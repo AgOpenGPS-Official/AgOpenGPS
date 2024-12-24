@@ -136,10 +136,10 @@
     <value>Agresividad</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
-    <value>Está seguro?</value>
+    <value>Esta seguro?</value>
   </data>
   <data name="gsArea" xml:space="preserve">
-    <value>Área</value>
+    <value>Area</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Autoguiado</value>
@@ -226,7 +226,7 @@
     <value>Borra todas las secciones y contornos</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
-    <value>Borrar Area aplicada</value>
+    <value>Borrar Area seleccionada</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Borrar rutas de Contorno</value>
@@ -244,7 +244,7 @@
     <value>Distancia</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
-    <value>Conducir hacia</value>
+    <value>Conducir en</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
     <value>Transitar</value>
@@ -259,13 +259,13 @@
     <value>Editar curva AB</value>
   </data>
   <data name="gsEditABLine" xml:space="preserve">
-    <value>Editar línea AB</value>
+    <value>Editar linea AB</value>
   </data>
   <data name="gsEditFieldName" xml:space="preserve">
     <value>Editar el nombre de la parcela</value>
   </data>
   <data name="gsEncoderCounts" xml:space="preserve">
-    <value>Conteo </value>
+    <value>Recuentos</value>
   </data>
   <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
     <value>Introducir Coordenadas para simulador</value>
@@ -298,7 +298,7 @@
     <value>Error de archivo</value>
   </data>
   <data name="gsFlagByLatLon" xml:space="preserve">
-    <value>Bandera según Lat Lon</value>
+    <value>Bandera de Lat Lon</value>
   </data>
   <data name="gsFlagFileIsCorrupt" xml:space="preserve">
     <value>Fichero de marcas corrupto</value>
@@ -316,16 +316,16 @@
     <value>Gráfico de rumbo</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
-    <value>Cabecera</value>
+    <value>Cabecero</value>
   </data>
   <data name="gsHeadlandForm" xml:space="preserve">
-    <value>Crear o Editar Cabecera</value>
+    <value>Crear o Editar Cabecero</value>
   </data>
   <data name="gsHelp" xml:space="preserve">
     <value>Ayuda</value>
   </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
-    <value>¿Direccion incorrecta? Toque el vehiculo</value>
+    <value>Direccion incorrecta? Toque el vehiculo</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Pulgadas</value>
@@ -340,7 +340,7 @@
     <value>Idioma</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
-    <value>mph</value>
+    <value>Mph</value>
   </data>
   <data name="gsMachinePort" xml:space="preserve">
     <value>Puerto del PCB</value>
@@ -457,13 +457,13 @@
     <value>Reiniciar Todo</value>
   </data>
   <data name="gsResetAllForSure" xml:space="preserve">
-    <value>¿Seguro que desea reiniciar todo?</value>
+    <value>Seguro que desea reiniciar todo?</value>
   </data>
   <data name="gsResume" xml:space="preserve">
     <value>Continuar</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
-    <value>SudEste</value>
+    <value>Este</value>
   </data>
   <data name="gsS_West" xml:space="preserve">
     <value>SudOeste</value>
@@ -490,7 +490,7 @@
     <value>Reduzca la velocidad por debajo</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
-    <value>Suavizar Curva AB </value>
+    <value>Curva AB Suave</value>
   </data>
   <data name="gsSort" xml:space="preserve">
     <value>Ordenar</value>
@@ -517,7 +517,7 @@
     <value>Al fichero</value>
   </data>
   <data name="gsTooFast" xml:space="preserve">
-    <value>Demasiado rápido</value>
+    <value>Demasiado rápida</value>
   </data>
   <data name="gsTopFieldView" xml:space="preserve">
     <value>Vista Aérea</value>
