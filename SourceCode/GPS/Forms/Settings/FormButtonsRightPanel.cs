@@ -158,7 +158,7 @@ namespace AgOpenGPS
             if (mf.buttonOrder.Count < 2)
             {
                 mf.TimedMessageBox(2000, "Button Error", "Not Enough Buttons Added");
-                mf.LogEventWriter("Button Picker, Not Enough Buttons");
+                mf.SystemEventsLogger.LogEvent("Button Picker, Not Enough Buttons");
                 return;
             }
             else

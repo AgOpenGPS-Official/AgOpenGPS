@@ -665,6 +665,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>gStr.zh-CHS.resx</DependentUpon>
     </Compile>
+    <Compile Include="Logging\SystemEventsLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\UDPComm.Designer.cs">

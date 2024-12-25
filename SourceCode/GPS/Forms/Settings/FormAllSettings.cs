@@ -160,7 +160,7 @@ namespace AgOpenGPS
             this.DrawToBitmap(bm, new Rectangle(0, 0, this.Width, this.Height));
             Clipboard.SetImage(bm);
             mf.TimedMessageBox(2000, "Captured", "Copied to Clipboard, Paste (CTRL-V) in Telegram");
-            mf.LogEventWriter("View All Settings to Clipboard");
+            mf.SystemEventsLogger.LogEvent("View All Settings to Clipboard");
         }
 
         private void btnCreatePNG_Click(object sender, EventArgs e)
@@ -169,7 +169,7 @@ namespace AgOpenGPS
             this.DrawToBitmap(bm, new Rectangle(0, 0, this.Width, this.Height));
             bm.Save(Path.Combine(mf.baseDirectory, "AllSet.PNG"), ImageFormat.Png);
             System.Diagnostics.Process.Start("explorer.exe", mf.baseDirectory);
-            mf.LogEventWriter("View All Settings to PNG");
+            mf.SystemEventsLogger.LogEvent("View All Settings to PNG");
             Close();
         }
 

@@ -27,10 +27,10 @@ namespace AgOpenGPS
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (rtbAutoSteerStopEvents.TextLength != mf.sbSystemEvents.Length)
+            if (rtbAutoSteerStopEvents.TextLength != mf.SystemEventsLogger.RawLogs.Length)
             {
                 rtbAutoSteerStopEvents.Clear();
-                rtbAutoSteerStopEvents.AppendText(mf.sbSystemEvents.ToString());
+                rtbAutoSteerStopEvents.AppendText(mf.SystemEventsLogger.RawLogs);
             }
         }
     }

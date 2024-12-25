@@ -472,7 +472,7 @@ namespace AgOpenGPS
             }
             catch (Exception e)
             {
-                mf.LogEventWriter("Exception Build new offset curve" + e.ToString());
+                mf.SystemEventsLogger.LogEvent("Exception Build new offset curve" + e.ToString());
             }
 
             return newCurList;
@@ -728,7 +728,7 @@ namespace AgOpenGPS
                                 {
                                     mf.btnAutoSteer.PerformClick();
                                     mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsPastEndOfCurve);
-                                    mf.LogEventWriter("Autosteer Stop, Past End of Curve");
+                                    mf.SystemEventsLogger.LogEvent("Autosteer Stop, Past End of Curve");
 
                                 }
                             }
@@ -738,7 +738,7 @@ namespace AgOpenGPS
                                 {
                                     mf.btnAutoSteer.PerformClick();
                                     mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsPastEndOfCurve);
-                                    mf.LogEventWriter("Autosteer Stop, Past End of Curve");
+                                    mf.SystemEventsLogger.LogEvent("Autosteer Stop, Past End of Curve");
                                 }
                             }
                         }

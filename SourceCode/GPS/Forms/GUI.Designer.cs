@@ -95,23 +95,13 @@ namespace AgOpenGPS
 
         public List<int> buttonOrder = new List<int>();
 
-        public StringBuilder sbSystemEvents = new StringBuilder();
-
         //Timer triggers at 125 msec
-
-        public void LogEventWriter(string message)
-        {
-            sbSystemEvents.Append(DateTime.Now.ToString("T"));
-            sbSystemEvents.Append("-> ");
-            sbSystemEvents.Append(message);
-            sbSystemEvents.Append("\r");
-        }
 
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
             if (sentenceCounter == 19)
             {
-                LogEventWriter("No GPS Warning - Lost GPS");
+                SystemEventsLogger.LogEvent("No GPS Warning - Lost GPS");
             }
 
             //Check for a newline char, if none then just return
@@ -415,7 +405,7 @@ namespace AgOpenGPS
                 {
                     btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
-                    LogEventWriter("Steer Safe Off, No Tracks, Idx -1");
+                    SystemEventsLogger.LogEvent("Steer Safe Off, No Tracks, Idx -1");
                 }
 
 
@@ -934,7 +924,7 @@ namespace AgOpenGPS
 
             if (vehicleFileName == "Default Vehicle")
             {
-                LogEventWriter("Using Default Vehicle At Start Warning");
+                SystemEventsLogger.LogEvent("Using Default Vehicle At Start Warning");
 
                 YesMessageBox("Using Default Vehicle" + "\r\n\r\n" + "Load Existing Vehicle or Save a New One !!!"
                     + "\r\n\r\n" + "Changes will NOT be Saved");
@@ -970,7 +960,7 @@ namespace AgOpenGPS
                     {
                         btnAutoSteer.PerformClick();
                         TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
-                        LogEventWriter("Steer Safe Off, No Tracks, Idx -1");
+                        SystemEventsLogger.LogEvent("Steer Safe Off, No Tracks, Idx -1");
                     }
                     btnAutoSteer.Enabled = false;
                 }
@@ -1595,7 +1585,7 @@ namespace AgOpenGPS
                     isFirstHeadingSet = false;
                     isReverse = false;
                     TimedMessageBox(2000, "Reset Direction", "Drive Forward > 1.5 kmh");
-                    LogEventWriter("Direction Reset, Drive Forward");
+                    SystemEventsLogger.LogEvent("Direction Reset, Drive Forward");
 
                     return;
                 }
@@ -1627,7 +1617,7 @@ namespace AgOpenGPS
                     + (vehicle.functionSpeedLimit * 0.621371).ToString("N1") + " " + gStr.gsMPH);
             }
 
-            LogEventWriter("UTurn or Lateral Speed exceeded");
+            SystemEventsLogger.LogEvent("UTurn or Lateral Speed exceeded");
 
         }
 

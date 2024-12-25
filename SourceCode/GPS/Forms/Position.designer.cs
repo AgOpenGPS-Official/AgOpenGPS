@@ -274,7 +274,7 @@ namespace AgOpenGPS
 
                                 isFirstHeadingSet = true;
                                 TimedMessageBox(2000, "Direction Reset", "Forward is Set");
-                                LogEventWriter("Forward Is Set");
+                                SystemEventsLogger.LogEvent("Forward Is Set");
 
                                 lastGPS = pn.fix;
 
@@ -916,8 +916,8 @@ namespace AgOpenGPS
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + vehicle.minSteerSpeed.ToString("N0") + " Kmh");
                             else
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + (vehicle.minSteerSpeed * 0.621371).ToString("N1") + " MPH");
-                            
-                            LogEventWriter("Steer Off, Below Min Steering Speed");
+
+                            SystemEventsLogger.LogEvent("Steer Off, Below Min Steering Speed");
                         }
                     }
                     else
@@ -1058,7 +1058,7 @@ namespace AgOpenGPS
                                 if (sounds.isTurnSoundOn)
                                 {
                                     sounds.sndUTurnTooClose.Play();
-                                    LogEventWriter("U Turn Creation Failure");
+                                    SystemEventsLogger.LogEvent("U Turn Creation Failure");
                                 }
                             }
                         }
@@ -1202,7 +1202,7 @@ namespace AgOpenGPS
                 {
                    btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, "Panic Stop");
-                    LogEventWriter("Steer Off, Panic Stop Exceeded");
+                    SystemEventsLogger.LogEvent("Steer Off, Panic Stop Exceeded");
                 }
             }
 

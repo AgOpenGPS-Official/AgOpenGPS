@@ -133,14 +133,14 @@ namespace AgOpenGPS
                             ///Remind the user
                             mf.TimedMessageBox(2500, "Steer and Machine Settings Sent", "Were Modules Connected?");
 
-                            mf.LogEventWriter("Vehicle Loaded: " + mf.vehicleFileName + ".XML");
+                            mf.SystemEventsLogger.LogEvent("Vehicle Loaded: " + mf.vehicleFileName + ".XML");
                         }
 
                         UpdateVehicleListView();
                     }
                     else
                     {
-                        mf.LogEventWriter("Attempted to Load Default Vehicle, Denied");
+                        mf.SystemEventsLogger.LogEvent("Attempted to Load Default Vehicle, Denied");
                         mf.TimedMessageBox(2500, "Vehicle Load Denied", "Choose Another Vehicle or Create One");
                     }
                 }
@@ -183,7 +183,7 @@ namespace AgOpenGPS
                     }
                     else
                     {
-                        mf.LogEventWriter("Attempted to Delete Default Vehicle, Denied");
+                        mf.SystemEventsLogger.LogEvent("Attempted to Delete Default Vehicle, Denied");
                         mf.TimedMessageBox(2500, "Default Vehicle Delete Denied", "Choose Another Vehicle");
                     }
 

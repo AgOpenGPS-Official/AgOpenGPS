@@ -187,7 +187,7 @@ namespace AgOpenGPS
                             else
                             {
                                 mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone);
-                                mf.LogEventWriter("New Field, Error Reading KML");
+                                mf.SystemEventsLogger.LogEvent("New Field, Error Reading KML");
                             }
                             break;
                         }
@@ -205,7 +205,7 @@ namespace AgOpenGPS
                     btnSave.Enabled = false;
                     btnLoadKML.Enabled = false;
                     mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone);
-                    mf.LogEventWriter("New Field, Error Reading KML" + ee.ToString());
+                    mf.SystemEventsLogger.LogEvent("New Field, Error Reading KML" + ee.ToString());
                     return;
                 }
             }
@@ -280,7 +280,7 @@ namespace AgOpenGPS
                             else
                             {
                                 mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone);
-                                mf.LogEventWriter("New Field, Error Reading KML ");
+                                mf.SystemEventsLogger.LogEvent("New Field, Error Reading KML ");
 
                             }
                             //if (button.Name == "btnLoadBoundaryFromGE")
@@ -293,7 +293,7 @@ namespace AgOpenGPS
                 catch (Exception et)
                 {
                     mf.TimedMessageBox(2000, "Exception", "Error Finding Lat Lon");
-                    mf.LogEventWriter("Lat Lon Exception Reading KML " + et.ToString());
+                    mf.SystemEventsLogger.LogEvent("Lat Lon Exception Reading KML " + et.ToString());
                     return;
                 }
             }
@@ -400,7 +400,7 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                mf.LogEventWriter("Creating new kml field " + ex.ToString());
+                mf.SystemEventsLogger.LogEvent("Creating new kml field " + ex.ToString());
 
                 MessageBox.Show(gStr.gsError, ex.ToString());
                 mf.currentFieldDirectory = "";

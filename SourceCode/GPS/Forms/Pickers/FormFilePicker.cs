@@ -38,7 +38,7 @@ namespace AgOpenGPS
             if (dirs == null || dirs.Length < 1)
             {
                 mf.TimedMessageBox(2000, gStr.gsCreateNewField, gStr.gsFileError);
-                mf.LogEventWriter("File Picker, No Fields");
+                mf.SystemEventsLogger.LogEvent("File Picker, No Fields");
                 Close();
                 return;
             }
@@ -94,7 +94,7 @@ namespace AgOpenGPS
                         {
                             MessageBox.Show(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken", gStr.gsFileError,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            mf.LogEventWriter("Field.txt is Broken" + eg.ToString());
+                            mf.SystemEventsLogger.LogEvent("Field.txt is Broken" + eg.ToString());
                             fileList.Add(fieldDirectory);
                             fileList.Add("Error");
                         }
@@ -175,7 +175,7 @@ namespace AgOpenGPS
                         catch (Exception)
                         {
                             area = 0;
-                            mf.LogEventWriter("Field.txt is Broken" + e.ToString());
+                            mf.SystemEventsLogger.LogEvent("Field.txt is Broken" + e.ToString());
                         }
                     }
                     if (area == 0) fileList.Add("No Bndry");
@@ -195,7 +195,7 @@ namespace AgOpenGPS
             if (fileList == null || fileList.Count < 1)
             {
                 mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
-                mf.LogEventWriter("File Picker, No fields Sorted");
+                mf.SystemEventsLogger.LogEvent("File Picker, No fields Sorted");
                 Close();
                 return;
             }
@@ -222,7 +222,7 @@ namespace AgOpenGPS
             else
             {
                 mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
-                mf.LogEventWriter("File Picker, No Line items");
+                mf.SystemEventsLogger.LogEvent("File Picker, No Line items");
                 Close();
                 return;
             }
@@ -405,7 +405,7 @@ namespace AgOpenGPS
                         {
                             MessageBox.Show(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken", gStr.gsFileError,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            mf.LogEventWriter("Field.txt is Broken" + e.ToString());
+                            mf.SystemEventsLogger.LogEvent("Field.txt is Broken" + e.ToString());
                             fileList.Add(fieldDirectory);
                             fileList.Add("Error");
                         }
@@ -484,7 +484,7 @@ namespace AgOpenGPS
                             catch (Exception)
                             {
                                 area = 0;
-                                mf.LogEventWriter("Field.txt is Broken" + e.ToString());
+                                mf.SystemEventsLogger.LogEvent("Field.txt is Broken" + e.ToString());
                             }
                         }
                         if (area == 0) fileList.Add("No Bndry");

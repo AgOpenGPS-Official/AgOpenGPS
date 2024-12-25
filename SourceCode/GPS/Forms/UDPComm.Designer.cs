@@ -269,7 +269,7 @@ namespace AgOpenGPS
                                 lblHardwareMessage.Visible = true;
                                 hardwareLineCounter = data[5] * 10;
 
-                                LogEventWriter(lblHardwareMessage.Text);
+                                SystemEventsLogger.LogEvent(lblHardwareMessage.Text);
 
                                 //color based on byte 6
                                 if (data[6] == 0) lblHardwareMessage.BackColor = Color.Salmon;
@@ -336,7 +336,7 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 MessageBox.Show("Load Error: " + ex.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LogEventWriter("Load UDP Server Error: " + ex.ToString());
+                SystemEventsLogger.LogEvent("Load UDP Server Error: " + ex.ToString());
             }
         }
 

@@ -121,7 +121,7 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                mf.LogEventWriter("Creating new field " + ex);
+                mf.SystemEventsLogger.LogEvent("Creating new field " + ex);
 
                 MessageBox.Show(gStr.gsError, ex.ToString());
                 mf.currentFieldDirectory = "";

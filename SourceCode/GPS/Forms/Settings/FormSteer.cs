@@ -575,7 +575,7 @@ namespace AgOpenGPS
                 MessageBoxDefaultButton.Button2);
             if (result3 == DialogResult.Yes)
             {
-                mf.LogEventWriter("Steer Form - Steer Settings Set to Default");
+                mf.SystemEventsLogger.LogEvent("Steer Form - Steer Settings Set to Default");
 
                 mf.TimedMessageBox(2000, "Reset To Default", "Values Set to Inital Default");
                 Properties.Settings.Default.setVehicle_maxSteerAngle = mf.vehicle.maxSteerAngle
@@ -712,7 +712,7 @@ namespace AgOpenGPS
             if (Math.Abs(offset) > 3900)
             {
                 mf.TimedMessageBox(2000, "Exceeded Range", "Excessive Steer Angle - Cannot Zero");
-                mf.LogEventWriter("Excessive Steer Angle, No Zero " + offset);
+                mf.SystemEventsLogger.LogEvent("Excessive Steer Angle, No Zero " + offset);
             }
             else
             {
@@ -929,7 +929,7 @@ namespace AgOpenGPS
             SaveSettings();
             mf.SendPgnToLoop(mf.p_251.pgn);
             pboxSendSteer.Visible = false;
-            mf.LogEventWriter("Steer Form, Send and Save Pressed");
+            mf.SystemEventsLogger.LogEvent("Steer Form, Send and Save Pressed");
 
             mf.TimedMessageBox(2000, gStr.gsAutoSteerPort, "Settings Sent To Steer Module");
         }
@@ -1139,12 +1139,12 @@ namespace AgOpenGPS
             if (mf.isStanleyUsed)
             {
                 btnStanleyPure.Image = Resources.ModeStanley;
-                mf.LogEventWriter("Stanley Steer Mode Selectede");
+                mf.SystemEventsLogger.LogEvent("Stanley Steer Mode Selectede");
             }
             else
             {
                 btnStanleyPure.Image = Resources.ModePurePursuit;
-                mf.LogEventWriter("Pure Pursuit Steer Mode Selected");
+                mf.SystemEventsLogger.LogEvent("Pure Pursuit Steer Mode Selected");
             }
 
             tabControl1.TabPages.Remove(tabPP);

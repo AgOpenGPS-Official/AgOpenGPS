@@ -138,7 +138,7 @@ namespace AgOpenGPS
                     //mf.hd.BuildSingleSpaceHeadLines();
                     mf.btnABDraw.Visible = true;
 
-                    mf.LogEventWriter("Driven Boundary Created, Area: " + lblArea.Text);
+                    mf.SystemEventsLogger.LogEvent("Driven Boundary Created, Area: " + lblArea.Text);
                 }
 
                 //stop it all for adding

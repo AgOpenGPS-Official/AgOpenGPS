@@ -144,7 +144,7 @@ namespace AgOpenGPS
             if (nudSetDistance.Value == 0 && rbtnCurve.Checked)
             {
                 mf.TimedMessageBox(3000, "Distance Error", "Distance Set to 0, Nothing to Move");
-                mf.LogEventWriter("Headland, Distance=0, Can't Move");
+                mf.SystemEventsLogger.LogEvent("Headland, Distance=0, Can't Move");
                 return;
             }
             sliceArr?.Clear();
@@ -841,7 +841,7 @@ namespace AgOpenGPS
             if (isStart < 2)
             {
                 mf.TimedMessageBox(2000, "Error", "Crossings not Found");
-                mf.LogEventWriter("Headland, Crossings Not Found");
+                mf.SystemEventsLogger.LogEvent("Headland, Crossings Not Found");
 
                 return;
             }
