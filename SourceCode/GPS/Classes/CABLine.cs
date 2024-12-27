@@ -437,7 +437,7 @@ namespace AgOpenGPS
                 double cosHeading = Math.Cos(-abHeading);
                 double sinHeading = Math.Sin(-abHeading);
 
-                GL.Color4(0,0,0, 0.5);
+                GL.Color4(0.0,1f,0.0, 0.1);
 
                 if (mf.camera.camSetDistance > mf.tool.width * -100)
                     GL.LineWidth(4);
