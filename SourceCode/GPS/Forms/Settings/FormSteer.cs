@@ -3,6 +3,7 @@ using AgOpenGPS.Properties;
 using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -12,7 +13,7 @@ namespace AgOpenGPS
         private readonly FormGPS mf = null;
 
         private bool toSend = false, isSA = false;
-        private int counter = 0, cntr, sbCntr=0;
+        private int counter = 0, secondCntr = 0, cntr;
         private vec3 startFix;
         private double diameter, steerAngleRight, dist;
         private int windowSizeState = 0;
@@ -54,8 +55,18 @@ namespace AgOpenGPS
             if (chkDisplayLightbar.Checked) { chkDisplayLightbar.Image = Resources.SwitchOn; }
             else { chkDisplayLightbar.Image = Resources.SwitchOff; }
 
-            if (mf.isStanleyUsed) tabControl1.TabPages.Remove(tabInt);
-            else tabControl1.TabPages.Remove(tabStan);
+            if (mf.isStanleyUsed)
+            {
+                tabControl1.TabPages.Remove(tabPP);
+                tabControl1.TabPages.Remove(tabPPAdv);
+                this.tabControl1.ItemSize = new System.Drawing.Size(105, 48);
+
+            }
+            else
+            {
+                tabControl1.TabPages.Remove(tabStan);
+                this.tabControl1.ItemSize = new System.Drawing.Size(89, 48);
+            }
 
             Location = Properties.Settings.Default.setWindow_steerSettingsLocation;
             //WAS Zero, CPD
@@ -130,6 +141,11 @@ namespace AgOpenGPS
 
             hsbarLookAheadMult.Value = (Int16)(Properties.Settings.Default.setVehicle_goalPointLookAheadMult * 10);
             lblLookAheadMult.Text = mf.vehicle.goalPointLookAheadMult.ToString();
+
+            hsbarAcquireFactor.Value = (int)(Properties.Settings.Default.setVehicle_goalPointAcquireFactor * 100);
+            lblAcquireFactor.Text = mf.vehicle.goalPointAcquireFactor.ToString();
+
+            lblAcquirePP.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("N1");
 
             hsbarUTurnCompensation.Value = (Int16)(mf.vehicle.uturnCompensation * 10);
             lblUTurnCompensation.Text = (hsbarUTurnCompensation.Value - 10).ToString();
@@ -339,6 +355,25 @@ namespace AgOpenGPS
                 counter = 0;
             }
 
+            if (secondCntr++ > 2)
+            {
+                secondCntr = 0;
+
+                if (tabControl1.SelectedTab == tabPPAdv)
+                {
+                    lblHoldAdv.Text = mf.vehicle.goalPointLookAheadHold.ToString("N1");
+                    lblAcqAdv.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("N1");
+                    lblDistanceAdv.Text = mf.vehicle.goalDistance.ToString("N1");
+                    lblAcquirePP.Text = lblAcqAdv.Text;
+                }
+                //else if (tabControl1.SelectedTab == tabPP)
+                //{
+                //    lblHoldAdv.Text = mf.vehicle.goalPointLookAheadHold.ToString("N1");
+                //    lblAcqAdv.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("N1");
+                //    lblDistanceAdv.Text = mf.vehicle.goalDistance.ToString("N1");
+                //}
+            }
+
             //if (hsbarMinPWM.Value > hsbarLowSteerPWM.Value) lblMinPWM.ForeColor = Color.OrangeRed;
             //else lblMinPWM.ForeColor = SystemColors.ControlText;
 
@@ -359,6 +394,7 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setVehicle_goalPointLookAheadHold = mf.vehicle.goalPointLookAheadHold;
             Properties.Settings.Default.setVehicle_goalPointLookAheadMult = mf.vehicle.goalPointLookAheadMult;
+            Properties.Settings.Default.setVehicle_goalPointAcquireFactor = mf.vehicle.goalPointAcquireFactor;
 
             Properties.Settings.Default.stanleyHeadingErrorGain = mf.vehicle.stanleyHeadingErrorGain;
             Properties.Settings.Default.stanleyDistanceErrorGain = mf.vehicle.stanleyDistanceErrorGain;
@@ -393,7 +429,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.Save();
 
             //save current vehicle
-            SettingsIO.ExportAll(mf.vehiclesDirectory + mf.vehicleFileName + ".XML");
+            SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
         }
 
         private void tabSettings_Enter(object sender, EventArgs e)
@@ -539,7 +575,7 @@ namespace AgOpenGPS
                 MessageBoxDefaultButton.Button2);
             if (result3 == DialogResult.Yes)
             {
-                mf.SystemEventWriter("Steer Form - Steer Settings Set to Default");
+                mf.LogEventWriter("Steer Form - Steer Settings Set to Default");
 
                 mf.TimedMessageBox(2000, "Reset To Default", "Values Set to Inital Default");
                 Properties.Settings.Default.setVehicle_maxSteerAngle = mf.vehicle.maxSteerAngle
@@ -564,9 +600,9 @@ namespace AgOpenGPS
 
                 Properties.Settings.Default.setArdSteer_maxPulseCounts = 0;
 
-                Properties.Settings.Default.setVehicle_goalPointLookAhead = 3;
+                Properties.Settings.Default.setVehicle_goalPointAcquireFactor = 0.75;
                 Properties.Settings.Default.setVehicle_goalPointLookAheadHold = 3;
-                Properties.Settings.Default.setVehicle_goalPointLookAheadMult = 1;
+                Properties.Settings.Default.setVehicle_goalPointLookAheadMult = 1.5;
 
                 Properties.Settings.Default.stanleyHeadingErrorGain = 1;
                 Properties.Settings.Default.stanleyDistanceErrorGain = 1;
@@ -595,7 +631,7 @@ namespace AgOpenGPS
                 Properties.Settings.Default.Save();
 
                 //save current vehicle
-                SettingsIO.ExportAll(mf.vehiclesDirectory + mf.vehicleFileName + ".XML");
+                SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
 
                 FormSteer_Load(this, e);
 
@@ -676,7 +712,7 @@ namespace AgOpenGPS
             if (Math.Abs(offset) > 3900)
             {
                 mf.TimedMessageBox(2000, "Exceeded Range", "Excessive Steer Angle - Cannot Zero");
-                mf.SystemEventWriter("Excessive Steer Angle, No Zero " + offset);
+                mf.LogEventWriter("Excessive Steer Angle, No Zero " + offset);
             }
             else
             {
@@ -763,6 +799,7 @@ namespace AgOpenGPS
         {
             mf.vehicle.goalPointLookAheadHold = hsbarHoldLookAhead.Value * 0.1;
             lblHoldLookAhead.Text = mf.vehicle.goalPointLookAheadHold.ToString();
+            lblAcquirePP.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("N1");
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)
@@ -771,17 +808,23 @@ namespace AgOpenGPS
             lblLookAheadMult.Text = mf.vehicle.goalPointLookAheadMult.ToString();
         }
 
+        private void hsbarAcquireFactor_ValueChanged(object sender, EventArgs e)
+        {
+            mf.vehicle.goalPointAcquireFactor = hsbarAcquireFactor.Value * 0.01;
+            lblAcquireFactor.Text = mf.vehicle.goalPointAcquireFactor.ToString();
+        }
+
         private void expandWindow_Click(object sender, EventArgs e)
         {
             if (windowSizeState++ > 0) windowSizeState = 0;
             if (windowSizeState == 1)
             {
-                this.Size = new System.Drawing.Size(1024, 720);
+                this.Size = new System.Drawing.Size(918, 673);
                 btnExpand.Image = Properties.Resources.ArrowLeft;
             }
             else if (windowSizeState == 0)
             {
-                this.Size = new System.Drawing.Size(388, 490);
+                this.Size = new System.Drawing.Size(392, 492);
                 btnExpand.Image = Properties.Resources.ArrowRight;
             }
         }
@@ -886,7 +929,7 @@ namespace AgOpenGPS
             SaveSettings();
             mf.SendPgnToLoop(mf.p_251.pgn);
             pboxSendSteer.Visible = false;
-            mf.SystemEventWriter("Steer Form, Send and Save Pressed");
+            mf.LogEventWriter("Steer Form, Send and Save Pressed");
 
             mf.TimedMessageBox(2000, gStr.gsAutoSteerPort, "Settings Sent To Steer Module");
         }
@@ -1073,6 +1116,7 @@ namespace AgOpenGPS
             //hSBarFreeDrive.Value = mf.driveFreeSteerAngle;
         }
 
+
         private void btnSteerAngleUp_MouseDown(object sender, MouseEventArgs e)
         {
             mf.vehicle.driveFreeSteerAngle++;
@@ -1095,22 +1139,41 @@ namespace AgOpenGPS
             if (mf.isStanleyUsed)
             {
                 btnStanleyPure.Image = Resources.ModeStanley;
-                mf.SystemEventWriter("Stanley Steer Mode Selectede");
+                mf.LogEventWriter("Stanley Steer Mode Selectede");
             }
             else
             {
                 btnStanleyPure.Image = Resources.ModePurePursuit;
-                mf.SystemEventWriter("Pure Pursuit Steer Mode Selected");
+                mf.LogEventWriter("Pure Pursuit Steer Mode Selected");
             }
+
+            tabControl1.TabPages.Remove(tabPP);
+            tabControl1.TabPages.Remove(tabPPAdv);
+            tabControl1.TabPages.Remove(tabGain);
+            tabControl1.TabPages.Remove(tabSteer);
+            tabControl1.TabPages.Remove(tabStan);
+
 
             Properties.Settings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
             Properties.Settings.Default.Save();
 
-            tabControl1.TabPages.Remove(tabInt);
-            tabControl1.TabPages.Remove(tabStan);
+            if (mf.isStanleyUsed)
+            {
+                this.tabControl1.ItemSize = new System.Drawing.Size(105, 48);
+                tabControl1.TabPages.Add(tabStan);
+                tabControl1.TabPages.Add(tabGain);
+                tabControl1.TabPages.Add(tabSteer);
+            }
+            else
+            {
+                tabControl1.TabPages.Add(tabPP);
+                tabControl1.TabPages.Add(tabGain);
+                tabControl1.TabPages.Add(tabSteer);
+                tabControl1.TabPages.Add(tabPPAdv);
 
-            if (mf.isStanleyUsed) tabControl1.TabPages.Add(tabStan);
-            else tabControl1.TabPages.Add(tabInt);
+                this.tabControl1.ItemSize = new System.Drawing.Size(89, 48);
+            }
+
         }
 
         private void btnSteerWizard_Click(object sender, EventArgs e)

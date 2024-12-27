@@ -58,9 +58,9 @@
             this.lblLast.Location = new System.Drawing.Point(15, 9);
             this.lblLast.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLast.Name = "lblLast";
-            this.lblLast.Size = new System.Drawing.Size(269, 23);
+            this.lblLast.Size = new System.Drawing.Size(351, 23);
             this.lblLast.TabIndex = 213;
-            this.lblLast.Text = "Settings And Configuration";
+            this.lblLast.Text = "Settings and Configuration Profiles ";
             this.lblLast.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tboxName
@@ -108,9 +108,9 @@
             this.label2.Location = new System.Drawing.Point(82, 55);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(198, 23);
+            this.label2.Size = new System.Drawing.Size(226, 23);
             this.label2.TabIndex = 217;
-            this.label2.Text = "Overwrite This File:";
+            this.label2.Text = "Overwrite This Profile:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnSerialCancel

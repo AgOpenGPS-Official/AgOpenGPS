@@ -81,7 +81,7 @@ namespace AgOpenGPS
             mf.currentFieldDirectory = tboxFieldName.Text.Trim();
 
             //get the directory and make sure it exists, create if not
-            string dirNewField = mf.fieldsDirectory + mf.currentFieldDirectory + "\\";
+            DirectoryInfo dirNewField = new DirectoryInfo(Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory));
 
             mf.menustripLanguage.Enabled = false;
             //if no template set just make a new file.
@@ -91,9 +91,7 @@ namespace AgOpenGPS
                 mf.JobNew();
 
                 //create it for first save
-                string directoryName = Path.GetDirectoryName(dirNewField);
-
-                if ((!string.IsNullOrEmpty(directoryName)) && (Directory.Exists(directoryName)))
+                if (dirNewField.Exists)
                 {
                     MessageBox.Show(gStr.gsChooseADifferentName, gStr.gsDirectoryExists, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
@@ -104,9 +102,7 @@ namespace AgOpenGPS
 
                     mf.pn.SetLocalMetersPerDegree();
 
-                    //make sure directory exists, or create it
-                    if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
-                    { Directory.CreateDirectory(directoryName); }
+                    dirNewField.Create();
 
                     mf.displayFieldName = mf.currentFieldDirectory;
 
@@ -125,7 +121,7 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                mf.WriteErrorLog("Creating new field " + ex);
+                mf.LogEventWriter("Creating new field " + ex);
 
                 MessageBox.Show(gStr.gsError, ex.ToString());
                 mf.currentFieldDirectory = "";

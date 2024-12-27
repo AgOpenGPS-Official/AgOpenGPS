@@ -38,10 +38,10 @@
             this.rtbAutoSteerStopEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbAutoSteerStopEvents.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbAutoSteerStopEvents.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbAutoSteerStopEvents.Location = new System.Drawing.Point(12, 12);
             this.rtbAutoSteerStopEvents.Name = "rtbAutoSteerStopEvents";
-            this.rtbAutoSteerStopEvents.Size = new System.Drawing.Size(470, 238);
+            this.rtbAutoSteerStopEvents.Size = new System.Drawing.Size(515, 238);
             this.rtbAutoSteerStopEvents.TabIndex = 520;
             this.rtbAutoSteerStopEvents.Text = "";
             this.rtbAutoSteerStopEvents.WordWrap = false;
@@ -57,7 +57,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(494, 262);
+            this.ClientSize = new System.Drawing.Size(539, 262);
             this.Controls.Add(this.rtbAutoSteerStopEvents);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FormEventViewer";

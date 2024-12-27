@@ -19,18 +19,20 @@ namespace AgIO
 
         private void FormCommSaver_Load(object sender, EventArgs e)
         {
-            lblLast.Text = "Current " + mf.commFileName;
-            DirectoryInfo dinfo = new DirectoryInfo(mf.commDirectory);
+            lblLast.Text = "Current " + mf.profileFileName;
+            DirectoryInfo dinfo = new DirectoryInfo(mf.profileDirectory);
             FileInfo[] Files = dinfo.GetFiles("*.xml");
-
-            if (Files.Length == 0)
-            {
-                cboxEnv.Enabled = false;
-            }
 
             foreach (FileInfo file in Files)
             {
-                cboxEnv.Items.Add(Path.GetFileNameWithoutExtension(file.Name));
+                string temp = Path.GetFileNameWithoutExtension(file.Name);
+                if (temp.Trim() != "Default Profile")
+                    cboxEnv.Items.Add(temp);
+            }
+
+            if (cboxEnv.Items.Count == 0)
+            {
+                cboxEnv.Enabled = false;
             }
         }
 
@@ -45,7 +47,14 @@ namespace AgIO
 
             if (result3 == DialogResult.Yes)
             {
-                SettingsIO.ExportSettings(mf.commDirectory + cboxEnv.SelectedItem.ToString() + ".xml");
+                mf.profileFileName = cboxEnv.SelectedItem.ToString().Trim();
+                Properties.Settings.Default.setConfig_profileName = cboxEnv.SelectedItem.ToString().Trim();
+                Properties.Settings.Default.Save();
+
+                if (mf.profileFileName != "Default Profile")
+                    SettingsIO.ExportSettings(mf.profileDirectory + mf.profileFileName + ".xml");
+                else
+                    mf.YesMessageBox("Default Profileuration, Changes will NOT be Saved");
                 Close();
             }
         }
@@ -63,7 +72,15 @@ namespace AgIO
         {
             if (tboxName.Text.Trim().Length > 0)
             {
-                SettingsIO.ExportSettings(mf.commDirectory + tboxName.Text.Trim() + ".xml");
+
+                mf.profileFileName = tboxName.Text.ToString().Trim();
+                Properties.Settings.Default.setConfig_profileName = mf.profileFileName;
+                Properties.Settings.Default.Save();
+
+                if (mf.profileFileName != "Default Profile")
+                    SettingsIO.ExportSettings(mf.profileDirectory + mf.profileFileName + ".xml");
+                else
+                    mf.YesMessageBox("Default Profileuration, Changes will NOT be Saved");
                 Close();
             }
             else

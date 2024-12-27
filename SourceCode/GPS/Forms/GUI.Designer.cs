@@ -57,6 +57,7 @@ namespace AgOpenGPS
         public bool isDay = true, isDayTime = true, isBrightnessOn = true;
         public bool isLogElevation = false, isDirectionMarkers;
         public bool isKeyboardOn = true, isAutoStartAgIO = true, isSvennArrowOn = true, isTermsAccepted = false;
+        public bool isSectionlinesOn = true, isLineSmooth = true;
 
         public bool isLightBarNotSteerBar = false;
 
@@ -73,7 +74,7 @@ namespace AgOpenGPS
         public bool isPanelBottomHidden = false;
 
         public bool isKioskMode = false;
-
+        public bool isNozzleApp = false;
         public int makeUTurnCounter = 0;
 
         //makes nav panel disappear after 6 seconds
@@ -98,7 +99,7 @@ namespace AgOpenGPS
 
         //Timer triggers at 125 msec
 
-        public void SystemEventWriter(string message)
+        public void LogEventWriter(string message)
         {
             sbSystemEvents.Append(DateTime.Now.ToString("T"));
             sbSystemEvents.Append("-> ");
@@ -108,13 +109,19 @@ namespace AgOpenGPS
 
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
+            if (sentenceCounter == 19)
+            {
+                LogEventWriter("No GPS Warning - Lost GPS");
+            }
+
             //Check for a newline char, if none then just return
             if (++sentenceCounter > 20)
             {
                 ShowNoGPSWarning();
-                SystemEventWriter("No GPS Warning - Counter > 20");
                 return;
             }
+
+
 
             ////////////////////////////////////////////// 10 second ///////////////////////////////////////////////////////
             //every 3 second update status
@@ -408,7 +415,7 @@ namespace AgOpenGPS
                 {
                     btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
-                    SystemEventWriter("Steer Safe Off, No Tracks, Idx -1");
+                    LogEventWriter("Steer Safe Off, No Tracks, Idx -1");
                 }
 
 
@@ -424,6 +431,68 @@ namespace AgOpenGPS
                     lblSpeed.Text = SpeedMPH;
                     //btnContour.Text = InchXTE; //cross track error
                 }
+
+                //Nozzz
+                if (isNozzleApp)
+                {
+                    //nozz.tankVolumeTotal += 1;
+                    if (nozz.isAppliedUnitsNotTankDisplayed)
+                        btnSprayVolumeTotal.Text = nozz.volumeApplied.ToString("N1");
+                    else
+                        btnSprayVolumeTotal.Text = (nozz.volumeTankStart - nozz.volumeApplied).ToString("N1");
+
+                    //pressure reading
+                    btnSprayPSI.Text = nozz.pressureActual.ToString();
+
+                    //volume per minute displays at top of panel
+                    lblGPM_Set.Text = ((double)(nozz.volumePerMinuteSet) * 0.01).ToString("N1");
+                    btnSprayGalPerMinActual.Text = (((double)(nozz.volumePerMinuteActual)) * 0.01).ToString("N2");
+
+                    //the main GPA display and button
+                    if (nozz.currentSectionsWidthMeters < 0.2)
+                    {
+                        btnSprayGalPerAcre.Text = "Off";
+                        btnSprayGalPerAcre.BackColor = Color.Transparent;
+                    }
+                    else
+                    {
+                        //volume per area calcs - GPM and L/Ha
+                        if (isMetric)
+                        {
+                            //Liters * 0.00167 𝑥 𝑠𝑤𝑎𝑡ℎ 𝑤𝑖𝑑𝑡ℎ 𝑥 𝐾mh
+                            nozz.volumePerAreaActualFiltered = (nozz.volumePerAreaActualFiltered * 0.6) +
+                                (nozz.volumePerMinuteActual * 6) / (nozz.currentSectionsWidthMeters * avgSpeed + 0.01) * 0.6;
+                        }
+                        else
+                        {
+                            //(GPM x 5,940) / (MPH x Width in inches)
+                            nozz.volumePerAreaActualFiltered = (nozz.volumePerAreaActualFiltered * 0.6)
+                                + ((nozz.volumePerMinuteActual * 59.4) / (nozz.currentSectionsWidthMeters * 39.3701 * avgSpeed * 0.621 + 0.01) * 0.4);
+                        }
+
+                        //display actual rate
+                        if (nozz.volumePerAreaActualFiltered < 100)
+                            btnSprayGalPerAcre.Text = (nozz.volumePerAreaActualFiltered).ToString("N1");
+                        else
+                            btnSprayGalPerAcre.Text = (nozz.volumePerAreaActualFiltered).ToString("N0");
+
+                        //flow error alarm
+                        if ((Math.Abs(nozz.volumePerAreaSetSelected - nozz.volumePerAreaActualFiltered)) > (nozz.volumePerAreaSetSelected * nozz.rateAlarmPercent))
+                        {
+                            if (isFlashOnOff) btnSprayGalPerAcre.BackColor = Color.DarkRed;
+                            else btnSprayGalPerAcre.BackColor = Color.Transparent;
+                        }
+                        else
+                        {
+                            btnSprayGalPerAcre.BackColor = Color.DarkGreen;
+                        }
+
+                        //flow error
+                        //lblFlowError.Text = (((double)(nozz.volumePerMinuteSet - nozz.volumePerMinuteActual) 
+                        //    / (double)(nozz.volumePerMinuteSet)) * 100).ToString("N0") + "%";
+                    }
+                }
+
             } //end every 1/2 second
 
             //every fourth second update  ///////////////////////////   Fourth  ////////////////////////////
@@ -479,6 +548,8 @@ namespace AgOpenGPS
             btnYouSkipEnable.Image = Resources.YouSkipOff;
             isNudgeOn = Properties.Settings.Default.setFeatures.isABLineOn;
 
+            isSectionlinesOn = Properties.Settings.Default.setDisplay_isSectionLinesOn;
+
             if (isMetric)
             {
                 inchOrCm2m = 0.01;
@@ -509,6 +580,58 @@ namespace AgOpenGPS
                 unitsInCmNS = "in";
                 unitsFtM = " ft";
             }
+
+            //Nozzz
+            //Nozzle Spray Controller
+
+            CheckNozzleSettingsNotNull();
+
+            isNozzleApp = Properties.Settings.Default.setApp_isNozzleApp;
+            nozzleAppToolStripMenuItem.Checked = isNozzleApp;
+            tlpNozzle.Visible = isNozzleApp;
+
+            if (isNozzleApp)
+            {
+                p_226.pgn[p_226.flowCalHi] = unchecked((byte)(Properties.Settings.Default.setNozzleSettings.flowCal >> 8)); ;
+                p_226.pgn[p_226.flowCaLo] = unchecked((byte)(Properties.Settings.Default.setNozzleSettings.flowCal));
+                p_226.pgn[p_226.pressureCalHi] = unchecked((byte)(Properties.Settings.Default.setNozzleSettings.pressureCal >> 8));
+                p_226.pgn[p_226.pressureCalLo] = unchecked((byte)(Properties.Settings.Default.setNozzleSettings.pressureCal));
+                p_226.pgn[p_226.Kp] = Properties.Settings.Default.setNozzleSettings.Kp;
+                p_226.pgn[p_226.Ki] = Properties.Settings.Default.setNozzleSettings.Ki;
+                p_226.pgn[p_226.minPressure] = unchecked((byte)(Properties.Settings.Default.setNozzleSettings.pressureMin));
+                p_226.pgn[p_226.fastPWM] = Properties.Settings.Default.setNozzleSettings.fastPWM;
+                p_226.pgn[p_226.slowPWM] = Properties.Settings.Default.setNozzleSettings.slowPWM;
+                p_226.pgn[p_226.deadbandError] = Properties.Settings.Default.setNozzleSettings.deadbandError;
+                p_226.pgn[p_226.switchAtFlowError] = Properties.Settings.Default.setNozzleSettings.switchAtFlowError;
+
+                if (Properties.Settings.Default.setNozzleSettings.isBypass)
+                    p_226.pgn[p_226.isBypass] = 1;
+                else
+                    p_226.pgn[p_226.isBypass] = 0;
+
+
+                tlpNozzle.Width = 175;
+
+                //units
+                if (cboxRate1Rate2Select.Checked)
+                {
+                    cboxRate1Rate2Select.Text = Properties.Settings.Default.setNozzleSettings.volumePerAreaSet2 + nozz.unitsPerArea;
+                    nozz.volumePerAreaSetSelected = Properties.Settings.Default.setNozzleSettings.volumePerAreaSet2;
+                }
+                else
+                {
+                    cboxRate1Rate2Select.Text = Properties.Settings.Default.setNozzleSettings.volumePerAreaSet1 + nozz.unitsPerArea;
+                    nozz.volumePerAreaSetSelected = Properties.Settings.Default.setNozzleSettings.volumePerAreaSet1;
+                }
+
+                btnSprayVolumeTotal.Text = nozz.volumeApplied.ToString();
+
+                if (!nozz.isAppliedUnitsNotTankDisplayed)
+                    lbl_Volume.Text = "Tank " + nozz.unitsApplied;
+                else
+                    lbl_Volume.Text = "App " + nozz.unitsApplied;
+            }
+
 
             udpWatchLimit = Properties.Settings.Default.SetGPS_udpWatchMsec;
             pn.headingTrueDualOffset = Properties.Settings.Default.setGPS_dualHeadingOffset;
@@ -798,7 +921,7 @@ namespace AgOpenGPS
             lblHardwareMessage.BringToFront();
             isHardwareMessages = Properties.Settings.Default.setDisplay_isHardwareMessages;
 
-            if ((int) PowerState.GetPowerLineStatus() == 1)
+            if (SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online)
             {
                 btnChargeStatus.BackColor = Color.YellowGreen;
             }
@@ -809,6 +932,13 @@ namespace AgOpenGPS
 
             //jumpDistanceAlarm = Settings.Default.setGPS_jumpFixAlarmDistance;
 
+            if (vehicleFileName == "Default Vehicle")
+            {
+                LogEventWriter("Using Default Vehicle At Start Warning");
+
+                YesMessageBox("Using Default Vehicle" + "\r\n\r\n" + "Load Existing Vehicle or Save a New One !!!"
+                    + "\r\n\r\n" + "Changes will NOT be Saved");
+            }
         }
 
         public void PanelUpdateRightAndBottom()
@@ -840,7 +970,7 @@ namespace AgOpenGPS
                     {
                         btnAutoSteer.PerformClick();
                         TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
-                        SystemEventWriter("Steer Safe Off, No Tracks, Idx -1");
+                        LogEventWriter("Steer Safe Off, No Tracks, Idx -1");
                     }
                     btnAutoSteer.Enabled = false;
                 }
@@ -994,23 +1124,37 @@ namespace AgOpenGPS
 
         private void PanelsAndOGLSize()
         {
+            // Nozzz
             if (!isJobStarted)
             {
                 panelBottom.Visible = false;
                 panelRight.Visible = false;
+                tlpNozzle.Visible = false;
 
                 oglMain.Left = 80;
-                oglMain.Width = this.Width - statusStripLeft.Width - 22; //22
+                oglMain.Width = this.Width - statusStripLeft.Width - 22; //22                
                 oglMain.Height = this.Height - 60;
+                tlpNozzle.Height = oglMain.Height;
             }
             else
             {
+                tlpNozzle.Visible = isNozzleApp;
+
                 if (isPanelBottomHidden)
                 {
                     panelBottom.Visible = false;
                     panelLeft.Visible = false;
+
                     oglMain.Left = 20;
+                    if (tlpNozzle.Visible)
+                    {
+                        oglMain.Left = 20 + tlpNozzle.Width;
+                        tlpNozzle.Left = 20;
+                    }
+
                     oglMain.Width = this.Width - 98; //22
+                    if (tlpNozzle.Visible) oglMain.Width -= tlpNozzle.Width;
+
                     oglMain.Height = this.Height - 62;
                 }
                 else
@@ -1019,9 +1163,20 @@ namespace AgOpenGPS
                     panelRight.Visible = true;
                     panelLeft.Visible = true;
                     oglMain.Left = 80;
+
+                    if (tlpNozzle.Visible)
+                    {
+                        oglMain.Left = 80 + tlpNozzle.Width;
+                        tlpNozzle.Left = 80;
+                    }
+
                     oglMain.Width = this.Width - statusStripLeft.Width - 92; //22
+                    if (tlpNozzle.Visible) oglMain.Width -= tlpNozzle.Width;
+
                     oglMain.Height = this.Height - 118;
                 }
+
+                tlpNozzle.Height = oglMain.Height;
             }
 
             PanelSizeRightAndBottom();
@@ -1372,8 +1527,8 @@ namespace AgOpenGPS
                             Form form = new FormPan(this);
                             form.Show(this);
 
-                            form.Top = this.Top + 90;
-                            form.Left = this.Left + 120;
+                            form.Top = this.Height/3 + this.Top;
+                            form.Left = this.Width -400 + this.Left;
                         }
 
                         if (isJobStarted)
@@ -1440,7 +1595,7 @@ namespace AgOpenGPS
                     isFirstHeadingSet = false;
                     isReverse = false;
                     TimedMessageBox(2000, "Reset Direction", "Drive Forward > 1.5 kmh");
-                    SystemEventWriter("Direction Reset, Drive Forward");
+                    LogEventWriter("Direction Reset, Drive Forward");
 
                     return;
                 }
@@ -1472,7 +1627,7 @@ namespace AgOpenGPS
                     + (vehicle.functionSpeedLimit * 0.621371).ToString("N1") + " " + gStr.gsMPH);
             }
 
-            SystemEventWriter("UTurn or Lateral Speed exceeded");
+            LogEventWriter("UTurn or Lateral Speed exceeded");
 
         }
 

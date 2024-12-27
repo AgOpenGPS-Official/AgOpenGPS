@@ -274,7 +274,7 @@ namespace AgOpenGPS
 
                                 isFirstHeadingSet = true;
                                 TimedMessageBox(2000, "Direction Reset", "Forward is Set");
-                                SystemEventWriter("Forward Is Set");
+                                LogEventWriter("Forward Is Set");
 
                                 lastGPS = pn.fix;
 
@@ -778,13 +778,13 @@ namespace AgOpenGPS
 
             //if (isFirstHeadingSet && jumpDistanceAlarm > 0 && jumpDistance > jumpDistanceAlarm)
             //{
-            //    SystemEventWriter(": " + jumpDistance.ToString("N0") + " cm");
+            //    LogEventWriter(": " + jumpDistance.ToString("N0") + " cm");
 
             //    if (isBtnAutoSteerOn)
             //    {
             //        btnAutoSteer.PerformClick();
             //        TimedMessageBox(3000, gStr.gsAutoSteer, "Big Jump in GPS position:" + jumpDistance.ToString("N0") + " cm");
-            //        SystemEventWriter("Autosteer Off, Jump in GPS position: " + jumpDistance.ToString("N0") + " cm");
+            //        LogEventWriter("Autosteer Off, Jump in GPS position: " + jumpDistance.ToString("N0") + " cm");
             //    }
 
             //}
@@ -917,7 +917,7 @@ namespace AgOpenGPS
                             else
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + (vehicle.minSteerSpeed * 0.621371).ToString("N1") + " MPH");
                             
-                            SystemEventWriter("Steer Off, Below Min Steering Speed");
+                            LogEventWriter("Steer Off, Below Min Steering Speed");
                         }
                     }
                     else
@@ -926,27 +926,27 @@ namespace AgOpenGPS
                     }
                 }
 
-                double tanSteerAngle = Math.Tan(glm.toRadians(((double)(guidanceLineSteerAngle)) * 0.01));
-                double tanActSteerAngle = Math.Tan(glm.toRadians(mc.actualSteerAngleDegrees));
+                //double tanSteerAngle = Math.Tan(glm.toRadians(((double)(guidanceLineSteerAngle)) * 0.01));
+                //double tanActSteerAngle = Math.Tan(glm.toRadians(mc.actualSteerAngleDegrees));
 
-                setAngVel = 0.277777 * avgSpeed * tanSteerAngle / vehicle.wheelbase;
-                actAngVel = glm.toDegrees(0.277777 * avgSpeed * tanActSteerAngle / vehicle.wheelbase);
+                //setAngVel = 0.277777 * avgSpeed * tanSteerAngle / vehicle.wheelbase;
+                //actAngVel = glm.toDegrees(0.277777 * avgSpeed * tanActSteerAngle / vehicle.wheelbase);
 
 
-                isMaxAngularVelocity = false;
-                //greater then settings rads/sec limit steer angle
-                if (Math.Abs(setAngVel) > vehicle.maxAngularVelocity)
-                {
-                    setAngVel = vehicle.maxAngularVelocity;
-                    tanSteerAngle = 3.6 * setAngVel * vehicle.wheelbase / avgSpeed;
-                    if (guidanceLineSteerAngle < 0)
-                        guidanceLineSteerAngle = (short)(glm.toDegrees(Math.Atan(tanSteerAngle)) * -100);
-                    else
-                        guidanceLineSteerAngle = (short)(glm.toDegrees(Math.Atan(tanSteerAngle)) * 100);
-                    isMaxAngularVelocity = true;
-                }
+                //isMaxAngularVelocity = false;
+                ////greater then settings rads/sec limit steer angle
+                //if (Math.Abs(setAngVel) > vehicle.maxAngularVelocity)
+                //{
+                //    setAngVel = vehicle.maxAngularVelocity;
+                //    tanSteerAngle = 3.6 * setAngVel * vehicle.wheelbase / avgSpeed;
+                //    if (guidanceLineSteerAngle < 0)
+                //        guidanceLineSteerAngle = (short)(glm.toDegrees(Math.Atan(tanSteerAngle)) * -100);
+                //    else
+                //        guidanceLineSteerAngle = (short)(glm.toDegrees(Math.Atan(tanSteerAngle)) * 100);
+                //    isMaxAngularVelocity = true;
+                //}
 
-                setAngVel = glm.toDegrees(setAngVel);
+                //setAngVel = glm.toDegrees(setAngVel);
 
                 if (isChangingDirection && ahrs.imuHeading == 99999)
                     p_254.pgn[p_254.status] = 0;
@@ -1058,7 +1058,7 @@ namespace AgOpenGPS
                                 if (sounds.isTurnSoundOn)
                                 {
                                     sounds.sndUTurnTooClose.Play();
-                                    SystemEventWriter("U Turn Creation Failure");
+                                    LogEventWriter("U Turn Creation Failure");
                                 }
                             }
                         }
@@ -1202,7 +1202,7 @@ namespace AgOpenGPS
                 {
                    btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, "Panic Stop");
-                    SystemEventWriter("Steer Off, Panic Stop Exceeded");
+                    LogEventWriter("Steer Off, Panic Stop Exceeded");
                 }
             }
 
@@ -1319,29 +1319,31 @@ namespace AgOpenGPS
 
             //used to increase triangle countExit when going around corners, less on straight
             //pick the slow moving side edge of tool
-            double distance = tool.width * 0.5;
-            //if (distance > 5) distance = 5;
+            double distance = tool.width*0.75;
+            if (distance > 8) distance = 8;
 
             //whichever is less
             if (tool.farLeftSpeed < tool.farRightSpeed)
             {
-                double twist = tool.farLeftSpeed / tool.farRightSpeed;
+                double twist = tool.farLeftSpeed * (tool.width / 50) / tool.farRightSpeed * (50/ tool.width);
                 twist *= twist;
                 if (twist < 0.2) twist = 0.2;
-                sectionTriggerStepDistance = distance * twist * twist;
+                sectionTriggerStepDistance = distance * twist;
             }
             else
             {
-                double twist = tool.farRightSpeed / tool.farLeftSpeed;
+                double twist = tool.farRightSpeed * (tool.width / 50) / tool.farLeftSpeed * (50 / tool.width);
                 twist *= twist;
                 if (twist < 0.2) twist = 0.2;
 
-                sectionTriggerStepDistance = distance * twist * twist;
+                sectionTriggerStepDistance = distance * twist;
             }
 
+            if (sectionTriggerStepDistance < 1) sectionTriggerStepDistance = 1;
+            //if (sectionTriggerStepDistance > 5) sectionTriggerStepDistance = 5;
+
             //finally fixed distance for making a curve line
-            if (!curve.isRecordingCurve) sectionTriggerStepDistance = sectionTriggerStepDistance + 1.0;
-            //if (ct.isContourBtnOn) sectionTriggerStepDistance *=0.5;
+            if (curve.isRecordingCurve) sectionTriggerStepDistance *= 0.5;
 
             //precalc the sin and cos of heading * -1
             sinSectionHeading = Math.Sin(-toolPivotPos.heading);
@@ -1458,25 +1460,46 @@ namespace AgOpenGPS
 
             if (bnd.isOkToAddPoints)
             {
-                if (bnd.isDrawRightSide)
+                if (bnd.isDrawAtPivot)
                 {
-                    //Right side
-                    vec3 point = new vec3(
-                        pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                        pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset), 
-                        pivotAxlePos.heading);
-                    bnd.bndBeingMadePts.Add(point);
-                }
+                    if (bnd.isDrawRightSide)
+                    {
+                        //Right side
+                        vec3 point = new vec3(
+                            pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                            pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                            pivotAxlePos.heading);
+                        bnd.bndBeingMadePts.Add(point);
+                    }
 
-                //draw on left side
+                    //draw on left side
+                    else
+                    {
+                        //Right side
+                        vec3 point = new vec3(
+                            pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                            pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                            pivotAxlePos.heading);
+                        bnd.bndBeingMadePts.Add(point);
+                    }
+                }
                 else
                 {
-                    //Right side
-                    vec3 point = new vec3(
-                        pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                        pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset), 
-                        pivotAxlePos.heading);
-                    bnd.bndBeingMadePts.Add(point);
+                    //draw at tool
+                    if (bnd.isDrawRightSide)
+                    {
+                        //Right side
+                        vec3 point = new vec3(section[tool.numOfSections-1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
+                        bnd.bndBeingMadePts.Add(point);
+                    }
+
+                    //draw on left side
+                    else
+                    {
+                        //Right side
+                        vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
+                        bnd.bndBeingMadePts.Add(point);
+                    }
                 }
             }
         }

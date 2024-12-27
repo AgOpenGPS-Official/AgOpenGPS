@@ -444,6 +444,58 @@ namespace AgOpenGPS
             //public int  = 12;
         }
 
+        //Spray Data
+        public class CPGN_227_E3
+        {
+            public byte[] pgn = new byte[] { 0x80, 0x81, 0x7f, 0xE3, 5, 0, 0, 0, 0, 0, 0xCC };
+            public int sec1to8 = 5;
+            public int sec9to16 = 6;
+            public int volumePerMinuteSetLo = 7;
+            public int volumePerMinuteSetHi = 8;
+            public int percentWidthBypass = 9;
+
+        }
+
+        //Spray Settings
+        public class CPGN_226_E2
+        {
+            public byte[] pgn = new byte[] { 0x80, 0x81, 0x7f, 0xE2, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
+            public int flowCaLo = 5;
+            public int flowCalHi = 6;
+            public int pressureCalLo = 7;
+            public int pressureCalHi = 8;
+            public int Kp = 9;
+            public int Ki = 10;
+            public int minPressure = 11;
+            public int fastPWM = 12;
+            public int slowPWM = 13;
+            public int deadbandError = 14;
+            public int switchAtFlowError = 15;
+            public int isBypass = 16;
+            public int isSectionValve3Wire = 17;
+
+        }
+
+        //Spray Functions
+        public class CPGN_225_E1
+        {
+            public byte[] pgn = new byte[] { 0x80, 0x81, 0x7f, 0xE1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
+
+            public int zeroTankVolumeLo = 5;
+            public int zeroTankVolumeHi = 6;
+            public int auto = 7;
+            public int up = 8;
+            public int dn = 9;
+
+            public CPGN_225_E1()
+            {
+                pgn[zeroTankVolumeLo] = 0;
+                pgn[zeroTankVolumeHi] = 0;
+                pgn[auto] = 1;
+                pgn[up] = 0;
+                pgn[dn] = 0;
+            }
+        }
 
 
 
@@ -493,6 +545,23 @@ namespace AgOpenGPS
         /// Section Symmetric PGN - 229 - EB
         /// </summary>
         public CPGN_E5 p_229 = new CPGN_E5();
+
+        //Spray PGNS
+        /// <summary>
+        /// Spray Data PGN - 227 - E3
+        /// </summary>
+        public CPGN_227_E3 p_227 = new CPGN_227_E3();
+
+        /// <summary>
+        /// Spray Settings PGN - 226 - E2
+        /// </summary>
+        public CPGN_226_E2 p_226 = new CPGN_226_E2();
+
+        /// <summary>
+        /// Spray Functions PGN - 225 - E1
+        /// </summary>
+        public CPGN_225_E1 p_225 = new CPGN_225_E1();
+
 
         /// <summary>
         /// LatitudeLongitude - D0 - 

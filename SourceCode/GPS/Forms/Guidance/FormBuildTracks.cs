@@ -201,7 +201,7 @@ namespace AgOpenGPS
                     {
                         mf.btnAutoSteer.PerformClick();
                         mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
-                        mf.SystemEventWriter("Autosteer Stop, No Tracks Available");
+                        mf.LogEventWriter("Autosteer Stop, No Tracks Available");
 
                     }
                     Close();
@@ -543,6 +543,7 @@ namespace AgOpenGPS
             mf.curve.desList?.Clear();
 
             this.Size = new System.Drawing.Size(270, 360);
+            mf.Activate();
         }
 
         private void btnzAPlus_Click(object sender, EventArgs e)
@@ -555,6 +556,7 @@ namespace AgOpenGPS
             nudHeading.Enabled = false;
 
             this.Size = new System.Drawing.Size(270, 360);
+            mf.Activate();
         }
 
         private void btnzABLine_Click(object sender, EventArgs e)
@@ -568,6 +570,7 @@ namespace AgOpenGPS
             mf.curve.desList?.Clear();
 
             this.Size = new System.Drawing.Size(270, 360);
+            mf.Activate();
         }
 
         private void btnzLatLonPlusHeading_Click(object sender, EventArgs e)
@@ -578,6 +581,7 @@ namespace AgOpenGPS
 
             nudLatitudePlus.Value = (decimal)mf.pn.latitude;
             nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            mf.Activate();
         }
 
         private void btnzLatLon_Click(object sender, EventArgs e)
@@ -585,6 +589,7 @@ namespace AgOpenGPS
             panelChoose.Visible = false;
             panelLatLonLatLon.Visible = true;
             this.Size = new System.Drawing.Size(370, 460);
+            mf.Activate();
         }
         private void btnLatLonPivot_Click(object sender, EventArgs e)
         {
@@ -595,6 +600,7 @@ namespace AgOpenGPS
 
             nudLatitudePivot.Value = (decimal)mf.pn.latitude;
             nudLongitudePivot.Value = (decimal)mf.pn.longitude;
+            mf.Activate();
         }
 
         #endregion
@@ -605,6 +611,7 @@ namespace AgOpenGPS
             isRefRightSide = !isRefRightSide;
             btnRefSideCurve.Image = isRefRightSide ?
             Properties.Resources.BoundaryRight : Properties.Resources.BoundaryLeft;
+            mf.Activate();
         }
 
         private void btnACurve_Click(object sender, System.EventArgs e)
@@ -628,6 +635,7 @@ namespace AgOpenGPS
                 mf.curve.isMakingCurve = true;
                 mf.curve.isRecordingCurve = true;
             }
+            mf.Activate();
         }
 
         private void btnBCurve_Click(object sender, System.EventArgs e)
@@ -716,6 +724,7 @@ namespace AgOpenGPS
 
                 this.Size = new System.Drawing.Size(650, 480);
             }
+            mf.Activate();
         }
 
         private void btnPausePlayCurve_Click(object sender, EventArgs e)
@@ -735,6 +744,7 @@ namespace AgOpenGPS
                 btnACurve.Enabled = false;
             }
             btnBCurve.Enabled = mf.curve.desList.Count > 3;
+            mf.Activate();
         }
 
         #endregion
@@ -745,6 +755,7 @@ namespace AgOpenGPS
             isRefRightSide = !isRefRightSide;
             btnRefSideAB.Image = isRefRightSide ?
             Properties.Resources.BoundaryRight : Properties.Resources.BoundaryLeft;
+            mf.Activate();
         }
 
         private void btnALine_Click(object sender, EventArgs e)
@@ -765,10 +776,15 @@ namespace AgOpenGPS
             btnALine.Enabled = false;
 
             btnEnter_AB.Enabled = true;
+
+            timer1.Enabled = true;
+            mf.Activate();
         }
 
         private void btnBLine_Click(object sender, EventArgs e)
         {
+            timer1.Enabled = false;
+
             mf.ABLine.desPtB = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
             btnBLine.BackColor = System.Drawing.Color.Teal;
@@ -782,10 +798,13 @@ namespace AgOpenGPS
 
             mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.ABLine.desHeading) * 1000);
             mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.ABLine.desHeading) * 1000);
+            mf.Activate();
         }
 
         private void btnEnter_AB_Click(object sender, EventArgs e)
         {
+            timer1.Enabled = false;
+
             mf.ABLine.isMakingABLine = false;
             mf.trk.gArr.Add(new CTrk());
 
@@ -821,6 +840,7 @@ namespace AgOpenGPS
             panelABLine.Visible = false;
             panelName.Visible = true;
 
+            mf.Activate();
         }
 
         #endregion
@@ -832,6 +852,7 @@ namespace AgOpenGPS
             isRefRightSide = !isRefRightSide;
             btnRefSideAPlus.Image = isRefRightSide ?
             Properties.Resources.BoundaryRight : Properties.Resources.BoundaryLeft;
+            mf.Activate();
         }
 
         private void btnAPlus_Click(object sender, EventArgs e)
@@ -840,8 +861,8 @@ namespace AgOpenGPS
 
             mf.ABLine.desPtA = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
-            mf.ABLine.desPtB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.heading) * 200);
-            mf.ABLine.desPtB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.heading) * 200);
+            mf.ABLine.desPtB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.heading) * 1);
+            mf.ABLine.desPtB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.heading) * 1);
 
             mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.pivotAxlePos.heading) * 1000);
             mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.pivotAxlePos.heading) * 1000);
@@ -855,10 +876,15 @@ namespace AgOpenGPS
             nudHeading.Enabled = true;
            
             nudHeading.Value = (decimal)(glm.toDegrees(mf.ABLine.desHeading));
+
+            timer1.Enabled = true;
+            mf.Activate();
         }
 
         private void nudHeading_Click(object sender, EventArgs e)
         {
+            timer1.Enabled = false;
+
             if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
             {
                 //original A pt. 
@@ -874,10 +900,13 @@ namespace AgOpenGPS
                 mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.ABLine.desHeading) * 1000);
                 mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.ABLine.desHeading) * 1000);
             }
+            mf.Activate();
         }
 
         private void btnEnter_APlus_Click(object sender, EventArgs e)
         {
+            timer1.Enabled = false;
+
             mf.ABLine.isMakingABLine = false;
             mf.trk.gArr.Add(new CTrk());
 
@@ -911,9 +940,25 @@ namespace AgOpenGPS
 
             panelAPlus.Visible = false;
             panelName.Visible = true;
+            mf.Activate();
         }
 
         #endregion
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            mf.ABLine.desPtB = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
+
+            mf.ABLine.desHeading = Math.Atan2(mf.ABLine.desPtB.easting - mf.ABLine.desPtA.easting,
+               mf.ABLine.desPtB.northing - mf.ABLine.desPtA.northing);
+            if (mf.ABLine.desHeading < 0) mf.ABLine.desHeading += glm.twoPI;
+
+            mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.ABLine.desHeading) * 1000);
+            mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.ABLine.desHeading) * 1000);
+
+            mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.ABLine.desHeading) * 1000);
+            mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.ABLine.desHeading) * 1000);
+        }
 
         #region KML Curve and line
 
@@ -935,7 +980,7 @@ namespace AgOpenGPS
                     Filter = "KML files (*.KML)|*.KML",
 
                     //the initial directory, fields, for the open dialog
-                    InitialDirectory = mf.fieldsDirectory + mf.currentFieldDirectory
+                    InitialDirectory = Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory)
                 };
 
                 //was a file selected
@@ -1087,8 +1132,9 @@ namespace AgOpenGPS
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ed)
             {
+                mf.LogEventWriter("Tracks from KML " + ed.ToString());
                 return;
             }
 
@@ -1280,6 +1326,7 @@ namespace AgOpenGPS
             panelName.Visible = true;
 
             this.Size = new System.Drawing.Size(270, 360);
+            mf.Activate();
         }
 
         private void btnFillLAtLonPivot_Click(object sender, EventArgs e)
@@ -1310,6 +1357,7 @@ namespace AgOpenGPS
             panelPivot.Visible = false;
 
             this.Size = new System.Drawing.Size(650, 480);
+            mf.Activate();
         }
 
         private void textBox_Click(object sender, EventArgs e)
@@ -1333,17 +1381,20 @@ namespace AgOpenGPS
 
             mf.curve.desList?.Clear();
             UpdateTable();
+            mf.Activate();
         }
 
         private void btnAddTime_Click(object sender, EventArgs e)
         {
             textBox1.Text += DateTime.Now.ToString(" hh:mm:ss", CultureInfo.InvariantCulture);
             mf.curve.desName = textBox1.Text;
+            mf.Activate();
         }
 
         private void btnAddTimeEdit_Click(object sender, EventArgs e)
         {
             textBox2.Text += DateTime.Now.ToString(" hh:mm:ss", CultureInfo.InvariantCulture);
+            mf.Activate();
         }
 
         private void btnSaveEditName_Click(object sender, EventArgs e)
@@ -1361,6 +1412,7 @@ namespace AgOpenGPS
 
             UpdateTable();
             flp.Focus();
+            mf.Activate();
         }
 
         public void SmoothAB(int smPts)
@@ -1405,6 +1457,7 @@ namespace AgOpenGPS
             {
                 mf.curve.desList.Add(arr[i]);
             }
+            mf.Activate();
         }
     }
 }

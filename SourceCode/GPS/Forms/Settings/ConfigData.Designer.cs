@@ -264,7 +264,7 @@ namespace AgOpenGPS
                 mf.ahrs.imuRoll += mf.ahrs.rollZero;
                 mf.ahrs.rollZero = mf.ahrs.imuRoll;
                 lblRollZeroOffset.Text = (mf.ahrs.rollZero).ToString("N2");
-                mf.SystemEventWriter("Roll Zeroed with " + mf.ahrs.rollZero.ToString());
+                mf.LogEventWriter("Roll Zeroed with " + mf.ahrs.rollZero.ToString());
             }
             else
             {
@@ -276,7 +276,7 @@ namespace AgOpenGPS
         {
             mf.ahrs.rollZero = 0;
             lblRollZeroOffset.Text = "0.00";
-            mf.SystemEventWriter("Roll Zero Offset Removed");
+            mf.LogEventWriter("Roll Zero Offset Removed");
         }
 
         private void btnResetIMU_Click(object sender, EventArgs e)

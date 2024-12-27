@@ -134,6 +134,8 @@
     <Compile Include="Classes\CBoundary.cs" />
     <Compile Include="Classes\CGuidance.cs" />
     <Compile Include="Classes\CHeadLine.cs" />
+    <Compile Include="Classes\CNozzle.cs" />
+    <Compile Include="Classes\CPolygon.cs" />
     <Compile Include="Classes\CRecordedPath.cs" />
     <Compile Include="Classes\CPatches.cs" />
     <Compile Include="Classes\CSettings.cs" />
@@ -478,6 +480,18 @@
     <Compile Include="Forms\Field\FormSaveOrNot.Designer.cs">
       <DependentUpon>FormSaveOrNot.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings\FormNozConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\FormNozConfig.Designer.cs">
+      <DependentUpon>FormNozConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\FormNozSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\FormNozSettings.Designer.cs">
+      <DependentUpon>FormNozSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Settings\FormSimCoords.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -809,6 +823,12 @@
     <EmbeddedResource Include="Forms\Field\FormSaveOrNot.resx">
       <DependentUpon>FormSaveOrNot.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\FormNozConfig.resx">
+      <DependentUpon>FormNozConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\FormNozSettings.resx">
+      <DependentUpon>FormNozSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\FormSimCoords.resx">
       <DependentUpon>FormSimCoords.cs</DependentUpon>
     </EmbeddedResource>
@@ -938,9 +958,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -982,6 +1000,10 @@
     <None Include="btnImages\Images\z_crossTrackBkgnd.png" />
     <None Include="btnImages\Config\ConD_SteerBarBar.png" />
     <None Include="btnImages\Config\ConD_DirectionMarker.png" />
+    <None Include="btnImages\BoundaryRecordPivot.png" />
+    <None Include="btnImages\BoundaryRecordTool.png" />
+    <None Include="btnImages\Config\ConD_SectionHighlights.png" />
+    <None Include="btnImages\Config\ConD_LineSmooth.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

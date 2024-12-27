@@ -37,6 +37,7 @@
             // 
             this.cboxEnv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboxEnv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboxEnv.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxEnv.FormattingEnabled = true;
             this.cboxEnv.Location = new System.Drawing.Point(12, 42);
@@ -52,9 +53,9 @@
             this.lblLast.Location = new System.Drawing.Point(15, 9);
             this.lblLast.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLast.Name = "lblLast";
-            this.lblLast.Size = new System.Drawing.Size(260, 23);
+            this.lblLast.Size = new System.Drawing.Size(203, 23);
             this.lblLast.TabIndex = 213;
-            this.lblLast.Text = "Choose AgIO Settings File";
+            this.lblLast.Text = "Choose AgIO Profile";
             this.lblLast.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnSerialCancel

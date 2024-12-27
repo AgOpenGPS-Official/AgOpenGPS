@@ -269,7 +269,7 @@ namespace AgOpenGPS
                                 lblHardwareMessage.Visible = true;
                                 hardwareLineCounter = data[5] * 10;
 
-                                SystemEventWriter(lblHardwareMessage.Text);
+                                LogEventWriter(lblHardwareMessage.Text);
 
                                 //color based on byte 6
                                 if (data[6] == 0) lblHardwareMessage.BackColor = Color.Salmon;
@@ -282,6 +282,26 @@ namespace AgOpenGPS
                             }
                             break;
                         }
+
+                    //back from spray controller
+                    case 224:
+                        {
+                            nozz.volumeApplied = (Int16)((data[6] << 8) + data[5]);
+                            nozz.volumeApplied *= 0.1;
+
+                            //times 100
+                            nozz.volumePerMinuteActual = (Int16)((data[8] << 8) + data[7]);
+
+                            nozz.pressureActual = data[9];
+
+                            nozz.isFlowingFlag = data[10];
+
+                            nozz.pwmDriveActual = data[11];
+                            if (data[12] == 0) nozz.pwmDriveActual *= -1;
+
+                            break;
+                        }
+
 
                     #region Remote Switches
                     case 234://MTZ8302 Feb 2020
@@ -316,6 +336,7 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 MessageBox.Show("Load Error: " + ex.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogEventWriter("Load UDP Server Error: " + ex.ToString());
             }
         }
 
@@ -371,10 +392,10 @@ namespace AgOpenGPS
                     loopBackSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None,
                         epAgIO, new AsyncCallback(SendAsyncLoopData), null);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    //WriteErrorLog("Sending UDP Message" + e.ToString());
-                    MessageBox.Show("Send Error: " + e.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //LogEventWriter("Sending UDP Message" + e.ToString());
+                    //MessageBox.Show("Send Error: " + e.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -671,7 +692,7 @@ namespace AgOpenGPS
             //turn right
             if (keyData == Keys.Right)
             {
-                sim.steerAngle += 0.5;
+                sim.steerAngle += 1.0;
                 if (sim.steerAngle > 40) sim.steerAngle = 40;
                 if (sim.steerAngle < -40) sim.steerAngle = -40;
                 sim.steerAngleScrollBar = sim.steerAngle;
@@ -683,7 +704,7 @@ namespace AgOpenGPS
             //turn left
             if (keyData == Keys.Left)
             {
-                sim.steerAngle -= 0.5;
+                sim.steerAngle -= 1.0;
                 if (sim.steerAngle > 40) sim.steerAngle = 40;
                 if (sim.steerAngle < -40) sim.steerAngle = -40;
                 sim.steerAngleScrollBar = sim.steerAngle;

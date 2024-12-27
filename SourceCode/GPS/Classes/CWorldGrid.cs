@@ -118,11 +118,11 @@ namespace AgOpenGPS
 
             if (mf.isDay)
             {
-                GL.Color3(0.35, 0.35, 0.35);
+                GL.Color3(0.25, 0.25, 0.25);
             }
             else
             {
-                GL.Color3(0.17, 0.17, 0.17);
+                GL.Color3(0.12, 0.12, 0.12);
             }
             GL.LineWidth(1);
             GL.Begin(PrimitiveType.Lines);

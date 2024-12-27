@@ -9,6 +9,8 @@ namespace AgIO
         //class variables
         private readonly FormLoop mf = null;
 
+        bool isDefaultExist = false;
+
         public FormCommPicker(Form callingForm)
         {
             //get copy of the calling main form
@@ -18,7 +20,7 @@ namespace AgIO
 
         private void FormCommPicker_Load(object sender, EventArgs e)
         {
-            DirectoryInfo dinfo = new DirectoryInfo(mf.commDirectory);
+            DirectoryInfo dinfo = new DirectoryInfo(mf.profileDirectory);
             FileInfo[] Files = dinfo.GetFiles("*.xml");
             if (Files.Length == 0)
             {
@@ -31,17 +33,41 @@ namespace AgIO
             {
                 foreach (FileInfo file in Files)
                 {
-                    cboxEnv.Items.Add(Path.GetFileNameWithoutExtension(file.Name));
+                    string temp = Path.GetFileNameWithoutExtension(file.Name);
+                    if (temp.Trim() != "Default Profile")
+                    {
+                        isDefaultExist = true;
+                    }
+
+                    cboxEnv.Items.Add(temp);
                 }
+            }
+
+            if (cboxEnv.Items.Count < 2 && isDefaultExist )
+            {
+                mf.YesMessageBox("No Profiles To Load, Save One First");
+                Close();
             }
         }
 
         private void cboxVeh_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SettingsIO.ImportSettings(mf.commDirectory + cboxEnv.SelectedItem.ToString() + ".xml");
 
-            DialogResult = DialogResult.OK;
-            Close();
+            if (cboxEnv.SelectedItem.ToString().Trim() == "Default Profile")
+            {
+                mf.YesMessageBox("Choose a Different Profile, Or Create a New One");
+            }
+            else
+            {
+                SettingsIO.ImportSettings(mf.profileDirectory + cboxEnv.SelectedItem.ToString().Trim() + ".xml");
+
+                mf.profileFileName = cboxEnv.SelectedItem.ToString().Trim();
+                Properties.Settings.Default.setConfig_profileName = mf.profileFileName;
+                Properties.Settings.Default.Save();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+
         }
     }
 }

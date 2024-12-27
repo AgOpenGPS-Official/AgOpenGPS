@@ -116,13 +116,13 @@ namespace AgOpenGPS
                     Properties.Settings.Default.Reload();
                 }
             }
-            catch (Exception) // Should make this more specific
+            catch // Should make this more specific
             {
                 // Could not import settings.
                 if (settingFile == "Settings")
                 {
                     Properties.Settings.Default.Reload();
-                }
+                }                
             }
         }
 

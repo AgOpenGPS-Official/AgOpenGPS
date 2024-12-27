@@ -158,7 +158,7 @@ namespace AgOpenGPS
             if (mf.buttonOrder.Count < 2)
             {
                 mf.TimedMessageBox(2000, "Button Error", "Not Enough Buttons Added");
-                mf.SystemEventWriter("Button Picker, Not Enough Buttons");
+                mf.LogEventWriter("Button Picker, Not Enough Buttons");
                 return;
             }
             else
@@ -212,9 +212,7 @@ namespace AgOpenGPS
         {
             Process[] processName = Process.GetProcessesByName("BobsYourUncle");
             //Start application here
-            DirectoryInfo di = new DirectoryInfo(Application.StartupPath);
-            string strPath = di.ToString();
-            strPath += "\\Buttons.mp4";
+            string strPath = Path.Combine(Application.StartupPath, "Buttons.mp4");
 
             try
             {

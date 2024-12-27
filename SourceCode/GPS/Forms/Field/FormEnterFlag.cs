@@ -36,10 +36,12 @@ namespace AgOpenGPS
 
         private void nudLatitude_Click(object sender, EventArgs e)
         {
+            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
         }
 
         private void nudLongitude_Click(object sender, EventArgs e)
         {
+            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
         }
 
         public void CalcHeading()

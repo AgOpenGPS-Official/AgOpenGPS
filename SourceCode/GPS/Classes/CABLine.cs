@@ -373,7 +373,7 @@ namespace AgOpenGPS
             GL.PointSize(1.0f);
 
             //Draw reference AB line
-            GL.LineWidth(2);
+            GL.LineWidth(4);
             GL.Enable(EnableCap.LineStipple);
             GL.LineStipple(1, 0x0F00);
             GL.Begin(PrimitiveType.Lines);
@@ -416,11 +416,12 @@ namespace AgOpenGPS
             //draw current AB Line
             GL.LineWidth(lineWidth*3);
             GL.Begin(PrimitiveType.Lines);
-            GL.Color4(0,0,0, 0.7);
+            GL.Color3(0,0,0);
             GL.Vertex3(currentLinePtA.easting, currentLinePtA.northing, 0.0);
             GL.Vertex3(currentLinePtB.easting, currentLinePtB.northing, 0.0);
             GL.End();
 
+            //draw current AB Line
             GL.LineWidth(lineWidth);
             GL.Begin(PrimitiveType.Lines);
             GL.Color3(0.95f, 0.20f, 0.950f);
@@ -437,7 +438,12 @@ namespace AgOpenGPS
                 double sinHeading = Math.Sin(-abHeading);
 
                 GL.Color4(0,0,0, 0.5);
-                GL.LineWidth(1);
+
+                if (mf.camera.camSetDistance > mf.tool.width * -100)
+                    GL.LineWidth(4);
+                else
+                    GL.LineWidth(2);
+
                 GL.Begin(PrimitiveType.Lines);
 
                 if (toolOffset == 0)
@@ -451,11 +457,11 @@ namespace AgOpenGPS
                         GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtB.easting, (sinHeading * (-toolWidth * i)) + currentLinePtB.northing, 0);
                     }
                     GL.End();
-                    GL.Enable(EnableCap.LineStipple);
-                    GL.LineStipple(1, 0x000F);
+                    //GL.Enable(EnableCap.LineStipple);
+                    //GL.LineStipple(1, 0x000F);
 
                     GL.Color4(0.9907f, 0.990f, 0.9750f, 0.5f);
-                    GL.LineWidth(2);
+                    GL.LineWidth(1);
                     GL.Begin(PrimitiveType.Lines);
 
                     for (int i = 1; i <= numGuideLines; i++)

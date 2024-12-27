@@ -1,8 +1,10 @@
 ﻿//Please, if you use this, share the improvements
 
 using AgOpenGPS.Culture;
+using Microsoft.Win32;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -135,7 +137,7 @@ namespace AgOpenGPS
             mf.LoadSettings();
 
             //save current vehicle
-            SettingsIO.ExportAll(mf.vehiclesDirectory + mf.vehicleFileName + ".XML");
+            SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
         }
 
         private void FixMinMaxSpinners()
@@ -263,6 +265,8 @@ namespace AgOpenGPS
             chkDisplayKeyboard.Checked = mf.isKeyboardOn;
             chkDisplayLogElevation.Checked = mf.isLogElevation;
             chkDirectionMarkers.Checked = Properties.Settings.Default.setTool_isDirectionMarkers;
+            chkSectionLines.Checked = Properties.Settings.Default.setDisplay_isSectionLinesOn;
+            chkLineSmooth.Checked = Properties.Settings.Default.setDisplay_isLineSmooth;
 
             if (mf.isMetric) rbtnDisplayMetric.Checked = true;
             else rbtnDisplayImperial.Checked = true;
@@ -278,7 +282,7 @@ namespace AgOpenGPS
         private void rbtnDisplayImperial_Click(object sender, EventArgs e)
         {
             mf.TimedMessageBox(2000, "Units Set", "Imperial");
-            mf.SystemEventWriter("Units To Imperial");
+            mf.LogEventWriter("Units To Imperial");
 
             mf.isMetric = false;
             Properties.Settings.Default.setMenu_isMetric = mf.isMetric;
@@ -290,7 +294,7 @@ namespace AgOpenGPS
         private void rbtnDisplayMetric_Click(object sender, EventArgs e)
         {
             mf.TimedMessageBox(2000, "Units Set", "Metric");
-            mf.SystemEventWriter("Units to Metric");
+            mf.LogEventWriter("Units to Metric");
 
             mf.isMetric = true;
             Properties.Settings.Default.setMenu_isMetric = mf.isMetric;

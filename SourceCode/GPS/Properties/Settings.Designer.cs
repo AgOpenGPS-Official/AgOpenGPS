@@ -433,7 +433,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int setDisplay_lineWidth {
             get {
                 return ((int)(this["setDisplay_lineWidth"]));
@@ -1754,7 +1754,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2.8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3.3")]
         public double setVehicle_wheelbase {
             get {
                 return ((double)(this["setVehicle_wheelbase"]));
@@ -1970,7 +1970,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.5")]
         public double setVehicle_goalPointLookAheadMult {
             get {
                 return ((double)(this["setVehicle_goalPointLookAheadMult"]));
@@ -3110,6 +3110,29 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::AgOpenGPS.CNozzleSettings setNozzleSettings {
+            get {
+                return ((global::AgOpenGPS.CNozzleSettings)(this["setNozzleSettings"]));
+            }
+            set {
+                this["setNozzleSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool setApp_isNozzleApp {
+            get {
+                return ((bool)(this["setApp_isNozzleApp"]));
+            }
+            set {
+                this["setApp_isNozzleApp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
         public double setTram_alpha {
             get {
@@ -3117,6 +3140,54 @@ namespace AgOpenGPS.Properties {
             }
             set {
                 this["setTram_alpha"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.85")]
+        public double setVehicle_goalPointAcquireFactor {
+            get {
+                return ((double)(this["setVehicle_goalPointAcquireFactor"]));
+            }
+            set {
+                this["setVehicle_goalPointAcquireFactor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool setBnd_isDrawPivot {
+            get {
+                return ((bool)(this["setBnd_isDrawPivot"]));
+            }
+            set {
+                this["setBnd_isDrawPivot"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool setDisplay_isSectionLinesOn {
+            get {
+                return ((bool)(this["setDisplay_isSectionLinesOn"]));
+            }
+            set {
+                this["setDisplay_isSectionLinesOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool setDisplay_isLineSmooth {
+            get {
+                return ((bool)(this["setDisplay_isLineSmooth"]));
+            }
+            set {
+                this["setDisplay_isLineSmooth"] = value;
             }
         }
     }

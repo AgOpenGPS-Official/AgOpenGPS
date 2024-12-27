@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblCurveExists = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panelName = new System.Windows.Forms.Panel();
@@ -128,6 +129,7 @@
             this.nudLongitudePivot = new AgOpenGPS.NudlessNumericUpDown();
             this.btnCancel_Pivot = new System.Windows.Forms.Button();
             this.btnEnter_Pivot = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelName.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.panelCurve.SuspendLayout();
@@ -1808,12 +1810,17 @@
             this.btnEnter_Pivot.UseVisualStyleBackColor = false;
             this.btnEnter_Pivot.Click += new System.EventHandler(this.btnEnter_Pivot_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FormBuildTracks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1924, 872);
+            this.ClientSize = new System.Drawing.Size(1924, 757);
             this.ControlBox = false;
             this.Controls.Add(this.panelPivot);
             this.Controls.Add(this.panelLatLonLatLon);
@@ -1972,5 +1979,6 @@
         private System.Windows.Forms.Button btnFillLatLonLatLonA;
         private System.Windows.Forms.Button btnFillLAtLonPivot;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Timer timer1;
     }
 }

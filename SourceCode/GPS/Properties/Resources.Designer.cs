@@ -622,6 +622,26 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BoundaryRecordPivot {
+            get {
+                object obj = ResourceManager.GetObject("BoundaryRecordPivot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BoundaryRecordTool {
+            get {
+                object obj = ResourceManager.GetObject("BoundaryRecordTool", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BoundaryReduce {
             get {
                 object obj = ResourceManager.GetObject("BoundaryReduce", resourceCulture);
@@ -1062,6 +1082,16 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ConD_LineSmooth {
+            get {
+                object obj = ResourceManager.GetObject("ConD_LineSmooth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ConD_LogElevation {
             get {
                 object obj = ResourceManager.GetObject("ConD_LogElevation", resourceCulture);
@@ -1105,6 +1135,16 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap ConD_RollHelper {
             get {
                 object obj = ResourceManager.GetObject("ConD_RollHelper", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ConD_SectionHighlights {
+            get {
+                object obj = ResourceManager.GetObject("ConD_SectionHighlights", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

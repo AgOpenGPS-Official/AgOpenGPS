@@ -30,7 +30,7 @@ namespace AgOpenGPS.Forms.Pickers
         {
             ListViewItem itm;
 
-            string fieldDir = mf.fieldsDirectory + mf.currentFieldDirectory;
+            string fieldDir = Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory);
 
             string[] files = Directory.GetFiles(fieldDir);
 
@@ -44,7 +44,7 @@ namespace AgOpenGPS.Forms.Pickers
             {
                 if (file.EndsWith(".rec"))
                 {
-                    string recordName = file.Replace(".rec", "").Replace(fieldDir, "").Replace("\\", "");
+                    string recordName = Path.GetFileNameWithoutExtension(file);
                     itm = new ListViewItem(recordName);
                     lvLines.Items.Add(itm);
                 }
@@ -64,11 +64,11 @@ namespace AgOpenGPS.Forms.Pickers
             if (count > 0)
             {
                 string selectedRecord = lvLines.SelectedItems[0].SubItems[0].Text;
-                string selectedRecordPath = mf.fieldsDirectory + mf.currentFieldDirectory + "\\" + selectedRecord + ".rec";
+                string selectedRecordPath = Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory, selectedRecord + ".rec");
 
                 // Copy the selected record file to the original record name inside the field dir:
                 // ( this will load the last selected path automatically when this field is opened again)
-                File.Copy(selectedRecordPath, mf.fieldsDirectory + mf.currentFieldDirectory + "\\RecPath.txt", true);
+                File.Copy(selectedRecordPath, Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory, "RecPath.txt"), true);
                 // and load the selected path into the recPath object:
                 string line;
                 if (File.Exists(selectedRecordPath))
@@ -103,9 +103,8 @@ namespace AgOpenGPS.Forms.Pickers
                         }
                         catch (Exception ex)
                         {
-                            var form = new FormTimedMessage(2000, gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded);
-                            form.Show(this);
-                            mf.WriteErrorLog("Load Recorded Path" + ex.ToString());
+                            mf.TimedMessageBox(2000, gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded);
+                            mf.LogEventWriter("Load Recorded Path" + ex.ToString());
                         }
                     }
                 }
@@ -119,7 +118,7 @@ namespace AgOpenGPS.Forms.Pickers
             if (count > 0)
             {
                 string selectedRecord = lvLines.SelectedItems[0].SubItems[0].Text;
-                dir2Delete = mf.fieldsDirectory + mf.currentFieldDirectory + "\\" + selectedRecord + ".rec";
+                dir2Delete = Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory, selectedRecord + ".rec");
 
                 DialogResult result3 = MessageBox.Show(
                     dir2Delete,

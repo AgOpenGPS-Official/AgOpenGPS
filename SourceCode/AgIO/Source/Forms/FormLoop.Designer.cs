@@ -50,9 +50,9 @@ namespace AgIO
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.modSimToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripUDPMonitor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSerialMonitor = new System.Windows.Forms.ToolStripMenuItem();
+            this.modSimToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripEthernet = new System.Windows.Forms.ToolStripMenuItem();
             this.deviceManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMenuStrip = new System.Windows.Forms.ToolStripDropDownButton();
@@ -310,15 +310,6 @@ namespace AgIO
             this.toolStripMenuItem2.Text = "Load";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // modSimToolStrip
-            // 
-            this.modSimToolStrip.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modSimToolStrip.Image = global::AgIO.Properties.Resources.ModuleSim2;
-            this.modSimToolStrip.Name = "modSimToolStrip";
-            this.modSimToolStrip.Size = new System.Drawing.Size(348, 70);
-            this.modSimToolStrip.Text = "Module Sim";
-            this.modSimToolStrip.Click += new System.EventHandler(this.modSimToolStrip_Click);
-            // 
             // toolStripUDPMonitor
             // 
             this.toolStripUDPMonitor.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -336,6 +327,15 @@ namespace AgIO
             this.toolStripSerialMonitor.Size = new System.Drawing.Size(348, 70);
             this.toolStripSerialMonitor.Text = "Serial Monitor";
             this.toolStripSerialMonitor.Click += new System.EventHandler(this.toolStripSerialMonitor_Click);
+            // 
+            // modSimToolStrip
+            // 
+            this.modSimToolStrip.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.modSimToolStrip.Image = global::AgIO.Properties.Resources.ModuleSim2;
+            this.modSimToolStrip.Name = "modSimToolStrip";
+            this.modSimToolStrip.Size = new System.Drawing.Size(348, 70);
+            this.modSimToolStrip.Text = "Module Sim";
+            this.modSimToolStrip.Click += new System.EventHandler(this.modSimToolStrip_Click);
             // 
             // toolStripEthernet
             // 

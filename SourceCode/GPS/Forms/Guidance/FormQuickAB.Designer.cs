@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblCurveExists = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panelName = new System.Windows.Forms.Panel();
@@ -62,6 +63,7 @@
             this.btnEnter_APlus = new System.Windows.Forms.Button();
             this.nudHeading = new AgOpenGPS.NudlessNumericUpDown();
             this.btnAPlus = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelName.SuspendLayout();
             this.panelCurve.SuspendLayout();
             this.panelChoose.SuspendLayout();
@@ -605,6 +607,11 @@
             this.btnAPlus.UseVisualStyleBackColor = true;
             this.btnAPlus.Click += new System.EventHandler(this.btnAPlus_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FormQuickAB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -677,5 +684,6 @@
         private System.Windows.Forms.Button btnRefSideAB;
         private System.Windows.Forms.Button btnRefSideAPlus;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Timer timer1;
     }
 }

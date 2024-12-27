@@ -34,9 +34,9 @@ namespace AgOpenGPS
         {
             //check if directory and file exists, maybe was deleted etc
             if (String.IsNullOrEmpty(mf.currentFieldDirectory)) btnJobResume.Enabled = false;
-            string directoryName = mf.fieldsDirectory + mf.currentFieldDirectory + "\\";
+            string directoryName = Path.Combine(mf.fieldsDirectory, mf.currentFieldDirectory);
 
-            string fileAndDirectory = directoryName + "Field.txt";
+            string fileAndDirectory = Path.Combine(directoryName, "Field.txt");
 
             if (!File.Exists(fileAndDirectory))
             {
@@ -90,7 +90,7 @@ namespace AgOpenGPS
             //open the Resume.txt and continue from last exit
             mf.FileOpenField("Resume");
 
-            mf.SystemEventWriter("Job Form, Field Resume");
+            mf.LogEventWriter("Job Form, Field Resume");
 
             //back to FormGPS
             DialogResult = DialogResult.OK;
@@ -131,7 +131,7 @@ namespace AgOpenGPS
                 double lon = 0;
 
                 string fieldDirectory = Path.GetFileName(dir);
-                string filename = dir + "\\Field.txt";
+                string filename = Path.Combine(dir, "Field.txt");
                 string line;
 
                 //make sure directory has a field.txt in it
@@ -170,7 +170,7 @@ namespace AgOpenGPS
                         }
                         catch (Exception)
                         {
-                            FormTimedMessage form = new FormTimedMessage(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
+                            mf.TimedMessageBox(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
                         }
                     }
                 }
@@ -199,15 +199,14 @@ namespace AgOpenGPS
                 }
                 else // 1 field found
                 {
-                    mf.filePickerFileAndDirectory = mf.fieldsDirectory + infieldList + "\\Field.txt";
+                    mf.filePickerFileAndDirectory = Path.Combine(mf.fieldsDirectory, infieldList, "Field.txt");
                     mf.FileOpenField(mf.filePickerFileAndDirectory);
                     Close();
                 }
             }
             else //no fields found
             {
-                FormTimedMessage form2 = new FormTimedMessage(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
-                form2.Show(this);
+                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
             }
         }
 

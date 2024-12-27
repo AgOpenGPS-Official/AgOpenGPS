@@ -327,6 +327,9 @@ namespace AgOpenGPS
 
             int oglCenter = isPanelBottomHidden ? oglCenter = oglMain.Width / 2 + 30 : statusStripLeft.Width + oglMain.Width / 2;
 
+            //Nozzz
+            if (tlpNozzle.Visible) oglCenter += tlpNozzle.Width;
+
             int top = 140;
 
             int buttonMaxWidth = 360, buttonHeight = 35;
@@ -507,7 +510,10 @@ namespace AgOpenGPS
                 return;
             }
 
-            int oglCenter = isPanelBottomHidden?oglCenter = oglMain.Width / 2 + 30:statusStripLeft.Width + oglMain.Width / 2;
+            int oglCenter = isPanelBottomHidden ? oglCenter = oglMain.Width / 2 + 30 : statusStripLeft.Width + oglMain.Width / 2;
+
+            //Nozzz
+            if (tlpNozzle.Visible) oglCenter += tlpNozzle.Width;
 
             int top = 130;
 

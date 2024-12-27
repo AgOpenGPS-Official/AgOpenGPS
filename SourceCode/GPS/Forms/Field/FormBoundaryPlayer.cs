@@ -38,8 +38,14 @@ namespace AgOpenGPS
                 double ftInches = (double)nudOffset.Value;
                 lblMetersInches.Text = ((int)(ftInches / 12)).ToString() + "' " + ((int)(ftInches % 12)).ToString() + '"';
             }
+
             btnPausePlay.Image = Properties.Resources.BoundaryRecord;
+
+            mf.bnd.isDrawAtPivot = Properties.Settings.Default.setBnd_isDrawPivot;
+
             btnLeftRight.Image = mf.bnd.isDrawRightSide ? Properties.Resources.BoundaryRight : Properties.Resources.BoundaryLeft;
+            btnAntennaTool.Image = mf.bnd.isDrawAtPivot ? Properties.Resources.BoundaryRecordPivot : Properties.Resources.BoundaryRecordTool;
+
             mf.bnd.createBndOffset = (mf.tool.width * 0.5);
             mf.bnd.isBndBeingMade = true;
             mf.Focus();
@@ -131,6 +137,8 @@ namespace AgOpenGPS
                     mf.bnd.BuildTurnLines();
                     //mf.hd.BuildSingleSpaceHeadLines();
                     mf.btnABDraw.Visible = true;
+
+                    mf.LogEventWriter("Driven Boundary Created, Area: " + lblArea.Text);
                 }
 
                 //stop it all for adding
@@ -204,6 +212,14 @@ namespace AgOpenGPS
         {
             mf.bnd.isDrawRightSide = !mf.bnd.isDrawRightSide;
             btnLeftRight.Image = mf.bnd.isDrawRightSide ? Properties.Resources.BoundaryRight : Properties.Resources.BoundaryLeft;
+        }
+
+        private void btnAntennaTool_Click(object sender, EventArgs e)
+        {
+            mf.bnd.isDrawAtPivot = !mf.bnd.isDrawAtPivot;
+            btnAntennaTool.Image = mf.bnd.isDrawAtPivot ? Properties.Resources.BoundaryRecordPivot : Properties.Resources.BoundaryRecordTool;
+            Properties.Settings.Default.setBnd_isDrawPivot = mf.bnd.isDrawAtPivot;
+            Properties.Settings.Default.Save();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

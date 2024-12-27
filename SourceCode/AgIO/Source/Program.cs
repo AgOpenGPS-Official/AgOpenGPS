@@ -1,6 +1,8 @@
 ﻿using AgIO.Properties;
 using Microsoft.Win32;
 using System;
+using System.Configuration;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -16,6 +18,15 @@ namespace AgIO
         [STAThread]
         private static void Main()
         {
+            string configPath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            if (!File.Exists(configPath))
+            {
+                //Existing user config does not exist, so load settings from previous assembly
+                Settings.Default.Upgrade();
+                Settings.Default.Reload();
+                Settings.Default.Save();
+            }
+
             ////opening the subkey
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AgOpenGPS");
 

@@ -1,0 +1,155 @@
+name: Build and release
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the dev branch
+  push:
+    branches:
+      - develop
+      # - feature/*
+      # - release/*
+      # - master
+
+env:
+  # Path to the solution file relative to the root of the project.https://github.com/farmerbriantee/AgOpenGPS/network/members
+  SOLUTION_FILE_PATH: ./SourceCode/AgOpenGPS.sln
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.9
+      with:
+        versionSpec: '6.x'
+      
+    - name: Install 7Zip PowerShell Module
+      shell: powershell
+      run: Install-Module 7Zip4PowerShell -Force
+         
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Determine Version
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.9
+
+    - name: Display GitVersion outputs
+      run: |
+        echo "Major: ${{ steps.gitversion.outputs.major }}"
+        echo "Minor: ${{ steps.gitversion.outputs.minor }}"
+        echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+        echo "PreReleaseTag: ${{ steps.gitversion.outputs.preReleaseTag }}"
+        echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}"
+        echo "PreReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}"
+        echo "PreReleaseNumber: ${{ steps.gitversion.outputs.preReleaseNumber }}"
+        echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.weightedPreReleaseNumber }}"
+        echo "BuildMetaData: ${{ steps.gitversion.outputs.buildMetaData }}"
+        echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.buildMetaDataPadded }}"
+        echo "FullBuildMetaData: ${{ steps.gitversion.outputs.fullBuildMetaData }}"
+        echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
+        echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+        echo "LegacySemVer: ${{ steps.gitversion.outputs.legacySemVer }}"
+        echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.legacySemVerPadded }}"
+        echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
+        echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
+        echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+        echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
+        echo "BranchName: ${{ steps.gitversion.outputs.branchName }}"
+        echo "EscapedBranchName: ${{ steps.gitversion.outputs.escapedBranchName }}"
+        echo "Sha: ${{ steps.gitversion.outputs.sha }}"
+        echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}"
+        echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
+        echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
+        echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.nuGetPreReleaseTagV2 }}"
+        echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.nuGetPreReleaseTag }}"
+        echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}"
+        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
+        echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}"
+        echo "UncommittedChanges: ${{ steps.gitversion.outputs.uncommittedChanges }}"
+        echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
+  
+
+    # - uses: paulhatch/semantic-version@v4.0.1
+    #   id: versioning
+    #   with:
+    #     # The prefix to use to identify tags
+    #     tag_prefix: "v"
+    #     # A string which, if present in a git commit, indicates that a change represents a
+    #     # major (breaking) change, supports regular expressions wrapped with '/'
+    #     major_pattern: "(MAJOR)"
+    #     # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+    #     minor_pattern: "(MINOR)"
+    #     # A string to determine the format of the version output
+    #     format: "v${major}.${minor}.${patch}-prerelease.${increment}"
+    #     # Optional path to check for changes. If any changes are detected in the path the
+    #     # 'changed' output will true. Enter multiple paths separated by spaces.
+    #     change_path: "./SourceCode"
+    #     # Named version, will be used as suffix for name version tag
+    #     #namespace: project-b
+    #     # Indicate whether short tags like 'v1' should be supported. If false only full
+    #     # tags like 'v1.0.0' will be recognized.
+    #     short_tags: false
+    #     # If this is set to true, *every* commit will be treated as a new version.
+    #     bump_each_commit: false
+        
+    # - name: Update AssemblyVersion and AssemblyFileVersion
+    #   run: ./SetVersion.ps1 "${{ steps.versioning.outputs.major }}.${{ steps.versioning.outputs.minor }}.${{ steps.versioning.outputs.patch }}.${{ steps.versioning.outputs.increment }}"
+    #   shell: powershell
+
+    - name: Update AssemblyVersion and AssemblyFileVersion
+      run: ./SetVersion.ps1 "${{ steps.gitversion.outputs.SemVer }}"
+      shell: powershell
+   
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}} -PackagesDirectory .\SourceCode\packages -source "https://api.nuget.org/v3/index.json"
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+   
+    - name: Directory Listing
+      shell: cmd
+      run: dir
+      
+    - name: Build Artifact AgOpenGPS
+      shell: powershell
+      run: Compress-7Zip "AgOpenGPS_v64" -ArchiveFileName "AgOpenGPS_v64.zip" -Format Zip    
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.gitversion.outputs.semVer }} ## Was: ${{ steps.versioning.outputs.version }}
+        release_name: Release ${{ steps.gitversion.outputs.semVer }} # Was: ${{ steps.versioning.outputs.version }}
+        body: |
+          Automated Release by GitHub Action CI
+        draft: false
+        prerelease: true
+               
+    - name: Upload Release Asset AgOpenGPS
+      id: upload-release-asset-agopengps
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./AgOpenGPS_v64.zip
+        asset_name: AgOpenGPS_v64.zip
+        asset_content_type: application/zip

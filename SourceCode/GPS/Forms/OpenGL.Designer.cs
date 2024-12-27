@@ -12,6 +12,9 @@ namespace AgOpenGPS
         //extracted Near, Far, Right, Left clipping planes of frustum
         public double[] frustum = new double[24];
 
+        //Set isBeta to true if this version is a betaversion
+        private bool isBeta = true;
+        //
         private bool isInit = false;
         private double fovy = 0.7;
         private double camDistanceFactor = -4;
@@ -53,6 +56,8 @@ namespace AgOpenGPS
                 1.0f, (float)(camDistanceFactor * camera.camSetDistance));
             GL.LoadMatrix(ref mat);
             GL.MatrixMode(MatrixMode.Modelview);
+            if (isLineSmooth) GL.Enable(EnableCap.LineSmooth);
+            else GL.Disable(EnableCap.LineSmooth);
         }
 
         //oglMain rendering, Draw
@@ -105,11 +110,9 @@ namespace AgOpenGPS
                     //draw patches of sections
 
                     //direction marker width
-                    double factor = 0.35;
-                    if (tool.width > 35) factor = 0.45;
-                    else if (tool.width > 16) factor = 0.4;
+                    double factor = 0.37;
 
-                    GL.LineWidth(1);
+                    GL.LineWidth(2);
 
                     for (int j = 0; j < triStrip.Count; j++)
                     {
@@ -181,36 +184,39 @@ namespace AgOpenGPS
                                     else { for (int i = 1; i < count2; i++) GL.Vertex3(triList[i].easting, triList[i].northing, 0); }
                                     GL.End();
 
-                                    //highlight lines
-                                    GL.Color4(0.2,0.2,0.2,1.0);
-                                    GL.Begin(PrimitiveType.LineStrip);
-
-                                    //if large enough patch and camera zoomed out, fake mipmap the patches, skip triangles
-                                    if (count2 >= (mipmap + 2))
+                                    if (isSectionlinesOn)
                                     {
-                                        int step = mipmap;
-                                        for (int i = 1; i < count2; i += step + 2)
-                                        {
-                                            GL.Vertex3(triList[i].easting, triList[i].northing, 0);
-                                            if (count2 - i <= (mipmap + 2)) step = 0;//too small to mipmap it
-                                        }
-                                    }
-                                    else { for (int i = 1; i < count2; i += 2) GL.Vertex3(triList[i].easting, triList[i].northing, 0); }
-                                    GL.End();
+                                        //highlight lines
+                                        GL.Color4(0.2, 0.2, 0.2, 1.0);
+                                        GL.Begin(PrimitiveType.LineStrip);
 
-                                    GL.Begin(PrimitiveType.LineStrip);
-                                    //if large enough patch and camera zoomed out, fake mipmap the patches, skip triangles
-                                    if (count2 >= (mipmap + 2))
-                                    {
-                                        int step = mipmap;
-                                        for (int i = 2; i < count2; i += step + 2)
+                                        //if large enough patch and camera zoomed out, fake mipmap the patches, skip triangles
+                                        if (count2 >= (mipmap + 2))
                                         {
-                                            GL.Vertex3(triList[i].easting, triList[i].northing, 0);
-                                            if (count2 - i <= (mipmap + 2)) step = 0;//too small to mipmap it
+                                            int step = mipmap;
+                                            for (int i = 1; i < count2; i += step + 2)
+                                            {
+                                                GL.Vertex3(triList[i].easting, triList[i].northing, 0);
+                                                if (count2 - i <= (mipmap + 2)) step = 0;//too small to mipmap it
+                                            }
                                         }
+                                        else { for (int i = 1; i < count2; i += 2) GL.Vertex3(triList[i].easting, triList[i].northing, 0); }
+                                        GL.End();
+
+                                        GL.Begin(PrimitiveType.LineStrip);
+                                        //if large enough patch and camera zoomed out, fake mipmap the patches, skip triangles
+                                        if (count2 >= (mipmap + 2))
+                                        {
+                                            int step = mipmap;
+                                            for (int i = 2; i < count2; i += step + 2)
+                                            {
+                                                GL.Vertex3(triList[i].easting, triList[i].northing, 0);
+                                                if (count2 - i <= (mipmap + 2)) step = 0;//too small to mipmap it
+                                            }
+                                        }
+                                        else { for (int i = 2; i < count2; i += 2) GL.Vertex3(triList[i].easting, triList[i].northing, 0); }
+                                        GL.End();
                                     }
-                                    else { for (int i = 2; i < count2; i += 2) GL.Vertex3(triList[i].easting, triList[i].northing, 0); }
-                                    GL.End();
 
 
                                     if (isDirectionMarkers)
@@ -363,12 +369,13 @@ namespace AgOpenGPS
                         //Draw headland
                         if (bnd.isHeadlandOn)
                         {
-                            GL.LineWidth(6);
-                            GL.Color4(0,0,0,0.8);
+                            GL.LineWidth(ABLine.lineWidth*3);
+
+                            GL.Color4(0,0,0, 0.80f);
                             bnd.bndList[0].hdLine.DrawPolygon();
 
-                            GL.LineWidth(2);
-                            GL.Color4(0.960f, 0.96232f, 0.30f, 0.8);
+                            GL.LineWidth(ABLine.lineWidth);
+                            GL.Color4(0.960f, 0.96232f, 0.30f, 1.0f);
                             bnd.bndList[0].hdLine.DrawPolygon();
                         }
                     }
@@ -484,17 +491,17 @@ namespace AgOpenGPS
                     if (isRTK_AlarmOn)
                     {
                         if (pn.fixQuality != 4)
-                        { 
+                        {
                             if (!sounds.isRTKAlarming)
                             {
                                 if (isRTK_KillAutosteer && isBtnAutoSteerOn)
                                 {
                                     btnAutoSteer.PerformClick();
                                     TimedMessageBox(2000, "Autosteer Turned Off", "RTK Fix Alarm");
-                                    SystemEventWriter("Autosteer Off, RTK Fix Alarm");
+                                    LogEventWriter("Autosteer Off, RTK Fix Alarm");
                                 }
 
-                                SystemEventWriter("RTK Alarm Fix is Lost");
+                                LogEventWriter("RTK Alarm Fix is Lost");
                                 sounds.sndRTKAlarm.Play();
                             }
                             sounds.isRTKAlarming = true;
@@ -505,6 +512,8 @@ namespace AgOpenGPS
                             sounds.isRTKAlarming = false;
                         }
                     }
+
+                    if (isBeta) DrawBeta();
 
                     if (pn.age > pn.ageAlarm) DrawAge();
 
@@ -733,7 +742,7 @@ namespace AgOpenGPS
             #region Draw to Back Buffer
 
             //patch color
-            GL.Color3(0.0f, 0.5f, 0.0f);
+            GL.Color3((byte)0, (byte)127, (byte)0);
 
             //to draw or not the triangle patch
             bool isDraw;
@@ -928,6 +937,9 @@ namespace AgOpenGPS
             //slope of the look ahead line
             double mOn = 0, mOff = 0;
 
+            double theta = mOn = (tool.lookAheadDistanceOnPixelsRight - tool.lookAheadDistanceOnPixelsLeft) / tool.rpWidth;
+            double deg = glm.toDegrees(Math.Atan(theta));
+
             //tram and hydraulics
             if (tram.displayMode > 0 && tool.width > vehicle.trackWidth)
             {
@@ -1024,7 +1036,7 @@ namespace AgOpenGPS
                 if (end >= tool.rpWidth)
                     end = tool.rpWidth - 1;
 
-                totalPixel = 1;
+                totalPixel = 0;
                 tagged = 0;
 
                 for (int pos = start; pos <= end; pos++)
@@ -1032,15 +1044,22 @@ namespace AgOpenGPS
                     startHeight = (int)(tool.lookAheadDistanceOffPixelsLeft + (mOff * pos)) * tool.rpWidth + pos;
                     endHeight = (int)(tool.lookAheadDistanceOnPixelsLeft + (mOn * pos)) * tool.rpWidth + pos;
 
-                    for (int a = startHeight; a <= endHeight; a += tool.rpWidth)
+                    //for (int a = startHeight; a <= endHeight; a += tool.rpWidth)
                     {
-                        totalPixel++;
-                        if (grnPixels[a] == 0) tagged++;
+                        //totalPixel++;
+                        if (grnPixels[endHeight] == 0) tagged++;
+                        if (grnPixels[startHeight] == 127) totalPixel++;
                     }
                 }
 
                 //determine if meeting minimum coverage
-                section[j].isSectionRequiredOn = ((tagged * 100) / totalPixel > (100 - tool.minCoverage));
+                totalPixel --;
+                //if (tagged != 0)
+                section[j].isSectionRequiredOn = true;
+
+                //check for off
+                if (tagged == 0 && totalPixel == (end-start))
+                    section[j].isSectionRequiredOn = false;
 
                 //logic if in or out of boundaries or headland
                 if (bnd.bndList.Count > 0)
@@ -1340,6 +1359,12 @@ namespace AgOpenGPS
 
             //send the byte out to section machines
             BuildMachineByte();
+
+            //Nozzz
+            if (isNozzleApp)
+            {
+                nozz.BuildRatePGN();
+            }
 
             ////Paint to context for troubleshooting
             //oglBack.MakeCurrent();
@@ -1981,6 +2006,7 @@ namespace AgOpenGPS
 
         private void MakeFlagMark()
         {
+
             leftMouseDownOnOpenGL = false;
 
             try
@@ -2026,7 +2052,6 @@ namespace AgOpenGPS
 
         private void DrawFlags()
         {
-
             try
             {
                 int flagCnt = flagPts.Count;
@@ -2719,7 +2744,13 @@ namespace AgOpenGPS
             font.DrawText(-oglMain.Width / 3, oglMain.Height/3, "RTK Fix Lost", 2);
         }
 
-        private void DrawAge()
+        private void DrawBeta()
+        {
+            GL.Color3(1f, 1f, 1f);
+            font.DrawText(-oglMain.Width / 2.1, oglMain.Height / 1.4, "Beta Testing v" + currentVersionStr, 1.3);
+        }
+
+         private void DrawAge()
         {
             GL.Color3(0.9752f, 0.52f, 0.0f);
             font.DrawText(oglMain.Width / 4, 60, "Age:" + pn.age.ToString("N1"), 1.5);

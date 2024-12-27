@@ -105,7 +105,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="setDisplay_lineWidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="setDisplay_panelSimLocation" Type="System.Drawing.Point" Scope="User">
       <Value Profile="(Default)">97, 600</Value>
@@ -435,7 +435,7 @@
       <Value Profile="(Default)">0.1</Value>
     </Setting>
     <Setting Name="setVehicle_wheelbase" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2.8</Value>
+      <Value Profile="(Default)">3.3</Value>
     </Setting>
     <Setting Name="setVehicle_hitchLength" Type="System.Double" Scope="User">
       <Value Profile="(Default)">-1</Value>
@@ -489,7 +489,7 @@
       <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="setVehicle_goalPointLookAheadMult" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">1.5</Value>
     </Setting>
     <Setting Name="stanleyDistanceErrorGain" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
@@ -773,8 +773,26 @@
     <Setting Name="setAS_deadZoneDelay" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
+    <Setting Name="setNozzleSettings" Type="AgOpenGPS.CNozzleSettings" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="setApp_isNozzleApp" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="setTram_alpha" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.8</Value>
+    </Setting>
+    <Setting Name="setVehicle_goalPointAcquireFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.85</Value>
+    </Setting>
+    <Setting Name="setBnd_isDrawPivot" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="setDisplay_isSectionLinesOn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="setDisplay_isLineSmooth" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
