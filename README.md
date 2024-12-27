@@ -36,10 +36,12 @@ is actively being worked on and may not be ready for production use.
 
 In order to contribute to AgOpenGPS, follow these steps:
 
-1. Checkout the `develop` branch
-2. Create a new branch named after your feature
-3. Make your changes and commit to this branch
-4. Create a PR targeting the `develop` branch
+1. Please join the Coding Telegram group to talk about your plans
+	https://t.me/+YSawMBD3ybM5YmRk * an admin will give you full access.
+2. Checkout the `develop` branch
+3. Create a new branch named after your feature
+4. Make your changes and commit to this branch
+5. Create a PR targeting the `develop` branch
 
 ## Links
 
