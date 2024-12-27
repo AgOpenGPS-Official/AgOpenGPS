@@ -36,6 +36,19 @@ namespace AgOpenGPS
                 LinkData = "https://discourse.agopengps.com/"
             };
             linkLabelCombineForum.Links.Add(linkCf);
+
+            this.Text = gStr.gsAboutAOG;
+
+            label13.Text = gStr.gsTermsAndConditions;
+            label7.Text = gStr.gsTermsParagraph1;
+            label9.Text = gStr.gsTermsParagraph2;
+            label10.Text = gStr.gsTermsParagraph3;
+            label14.Text = gStr.gsThanks;
+            label3.Text = gStr.gsDiscussion;
+            label6.Text = gStr.gsCheckForUpdates;
+            label8.Text = gStr.gsShortIntro;
+            label15.Text = gStr.gsEnableTerms;
+
         }
 
         private void button4_Click(object sender, EventArgs e)

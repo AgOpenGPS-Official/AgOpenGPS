@@ -610,20 +610,29 @@ namespace AgOpenGPS
             simulatorOnToolStripMenuItem.Text = gStr.gsSimulatorOn;
             resetALLToolStripMenuItem.Text = gStr.gsResetAll;
 
+            kioskModeToolStrip.Text= gStr.gsKioskMode;
+
+            helpMenuItem.Text = gStr.gsHelp;
+
             toolStripColors.Text = gStr.gsColors;
-            toolStripSectionColors.Text = "Section " + gStr.gsColors;
+            // toolStripSectionColors.Text = "Section " + gStr.gsColors;
+            toolStripSectionColors.Text = gStr.gsSectionColors;
             toolStripConfig.Text = gStr.gsConfiguration;
             toolStripSteerSettings.Text = gStr.gsAutoSteer;
+            toolStripAllSettings.Text = gStr.gsViewAllSettings;
             toolStripWorkingDirectories.Text = gStr.gsDirectories;
+
+            toolStripGPSData.Text = gStr.gsGpsData;
 
             resetEverythingToolStripMenuItem.Text = gStr.gsResetAllForSure;
             steerChartStripMenu.Text = gStr.gsCharts;
-
+            
+            
             //Tools Menu
             SmoothABtoolStripMenu.Text = gStr.gsSmoothABCurve;
             boundariesToolStripMenuItem.Text = gStr.gsBoundary;
             headlandToolStripMenuItem.Text = gStr.gsHeadland;
-            headlandBuildToolStripMenuItem.Text = gStr.gsHeadland + " Builder";
+            headlandBuildToolStripMenuItem.Text = gStr.gsHeadlandBuilder;
             deleteContourPathsToolStripMenuItem.Text = gStr.gsDeleteContourPaths;
             deleteAppliedToolStripMenuItem.Text = gStr.gsDeleteAppliedArea;
             tramLinesMenuField.Text = gStr.gsTramLines;
@@ -638,6 +647,14 @@ namespace AgOpenGPS
             steerChartToolStripMenuItem.Text = gStr.gsSteerChart;
             headingChartToolStripMenuItem.Text = gStr.gsHeadingChart;
             xTEChartToolStripMenuItem.Text = gStr.gsXTEChart;
+            rollCheckToolStripMenuItem.Text = gStr.gsRollChack;
+            
+            eventViewerToolStripMenuItem.Text = gStr.gsEventViewer;
+
+            guidelinesToolStripMenuItem.Text = gStr.gsExtraGuides;
+
+
+
 
             btnChangeMappingColor.Text = Application.ProductVersion.ToString(CultureInfo.InvariantCulture);
             //btnChangeMappingColor.Text = btnChangeMappingColor.Text.Substring(2);

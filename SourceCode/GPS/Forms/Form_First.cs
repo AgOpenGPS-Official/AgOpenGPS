@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Culture;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -13,6 +14,18 @@ namespace AgOpenGPS
             mf = callingForm as FormGPS;
 
             InitializeComponent();
+
+            this.Text = gStr.gsAccepTerms;
+
+            label3.Text = gStr.gsDiscussion;
+            label6.Text = gStr.gsCheckForUpdates;
+            label2.Text = gStr.gsTermsAndConditions;
+            label9.Text = gStr.gsTermsParagraph2;
+            label10.Text = gStr.gsTermsParagraph3;
+            label4.Text = gStr.gsTermsParagraph4;
+            button2.Text = gStr.gsDisagree;
+            button1.Text = gStr.gsIAgreeToTerms;
+
         }
 
         private void linkLabelGit_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

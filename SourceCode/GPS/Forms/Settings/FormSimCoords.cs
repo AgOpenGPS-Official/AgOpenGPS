@@ -25,7 +25,16 @@ namespace AgOpenGPS
         {
             nudLatitude.Value = (decimal)Properties.Settings.Default.setGPS_SimLatitude;
             nudLongitude.Value = (decimal)Properties.Settings.Default.setGPS_SimLongitude;
+
+            label2.Text = gStr.gsLatitude;
+            label18.Text = gStr.gsLatitude;
+
+            label1.Text = gStr.gsLongitude;
+            label3.Text = gStr.gsLongitude;
+
         }
+
+
 
         private void bntOK_Click(object sender, EventArgs e)
         {

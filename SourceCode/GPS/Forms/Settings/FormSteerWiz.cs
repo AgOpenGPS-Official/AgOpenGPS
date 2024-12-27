@@ -34,6 +34,135 @@ namespace AgOpenGPS
             this.Text = gStr.gsAutoSteerConfiguration;
             //this.Width = 378;
             //this.Height = 462;
+
+            label71.Text = gStr.gsProgress;
+            label34.Text = gStr.gsRight;
+            label35.Text = gStr.gsLeft;
+
+            btnStartWizard.Text = gStr.gsStartWiz;
+            btnStopWizard.Text = gStr.gsRestartWiz;
+
+            label80.Text = gStr.gsLoadDefaults;
+            label81.Text = gStr.gsHighlyRecommended;
+            btnLoadDefaults.Text = gStr.gsLoadDefault;
+
+            label91.Text = gStr.gsSetWheelbase;
+
+            label95.Text = gStr.gsSetTrackWidth;
+
+            label98.Text = gStr.gsAntennaPosition;
+            label99.Text = gStr.gsSetAntennaDistance;
+
+            label92.Text = gStr.gsAntennaHeight;
+            label93.Text = gStr.gsSetAntennaHeight;
+
+            label102.Text = gStr.gsAntennaOffset;
+            label103.Text = gStr.gsSetAntennaOffset;
+            label104.Text = gStr.gsZeroEqualsOff;
+
+            label53.Text = gStr.gsSteerSwitch;
+            label62.Text = gStr.gsSteerEnableMode;
+            label28.Text = gStr.gsSteerInfo;
+            cboxSteerEnable.Items.Add(gStr.gsNone);
+            cboxSteerEnable.Items.Add(gStr.gsSwitch);
+            cboxSteerEnable.Items.Add(gStr.gsButton);
+
+            label52.Text = gStr.gsADConverter;
+            label64.Text = gStr.gsADConverterConnection;
+            cboxConv.Items.Add(gStr.gsSingle);
+            cboxConv.Items.Add(gStr.gsDifferential);
+
+            label43.Text = gStr.gsMotorDriverBoard;
+            label63.Text = gStr.gsMotorDriverStyle;
+
+            label51.Text = gStr.gsDriverControlRelay;
+            label29.Text = gStr.gsInvertHydraulic;
+            label59.Text = gStr.gsInvertRelays;
+
+            label50.Text = gStr.gsDanfossValve;
+            label55.Text = gStr.gsDoYouHaveDanfoss;
+
+            label46.Text = gStr.gsRollFunction;
+            label107.Text = gStr.gsRoll;
+            label36.Text = gStr.gsRollNote1;
+            label115.Text = gStr.gsRollNote2;
+
+            label56.Text = gStr.gsRollZero;
+            label48.Text = gStr.gsRollNote;
+            label57.Text = gStr.gsRemoveOffset;
+            label47.Text = gStr.gsZeroRoll;
+            lblRollZeroOffset.Text = gStr.gsOffset;
+            label110.Text = gStr.gsRoll;
+
+            label42.Text = gStr.gsInvertWASDir;
+            label30.Text = gStr.gsInvertWASNote;
+            label45.Text = gStr.gsInvertWAS;
+
+            label40.Text = gStr.gsWASZeroing;
+            label10.Text = gStr.gsWASZeroNote;
+            label112.Text = gStr.gsReset;
+            label37.Text = gStr.gsCurrentHeading;
+
+            label41.Text = gStr.gsSteerMotorDir;
+            label70.Text = gStr.gsSteerMotorDirNote;
+            label58.Text = gStr.gsInvertDirection;
+            label17.Text = gStr.gsLeft;
+            label33.Text = gStr.gsRight;
+
+            label74.Text = gStr.gsWASCalibration;
+            label75.Text = gStr.gsSkipCPD;
+            label60.Text = gStr.gsBeginCalibration;
+
+            label39.Text = gStr.gsCountsPerDegree;
+            label7.Text = gStr.gsCPDNote;
+            label109.Text = gStr.gsStartAngle + ":";
+            label8.Text = gStr.gsSteerAngle + ":";
+            label1.Text = gStr.gsDiameter + ":";
+
+            label108.Text = gStr.gsAckermannNote;
+            label101.Text = gStr.gsStartAngle + ":";
+            label106.Text = gStr.gsSteerAngle + ":";
+            label111.Text = gStr.gsDiameter + ":";
+            label32.Text = gStr.gsAckermannValue+ ":";
+            btnAckReset.Text = gStr.gsResetTo100;
+
+            label49.Text = gStr.gsGuidanceSteerLimit;
+            label73.Text = gStr.gsGuidanceSteerNote1;
+            label23.Text = gStr.gsGuidanceSteerNote2;
+            label113.Text = gStr.gsSet;
+
+            label44.Text = gStr.gsAutomaticCancel;
+            labelEncoder.Text = gStr.gsTurnSensor;
+            labelCurrentTurnSensor.Text = gStr.gsCurrentTurnSensor;
+            labelPressureTurnSensor.Text = gStr.gsPressureTurnSensor;
+
+            label54.Text = gStr.gsPanicStopSpeed;
+            label82.Text = gStr.gsPanicStopNote;
+            label16.Text = gStr.gsSetPanicStopSpeed;
+            label31.Text = gStr.gsZeroEqualsOff;
+
+            label68.Text = gStr.gsMinimumMovementSetting;
+            label76.Text = gStr.gsMinimumMovNote1;
+            label77.Text = gStr.gsMinimumMovNote2;
+            label15.Text = gStr.gsPWMMinimumMov;
+            label72.Text = gStr.gsZero;
+            label78.Text = gStr.gsLeft;
+            label79.Text = gStr.gsRight;
+
+            label87.Text = gStr.gsGainSetting;
+            label86.Text = gStr.gsGainSettingNote1;
+            label85.Text = gStr.gsGainSettingNote2;
+            label2.Text = gStr.gsProportionalGain;
+            label4.Text = gStr.gsPWMMaximum;
+            label83.Text = gStr.gsZeroOrPlusFive;
+            label84.Text = gStr.gsLeft;
+            label88.Text = gStr.gsRight;
+
+            label69.Text = gStr.gsFinished;
+            label116.Text = gStr.gsSteerWizFinishNote;
+            btnRestartWizard.Text = gStr.gsRestartWiz;
+
+
         }
 
         private void FormSteer_Load(object sender, EventArgs e)
@@ -746,7 +875,7 @@ namespace AgOpenGPS
                         lblPercentFS.Visible = true;
                         nudMaxCounts.Visible = false;
                         pbarSensor.Visible = true;
-                        label61.Text = "Off at %";
+                        label61.Text = gStr.gsOffatPercent;
                         hsbarSensor.Visible = true;
                         lblhsbarSensor.Visible = true;
                     }
@@ -759,7 +888,7 @@ namespace AgOpenGPS
                         nudMaxCounts.Visible = false;
                         hsbarSensor.Visible = true;
                         pbarSensor.Visible = true;
-                        label61.Text = "Off at %";
+                        label61.Text = gStr.gsOffatPercent;
                         lblhsbarSensor.Visible = true;
                     }
                     else if (checkbox == cboxEncoder)
@@ -999,7 +1128,7 @@ namespace AgOpenGPS
                 cntr = 0;
                 btnStartSA.Image = Properties.Resources.boundaryStop;
                 lblDiameter.Text = "0";
-                lblCalcSteerAngleInner.Text = "Drive Steady";
+                lblCalcSteerAngleInner.Text = gStr.gsDriveSteady;
                 lblRightStartAngle.Text = mf.mc.actualSteerAngleDegrees.ToString("N1");
             }
             else

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Culture;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -58,6 +59,11 @@ namespace AgOpenGPS
                 Left = 0;
             }
 
+            this.Text = "AgOpenGPS " + gStr.gsHelp;
+
+            label3.Text = gStr.gsDiscussion;
+            label6.Text = gStr.gsCheckForUpdates;
+            label1.Text = gStr.gs_YoutubeTutorials;
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)

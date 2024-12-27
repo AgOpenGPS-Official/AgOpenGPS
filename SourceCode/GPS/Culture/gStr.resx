@@ -570,4 +570,366 @@
   <data name="v_SteerSettingsForm" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=3SdvYgx8HHc</value>
   </data>
+  <data name="gsAboutAOG" xml:space="preserve">
+    <value>About AgOpenGPS</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="gsDiscussion" xml:space="preserve">
+    <value>Discussions at....</value>
+  </data>
+  <data name="gsEnableTerms" xml:space="preserve">
+    <value>Enable Terms Form</value>
+  </data>
+  <data name="gsEventViewer" xml:space="preserve">
+    <value>Event Viewer</value>
+  </data>
+  <data name="gsExtraGuides" xml:space="preserve">
+    <value>Extra Guides</value>
+  </data>
+  <data name="gsGpsData" xml:space="preserve">
+    <value>GPS Data</value>
+  </data>
+  <data name="gsHeadlandBuilder" xml:space="preserve">
+    <value>Headland Builder</value>
+  </data>
+  <data name="gsKioskMode" xml:space="preserve">
+    <value>Kiosk Mode</value>
+  </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="gsLongitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="gsRollChack" xml:space="preserve">
+    <value>Roll Check</value>
+  </data>
+  <data name="gsSectionColors" xml:space="preserve">
+    <value>Section Colors</value>
+  </data>
+  <data name="gsShortIntro" xml:space="preserve">
+    <value>Short Introduction</value>
+  </data>
+  <data name="gsSystemLogViewer" xml:space="preserve">
+    <value>System Log Viewer</value>
+  </data>
+  <data name="gsTermsAndConditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="gsTermsParagraph1" xml:space="preserve">
+    <value>AgOpenGPS is protected under the GPLv3 License</value>
+  </data>
+  <data name="gsTermsParagraph2" xml:space="preserve">
+    <value>If you distribute copies of this FREE program, whether gratis or for a fee, improved, changed, you must pass on to the recipients the same freedoms that you received as Outlined in the GPLv3 License.</value>
+  </data>
+  <data name="gsTermsParagraph3" xml:space="preserve">
+    <value>You must make sure that they, too, receive or can get the source code.  And you must show them these terms so they know their rights. Don't steal others work and call it your own.</value>
+  </data>
+  <data name="gsThanks" xml:space="preserve">
+    <value>Special Thx to Contributors:</value>
+  </data>
+  <data name="gsViewAllSettings" xml:space="preserve">
+    <value>View All Settings</value>
+  </data>
+  <data name="gs.YoutubeTutorials" xml:space="preserve">
+    <value>YouTube Tutorials</value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>A/D Converter</value>
+  </data>
+  <data name="gsADConverterConnection" xml:space="preserve">
+    <value>A/D Converter Connection?</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antenna 
+Height</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Antenna Offset</value>
+  </data>
+  <data name="gsAntennaPosition" xml:space="preserve">
+    <value>Antenna Position</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Button</value>
+  </data>
+  <data name="gsDanfossValve" xml:space="preserve">
+    <value>Danfoss Valve</value>
+  </data>
+  <data name="gsDifferential" xml:space="preserve">
+    <value>Differential</value>
+  </data>
+  <data name="gsDoYouHaveDanfoss" xml:space="preserve">
+    <value>Do you have a Danfoss Valve?</value>
+  </data>
+  <data name="gsDriverControlRelay" xml:space="preserve">
+    <value>Driver Control Relay</value>
+  </data>
+  <data name="gsHighlyRecommended" xml:space="preserve">
+    <value>Highly Recommended</value>
+  </data>
+  <data name="gsInvertHydraulic" xml:space="preserve">
+    <value>Invert Hydraulic Enable Relay?</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>Invert Relays</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="gsLoadDefault" xml:space="preserve">
+    <value>Load Defaults</value>
+  </data>
+  <data name="gsLoadDefaults" xml:space="preserve">
+    <value>Load Defaults</value>
+  </data>
+  <data name="gsMotorDriverBoard" xml:space="preserve">
+    <value>Motor Driver Board</value>
+  </data>
+  <data name="gsMotorDriverStyle" xml:space="preserve">
+    <value>What Style of Motor Driver?</value>
+  </data>
+  <data name="gsProgress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="gsRestartWiz" xml:space="preserve">
+    <value>Restart Wizard</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="gsRoll" xml:space="preserve">
+    <value>Roll</value>
+  </data>
+  <data name="gsRollFunction" xml:space="preserve">
+    <value>Roll Function</value>
+  </data>
+  <data name="gsRollNote1" xml:space="preserve">
+    <value>Put vehicle leaning strongly to the right. Roll to the right must be POSITIVE.</value>
+  </data>
+  <data name="gsRollNote2" xml:space="preserve">
+    <value>If not Select Invert Roll</value>
+  </data>
+  <data name="gsSetAntennaDistance" xml:space="preserve">
+    <value>Set Distance Antenna Is From Pivot Axle</value>
+  </data>
+  <data name="gsSetAntennaHeight" xml:space="preserve">
+    <value>Set Antenna Height</value>
+  </data>
+  <data name="gsSetAntennaOffset" xml:space="preserve">
+    <value>Set Antenna Offset</value>
+  </data>
+  <data name="gsSetTrackWidth" xml:space="preserve">
+    <value>Set Track Width</value>
+  </data>
+  <data name="gsSetWheelbase" xml:space="preserve">
+    <value>Set Wheelbase</value>
+  </data>
+  <data name="gsSingle" xml:space="preserve">
+    <value>Single</value>
+  </data>
+  <data name="gsStartWiz" xml:space="preserve">
+    <value>Start Wizard</value>
+  </data>
+  <data name="gsSteerEnableMode" xml:space="preserve">
+    <value>Steer Enable Mode</value>
+  </data>
+  <data name="gsSteerInfo" xml:space="preserve">
+    <value>Button - Push Release, On.   
+               Push Release, Off
+
+Switch - While Pushed is On. 
+               Released is Off.</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Steer Switch</value>
+  </data>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Switch</value>
+  </data>
+  <data name="gsZeroEqualsOff" xml:space="preserve">
+    <value>0 = Off</value>
+  </data>
+  <data name="gsAccepTerms" xml:space="preserve">
+    <value>Accept Terms and Conditions</value>
+  </data>
+  <data name="gsAckermannNote" xml:space="preserve">
+    <value>Turn steering wheel to LEFT roughly the same degrees as right.
+While driving in a steady circle, Press Rec and wait.</value>
+  </data>
+  <data name="gsAckermannValue" xml:space="preserve">
+    <value>Ackermann Value</value>
+  </data>
+  <data name="gsAutomaticCancel" xml:space="preserve">
+    <value>Automatic Canceling Feature</value>
+  </data>
+  <data name="gsBeginCalibration" xml:space="preserve">
+    <value>*Begin* Calibration</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Counts per Degree</value>
+  </data>
+  <data name="gsCPDNote" xml:space="preserve">
+    <value>Turn steering wheel to RIGHT about 20 degrees.
+While driving in a steady circle, Press Rec and wait.</value>
+  </data>
+  <data name="gsCurrentHeading" xml:space="preserve">
+    <value>Current Heading</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Current Turn Sensor</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Disagree</value>
+  </data>
+  <data name="gsDriveSteady" xml:space="preserve">
+    <value>Drive Steady</value>
+  </data>
+  <data name="gsFinished" xml:space="preserve">
+    <value>Finished !</value>
+  </data>
+  <data name="gsGainSetting" xml:space="preserve">
+    <value>Gain Setting</value>
+  </data>
+  <data name="gsGainSettingNote1" xml:space="preserve">
+    <value>Drive forward and enable Auto Steer</value>
+  </data>
+  <data name="gsGainSettingNote2" xml:space="preserve">
+    <value>Set Proportional for good response. 
+Set PWM Maximum to limit turning speed.</value>
+  </data>
+  <data name="gsGuidanceSteerLimit" xml:space="preserve">
+    <value>Guidance Steer Angle Limit</value>
+  </data>
+  <data name="gsGuidanceSteerNote1" xml:space="preserve">
+    <value>Turn steering to your desired limit for guidance and touch OK -&gt;</value>
+  </data>
+  <data name="gsGuidanceSteerNote2" xml:space="preserve">
+    <value>Or Manually Set Guidance Steer Angle Limit</value>
+  </data>
+  <data name="gsIAgreeToTerms" xml:space="preserve">
+    <value>I Agree to the Terms and Conditions</value>
+  </data>
+  <data name="gsInvertDirection" xml:space="preserve">
+    <value>Invert Direction</value>
+  </data>
+  <data name="gsInvertWAS" xml:space="preserve">
+    <value>Invert WAS</value>
+  </data>
+  <data name="gsInvertWASDir" xml:space="preserve">
+    <value>Invert WAS Direction</value>
+  </data>
+  <data name="gsInvertWASNote" xml:space="preserve">
+    <value>Steer Angle must be POSITIVE when turning to the RIGHT.
+If not, select the Invert WAS.</value>
+  </data>
+  <data name="gsMinimumMovementSetting" xml:space="preserve">
+    <value>Minimun Movement Setting</value>
+  </data>
+  <data name="gsMinimumMovNote1" xml:space="preserve">
+    <value>Drive slowly straight forward, Allow system to steer</value>
+  </data>
+  <data name="gsMinimumMovNote2" xml:space="preserve">
+    <value>Change Setpoint with steer buttons. 
+
+Adjust Minumum Movement as high as possible without steer motor or hydraulics moving steering.</value>
+  </data>
+  <data name="gsOffatPercent" xml:space="preserve">
+    <value>Off at %</value>
+  </data>
+  <data name="gsPanicStopNote" xml:space="preserve">
+    <value>Kmh drop per fix update (3 works well)</value>
+  </data>
+  <data name="gsPanicStopSpeed" xml:space="preserve">
+    <value>Panic Stop Speed</value>
+  </data>
+  <data name="gsPressureTurnSensor" xml:space="preserve">
+    <value>Pressure Turn Sensor</value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value>Proportional Gain</value>
+  </data>
+  <data name="gsPWMMaximum" xml:space="preserve">
+    <value>PWM Maximum</value>
+  </data>
+  <data name="gsPWMMinimumMov" xml:space="preserve">
+    <value>PWM Minimum Movement</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Remove Offset</value>
+  </data>
+  <data name="gsReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="gsResetTo100" xml:space="preserve">
+    <value>Reset To 100%</value>
+  </data>
+  <data name="gsRollNote" xml:space="preserve">
+    <value>Park on level surface and touch "Zero Roll"</value>
+  </data>
+  <data name="gsRollZero" xml:space="preserve">
+    <value>Roll Zero</value>
+  </data>
+  <data name="gsSet" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="gsSetPanicStopSpeed" xml:space="preserve">
+    <value>Set Panic Stop Speed</value>
+  </data>
+  <data name="gsSkipCPD" xml:space="preserve">
+    <value>* SKIP *  Counts Per Degree and Ackermann Setting?</value>
+  </data>
+  <data name="gsStartAngle" xml:space="preserve">
+    <value>Start Angle</value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Steer Angle</value>
+  </data>
+  <data name="gsSteerMotorDir" xml:space="preserve">
+    <value>Steer Motor Direction</value>
+  </data>
+  <data name="gsSteerMotorDirNote" xml:space="preserve">
+    <value>Drive slowly and enable Auto Steer. Invert Direction if steer motor turns the wrong way.
+Test with Arrows.</value>
+  </data>
+  <data name="gsSteerWizFinishNote" xml:space="preserve">
+    <value>Now go drive an AB Line and fine tune settings based on your speed and soil conditions.
+
+Remember: CPD, Min PWM, and Look Ahead are critical settings.</value>
+  </data>
+  <data name="gsTermsParagraph4" xml:space="preserve">
+    <value>AgOpenGPS is strictly educational software for learning about guidance systems, GPS messaging and theoretical machine control applications.
+
+It should not be used on real equipment under any circumstances. A simulator is provided for the student to safely experience machine guidance.
+
+The software does not include any safety systems and none are implied.
+
+Use at your own risk.</value>
+  </data>
+  <data name="gsTurnSensor" xml:space="preserve">
+    <value>Turn Sensor</value>
+  </data>
+  <data name="gsWASCalibration" xml:space="preserve">
+    <value>WAS Calibration</value>
+  </data>
+  <data name="gsWASZeroing" xml:space="preserve">
+    <value>WAS Zeroing</value>
+  </data>
+  <data name="gsWASZeroNote" xml:space="preserve">
+    <value>Drive straight forward and Touch Zero</value>
+  </data>
+  <data name="gsZero" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="gsZeroOrPlusFive" xml:space="preserve">
+    <value>Zero or +5</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Zero Roll</value>
+  </data>
 </root>
