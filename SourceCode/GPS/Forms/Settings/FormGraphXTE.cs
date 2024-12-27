@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Culture;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -24,7 +25,7 @@ namespace AgOpenGPS
             this.label5.Text = "HE";
             this.label1.Text = "XTE";
 
-            this.Text = "XTE Chart";
+            this.Text = gStr.gsXTEChart;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

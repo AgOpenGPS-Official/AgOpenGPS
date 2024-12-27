@@ -805,7 +805,7 @@ Establezca PWM Máximo para limitar la velocidad de giro.</value>
     <value>O bien, fije manualmente el Límite del Ángulo de Guiado</value>
   </data>
   <data name="gsIAgreeToTerms" xml:space="preserve">
-    <value>Yo estoy de Acuerdo con los Términos y Condiciones</value>
+    <value>Estoy de Acuerdo con los Términos y Condiciones</value>
   </data>
   <data name="gsInvertDirection" xml:space="preserve">
     <value>Invertir Dirección</value>
@@ -922,5 +922,26 @@ Utilícelo bajo su propio riesgo.</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Cero Inclinación</value>
+  </data>
+  <data name="gsAntenna" xml:space="preserve">
+    <value>Antena</value>
+  </data>
+  <data name="gsBoundaryTool" xml:space="preserve">
+    <value>Herramienta de Lindero</value>
+  </data>
+  <data name="gsCorrectedEasting" xml:space="preserve">
+    <value>Easting Correjido</value>
+  </data>
+  <data name="gsCorrectionDistance" xml:space="preserve">
+    <value>Distancia de Correción</value>
+  </data>
+  <data name="gsRollCorrectionGraph" xml:space="preserve">
+    <value>Gráfico de Correción de Inclinación</value>
+  </data>
+  <data name="gsRollDegrees" xml:space="preserve">
+    <value>Inclinación Grados</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Crear</value>
   </data>
 </root>

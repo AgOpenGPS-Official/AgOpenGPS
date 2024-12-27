@@ -64,6 +64,9 @@ namespace AgOpenGPS
             InitializeComponent();
 
             mf.CalculateMinMax();
+
+            label2.Text = gStr.gsCreate;
+
         }
 
         private void FormBndTool_Load(object sender, EventArgs e)

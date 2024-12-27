@@ -179,6 +179,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Antenna.
+        /// </summary>
+        public static string gsAntenna {
+            get {
+                return ResourceManager.GetString("gsAntenna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Antenna 
         ///Height.
         /// </summary>
@@ -302,6 +311,15 @@ namespace AgOpenGPS.Culture {
         public static string gsBoundaryMenu {
             get {
                 return ResourceManager.GetString("gsBoundaryMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boundary Tool.
+        /// </summary>
+        public static string gsBoundaryTool {
+            get {
+                return ResourceManager.GetString("gsBoundaryTool", resourceCulture);
             }
         }
         
@@ -450,6 +468,24 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Corrected Easting.
+        /// </summary>
+        public static string gsCorrectedEasting {
+            get {
+                return ResourceManager.GetString("gsCorrectedEasting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Correction Distance.
+        /// </summary>
+        public static string gsCorrectionDistance {
+            get {
+                return ResourceManager.GetString("gsCorrectionDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Valid Path.
         /// </summary>
         public static string gsCouldntGenerateValidPath {
@@ -474,6 +510,15 @@ namespace AgOpenGPS.Culture {
         public static string gsCPDNote {
             get {
                 return ResourceManager.GetString("gsCPDNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string gsCreate {
+            get {
+                return ResourceManager.GetString("gsCreate", resourceCulture);
             }
         }
         
@@ -1774,6 +1819,24 @@ namespace AgOpenGPS.Culture {
         public static string gsRollChack {
             get {
                 return ResourceManager.GetString("gsRollChack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roll Correction Graph.
+        /// </summary>
+        public static string gsRollCorrectionGraph {
+            get {
+                return ResourceManager.GetString("gsRollCorrectionGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roll Degrees.
+        /// </summary>
+        public static string gsRollDegrees {
+            get {
+                return ResourceManager.GetString("gsRollDegrees", resourceCulture);
             }
         }
         

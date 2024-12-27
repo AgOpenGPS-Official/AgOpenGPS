@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Culture;
+using System;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -23,6 +24,8 @@ namespace AgOpenGPS
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
+
+            this.Text = gStr.gsHeadingChart;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

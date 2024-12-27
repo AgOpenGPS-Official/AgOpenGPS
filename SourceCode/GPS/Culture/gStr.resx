@@ -932,4 +932,25 @@ Use at your own risk.</value>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Zero Roll</value>
   </data>
+  <data name="gsAntenna" xml:space="preserve">
+    <value>Antenna</value>
+  </data>
+  <data name="gsBoundaryTool" xml:space="preserve">
+    <value>Boundary Tool</value>
+  </data>
+  <data name="gsCorrectedEasting" xml:space="preserve">
+    <value>Corrected Easting</value>
+  </data>
+  <data name="gsCorrectionDistance" xml:space="preserve">
+    <value>Correction Distance</value>
+  </data>
+  <data name="gsRollCorrectionGraph" xml:space="preserve">
+    <value>Roll Correction Graph</value>
+  </data>
+  <data name="gsRollDegrees" xml:space="preserve">
+    <value>Roll Degrees</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Create</value>
+  </data>
 </root>

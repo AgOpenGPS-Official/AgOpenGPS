@@ -142,7 +142,9 @@
             this.label90 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.label91 = new System.Windows.Forms.Label();
+            this.nudWheelbase = new AgOpenGPS.NudlessNumericUpDown();
             this.tabWheelTrack = new System.Windows.Forms.TabPage();
+            this.nudVehicleTrack = new AgOpenGPS.NudlessNumericUpDown();
             this.label118 = new System.Windows.Forms.Label();
             this.label96 = new System.Windows.Forms.Label();
             this.label94 = new System.Windows.Forms.Label();
@@ -150,12 +152,14 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabAntennaDistance = new System.Windows.Forms.TabPage();
+            this.nudAntennaPivot = new AgOpenGPS.NudlessNumericUpDown();
             this.label100 = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Button();
             this.label98 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
             this.label99 = new System.Windows.Forms.Label();
             this.tabAntennaHeight = new System.Windows.Forms.TabPage();
+            this.nudAntennaHeight = new AgOpenGPS.NudlessNumericUpDown();
             this.label114 = new System.Windows.Forms.Label();
             this.label97 = new System.Windows.Forms.Label();
             this.button13 = new System.Windows.Forms.Button();
@@ -163,6 +167,7 @@
             this.button14 = new System.Windows.Forms.Button();
             this.label93 = new System.Windows.Forms.Label();
             this.tabAntennaOffset = new System.Windows.Forms.TabPage();
+            this.nudAntennaOffset = new AgOpenGPS.NudlessNumericUpDown();
             this.button11 = new System.Windows.Forms.Button();
             this.label102 = new System.Windows.Forms.Label();
             this.label104 = new System.Windows.Forms.Label();
@@ -285,11 +290,13 @@
             this.cboxPressureSensor = new System.Windows.Forms.CheckBox();
             this.cboxEncoder = new System.Windows.Forms.CheckBox();
             this.cboxCurrentSensor = new System.Windows.Forms.CheckBox();
+            this.nudMaxCounts = new AgOpenGPS.NudlessNumericUpDown();
             this.tabPanicStop = new System.Windows.Forms.TabPage();
             this.label82 = new System.Windows.Forms.Label();
             this.btnPrev_Panic = new System.Windows.Forms.Button();
             this.label54 = new System.Windows.Forms.Label();
             this.btnOkNext_PanicStop = new System.Windows.Forms.Button();
+            this.nudPanicStopSpeed = new AgOpenGPS.NudlessNumericUpDown();
             this.tab_MinimumGain = new System.Windows.Forms.TabPage();
             this.label72 = new System.Windows.Forms.Label();
             this.label79 = new System.Windows.Forms.Label();
@@ -332,13 +339,6 @@
             this.label67 = new System.Windows.Forms.Label();
             this.lblBarWasOffset = new System.Windows.Forms.Label();
             this.btnCloseAll = new System.Windows.Forms.Button();
-            this.nudWheelbase = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudVehicleTrack = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudAntennaPivot = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudAntennaHeight = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudAntennaOffset = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudMaxCounts = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudPanicStopSpeed = new AgOpenGPS.NudlessNumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tabSteer.SuspendLayout();
             this.tabStan.SuspendLayout();
@@ -349,10 +349,15 @@
             this.tabStart.SuspendLayout();
             this.tabLoadDef.SuspendLayout();
             this.tabWheelBase.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWheelbase)).BeginInit();
             this.tabWheelTrack.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVehicleTrack)).BeginInit();
             this.tabAntennaDistance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaPivot)).BeginInit();
             this.tabAntennaHeight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).BeginInit();
             this.tabAntennaOffset.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaOffset)).BeginInit();
             this.tabButtonSwitch.SuspendLayout();
             this.tabA2DConv.SuspendLayout();
             this.tabMotorDriver.SuspendLayout();
@@ -369,18 +374,13 @@
             this.tabAckCPD.SuspendLayout();
             this.tabMaxSteerAngle.SuspendLayout();
             this.tabCancelGuidance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxCounts)).BeginInit();
             this.tabPanicStop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPanicStopSpeed)).BeginInit();
             this.tab_MinimumGain.SuspendLayout();
             this.tabPGain.SuspendLayout();
             this.tabEnd.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWheelbase)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudVehicleTrack)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaPivot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxCounts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPanicStopSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // timer1
@@ -1759,13 +1759,13 @@
             this.tabWheelBase.BackColor = System.Drawing.Color.White;
             this.tabWheelBase.BackgroundImage = global::AgOpenGPS.Properties.Resources.RadiusWheelBase;
             this.tabWheelBase.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tabWheelBase.Controls.Add(this.nudWheelbase);
             this.tabWheelBase.Controls.Add(this.label117);
             this.tabWheelBase.Controls.Add(this.label89);
             this.tabWheelBase.Controls.Add(this.button1);
             this.tabWheelBase.Controls.Add(this.label90);
             this.tabWheelBase.Controls.Add(this.button2);
             this.tabWheelBase.Controls.Add(this.label91);
-            this.tabWheelBase.Controls.Add(this.nudWheelbase);
             this.tabWheelBase.Location = new System.Drawing.Point(4, 19);
             this.tabWheelBase.Name = "tabWheelBase";
             this.tabWheelBase.Size = new System.Drawing.Size(655, 348);
@@ -1858,6 +1858,30 @@
             this.label91.Text = "Set Wheelbase";
             this.label91.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // nudWheelbase
+            // 
+            this.nudWheelbase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudWheelbase.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudWheelbase.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudWheelbase.InterceptArrowKeys = false;
+            this.nudWheelbase.Location = new System.Drawing.Point(90, 231);
+            this.nudWheelbase.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudWheelbase.Name = "nudWheelbase";
+            this.nudWheelbase.ReadOnly = true;
+            this.nudWheelbase.Size = new System.Drawing.Size(143, 65);
+            this.nudWheelbase.TabIndex = 537;
+            this.nudWheelbase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudWheelbase.Value = new decimal(new int[] {
+            333,
+            0,
+            0,
+            0});
+            this.nudWheelbase.Click += new System.EventHandler(this.nudWheelbase_Click);
+            // 
             // tabWheelTrack
             // 
             this.tabWheelTrack.BackColor = System.Drawing.Color.White;
@@ -1875,6 +1899,30 @@
             this.tabWheelTrack.Size = new System.Drawing.Size(655, 348);
             this.tabWheelTrack.TabIndex = 38;
             this.tabWheelTrack.Text = "Track";
+            // 
+            // nudVehicleTrack
+            // 
+            this.nudVehicleTrack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudVehicleTrack.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudVehicleTrack.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudVehicleTrack.InterceptArrowKeys = false;
+            this.nudVehicleTrack.Location = new System.Drawing.Point(423, 180);
+            this.nudVehicleTrack.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudVehicleTrack.Name = "nudVehicleTrack";
+            this.nudVehicleTrack.ReadOnly = true;
+            this.nudVehicleTrack.Size = new System.Drawing.Size(157, 65);
+            this.nudVehicleTrack.TabIndex = 537;
+            this.nudVehicleTrack.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudVehicleTrack.Value = new decimal(new int[] {
+            333,
+            0,
+            0,
+            0});
+            this.nudVehicleTrack.Click += new System.EventHandler(this.nudVehicleTrack_Click);
             // 
             // label118
             // 
@@ -1978,6 +2026,35 @@
             this.tabAntennaDistance.TabIndex = 39;
             this.tabAntennaDistance.Text = "AntDist";
             // 
+            // nudAntennaPivot
+            // 
+            this.nudAntennaPivot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudAntennaPivot.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudAntennaPivot.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudAntennaPivot.InterceptArrowKeys = false;
+            this.nudAntennaPivot.Location = new System.Drawing.Point(230, 226);
+            this.nudAntennaPivot.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudAntennaPivot.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudAntennaPivot.Name = "nudAntennaPivot";
+            this.nudAntennaPivot.ReadOnly = true;
+            this.nudAntennaPivot.Size = new System.Drawing.Size(165, 65);
+            this.nudAntennaPivot.TabIndex = 537;
+            this.nudAntennaPivot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudAntennaPivot.Value = new decimal(new int[] {
+            333,
+            0,
+            0,
+            0});
+            this.nudAntennaPivot.Click += new System.EventHandler(this.nudAntennaPivot_Click);
+            // 
             // label100
             // 
             this.label100.BackColor = System.Drawing.Color.White;
@@ -2069,6 +2146,30 @@
             this.tabAntennaHeight.Size = new System.Drawing.Size(655, 348);
             this.tabAntennaHeight.TabIndex = 41;
             this.tabAntennaHeight.Text = "AntHigh";
+            // 
+            // nudAntennaHeight
+            // 
+            this.nudAntennaHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudAntennaHeight.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudAntennaHeight.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudAntennaHeight.InterceptArrowKeys = false;
+            this.nudAntennaHeight.Location = new System.Drawing.Point(465, 87);
+            this.nudAntennaHeight.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudAntennaHeight.Name = "nudAntennaHeight";
+            this.nudAntennaHeight.ReadOnly = true;
+            this.nudAntennaHeight.Size = new System.Drawing.Size(145, 65);
+            this.nudAntennaHeight.TabIndex = 537;
+            this.nudAntennaHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudAntennaHeight.Value = new decimal(new int[] {
+            333,
+            0,
+            0,
+            0});
+            this.nudAntennaHeight.Click += new System.EventHandler(this.nudAntennaHeight_Click);
             // 
             // label114
             // 
@@ -2171,6 +2272,35 @@
             this.tabAntennaOffset.Size = new System.Drawing.Size(655, 348);
             this.tabAntennaOffset.TabIndex = 40;
             this.tabAntennaOffset.Text = "AntOff";
+            // 
+            // nudAntennaOffset
+            // 
+            this.nudAntennaOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudAntennaOffset.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudAntennaOffset.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudAntennaOffset.InterceptArrowKeys = false;
+            this.nudAntennaOffset.Location = new System.Drawing.Point(250, 65);
+            this.nudAntennaOffset.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudAntennaOffset.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudAntennaOffset.Name = "nudAntennaOffset";
+            this.nudAntennaOffset.ReadOnly = true;
+            this.nudAntennaOffset.Size = new System.Drawing.Size(165, 65);
+            this.nudAntennaOffset.TabIndex = 537;
+            this.nudAntennaOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudAntennaOffset.Value = new decimal(new int[] {
+            333,
+            0,
+            0,
+            0});
+            this.nudAntennaOffset.Click += new System.EventHandler(this.nudAntennaOffset_Click);
             // 
             // button11
             // 
@@ -4042,6 +4172,30 @@
             this.cboxCurrentSensor.UseVisualStyleBackColor = false;
             this.cboxCurrentSensor.Click += new System.EventHandler(this.cboxCancelGuidance_Click);
             // 
+            // nudMaxCounts
+            // 
+            this.nudMaxCounts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudMaxCounts.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudMaxCounts.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudMaxCounts.InterceptArrowKeys = false;
+            this.nudMaxCounts.Location = new System.Drawing.Point(58, 239);
+            this.nudMaxCounts.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudMaxCounts.Name = "nudMaxCounts";
+            this.nudMaxCounts.ReadOnly = true;
+            this.nudMaxCounts.Size = new System.Drawing.Size(107, 52);
+            this.nudMaxCounts.TabIndex = 493;
+            this.nudMaxCounts.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudMaxCounts.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.nudMaxCounts.Click += new System.EventHandler(this.nudMaxCounts_Click);
+            // 
             // tabPanicStop
             // 
             this.tabPanicStop.BackColor = System.Drawing.Color.White;
@@ -4118,6 +4272,30 @@
             this.btnOkNext_PanicStop.TabIndex = 533;
             this.btnOkNext_PanicStop.UseVisualStyleBackColor = false;
             this.btnOkNext_PanicStop.Click += new System.EventHandler(this.btnOkNext_Click);
+            // 
+            // nudPanicStopSpeed
+            // 
+            this.nudPanicStopSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.nudPanicStopSpeed.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudPanicStopSpeed.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudPanicStopSpeed.InterceptArrowKeys = false;
+            this.nudPanicStopSpeed.Location = new System.Drawing.Point(263, 202);
+            this.nudPanicStopSpeed.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.nudPanicStopSpeed.Name = "nudPanicStopSpeed";
+            this.nudPanicStopSpeed.ReadOnly = true;
+            this.nudPanicStopSpeed.Size = new System.Drawing.Size(107, 52);
+            this.nudPanicStopSpeed.TabIndex = 519;
+            this.nudPanicStopSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudPanicStopSpeed.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.nudPanicStopSpeed.Click += new System.EventHandler(this.nudPanicStopSpeed_Click);
             // 
             // tab_MinimumGain
             // 
@@ -4740,184 +4918,6 @@
             this.btnCloseAll.UseVisualStyleBackColor = false;
             this.btnCloseAll.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // nudWheelbase
-            // 
-            this.nudWheelbase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudWheelbase.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudWheelbase.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudWheelbase.InterceptArrowKeys = false;
-            this.nudWheelbase.Location = new System.Drawing.Point(90, 231);
-            this.nudWheelbase.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudWheelbase.Name = "nudWheelbase";
-            this.nudWheelbase.ReadOnly = true;
-            this.nudWheelbase.Size = new System.Drawing.Size(143, 65);
-            this.nudWheelbase.TabIndex = 537;
-            this.nudWheelbase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudWheelbase.Value = new decimal(new int[] {
-            333,
-            0,
-            0,
-            0});
-            this.nudWheelbase.Click += new System.EventHandler(this.nudWheelbase_Click);
-            // 
-            // nudVehicleTrack
-            // 
-            this.nudVehicleTrack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudVehicleTrack.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudVehicleTrack.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudVehicleTrack.InterceptArrowKeys = false;
-            this.nudVehicleTrack.Location = new System.Drawing.Point(423, 180);
-            this.nudVehicleTrack.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudVehicleTrack.Name = "nudVehicleTrack";
-            this.nudVehicleTrack.ReadOnly = true;
-            this.nudVehicleTrack.Size = new System.Drawing.Size(157, 65);
-            this.nudVehicleTrack.TabIndex = 537;
-            this.nudVehicleTrack.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudVehicleTrack.Value = new decimal(new int[] {
-            333,
-            0,
-            0,
-            0});
-            this.nudVehicleTrack.Click += new System.EventHandler(this.nudVehicleTrack_Click);
-            // 
-            // nudAntennaPivot
-            // 
-            this.nudAntennaPivot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudAntennaPivot.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudAntennaPivot.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudAntennaPivot.InterceptArrowKeys = false;
-            this.nudAntennaPivot.Location = new System.Drawing.Point(230, 226);
-            this.nudAntennaPivot.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudAntennaPivot.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.nudAntennaPivot.Name = "nudAntennaPivot";
-            this.nudAntennaPivot.ReadOnly = true;
-            this.nudAntennaPivot.Size = new System.Drawing.Size(165, 65);
-            this.nudAntennaPivot.TabIndex = 537;
-            this.nudAntennaPivot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudAntennaPivot.Value = new decimal(new int[] {
-            333,
-            0,
-            0,
-            0});
-            this.nudAntennaPivot.Click += new System.EventHandler(this.nudAntennaPivot_Click);
-            // 
-            // nudAntennaHeight
-            // 
-            this.nudAntennaHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudAntennaHeight.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudAntennaHeight.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudAntennaHeight.InterceptArrowKeys = false;
-            this.nudAntennaHeight.Location = new System.Drawing.Point(465, 87);
-            this.nudAntennaHeight.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudAntennaHeight.Name = "nudAntennaHeight";
-            this.nudAntennaHeight.ReadOnly = true;
-            this.nudAntennaHeight.Size = new System.Drawing.Size(145, 65);
-            this.nudAntennaHeight.TabIndex = 537;
-            this.nudAntennaHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudAntennaHeight.Value = new decimal(new int[] {
-            333,
-            0,
-            0,
-            0});
-            this.nudAntennaHeight.Click += new System.EventHandler(this.nudAntennaHeight_Click);
-            // 
-            // nudAntennaOffset
-            // 
-            this.nudAntennaOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudAntennaOffset.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudAntennaOffset.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudAntennaOffset.InterceptArrowKeys = false;
-            this.nudAntennaOffset.Location = new System.Drawing.Point(250, 65);
-            this.nudAntennaOffset.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudAntennaOffset.Minimum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            -2147483648});
-            this.nudAntennaOffset.Name = "nudAntennaOffset";
-            this.nudAntennaOffset.ReadOnly = true;
-            this.nudAntennaOffset.Size = new System.Drawing.Size(165, 65);
-            this.nudAntennaOffset.TabIndex = 537;
-            this.nudAntennaOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudAntennaOffset.Value = new decimal(new int[] {
-            333,
-            0,
-            0,
-            0});
-            this.nudAntennaOffset.Click += new System.EventHandler(this.nudAntennaOffset_Click);
-            // 
-            // nudMaxCounts
-            // 
-            this.nudMaxCounts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudMaxCounts.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudMaxCounts.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudMaxCounts.InterceptArrowKeys = false;
-            this.nudMaxCounts.Location = new System.Drawing.Point(58, 239);
-            this.nudMaxCounts.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudMaxCounts.Name = "nudMaxCounts";
-            this.nudMaxCounts.ReadOnly = true;
-            this.nudMaxCounts.Size = new System.Drawing.Size(107, 52);
-            this.nudMaxCounts.TabIndex = 493;
-            this.nudMaxCounts.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudMaxCounts.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.nudMaxCounts.Click += new System.EventHandler(this.nudMaxCounts_Click);
-            // 
-            // nudPanicStopSpeed
-            // 
-            this.nudPanicStopSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.nudPanicStopSpeed.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudPanicStopSpeed.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudPanicStopSpeed.InterceptArrowKeys = false;
-            this.nudPanicStopSpeed.Location = new System.Drawing.Point(263, 202);
-            this.nudPanicStopSpeed.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            this.nudPanicStopSpeed.Name = "nudPanicStopSpeed";
-            this.nudPanicStopSpeed.ReadOnly = true;
-            this.nudPanicStopSpeed.Size = new System.Drawing.Size(107, 52);
-            this.nudPanicStopSpeed.TabIndex = 519;
-            this.nudPanicStopSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudPanicStopSpeed.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.nudPanicStopSpeed.Click += new System.EventHandler(this.nudPanicStopSpeed_Click);
-            // 
             // FormSteerWiz
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -4966,14 +4966,19 @@
             this.tabLoadDef.PerformLayout();
             this.tabWheelBase.ResumeLayout(false);
             this.tabWheelBase.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWheelbase)).EndInit();
             this.tabWheelTrack.ResumeLayout(false);
             this.tabWheelTrack.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVehicleTrack)).EndInit();
             this.tabAntennaDistance.ResumeLayout(false);
             this.tabAntennaDistance.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaPivot)).EndInit();
             this.tabAntennaHeight.ResumeLayout(false);
             this.tabAntennaHeight.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).EndInit();
             this.tabAntennaOffset.ResumeLayout(false);
             this.tabAntennaOffset.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaOffset)).EndInit();
             this.tabButtonSwitch.ResumeLayout(false);
             this.tabButtonSwitch.PerformLayout();
             this.tabA2DConv.ResumeLayout(false);
@@ -5005,8 +5010,10 @@
             this.tabMaxSteerAngle.PerformLayout();
             this.tabCancelGuidance.ResumeLayout(false);
             this.tabCancelGuidance.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaxCounts)).EndInit();
             this.tabPanicStop.ResumeLayout(false);
             this.tabPanicStop.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPanicStopSpeed)).EndInit();
             this.tab_MinimumGain.ResumeLayout(false);
             this.tab_MinimumGain.PerformLayout();
             this.tabPGain.ResumeLayout(false);
@@ -5014,13 +5021,6 @@
             this.tabEnd.ResumeLayout(false);
             this.tabEnd.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudWheelbase)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudVehicleTrack)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaPivot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAntennaOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaxCounts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPanicStopSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
