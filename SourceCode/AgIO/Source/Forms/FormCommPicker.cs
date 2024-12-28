@@ -59,7 +59,7 @@ namespace AgIO
             }
             else
             {
-                SettingsIO.ImportSettings(mf.profileDirectory + cboxEnv.SelectedItem.ToString().Trim() + ".xml");
+                SettingsIO.ImportSettings(Path.Combine(mf.profileDirectory, cboxEnv.SelectedItem.ToString().Trim() + ".xml"));
 
                 mf.profileFileName = cboxEnv.SelectedItem.ToString().Trim();
                 Properties.Settings.Default.setConfig_profileName = mf.profileFileName;

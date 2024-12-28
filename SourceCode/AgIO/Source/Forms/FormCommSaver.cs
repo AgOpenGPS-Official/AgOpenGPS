@@ -52,7 +52,7 @@ namespace AgIO
                 Properties.Settings.Default.Save();
 
                 if (mf.profileFileName != "Default Profile")
-                    SettingsIO.ExportSettings(mf.profileDirectory + mf.profileFileName + ".xml");
+                    SettingsIO.ExportSettings(Path.Combine(mf.profileDirectory, mf.profileFileName + ".xml"));
                 else
                     mf.YesMessageBox("Default Profileuration, Changes will NOT be Saved");
                 Close();
@@ -78,7 +78,7 @@ namespace AgIO
                 Properties.Settings.Default.Save();
 
                 if (mf.profileFileName != "Default Profile")
-                    SettingsIO.ExportSettings(mf.profileDirectory + mf.profileFileName + ".xml");
+                    SettingsIO.ExportSettings(Path.Combine(mf.profileDirectory, mf.profileFileName + ".xml"));
                 else
                     mf.YesMessageBox("Default Profileuration, Changes will NOT be Saved");
                 Close();
