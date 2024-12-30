@@ -159,11 +159,6 @@ namespace AgOpenGPS
 
                                 sentenceCounter = 0;
 
-                                if (isLogNMEA)
-                                    pn.logNMEASentence.Append(
-                                        DateTime.UtcNow.ToString("mm:ss.ff")+ "," +
-                                        Lat.ToString("N7") + "," + Lon.ToString("N7") + "\r\n");
-
                                 UpdateFixPosition();
                             }
                         }
@@ -239,12 +234,6 @@ namespace AgOpenGPS
 
                             //Actual PWM
                             mc.pwmDisplay = data[12];
-
-                            if (isLogNMEA)
-                                pn.logNMEASentence.Append(
-                                    DateTime.UtcNow.ToString("mm:ss.ff", CultureInfo.InvariantCulture) + " AS " +
-                                    mc.actualSteerAngleDegrees.ToString("N1") + "\r\n"
-                                    );
 
                             break;
                         }

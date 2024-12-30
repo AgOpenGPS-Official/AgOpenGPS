@@ -58,7 +58,7 @@ namespace AgOpenGPS
         public bool isJobStarted = false, isBtnAutoSteerOn, isLidarBtnOn = true;
 
         //if we are saving a file
-        public bool isSavingFile = false, isLogNMEA = false;
+        public bool isSavingFile = false;
 
         //texture holders
         public uint[] texture;
@@ -446,7 +446,7 @@ namespace AgOpenGPS
             {
                 if (txtfile.Length > (100000))       // ## NOTE: 0.1MB max file size
                 {
-                    Log.System.WriteRaw("Missed Log File Reduced to 50Kb\r");
+                    Log.System.WriteRaw("Missed NMEA Log File Reduced to 50Kb\r");
                     StringBuilder sbF = new StringBuilder();
                     long lines = txtfile.Length - 50000;
 
@@ -476,53 +476,6 @@ namespace AgOpenGPS
                         writer.WriteLine(sbF);
                     }
                 }
-            }
-            else
-            {
-                Log.System.WriteRaw("NMEA Missed Log File Created\r");
-            }
-
-
-            //system event log file
-            txtfile = new FileInfo(Path.Combine(logsDirectory, "NMEA_Log.txt"));
-            if (txtfile.Exists)
-            {
-                if (txtfile.Length > (200000))       // ## NOTE: 0.2MB max file size
-                {
-                    Log.System.WriteRaw("NMEA Log File Reduced to 50Kb\r");
-                    StringBuilder sbF = new StringBuilder();
-                    long lines = txtfile.Length - 100000;
-
-                    //create some extra space
-                    lines /= 22;
-
-                    using (StreamReader reader = new StreamReader(Path.Combine(logsDirectory, "NMEA_Log.txt")))
-                    {
-                        try
-                        {
-                            //Date time line
-                            for (long i = 0; i < lines; i++)
-                            {
-                                reader.ReadLine();
-                            }
-
-                            while (!reader.EndOfStream)
-                            {
-                                sbF.AppendLine(reader.ReadLine());
-                            }
-                        }
-                        catch { }
-                    }
-
-                    using (StreamWriter writer = new StreamWriter(Path.Combine(logsDirectory, "NMEA_Log.txt")))
-                    {
-                        writer.WriteLine(sbF);
-                    }
-                }
-            }
-            else
-            {
-                Log.System.WriteRaw("NMEA Log File Created\r");
             }
 
             //make sure current field directory exists, null if not

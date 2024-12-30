@@ -46,6 +46,7 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnDeleteLast = new System.Windows.Forms.Button();
             this.nudOffset = new AgOpenGPS.NudlessNumericUpDown();
+            this.chAutoRecBoundary = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffset)).BeginInit();
             this.SuspendLayout();
             // 
@@ -283,13 +284,34 @@
             0});
             this.nudOffset.Click += new System.EventHandler(this.nudOffset_Click);
             // 
+            // chAutoRecBoundary
+            // 
+            this.chAutoRecBoundary.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chAutoRecBoundary.BackColor = System.Drawing.Color.AliceBlue;
+            this.chAutoRecBoundary.CheckAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.chAutoRecBoundary.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.chAutoRecBoundary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chAutoRecBoundary.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chAutoRecBoundary.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chAutoRecBoundary.Image = global::AgOpenGPS.Properties.Resources.AutoRecBoundary;
+            this.chAutoRecBoundary.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chAutoRecBoundary.Location = new System.Drawing.Point(247, 61);
+            this.chAutoRecBoundary.Name = "chAutoRecBoundary";
+            this.chAutoRecBoundary.Size = new System.Drawing.Size(73, 71);
+            this.chAutoRecBoundary.TabIndex = 458;
+            this.chAutoRecBoundary.Text = " Auto Rec";
+            this.chAutoRecBoundary.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.chAutoRecBoundary.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.chAutoRecBoundary.UseVisualStyleBackColor = false;
+            // 
             // FormBoundaryPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(250, 434);
+            this.ClientSize = new System.Drawing.Size(336, 434);
             this.ControlBox = false;
+            this.Controls.Add(this.chAutoRecBoundary);
             this.Controls.Add(this.btnAntennaTool);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -344,5 +366,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAntennaTool;
+        private System.Windows.Forms.CheckBox chAutoRecBoundary;
     }
 }

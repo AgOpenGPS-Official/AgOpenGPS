@@ -113,6 +113,8 @@ namespace AgOpenGPS
 
         public int minSteerSpeedTimer = 0;
 
+        public bool isAutoRecBoundary = false;
+
         //public vec2 jumpFix = new vec2(0, 0);
         //public double jumpDistance = 0, jumpDistanceMax;
         //public double jumpDistanceAlarm = 20;
@@ -314,7 +316,7 @@ namespace AgOpenGPS
 
                         //save a copy of previous for jump test
                         //jumpFix.easting = stepFixPts[0].easting; jumpFix.northing = stepFixPts[0].northing;
-                        
+
                         if ((fd.distanceUser += distanceCurrentStepFix) > 9999) fd.distanceUser = 0;
 
                         double minFixHeadingDistSquared = minHeadingStepDist * minHeadingStepDist;
@@ -683,7 +685,7 @@ namespace AgOpenGPS
                         //grab the most current fix and save the distance from the last fix
                         distanceCurrentStepFix = glm.Distance(pn.fix, prevDistFix);
                         //jumpFix = prevDistFix;
-                        prevDistFix  = pn.fix;
+                        prevDistFix = pn.fix;
 
                         //userDistance can be reset
                         distanceCurrentStepFixDisplay = distanceCurrentStepFix * 100;
@@ -913,7 +915,7 @@ namespace AgOpenGPS
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + vehicle.minSteerSpeed.ToString("N0") + " Kmh");
                             else
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + (vehicle.minSteerSpeed * 0.621371).ToString("N1") + " MPH");
-                            
+
                             Log.System.Write("Steer Off, Below Min Steering Speed");
                         }
                     }
@@ -952,11 +954,11 @@ namespace AgOpenGPS
                 if (!isSteerInReverse)
                 {
                     if (isReverse) p_254.pgn[p_254.status] = 0;
-                }                
+                }
 
                 // delay on dead zone.
                 if (p_254.pgn[p_254.status] == 1 && !isReverse
-                    && Math.Abs(guidanceLineSteerAngle - mc.actualSteerAngleDegrees*100) < vehicle.deadZoneHeading)
+                    && Math.Abs(guidanceLineSteerAngle - mc.actualSteerAngleDegrees * 100) < vehicle.deadZoneHeading)
                 {
                     if (vehicle.deadZoneDelayCounter > vehicle.deadZoneDelay)
                     {
@@ -969,7 +971,7 @@ namespace AgOpenGPS
                     vehicle.isInDeadZone = false;
                 }
 
-                 if (!vehicle.isInDeadZone)
+                if (!vehicle.isInDeadZone)
                 {
                     p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                     p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));
@@ -1151,18 +1153,18 @@ namespace AgOpenGPS
             contourTriggerDistance = glm.Distance(pn.fix, prevContourPos);
             gridTriggerDistance = glm.DistanceSquared(pn.fix, prevGridPos);
 
-            if ( isLogElevation && gridTriggerDistance > 2.9 && patchCounter !=0 && isJobStarted)
+            if (isLogElevation && gridTriggerDistance > 2.9 && patchCounter != 0 && isJobStarted)
             {
                 //grab fix and elevation
                 sbGrid.Append(
                       pn.latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
                     + pn.longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
-                    + Math.Round((pn.altitude - vehicle.antennaHeight),3).ToString(CultureInfo.InvariantCulture) + ","
+                    + Math.Round((pn.altitude - vehicle.antennaHeight), 3).ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fixQuality.ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fix.easting.ToString("N2", CultureInfo.InvariantCulture) + ","
                     + pn.fix.northing.ToString("N2", CultureInfo.InvariantCulture) + ","
                     + pivotAxlePos.heading.ToString("N3", CultureInfo.InvariantCulture) + ","
-                    + Math.Round(ahrs.imuRoll,3).ToString(CultureInfo.InvariantCulture) + 
+                    + Math.Round(ahrs.imuRoll, 3).ToString(CultureInfo.InvariantCulture) +
                     "\r\n");
 
                 prevGridPos.easting = pivotAxlePos.easting;
@@ -1170,7 +1172,7 @@ namespace AgOpenGPS
             }
 
             //contour points
-            if (isJobStarted &&(contourTriggerDistance > tool.contourWidth 
+            if (isJobStarted && (contourTriggerDistance > tool.contourWidth
                 || contourTriggerDistance > sectionTriggerStepDistance))
             {
                 AddContourPoints();
@@ -1222,11 +1224,11 @@ namespace AgOpenGPS
             steerAxlePos.heading = fixHeading;
 
             //guidance look ahead distance based on time or tool width at least 
-            
+
             double guidanceLookDist = (Math.Max(tool.width * 0.5, avgSpeed * 0.277777 * guidanceLookAheadTime));
             guidanceLookPos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * guidanceLookDist);
             guidanceLookPos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * guidanceLookDist);
-            
+
 
             //determine where the rigid vehicle hitch ends
             hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (tool.hitchLength - vehicle.antennaPivot));
@@ -1294,9 +1296,9 @@ namespace AgOpenGPS
                 }
 
                 toolPos.heading = toolPivotPos.heading;
-                toolPos.easting = tankPos.easting + 
+                toolPos.easting = tankPos.easting +
                     (Math.Sin(toolPivotPos.heading) * (tool.trailingHitchLength - tool.trailingToolToPivotLength));
-                toolPos.northing = tankPos.northing + 
+                toolPos.northing = tankPos.northing +
                     (Math.Cos(toolPivotPos.heading) * (tool.trailingHitchLength - tool.trailingToolToPivotLength));
             }
 
@@ -1316,13 +1318,13 @@ namespace AgOpenGPS
 
             //used to increase triangle countExit when going around corners, less on straight
             //pick the slow moving side edge of tool
-            double distance = tool.width*0.75;
+            double distance = tool.width * 0.75;
             if (distance > 8) distance = 8;
 
             //whichever is less
             if (tool.farLeftSpeed < tool.farRightSpeed)
             {
-                double twist = tool.farLeftSpeed * (tool.width / 50) / tool.farRightSpeed * (50/ tool.width);
+                double twist = tool.farLeftSpeed * (tool.width / 50) / tool.farRightSpeed * (50 / tool.width);
                 twist *= twist;
                 if (twist < 0.2) twist = 0.2;
                 sectionTriggerStepDistance = distance * twist;
@@ -1385,9 +1387,9 @@ namespace AgOpenGPS
 
                     //save a copy for next time
                     section[j].lastLeftPoint = section[j].leftPoint;
-                    
+
                     //Save the slower of the 2
-                    if (leftSpeed > rightSpeed) leftSpeed = rightSpeed;                    
+                    if (leftSpeed > rightSpeed) leftSpeed = rightSpeed;
                 }
 
                 section[j].rightPoint = new vec2(cosHeading * (section[j].positionRight) + easting,
@@ -1422,7 +1424,7 @@ namespace AgOpenGPS
 
                 double sped = 0;
                 //save the far left and right speed in m/sec averaged over 20%
-                if (j==0)
+                if (j == 0)
                 {
                     sped = (leftSpeed * 0.1);
                     if (sped < 0.1) sped = 0.1;
@@ -1445,7 +1447,7 @@ namespace AgOpenGPS
                 section[j].speedPixels = section[j].speedPixels * 0.7 + sped * 0.3;
             }
         }
-
+        //---------------------------------------------------------------------------------------------------------------------------------------------
         //perimeter and boundary point generation
         public void AddBoundaryPoint()
         {
@@ -1454,54 +1456,118 @@ namespace AgOpenGPS
             prevBoundaryPos.northing = pn.fix.northing;
 
             //build the boundary line
-
-            if (bnd.isOkToAddPoints)
+            if (isAutoRecBoundary == true)
             {
-                if (bnd.isDrawAtPivot)
+                if ((manualBtnState == btnStates.On || autoBtnState == btnStates.Auto) & isAutoRecBoundary == true)
                 {
-                    if (bnd.isDrawRightSide)
+                    if (bnd.isOkToAddPoints)
                     {
-                        //Right side
-                        vec3 point = new vec3(
-                            pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                            pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                            pivotAxlePos.heading);
-                        bnd.bndBeingMadePts.Add(point);
-                    }
+                        if (bnd.isDrawAtPivot)
+                        {
+                            if (bnd.isDrawRightSide)
+                            {
+                                //Right side
+                                vec3 point = new vec3(
+                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                                    pivotAxlePos.heading);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
 
-                    //draw on left side
-                    else
-                    {
-                        //Right side
-                        vec3 point = new vec3(
-                            pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                            pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                            pivotAxlePos.heading);
-                        bnd.bndBeingMadePts.Add(point);
-                    }
-                }
-                else
-                {
-                    //draw at tool
-                    if (bnd.isDrawRightSide)
-                    {
-                        //Right side
-                        vec3 point = new vec3(section[tool.numOfSections-1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
-                        bnd.bndBeingMadePts.Add(point);
-                    }
+                            //draw on left side
+                            else
+                            {
+                                //Right side
+                                vec3 point = new vec3(
+                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                                    pivotAxlePos.heading);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
+                        }
+                        else
+                        {
+                            //draw at tool
+                            if (bnd.isDrawRightSide)
+                            {
+                                //Right side
+                                vec3 point = new vec3(section[tool.numOfSections - 1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
 
-                    //draw on left side
-                    else
-                    {
-                        //Right side
-                        vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
-                        bnd.bndBeingMadePts.Add(point);
+                            //draw on left side
+                            else
+                            {
+                                //Right side
+                                vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
+                        }
                     }
                 }
             }
-        }
+            //*********************************************************
+            if (isAutoRecBoundary == false)
+            {
+               
+                    if (bnd.isOkToAddPoints)
+                    {
+                        if (bnd.isDrawAtPivot)
+                        {
+                            if (bnd.isDrawRightSide)
+                            {
+                                //Right side
+                                vec3 point = new vec3(
+                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                                    pivotAxlePos.heading);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
 
-        private void AddContourPoints()
+                            //draw on left side
+                            else
+                            {
+                                //Right side
+                                vec3 point = new vec3(
+                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                                    pivotAxlePos.heading);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
+                        }
+                        else
+                        {
+                            //draw at tool
+                            if (bnd.isDrawRightSide)
+                            {
+                                //Right side
+                                vec3 point = new vec3(section[tool.numOfSections - 1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
+
+                            //draw on left side
+                            else
+                            {
+                                //Right side
+                                vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
+                                bnd.bndBeingMadePts.Add(point);
+                            }
+                        }
+                    }
+            }
+
+
+
+                //*********************************************************
+            }
+            //-------------------------------------------------------------------------------------------------------------------------------------------------------------------        
+
+
+
+
+
+
+            private void AddContourPoints()
         {
             //if (isConstantContourOn)
             {

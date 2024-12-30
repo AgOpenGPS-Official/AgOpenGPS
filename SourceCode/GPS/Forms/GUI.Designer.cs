@@ -240,13 +240,10 @@ namespace AgOpenGPS
                 //fix
                 if (timerSim.Enabled && pn.fixQuality++ > 5) pn.fixQuality = 2;
 
-                if (fileMissedCounter++ > 10)
+                if (fileMissedCounter++ > 20)
                 {
                     FileSaveMissedNMEA();
                     fileMissedCounter = 0;
-
-                    //save nmea log file
-                    if (isLogNMEA) FileSaveNMEA();
                 }
             }
 

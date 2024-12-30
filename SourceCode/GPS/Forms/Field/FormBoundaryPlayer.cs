@@ -157,24 +157,26 @@ namespace AgOpenGPS
         //actually the record button
         private void btnPausePlay_Click(object sender, EventArgs e)
         {
+            mf.isAutoRecBoundary = chAutoRecBoundary.Checked;
             if (mf.bnd.isOkToAddPoints)
-            {
-                mf.bnd.isOkToAddPoints = false;
-                btnPausePlay.Image = Properties.Resources.BoundaryRecord;
-                //btnPausePlay.Text = gStr.gsRecord;
-                btnAddPoint.Enabled = true;
-                btnDeleteLast.Enabled = true;
+            { 
+            mf.bnd.isOkToAddPoints = false;
+            btnPausePlay.Image = Properties.Resources.BoundaryRecord;
+            //btnPausePlay.Text = gStr.gsRecord;
+            btnAddPoint.Enabled = true;
+            btnDeleteLast.Enabled = true;
             }
             else
             {
-                mf.bnd.isOkToAddPoints = true;
-                btnPausePlay.Image = Properties.Resources.boundaryPause;
-                //btnPausePlay.Text = gStr.gsPause;
-                btnAddPoint.Enabled = false;
-                btnDeleteLast.Enabled = false;
-            }
+            mf.bnd.isOkToAddPoints = true;
+            btnPausePlay.Image = Properties.Resources.boundaryPause;
+            //btnPausePlay.Text = gStr.gsPause;
+            btnAddPoint.Enabled = false;
+            btnDeleteLast.Enabled = false;
+            }          
         }
-
+                
+        //-----------------------------------------------------------------------------------------
         private void btnAddPoint_Click(object sender, EventArgs e)
         {
             mf.bnd.isOkToAddPoints = true;
@@ -259,7 +261,6 @@ namespace AgOpenGPS
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
     }
 }
 

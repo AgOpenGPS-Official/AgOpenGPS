@@ -420,7 +420,6 @@ namespace AgOpenGPS
             mf.isSpeedoOn = chkDisplaySpeedo.Checked;
             mf.isSideGuideLines = chkDisplayExtraGuides.Checked;
 
-            mf.isLogNMEA = chkDisplayLogNMEA.Checked;
             mf.isDrawPolygons = chkDisplayPolygons.Checked;
             mf.isKeyboardOn = chkDisplayKeyboard.Checked;
 
