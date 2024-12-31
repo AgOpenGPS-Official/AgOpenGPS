@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -408,24 +410,19 @@ namespace AgOpenGPS.Properties
                 {
                     using (XmlTextReader reader = new XmlTextReader(filePath))
                     {
-                        string currentParent = "";
                         string name = "";
                         while (reader.Read())
                         {
                             switch (reader.NodeType)
                             {
                                 case XmlNodeType.Element:
-                                    if (reader.Name == "AgOpenGPS.Properties.Settings")
-                                    {
-                                        currentParent = reader.Name;
-                                    }
-                                    else if (reader.Name == "setting")
+                                    if (reader.Name == "setting")
                                     {
                                         name = reader.GetAttribute("name");
-                                        string serializeAs = reader.GetAttribute("serializeAs");
                                     }
                                     else if (reader.Name == "value")
                                     {
+                                        int depth = reader.Depth;
                                         if (!string.IsNullOrEmpty(name))
                                         {
                                             var pinfo = obj.GetType().GetField(name);
@@ -433,95 +430,44 @@ namespace AgOpenGPS.Properties
                                             {
                                                 try
                                                 {
-                                                    // Read string values
-                                                    string value = reader.ReadString();
+                                                    if (pinfo.FieldType.Namespace == "AgOpenGPS" && !pinfo.FieldType.IsEnum)//structs and classes
+                                                    {
+                                                        string currentElement = "";
 
-                                                    if (pinfo.FieldType == typeof(CNozzleSettings) || pinfo.FieldType == typeof(CFeatureSettings))
-                                                    {
-                                                        // Deserialize XML into the custom object
-                                                        var serializer = new XmlSerializer(pinfo.FieldType);
-                                                        var nestedObj = serializer.Deserialize(reader);
-                                                        pinfo.SetValue(obj, nestedObj);
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(string))
-                                                    {
-                                                        pinfo.SetValue(obj, value);
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(double))
-                                                    {
-                                                        pinfo.SetValue(obj, double.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(bool))
-                                                    {
-                                                        pinfo.SetValue(obj, bool.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(int))
-                                                    {
-                                                        pinfo.SetValue(obj, int.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(byte))
-                                                    {
-                                                        pinfo.SetValue(obj, byte.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(float))
-                                                    {
-                                                        pinfo.SetValue(obj, float.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(Color))
-                                                    {
-                                                        var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                                        if (parts.Length == 3 && int.TryParse(parts[0], out int r) && int.TryParse(parts[1], out int g) && int.TryParse(parts[2], out int b))
+                                                        while (reader.Read())
                                                         {
-                                                            pinfo.SetValue(obj, Color.FromArgb(r, g, b));
-                                                        }
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(HBrand))
-                                                    {
-                                                        if (Enum.TryParse(value, out HBrand HBrand))
-                                                            pinfo.SetValue(obj, HBrand);
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(TBrand))
-                                                    {
-                                                        if (Enum.TryParse(value, out TBrand TBrand))
-                                                            pinfo.SetValue(obj, TBrand);
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(WDBrand))
-                                                    {
-                                                        if (Enum.TryParse(value, out WDBrand WDBrand))
-                                                            pinfo.SetValue(obj, WDBrand);
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(short))
-                                                    {
-                                                        pinfo.SetValue(obj, short.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(decimal))
-                                                    {
-                                                        pinfo.SetValue(obj, decimal.Parse(value));
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(Point))
-                                                    {
-                                                        var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
-                                                        {
-                                                            pinfo.SetValue(obj, new Point(x, y));
-                                                        }
-                                                    }
-                                                    else if (pinfo.FieldType == typeof(Size))
-                                                    {
-                                                        var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                                        if (parts.Length == 2 && int.TryParse(parts[0], out int width) && int.TryParse(parts[1], out int height))
-                                                        {
-                                                            pinfo.SetValue(obj, new Size(width, height));
+                                                            if (reader.NodeType == XmlNodeType.Element)
+                                                            {
+                                                                currentElement = reader.Name;
+                                                            }
+                                                            else if (reader.NodeType == XmlNodeType.Text || reader.NodeType == XmlNodeType.CDATA)
+                                                            {
+                                                                if (!string.IsNullOrEmpty(currentElement))
+                                                                {
+                                                                    var fieldInfo = pinfo.FieldType.GetField(currentElement);
+                                                                    if (fieldInfo != null)
+                                                                    {
+                                                                        object fieldObj = pinfo.GetValue(obj);
+                                                                        Errors = Errors || SetValue(fieldObj, fieldInfo, reader.Value);
+                                                                    }
+                                                                    currentElement = "";
+                                                                }
+                                                            }
+                                                            else if (reader.NodeType == XmlNodeType.EndElement)
+                                                            {
+                                                                currentElement = "";
+                                                                if (reader.Depth == depth)
+                                                                    break;
+                                                            }
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        Errors = true;
-                                                        continue;
-                                                        throw new ArgumentException("type not found");
+                                                        string value = reader.ReadString();
+                                                        Errors = Errors || SetValue(obj, pinfo, value);
                                                     }
                                                 }
-                                                catch (Exception)
+                                                catch (Exception e)
                                                 {
                                                     Errors = true;
                                                     continue;
@@ -532,10 +478,6 @@ namespace AgOpenGPS.Properties
                                     break;
 
                                 case XmlNodeType.EndElement:
-                                    if (reader.Name == "AgOpenGPS.Properties.Settings")
-                                    {
-                                        currentParent = "";
-                                    }
                                     break;
                             }
                         }
@@ -544,9 +486,56 @@ namespace AgOpenGPS.Properties
                     return !Errors;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //glm.WriteErrorLog(ex);
+            }
+            return false;
+        }
+
+        private static bool SetValue(object obj, FieldInfo pinfo, string value)
+        {
+            if (pinfo.FieldType == typeof(string))
+            {
+                pinfo.SetValue(obj, value);
+            }
+            else if (pinfo.FieldType.IsPrimitive || pinfo.FieldType == typeof(decimal))
+            {
+                object parsedValue = Convert.ChangeType(value, pinfo.FieldType, CultureInfo.InvariantCulture);
+                pinfo.SetValue(obj, parsedValue);
+            }
+            else if (pinfo.FieldType.IsEnum)
+            {
+                object enumValue = Enum.Parse(pinfo.FieldType, value);
+                pinfo.SetValue(obj, enumValue);
+            }
+            else if (pinfo.FieldType == typeof(Point))
+            {
+                var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 2 && int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out int x) && int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out int y))
+                {
+                    pinfo.SetValue(obj, new Point(x, y));
+                }
+            }
+            else if (pinfo.FieldType == typeof(Size))
+            {
+                var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 2 && int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out int width) && int.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out int height))
+                {
+                    pinfo.SetValue(obj, new Size(width, height));
+                }
+            }
+            else if (pinfo.FieldType == typeof(Color))
+            {
+                var parts = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 3 && int.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out int r) && int.TryParse(parts[1], out int g) && int.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out int b))
+                {
+                    pinfo.SetValue(obj, Color.FromArgb(r, g, b));
+                }
+            }
+            else
+            {
+                return true;
             }
             return false;
         }
@@ -577,7 +566,7 @@ namespace AgOpenGPS.Properties
                     foreach (var fld in obj.GetType().GetFields())
                     {
                         var value = fld.GetValue(obj);
-
+                        
                         // Start a "setting" element
                         xml.WriteStartElement("setting");
 
@@ -585,7 +574,8 @@ namespace AgOpenGPS.Properties
                         xml.WriteAttributeString("name", fld.Name);
 
                         // Determine if serializeAs="Xml" is needed
-                        if (value.GetType() == typeof(CNozzleSettings) || value.GetType() == typeof(CFeatureSettings))
+
+                        if (value.GetType().Namespace == "AgOpenGPS" && !value.GetType().IsEnum)//structs and classes
                         {
                             xml.WriteAttributeString("serializeAs", "Xml");
 
@@ -600,19 +590,20 @@ namespace AgOpenGPS.Properties
 
                             if (value is Point pointValue)
                             {
-                                xml.WriteElementString("value", $"{pointValue.X}, {pointValue.Y}");
+                                xml.WriteElementString("value", $"{pointValue.X.ToString(CultureInfo.InvariantCulture)}, {pointValue.Y.ToString(CultureInfo.InvariantCulture)}");
                             }
                             else if (value is Size sizeValue)
                             {
-                                xml.WriteElementString("value", $"{sizeValue.Width}, {sizeValue.Height}");
+                                xml.WriteElementString("value", $"{sizeValue.Width.ToString(CultureInfo.InvariantCulture)}, {sizeValue.Height.ToString(CultureInfo.InvariantCulture)}");
                             }
                             else if (value is Color dd)
                             {
-                                xml.WriteElementString("value", $"{dd.R}, {dd.G}, {dd.B}");
+                                xml.WriteElementString("value", $"{dd.R.ToString(CultureInfo.InvariantCulture)}, {dd.G.ToString(CultureInfo.InvariantCulture)}, {dd.B.ToString(CultureInfo.InvariantCulture)}");
                             }
                             else
                             {
-                                xml.WriteElementString("value", value.ToString());
+                                string stringValue = Convert.ToString(value, CultureInfo.InvariantCulture);
+                                xml.WriteElementString("value", stringValue);
                             }
                         }
 
@@ -635,17 +626,43 @@ namespace AgOpenGPS.Properties
                 if (File.Exists(filePath + ".tmp"))
                     File.Move(filePath + ".tmp", filePath);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //glm.WriteErrorLog(ex);
             }
         }
 
-        // Helper method to serialize an object into XML
-        static void SerializeObjectToXml(XmlWriter writer, object obj)
+        private static void SerializeObjectToXml(XmlTextWriter xml, object obj)
         {
-            var serializer = new XmlSerializer(obj.GetType());
-            serializer.Serialize(writer, obj);
+            xml.WriteStartElement(obj.GetType().Name);
+
+            xml.WriteAttributeString("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+            xml.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+            foreach (var fld in obj.GetType().GetFields())
+            {
+                var value = fld.GetValue(obj);
+
+                if (value is Point pointValue)
+                {
+                    xml.WriteElementString(fld.Name, $"{pointValue.X.ToString(CultureInfo.InvariantCulture)}, {pointValue.Y.ToString(CultureInfo.InvariantCulture)}");
+                }
+                else if (value is Size sizeValue)
+                {
+                    xml.WriteElementString(fld.Name, $"{sizeValue.Width.ToString(CultureInfo.InvariantCulture)}, {sizeValue.Height.ToString(CultureInfo.InvariantCulture)}");
+                }
+                else if (value is Color dd)
+                {
+                    xml.WriteElementString(fld.Name, $"{dd.R.ToString(CultureInfo.InvariantCulture)}, {dd.G.ToString(CultureInfo.InvariantCulture)}, {dd.B.ToString(CultureInfo.InvariantCulture)}");
+                }
+                else
+                {
+                    string stringValue = Convert.ToString(value, CultureInfo.InvariantCulture);
+                    xml.WriteElementString(fld.Name, stringValue);
+                }
+            }
+
+            xml.WriteEndElement(); // value
         }
     }
 }
