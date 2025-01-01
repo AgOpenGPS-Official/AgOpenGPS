@@ -14,24 +14,24 @@ namespace AgIO.Properties
     {
         public static string culture = "en";
         public static string WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        public static string ProfileFileName = "";
+        public static string ProfileName = "";
 
         public static void Load()
         {
             try
             {
                 //opening the subkey
-                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AgOpenGPS");
+                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AgIO");
 
                 ////create default keys if not existing
                 if (regKey == null)
                 {
-                    RegistryKey Key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
+                    RegistryKey Key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgIO");
 
                     //storing the values
                     Key.SetValue("Language", "en");
                     Key.SetValue("WorkingDirectory", "Default");
-                    Key.SetValue("ProfileFileName", "");
+                    Key.SetValue("ProfileName", "");
 
                     Key.Close();
                 }
@@ -44,9 +44,9 @@ namespace AgIO.Properties
                         if (dir != null && dir.ToString() != "Default")
                             WorkingDirectory = dir.ToString();
 
-                        object name = regKey.GetValue("ProfileFileName");
+                        object name = regKey.GetValue("ProfileName");
                         if (name != null)
-                            ProfileFileName = name.ToString();
+                            ProfileName = name.ToString();
 
                         var lang = regKey.GetValue("Language");
                         if (lang != null)
@@ -70,10 +70,10 @@ namespace AgIO.Properties
             try
             {
                 //adding or editing "Language" subkey to the "SOFTWARE" subkey  
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
+                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgIO");
 
-                if (name == "ProfileFileName")
-                    ProfileFileName = value;
+                if (name == "ProfileName")
+                    ProfileName = value;
 
                 if (name == "Directory" && value == Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
                     key.SetValue(name, "Default");
@@ -94,11 +94,11 @@ namespace AgIO.Properties
             try
             {
                 //opening the subkey
-                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AgOpenGPS");
+                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AgIO");
 
                 regKey.SetValue("Language", "en");
                 regKey.SetValue("WorkingDirectory", "Default");
-                regKey.SetValue("ProfileFileName", "Default Profile");
+                regKey.SetValue("ProfileName", "Default Profile");
 
                 regKey.Close();
             }
@@ -196,25 +196,25 @@ namespace AgIO.Properties
 
         public bool Load()
         {
-            string path = Path.Combine(FormLoop.profileDirectory, RegistrySettings.ProfileFileName + ".XML");
+            string path = Path.Combine(FormLoop.profileDirectory, RegistrySettings.ProfileName + ".XML");
             if (!LoadXMLFile(path, this))
             {
-                RegistrySettings.Save("ProfileFileName", "");
+                RegistrySettings.Save("ProfileName", "");
                 Log.System.Write("Profile Not Found, Loading Default");
                 return false;
             }
             else
             {
-                Log.System.Write(RegistrySettings.ProfileFileName + ".XML" + " Loaded");
+                Log.System.Write(RegistrySettings.ProfileName + ".XML" + " Loaded");
             }
             return true;
         }
 
         public void Save()
         {
-            string path = Path.Combine(FormLoop.profileDirectory, RegistrySettings.ProfileFileName + ".XML");
+            string path = Path.Combine(FormLoop.profileDirectory, RegistrySettings.ProfileName + ".XML");
 
-            if (RegistrySettings.ProfileFileName != "")
+            if (RegistrySettings.ProfileName != "")
                 SaveXMLFile(path, this);
         }
 

@@ -41,7 +41,7 @@ namespace AgIO
         private void cboxVeh_SelectedIndexChanged(object sender, EventArgs e)
         {
             var newname = cboxEnv.SelectedItem.ToString().Trim();
-            Properties.RegistrySettings.Save("ProfileFileName", newname);
+            Properties.RegistrySettings.Save("ProfileName", newname);
             Properties.Settings.Default.Load();
             DialogResult = DialogResult.OK;
         }

@@ -19,7 +19,7 @@ namespace AgIO
 
         private void FormCommSaver_Load(object sender, EventArgs e)
         {
-            lblLast.Text = "Current " + Properties.RegistrySettings.ProfileFileName;
+            lblLast.Text = "Current " + Properties.RegistrySettings.ProfileName;
             DirectoryInfo dinfo = new DirectoryInfo(FormLoop.profileDirectory);
             FileInfo[] Files = dinfo.GetFiles("*.xml");
 
@@ -48,10 +48,10 @@ namespace AgIO
             {
                 var newname = cboxEnv.SelectedItem.ToString().Trim();
 
-                Properties.RegistrySettings.Save("ProfileFileName", newname);
+                Properties.RegistrySettings.Save("ProfileName", newname);
                 Properties.Settings.Default.Load();
 
-                if (Properties.RegistrySettings.ProfileFileName == "")
+                if (Properties.RegistrySettings.ProfileName == "")
                 {
                     mf.YesMessageBox("Default Profile, Changes will NOT be Saved");
                 }
@@ -72,9 +72,9 @@ namespace AgIO
         {
             if (tboxName.Text.Trim().Length > 0)
             {
-                Properties.RegistrySettings.Save("ProfileFileName", tboxName.Text.ToString().Trim());
+                Properties.RegistrySettings.Save("ProfileName", tboxName.Text.ToString().Trim());
 
-                if (Properties.RegistrySettings.ProfileFileName != "")
+                if (Properties.RegistrySettings.ProfileName != "")
                     Properties.Settings.Default.Save();
                 else
                     mf.YesMessageBox("Default Profile, Changes will NOT be Saved");

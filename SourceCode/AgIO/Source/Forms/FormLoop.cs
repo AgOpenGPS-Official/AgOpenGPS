@@ -1,4 +1,4 @@
-﻿using AgIO.Logging;
+using AgIO.Logging;
 using AgIO.Properties;
 using System;
 using System.Diagnostics;
@@ -294,9 +294,9 @@ namespace AgIO
                 Log.System.Write("Run GPS_Out");
             }
 
-            this.Text = "AgIO v" + GitVersionInformation.MajorMinorPatch + " Profile: " + RegistrySettings.ProfileFileName;
+            this.Text = "AgIO v" + GitVersionInformation.MajorMinorPatch + " Profile: " + RegistrySettings.ProfileName;
 
-            if (RegistrySettings.ProfileFileName == "")
+            if (RegistrySettings.ProfileName == "")
                 YesMessageBox("Using Default Profile" + "\r\n\r\n" + "Load Existing Profile or Save a New One !!!"
                     + "\r\n\r\n" + "Changes will NOT be Saved");
         }

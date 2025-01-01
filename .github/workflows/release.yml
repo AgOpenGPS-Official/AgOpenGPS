@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - master
-      - develop
-  pull_request:
-    branches:
-      - develop
+      - release/*
+  workflow_dispatch:
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -19,11 +17,8 @@ env:
   BUILD_CONFIGURATION: Release
 
 jobs:
-  build:
+  build-and-release:
     runs-on: windows-latest
-    outputs:
-      version: ${{ steps.variables.outputs.VERSION }}
-      prerelease: ${{ steps.variables.outputs.PRERELEASE }}
 
     steps:
     - name: Checkout
@@ -40,32 +35,9 @@ jobs:
     - name: Build
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Set variables
-      id: variables
-      run: |
-        echo "VERSION=${{env.GitVersion_SemVer}}" >> $env:GITHUB_OUTPUT
-        echo "PRERELEASE=${{env.GitVersion_PreReleaseTag != ''}}" >> $env:GITHUB_OUTPUT
-
     - name: Create AgOpenGPS.zip
       shell: powershell
       run: Compress-Archive -Path "AgOpenGPS" -Destination "AgOpenGPS.zip"
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: AgOpenGPS.zip
-        path: AgOpenGPS.zip
-
-  release:
-    needs: build
-    runs-on: windows-latest
-    if: github.event_name != 'pull_request'
-
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: AgOpenGPS.zip
 
     - name: Create Release
       id: create_release
@@ -73,12 +45,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ needs.build.outputs.version }}
-        release_name: Release ${{ needs.build.outputs.version }}
+        tag_name: ${{ env.GitVersion_SemVer }}
+        release_name: Release ${{ env.GitVersion_SemVer }}
         body: |
           Automated Release by GitHub Action CI
         draft: false
-        prerelease: ${{ needs.build.outputs.prerelease }}
+        prerelease: ${{ contains(github.ref_name, 'release/') }}
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
