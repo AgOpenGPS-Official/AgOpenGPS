@@ -988,6 +988,7 @@
     <None Include="btnImages\BoundaryRecordTool.png" />
     <None Include="btnImages\Config\ConD_SectionHighlights.png" />
     <None Include="btnImages\Config\ConD_LineSmooth.png" />
+    <None Include="btnImages\AutoRecBoundary.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1324,7 +1325,6 @@
     <None Include="btnImages\Images\z_TurnCancel.png" />
     <None Include="btnImages\Images\z_TurnManual.png" />
     <None Include="btnImages\ImplementSettings.png" />
-    <None Include="btnImages\ManualOff.png" />
     <None Include="btnImages\ManualOn.png" />
     <None Include="btnImages\JobActive.png" />
     <None Include="btnImages\FileSave.png" />
