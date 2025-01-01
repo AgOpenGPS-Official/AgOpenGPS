@@ -176,7 +176,6 @@ namespace AgOpenGPS
             }          
         }
                 
-        //-----------------------------------------------------------------------------------------
         private void btnAddPoint_Click(object sender, EventArgs e)
         {
             mf.bnd.isOkToAddPoints = true;

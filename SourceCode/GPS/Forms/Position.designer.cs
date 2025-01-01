@@ -1447,7 +1447,7 @@ namespace AgOpenGPS
                 section[j].speedPixels = section[j].speedPixels * 0.7 + sped * 0.3;
             }
         }
-        //---------------------------------------------------------------------------------------------------------------------------------------------
+      
         //perimeter and boundary point generation
         public void AddBoundaryPoint()
         {
@@ -1456,116 +1456,54 @@ namespace AgOpenGPS
             prevBoundaryPos.northing = pn.fix.northing;
 
             //build the boundary line
-            if (isAutoRecBoundary == true)
+            if ((isAutoRecBoundary == true & (manualBtnState == btnStates.On || autoBtnState == btnStates.Auto)) || isAutoRecBoundary == false)
             {
-                if ((manualBtnState == btnStates.On || autoBtnState == btnStates.Auto) & isAutoRecBoundary == true)
+                if (bnd.isOkToAddPoints)
                 {
-                    if (bnd.isOkToAddPoints)
+                    if (bnd.isDrawAtPivot)
                     {
-                        if (bnd.isDrawAtPivot)
+                        if (bnd.isDrawRightSide)
                         {
-                            if (bnd.isDrawRightSide)
-                            {
-                                //Right side
-                                vec3 point = new vec3(
-                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                                    pivotAxlePos.heading);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
-
-                            //draw on left side
-                            else
-                            {
-                                //Right side
-                                vec3 point = new vec3(
-                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                                    pivotAxlePos.heading);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
+                         //Right side
+                         vec3 point = new vec3(
+                              pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                              pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
+                              pivotAxlePos.heading);
+                              bnd.bndBeingMadePts.Add(point);
                         }
+
+                        //draw on left side
                         else
                         {
-                            //draw at tool
-                            if (bnd.isDrawRightSide)
-                            {
-                                //Right side
-                                vec3 point = new vec3(section[tool.numOfSections - 1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
+                         //Right side
+                         vec3 point = new vec3(
+                              pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                              pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
+                              pivotAxlePos.heading);
+                              bnd.bndBeingMadePts.Add(point);
+                        }
+                    }
+                    else
+                    {
+                     //draw at tool
+                        if (bnd.isDrawRightSide)
+                        {
+                        //Right side
+                         vec3 point = new vec3(section[tool.numOfSections - 1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
+                              bnd.bndBeingMadePts.Add(point);
+                        }
 
-                            //draw on left side
-                            else
-                            {
-                                //Right side
-                                vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
+                        //draw on left side
+                        else
+                        {
+                         //Right side
+                         vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
+                              bnd.bndBeingMadePts.Add(point);
                         }
                     }
                 }
             }
-            //*********************************************************
-            if (isAutoRecBoundary == false)
-            {
-               
-                    if (bnd.isOkToAddPoints)
-                    {
-                        if (bnd.isDrawAtPivot)
-                        {
-                            if (bnd.isDrawRightSide)
-                            {
-                                //Right side
-                                vec3 point = new vec3(
-                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * -bnd.createBndOffset),
-                                    pivotAxlePos.heading);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
-
-                            //draw on left side
-                            else
-                            {
-                                //Right side
-                                vec3 point = new vec3(
-                                    pivotAxlePos.easting + (Math.Sin(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                                    pivotAxlePos.northing + (Math.Cos(pivotAxlePos.heading - glm.PIBy2) * bnd.createBndOffset),
-                                    pivotAxlePos.heading);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
-                        }
-                        else
-                        {
-                            //draw at tool
-                            if (bnd.isDrawRightSide)
-                            {
-                                //Right side
-                                vec3 point = new vec3(section[tool.numOfSections - 1].rightPoint.easting, section[tool.numOfSections - 1].rightPoint.northing, 0);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
-
-                            //draw on left side
-                            else
-                            {
-                                //Right side
-                                vec3 point = new vec3(section[0].leftPoint.easting, section[0].leftPoint.northing, 0);
-                                bnd.bndBeingMadePts.Add(point);
-                            }
-                        }
-                    }
-            }
-
-
-
-                //*********************************************************
-            }
-            //-------------------------------------------------------------------------------------------------------------------------------------------------------------------        
-
-
-
-
-
+           }
 
             private void AddContourPoints()
         {
