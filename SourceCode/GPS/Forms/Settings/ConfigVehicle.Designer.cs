@@ -79,15 +79,17 @@ namespace AgOpenGPS
                     {
                         RegistrySettings.Save("VehicleFileName", newname);
 
-                        if (!Properties.Settings.Default.Load())
+                        var result = Settings.Default.Load();
+
+                        if (result != DialogResult.OK)
                         {
                             Log.System.Write("Error loading settings XML: " + newname);
-                            mf.YesMessageBox("Error loading settings XML Deleting it now");
 
-                            var path = Path.Combine(mf.vehiclesDirectory, newname + ".XML");
-
-                            if (File.Exists(path))
-                                File.Delete(path);
+                            if (result != DialogResult.Ignore)
+                            {
+                                mf.YesMessageBox("Error loading settings XML Fixing it now");
+                                Settings.Default.Save();
+                            }
 
                             UpdateVehicleListView();
                             return;
