@@ -45,6 +45,7 @@
             this.btnPausePlay = new System.Windows.Forms.Button();
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnDeleteLast = new System.Windows.Forms.Button();
+            this.chkAutoRecBoundary = new System.Windows.Forms.CheckBox();
             this.nudOffset = new AgOpenGPS.NudlessNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffset)).BeginInit();
             this.SuspendLayout();
@@ -261,6 +262,25 @@
             this.btnDeleteLast.UseVisualStyleBackColor = false;
             this.btnDeleteLast.Click += new System.EventHandler(this.btnDeleteLast_Click);
             // 
+            // chkAutoRecBoundary
+            // 
+            this.chkAutoRecBoundary.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAutoRecBoundary.BackColor = System.Drawing.Color.AliceBlue;
+            this.chkAutoRecBoundary.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.chkAutoRecBoundary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkAutoRecBoundary.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkAutoRecBoundary.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkAutoRecBoundary.Image = global::AgOpenGPS.Properties.Resources.AutoRecBoundary;
+            this.chkAutoRecBoundary.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.chkAutoRecBoundary.Location = new System.Drawing.Point(255, 71);
+            this.chkAutoRecBoundary.Name = "chkAutoRecBoundary";
+            this.chkAutoRecBoundary.Size = new System.Drawing.Size(72, 71);
+            this.chkAutoRecBoundary.TabIndex = 529;
+            this.chkAutoRecBoundary.Text = "Auto Rec";
+            this.chkAutoRecBoundary.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.chkAutoRecBoundary.UseVisualStyleBackColor = false;
+            this.chkAutoRecBoundary.Click += new System.EventHandler(this.btnPausePlay_Click);
+            // 
             // nudOffset
             // 
             this.nudOffset.BackColor = System.Drawing.Color.AliceBlue;
@@ -288,8 +308,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(250, 434);
+            this.ClientSize = new System.Drawing.Size(344, 434);
             this.ControlBox = false;
+            this.Controls.Add(this.chkAutoRecBoundary);
             this.Controls.Add(this.btnAntennaTool);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -344,5 +365,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAntennaTool;
+        private System.Windows.Forms.CheckBox chkAutoRecBoundary;
     }
 }

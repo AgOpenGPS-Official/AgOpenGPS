@@ -988,12 +988,15 @@
     <None Include="btnImages\BoundaryRecordTool.png" />
     <None Include="btnImages\Config\ConD_SectionHighlights.png" />
     <None Include="btnImages\Config\ConD_LineSmooth.png" />
+    <None Include="btnImages\ManualOff1.png" />
+    <None Include="btnImages\AutoRec Boundary.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ModSim.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AutoRecBoundary.png" />
     <Content Include="UDP_SimTool.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1324,7 +1327,6 @@
     <None Include="btnImages\Images\z_TurnCancel.png" />
     <None Include="btnImages\Images\z_TurnManual.png" />
     <None Include="btnImages\ImplementSettings.png" />
-    <None Include="btnImages\ManualOff.png" />
     <None Include="btnImages\ManualOn.png" />
     <None Include="btnImages\JobActive.png" />
     <None Include="btnImages\FileSave.png" />

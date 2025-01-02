@@ -113,6 +113,8 @@ namespace AgOpenGPS
 
         public int minSteerSpeedTimer = 0;
 
+        public bool isAutoRecBoundary = false;
+
         //public vec2 jumpFix = new vec2(0, 0);
         //public double jumpDistance = 0, jumpDistanceMax;
         //public double jumpDistanceAlarm = 20;
@@ -1455,8 +1457,8 @@ namespace AgOpenGPS
 
             //build the boundary line
 
-            if (bnd.isOkToAddPoints)
-            {
+            if (bnd.isOkToAddPoints && (!isAutoRecBoundary || (isAutoRecBoundary && (manualBtnState == btnStates.On || autoBtnState == btnStates.Auto))))
+                {
                 if (bnd.isDrawAtPivot)
                 {
                     if (bnd.isDrawRightSide)

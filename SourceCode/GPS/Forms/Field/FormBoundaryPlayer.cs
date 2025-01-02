@@ -157,6 +157,8 @@ namespace AgOpenGPS
         //actually the record button
         private void btnPausePlay_Click(object sender, EventArgs e)
         {
+            mf.isAutoRecBoundary = chkAutoRecBoundary.Checked;
+
             if (mf.bnd.isOkToAddPoints)
             {
                 mf.bnd.isOkToAddPoints = false;
@@ -259,7 +261,6 @@ namespace AgOpenGPS
             // Call the base class
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
     }
 }
 
