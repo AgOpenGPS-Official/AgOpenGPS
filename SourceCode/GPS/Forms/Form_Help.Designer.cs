@@ -71,7 +71,7 @@
             this.linkLabelGit.Size = new System.Drawing.Size(407, 19);
             this.linkLabelGit.TabIndex = 11;
             this.linkLabelGit.TabStop = true;
-            this.linkLabelGit.Text = "https://github.com/farmerbriantee/AgOpenGPS/releases";
+            this.linkLabelGit.Text = "https://github.com/AgOpenGPS-Official/AgOpenGPS/releases";
             this.linkLabelGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGit_LinkClicked);
             // 
             // linkLabelCombineForum

@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsAgIOHelp" xml:space="preserve">
-    <value>https://github.com/farmerbriantee/AgOpenGPS/wiki/03.-AgTwo-Orientation</value>
+    <value>https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/03.-AgIO-Orientation</value>
   </data>
   <data name="gsAuthourizing" xml:space="preserve">
     <value>Authourizing</value>
   </data>
   <data name="gsEthernetHelp" xml:space="preserve">
-    <value>https://github.com/farmerbriantee/AgOpenGPS/wiki/05.-Ethernet-Setup</value>
+    <value>https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/05.-Ethernet-Setup</value>
   </data>
   <data name="gsListening" xml:space="preserve">
     <value>Listening</value>
@@ -133,7 +133,7 @@
     <value>NTRIP</value>
   </data>
   <data name="gsNTRIP_Help" xml:space="preserve">
-    <value>https://github.com/farmerbriantee/AgOpenGPS/wiki/04.-RTK-Setup</value>
+    <value>https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/06.-RTK-Setup</value>
   </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Save And Return</value>
@@ -142,7 +142,7 @@
     <value>Save Comms</value>
   </data>
   <data name="gsSerialMonHelp" xml:space="preserve">
-    <value>https://github.com/farmerbriantee/AgOpenGPS/wiki/06.-Serial-Monitor</value>
+    <value>https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/08.-Serial-Monitor</value>
   </data>
   <data name="gsWaiting" xml:space="preserve">
     <value>Waiting</value>

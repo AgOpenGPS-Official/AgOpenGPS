@@ -61,7 +61,7 @@ namespace ModSim {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/farmerbriantee/AgOpenGPS/wiki/03.-ModSim-Orientation.
+        ///   Looks up a localized string similar to https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/03.-AgIO-Orientation.
         /// </summary>
         internal static string gsAgIOHelp {
             get {
@@ -79,7 +79,7 @@ namespace ModSim {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/farmerbriantee/AgOpenGPS/wiki/05.-Ethernet-Setup.
+        ///   Looks up a localized string similar to https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/05.-Ethernet-Setup.
         /// </summary>
         internal static string gsEthernetHelp {
             get {
@@ -106,7 +106,7 @@ namespace ModSim {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/farmerbriantee/AgOpenGPS/wiki/04.-RTK-Setup.
+        ///   Looks up a localized string similar to https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/06.-RTK-Setup.
         /// </summary>
         internal static string gsNTRIP_Help {
             get {
@@ -133,7 +133,7 @@ namespace ModSim {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/farmerbriantee/AgOpenGPS/wiki/06.-Serial-Monitor.
+        ///   Looks up a localized string similar to https://github.com/AgOpenGPS-Official/AgOpenGPS/wiki/08.-Serial-Monitor.
         /// </summary>
         internal static string gsSerialMonHelp {
             get {
