@@ -272,7 +272,7 @@ namespace AgIO
             {
                 Log.EventWriter("Using Default Profile At Start Warning");
 
-                TimedMessageBox(3000, "AgIO Default Profile Used", "Create or Choes a Profile");
+                TimedMessageBox(3000, "AgIO Default Profile Used", "Create or Choose a Profile");
                 using (var form = new FormProfiles(this))
                 {
                     form.ShowDialog(this);
