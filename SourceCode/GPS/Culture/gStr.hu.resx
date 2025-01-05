@@ -145,7 +145,7 @@
     <value>Automata kormányzás</value>
   </data>
   <data name="gsConfiguration" xml:space="preserve">
-    <value>Konfigurációt</value>
+    <value>Beállítások</value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Automata kormányzás beállítása</value>
@@ -172,7 +172,7 @@
     <value>Centiméter</value>
   </data>
   <data name="gsCharts" xml:space="preserve">
-    <value>Diagramok</value>
+    <value>Grafikonok</value>
   </data>
   <data name="gsChooseADifferentField" xml:space="preserve">
     <value>Válassz egy másik területet</value>
@@ -184,10 +184,10 @@
     <value>Válassz vagy készíts egy másikat</value>
   </data>
   <data name="gsClose" xml:space="preserve">
-    <value>Becsuk</value>
+    <value>Bezár</value>
   </data>
   <data name="gsCloseAllWindowsFirst" xml:space="preserve">
-    <value>Először zárja be az összes ablakot</value>
+    <value>Zárd be az összes ablakot először</value>
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Zárd be a területet először</value>
@@ -214,7 +214,7 @@
     <value>Új terület készítése</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>Áramerősség</value>
+    <value>Jelenlegi profil: </value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Görbe fájl hibás</value>
@@ -223,7 +223,7 @@
     <value>Görbe nincs bekapcsolva</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
-    <value>Összes szekció és kontúr törlése</value>
+    <value>Összes festést és kontúrvonalat törüljük?</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Megművelt terület (festés) törlése</value>
@@ -250,7 +250,7 @@
     <value>Közeli föld megnyitása</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
-    <value>Drive Thru</value>
+    <value>Művelés alatt</value>
   </data>
   <data name="gsDriving" xml:space="preserve">
     <value>Vezetés</value>
@@ -272,13 +272,13 @@
     <comment>-4000 és 4000 közötti szám az A/D-tól</comment>
   </data>
   <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
-    <value>Szimulátorhoz koordináták megadása</value>
+    <value>Szimulátor koordináták megadása (Bp 47.5  19)</value>
   </data>
   <data name="gsEnterFieldName" xml:space="preserve">
     <value>Területnév megadása</value>
   </data>
   <data name="gsEnterSimCoords" xml:space="preserve">
-    <value>Szimuláció koordinátáinak megadása</value>
+    <value>Szimulátor koordinátáinak beállítása</value>
   </data>
   <data name="gsError" xml:space="preserve">
     <value>Hiba</value>
@@ -309,7 +309,7 @@
     <value>Zászló fájl sérült</value>
   </data>
   <data name="gsForNow" xml:space="preserve">
-    <value>For Now</value>
+    <value>Ideiglenes</value>
     <comment>* Csak most? Ideiglenes?</comment>
   </data>
   <data name="gsFromExisting" xml:space="preserve">
@@ -331,7 +331,7 @@
     <value>Segítség</value>
   </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
-    <value>Rossz irány? Koppintson a Járműre</value>
+    <value>Rossz irány? Koppintson a Járműre &gt;&gt;</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Inch</value>
@@ -494,7 +494,7 @@
     <value>Szimulátor bekapcsolva</value>
   </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
-    <value>Lassíts le ez alatt</value>
+    <value>Lassíts le ez alá</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
     <value>AB görbe simítása</value>
@@ -521,7 +521,7 @@
     <value>Határvonal rögzítésének megállítása</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
-    <value>Fájlba</value>
+    <value>Végleges</value>
   </data>
   <data name="gsTooFast" xml:space="preserve">
     <value>Túl gyors</value>
