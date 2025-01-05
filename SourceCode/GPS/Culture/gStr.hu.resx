@@ -214,7 +214,7 @@
     <value>Új terület készítése</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>Jelenlegi profil: </value>
+    <value>Jelenlegi profil</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Görbe fájl hibás</value>
