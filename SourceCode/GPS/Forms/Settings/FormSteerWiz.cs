@@ -244,10 +244,8 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setIMU_invertRoll = mf.ahrs.isRollInvert;
 
-            Properties.Settings.Default.Save();
-
             //save current vehicle
-            SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
+            Properties.Settings.Default.Save();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -590,15 +588,13 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setIMU_rollZero = mf.ahrs.rollZero;
 
-            Properties.Settings.Default.Save();
-
             toSend252 = true;
             counter252 = 3;
             toSend251 = true;
             counter251 = 2;
 
             //save current vehicle
-            SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
+            Properties.Settings.Default.Save();
 
             FormSteer_Load(this, e);
         }

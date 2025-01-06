@@ -114,7 +114,7 @@ namespace AgOpenGPS
         /// <summary>
         /// create the scene camera
         /// </summary>
-        public CCamera camera = new CCamera();
+        public CCamera camera;
 
         /// <summary>
         /// create world grid
@@ -285,10 +285,6 @@ namespace AgOpenGPS
             //winform initialization
             InitializeComponent();
 
-            CheckSettingsNotNull();
-
-            CheckNozzleSettingsNotNull();
-
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
@@ -310,6 +306,8 @@ namespace AgOpenGPS
             {
                 new CPatches(this)
             };
+
+            camera = new CCamera();
 
             //our NMEA parser
             pn = new CNMEA(this);
@@ -392,8 +390,7 @@ namespace AgOpenGPS
 
             this.MouseWheel += ZoomByMouseWheel;
 
-            Log.EventWriter("Program Started: " 
-                + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(Settings.Default.setF_culture)));
+            Log.EventWriter("Program Started: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
             Log.EventWriter("AOG Version: " + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
 
             //The way we subscribe to the System Event to check when Power Mode has changed.
@@ -417,11 +414,7 @@ namespace AgOpenGPS
             //set the language to last used
             SetLanguage(RegistrySettings.culture, false);
 
-            string workingDirectory = Settings.Default.setF_workingDirectory == "Default"
-                ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                : Settings.Default.setF_workingDirectory;
-
-            baseDirectory = Path.Combine(workingDirectory, "AgOpenGPS");
+            baseDirectory = Path.Combine(RegistrySettings.workingDirectory, "AgOpenGPS");
 
             //get the fields directory, if not exist, create
             fieldsDirectory = Path.Combine(baseDirectory, "Fields");
@@ -585,10 +578,6 @@ namespace AgOpenGPS
                 YesMessageBox("Using Default Vehicle" + "\r\n\r\n" + "Load Existing Vehicle or Save As a New One !!!"
                     + "\r\n\r\n" + "Changes will NOT be Saved for Default Vehicle");
             
-                SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, "Default Vehicle.xml"));
-
-                RegistrySettings.Save("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-
                 using (FormConfig form = new FormConfig(this))
                 {
                     form.ShowDialog(this);
@@ -663,13 +652,13 @@ namespace AgOpenGPS
 
             Log.EventWriter("Missed Sentence Counter Total: " + missedSentenceCount.ToString());
 
-            Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(Settings.Default.setF_culture)) + "\r");
+            Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture) + "\r");
 
             //write the log file
             FileSaveSystemEvents();
 
             //save current vehicle
-            SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, vehicleFileName + ".XML"));
+            Properties.Settings.Default.Save();
 
             if (displayBrightness.isWmiMonitor)
                 displayBrightness.SetBrightness(Settings.Default.setDisplay_brightnessSystem);
@@ -770,22 +759,6 @@ namespace AgOpenGPS
             {
                 f.Top = this.Top + 75;
                 f.Left = this.Left + this.Width - 380;
-            }
-        }
-
-        public void CheckSettingsNotNull()
-        {
-            if (Settings.Default.setFeatures == null)
-            {
-                Settings.Default.setFeatures = new CFeatureSettings();
-            }
-        }
-
-        public void CheckNozzleSettingsNotNull()
-        {
-            if (Settings.Default.setNozzleSettings == null)
-            {
-                Settings.Default.setNozzleSettings = new CNozzleSettings();
             }
         }
 

@@ -30,6 +30,8 @@ namespace AgOpenGPS
                 var lang = regKey.GetValue("Language");
                 if (lang != null)
                     culture = lang.ToString();
+                else
+                    regKey.SetValue("Language", culture);//needed in formKeyboard
 
                 //close registry
                 regKey.Close();

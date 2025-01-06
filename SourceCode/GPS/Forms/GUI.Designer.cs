@@ -7,11 +7,8 @@ using System.Windows.Forms;
 using AgOpenGPS.Properties;
 using System.Globalization;
 using System.IO;
-using System.Media;
-using System.Reflection;
 using System.Collections.Generic;
 using AgOpenGPS.Culture;
-using System.Text;
 using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
@@ -441,9 +438,7 @@ namespace AgOpenGPS
         }//wait till timer fires again.         
 
         public void LoadSettings()
-        {            
-            CheckSettingsNotNull();
-
+        {
             //metric settings
             isMetric = Settings.Default.setMenu_isMetric;
 
@@ -515,8 +510,6 @@ namespace AgOpenGPS
             //Nozzz
             //Nozzle Spray Controller
 
-            CheckNozzleSettingsNotNull();
-
             isNozzleApp = Properties.Settings.Default.setApp_isNozzleApp;
             nozzleAppToolStripMenuItem.Checked = isNozzleApp;
             tlpNozzle.Visible = isNozzleApp;
@@ -574,13 +567,6 @@ namespace AgOpenGPS
             fieldColorDay = Properties.Settings.Default.setDisplay_colorFieldDay.CheckColorFor255();
             fieldColorNight = Properties.Settings.Default.setDisplay_colorFieldNight.CheckColorFor255();
 
-            Properties.Settings.Default.setDisplay_colorDayFrame = frameDayColor;
-            Properties.Settings.Default.setDisplay_colorNightFrame = frameNightColor;
-            Properties.Settings.Default.setDisplay_colorSectionsDay = sectionColorDay;
-            Properties.Settings.Default.setDisplay_colorFieldDay = fieldColorDay;
-            Properties.Settings.Default.setDisplay_colorFieldNight = fieldColorNight;
-            Properties.Settings.Default.Save();
-
             //load up colors
             textColorDay = Settings.Default.setDisplay_colorTextDay.CheckColorFor255();
             textColorNight = Settings.Default.setDisplay_colorTextNight.CheckColorFor255();
@@ -595,14 +581,6 @@ namespace AgOpenGPS
                 int iCol = (test.A << 24) | (test.R << 16) | (test.G << 8) | test.B;
                 customColorsList[i] = iCol;
             }
-
-            Properties.Settings.Default.setDisplay_customColors = "";
-            for (int i = 0; i < 15; i++)
-                Properties.Settings.Default.setDisplay_customColors += customColorsList[i].ToString() + ",";
-            Properties.Settings.Default.setDisplay_customColors += customColorsList[15].ToString();
-
-            Properties.Settings.Default.Save();
-
 
             isTextureOn = Settings.Default.setDisplay_isTextureOn;
             isLogElevation = Settings.Default.setDisplay_isLogElevation;
@@ -633,7 +611,7 @@ namespace AgOpenGPS
             string directoryName = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
             //grab the current vehicle filename - make sure it exists
-            vehicleFileName = Settings.Default.setVehicle_vehicleName;
+            vehicleFileName = RegistrySettings.vehicleFileName;
 
             simulatorOnToolStripMenuItem.Checked = Settings.Default.setMenu_isSimulatorOn;
             if (simulatorOnToolStripMenuItem.Checked)
@@ -1226,7 +1204,6 @@ namespace AgOpenGPS
             }
 
             Properties.Settings.Default.setDisplay_isDayMode = isDay;
-            Properties.Settings.Default.Save();
         }
 
         public void SaveFormGPSWindowSettings()
@@ -1255,7 +1232,7 @@ namespace AgOpenGPS
             }
 
             Settings.Default.setDisplay_camPitch = camera.camPitch;
-            Properties.Settings.Default.setDisplay_camZoom = camera.zoomValue;
+            Settings.Default.setDisplay_camZoom = camera.zoomValue;
 
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 

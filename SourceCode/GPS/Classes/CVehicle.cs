@@ -9,9 +9,6 @@ namespace AgOpenGPS
     {
         private readonly FormGPS mf;
 
-        public bool isSteerAxleAhead;
-        public bool isPivotBehindAntenna;
-
         public double antennaHeight;
         public double antennaPivot;
         public double wheelbase;
@@ -53,13 +50,11 @@ namespace AgOpenGPS
             //constructor
             mf = _f;
 
-            isPivotBehindAntenna = Properties.Settings.Default.setVehicle_isPivotBehindAntenna;
             antennaHeight = Properties.Settings.Default.setVehicle_antennaHeight;
             antennaPivot = Properties.Settings.Default.setVehicle_antennaPivot;
             antennaOffset = Properties.Settings.Default.setVehicle_antennaOffset;
 
             wheelbase = Properties.Settings.Default.setVehicle_wheelbase;
-            isSteerAxleAhead = Properties.Settings.Default.setVehicle_isSteerAxleAhead;
 
             slowSpeedCutoff = Properties.Settings.Default.setVehicle_slowSpeedCutoff;
 

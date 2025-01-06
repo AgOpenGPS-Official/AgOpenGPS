@@ -1,7 +1,7 @@
 ﻿using AgOpenGPS.Culture;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AgOpenGPS
 {
@@ -24,8 +24,7 @@ namespace AgOpenGPS
             keyboardString.SelectionLength = 0;
             keyboard1.Focus();
 
-            string language = Properties.Settings.Default.setF_culture;
-            if (language == "fr")
+            if (CultureInfo.CurrentUICulture.Name == "fr")
             {
                 this.Height = 575;
             }

@@ -731,7 +731,7 @@ namespace AgOpenGPS
                     }
 
                     Log.EventWriter("** Opened **  " + currentFieldDirectory + "   " 
-                        + (DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(Settings.Default.setF_culture))));
+                        + (DateTime.Now.ToString("f", CultureInfo.InvariantCulture)));
                 }
             }
 
@@ -780,7 +780,7 @@ namespace AgOpenGPS
             ExportFieldAs_ISOXMLv4();
 
             Log.EventWriter("** Closed **   " + currentFieldDirectory + "   "
-                + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(Settings.Default.setF_culture)));
+                + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
 
             Settings.Default.setF_CurrentDir = currentFieldDirectory;
             Settings.Default.Save();
@@ -1422,24 +1422,15 @@ namespace AgOpenGPS
 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowNewFolderButton = true;
-            fbd.Description = "Currently: " + Settings.Default.setF_workingDirectory;
+            var dir = RegistrySettings.workingDirectory;
 
-            if (Settings.Default.setF_workingDirectory == "Default") fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            else fbd.SelectedPath = Settings.Default.setF_workingDirectory;
+            fbd.Description = "Currently: " + dir;
+
+            fbd.SelectedPath = dir;
 
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
-                if (fbd.SelectedPath != Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
-                {
-                    Settings.Default.setF_workingDirectory = fbd.SelectedPath;
-                }
-                else
-                {
-                    Settings.Default.setF_workingDirectory = "Default";
-                }
-                Settings.Default.Save();
-
-                RegistrySettings.Save("WorkingDirectory", Settings.Default.setF_workingDirectory);
+                RegistrySettings.Save("WorkingDirectory", fbd.SelectedPath);
 
                 //restart program
                 MessageBox.Show(gStr.gsProgramWillExitPleaseRestart);
@@ -1541,7 +1532,6 @@ namespace AgOpenGPS
                     vehicleFileName = "Default Vehicle";
 
                     Settings.Default.Reset();
-                    Settings.Default.Save();
 
                     //save events this sessiom
                     FileSaveSystemEvents();
@@ -1623,7 +1613,7 @@ namespace AgOpenGPS
             {
                 form.ShowDialog(this);
             }
-            SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, vehicleFileName + ".XML"));
+            Properties.Settings.Default.Save();
         }
         private void colorsSectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1633,7 +1623,7 @@ namespace AgOpenGPS
                 {
                     form.ShowDialog(this);
                 }
-                SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, vehicleFileName + ".XML"));
+                Properties.Settings.Default.Save();
             }
             else
             {
@@ -1833,9 +1823,6 @@ namespace AgOpenGPS
                     lang = "en";
                     break;
             }
-
-            Settings.Default.setF_culture = lang;
-            Settings.Default.Save();
 
             if (lang != RegistrySettings.culture)
             {

@@ -79,7 +79,6 @@ namespace AgOpenGPS
         {
             if (mf.vehicle.vehicleType != 1)
             {
-
                 if (rbtnFront.Checked)
                 {
                     Properties.Settings.Default.setTool_isToolFront = true;
@@ -123,12 +122,11 @@ namespace AgOpenGPS
             mf.tool.isToolFrontFixed = Properties.Settings.Default.setTool_isToolFront;
 
             //mf.tool.hitchLength = (double)nudDrawbarLength.Value * mf.inchOrCm2m;
-            if (Properties.Settings.Default.setTool_isToolFront && mf.tool.hitchLength < 0)
+            if (Properties.Settings.Default.setTool_isToolFront == mf.tool.hitchLength < 0)
+            {
                 mf.tool.hitchLength *= -1;
-            else if (!Properties.Settings.Default.setTool_isToolFront && mf.tool.hitchLength > 0)
-                mf.tool.hitchLength *= -1;
-            Properties.Settings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
-
+                Properties.Settings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
+            }
             Properties.Settings.Default.Save();
         }
 
