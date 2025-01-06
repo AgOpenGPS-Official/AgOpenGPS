@@ -412,7 +412,7 @@ namespace AgOpenGPS
             panelSim.Top = Height - 60;
 
             //set the language to last used
-            SetLanguage(RegistrySettings.culture, false);
+            SetLanguage(RegistrySettings.culture);
 
             baseDirectory = Path.Combine(RegistrySettings.workingDirectory, "AgOpenGPS");
 
@@ -526,6 +526,33 @@ namespace AgOpenGPS
 
             ControlExtension.Draggable(panelDrag, true);
 
+            setStrings();
+
+            btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
+            //btnChangeMappingColor.Text = btnChangeMappingColor.Text.Substring(2);
+
+            hotkeys = new char[19];
+
+            hotkeys = Properties.Settings.Default.setKey_hotkeys.ToCharArray();
+
+            Log.EventWriter("Terms Accepted");
+
+            if (vehicleFileName == "Default Vehicle")
+            {
+                Log.EventWriter("Using Default Vehicle At Start Warning");
+
+                YesMessageBox("Using Default Vehicle" + "\r\n\r\n" + "Load Existing Vehicle or Save As a New One !!!"
+                    + "\r\n\r\n" + "Changes will NOT be Saved for Default Vehicle");
+            
+                using (FormConfig form = new FormConfig(this))
+                {
+                    form.ShowDialog(this);
+                }
+            }
+        }
+
+        private void setStrings()
+        {
             enterSimCoordsToolStripMenuItem.Text = gStr.gsEnterSimCoords;
             aboutToolStripMenuItem.Text = gStr.gsAbout;
             menustripLanguage.Text = gStr.gsLanguage;
@@ -561,28 +588,6 @@ namespace AgOpenGPS
             steerChartToolStripMenuItem.Text = gStr.gsSteerChart;
             headingChartToolStripMenuItem.Text = gStr.gsHeadingChart;
             xTEChartToolStripMenuItem.Text = gStr.gsXTEChart;
-
-            btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
-            //btnChangeMappingColor.Text = btnChangeMappingColor.Text.Substring(2);
-
-            hotkeys = new char[19];
-
-            hotkeys = Properties.Settings.Default.setKey_hotkeys.ToCharArray();
-
-            Log.EventWriter("Terms Accepted");
-
-            if (vehicleFileName == "Default Vehicle")
-            {
-                Log.EventWriter("Using Default Vehicle At Start Warning");
-
-                YesMessageBox("Using Default Vehicle" + "\r\n\r\n" + "Load Existing Vehicle or Save As a New One !!!"
-                    + "\r\n\r\n" + "Changes will NOT be Saved for Default Vehicle");
-            
-                using (FormConfig form = new FormConfig(this))
-                {
-                    form.ShowDialog(this);
-                }
-            }
         }
 
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
@@ -944,7 +949,6 @@ namespace AgOpenGPS
             }
 
             //update the menu
-            this.menustripLanguage.Enabled = false;
             panelRight.Enabled = true;
             //boundaryToolStripBtn.Enabled = true;
             isPanelBottomHidden = false;
@@ -1005,7 +1009,6 @@ namespace AgOpenGPS
             panelRight.Enabled = false;
             FieldMenuButtonEnableDisable(false);
 
-            menustripLanguage.Enabled = true;
             isJobStarted = false;
 
             //fix ManualOffOnAuto buttons

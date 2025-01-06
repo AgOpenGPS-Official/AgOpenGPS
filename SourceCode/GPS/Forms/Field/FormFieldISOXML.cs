@@ -271,7 +271,6 @@ namespace AgOpenGPS
             //reset sim and world to kml position
             //append date time to name
 
-            mf.menustripLanguage.Enabled = false;
 
             //create new field files.
 
@@ -279,7 +278,6 @@ namespace AgOpenGPS
             {
                 //start a new job
                 mf.JobNew();
-                mf.menustripLanguage.Enabled = false;
 
                 //double check
                 if ((!string.IsNullOrEmpty(directoryName)) && (Directory.Exists(directoryName)))
