@@ -418,7 +418,7 @@ namespace AgOpenGPS
             panelSim.Top = Height - 60;
 
             //set the language to last used
-            SetLanguage(Settings.Default.setF_culture, false);
+            SetLanguage(RegistrySettings.culture, false);
 
             string workingDirectory = Settings.Default.setF_workingDirectory == "Default"
                 ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -590,9 +590,7 @@ namespace AgOpenGPS
             
                 SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, "Default Vehicle.xml"));
 
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-                key.SetValue("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-                key.Close();
+                RegistrySettings.Save("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
 
                 using (FormConfig form = new FormConfig(this))
                 {
@@ -675,11 +673,6 @@ namespace AgOpenGPS
 
             //save current vehicle
             SettingsIO.ExportAll(Path.Combine(vehiclesDirectory, vehicleFileName + ".XML"));
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-            key.SetValue("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-            key.SetValue("WorkingDirectory", Properties.Settings.Default.setF_workingDirectory);
-            key.Close();
 
             if (displayBrightness.isWmiMonitor)
                 displayBrightness.SetBrightness(Settings.Default.setDisplay_brightnessSystem);

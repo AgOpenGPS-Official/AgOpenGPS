@@ -44,9 +44,7 @@ namespace AgOpenGPS
                         Properties.Settings.Default.setVehicle_vehicleName = mf.vehicleFileName;
                         Properties.Settings.Default.Save();
 
-                        RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-                        key.SetValue("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-                        key.Close();
+                        RegistrySettings.Save("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
 
                         LoadBrandImage();
 
@@ -178,9 +176,7 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setVehicle_vehicleName = mf.vehicleFileName;
                 Properties.Settings.Default.Save();
 
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-                key.SetValue("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-                key.Close();
+                RegistrySettings.Save("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
 
                 tboxVehicleNameSave.Text = "";
 
@@ -376,9 +372,7 @@ namespace AgOpenGPS
 
                 SettingsIO.ExportAll(Path.Combine(mf.vehiclesDirectory, mf.vehicleFileName + ".XML"));
 
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-                key.SetValue("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
-                key.Close();
+                RegistrySettings.Save("VehicleFileName", Properties.Settings.Default.setVehicle_vehicleName);
             }
 
             UpdateVehicleListView();

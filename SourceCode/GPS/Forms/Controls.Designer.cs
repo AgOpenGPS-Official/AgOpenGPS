@@ -1439,9 +1439,7 @@ namespace AgOpenGPS
                 }
                 Settings.Default.Save();
 
-                RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-                key.SetValue("WorkingDirectory", Settings.Default.setF_workingDirectory);
-                key.Close();
+                RegistrySettings.Save("WorkingDirectory", Settings.Default.setF_workingDirectory);
 
                 //restart program
                 MessageBox.Show(gStr.gsProgramWillExitPleaseRestart);
@@ -1538,13 +1536,7 @@ namespace AgOpenGPS
 
                 if (result2 == DialogResult.Yes)
                 {
-                    RegistryKey Key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-
-                    //storing the values
-                    Key.SetValue("Language", "en");
-                    Key.SetValue("VehicleFileName", "Default Vehicle");
-                    Key.SetValue("WorkingDirectory", "Default");
-                    Key.Close();
+                    RegistrySettings.Reset();
 
                     vehicleFileName = "Default Vehicle";
 
@@ -1845,12 +1837,10 @@ namespace AgOpenGPS
             Settings.Default.setF_culture = lang;
             Settings.Default.Save();
 
-            //adding or editing "Language" subkey to the "SOFTWARE" subkey  
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AgOpenGPS");
-
-            //storing the values  
-            key.SetValue("Language", lang);
-            key.Close();
+            if (lang != RegistrySettings.culture)
+            {
+                RegistrySettings.Save("Language", lang);
+            }
 
             if (Restart)
             {
