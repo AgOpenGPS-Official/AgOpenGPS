@@ -567,7 +567,7 @@ namespace AgOpenGPS
 
             if (isJobStarted)
             {
-                //check if third bit in the pgn234 received Main-Byte is set to signal the use of buttons (0) or switches (1) in the SC hardware
+                //check if third bit in the pgn234 received Main-Byte is set to indicate the use of buttons (0) or switches (1) in the SC hardware
                 if ((mc.ss[mc.swMain] & 4) != 4) // Button hardware by MTZ8302 Feb 2020 
                 {
 
@@ -916,7 +916,7 @@ namespace AgOpenGPS
 
         private void PerformSectionClick(int Btn)
         {
-            (this.Controls.Find("btnSection" + (Btn).ToString() + "Man", true).First() as Button).PerformClick();
+            (this.Controls.Find("btnSection" + (Btn + 1).ToString() + "Man", true).First() as Button).PerformClick();
         }
     }
 }
