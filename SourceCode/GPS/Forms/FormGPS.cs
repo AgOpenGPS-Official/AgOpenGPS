@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgLibrary.Logging;
 using AgOpenGPS;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;

@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace AgIO
+namespace AgLibrary.Logging
 {
     public static class Log
     {
-        public static StringBuilder sbEvent = new StringBuilder();
+        public static StringBuilder sbEvents = new StringBuilder();
 
         public static void EventWriter(string message)
         {
-            sbEvent.Append(DateTime.Now.ToString("T"));
-            sbEvent.Append("-> ");
-            sbEvent.Append(message);
-            sbEvent.Append("\r");
+            sbEvents.Append(DateTime.Now.ToString("T"));
+            sbEvents.Append("-> ");
+            sbEvents.Append(message);
+            sbEvents.Append("\r");
         }
 
         public static void CheckLogSize(string logFile, int sizeLimit)
@@ -30,7 +27,7 @@ namespace AgIO
                     StringBuilder sbF = new StringBuilder();
                     long bytes = txtfile.Length - sizeLimit;
                     bytes = (sizeLimit * 2) / 10 + bytes;
-                    Log.EventWriter("Log File Reduced by: " + bytes.ToString());
+                    Log.sbEvents.Append("Log File Reduced by: " + bytes.ToString());
 
                     //create some extra space
                     int bytesSoFar = 0;
@@ -62,6 +59,5 @@ namespace AgIO
                 }
             }
         }
-
     }
 }

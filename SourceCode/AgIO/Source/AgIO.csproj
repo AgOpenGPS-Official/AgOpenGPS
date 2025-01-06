@@ -27,8 +27,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
     <!-- Only write to build log in one project (AgOpenGPS), otherwise GitVersion will fail -->
+    <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CGLM.cs" />
-    <Compile Include="Classes\CLog.cs" />
     <Compile Include="Classes\ListViewColumnSorterExt.cs" />
     <Compile Include="Classes\CRadioChannel.cs" />
     <Compile Include="Classes\CSettings.cs" />
@@ -399,6 +398,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AgLibrary\AgLibrary.csproj">
+      <Project>{692b4970-37f1-4f02-8f7f-a514283fc399}</Project>
+      <Name>AgLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Keypad\Keypad.csproj">
       <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>
       <Name>Keypad</Name>

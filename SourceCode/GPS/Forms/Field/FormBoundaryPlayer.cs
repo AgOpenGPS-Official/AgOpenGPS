@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
 using System.Windows.Forms;
@@ -156,6 +157,7 @@ namespace AgOpenGPS
         //actually the record button
         private void btnPausePlay_Click(object sender, EventArgs e)
         {
+            mf.isAutoRecBoundary = chkAutoRecBoundary.Checked;
             if (mf.bnd.isOkToAddPoints)
             {
                 mf.bnd.isOkToAddPoints = false;

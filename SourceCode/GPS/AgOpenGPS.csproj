@@ -107,7 +107,6 @@
     <Compile Include="Classes\CBoundary.cs" />
     <Compile Include="Classes\CGuidance.cs" />
     <Compile Include="Classes\CHeadLine.cs" />
-    <Compile Include="Classes\CLog.cs" />
     <Compile Include="Classes\CPolygon.cs" />
     <Compile Include="Classes\CRecordedPath.cs" />
     <Compile Include="Classes\CPatches.cs" />
@@ -953,9 +952,11 @@
     <None Include="btnImages\BoundaryRecordTool.png" />
     <None Include="btnImages\Config\ConD_SectionHighlights.png" />
     <None Include="btnImages\Config\ConD_LineSmooth.png" />
+    <Content Include="btnImages\AutoRecBoundary.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AutoRecBoundary.png" />
     <Content Include="UDP_SimTool.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1351,6 +1352,10 @@
     <PackageReference Include="WinFormsMapControl" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AgLibrary\AgLibrary.csproj">
+      <Project>{692b4970-37f1-4f02-8f7f-a514283fc399}</Project>
+      <Name>AgLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Keypad\Keypad.csproj">
       <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>
       <Name>Keypad</Name>

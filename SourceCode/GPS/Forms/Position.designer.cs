@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgLibrary.Logging;
 using AgOpenGPS.Culture;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,10 @@ namespace AgOpenGPS
 
         public bool isMaxAngularVelocity = false;
 
-        public int minSteerSpeedTimer = 0;
+        public int minSteerSpeedTimer = 0; 
+        
+        public bool isAutoRecBoundary = false;
+
 
         //public vec2 jumpFix = new vec2(0, 0);
         //public double jumpDistance = 0, jumpDistanceMax;
@@ -1458,7 +1462,7 @@ namespace AgOpenGPS
 
             //build the boundary line
 
-            if (bnd.isOkToAddPoints)
+            if (bnd.isOkToAddPoints && (!isAutoRecBoundary || (isAutoRecBoundary && (manualBtnState == btnStates.On || autoBtnState == btnStates.Auto))))
             {
                 if (bnd.isDrawAtPivot)
                 {

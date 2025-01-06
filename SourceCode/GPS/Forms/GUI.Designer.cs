@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using AgOpenGPS.Culture;
 using System.Text;
 using AgOpenGPS.Helpers;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {

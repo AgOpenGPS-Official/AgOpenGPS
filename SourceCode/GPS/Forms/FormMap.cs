@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using OpenTK.Graphics.OpenGL;
 using System;

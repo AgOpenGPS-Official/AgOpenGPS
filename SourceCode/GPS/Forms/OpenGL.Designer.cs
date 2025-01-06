@@ -4,6 +4,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Windows.Forms;
 using System.Text;
 using System.Drawing;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {

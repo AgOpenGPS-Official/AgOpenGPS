@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using AgOpenGPS.Culture;
 using System.Text;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {

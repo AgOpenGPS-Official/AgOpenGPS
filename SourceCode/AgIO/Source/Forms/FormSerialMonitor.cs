@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Windows.Forms;
+using AgLibrary.Logging;
 
 namespace AgIO
 {
