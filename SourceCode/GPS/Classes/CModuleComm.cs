@@ -19,8 +19,8 @@ namespace AgOpenGPS
         public int
             swHeader = 0,
             swMain = 1,
-            swReserve = 2,
-            swReserve2 = 3,
+            swAutoGr0 = 2,
+            swAutoGr1 = 3,
             swNumSections = 4,
             swOnGr0 = 5,
             swOffGr0 = 6,

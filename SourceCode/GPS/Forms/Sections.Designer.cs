@@ -563,182 +563,347 @@ namespace AgOpenGPS
 
         private void DoRemoteSwitches()
         {
-            //MTZ8302 Feb 2020 
+            //MTZ8302 Feb 2020 and hagre 2024
+
             if (isJobStarted)
             {
-                //MainSW was used
-                if (mc.ss[mc.swMain] != mc.ssP[mc.swMain])
+                //check if third bit in the pgn234 received Main-Byte is set to signal the use of buttons (0) or switches (1) in the SC hardware
+                if ((mc.ss[mc.swMain] & 4) != 4) // Button hardware by MTZ8302 Feb 2020 
                 {
-                    //Main SW pressed
-                    if ((mc.ss[mc.swMain] & 1) == 1)
+
+                    //MainSW was used
+                    if (mc.ss[mc.swMain] != mc.ssP[mc.swMain])
+                    {
+                        //Main SW pressed
+                        if ((mc.ss[mc.swMain] & 1) == 1)
+                        {
+                            //set butto off and then press it = ON
+                            autoBtnState = btnStates.Off;
+                            btnSectionMasterAuto.PerformClick();
+                        } // if Main SW ON
+
+                        //if Main SW in Arduino is pressed OFF
+                        if ((mc.ss[mc.swMain] & 2) == 2)
+                        {
+                            //set button on and then press it = OFF
+                            autoBtnState = btnStates.Auto;
+                            btnSectionMasterAuto.PerformClick();
+                        } // if Main SW OFF
+
+                        mc.ssP[mc.swMain] = mc.ss[mc.swMain];
+                    }  //Main or shpList SW
+
+                    if (tool.isSectionsNotZones)
+                    {
+                        #region NoZones
+
+                        if (mc.ss[mc.swOnGr0] != 0)
+                        {
+                            // ON Signal from Arduino 
+                            for (int i = 7; i >= 0; i--)
+                            {
+                                if (tool.numOfSections > i && (mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i))
+                                {
+                                    if (section[i].sectionBtnState != btnStates.Auto) section[i].sectionBtnState = btnStates.Auto;
+                                    (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
+                                }
+                            }
+                            mc.ssP[mc.swOnGr0] = mc.ss[mc.swOnGr0];
+                        } //if swONLo != 0 
+                        else { if (mc.ssP[mc.swOnGr0] != 0) { mc.ssP[mc.swOnGr0] = 0; } }
+
+
+                        if (mc.ss[mc.swOnGr1] != 0)
+                        {
+                            // sections ON signal from Arduino  
+                            for (int i = 7; i >= 0; i--)
+                            {
+                                if (tool.numOfSections > (i + 8) && (mc.ss[mc.swOnGr1] & (1 << i)) == (1 << i))
+                                {
+                                    if (section[i + 8].sectionBtnState != btnStates.Auto) section[i + 8].sectionBtnState = btnStates.Auto;
+                                    (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
+                                }
+                            }
+                            mc.ssP[mc.swOnGr1] = mc.ss[mc.swOnGr1];
+                        } //if swONHi != 0   
+                        else { if (mc.ssP[mc.swOnGr1] != 0) { mc.ssP[mc.swOnGr1] = 0; } }
+
+
+                        // Switches have changed
+                        if (mc.ss[mc.swOffGr0] != mc.ssP[mc.swOffGr0])
+                        {
+                            //if Main = Auto then change section to Auto if Off signal from Arduino stopped
+                            if (autoBtnState == btnStates.Auto)
+                            {
+                                for (int i = 7; i >= 0; i--)
+                                {
+                                    if ((section[i].sectionBtnState == btnStates.Off) && (mc.ssP[mc.swOffGr0] & (1 << i)) == (1 << i) & ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)))
+                                    {
+                                        (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
+                                    }
+                                }
+                            }
+                            mc.ssP[mc.swOffGr0] = mc.ss[mc.swOffGr0];
+                        }
+
+                        if (mc.ss[mc.swOffGr1] != mc.ssP[mc.swOffGr1])
+                        {
+                            //if Main = Auto then change section to Auto if Off signal from Arduino stopped
+                            if (autoBtnState == btnStates.Auto)
+                            {
+                                for (int i = 7; i >= 0; i--)
+                                {
+                                    if ((section[i + 8].sectionBtnState == btnStates.Off) && ((mc.ssP[mc.swOffGr1] & (1 << i)) == (1 << i)) & ((mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i)))
+                                    {
+                                        (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
+                                    }
+                                }
+                            }
+                            mc.ssP[mc.swOffGr1] = mc.ss[mc.swOffGr1];
+                        }
+
+                        // OFF Signal from Arduino
+                        if (mc.ss[mc.swOffGr0] != 0)
+                        {
+                            //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
+                            for (int i = 7; i >= 0; i--)
+                            {
+                                if ((section[i].sectionBtnState != btnStates.Off) && (mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i))
+                                {
+                                    section[i].sectionBtnState = btnStates.On;
+                                    (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
+                                }
+                            }
+                        } // if swOFFLo !=0
+
+                        if (mc.ss[mc.swOffGr1] != 0)
+                        {
+                            //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
+                            for (int i = 7; i >= 0; i--)
+                            {
+                                if ((section[i + 8].sectionBtnState != btnStates.Off) && (mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i))
+                                {
+                                    section[i + 8].sectionBtnState = btnStates.On;
+                                    (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
+                                }
+                            }
+                        } // if swOFFHi !=0
+                        #endregion
+                    }
+                    else
+                    {
+                        DoZones();
+                    }
+
+                }
+                else if ((mc.ss[mc.swMain] & 4) == 4)  // Switch hardware by hagre 05 2024
+                {
+                    int Bit;
+                    
+                    //MainSW Byte is AUTO
+                    if (autoBtnState != btnStates.Auto && ((mc.ss[mc.swMain] & 1) == 1))
                     {
                         //set butto off and then press it = ON
                         autoBtnState = btnStates.Off;
                         btnSectionMasterAuto.PerformClick();
-                    } // if Main SW ON
-
-                    //if Main SW in Arduino is pressed OFF
-                    if ((mc.ss[mc.swMain] & 2) == 2)
+                    }
+                    //MainSW Byte is OFF
+                    else if (autoBtnState != btnStates.Off && ((mc.ss[mc.swMain] & 2) == 2))
                     {
                         //set button on and then press it = OFF
                         autoBtnState = btnStates.Auto;
                         btnSectionMasterAuto.PerformClick();
-                    } // if Main SW OFF
+                    }
 
-                    mc.ssP[mc.swMain] = mc.ss[mc.swMain];
-                }  //Main or shpList SW
-
-                if (tool.isSectionsNotZones)
-                {
-                    #region NoZones
-
-                    if (mc.ss[mc.swOnGr0] != 0)
+                    if (tool.isSectionsNotZones)
                     {
-                        // ON Signal from Arduino 
-                        for (int i = 7; i >= 0; i--)
+                        #region NoZones
+                        if (mc.ss[mc.swOnGr0] != 0)
                         {
-                            if (tool.numOfSections > i && (mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i))
+                            // ON Signal from Arduino Gr0
+                            for (int i = 0; i < 8; i++)
                             {
-                                if (section[i].sectionBtnState != btnStates.Auto) section[i].sectionBtnState = btnStates.Auto;
-                                (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
-                            }
-                        }
-                        mc.ssP[mc.swOnGr0] = mc.ss[mc.swOnGr0];
-                    } //if swONLo != 0 
-                    else { if (mc.ssP[mc.swOnGr0] != 0) { mc.ssP[mc.swOnGr0] = 0; } }
-
-
-                    if (mc.ss[mc.swOnGr1] != 0)
-                    {
-                        // sections ON signal from Arduino  
-                        for (int i = 7; i >= 0; i--)
-                        {
-                            if (tool.numOfSections > (i + 8) && (mc.ss[mc.swOnGr1] & (1 << i)) == (1 << i))
-                            {
-                                if (section[i + 8].sectionBtnState != btnStates.Auto) section[i + 8].sectionBtnState = btnStates.Auto;
-                                (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
-                            }
-                        }
-                        mc.ssP[mc.swOnGr1] = mc.ss[mc.swOnGr1];
-                    } //if swONHi != 0   
-                    else { if (mc.ssP[mc.swOnGr1] != 0) { mc.ssP[mc.swOnGr1] = 0; } }
-
-
-                    // Switches have changed
-                    if (mc.ss[mc.swOffGr0] != mc.ssP[mc.swOffGr0])
-                    {
-                        //if Main = Auto then change section to Auto if Off signal from Arduino stopped
-                        if (autoBtnState == btnStates.Auto)
-                        {
-                            for (int i = 7; i >= 0; i--)
-                            {
-                                if ((section[i].sectionBtnState == btnStates.Off) && (mc.ssP[mc.swOffGr0] & (1 << i)) == (1 << i) & ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)))
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i].sectionBtnState != btnStates.On && (mc.ss[mc.swOnGr0] & Bit) == Bit && tool.numOfSections > i && mc.ss[mc.swNumSections] > i)
                                 {
-                                    (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
+                                    section[i].sectionBtnState = btnStates.Auto;
+                                    PerformSectionClick(i);
                                 }
                             }
                         }
-                        mc.ssP[mc.swOffGr0] = mc.ss[mc.swOffGr0];
-                    }
-
-                    if (mc.ss[mc.swOffGr1] != mc.ssP[mc.swOffGr1])
-                    {
-                        //if Main = Auto then change section to Auto if Off signal from Arduino stopped
-                        if (autoBtnState == btnStates.Auto)
+                        if (mc.ss[mc.swOnGr1] != 0)
                         {
-                            for (int i = 7; i >= 0; i--)
+                            // ON Signal from Arduino Gr1
+                            for (int i = 0; i < 8; i++)
                             {
-                                if ((section[i + 8].sectionBtnState == btnStates.Off) && ((mc.ssP[mc.swOffGr1] & (1 << i)) == (1 << i)) & ((mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i)))
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i + 8].sectionBtnState != btnStates.On && (mc.ss[mc.swOnGr1] & Bit) == Bit && tool.numOfSections > i + 8 && mc.ss[mc.swNumSections] > i)
                                 {
-                                    (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
+                                    section[i + 8].sectionBtnState = btnStates.Auto;
+                                    PerformSectionClick(i + 8);
                                 }
                             }
                         }
-                        mc.ssP[mc.swOffGr1] = mc.ss[mc.swOffGr1];
+
+                        if (mc.ss[mc.swAutoGr0] != 0)
+                        {
+                            // AUTO Signal from Arduino Gr0
+                            for (int i = 0; i < 8; i++)
+                            {
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i].sectionBtnState != btnStates.Auto && (mc.ss[mc.swAutoGr0] & Bit) == Bit && tool.numOfSections > i && mc.ss[mc.swNumSections] > i)
+                                {
+                                    section[i].sectionBtnState = btnStates.Off;
+                                    PerformSectionClick(i);
+                                }
+                            }
+                        }
+                        if (mc.ss[mc.swAutoGr1] != 0)
+                        {
+                            // AUTO Signal from Arduino Gr1
+                            for (int i = 0; i < 8; i++)
+                            {
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i + 8].sectionBtnState != btnStates.Auto && (mc.ss[mc.swAutoGr1] & Bit) == Bit && tool.numOfSections > i + 8 && mc.ss[mc.swNumSections] > i)
+                                {
+                                    PerformSectionClick(i + 8);
+                                }
+                            }
+                        }
+
+                        if (mc.ss[mc.swOffGr0] != 0)
+                        {
+                            // OFF Signal from Arduino Gr0
+                            for (int i = 0; i < 8; i++)
+                            {
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i].sectionBtnState != btnStates.Off && (mc.ss[mc.swOffGr0] & Bit) == Bit && tool.numOfSections > i)
+                                {
+                                    section[i].sectionBtnState = btnStates.On;
+                                    PerformSectionClick(i);
+                                }
+                            }
+                        }
+                        if (mc.ss[mc.swOffGr1] != 0)
+                        {
+                            // OFF Signal from Arduino Gr1
+                            for (int i = 0; i < 8; i++)
+                            {
+                                Bit = (int)Math.Pow(2, i);
+                                if (section[i + 8].sectionBtnState != btnStates.Off && (mc.ss[mc.swOffGr1] & Bit) == Bit && tool.numOfSections > i + 8)
+                                {
+                                    PerformSectionClick(i + 8);
+                                }
+                            }
+                        }
+                        #endregion
                     }
-
-                    // OFF Signal from Arduino
-                    if (mc.ss[mc.swOffGr0] != 0)
+                    else
                     {
-                        //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
-                        for (int i = 7; i >= 0; i--)
-                        {
-                            if ((section[i].sectionBtnState != btnStates.Off) && (mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i))
-                            {
-                                section[i].sectionBtnState = btnStates.On;
-                                (this.Controls.Find("btnSection" + (i + 1).ToString() + "Man", true).First() as Button).PerformClick();
-                            }
-                        }
-                    } // if swOFFLo !=0
-
-                    if (mc.ss[mc.swOffGr1] != 0)
-                    {
-                        //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
-                        for (int i = 7; i >= 0; i--)
-                        {
-                            if ((section[i + 8].sectionBtnState != btnStates.Off) && (mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i))
-                            {
-                                section[i + 8].sectionBtnState = btnStates.On;
-                                (this.Controls.Find("btnSection" + (i + 9).ToString() + "Man", true).First() as Button).PerformClick();
-                            }
-                        }
-                    } // if swOFFHi !=0
-                    #endregion
-                }
-                else
-                {
-                    DoZones();
-                }
-            }//if serial or udp port open
-        }
+                        DoZones();
+                    }
+                }//if serial or udp port open
+            }
+        }//if serial or udp port open
+        
         private void DoZones()
         {
             int Bit;
-            // zones to on
-            if (mc.ss[mc.swOnGr0] != 0)
+            //check if third bit in the Main-Byte is set to signal buttons (0) or switches (1) used in the SC hardware
+            if ((mc.ss[mc.swMain] & 4) != 4) // Button hardware by MTZ8302 Feb 2020 
             {
-                for (int i = 0; i < 8; i++)
-                {
-                    Bit = (int)Math.Pow(2, i);
-                    if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & Bit) == Bit))
-                    {
-                        if (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto) section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Auto;
-                        PerformZoneClick(i);
-                    }
-                }
-
-                mc.ssP[mc.swOnGr0] = mc.ss[mc.swOnGr0];
-            }
-            else { if (mc.ssP[mc.swOnGr0] != 0) { mc.ssP[mc.swOnGr0] = 0; } }
-
-            // zones to auto
-            if (mc.ss[mc.swOffGr0] != mc.ssP[mc.swOffGr0])
-            {
-                if (autoBtnState == btnStates.Auto)
+                // zones to on
+                if (mc.ss[mc.swOnGr0] != 0)
                 {
                     for (int i = 0; i < 8; i++)
                     {
                         Bit = (int)Math.Pow(2, i);
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ssP[mc.swOffGr0] & Bit) == Bit)
-                            && ((mc.ss[mc.swOffGr0] & Bit) != Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState == btnStates.Off))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & Bit) == Bit))
                         {
+                            if (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto) section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Auto;
+                            PerformZoneClick(i);
+                        }
+                    }
+
+                    mc.ssP[mc.swOnGr0] = mc.ss[mc.swOnGr0];
+                }
+                else { if (mc.ssP[mc.swOnGr0] != 0) { mc.ssP[mc.swOnGr0] = 0; } }
+
+                // zones to auto
+                if (mc.ss[mc.swOffGr0] != mc.ssP[mc.swOffGr0])
+                {
+                    if (autoBtnState == btnStates.Auto)
+                    {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            Bit = (int)Math.Pow(2, i);
+                            if ((tool.zoneRanges[i + 1] > 0) && ((mc.ssP[mc.swOffGr0] & Bit) == Bit)
+                                && ((mc.ss[mc.swOffGr0] & Bit) != Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState == btnStates.Off))
+                            {
+                                PerformZoneClick(i);
+                            }
+                        }
+                    }
+                    mc.ssP[mc.swOffGr0] = mc.ss[mc.swOffGr0];
+                }
+
+                // zones to off
+                if (mc.ss[mc.swOffGr0] != 0)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Bit = (int)Math.Pow(2, i);
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & Bit) == Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
+                        {
+                            section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.On;
                             PerformZoneClick(i);
                         }
                     }
                 }
-                mc.ssP[mc.swOffGr0] = mc.ss[mc.swOffGr0];
             }
-
-            // zones to off
-            if (mc.ss[mc.swOffGr0] != 0)
+            else if ((mc.ss[mc.swMain] & 4) == 4)  // Switch hardware by hagre 05 2024
             {
-                for (int i = 0; i < 8; i++)
+                // zones to on
+                if (mc.ss[mc.swOnGr0] != 0)
                 {
-                    Bit = (int)Math.Pow(2, i);
-                    if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & Bit) == Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
+                    for (int i = 0; i < 8; i++)
                     {
-                        section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.On;
-                        PerformZoneClick(i);
+                        Bit = (int)Math.Pow(2, i);
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & Bit) == Bit) && ((mc.ss[mc.swOffGr0] & Bit) != Bit) && section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.On)
+                        {
+                            section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Auto;
+                            PerformZoneClick(i);
+
+                        }
+                    }
+                }
+
+                // zones to auto
+                if (mc.ss[mc.swAutoGr0] != 0)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Bit = (int)Math.Pow(2, i);
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swAutoGr0] & Bit) == Bit) && ((mc.ss[mc.swOnGr0] & Bit) != Bit) && ((mc.ss[mc.swOffGr0] & Bit) != Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto))
+                        {
+                            section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Off;
+                            PerformZoneClick(i);
+                        }
+                    }
+
+                }
+
+                // zones to off
+                if (mc.ss[mc.swOffGr0] != 0)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Bit = (int)Math.Pow(2, i);
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & Bit) == Bit) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
+                        {
+                            section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.On;
+                            PerformZoneClick(i);
+                        }
                     }
                 }
             }
@@ -747,6 +912,11 @@ namespace AgOpenGPS
         private void PerformZoneClick(int Btn)
         {
             (this.Controls.Find("btnZone" + (Btn + 1).ToString(), true).First() as Button).PerformClick();
+        }
+
+        private void PerformSectionClick(int Btn)
+        {
+            (this.Controls.Find("btnSection" + (Btn).ToString() + "Man", true).First() as Button).PerformClick();
         }
     }
 }
