@@ -1,5 +1,4 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Culture;
+﻿using AgOpenGPS.Culture;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -86,7 +85,7 @@ namespace AgOpenGPS
             //lblMax.Text = "Auto";
             //lblMin.Text = "0";
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

@@ -1,6 +1,4 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Culture;
-using AgOpenGPS.Helpers;
+﻿using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
 
@@ -52,7 +50,7 @@ namespace AgOpenGPS
             mf.bnd.isBndBeingMade = true;
             mf.Focus();
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

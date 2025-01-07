@@ -1,7 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
 using AgOpenGPS.Culture;
-using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
 using System.Drawing;
@@ -34,7 +33,7 @@ namespace AgOpenGPS
             hsbarSmooth.Value = Properties.Settings.Default.setDisplay_camSmooth;
             lblSmoothCam.Text = hsbarSmooth.Value.ToString() + "%";
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

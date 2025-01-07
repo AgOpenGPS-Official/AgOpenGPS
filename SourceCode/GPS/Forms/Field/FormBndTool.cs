@@ -1,5 +1,4 @@
 ﻿using AgOpenGPS.Culture;
-using AgOpenGPS.Helpers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -118,7 +117,7 @@ namespace AgOpenGPS
             this.Left = (area.Width - this.Width) / 2;
             FormBndTool_ResizeEnd(this, e);
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

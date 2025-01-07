@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-using AgLibrary.Logging;
-using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -32,7 +30,7 @@ namespace AgOpenGPS
             //}
             flpRight.Controls.Clear();
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

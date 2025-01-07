@@ -16,10 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModSim", "ModSim\Source\Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPS_Out", "GPS_Out\Source\GPS_Out.csproj", "{A9BF85B8-2178-479E-B41B-4E7F84D56A79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keypad", "Keypad\Keypad.csproj", "{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgLibrary", "AgLibrary\AgLibrary.csproj", "{692B4970-37F1-4F02-8F7F-A514283FC399}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -78,40 +74,16 @@ Global
 		{A9BF85B8-2178-479E-B41B-4E7F84D56A79}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9BF85B8-2178-479E-B41B-4E7F84D56A79}.Release|x86.ActiveCfg = Release|Any CPU
 		{A9BF85B8-2178-479E-B41B-4E7F84D56A79}.Release|x86.Build.0 = Release|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.All|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.All|Any CPU.Build.0 = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.All|x86.ActiveCfg = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.All|x86.Build.0 = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Debug|x86.Build.0 = Debug|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Release|x86.ActiveCfg = Release|Any CPU
-		{F1053BAC-22C7-4E6F-A3EA-CC1E1FBA9CB0}.Release|x86.Build.0 = Release|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.All|Any CPU.ActiveCfg = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.All|Any CPU.Build.0 = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.All|x86.ActiveCfg = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.All|x86.Build.0 = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Debug|x86.Build.0 = Debug|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|Any CPU.Build.0 = Release|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|x86.ActiveCfg = Release|Any CPU
-		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_ConfirmAddLanguageFile = True
-		RESX_NeutralResourcesLanguage = en-US
-		RESX_SortFileContentOnSave = True
-		RESX_ShowErrorsInErrorList = False
-		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
 		RESX_ResXSortingComparison = Ordinal
+		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
+		RESX_ShowErrorsInErrorList = False
+		RESX_SortFileContentOnSave = True
+		RESX_NeutralResourcesLanguage = en-US
+		RESX_ConfirmAddLanguageFile = True
 	EndGlobalSection
 EndGlobal

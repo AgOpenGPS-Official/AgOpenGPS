@@ -1,6 +1,6 @@
 # AgOpenGPS - Guidance software
 
-[![GitHub Release](https://img.shields.io/github/v/release/agopengps-official/AgOpenGPS)](https://github.com/agopengps-official/AgOpenGPS/releases/latest)
+[![GitHub Release](https://img.shields.io/github/v/release/farmerbriantee/AgOpenGPS)](https://github.com/farmerbriantee/AgOpenGPS/releases/latest)
 
 Ag Precision Mapping and Section Control Software
 
@@ -24,7 +24,7 @@ See the PCB repo for PCB layouts, firmware for steering and rate control, machin
 
 ## Installation
 
-1. Download the [Most Stable AgOpenGPS Release](https://github.com/agopengps-official/AgOpenGPS/releases)
+1. Download the [Most Stable AgOpenGPS Release](https://github.com/farmerbriantee/AgOpenGPS/releases)
 2. Unzip or extract the contents to a folder (folder accessible by user not the root of C:\\)
 Even on your desktop
 3. Run AgOpenGPS.exe
@@ -43,11 +43,11 @@ In order to contribute to AgOpenGPS, follow these steps:
 
 ## Links
 
-- [AgOpenGPS Wiki](https://github.com/agopengps-official/AgOpenGPS/wiki)
+- [AgOpenGPS Wiki](https://github.com/farmerbriantee/AgOpenGPS/wiki)
 - [AgOpenGPS Forum](https://discourse.agopengps.com/)
-- [PCB and Firmware Repository](https://github.com/agopengps-official/Boards)
-- [SK21 Rate Control Repository](https://github.com/agopengps-official/Rate_Control)
-- [Hardware Wiki](https://github.com/agopengps-official/Boards/wiki)
+- [PCB and Firmware Repository](https://github.com/AgHardware/Boards)
+- [SK21 Rate Control Repository](https://github.com/AgHardware/Rate_Control)
+- [AgHardware Wiki](https://github.com/AgHardware/Boards/wiki)
 
 ## License
 

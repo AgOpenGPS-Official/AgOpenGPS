@@ -1,8 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgLibrary.Logging;
 using AgOpenGPS.Culture;
-using AgOpenGPS.Helpers;
 using Microsoft.Win32;
 using System;
 using System.Drawing;
@@ -104,7 +102,7 @@ namespace AgOpenGPS
             mf.SaveFormGPSWindowSettings();
 
             //metric or imp on spinners min/maxes
-            if (!mf.isMetric) FixMinMaxSpinners();
+            if (!mf.isMetric)  FixMinMaxSpinners();            
 
             //the pick a saved vehicle box
             UpdateVehicleListView();
@@ -120,7 +118,7 @@ namespace AgOpenGPS
             label162.Text = gStr.gsNew;
             UpdateSummary();
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

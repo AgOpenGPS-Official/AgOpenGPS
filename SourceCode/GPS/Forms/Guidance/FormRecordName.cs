@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS.Forms
 {
@@ -27,7 +26,7 @@ namespace AgOpenGPS.Forms
             lblFilename.Text = "";
             tboxFieldName.Focus();
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

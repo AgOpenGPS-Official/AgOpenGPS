@@ -1,6 +1,5 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgLibrary.Logging;
 using AgOpenGPS.Properties;
 using System;
 using System.Drawing;

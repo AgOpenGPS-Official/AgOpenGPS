@@ -1,5 +1,4 @@
 ﻿using AgOpenGPS.Culture;
-using AgOpenGPS.Helpers;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
@@ -82,7 +81,7 @@ namespace AgOpenGPS
             lblMax.Text = ((int)(unoChart.ChartAreas[0].AxisY.Maximum * 0.01)).ToString();
             lblMin.Text = ((int)(unoChart.ChartAreas[0].AxisY.Minimum * 0.01)).ToString();
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

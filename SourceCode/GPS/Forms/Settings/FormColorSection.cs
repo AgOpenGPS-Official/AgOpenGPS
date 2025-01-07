@@ -1,6 +1,5 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
 using System.Drawing;
@@ -79,7 +78,7 @@ namespace AgOpenGPS
                 SetGui(false);
             }
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;

@@ -1,6 +1,4 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Helpers;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -89,7 +87,7 @@ namespace AgOpenGPS
             this.Left = (area.Width - this.Width) / 2;
             FormHeadLine_ResizeEnd(this, e);
 
-            if (!ScreenHelper.IsOnScreen(Bounds))
+            if (!mf.IsOnScreen(Location, Size, 1))
             {
                 Top = 0;
                 Left = 0;
@@ -544,7 +542,7 @@ namespace AgOpenGPS
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
             GL.ClearColor(0.1f, 0.1f, 0.1f ,1.0f);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
         }
         private void oglSelf_Resize(object sender, EventArgs e)
         {

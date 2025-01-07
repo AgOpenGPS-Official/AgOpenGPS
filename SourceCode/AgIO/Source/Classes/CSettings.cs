@@ -1,5 +1,4 @@
 ﻿using AgIO.Properties;
-using AgLibrary.Logging;
 using Microsoft.Win32;
 using System;
 using System.Configuration;
@@ -98,7 +97,7 @@ namespace AgIO
                     if (!string.IsNullOrEmpty(profileDirectory) && !Directory.Exists(profileDirectory))
                     {
                         Directory.CreateDirectory(profileDirectory);
-                        Log.EventWriter("Profile Dir Created\r");
+                        Log.EventWriter("PRofile Dir Created\r");
                     }
                 }
                 catch (Exception ex)

@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using AgLibrary.Logging;
 
 namespace AgIO
 {
@@ -167,6 +166,7 @@ namespace AgIO
             {
                 mf.YesMessageBox("Can't Find: " + actualIP);
                 Log.EventWriter("Catch -> Can't Find Caster IP" + ex.ToString());
+
             }
         }
 
