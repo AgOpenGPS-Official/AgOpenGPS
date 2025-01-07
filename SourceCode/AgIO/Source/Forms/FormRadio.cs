@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
+using AgLibrary.Logging;
 
 namespace AgIO
 {
@@ -155,7 +156,6 @@ namespace AgIO
             {
                 mf.TimedMessageBox(3000, "Error opening port", ex.Message);
                 Log.EventWriter("Catch - > Error opening Radio port" + ex.ToString());
-
             }
 
             SetButtonState();

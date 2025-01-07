@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Culture;
+using AgOpenGPS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -49,7 +50,7 @@ namespace AgOpenGPS
             nudHeading.Controls[0].Enabled = false;
             nudHeading.Value = 0;
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

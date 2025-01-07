@@ -98,6 +98,7 @@ namespace AgOpenGPS
             mf.pn.satellitesTracked = 12;
 
             mf.sentenceCounter = 0;
+
             mf.UpdateFixPosition();
 
             if (isAccelForward)

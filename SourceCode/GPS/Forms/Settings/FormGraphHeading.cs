@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -94,7 +95,7 @@ namespace AgOpenGPS
         {
             timer1.Interval = (int)((1 / (double)mf.gpsHz) * 1000);
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

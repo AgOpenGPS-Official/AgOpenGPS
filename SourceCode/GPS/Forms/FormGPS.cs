@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgLibrary.Logging;
 using AgOpenGPS;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
@@ -676,25 +677,6 @@ namespace AgOpenGPS
                 f.Top = this.Height / 3 + this.Top;
                 f.Left = this.Width - 400 + this.Left;
             }
-        }
-
-        // Return True if a certain percent of a rectangle is shown across the total screen area of all monitors, otherwise return False.
-        public bool IsOnScreen(System.Drawing.Point RecLocation, System.Drawing.Size RecSize, double MinPercentOnScreen = 0.8)
-        {
-            double PixelsVisible = 0;
-            System.Drawing.Rectangle Rec = new System.Drawing.Rectangle(RecLocation, RecSize);
-
-            foreach (Screen Scrn in Screen.AllScreens)
-            {
-                System.Drawing.Rectangle r = System.Drawing.Rectangle.Intersect(Rec, Scrn.WorkingArea);
-                // intersect rectangle with screen
-                if (r.Width != 0 & r.Height != 0)
-                {
-                    PixelsVisible += (r.Width * r.Height);
-                    // tally visible pixels
-                }
-            }
-            return PixelsVisible >= (Rec.Width * Rec.Height) * MinPercentOnScreen;
         }
 
         private void FormGPS_Move(object sender, EventArgs e)

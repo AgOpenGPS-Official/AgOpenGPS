@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Culture;
+using AgOpenGPS.Helpers;
 using System;
 using System.Windows.Forms;
 
@@ -89,7 +90,7 @@ namespace AgOpenGPS
                 MoveBuildTramLine(0);
             }
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

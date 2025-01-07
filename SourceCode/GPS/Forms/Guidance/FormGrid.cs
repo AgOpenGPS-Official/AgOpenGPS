@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using AgOpenGPS.Helpers;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace AgOpenGPS
             Location = Properties.Settings.Default.setWindow_gridLocation;
             FormABDraw_ResizeEnd(this, e);
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

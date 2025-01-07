@@ -9,35 +9,35 @@ namespace AgOpenGPS
 
     public static class glm
     {
-        public static void GetClosestSegmentLooping(this vec2 Point, List<vec3> curList, out int AA, out int BB, out double minDistA, int Start = 0, int End = int.MaxValue)
-        {
-            bool isLoop = true;
-            AA = -1; BB = -1;
-            minDistA = double.MaxValue;
-            int A = Start > 0 ? Start - 1 : curList.Count - 1;
-            bool looping = isLoop & Start > End;
-            for (int B = (Start > 0 ? Start : 0); B < End || looping; A = B++)
-            {
-                if (B == curList.Count)
-                {
-                    if (looping)
-                    {
-                        B = -1; looping = false;
-                        continue;
-                    }
-                    else break;
-                }
-                if (B == 0 && !isLoop) continue;
-                else if (B == 0) A = curList.Count - 1;
+        //public static void GetClosestSegmentLooping(this vec2 Point, List<vec3> curList, out int AA, out int BB, out double minDistA, int Start = 0, int End = int.MaxValue)
+        //{
+        //    bool isLoop = true;
+        //    AA = -1; BB = -1;
+        //    minDistA = double.MaxValue;
+        //    int A = Start > 0 ? Start - 1 : curList.Count - 1;
+        //    bool looping = isLoop & Start > End;
+        //    for (int B = (Start > 0 ? Start : 0); B < End || looping; A = B++)
+        //    {
+        //        if (B == curList.Count)
+        //        {
+        //            if (looping)
+        //            {
+        //                B = -1; looping = false;
+        //                continue;
+        //            }
+        //            else break;
+        //        }
+        //        if (B == 0 && !isLoop) continue;
+        //        else if (B == 0) A = curList.Count - 1;
 
-                double dist2 = DistanceSquared(curList[A], curList[B]);
-                if (dist2 < minDistA)
-                {
-                    minDistA = dist2; AA = A;
-                    BB = B;
-                }
-            }
-        }
+        //        double dist2 = DistanceSquared(curList[A], curList[B]);
+        //        if (dist2 < minDistA)
+        //        {
+        //            minDistA = dist2; AA = A;
+        //            BB = B;
+        //        }
+        //    }
+        //}
 
         public static bool InRangeBetweenAB(double start_x, double start_y, double end_x, double end_y,
           double point_x, double point_y)

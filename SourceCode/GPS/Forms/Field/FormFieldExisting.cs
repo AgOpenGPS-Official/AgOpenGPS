@@ -1,4 +1,6 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Culture;
+using AgOpenGPS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -240,7 +242,7 @@ namespace AgOpenGPS
                 return;
             }
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

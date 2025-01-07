@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -47,7 +48,7 @@ namespace AgOpenGPS
             //Location = Properties.Settings.Default.setWindow_formNudgeLocation;
             //Size = Properties.Settings.Default.setWindow_formNudgeSize;
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

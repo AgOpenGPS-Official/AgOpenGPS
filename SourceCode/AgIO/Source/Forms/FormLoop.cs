@@ -1,4 +1,5 @@
 ﻿using AgIO.Properties;
+using AgLibrary.Logging;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -342,8 +343,8 @@ namespace AgIO
         {
             using (StreamWriter writer = new StreamWriter(Path.Combine(RegistrySettings.logsDirectory, "AgIO_Events_Log.txt"), true))
             {
-                writer.Write(Log.sbEvent);
-                Log.sbEvent.Clear();
+                writer.Write(Log.sbEvents);
+                Log.sbEvents.Clear();
             }
         }
 

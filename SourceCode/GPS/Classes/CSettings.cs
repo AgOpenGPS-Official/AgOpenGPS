@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Properties;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Properties;
 using Microsoft.Win32;
 using OpenTK.Input;
 using System;

@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Culture;
+using AgOpenGPS.Helpers;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
@@ -26,7 +27,7 @@ namespace AgOpenGPS
 
         private void FormEnterAB_Load(object sender, EventArgs e)
         {
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

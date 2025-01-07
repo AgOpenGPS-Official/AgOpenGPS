@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -40,7 +41,7 @@ namespace AgOpenGPS
             Size = Properties.Settings.Default.setWindow_formNudgeSize;
             UpdateMoveLabel();
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

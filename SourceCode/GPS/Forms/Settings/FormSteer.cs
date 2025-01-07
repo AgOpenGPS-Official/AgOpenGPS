@@ -1,4 +1,6 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Culture;
+using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
 using System.Diagnostics.Eventing.Reader;
@@ -260,7 +262,7 @@ namespace AgOpenGPS
                 lblhsbarSensor.Visible = false;
             }
 
-            if (!mf.IsOnScreen(Location, Size, 1))
+            if (!ScreenHelper.IsOnScreen(Bounds))
             {
                 Top = 0;
                 Left = 0;

@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Culture;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -515,10 +516,8 @@ namespace AgOpenGPS
                 }
                 else// Pure Pursuit ------------------------------------------
                 {
-
                     double minDistA;
                     double minDistB;
-                    //close call hit
 
                     //If is a curve
                     if (mf.trk.gArr[mf.trk.idx].mode <= TrackMode.Curve)

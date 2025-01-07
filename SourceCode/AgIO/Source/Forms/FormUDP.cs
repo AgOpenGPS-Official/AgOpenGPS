@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using AgLibrary.Logging;
 
 namespace AgIO
 {
@@ -283,6 +284,8 @@ namespace AgIO
 
             pboxSendSteer.Visible = false;
             btnSerialCancel.Image = Properties.Resources.back_button;
+
+            Log.EventWriter("Subnet Uploaded: " + lblNetworkHelp.Text);
         }
 
         private void nudFirstIP_Click(object sender, EventArgs e)

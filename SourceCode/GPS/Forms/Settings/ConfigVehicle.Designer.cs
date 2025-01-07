@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;

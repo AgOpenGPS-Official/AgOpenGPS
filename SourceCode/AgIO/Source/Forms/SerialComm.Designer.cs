@@ -5,6 +5,7 @@ using System;
 using System.Windows.Forms;
 using System.Linq;
 using System.Globalization;
+using AgLibrary.Logging;
 
 namespace AgIO
 {
@@ -119,11 +120,11 @@ namespace AgIO
             }
 
             try { spIMU.Open(); }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.EventWriter("Opening Machine Port" + e.ToString());
+                Log.EventWriter("No Arduino Port, IMU Port Exc: " + ex.ToString());
 
-                MessageBox.Show(e.Message + "\n\r" + "\n\r" + "Go to Settings -> COM Ports to Fix", "No Arduino Port Active");
+                MessageBox.Show(ex.Message + "\n\r" + "\n\r" + "Go to Settings -> COM Ports to Fix", "No Arduino Port Active");
 
 
                 Properties.Settings.Default.setPort_wasIMUConnected = false;
@@ -517,8 +518,10 @@ namespace AgIO
                 SendToLoopBackMessageAOG(Data);
                 traffic.helloFromMachine = 0;
             }
-            catch { }
-
+            catch (Exception e)
+            {
+                Log.EventWriter("Machine Module Send Exc: " + e.ToString());
+            }
         }
 
         //Send machine info out to machine board
@@ -559,7 +562,7 @@ namespace AgIO
             }
             catch (Exception e)
             {
-                Log.EventWriter("Opening Machine Port" + e.ToString());
+                Log.EventWriter("Opening Machine Port: " + e.ToString());
 
                 MessageBox.Show(e.Message + "\n\r" + "\n\r" + "Go to Settings -> COM Ports to Fix", "No Arduino Port Active");
 
@@ -591,7 +594,7 @@ namespace AgIO
                 try { spMachineModule.Close(); }
                 catch (Exception e)
                 {
-                    Log.EventWriter("Closing Machine Serial Port" + e.ToString());
+                    Log.EventWriter("Closing Machine Serial Port: " + e.ToString());
                     MessageBox.Show(e.Message, "Connection already terminated??");
                 }
 
@@ -945,8 +948,9 @@ namespace AgIO
                     spGPS.Write(data, 0, data.Length);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.EventWriter("Opening RTCM Port: " + e.ToString());
             }
         }
 
@@ -972,7 +976,6 @@ namespace AgIO
             catch (Exception ex)
             {
                 Log.EventWriter("Catch - > Serial GPS Open Fail: " + ex.ToString());
-
             }
 
             if (spGPS.IsOpen)
