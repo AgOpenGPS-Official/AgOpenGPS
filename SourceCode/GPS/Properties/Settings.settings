@@ -447,7 +447,7 @@
       <Value Profile="(Default)">0.5</Value>
     </Setting>
     <Setting Name="setVehicle_tankTrailingHitchLength" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">-3</Value>
     </Setting>
     <Setting Name="setVehicle_minCoverage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>

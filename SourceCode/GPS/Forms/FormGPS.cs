@@ -405,7 +405,7 @@ namespace AgOpenGPS
             panelSim.Top = Height - 60;
 
             //set the language to last used
-            SetLanguage(RegistrySettings.culture, false);
+            SetLanguage(RegistrySettings.culture);
 
             //make sure current field directory exists, null if not
             currentFieldDirectory = Settings.Default.setF_CurrentDir;
@@ -495,45 +495,6 @@ namespace AgOpenGPS
             udpWatch.Start();
 
             ControlExtension.Draggable(panelDrag, true);
-
-            enterSimCoordsToolStripMenuItem.Text = gStr.gsEnterSimCoords;
-            aboutToolStripMenuItem.Text = gStr.gsAbout;
-            menustripLanguage.Text = gStr.gsLanguage;
-
-            simulatorOnToolStripMenuItem.Text = gStr.gsSimulatorOn;
-            resetALLToolStripMenuItem.Text = gStr.gsResetAll;
-
-            toolStripColors.Text = gStr.gsColors;
-            toolStripSectionColors.Text = "Section " + gStr.gsColors;
-            toolStripConfig.Text = gStr.gsConfiguration;
-            toolStripSteerSettings.Text = gStr.gsAutoSteer;
-            toolStripWorkingDirectories.Text = gStr.gsDirectories;
-
-            resetEverythingToolStripMenuItem.Text = gStr.gsResetAllForSure;
-            steerChartStripMenu.Text = gStr.gsCharts;
-
-            //Tools Menu
-            SmoothABtoolStripMenu.Text = gStr.gsSmoothABCurve;
-            boundariesToolStripMenuItem.Text = gStr.gsBoundary;
-            headlandToolStripMenuItem.Text = gStr.gsHeadland;
-            headlandBuildToolStripMenuItem.Text = gStr.gsHeadland + " Builder";
-            deleteContourPathsToolStripMenuItem.Text = gStr.gsDeleteContourPaths;
-            deleteAppliedToolStripMenuItem.Text = gStr.gsDeleteAppliedArea;
-            tramLinesMenuField.Text = gStr.gsTramLines;
-            recordedPathStripMenu.Text = gStr.gsRecordedPathMenu;
-            flagByLatLonToolStripMenuItem.Text = gStr.gsFlagByLatLon;
-            boundaryToolToolStripMenu.Text = gStr.gsBoundary + " Tool";
-
-            webcamToolStrip.Text = gStr.gsWebCam;
-            offsetFixToolStrip.Text = gStr.gsOffsetFix;
-            wizardsMenu.Text = gStr.gsWizards;
-            steerWizardMenuItem.Text = gStr.gsSteerWizard;
-            steerChartToolStripMenuItem.Text = gStr.gsSteerChart;
-            headingChartToolStripMenuItem.Text = gStr.gsHeadingChart;
-            xTEChartToolStripMenuItem.Text = gStr.gsXTEChart;
-
-            btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
-            //btnChangeMappingColor.Text = btnChangeMappingColor.Text.Substring(2);
 
             hotkeys = new char[19];
 

@@ -1802,7 +1802,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-3")]
         public double setVehicle_tankTrailingHitchLength {
             get {
                 return ((double)(this["setVehicle_tankTrailingHitchLength"]));
