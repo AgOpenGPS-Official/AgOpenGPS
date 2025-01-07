@@ -80,7 +80,6 @@ namespace AgOpenGPS
         {
             if (mf.vehicle.vehicleType != 1)
             {
-
                 if (rbtnFront.Checked)
                 {
                     Properties.Settings.Default.setTool_isToolFront = true;
@@ -163,7 +162,7 @@ namespace AgOpenGPS
                     picboxToolHitch.BackgroundImage = Properties.Resources.ToolHitchPageRear;
                 }
 
-                //trailing
+                //trailing TBT
                 else if (Properties.Settings.Default.setTool_isToolTBT)
                 {
                     nudTrailingHitchLength.Visible = true;
@@ -175,6 +174,8 @@ namespace AgOpenGPS
 
                     picboxToolHitch.BackgroundImage = Properties.Resources.ToolHitchPageTBT;
                 }
+
+                //normal trailing
                 else if (Properties.Settings.Default.setTool_isToolTrailing)
                 {
                     nudTrailingHitchLength.Visible = true;
@@ -229,7 +230,6 @@ namespace AgOpenGPS
             {
                 mf.tool.tankTrailingHitchLength = (double)nudTankHitch.Value * -mf.inchOrCm2m;
                 Properties.Settings.Default.setVehicle_tankTrailingHitchLength = mf.tool.tankTrailingHitchLength;
-
             }
         }
 

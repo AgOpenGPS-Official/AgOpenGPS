@@ -907,6 +907,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -952,7 +953,9 @@
     <None Include="btnImages\BoundaryRecordTool.png" />
     <None Include="btnImages\Config\ConD_SectionHighlights.png" />
     <None Include="btnImages\Config\ConD_LineSmooth.png" />
-    <Content Include="btnImages\AutoRecBoundary.png" />
+    <None Include="btnImages\AutoRecBoundary.png" />
+    <None Include="btnImages\QR\QRAOG.png" />
+    <None Include="btnImages\QR\QRYouTube.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
