@@ -46,7 +46,7 @@ namespace AgOpenGPS
                 Left = 0;
             }
 
-            label1.Text = RegistrySettings.vehiclesDirectory + RegistrySettings.vehicleFileName + ".xml";
+            label1.Text = RegistrySettings.vehiclesDirectory + " -> " + RegistrySettings.vehicleFileName + ".xml";
 
             if (RegistrySettings.workingDirectory == "Default")
             {
