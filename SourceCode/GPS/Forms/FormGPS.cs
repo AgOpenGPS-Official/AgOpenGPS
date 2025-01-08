@@ -584,7 +584,14 @@ namespace AgOpenGPS
 
             SaveFormGPSWindowSettings();
 
-            Log.EventWriter("Missed Sentence Counter Total: " + missedSentenceCount.ToString());
+            double minutesSinceStart = ((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds)/60;
+            if (minutesSinceStart < 1)
+            {
+                minutesSinceStart = 1;
+            }
+
+            Log.EventWriter("Missed Sentence Counter Total: " + missedSentenceCount.ToString()
+                + "   Missed Per Minute: " + ((double)missedSentenceCount/minutesSinceStart).ToString("N4"));
 
             Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(RegistrySettings.culture)) + "\r");
 

@@ -900,6 +900,7 @@
     <EmbeddedResource Include="Culture\gStr.zh-CHS.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>gStr.zh-CHS.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

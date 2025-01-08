@@ -445,7 +445,6 @@ namespace AgOpenGPS
             if (isSideGuideLines) guidelinesToolStripMenuItem.Checked = true;
             else guidelinesToolStripMenuItem.Checked = false;
 
-
             //left side
             btnStartAgIO.Visible = Properties.Settings.Default.setFeatures.isAgIOOn;
 
@@ -541,7 +540,6 @@ namespace AgOpenGPS
             isSideGuideLines = Settings.Default.setMenu_isSideGuideLines;
             isSvennArrowOn = Settings.Default.setDisplay_isSvennArrowOn;
 
-            //isLogNMEA = Settings.Default.setMenu_isLogNMEA;
             isPureDisplayOn = Settings.Default.setMenu_isPureOn;
 
             isAutoStartAgIO = Settings.Default.setDisplay_isAutoStartAgIO;
