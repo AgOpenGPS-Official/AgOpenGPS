@@ -585,7 +585,7 @@ namespace AgOpenGPS
             if (mc.ss[mc.swMain] != mc.ssP[mc.swMain])
             {
                 //Main SW pressed
-                if ((mc.ss[mc.swMain] & 1) != 0)
+                if ((mc.ss[mc.swMain] & 1) == 1)
                 {
                     //set butto off and then press it = ON
                     autoBtnState = btnStates.Off;
@@ -593,7 +593,7 @@ namespace AgOpenGPS
                 } // if Main SW ON
 
                 //if Main SW in Arduino is pressed OFF
-                if ((mc.ss[mc.swMain] & (1 << 1)) != 0)
+                if ((mc.ss[mc.swMain] & 2) == 2)
                 {
                     //set button on and then press it = OFF
                     autoBtnState = btnStates.Auto;
@@ -610,7 +610,7 @@ namespace AgOpenGPS
                     // ON Signal from Arduino 
                     for (int i = 0; i < 8; i++)
                     {
-                        if (((mc.ss[mc.swOnGr0] & (1 << i)) != 0) && (tool.numOfSections > i))
+                        if (((mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i)) && (tool.numOfSections > i))
                         {
                             if (section[i].sectionBtnState != btnStates.Auto)
                             {
@@ -636,7 +636,7 @@ namespace AgOpenGPS
                     // sections ON signal from Arduino  
                     for (int i = 0; i < 8; i++)
                     {
-                        if (((mc.ss[mc.swOnGr1] & (1 << i)) != 0) && (tool.numOfSections > i + 8))
+                        if (((mc.ss[mc.swOnGr1] & (1 << i)) == (1 << i)) && (tool.numOfSections > i + 8))
                         {
                             if (section[i + 8].sectionBtnState != btnStates.Auto)
                             {
@@ -664,7 +664,7 @@ namespace AgOpenGPS
                     {
                         for (int i = 0; i < 8; i++)
                         {
-                            if (((mc.ssP[mc.swOffGr0] & (1 << i)) != 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 1) && (section[i].sectionBtnState == btnStates.Off))
+                            if (((mc.ssP[mc.swOffGr0] & (1 << i)) == (1 << i)) && ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)) && (section[i].sectionBtnState == btnStates.Off))
                             {
                                 PerformSectionClick(i);
                             }
@@ -680,7 +680,7 @@ namespace AgOpenGPS
                     {
                         for (int i = 0; i < 8; i++)
                         {
-                            if (((mc.ssP[mc.swOffGr1] & (1 << i)) != 0) && ((mc.ss[mc.swOffGr1] & (1 << i)) != 1) && (section[i + 8].sectionBtnState == btnStates.Off))
+                            if (((mc.ssP[mc.swOffGr1] & (1 << i)) == (1 << i)) && ((mc.ss[mc.swOffGr1] & (1 << i)) != (1 << i)) && (section[i + 8].sectionBtnState == btnStates.Off))
                             {
                                 PerformSectionClick(i + 8);
                             }
@@ -695,7 +695,7 @@ namespace AgOpenGPS
                     //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
                     for (int i = 0; i < 8; i++)
                     {
-                        if (((mc.ss[mc.swOffGr0] & (1 << i)) != 0) && (section[i].sectionBtnState != btnStates.Off))
+                        if (((mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i)) && (section[i].sectionBtnState != btnStates.Off))
                         {
                             section[i].sectionBtnState = btnStates.On;
                             PerformSectionClick(i);
@@ -709,7 +709,7 @@ namespace AgOpenGPS
                     //if section SW in Arduino is switched to OFF; check always, if switch is locked to off GUI should not change
                     for (int i = 0; i < 8; i++)
                     {
-                        if (((mc.ss[mc.swOffGr1] & (1 << i)) != 0) && (section[i + 8].sectionBtnState != btnStates.Off))
+                        if (((mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i)) && (section[i + 8].sectionBtnState != btnStates.Off))
                         {
                             section[i + 8].sectionBtnState = btnStates.On;
                             PerformSectionClick(i + 8);
@@ -723,7 +723,7 @@ namespace AgOpenGPS
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & (1 << i)) != 0))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i)))
                         {
                             if (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto)
                             {
@@ -749,7 +749,7 @@ namespace AgOpenGPS
                     {
                         for (int i = 0; i < 8; i++)
                         {
-                            if ((tool.zoneRanges[i + 1] > 0) && ((mc.ssP[mc.swOffGr0] & (1 << i)) != 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 1) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState == btnStates.Off))
+                            if ((tool.zoneRanges[i + 1] > 0) && ((mc.ssP[mc.swOffGr0] & (1 << i)) == (1 << i)) && ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState == btnStates.Off))
                             {
                                 PerformZoneClick(i);
                             }
@@ -763,7 +763,7 @@ namespace AgOpenGPS
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 0) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i)) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
                         {
                             section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.On;
                             PerformZoneClick(i);
@@ -776,14 +776,14 @@ namespace AgOpenGPS
         private void HandleSwitchHardware()
         {
             //MainSW Byte is AUTO
-            if ((autoBtnState != btnStates.Auto) && ((mc.ss[mc.swMain] & 1) != 0))
+            if ((autoBtnState != btnStates.Auto) && ((mc.ss[mc.swMain] & 1) == 1))
             {
-                //set butto off and then press it = ON
+                //set button off and then press it = ON
                 autoBtnState = btnStates.Off;
                 btnSectionMasterAuto.PerformClick();
             }
             //MainSW Byte is OFF
-            else if ((autoBtnState != btnStates.Off) && ((mc.ss[mc.swMain] & (1 << 1)) != 0))
+            else if ((autoBtnState != btnStates.Off) && ((mc.ss[mc.swMain] & 2) == 2))
             {
                 //set button on and then press it = OFF
                 autoBtnState = btnStates.Auto;
@@ -797,7 +797,7 @@ namespace AgOpenGPS
                     // AUTO Signal from Arduino Gr0
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((section[i].sectionBtnState != btnStates.Auto) && ((mc.ss[mc.swAutoGr0] & (1 << i)) != 0) && (tool.numOfSections > i) && (mc.ss[mc.swNumSections] > i))
+                        if ((section[i].sectionBtnState != btnStates.Auto) && ((mc.ss[mc.swAutoGr0] & (1 << i)) == (1 << i)) && (tool.numOfSections > i) && (mc.ss[mc.swNumSections] > i))
                         {
                             section[i].sectionBtnState = btnStates.Off;
                             PerformSectionClick(i);
@@ -809,7 +809,7 @@ namespace AgOpenGPS
                     // AUTO Signal from Arduino Gr1
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((section[i + 8].sectionBtnState != btnStates.Auto) && ((mc.ss[mc.swAutoGr1] & (1 << i)) != 0) && (tool.numOfSections > i + 8) && (mc.ss[mc.swNumSections] > i + 8))
+                        if ((section[i + 8].sectionBtnState != btnStates.Auto) && ((mc.ss[mc.swAutoGr1] & (1 << i)) == (1 << i)) && (tool.numOfSections > i + 8) && (mc.ss[mc.swNumSections] > i + 8))
                         {
                             PerformSectionClick(i + 8);
                         }
@@ -821,7 +821,7 @@ namespace AgOpenGPS
                     // ON Signal from Arduino Gr0
                     for (int i = 0; i < 8; i++)
                     {
-                        if (((section[i].sectionBtnState != btnStates.On) && (mc.ss[mc.swOnGr0] & (1 << i)) != 0) && (tool.numOfSections > i) && (mc.ss[mc.swNumSections] > i))
+                        if (((section[i].sectionBtnState != btnStates.On) && (mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i)) && (tool.numOfSections > i) && (mc.ss[mc.swNumSections] > i))
                         {
                             section[i].sectionBtnState = btnStates.Auto;
                             PerformSectionClick(i);
@@ -833,7 +833,7 @@ namespace AgOpenGPS
                     // ON Signal from Arduino Gr1
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((section[i + 8].sectionBtnState != btnStates.On) && ((mc.ss[mc.swOnGr1] & (1 << i)) != 0) && (tool.numOfSections > i + 8) && (mc.ss[mc.swNumSections] > i + 8))
+                        if ((section[i + 8].sectionBtnState != btnStates.On) && ((mc.ss[mc.swOnGr1] & (1 << i)) == (1 << i)) && (tool.numOfSections > i + 8) && (mc.ss[mc.swNumSections] > i + 8))
                         {
                             section[i + 8].sectionBtnState = btnStates.Auto;
                             PerformSectionClick(i + 8);
@@ -847,7 +847,7 @@ namespace AgOpenGPS
                     // OFF Signal from Arduino Gr0
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((section[i].sectionBtnState != btnStates.Off) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 0) && (tool.numOfSections > i))  // !check mc.ss[tool.numOfSections] => to be on the save side by switching eveything off 
+                        if ((section[i].sectionBtnState != btnStates.Off) && ((mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i)) && (tool.numOfSections > i))  // !check mc.ss[tool.numOfSections] => to be on the save side by switching eveything off 
                         {
                             section[i].sectionBtnState = btnStates.On;
                             PerformSectionClick(i);
@@ -859,7 +859,7 @@ namespace AgOpenGPS
                     // OFF Signal from Arduino Gr1
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((section[i + 8].sectionBtnState != btnStates.Off) && ((mc.ss[mc.swOffGr1] & (1 << i)) != 0) && (tool.numOfSections > i + 8)) // !check mc.ss[tool.numOfSections] => to be on the save side by switching eveything off
+                        if ((section[i + 8].sectionBtnState != btnStates.Off) && ((mc.ss[mc.swOffGr1] & (1 << i)) == (1 << i)) && (tool.numOfSections > i + 8)) // !check mc.ss[tool.numOfSections] => to be on the save side by switching eveything off
                         {
                             PerformSectionClick(i + 8);
                         }
@@ -873,7 +873,7 @@ namespace AgOpenGPS
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swAutoGr0] & (1 << i)) != 0) && ((mc.ss[mc.swOnGr0] & (1 << i)) != 1) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 1) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swAutoGr0] & (1 << i)) == (1 << i)) && ((mc.ss[mc.swOnGr0] & (1 << i)) != (1 << i)) && ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Auto))
                         {
                             section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Off;
                             PerformZoneClick(i);
@@ -887,7 +887,7 @@ namespace AgOpenGPS
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & (1 << i)) != 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 1) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.On))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOnGr0] & (1 << i)) == (1 << i)) && ((mc.ss[mc.swOffGr0] & (1 << i)) != (1 << i)) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.On))
                         {
                             section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.Auto;
                             PerformZoneClick(i);
@@ -901,7 +901,7 @@ namespace AgOpenGPS
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) != 0) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
+                        if ((tool.zoneRanges[i + 1] > 0) && ((mc.ss[mc.swOffGr0] & (1 << i)) == (1 << i)) && (section[tool.zoneRanges[i + 1] - 1].sectionBtnState != btnStates.Off))
                         {
                             section[tool.zoneRanges[i + 1] - 1].sectionBtnState = btnStates.On;
                             PerformZoneClick(i);
