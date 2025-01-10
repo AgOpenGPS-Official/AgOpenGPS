@@ -581,13 +581,13 @@ namespace AgOpenGPS
             {
                 nudTractorHitchLength.Visible = true;
                 label94.Visible = true;
-                label27.Visible = true;
+                LabelHitchL.Visible = true;
             }
             else
             {
                 nudTractorHitchLength.Visible = false;
                 label94.Visible = false;
-                label27.Visible = false;
+                LabelHitchL.Visible = false;
             }
 
             label94.Text = mf.unitsInCm;

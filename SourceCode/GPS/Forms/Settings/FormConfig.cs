@@ -116,8 +116,8 @@ namespace AgOpenGPS
             tab1.SelectedTab = tabSummary;
             tboxVehicleNameSave.Focus();
 
-            label29.Text = gStr.gsSaveAs;
-            label162.Text = gStr.gsNew;
+            lblsaveas.Text = gStr.gsSaveAs;
+            labelnew.Text = gStr.gsNew;
             UpdateSummary();
 
             if (!ScreenHelper.IsOnScreen(Bounds))
