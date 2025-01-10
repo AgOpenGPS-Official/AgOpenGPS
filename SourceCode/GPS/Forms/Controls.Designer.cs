@@ -473,7 +473,7 @@ namespace AgOpenGPS
             headlandToolStripMenuItem.Enabled = (bnd.bndList.Count > 0);
             headlandBuildToolStripMenuItem.Enabled = (bnd.bndList.Count > 0);
 
-            tramLinesMenuField.Enabled = (trk.gArr.Count > 0 && trk.idx > -1);
+            tramLinesMenuField.Enabled = tramsMultiMenuField.Enabled = (trk.gArr.Count > 0 && trk.idx > -1);
         }
 
         public bool isCancelJobMenu;
@@ -679,6 +679,28 @@ namespace AgOpenGPS
             form99.Show(this);
 
         }
+
+        private void tramLinesMenuMulti_Click(object sender, EventArgs e)
+        {
+            if (ct.isContourBtnOn) btnContour.PerformClick();
+
+            if (trk.gArr.Count < 1)
+            {
+                TimedMessageBox(1500, gStr.gsNoGuidanceLines, gStr.gsNoGuidanceLines);
+                panelRight.Enabled = true;
+                return;
+            }
+            if (bnd.bndList.Count < 1)
+            {
+                TimedMessageBox(1500, gStr.gsNoBoundary, gStr.gsCreateABoundaryFirst);
+                panelRight.Enabled = true;
+                return;
+            }
+
+            Form form99 = new FormTramLine(this);
+            form99.ShowDialog(this);
+        }
+
         public void GetHeadland()
         {
             using (var form = new FormHeadLine (this))

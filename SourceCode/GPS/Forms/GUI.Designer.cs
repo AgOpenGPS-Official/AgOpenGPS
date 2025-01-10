@@ -97,7 +97,6 @@ namespace AgOpenGPS
 
         public List<int> buttonOrder = new List<int>();
 
-
         //Timer triggers at 125 msec
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
@@ -406,6 +405,7 @@ namespace AgOpenGPS
             deleteContourPathsToolStripMenuItem.Text = gStr.gsDeleteContourPaths;
             deleteAppliedToolStripMenuItem.Text = gStr.gsDeleteAppliedArea;
             tramLinesMenuField.Text = gStr.gsTramLines;
+            tramsMultiMenuField.Text = gStr.gsTramLines + " Add";
             recordedPathStripMenu.Text = gStr.gsRecordedPathMenu;
             flagByLatLonToolStripMenuItem.Text = gStr.gsFlagByLatLon;
             boundaryToolToolStripMenu.Text = gStr.gsBoundary + " Tool";
@@ -419,7 +419,6 @@ namespace AgOpenGPS
             xTEChartToolStripMenuItem.Text = gStr.gsXTEChart;
 
             btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
-            //btnChangeMappingColor.Text = btnChangeMappingColor.Text.Substring(2);
 
             //metric settings
             isMetric = Settings.Default.setMenu_isMetric;
@@ -434,6 +433,7 @@ namespace AgOpenGPS
             headlandToolStripMenuItem.Visible = Properties.Settings.Default.setFeatures.isHeadlandOn;
             headlandBuildToolStripMenuItem.Visible = Properties.Settings.Default.setFeatures.isHeadlandOn;
             tramLinesMenuField.Visible = Properties.Settings.Default.setFeatures.isTramOn;
+            tramsMultiMenuField.Visible = Properties.Settings.Default.setFeatures.isTramOn;
             recordedPathStripMenu.Visible = Properties.Settings.Default.setFeatures.isRecPathOn;
 
 

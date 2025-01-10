@@ -24,7 +24,6 @@ namespace AgOpenGPS
             InitializeComponent();
 
             //Language keys
-            this.Text = "Name *****";
         }
 
         private void LoadLabels()
@@ -59,7 +58,6 @@ namespace AgOpenGPS
             label58.Text = Properties.Settings.Default.setDisplay_isAutoOffAgIO.ToString();
 
             label60.Text = RegistrySettings.culture;
-            label62.Text = Properties.Settings.Default.setF_CurrentDir;
             label64.Text = Properties.Settings.Default.setF_isRemoteWorkSystemOn.ToString();
             label66.Text = Properties.Settings.Default.setF_isSteerWorkSwitchEnabled.ToString(); 
             label68.Text = Properties.Settings.Default.setF_isSteerWorkSwitchManualSections.ToString();
@@ -67,7 +65,9 @@ namespace AgOpenGPS
             label72.Text = Properties.Settings.Default.setF_isWorkSwitchEnabled.ToString();
             label74.Text = Properties.Settings.Default.setF_isWorkSwitchManualSections.ToString();
             label76.Text = Properties.Settings.Default.setF_minHeadingStepDistance.ToString();
-            label78.Text = RegistrySettings.culture.ToString();
+            label78.Text = RegistrySettings.vehiclesDirectory + " -> " 
+                    + RegistrySettings.vehicleFileName + ".xml";
+            
             label80.Text = Properties.Settings.Default.setGPS_ageAlarm.ToString();
             label82.Text = Properties.Settings.Default.setGPS_dualHeadingOffset.ToString();
             label84.Text = Properties.Settings.Default.setGPS_dualReverseDetectionDistance.ToString();
@@ -107,7 +107,6 @@ namespace AgOpenGPS
             label154.Text = Properties.Settings.Default.setVehicle_toolOffset.ToString();
             label156.Text = Properties.Settings.Default.setVehicle_toolOverlap.ToString();
             label158.Text = Properties.Settings.Default.setVehicle_toolWidth.ToString();
-            label160.Text = RegistrySettings.vehicleFileName;
             label162.Text = Properties.Settings.Default.setVehicle_vehicleType.ToString();
             label164.Text = Properties.Settings.Default.setAS_isSteerInReverse.ToString();
 

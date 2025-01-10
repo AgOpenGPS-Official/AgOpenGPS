@@ -40,11 +40,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -59,7 +54,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(13, 643);
+            this.label6.Location = new System.Drawing.Point(19, 551);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(163, 23);
             this.label6.TabIndex = 16;
@@ -78,7 +73,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(13, 581);
+            this.label3.Location = new System.Drawing.Point(19, 489);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(150, 23);
             this.label3.TabIndex = 15;
@@ -88,7 +83,7 @@
             // 
             this.linkLabelGit.AutoSize = true;
             this.linkLabelGit.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabelGit.Location = new System.Drawing.Point(13, 668);
+            this.linkLabelGit.Location = new System.Drawing.Point(19, 576);
             this.linkLabelGit.Name = "linkLabelGit";
             this.linkLabelGit.Size = new System.Drawing.Size(447, 23);
             this.linkLabelGit.TabIndex = 11;
@@ -100,7 +95,7 @@
             // 
             this.linkLabelCombineForum.AutoSize = true;
             this.linkLabelCombineForum.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabelCombineForum.Location = new System.Drawing.Point(13, 610);
+            this.linkLabelCombineForum.Location = new System.Drawing.Point(19, 518);
             this.linkLabelCombineForum.Name = "linkLabelCombineForum";
             this.linkLabelCombineForum.Size = new System.Drawing.Size(298, 23);
             this.linkLabelCombineForum.TabIndex = 12;
@@ -145,7 +140,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(280, 220);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(714, 205);
+            this.label4.Size = new System.Drawing.Size(731, 248);
             this.label4.TabIndex = 132;
             this.label4.Text = resources.GetString("label4.Text");
             // 
@@ -170,61 +165,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(147, 483);
+            this.label1.Location = new System.Drawing.Point(26, 622);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 23);
             this.label1.TabIndex = 134;
             this.label1.Text = "label1";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(147, 510);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 23);
-            this.label7.TabIndex = 135;
-            this.label7.Text = "label7";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(147, 536);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 23);
-            this.label8.TabIndex = 136;
-            this.label8.Text = "label8";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(76, 536);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(77, 23);
-            this.label11.TabIndex = 139;
-            this.label11.Text = "Culture:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(67, 509);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(86, 23);
-            this.label12.TabIndex = 138;
-            this.label12.Text = "Working:";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(77, 482);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(76, 23);
-            this.label13.TabIndex = 137;
-            this.label13.Text = "Vehicle:";
             // 
             // pictureBox1
             // 
@@ -244,9 +189,9 @@
             this.button2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button2.Location = new System.Drawing.Point(612, 588);
+            this.button2.Location = new System.Drawing.Point(563, 492);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(155, 86);
+            this.button2.Size = new System.Drawing.Size(155, 89);
             this.button2.TabIndex = 39;
             this.button2.Text = "Disagree";
             this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -261,7 +206,7 @@
             this.button1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Image = global::AgOpenGPS.Properties.Resources.OK64;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1.Location = new System.Drawing.Point(806, 588);
+            this.button1.Location = new System.Drawing.Point(757, 492);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(254, 107);
             this.button1.TabIndex = 10;
@@ -304,8 +249,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1064, 703);
+            this.BackColor = System.Drawing.Color.Lavender;
+            this.ClientSize = new System.Drawing.Size(1026, 659);
             this.ControlBox = false;
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label10);
@@ -313,12 +258,7 @@
             this.Controls.Add(this.label14);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label3);
@@ -357,11 +297,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label14;

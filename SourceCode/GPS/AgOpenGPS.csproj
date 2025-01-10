@@ -220,6 +220,12 @@
     <Compile Include="Forms\Field\FormFieldExisting.Designer.cs">
       <DependentUpon>FormFieldExisting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Guidance\FormTramLine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Guidance\FormTramLine.Designer.cs">
+      <DependentUpon>FormTramLine.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Settings\FormAllSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -681,6 +687,9 @@
     <EmbeddedResource Include="Forms\Field\FormFieldExisting.resx">
       <DependentUpon>FormFieldExisting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Guidance\FormTramLine.resx">
+      <DependentUpon>FormTramLine.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\FormAllSettings.resx">
       <DependentUpon>FormAllSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -955,9 +964,12 @@
     <None Include="btnImages\Config\ConD_LineSmooth.png" />
     <None Include="btnImages\QR\QRAOG.png" />
     <None Include="btnImages\QR\QRYouTube.png" />
+    <None Include="btnImages\BoundarySectionControlOnOff.png" />
+    <None Include="btnImages\TramMulti.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\BoundarySectionControlOnOff.png" />
     <Content Include="UDP_SimTool.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

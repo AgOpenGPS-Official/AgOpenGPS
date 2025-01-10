@@ -483,7 +483,7 @@ namespace AgOpenGPS
             //    GL.End();
             //}
 
-            if (mf.bnd.isBndBeingMade)
+            if (mf.bnd.isBndBeingMade && mf.bnd.isDrawAtPivot)
             {
                 if (mf.bnd.isDrawRightSide)
                 {

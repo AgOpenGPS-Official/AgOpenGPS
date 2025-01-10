@@ -345,7 +345,7 @@ namespace AgOpenGPS
             CreateDirectories();
 
             //keep below 500 kb
-            Log.CheckLogSize(Path.Combine(logsDirectory, "AgOpenGPS_Events_Log.txt"), 500000);
+            Log.CheckLogSize(Path.Combine(logsDirectory, "AgOpenGPS_Events_Log.txt"), 1000000);
 
             //what's in the vehicle directory
             try

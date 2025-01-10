@@ -12,7 +12,7 @@ namespace AgOpenGPS
         public bool isBndBeingMade;
 
         public bool isDrawRightSide = true, isDrawAtPivot = true, isOkToAddPoints = false;
-
+        public bool isRecBoundaryWhenSectionOn = false;
         public int closestFenceNum;
 
         //point at the farthest boundary segment from pivotAxle

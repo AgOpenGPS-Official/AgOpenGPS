@@ -122,8 +122,9 @@
 
 It is in no way to be used on real equipment in any circumstance. A simulator is provided to allow the student to safely experience machine guidance.
 
-There are no safety systems in the software and none are implied. Use at own Risk.
-</value>
+There are no safety systems in the software and none are implied. 
+
+USE AT OWN RISK.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

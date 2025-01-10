@@ -553,7 +553,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100, 100, 125")]
+        [global::System.Configuration.DefaultSettingValueAttribute("145, 145, 145")]
         public global::System.Drawing.Color setDisplay_colorFieldDay {
             get {
                 return ((global::System.Drawing.Color)(this["setDisplay_colorFieldDay"]));
@@ -782,7 +782,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10, 10, 20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
         public global::System.Drawing.Color setDisplay_colorTextDay {
             get {
                 return ((global::System.Drawing.Color)(this["setDisplay_colorTextDay"]));
@@ -3129,6 +3129,18 @@ namespace AgOpenGPS.Properties {
             }
             set {
                 this["setDisplay_isLineSmooth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("921, 676")]
+        public global::System.Drawing.Size setWindow_tramLineSize {
+            get {
+                return ((global::System.Drawing.Size)(this["setWindow_tramLineSize"]));
+            }
+            set {
+                this["setWindow_tramLineSize"] = value;
             }
         }
     }

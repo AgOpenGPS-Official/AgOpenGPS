@@ -32,12 +32,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblArea = new System.Windows.Forms.Label();
-            this.lblPoints = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.lblMetersInches = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.cboxIsRecBoundaryWhenSectionOn = new System.Windows.Forms.CheckBox();
             this.btnAntennaTool = new System.Windows.Forms.Button();
             this.btnAddPoint = new System.Windows.Forms.Button();
             this.btnLeftRight = new System.Windows.Forms.Button();
@@ -55,7 +54,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(18, 365);
+            this.label1.Location = new System.Drawing.Point(2, 458);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 23);
             this.label1.TabIndex = 141;
@@ -73,49 +72,24 @@
             this.lblArea.BackColor = System.Drawing.Color.Transparent;
             this.lblArea.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblArea.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblArea.Location = new System.Drawing.Point(66, 366);
+            this.lblArea.Location = new System.Drawing.Point(56, 458);
             this.lblArea.Name = "lblArea";
             this.lblArea.Size = new System.Drawing.Size(46, 23);
             this.lblArea.TabIndex = 142;
             this.lblArea.Text = "999";
             this.lblArea.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblPoints
-            // 
-            this.lblPoints.AutoSize = true;
-            this.lblPoints.BackColor = System.Drawing.Color.Transparent;
-            this.lblPoints.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPoints.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblPoints.Location = new System.Drawing.Point(68, 403);
-            this.lblPoints.Name = "lblPoints";
-            this.lblPoints.Size = new System.Drawing.Size(46, 23);
-            this.lblPoints.TabIndex = 146;
-            this.lblPoints.Text = "999";
-            this.lblPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(7, 402);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 23);
-            this.label2.TabIndex = 148;
-            this.label2.Text = "Points:";
-            // 
             // lblMetersInches
             // 
             this.lblMetersInches.BackColor = System.Drawing.Color.Transparent;
             this.lblMetersInches.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMetersInches.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblMetersInches.Location = new System.Drawing.Point(146, 16);
+            this.lblMetersInches.Location = new System.Drawing.Point(137, 14);
             this.lblMetersInches.Name = "lblMetersInches";
             this.lblMetersInches.Size = new System.Drawing.Size(102, 23);
             this.lblMetersInches.TabIndex = 151;
-            this.lblMetersInches.Text = "meters";
-            this.lblMetersInches.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMetersInches.Text = "cm";
+            this.lblMetersInches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label3
             // 
@@ -123,7 +97,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(141, 247);
+            this.label3.Location = new System.Drawing.Point(161, 270);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 23);
             this.label3.TabIndex = 152;
@@ -136,7 +110,7 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Location = new System.Drawing.Point(146, 149);
+            this.label4.Location = new System.Drawing.Point(161, 155);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(24, 23);
             this.label4.TabIndex = 153;
@@ -149,12 +123,32 @@
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(5, 249);
+            this.label5.Location = new System.Drawing.Point(161, 389);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 23);
             this.label5.TabIndex = 154;
             this.label5.Text = "R";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cboxIsRecBoundaryWhenSectionOn
+            // 
+            this.cboxIsRecBoundaryWhenSectionOn.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxIsRecBoundaryWhenSectionOn.BackColor = System.Drawing.Color.Transparent;
+            this.cboxIsRecBoundaryWhenSectionOn.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.cboxIsRecBoundaryWhenSectionOn.FlatAppearance.BorderSize = 2;
+            this.cboxIsRecBoundaryWhenSectionOn.FlatAppearance.CheckedBackColor = System.Drawing.Color.PaleTurquoise;
+            this.cboxIsRecBoundaryWhenSectionOn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxIsRecBoundaryWhenSectionOn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxIsRecBoundaryWhenSectionOn.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.cboxIsRecBoundaryWhenSectionOn.Image = global::AgOpenGPS.Properties.Resources.BoundarySectionControlOnOff;
+            this.cboxIsRecBoundaryWhenSectionOn.Location = new System.Drawing.Point(155, 54);
+            this.cboxIsRecBoundaryWhenSectionOn.Name = "cboxIsRecBoundaryWhenSectionOn";
+            this.cboxIsRecBoundaryWhenSectionOn.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cboxIsRecBoundaryWhenSectionOn.Size = new System.Drawing.Size(80, 84);
+            this.cboxIsRecBoundaryWhenSectionOn.TabIndex = 468;
+            this.cboxIsRecBoundaryWhenSectionOn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxIsRecBoundaryWhenSectionOn.UseVisualStyleBackColor = false;
+            this.cboxIsRecBoundaryWhenSectionOn.Click += new System.EventHandler(this.cboxIsRecBoundaryWhenSectionOn_Click);
             // 
             // btnAntennaTool
             // 
@@ -162,9 +156,9 @@
             this.btnAntennaTool.FlatAppearance.BorderSize = 0;
             this.btnAntennaTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAntennaTool.Image = global::AgOpenGPS.Properties.Resources.BoundaryRecordTool;
-            this.btnAntennaTool.Location = new System.Drawing.Point(156, 61);
+            this.btnAntennaTool.Location = new System.Drawing.Point(13, 172);
             this.btnAntennaTool.Name = "btnAntennaTool";
-            this.btnAntennaTool.Size = new System.Drawing.Size(85, 68);
+            this.btnAntennaTool.Size = new System.Drawing.Size(80, 64);
             this.btnAntennaTool.TabIndex = 155;
             this.btnAntennaTool.UseVisualStyleBackColor = true;
             this.btnAntennaTool.Click += new System.EventHandler(this.btnAntennaTool_Click);
@@ -177,9 +171,9 @@
             this.btnAddPoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPoint.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnAddPoint.Image = global::AgOpenGPS.Properties.Resources.PointAdd;
-            this.btnAddPoint.Location = new System.Drawing.Point(141, 256);
+            this.btnAddPoint.Location = new System.Drawing.Point(155, 290);
             this.btnAddPoint.Name = "btnAddPoint";
-            this.btnAddPoint.Size = new System.Drawing.Size(89, 70);
+            this.btnAddPoint.Size = new System.Drawing.Size(80, 64);
             this.btnAddPoint.TabIndex = 143;
             this.btnAddPoint.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnAddPoint.UseVisualStyleBackColor = false;
@@ -191,9 +185,9 @@
             this.btnLeftRight.FlatAppearance.BorderSize = 0;
             this.btnLeftRight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLeftRight.Image = global::AgOpenGPS.Properties.Resources.BoundaryLeft;
-            this.btnLeftRight.Location = new System.Drawing.Point(19, 61);
+            this.btnLeftRight.Location = new System.Drawing.Point(5, 64);
             this.btnLeftRight.Name = "btnLeftRight";
-            this.btnLeftRight.Size = new System.Drawing.Size(85, 68);
+            this.btnLeftRight.Size = new System.Drawing.Size(80, 64);
             this.btnLeftRight.TabIndex = 68;
             this.btnLeftRight.UseVisualStyleBackColor = true;
             this.btnLeftRight.Click += new System.EventHandler(this.btnLeftRight_Click);
@@ -205,9 +199,9 @@
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnStop.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnStop.Location = new System.Drawing.Point(145, 364);
+            this.btnStop.Location = new System.Drawing.Point(5, 395);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(97, 64);
+            this.btnStop.Size = new System.Drawing.Size(80, 78);
             this.btnStop.TabIndex = 140;
             this.btnStop.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnStop.UseVisualStyleBackColor = false;
@@ -221,9 +215,9 @@
             this.btnPausePlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPausePlay.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnPausePlay.Image = global::AgOpenGPS.Properties.Resources.BoundaryRecord;
-            this.btnPausePlay.Location = new System.Drawing.Point(5, 262);
+            this.btnPausePlay.Location = new System.Drawing.Point(155, 409);
             this.btnPausePlay.Name = "btnPausePlay";
-            this.btnPausePlay.Size = new System.Drawing.Size(109, 64);
+            this.btnPausePlay.Size = new System.Drawing.Size(80, 64);
             this.btnPausePlay.TabIndex = 139;
             this.btnPausePlay.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnPausePlay.UseVisualStyleBackColor = false;
@@ -237,9 +231,9 @@
             this.btnRestart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestart.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnRestart.Image = global::AgOpenGPS.Properties.Resources.Trash;
-            this.btnRestart.Location = new System.Drawing.Point(5, 158);
+            this.btnRestart.Location = new System.Drawing.Point(18, 292);
             this.btnRestart.Name = "btnRestart";
-            this.btnRestart.Size = new System.Drawing.Size(89, 70);
+            this.btnRestart.Size = new System.Drawing.Size(52, 52);
             this.btnRestart.TabIndex = 147;
             this.btnRestart.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnRestart.UseVisualStyleBackColor = false;
@@ -253,9 +247,9 @@
             this.btnDeleteLast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeleteLast.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnDeleteLast.Image = global::AgOpenGPS.Properties.Resources.PointDelete;
-            this.btnDeleteLast.Location = new System.Drawing.Point(141, 158);
+            this.btnDeleteLast.Location = new System.Drawing.Point(155, 172);
             this.btnDeleteLast.Name = "btnDeleteLast";
-            this.btnDeleteLast.Size = new System.Drawing.Size(89, 70);
+            this.btnDeleteLast.Size = new System.Drawing.Size(80, 64);
             this.btnDeleteLast.TabIndex = 144;
             this.btnDeleteLast.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDeleteLast.UseVisualStyleBackColor = false;
@@ -265,7 +259,7 @@
             // 
             this.nudOffset.BackColor = System.Drawing.Color.AliceBlue;
             this.nudOffset.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudOffset.Location = new System.Drawing.Point(22, 5);
+            this.nudOffset.Location = new System.Drawing.Point(11, 5);
             this.nudOffset.Maximum = new decimal(new int[] {
             4999,
             0,
@@ -288,17 +282,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(250, 434);
+            this.ClientSize = new System.Drawing.Size(249, 483);
             this.ControlBox = false;
+            this.Controls.Add(this.cboxIsRecBoundaryWhenSectionOn);
             this.Controls.Add(this.btnAntennaTool);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnAddPoint);
-            this.Controls.Add(this.lblPoints);
             this.Controls.Add(this.btnLeftRight);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnPausePlay);
             this.Controls.Add(this.lblArea);
             this.Controls.Add(this.btnRestart);
@@ -306,6 +298,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.nudOffset);
             this.Controls.Add(this.lblMetersInches);
+            this.Controls.Add(this.btnStop);
             this.Font = new System.Drawing.Font("Tahoma", 14F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.HelpButton = true;
@@ -334,9 +327,7 @@
         private System.Windows.Forms.Label lblArea;
         private System.Windows.Forms.Button btnAddPoint;
         private System.Windows.Forms.Button btnDeleteLast;
-        private System.Windows.Forms.Label lblPoints;
         private System.Windows.Forms.Button btnRestart;
-        private System.Windows.Forms.Label label2;
         private NudlessNumericUpDown nudOffset;
         private System.Windows.Forms.Button btnLeftRight;
         private System.Windows.Forms.Label lblMetersInches;
@@ -344,5 +335,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAntennaTool;
+        private System.Windows.Forms.CheckBox cboxIsRecBoundaryWhenSectionOn;
     }
 }

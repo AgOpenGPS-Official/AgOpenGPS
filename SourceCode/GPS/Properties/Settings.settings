@@ -135,7 +135,7 @@
       <Value Profile="(Default)">27, 151, 160</Value>
     </Setting>
     <Setting Name="setDisplay_colorFieldDay" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">100, 100, 125</Value>
+      <Value Profile="(Default)">145, 145, 145</Value>
     </Setting>
     <Setting Name="setDisplay_isDayMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -192,7 +192,7 @@
       <Value Profile="(Default)">230, 230, 230</Value>
     </Setting>
     <Setting Name="setDisplay_colorTextDay" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">10, 10, 20</Value>
+      <Value Profile="(Default)">Black</Value>
     </Setting>
     <Setting Name="setTram_isTramOnBackBuffer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -778,6 +778,9 @@
     </Setting>
     <Setting Name="setDisplay_isLineSmooth" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="setWindow_tramLineSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">921, 676</Value>
     </Setting>
   </Settings>
 </SettingsFile>
