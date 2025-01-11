@@ -115,21 +115,21 @@ namespace AgOpenGPS
 
             tab1.SelectedTab = tabSummary;
             tboxVehicleNameSave.Focus();
-
-            lblsaveas.Text = gStr.gsSaveAs;
-            labelnew.Text = gStr.gsNew;
-            LabelUnit.Text = gStr.gsUnit;
+            //Label translations
+            labelSaveAs.Text = gStr.gsSaveAs;
+            labelNew.Text = gStr.gsNew;
+            labelUnits.Text = gStr.gsUnit;
             labelWidth.Text = gStr.gsWidth;
-            LabelSections.Text = gStr.gsSections;
-            LabelOffset.Text = gStr.gsOffset;
-            LabelOverlap.Text = gStr.gsOverlap;
-            LabelLookAhead.Text = gStr.gsLookAhead;
-            LabelNudge.Text = gStr.gsNudge;
-            LabelTramW.Text = gStr.gsTramWidth;
-            LabelWheelBase.Text = gStr.gsWheelbase;
-            VhicleGroupBox.Text = gStr.gsVhiclegroupbox;
-            LabelImage.Text = gStr.gsImage;
-            LabelOpacity.Text = gStr.gsOpacity;
+            labelSections.Text = gStr.gsSections;
+            labelOffset.Text = gStr.gsOffset;
+            labelOverlap.Text = gStr.gsOverlap;
+            labelLookAhead.Text = gStr.gsLookAhead;
+            labelNudge.Text = gStr.gsNudge;
+            labelTramW.Text = gStr.gsTramWidth;
+            labelWheelBase.Text = gStr.gsWheelbase;
+            labelVehicleGroupBox.Text = gStr.gsVhiclegroupbox;
+            labelImage.Text = gStr.gsImage;
+            labelOpacity.Text = gStr.gsOpacity;
 
 
             UpdateSummary();

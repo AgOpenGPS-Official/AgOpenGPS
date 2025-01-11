@@ -571,12 +571,12 @@ namespace AgOpenGPS
             if (cboxIsUnique.Checked)
             {
                 cboxIsUnique.BackgroundImage = Properties.Resources.ConT_Symmetric;
-                cboxNumberOfZones.Visible = lblZonesBox.Visible = true;
+                cboxNumberOfZones.Visible = labelZonesBox.Visible = true;
             }
             else
             {
                 cboxIsUnique.BackgroundImage = Properties.Resources.ConT_Asymmetric;
-                cboxNumberOfZones.Visible = lblZonesBox.Visible = false;
+                cboxNumberOfZones.Visible = labelZonesBox.Visible = false;
             }
 
             nudNumberOfSections.Maximum = FormGPS.MAXSECTIONS;

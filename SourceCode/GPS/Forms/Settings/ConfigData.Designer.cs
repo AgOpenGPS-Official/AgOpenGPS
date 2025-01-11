@@ -17,13 +17,13 @@ namespace AgOpenGPS
             
             if (rbtnHeadingHDT.Checked)
             {
-                gboxSingle.Enabled = false;
-                gboxDual.Enabled = true;
+                labelGboxSingle.Enabled = false;
+                labelGboxDual.Enabled = true;
             }
             else
             {
-                gboxSingle.Enabled = true;
-                gboxDual.Enabled = false;
+                labelGboxSingle.Enabled = true;
+                labelGboxDual.Enabled = false;
             }
 
             nudDualHeadingOffset.Value = (decimal)Properties.Settings.Default.setGPS_dualHeadingOffset;
@@ -107,13 +107,13 @@ namespace AgOpenGPS
 
             if (rbtnHeadingHDT.Checked)
             {
-                gboxSingle.Enabled = false;
-                gboxDual.Enabled = true;
+                labelGboxSingle.Enabled = false;
+                labelGboxDual.Enabled = true;
             }
             else
             {
-                gboxSingle.Enabled = true;
-                gboxDual.Enabled= false;
+                labelGboxSingle.Enabled = true;
+                labelGboxDual.Enabled= false;
             }
         }
 
