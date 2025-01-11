@@ -144,9 +144,6 @@
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Autostuur</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Configuratie</value>
-  </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Autostuur Configuratie</value>
   </data>
@@ -198,6 +195,9 @@
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Verwijder de hele perceelgrens</value>
   </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Configuratie</value>
+  </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Contour bestand corrupt</value>
   </data>
@@ -215,6 +215,9 @@
   </data>
   <data name="gsCurrent" xml:space="preserve">
     <value>Huidig</value>
+  </data>
+  <data name="gsCurrentSensorValueLabel" xml:space="preserve">
+    <value>Huidige Waarde</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>AB Curve lijn corrupt</value>
@@ -324,6 +327,9 @@
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Verkeerde richting? Druk op Voertuig</value>
   </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Geen afbeelding:</value>
+  </data>
   <data name="gsInches" xml:space="preserve">
     <value>inch</value>
   </data>
@@ -335,6 +341,9 @@
   </data>
   <data name="gsLanguage" xml:space="preserve">
     <value>Taal</value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value>Goal-punt:</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mijl/u</value>
@@ -402,17 +411,26 @@
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Niets verwijderd</value>
   </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Lijn-Nudge:</value>
+  </data>
   <data name="gsOffset" xml:space="preserve">
     <value>Verschuiving</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
     <value>FIX verschuiving</value>
   </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Transparantie:</value>
+  </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Openen</value>
   </data>
   <data name="gsOuter" xml:space="preserve">
     <value>Buitenste</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Overlapping:</value>
   </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Reduceer over-de-lijn reactie</value>
@@ -471,6 +489,9 @@
   <data name="gsSaveAs" xml:space="preserve">
     <value>Opslaan als</value>
   </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Secties:</value>
+  </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Verstuur naar machine-besturing</value>
   </data>
@@ -522,14 +543,29 @@
   <data name="gsTramLines" xml:space="preserve">
     <value>Spuitpaden</value>
   </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Spuit Breedte:</value>
+  </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Schakel AB Curve in</value>
   </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
     <value>Schakel Contour of AB lijn in</value>
   </data>
+  <data name="gsUnit" xml:space="preserve">
+    <value>Maatvoering:</value>
+  </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>gebruik geselecteerde</value>
+  </data>
+  <data name="gsVhiclegroupbox" xml:space="preserve">
+    <value>Voertuig Type:</value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Wielbasis:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Breedte:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Ramen nog open</value>

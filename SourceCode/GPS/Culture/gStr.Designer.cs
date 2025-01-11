@@ -358,6 +358,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Value.
+        /// </summary>
+        public static string gsCurrentSensorValueLabel {
+            get {
+                return ResourceManager.GetString("gsCurrentSensorValueLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Curve Line File Corrupt.
         /// </summary>
         public static string gsCurveLineFileIsCorrupt {
@@ -709,6 +718,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Image:.
+        /// </summary>
+        public static string gsImage {
+            get {
+                return ResourceManager.GetString("gsImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inch.
         /// </summary>
         public static string gsInches {
@@ -741,6 +759,15 @@ namespace AgOpenGPS.Culture {
         public static string gsLanguage {
             get {
                 return ResourceManager.GetString("gsLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Look Ahead:.
+        /// </summary>
+        public static string gsLookAhead {
+            get {
+                return ResourceManager.GetString("gsLookAhead", resourceCulture);
             }
         }
         
@@ -943,6 +970,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nudge:.
+        /// </summary>
+        public static string gsNudge {
+            get {
+                return ResourceManager.GetString("gsNudge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset.
         /// </summary>
         public static string gsOffset {
@@ -961,6 +997,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opacity:.
+        /// </summary>
+        public static string gsOpacity {
+            get {
+                return ResourceManager.GetString("gsOpacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string gsOpen {
@@ -975,6 +1020,15 @@ namespace AgOpenGPS.Culture {
         public static string gsOuter {
             get {
                 return ResourceManager.GetString("gsOuter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlap:.
+        /// </summary>
+        public static string gsOverlap {
+            get {
+                return ResourceManager.GetString("gsOverlap", resourceCulture);
             }
         }
         
@@ -1159,6 +1213,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sections:.
+        /// </summary>
+        public static string gsSections {
+            get {
+                return ResourceManager.GetString("gsSections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sent To Machine Module.
         /// </summary>
         public static string gsSentToMachineModule {
@@ -1321,6 +1384,15 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tram Width:.
+        /// </summary>
+        public static string gsTramWidth {
+            get {
+                return ResourceManager.GetString("gsTramWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Turn AB Curve On.
         /// </summary>
         public static string gsTurnABCurveOn {
@@ -1339,11 +1411,29 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Units:.
+        /// </summary>
+        public static string gsUnit {
+            get {
+                return ResourceManager.GetString("gsUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Selected.
         /// </summary>
         public static string gsUseSelected {
             get {
                 return ResourceManager.GetString("gsUseSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Type:.
+        /// </summary>
+        public static string gsVhiclegroupbox {
+            get {
+                return ResourceManager.GetString("gsVhiclegroupbox", resourceCulture);
             }
         }
         
@@ -1362,6 +1452,24 @@ namespace AgOpenGPS.Culture {
         public static string gsWest {
             get {
                 return ResourceManager.GetString("gsWest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wheelbase:.
+        /// </summary>
+        public static string gsWheelbase {
+            get {
+                return ResourceManager.GetString("gsWheelbase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width:.
+        /// </summary>
+        public static string gsWidth {
+            get {
+                return ResourceManager.GetString("gsWidth", resourceCulture);
             }
         }
         

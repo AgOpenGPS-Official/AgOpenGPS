@@ -216,6 +216,9 @@
   <data name="gsCurrent" xml:space="preserve">
     <value>Current</value>
   </data>
+  <data name="gsCurrentSensorValueLabel" xml:space="preserve">
+    <value>Current Value</value>
+  </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Curve Line File Corrupt</value>
   </data>
@@ -333,6 +336,9 @@
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>If Wrong Direction Tap Vehicle</value>
   </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>No Image:</value>
+  </data>
   <data name="gsInches" xml:space="preserve">
     <value>Inch</value>
   </data>
@@ -344,6 +350,9 @@
   </data>
   <data name="gsLanguage" xml:space="preserve">
     <value>Language</value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value>Look Ahead:</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mph</value>
@@ -411,17 +420,26 @@
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Nothing Deleted</value>
   </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Nudge:</value>
+  </data>
   <data name="gsOffset" xml:space="preserve">
     <value>Offset</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
     <value>Offset Fix</value>
   </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Opacity:</value>
+  </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Open</value>
   </data>
   <data name="gsOuter" xml:space="preserve">
     <value>Outer</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Overlap:</value>
   </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Overshoot Reduction</value>
@@ -483,6 +501,9 @@
   <data name="gsSaveAs" xml:space="preserve">
     <value>Save As</value>
   </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Sections:</value>
+  </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Sent To Machine Module</value>
   </data>
@@ -537,20 +558,35 @@
   <data name="gsTramLines" xml:space="preserve">
     <value>Tram Lines</value>
   </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Tram Width:</value>
+  </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Turn AB Curve On</value>
   </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
     <value>Turn On Contour of Make AB Line</value>
   </data>
+  <data name="gsUnit" xml:space="preserve">
+    <value>Units:</value>
+  </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Use Selected</value>
+  </data>
+  <data name="gsVhiclegroupbox" xml:space="preserve">
+    <value>Vehicle Type:</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>WebCam</value>
   </data>
   <data name="gsWest" xml:space="preserve">
     <value>West</value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Wheelbase:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Width:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows Still Open</value>

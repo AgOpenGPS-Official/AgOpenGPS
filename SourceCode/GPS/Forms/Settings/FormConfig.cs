@@ -118,6 +118,20 @@ namespace AgOpenGPS
 
             lblsaveas.Text = gStr.gsSaveAs;
             labelnew.Text = gStr.gsNew;
+            LabelUnit.Text = gStr.gsUnit;
+            labelWidth.Text = gStr.gsWidth;
+            LabelSections.Text = gStr.gsSections;
+            LabelOffset.Text = gStr.gsOffset;
+            LabelOverlap.Text = gStr.gsOverlap;
+            LabelLookAhead.Text = gStr.gsLookAhead;
+            LabelNudge.Text = gStr.gsNudge;
+            LabelTramW.Text = gStr.gsTramWidth;
+            LabelWheelBase.Text = gStr.gsWheelbase;
+            VhicleGroupBox.Text = gStr.gsVhiclegroupbox;
+            LabelImage.Text = gStr.gsImage;
+            LabelOpacity.Text = gStr.gsOpacity;
+
+
             UpdateSummary();
 
             if (!ScreenHelper.IsOnScreen(Bounds))

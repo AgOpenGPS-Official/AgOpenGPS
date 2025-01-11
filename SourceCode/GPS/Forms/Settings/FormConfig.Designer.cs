@@ -1365,12 +1365,12 @@ namespace AgOpenGPS
             // 
             this.labelWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelWidth.BackColor = System.Drawing.Color.Transparent;
-            this.labelWidth.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelWidth.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWidth.ForeColor = System.Drawing.Color.DimGray;
-            this.labelWidth.Location = new System.Drawing.Point(25, 233);
+            this.labelWidth.Location = new System.Drawing.Point(0, 233);
             this.labelWidth.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelWidth.Name = "labelWidth";
-            this.labelWidth.Size = new System.Drawing.Size(90, 23);
+            this.labelWidth.Size = new System.Drawing.Size(111, 23);
             this.labelWidth.TabIndex = 518;
             this.labelWidth.Text = "Width:";
             this.labelWidth.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1379,9 +1379,9 @@ namespace AgOpenGPS
             // 
             this.LabelOverlap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelOverlap.BackColor = System.Drawing.Color.Transparent;
-            this.LabelOverlap.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelOverlap.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelOverlap.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelOverlap.Location = new System.Drawing.Point(-5, 335);
+            this.LabelOverlap.Location = new System.Drawing.Point(-9, 335);
             this.LabelOverlap.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelOverlap.Name = "LabelOverlap";
             this.LabelOverlap.Size = new System.Drawing.Size(120, 32);
@@ -1395,10 +1395,10 @@ namespace AgOpenGPS
             this.lblOverlap.BackColor = System.Drawing.Color.Transparent;
             this.lblOverlap.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOverlap.ForeColor = System.Drawing.Color.Black;
-            this.lblOverlap.Location = new System.Drawing.Point(112, 341);
+            this.lblOverlap.Location = new System.Drawing.Point(128, 341);
             this.lblOverlap.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblOverlap.Name = "lblOverlap";
-            this.lblOverlap.Size = new System.Drawing.Size(114, 23);
+            this.lblOverlap.Size = new System.Drawing.Size(91, 23);
             this.lblOverlap.TabIndex = 516;
             this.lblOverlap.Text = "3 cm";
             this.lblOverlap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1407,9 +1407,9 @@ namespace AgOpenGPS
             // 
             this.LabelLookAhead.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelLookAhead.BackColor = System.Drawing.Color.Transparent;
-            this.LabelLookAhead.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelLookAhead.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelLookAhead.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelLookAhead.Location = new System.Drawing.Point(-5, 375);
+            this.LabelLookAhead.Location = new System.Drawing.Point(-9, 375);
             this.LabelLookAhead.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelLookAhead.Name = "LabelLookAhead";
             this.LabelLookAhead.Size = new System.Drawing.Size(120, 32);
@@ -1423,10 +1423,10 @@ namespace AgOpenGPS
             this.lblLookahead.BackColor = System.Drawing.Color.Transparent;
             this.lblLookahead.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLookahead.ForeColor = System.Drawing.Color.Black;
-            this.lblLookahead.Location = new System.Drawing.Point(112, 380);
+            this.lblLookahead.Location = new System.Drawing.Point(128, 380);
             this.lblLookahead.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblLookahead.Name = "lblLookahead";
-            this.lblLookahead.Size = new System.Drawing.Size(114, 23);
+            this.lblLookahead.Size = new System.Drawing.Size(91, 23);
             this.lblLookahead.TabIndex = 514;
             this.lblLookahead.Text = "1 sec";
             this.lblLookahead.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1435,9 +1435,9 @@ namespace AgOpenGPS
             // 
             this.LabelOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelOffset.BackColor = System.Drawing.Color.Transparent;
-            this.LabelOffset.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelOffset.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelOffset.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelOffset.Location = new System.Drawing.Point(-5, 297);
+            this.LabelOffset.Location = new System.Drawing.Point(-9, 297);
             this.LabelOffset.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelOffset.Name = "LabelOffset";
             this.LabelOffset.Size = new System.Drawing.Size(120, 32);
@@ -1451,10 +1451,10 @@ namespace AgOpenGPS
             this.lblToolOffset.BackColor = System.Drawing.Color.Transparent;
             this.lblToolOffset.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblToolOffset.ForeColor = System.Drawing.Color.Black;
-            this.lblToolOffset.Location = new System.Drawing.Point(112, 303);
+            this.lblToolOffset.Location = new System.Drawing.Point(128, 303);
             this.lblToolOffset.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblToolOffset.Name = "lblToolOffset";
-            this.lblToolOffset.Size = new System.Drawing.Size(114, 23);
+            this.lblToolOffset.Size = new System.Drawing.Size(91, 23);
             this.lblToolOffset.TabIndex = 512;
             this.lblToolOffset.Text = "5";
             this.lblToolOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1463,9 +1463,9 @@ namespace AgOpenGPS
             // 
             this.LabelWheelBase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelWheelBase.BackColor = System.Drawing.Color.Transparent;
-            this.LabelWheelBase.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelWheelBase.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelWheelBase.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelWheelBase.Location = new System.Drawing.Point(-5, 484);
+            this.LabelWheelBase.Location = new System.Drawing.Point(-9, 484);
             this.LabelWheelBase.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelWheelBase.Name = "LabelWheelBase";
             this.LabelWheelBase.Size = new System.Drawing.Size(120, 32);
@@ -1477,9 +1477,9 @@ namespace AgOpenGPS
             // 
             this.LabelTramW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelTramW.BackColor = System.Drawing.Color.Transparent;
-            this.LabelTramW.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelTramW.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelTramW.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelTramW.Location = new System.Drawing.Point(-5, 446);
+            this.LabelTramW.Location = new System.Drawing.Point(-9, 446);
             this.LabelTramW.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelTramW.Name = "LabelTramW";
             this.LabelTramW.Size = new System.Drawing.Size(120, 32);
@@ -1493,10 +1493,10 @@ namespace AgOpenGPS
             this.lblUnits.BackColor = System.Drawing.Color.Transparent;
             this.lblUnits.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUnits.ForeColor = System.Drawing.Color.Black;
-            this.lblUnits.Location = new System.Drawing.Point(112, 189);
+            this.lblUnits.Location = new System.Drawing.Point(128, 189);
             this.lblUnits.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblUnits.Name = "lblUnits";
-            this.lblUnits.Size = new System.Drawing.Size(114, 23);
+            this.lblUnits.Size = new System.Drawing.Size(91, 23);
             this.lblUnits.TabIndex = 510;
             this.lblUnits.Text = "Metric";
             this.lblUnits.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1507,10 +1507,10 @@ namespace AgOpenGPS
             this.lblTramWidth.BackColor = System.Drawing.Color.Transparent;
             this.lblTramWidth.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTramWidth.ForeColor = System.Drawing.Color.Black;
-            this.lblTramWidth.Location = new System.Drawing.Point(112, 452);
+            this.lblTramWidth.Location = new System.Drawing.Point(128, 452);
             this.lblTramWidth.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTramWidth.Name = "lblTramWidth";
-            this.lblTramWidth.Size = new System.Drawing.Size(122, 23);
+            this.lblTramWidth.Size = new System.Drawing.Size(99, 23);
             this.lblTramWidth.TabIndex = 509;
             this.lblTramWidth.Text = "2400 cm";
             this.lblTramWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1521,10 +1521,10 @@ namespace AgOpenGPS
             this.lblNudgeDistance.BackColor = System.Drawing.Color.Transparent;
             this.lblNudgeDistance.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNudgeDistance.ForeColor = System.Drawing.Color.Black;
-            this.lblNudgeDistance.Location = new System.Drawing.Point(112, 416);
+            this.lblNudgeDistance.Location = new System.Drawing.Point(128, 416);
             this.lblNudgeDistance.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblNudgeDistance.Name = "lblNudgeDistance";
-            this.lblNudgeDistance.Size = new System.Drawing.Size(114, 23);
+            this.lblNudgeDistance.Size = new System.Drawing.Size(91, 23);
             this.lblNudgeDistance.TabIndex = 509;
             this.lblNudgeDistance.Text = "5";
             this.lblNudgeDistance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1535,10 +1535,10 @@ namespace AgOpenGPS
             this.lblSumNumSections.BackColor = System.Drawing.Color.Transparent;
             this.lblSumNumSections.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSumNumSections.ForeColor = System.Drawing.Color.Black;
-            this.lblSumNumSections.Location = new System.Drawing.Point(112, 267);
+            this.lblSumNumSections.Location = new System.Drawing.Point(128, 267);
             this.lblSumNumSections.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblSumNumSections.Name = "lblSumNumSections";
-            this.lblSumNumSections.Size = new System.Drawing.Size(114, 23);
+            this.lblSumNumSections.Size = new System.Drawing.Size(91, 23);
             this.lblSumNumSections.TabIndex = 508;
             this.lblSumNumSections.Text = "5";
             this.lblSumNumSections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1547,12 +1547,12 @@ namespace AgOpenGPS
             // 
             this.LabelUnits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelUnits.BackColor = System.Drawing.Color.Transparent;
-            this.LabelUnits.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelUnits.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelUnits.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelUnits.Location = new System.Drawing.Point(28, 188);
+            this.LabelUnits.Location = new System.Drawing.Point(0, 188);
             this.LabelUnits.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelUnits.Name = "LabelUnits";
-            this.LabelUnits.Size = new System.Drawing.Size(90, 23);
+            this.LabelUnits.Size = new System.Drawing.Size(114, 23);
             this.LabelUnits.TabIndex = 507;
             this.LabelUnits.Text = "Units:";
             this.LabelUnits.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1561,26 +1561,26 @@ namespace AgOpenGPS
             // 
             this.LabelNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelNudge.BackColor = System.Drawing.Color.Transparent;
-            this.LabelNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelNudge.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelNudge.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelNudge.Location = new System.Drawing.Point(25, 415);
+            this.LabelNudge.Location = new System.Drawing.Point(0, 415);
             this.LabelNudge.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelNudge.Name = "LabelNudge";
-            this.LabelNudge.Size = new System.Drawing.Size(90, 23);
+            this.LabelNudge.Size = new System.Drawing.Size(111, 23);
             this.LabelNudge.TabIndex = 506;
-            this.LabelNudge.Text = "Nudge:";
+            this.LabelNudge.Text = "Line Shift:";
             this.LabelNudge.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LabelSections
             // 
             this.LabelSections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LabelSections.BackColor = System.Drawing.Color.Transparent;
-            this.LabelSections.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSections.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelSections.ForeColor = System.Drawing.Color.DimGray;
-            this.LabelSections.Location = new System.Drawing.Point(25, 266);
+            this.LabelSections.Location = new System.Drawing.Point(0, 266);
             this.LabelSections.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.LabelSections.Name = "LabelSections";
-            this.LabelSections.Size = new System.Drawing.Size(90, 23);
+            this.LabelSections.Size = new System.Drawing.Size(111, 23);
             this.LabelSections.TabIndex = 505;
             this.LabelSections.Text = "Sections:";
             this.LabelSections.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1693,10 +1693,10 @@ namespace AgOpenGPS
             this.lblSummaryWidth.BackColor = System.Drawing.Color.Transparent;
             this.lblSummaryWidth.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSummaryWidth.ForeColor = System.Drawing.Color.Black;
-            this.lblSummaryWidth.Location = new System.Drawing.Point(112, 234);
+            this.lblSummaryWidth.Location = new System.Drawing.Point(128, 234);
             this.lblSummaryWidth.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblSummaryWidth.Name = "lblSummaryWidth";
-            this.lblSummaryWidth.Size = new System.Drawing.Size(122, 23);
+            this.lblSummaryWidth.Size = new System.Drawing.Size(99, 23);
             this.lblSummaryWidth.TabIndex = 519;
             this.lblSummaryWidth.Text = "7.2 m";
             this.lblSummaryWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1707,10 +1707,10 @@ namespace AgOpenGPS
             this.lblSumWheelbase.BackColor = System.Drawing.Color.Transparent;
             this.lblSumWheelbase.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSumWheelbase.ForeColor = System.Drawing.Color.Black;
-            this.lblSumWheelbase.Location = new System.Drawing.Point(112, 490);
+            this.lblSumWheelbase.Location = new System.Drawing.Point(128, 490);
             this.lblSumWheelbase.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblSumWheelbase.Name = "lblSumWheelbase";
-            this.lblSumWheelbase.Size = new System.Drawing.Size(129, 23);
+            this.lblSumWheelbase.Size = new System.Drawing.Size(106, 23);
             this.lblSumWheelbase.TabIndex = 509;
             this.lblSumWheelbase.Text = "2.4m";
             this.lblSumWheelbase.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
