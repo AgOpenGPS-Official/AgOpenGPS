@@ -866,6 +866,7 @@ namespace AgOpenGPS
                 //fill up0 the appropriate arrays with new values
                 p_254.pgn[p_254.speedHi] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0) >> 8));
                 p_254.pgn[p_254.speedLo] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0)));
+                pgn254.SetSpeedInKmh(avgSpeed);
                 //mc.machineControlData[mc.cnSpeed] = mc.autoSteerData[mc.sdSpeed];
 
                 //save distance for display
@@ -876,10 +877,14 @@ namespace AgOpenGPS
                     guidanceLineDistanceOff = 32020;
                     p_254.pgn[p_254.status] = 0;
                 }
-
                 else p_254.pgn[p_254.status] = 1;
+                pgn254.SetStatus(isBtnAutoSteerOn);
 
-                if (recPath.isDrivingRecordedPath || recPath.isFollowingDubinsToPath) p_254.pgn[p_254.status] = 1;
+                if (recPath.isDrivingRecordedPath || recPath.isFollowingDubinsToPath)
+                {
+                    p_254.pgn[p_254.status] = 1;
+                    pgn254.SetStatus(true);
+                }
 
                 //mc.autoSteerData[7] = unchecked((byte)(guidanceLineDistanceOff >> 8));
                 //mc.autoSteerData[8] = unchecked((byte)(guidanceLineDistanceOff));
@@ -899,6 +904,7 @@ namespace AgOpenGPS
                 }
 
                 p_254.pgn[p_254.lineDistance] = unchecked((byte)distanceX2);
+                pgn254.SetDist(guidanceLineDistanceOff == 32020 || guidanceLineDistanceOff == 32000, guidanceLineDistanceOff);
 
                 if (!timerSim.Enabled)
                 {
@@ -950,13 +956,17 @@ namespace AgOpenGPS
                 //setAngVel = glm.toDegrees(setAngVel);
 
                 if (isChangingDirection && ahrs.imuHeading == 99999)
-                    p_254.pgn[p_254.status] = 0;
+                {
+                    pgn254.SetStatus(false);
+
+                }
 
                 //for now if backing up, turn off autosteer
                 if (!isSteerInReverse)
                 {
                     if (isReverse) p_254.pgn[p_254.status] = 0;
-                }                
+                    if (isReverse) pgn254.SetStatus(false);
+                }
 
                 // delay on dead zone.
                 if (p_254.pgn[p_254.status] == 1 && !isReverse
@@ -977,6 +987,7 @@ namespace AgOpenGPS
                 {
                     p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                     p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));
+                    pgn254.SetGuidanceLineSteerAngle(guidanceLineSteerAngle);
                 }
             }
 
@@ -998,7 +1009,8 @@ namespace AgOpenGPS
 
             }
 
-            //out serial to autosteer module  //indivdual classes load the distance and heading deltas 
+            //out serial to autosteer module  //indivdual classes load the distance and heading deltas
+            pgn254.AssertEqual(p_254);
             SendPgnToLoop(p_254.pgn);
 
             //for average cross track error

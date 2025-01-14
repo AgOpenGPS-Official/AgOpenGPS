@@ -446,10 +446,8 @@ namespace AgOpenGPS
 
         //pgn instances
 
-        /// <summary>
-        /// autoSteerData - FE - 254 - 
-        /// </summary>
         public CPGN_FE p_254 = new CPGN_FE();
+        public Pgn254AutoSteerData pgn254 = new Pgn254AutoSteerData();
 
         /// <summary>
         /// autoSteerSettings PGN - 252 - FC

@@ -517,6 +517,18 @@ namespace AgOpenGPS
                 }
                 p_254.pgn[p_254.sc9to16] = unchecked((byte)number);
 
+
+                UInt16 sectionControl1to16 = 0;
+                for (int j = 0; j < 16; j++)
+                {
+                    if (section[j].isSectionOn)
+                    {
+                        sectionControl1to16 += ((UInt16)(1 << j));
+                    }
+                }
+                pgn254.SetSectionControl1to16(sectionControl1to16);
+
+
                 //machine pgn
                 p_239.pgn[p_239.sc1to8] = p_254.pgn[p_254.sc1to8];
                 p_239.pgn[p_239.sc9to16] = p_254.pgn[p_254.sc9to16];
