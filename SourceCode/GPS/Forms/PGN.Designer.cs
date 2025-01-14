@@ -446,6 +446,7 @@ namespace AgOpenGPS
 
         //pgn instances
         public CPGN_FE p_254 = new CPGN_FE();
+        public Pgn254AutoSteerData pgn254 = new Pgn254AutoSteerData();
 
         public CPGN_FC p_252 = new CPGN_FC();
 
