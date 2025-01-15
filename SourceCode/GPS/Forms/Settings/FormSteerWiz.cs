@@ -240,6 +240,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_lowSteerPWM = mf.p_252.pgn[mf.p_252.lowPWM] = unchecked((byte)hsbarLowSteerPWM.Value);
             Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
+            SetPgn252AndDefaultSettings();
 
             hsbarSideHillComp.Value = (int)(Properties.Settings.Default.setAS_sideHillComp * 100);
 
@@ -367,6 +368,7 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setAS_lowSteerPWM = mf.p_252.pgn[mf.p_252.lowPWM] = unchecked((byte)hsbarLowSteerPWM.Value);
                 Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
+                SetPgn252AndDefaultSettings();
 
                 Properties.Settings.Default.Save();
 
@@ -502,6 +504,17 @@ namespace AgOpenGPS
             {
                 btnSteerStatus.BackColor = Color.Magenta;
             }
+        }
+
+        private void SetPgn252AndDefaultSettings()
+        {
+            Properties.Settings.Default.setAS_countsPerDegree = mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
+            Properties.Settings.Default.setAS_ackerman = mf.pgn252.SetAckerman(hsbarAckerman.Value);
+            Properties.Settings.Default.setAS_wasOffset = mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
+            Properties.Settings.Default.setAS_highSteerPWM = mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
+            Properties.Settings.Default.setAS_lowSteerPWM = mf.pgn252.SetLowSteerPwm(hsbarLowSteerPWM.Value);
+            Properties.Settings.Default.setAS_Kp = mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
+            Properties.Settings.Default.setAS_minSteerPWM = mf.pgn252.SetLowSteerPwm(hsbarMinPWM.Value);
         }
 
         private void sideBarTimer_Tick(object sender, EventArgs e)

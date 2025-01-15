@@ -298,6 +298,14 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
+            Properties.Settings.Default.setAS_countsPerDegree = mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
+            Properties.Settings.Default.setAS_ackerman = mf.pgn252.SetAckerman(hsbarAckerman.Value);
+            Properties.Settings.Default.setAS_wasOffset = mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
+            Properties.Settings.Default.setAS_highSteerPWM = mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
+            Properties.Settings.Default.setAS_lowSteerPWM = mf.pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
+            Properties.Settings.Default.setAS_Kp = mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
+            Properties.Settings.Default.setAS_minSteerPWM = mf.pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
+
             Properties.Settings.Default.setAS_deadZoneHeading = mf.vehicle.deadZoneHeading;
             Properties.Settings.Default.setAS_deadZoneDelay = mf.vehicle.deadZoneDelay;
 
@@ -382,6 +390,16 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.lowPWM] = unchecked((byte)(hsbarHighSteerPWM.Value / 3));
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
+
+
+                mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
+                mf.pgn252.SetAckerman(hsbarAckerman.Value);
+                mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
+                mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
+                mf.pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
+                mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
+                mf.pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
+                mf.pgn252.AssertEqual(mf.p_252);
 
                 mf.SendPgnToLoop(mf.p_252.pgn);
                 toSend = false;
