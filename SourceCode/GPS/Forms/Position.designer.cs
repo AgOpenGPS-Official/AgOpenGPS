@@ -860,6 +860,7 @@ namespace AgOpenGPS
             //if the whole path driving driving process is green
             if (recPath.isDrivingRecordedPath) recPath.UpdatePosition();
 
+            Pgn254AutoSteerData pgn254 = PgnAll.Pgn254;
             // If Drive button off - normal autosteer 
             if (!vehicle.isInFreeDriveMode)
             {

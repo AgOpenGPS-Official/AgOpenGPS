@@ -67,7 +67,7 @@ namespace AgOpenGPS
                         mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)Properties.Settings.Default.setAS_Kp);
                         mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)Properties.Settings.Default.setAS_minSteerPWM);
 
-                        mf.pgn252.SetFromDefaultSettings();
+                        mf.PgnAll.Pgn252.SetFromDefaultSettings();
                         mf.SendPgnToLoop(mf.p_252.pgn);
 
                         //machine module settings
@@ -323,7 +323,7 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.lowPWM] = unchecked((byte)Properties.Settings.Default.setAS_lowSteerPWM);
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)Properties.Settings.Default.setAS_Kp);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)Properties.Settings.Default.setAS_minSteerPWM);
-                mf.pgn252.SetFromDefaultSettings();
+                mf.PgnAll.Pgn252.SetFromDefaultSettings();
 
                 mf.SendPgnToLoop(mf.p_252.pgn);
 

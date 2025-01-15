@@ -526,7 +526,7 @@ namespace AgOpenGPS
                         sectionControl1to16 += ((UInt16)(1 << j));
                     }
                 }
-                pgn254.SetSectionControl1to16(sectionControl1to16);
+                PgnAll.Pgn254.SetSectionControl1to16(sectionControl1to16);
 
 
                 //machine pgn

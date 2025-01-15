@@ -298,14 +298,15 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-            Properties.Settings.Default.setAS_countsPerDegree = mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
-            Properties.Settings.Default.setAS_ackerman = mf.pgn252.SetAckerman(hsbarAckerman.Value);
+            Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+            Properties.Settings.Default.setAS_countsPerDegree = pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
+            Properties.Settings.Default.setAS_ackerman = pgn252.SetAckerman(hsbarAckerman.Value);
             Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;
-            mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
-            Properties.Settings.Default.setAS_highSteerPWM = mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
-            Properties.Settings.Default.setAS_lowSteerPWM = mf.pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
-            Properties.Settings.Default.setAS_Kp = mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
-            Properties.Settings.Default.setAS_minSteerPWM = mf.pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
+            pgn252.SetWasOffset(hsbarWasOffset.Value);
+            Properties.Settings.Default.setAS_highSteerPWM = pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
+            Properties.Settings.Default.setAS_lowSteerPWM = pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
+            Properties.Settings.Default.setAS_Kp = pgn252.SetProportionalGain(hsbarProportionalGain.Value);
+            Properties.Settings.Default.setAS_minSteerPWM = pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
 
             Properties.Settings.Default.setAS_deadZoneHeading = mf.vehicle.deadZoneHeading;
             Properties.Settings.Default.setAS_deadZoneDelay = mf.vehicle.deadZoneDelay;
@@ -392,15 +393,15 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-
-                mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
-                mf.pgn252.SetAckerman(hsbarAckerman.Value);
-                mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
-                mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
-                mf.pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
-                mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
-                mf.pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
-                mf.pgn252.FindRefactoringBugs(mf.p_252.pgn);
+                Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+                pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
+                pgn252.SetAckerman(hsbarAckerman.Value);
+                pgn252.SetWasOffset(hsbarWasOffset.Value);
+                pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
+                pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
+                pgn252.SetProportionalGain(hsbarProportionalGain.Value);
+                pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
+                pgn252.FindRefactoringBugs(mf.p_252.pgn);
 
                 mf.SendPgnToLoop(mf.p_252.pgn);
                 toSend = false;

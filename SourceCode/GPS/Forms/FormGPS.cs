@@ -269,6 +269,9 @@ namespace AgOpenGPS
             }
         }
 
+        private readonly PgnAll _pgnAll;
+        public PgnAll PgnAll => _pgnAll;
+
         public FormGPS()
         {
             //winform initialization
@@ -278,6 +281,8 @@ namespace AgOpenGPS
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
+
+            _pgnAll = new PgnAll();
 
             //create the world grid
             worldGrid = new CWorldGrid(this);

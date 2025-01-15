@@ -633,6 +633,7 @@
       <DependentUpon>gStr.zh-CHS.resx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ScreenHelper.cs" />
+    <Compile Include="Pgn\PgnAll.cs" />
     <Compile Include="Pgn\Pgn252AutoSteerSettings.cs" />
     <Compile Include="Pgn\Pgn254AutoSteerData.cs" />
     <Compile Include="Pgn\PgnBase.cs" />
