@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Culture;
+using AgOpenGPS.Pgn;
 using System;
 using System.Linq;
 using System.Text;
@@ -384,6 +385,14 @@ namespace AgOpenGPS
             mf.p_235.pgn[mf.p_235.sec15Hi] = unchecked((byte)((int)((mf.section[15].sectionWidth * 100)) >> 8));
 
             mf.p_235.pgn[mf.p_235.numSections] = (byte)mf.tool.numOfSections;
+
+            Pgn235SectionDimensions pgn235 = mf.PgnAll.Pgn235;
+            for (int i = 0; i < 16; i++)
+            {
+                pgn235.SetSectionWidth(i, mf.section[i].sectionWidth);
+            }
+            pgn235.SetNumberOfSections(mf.tool.numOfSections);
+            pgn235.FindRefactoringBugs(mf.p_235.pgn);
 
             mf.SendPgnToLoop(mf.p_235.pgn);
         }

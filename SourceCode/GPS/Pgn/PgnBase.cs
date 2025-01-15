@@ -1,5 +1,4 @@
 ﻿﻿using System;
-//using System.Diagnostics;
 
 namespace AgOpenGPS
 {
@@ -17,6 +16,10 @@ namespace AgOpenGPS
             _message[2] = 0x7f;
             _message[3] = id;
             _message[4] = contentSize;
+            for (int i = 5; i < 5 + contentSize; i++)
+            {
+                _message[i] = 0;
+            }
         }
 
         // This exposes the message to all kind of harm from outside the pgn classes.
@@ -92,7 +95,7 @@ namespace AgOpenGPS
             return b;
         }
 
-        public void SetDoubleLoHi(byte loIndex, double inputValue)  // Check ranges....
+        public void SetDoubleLoHi(byte loIndex, double inputValue)
         {
             UInt16 outputValue = unchecked((UInt16)inputValue);
             if (UInt16.MaxValue < inputValue)

@@ -345,17 +345,17 @@ namespace AgOpenGPS
                                         0, 0, 0, 0, 0, 0, 0, 0,
                                         0, 0xCC };
 
-            //where in the pgn is which pin
-            public int sec0Lo  = 5;
-            public int sec1Lo  = 7;
-            public int sec2Lo  = 9;
-            public int sec3Lo  = 11;
-            public int sec4Lo  = 13;
-            public int sec5Lo  = 15;
-            public int sec6Lo  = 17;
-            public int sec7Lo  = 19;
-            public int sec8Lo  = 21;
-            public int sec9Lo  = 23;
+            //    //where in the pgn is which pin
+            public int sec0Lo = 5;
+            public int sec1Lo = 7;
+            public int sec2Lo = 9;
+            public int sec3Lo = 11;
+            public int sec4Lo = 13;
+            public int sec5Lo = 15;
+            public int sec6Lo = 17;
+            public int sec7Lo = 19;
+            public int sec8Lo = 21;
+            public int sec9Lo = 23;
             public int sec10Lo = 25;
             public int sec11Lo = 27;
             public int sec12Lo = 29;
@@ -363,16 +363,16 @@ namespace AgOpenGPS
             public int sec14Lo = 33;
             public int sec15Lo = 35;
 
-            public int sec0Hi  = 6;
-            public int sec1Hi  = 8;
-            public int sec2Hi  = 10;
-            public int sec3Hi  = 12;
-            public int sec4Hi  = 14;
-            public int sec5Hi  = 16;
-            public int sec6Hi  = 18;
-            public int sec7Hi  = 20;
-            public int sec8Hi  = 22;
-            public int sec9Hi  = 24;
+            public int sec0Hi = 6;
+            public int sec1Hi = 8;
+            public int sec2Hi = 10;
+            public int sec3Hi = 12;
+            public int sec4Hi = 14;
+            public int sec5Hi = 16;
+            public int sec6Hi = 18;
+            public int sec7Hi = 20;
+            public int sec8Hi = 22;
+            public int sec9Hi = 24;
             public int sec10Hi = 26;
             public int sec11Hi = 28;
             public int sec12Hi = 30;
@@ -406,7 +406,7 @@ namespace AgOpenGPS
                 pgn[sec2Hi] = 0;
                 pgn[sec3Hi] = 0;
                 pgn[sec4Hi] = 0;
-                pgn[sec5Hi] = 0; 
+                pgn[sec5Hi] = 0;
                 pgn[sec6Hi] = 0;
                 pgn[sec7Hi] = 0;
                 pgn[sec8Hi] = 0;
@@ -418,7 +418,7 @@ namespace AgOpenGPS
                 pgn[sec14Hi] = 0;
                 pgn[sec15Hi] = 0;
 
-                pgn[numSections] = 0;   
+                pgn[numSections] = 0;
             }
 
             public void Reset()
