@@ -238,6 +238,15 @@ namespace AgOpenGPS
                             break;
                         }
 
+                    case 0xF0: // ISOBUS heartbeat
+                        {
+                            int length = data[4];
+                            byte[] pgnData = new byte[length];
+                            Array.Copy(data, 5, pgnData, 0, length);
+                            isobus.DeserializeHeartbeat(pgnData);
+                            break;
+                        }
+
                     case 250:
                         {
                             if (data.Length != 14)

@@ -20,7 +20,7 @@ namespace AgOpenGPS
         //public double wheelTrack;
         public double tramWidth;
 
-        public double halfWheelTrack, tramAlpha;
+        public double halfWheelTrack, alpha;
         public int passes;
         public bool isOuter;
 
@@ -52,7 +52,7 @@ namespace AgOpenGPS
             passes = Properties.Settings.Default.setTram_passes;
             displayMode = 0;
 
-            tramAlpha = Properties.Settings.Default.setTram_alpha;
+            alpha = Properties.Settings.Default.setTram_alpha;
         }
 
         public void IsTramOuterOrInner()
@@ -66,7 +66,7 @@ namespace AgOpenGPS
             if (mf.camera.camSetDistance > -500)  GL.LineWidth(10);
             else GL.LineWidth(6);
 
-            GL.Color4(0,0,0, tramAlpha);
+            GL.Color4(0,0,0, alpha);
 
             if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
             {
@@ -98,7 +98,7 @@ namespace AgOpenGPS
             if (mf.camera.camSetDistance > -500) GL.LineWidth(4);
             else GL.LineWidth(2);
 
-            GL.Color4(0.930f, 0.72f, 0.73530f, tramAlpha);
+            GL.Color4(0.930f, 0.72f, 0.73530f, alpha);
 
             if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
             {

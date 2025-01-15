@@ -121,6 +121,9 @@
   <data name="AntennaHarvester" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\AntennaHarvester.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="YouSkipOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\YouSkipOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BoundaryRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\BoundaryRecord.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -138,6 +141,9 @@
   </data>
   <data name="ConS_VehicleLines" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Config\ConS_VehicleLines.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IncrementPlus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\IncrementPlus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="APlusPlusB" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\APlusPlusB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -165,6 +171,9 @@
   </data>
   <data name="ConD_RollHelper" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Config\ConD_RollHelper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TramMulti" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\TramMulti.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ResetTool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\ResetTool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -459,6 +468,9 @@
   </data>
   <data name="ConV_ABLineLength" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Config\ConV_ABLineLength.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IncrementMinus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\IncrementMinus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="APlusMinusA" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\APlusMinusA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1117,8 +1129,8 @@
   <data name="z_4WDRearChallenger" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Config\4WD\z_4WDRearChallenger.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="YouSkipOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\btnImages\YouSkipOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SectionMasterOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\SectionMasterOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="z_Turn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Images\z_Turn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1194,9 +1206,6 @@
   </data>
   <data name="QRAOG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\QR\QRAOG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SectionMasterOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\btnImages\SectionMasterOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ConT_TramOverrideDisplay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\Config\ConT_TramOverrideDisplay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1408,7 +1417,13 @@
   <data name="pathResumeStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\pathResumeStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TramMulti" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\btnImages\TramMulti.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ZoomOut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\ZoomOut.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IsobusSectionControlOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\IsobusSectionControlOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IsobusSectionControlOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\btnImages\IsobusSectionControlOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

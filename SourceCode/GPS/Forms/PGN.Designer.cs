@@ -99,7 +99,7 @@ namespace AgOpenGPS
                 pgn[minPWM] = Properties.Settings.Default.setAS_minSteerPWM;
                 pgn[countsPerDegree] = Properties.Settings.Default.setAS_countsPerDegree;
                 pgn[wasOffsetHi] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset >> 8));;
-                pgn[wasOffsetLo] = unchecked((byte)(Properties.Settings.Default.setAS_Kp));
+                pgn[wasOffsetLo] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset));
                 pgn[ackerman] = Properties.Settings.Default.setAS_ackerman;
             }
 

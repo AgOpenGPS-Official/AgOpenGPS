@@ -1039,7 +1039,6 @@ namespace AgOpenGPS
                     continue;
                 }
 
-
                 //AutoSection - If any nowhere applied, send OnRequest, if its all green send an offRequest
                 section[j].isSectionRequiredOn = false;
 
@@ -1053,7 +1052,7 @@ namespace AgOpenGPS
                 if (end >= tool.rpWidth)
                     end = tool.rpWidth - 1;
 
-                totalPixel = 0;
+                totalPixel = 1;
                 tagged = 0;
 
                 for (int pos = start; pos <= end; pos++)
@@ -1061,22 +1060,15 @@ namespace AgOpenGPS
                     startHeight = (int)(tool.lookAheadDistanceOffPixelsLeft + (mOff * pos)) * tool.rpWidth + pos;
                     endHeight = (int)(tool.lookAheadDistanceOnPixelsLeft + (mOn * pos)) * tool.rpWidth + pos;
 
-                    //for (int a = startHeight; a <= endHeight; a += tool.rpWidth)
+                    for (int a = startHeight; a <= endHeight; a += tool.rpWidth)
                     {
-                        //totalPixel++;
-                        if (grnPixels[endHeight] == 0) tagged++;
-                        if (grnPixels[startHeight] == 127) totalPixel++;
+                        totalPixel++;
+                        if (grnPixels[a] == 0) tagged++;
                     }
                 }
 
                 //determine if meeting minimum coverage
-                totalPixel--;
-                //if (tagged != 0)
-                section[j].isSectionRequiredOn = true;
-
-                //check for off
-                if (tagged == 0 && totalPixel == (end - start))
-                    section[j].isSectionRequiredOn = false;
+                section[j].isSectionRequiredOn = ((tagged * 100) / totalPixel > (100 - tool.minCoverage));
 
                 //logic if in or out of boundaries or headland
                 if (bnd.bndList.Count > 0)
@@ -1235,6 +1227,18 @@ namespace AgOpenGPS
             //Checks the workswitch or steerSwitch if required
             if (ahrs.isAutoSteerAuto || mc.isRemoteWorkSystemOn)
                 mc.CheckWorkAndSteerSwitch();
+
+            // Check ISOBUS for actual section states
+            if (isobus.IsAlive())
+            {
+                for (int j = 0; j < tool.numOfSections; j++)
+                {
+                    if (isobus.IsSectionOn(j))
+                        section[j].isMappingOn = true;
+                    else
+                        section[j].isMappingOn = false;
+                }
+            }
 
             // check if any sections have changed status
             number = 0;

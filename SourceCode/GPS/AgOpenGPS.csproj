@@ -1,1359 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{73933709-370E-43B3-8563-CC0F48FF587B}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AgOpenGPS</RootNamespace>
-    <AssemblyName>AgOpenGPS</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.1.1.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\..\AgOpenGPS\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>7.1</LangVersion>
+    <ApplicationIcon>AOG.ico</ApplicationIcon>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\AgOpenGPS\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>BriansRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-    <NoWarn>
-    </NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <DebugSymbols>false</DebugSymbols>
-    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>AOG.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
   <ItemGroup>
     <Reference Include="ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\ColorPicker.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="RepeatButtonControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\RepeatButtonControl.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CBrightness.cs" />
-    <Compile Include="Classes\CExtensionMethods.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Classes\CFence.cs">
-      <DependentUpon>CBoundary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CFenceLine.cs">
-      <DependentUpon>CBoundaryList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CBoundary.cs" />
-    <Compile Include="Classes\CGuidance.cs" />
-    <Compile Include="Classes\CHeadLine.cs" />
-    <Compile Include="Classes\CPolygon.cs" />
-    <Compile Include="Classes\CRecordedPath.cs" />
-    <Compile Include="Classes\CPatches.cs" />
-    <Compile Include="Classes\CSettings.cs" />
-    <Compile Include="Classes\CSound.cs" />
-    <Compile Include="Classes\CFieldData.cs" />
-    <Compile Include="Classes\CBoundaryList.cs" />
-    <Compile Include="Classes\CDubins.cs" />
-    <Compile Include="Classes\CAHRS.cs" />
-    <Compile Include="Classes\CAutoSteer.cs" />
-    <Compile Include="Classes\CABCurve.cs" />
-    <Compile Include="Classes\CFont.cs" />
-    <Compile Include="Classes\CHead.cs">
-      <DependentUpon>CBoundary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CSim.cs" />
-    <Compile Include="Classes\CTrack.cs" />
-    <Compile Include="Classes\CTram.cs" />
-    <Compile Include="Classes\CYouTurn.cs" />
-    <Compile Include="Classes\CFlag.cs" />
-    <Compile Include="Classes\CABLine.cs" />
-    <Compile Include="Classes\CCamera.cs" />
-    <Compile Include="Classes\CContour.cs" />
-    <Compile Include="Classes\CModuleComm.cs" />
-    <Compile Include="Classes\CNMEA.cs" />
-    <Compile Include="Classes\CSection.cs" />
-    <Compile Include="Classes\CVehicle.cs" />
-    <Compile Include="Classes\CWorldGrid.cs" />
-    <Compile Include="Classes\CTurn.cs">
-      <DependentUpon>CBoundary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CTurnLines.cs">
-      <DependentUpon>CBoundaryList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CTool.cs" />
-    <Compile Include="Forms\Field\FormEnterFlag.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormEnterFlag.Designer.cs">
-      <DependentUpon>FormEnterFlag.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormBndTool.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormBndTool.Designer.cs">
-      <DependentUpon>FormBndTool.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormPan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormPan.Designer.cs">
-      <DependentUpon>FormPan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldISOXML.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldISOXML.Designer.cs">
-      <DependentUpon>FormFieldISOXML.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldKML.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldKML.Designer.cs">
-      <DependentUpon>FormFieldKML.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldData.Designer.cs">
-      <DependentUpon>FormFieldData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormMap.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormMap.Designer.cs">
-      <DependentUpon>FormMap.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEventViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEventViewer.Designer.cs">
-      <DependentUpon>FormEventViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormYes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormYes.designer.cs">
-      <DependentUpon>FormYes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormGrid.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormGrid.Designer.cs">
-      <DependentUpon>FormGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormQuickAB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormQuickAB.Designer.cs">
-      <DependentUpon>FormQuickAB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormRecordName.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormRecordName.Designer.cs">
-      <DependentUpon>FormRecordName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldExisting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldExisting.Designer.cs">
-      <DependentUpon>FormFieldExisting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormTramLine.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormTramLine.Designer.cs">
-      <DependentUpon>FormTramLine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormAllSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormAllSettings.Designer.cs">
-      <DependentUpon>FormAllSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormButtonsRightPanel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormButtonsRightPanel.Designer.cs">
-      <DependentUpon>FormButtonsRightPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormTemp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormTemp.Designer.cs">
-      <DependentUpon>FormTemp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Form_Keys.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Form_Keys.Designer.cs">
-      <DependentUpon>Form_Keys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Form_Help.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Form_Help.Designer.cs">
-      <DependentUpon>Form_Help.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormRefNudge.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormRefNudge.designer.cs">
-      <DependentUpon>FormRefNudge.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormNudge.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormNudge.designer.cs">
-      <DependentUpon>FormNudge.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormHeadAche.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormHeadAche.Designer.cs">
-      <DependentUpon>FormHeadAche.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormHeadLine.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormHeadLine.Designer.cs">
-      <DependentUpon>FormHeadLine.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormColorPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormColorPicker.Designer.cs">
-      <DependentUpon>FormColorPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Form_First.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Form_First.Designer.cs">
-      <DependentUpon>Form_First.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Inputs\FormKeyboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Inputs\FormKeyboard.Designer.cs">
-      <DependentUpon>FormKeyboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormDrivePicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormDrivePicker.Designer.cs">
-      <DependentUpon>FormDrivePicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormRecordPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormRecordPicker.Designer.cs">
-      <DependentUpon>FormRecordPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormFilePicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Pickers\FormFilePicker.Designer.cs">
-      <DependentUpon>FormFilePicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Inputs\FormNumeric.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Inputs\FormNumeric.Designer.cs">
-      <DependentUpon>FormNumeric.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormCorrection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormCorrection.Designer.cs">
-      <DependentUpon>FormCorrection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormColorSection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormColorSection.Designer.cs">
-      <DependentUpon>FormColorSection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormColor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormColor.Designer.cs">
-      <DependentUpon>FormColor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormConfig.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormConfig.Designer.cs">
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigMenu.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigHelp.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigVehicle.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigTool.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigData.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\ConfigModule.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormABDraw.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormABDraw.Designer.cs">
-      <DependentUpon>FormABDraw.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFlags.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFlags.Designer.cs">
-      <DependentUpon>FormFlags.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphHeading.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphHeading.Designer.cs">
-      <DependentUpon>FormGraphHeading.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphXTE.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphXTE.Designer.cs">
-      <DependentUpon>FormGraphXTE.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphSteer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormGraphSteer.Designer.cs">
-      <DependentUpon>FormGraphSteer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormShiftPos.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormShiftPos.Designer.cs">
-      <DependentUpon>FormShiftPos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormSmoothAB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormSmoothAB.Designer.cs">
-      <DependentUpon>FormSmoothAB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormBuildTracks.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormBuildTracks.Designer.cs">
-      <DependentUpon>FormBuildTracks.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormBoundary.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormBoundary.Designer.cs">
-      <DependentUpon>FormBoundary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormBoundaryPlayer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormBoundaryPlayer.Designer.cs">
-      <DependentUpon>FormBoundaryPlayer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldDir.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormFieldDir.Designer.cs">
-      <DependentUpon>FormFieldDir.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormJob.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormJob.Designer.cs">
-      <DependentUpon>FormJob.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Field\FormSaveOrNot.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Field\FormSaveOrNot.Designer.cs">
-      <DependentUpon>FormSaveOrNot.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSimCoords.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSimCoords.Designer.cs">
-      <DependentUpon>FormSimCoords.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSteer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSteer.Designer.cs">
-      <DependentUpon>FormSteer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormTimedMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormTimedMessage.Designer.cs">
-      <DependentUpon>FormTimedMessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormWebCam.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormWebCam.Designer.cs">
-      <DependentUpon>FormWebCam.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\GUI.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Position.designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Form_About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Form_About.Designer.cs">
-      <DependentUpon>Form_About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormTram.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Guidance\FormTram.Designer.cs">
-      <DependentUpon>FormTram.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSteerWiz.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Settings\FormSteerWiz.Designer.cs">
-      <DependentUpon>FormSteerWiz.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Culture\gStr.da.Designer.cs">
-      <DependentUpon>gStr.da.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Culture\gStr.fi.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.fi.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.hu.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.hu.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.lt.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.lt.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.lv.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.lv.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.no.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.no.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.pt.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.pt.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.tr.Designer.cs">
-      <DependentUpon>gStr.tr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Culture\gStr.sk.Designer.cs">
-      <DependentUpon>gStr.sk.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Culture\gStr.af.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.af.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.de.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.de.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.es.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.es.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.fr.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.it.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.it.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.nl.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SaveOpen.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormGPSData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormGPSData.Designer.cs">
-      <DependentUpon>FormGPSData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\CGLM.cs" />
-    <Compile Include="Forms\OpenGL.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PGN.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Sections.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormGPS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormGPS.Designer.cs">
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.pl.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.pl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.ru.Designer.cs">
-      <DependentUpon>gStr.ru.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Culture\gStr.uk.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.uk.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Culture\gStr.zh-CHS.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>gStr.zh-CHS.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\ScreenHelper.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\UDPComm.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\vec3.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="Forms\Field\FormEnterFlag.resx">
-      <DependentUpon>FormEnterFlag.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormBndTool.resx">
-      <DependentUpon>FormBndTool.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormPan.resx">
-      <DependentUpon>FormPan.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFieldISOXML.resx">
-      <DependentUpon>FormFieldISOXML.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFieldKML.resx">
-      <DependentUpon>FormFieldKML.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFieldData.resx">
-      <DependentUpon>FormFieldData.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormMap.resx">
-      <DependentUpon>FormMap.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEventViewer.resx">
-      <DependentUpon>FormEventViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormYes.resx">
-      <DependentUpon>FormYes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormGrid.resx">
-      <DependentUpon>FormGrid.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormQuickAB.resx">
-      <DependentUpon>FormQuickAB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormRecordName.resx">
-      <DependentUpon>FormRecordName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFieldExisting.resx">
-      <DependentUpon>FormFieldExisting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormTramLine.resx">
-      <DependentUpon>FormTramLine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormAllSettings.resx">
-      <DependentUpon>FormAllSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormButtonsRightPanel.resx">
-      <DependentUpon>FormButtonsRightPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormTemp.resx">
-      <DependentUpon>FormTemp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form_Keys.resx">
-      <DependentUpon>Form_Keys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form_Help.resx">
-      <DependentUpon>Form_Help.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormRefNudge.resx">
-      <DependentUpon>FormRefNudge.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormNudge.resx">
-      <DependentUpon>FormNudge.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormHeadAche.resx">
-      <DependentUpon>FormHeadAche.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormHeadLine.resx">
-      <DependentUpon>FormHeadLine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pickers\FormColorPicker.resx">
-      <DependentUpon>FormColorPicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form_First.resx">
-      <DependentUpon>Form_First.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Inputs\FormKeyboard.resx">
-      <DependentUpon>FormKeyboard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pickers\FormDrivePicker.resx">
-      <DependentUpon>FormDrivePicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pickers\FormRecordPicker.resx">
-      <DependentUpon>FormRecordPicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Pickers\FormFilePicker.resx">
-      <DependentUpon>FormFilePicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Inputs\FormNumeric.resx">
-      <DependentUpon>FormNumeric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormCorrection.resx">
-      <DependentUpon>FormCorrection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormColorSection.resx">
-      <DependentUpon>FormColorSection.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormColor.resx">
-      <DependentUpon>FormColor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormConfig.resx">
-      <DependentUpon>FormConfig.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormABDraw.resx">
-      <DependentUpon>FormABDraw.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFlags.resx">
-      <DependentUpon>FormFlags.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormShiftPos.resx">
-      <DependentUpon>FormShiftPos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormBuildTracks.resx">
-      <DependentUpon>FormBuildTracks.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormBoundary.resx">
-      <DependentUpon>FormBoundary.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormBoundaryPlayer.resx">
-      <DependentUpon>FormBoundaryPlayer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormFieldDir.resx">
-      <DependentUpon>FormFieldDir.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormGPSData.resx">
-      <DependentUpon>FormGPSData.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormGPS.resx">
-      <DependentUpon>FormGPS.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormJob.resx">
-      <DependentUpon>FormJob.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Field\FormSaveOrNot.resx">
-      <DependentUpon>FormSaveOrNot.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormSimCoords.resx">
-      <DependentUpon>FormSimCoords.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormSmoothAB.resx">
-      <DependentUpon>FormSmoothAB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormSteer.resx">
-      <DependentUpon>FormSteer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormGraphHeading.resx">
-      <DependentUpon>FormGraphHeading.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormGraphXTE.resx">
-      <DependentUpon>FormGraphXTE.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormGraphSteer.resx">
-      <DependentUpon>FormGraphSteer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormtimedMessage.resx">
-      <DependentUpon>FormTimedMessage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormWebCam.resx">
-      <DependentUpon>FormWebCam.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form_About.resx">
-      <DependentUpon>Form_About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Guidance\FormTram.resx">
-      <DependentUpon>FormTram.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings\FormSteerWiz.resx">
-      <DependentUpon>FormSteerWiz.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.da.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.da.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.fi.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.fi.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.hu.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.hu.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.lt.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.lt.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.lv.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.lv.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.no.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.no.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.pt.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.pt.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.tr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.tr.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.sk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.sk.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.af.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.af.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.de.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.es.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.es.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.fr.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.it.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.it.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.nl.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.nl.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.pl.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.pl.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.ru.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.uk.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Culture\gStr.zh-CHS.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>gStr.zh-CHS.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AOG.ico" />
     <Content Include="aChangeLog.txt" />
-    <None Include="btnImages\SimUDP.png" />
-    <None Include="btnImages\Images\z_crossTrackBkgnd.png" />
-    <None Include="btnImages\Config\ConD_SteerBarBar.png" />
-    <None Include="btnImages\Config\ConD_DirectionMarker.png" />
-    <None Include="btnImages\BoundaryRecordPivot.png" />
-    <None Include="btnImages\BoundaryRecordTool.png" />
-    <None Include="btnImages\Config\ConD_SectionHighlights.png" />
-    <None Include="btnImages\Config\ConD_LineSmooth.png" />
-    <None Include="btnImages\QR\QRAOG.png" />
-    <None Include="btnImages\QR\QRYouTube.png" />
-    <None Include="btnImages\BoundarySectionControlOnOff.png" />
-    <None Include="btnImages\TramMulti.png" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\BoundarySectionControlOnOff.png" />
     <Content Include="UDP_SimTool.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="btnImages\AntennaLeftOffset.png" />
-    <None Include="btnImages\AntennaRightOffset.png" />
-    <None Include="btnImages\AntennaNoOffset.png" />
-    <None Include="btnImages\VR.png" />
-    <None Include="btnImages\Background.png" />
-    <None Include="btnImages\ABPivot.png" />
-    <None Include="btnImages\TrackPivot.png" />
-    <None Include="btnImages\Config\ConF_SoundSections.png" />
-    <None Include="btnImages\Config\ConD_LogElevation.png" />
-    <None Include="btnImages\Config\ConT_TramOverrideDisplay.png" />
-    <None Include="btnImages\GridRotate.png" />
-    <None Include="btnImages\ScreenShot.png" />
-    <None Include="btnImages\Screen2PNG.png" />
-    <None Include="btnImages\ChargingNo.png" />
-    <None Include="btnImages\ChargeIndicator.png" />
-    <None Include="Resources\ChargeIndicator.png" />
-    <None Include="btnImages\HardwareMessage.png" />
-    <Content Include="Resources\TF012.WAV" />
-    <None Include="Resources\SectionOn.wav" />
-    <None Include="Resources\SectionOff.wav" />
-    <None Include="btnImages\bing.png" />
-    <None Include="btnImages\Config\ConT_Asymmetric.png" />
-    <None Include="btnImages\Config\ConT_Symmetric.png" />
-    <None Include="btnImages\Config\WindowRestore.png" />
-    <None Include="btnImages\SectionOffBoundary.png" />
-    <None Include="btnImages\YouTurnH.png" />
-    <None Include="btnImages\Config\ConV_RevSteer.png" />
-    <None Include="btnImages\Config\con_VehicleFunctionSpeedLimit.png" />
-    <None Include="btnImages\Config\ConV_MaxAngVel.png" />
-    <None Include="btnImages\Config\ConV_MaxAutoSteer.png" />
-    <None Include="btnImages\Config\ConV_MinAutoSteer.png" />
-    <None Include="btnImages\Config\tractor-raise.gif" />
-    <None Include="btnImages\FileExisting.png" />
-    <None Include="btnImages\BackSpace.png" />
-    <None Include="btnImages\SectionOnBoundary.png" />
-    <None Include="btnImages\SvennArrow.png" />
-    <None Include="btnImages\ABLineCycleBk.png" />
-    <None Include="btnImages\Config\ConT_TramOverride.png" />
-    <None Include="btnImages\Config\4WD\z_4WDFrontHolder.png" />
-    <None Include="btnImages\Config\4WD\z_4WDRearHolder.png" />
-    <None Include="btnImages\Config\Brand\Holder.png" />
-    <None Include="btnImages\ABTrackAB.png" />
-    <None Include="btnImages\ABTrackCurve.png" />
-    <None Include="btnImages\HeadlandBuild.png" />
-    <None Include="btnImages\HeadlandReset.png" />
-    <None Include="btnImages\HeadlandSlice.png" />
-    <None Include="btnImages\FieldTools.png" />
-    <None Include="btnImages\FileClose.png" />
-    <None Include="btnImages\Headache.png" />
-    <None Include="btnImages\ISOXML.png" />
-    <None Include="btnImages\ABSnapNudgeMenu.png" />
-    <None Include="btnImages\YouTurnU.png" />
-    <None Include="btnImages\Pan.png" />
-    <None Include="btnImages\PanBackground.png" />
-    <None Include="btnImages\Config\Con_Display.png" />
-    <None Include="btnImages\Config\ConS_Pins.png" />
-    <None Include="btnImages\ABLinesHideShow.png" />
-    <None Include="btnImages\HeadlandSectionOff.png" />
-    <None Include="btnImages\HeadlandSectionOn.png" />
-    <None Include="btnImages\ABShrinkGrow.png" />
-    <None Include="btnImages\Config\ConV_SteerPivotSnap.png" />
-    <None Include="btnImages\FieldStats.png" />
-    <None Include="btnImages\ABDraw.png" />
-    <None Include="btnImages\MenuHideShow.png" />
-    <None Include="btnImages\GPSQuality.png" />
-    <None Include="btnImages\ResetColors.png" />
-    <None Include="btnImages\HelpSmall.png" />
-    <None Include="btnImages\TrashContourRef.png" />
-    <None Include="btnImages\TrashApplied.png" />
-    <None Include="btnImages\Images\z_Tool.png" />
-    <None Include="btnImages\TrackOff.png" />
-    <None Include="btnImages\TrackOn.png" />
-    <None Include="btnImages\ABLatLonHeading.png" />
-    <None Include="btnImages\ABLatLonLatLon.png" />
-    <None Include="btnImages\ABTrackA+.png" />
-    <None Include="btnImages\AutoTrack.png" />
-    <None Include="btnImages\ABTracks.png" />
-    <None Include="btnImages\AutoSteerSnapToPivot.png" />
-    <None Include="btnImages\TrackCurve.png" />
-    <None Include="btnImages\TrackLine.png" />
-    <None Include="btnImages\TracksInvisible.png" />
-    <None Include="btnImages\TrackVisible.png" />
-    <None Include="btnImages\Config\ConS_ImplementOffset.png" />
-    <None Include="btnImages\Config\ToolGap.png" />
-    <None Include="btnImages\Config\ToolOffsetNegativeLeft.png" />
-    <None Include="btnImages\Config\ToolOffsetPositiveRight.png" />
-    <None Include="btnImages\Config\ToolOverlap.png" />
-    <None Include="btnImages\Config\ToolHitchPivotOffsetNeg.png" />
-    <None Include="btnImages\Config\ToolHitchPivotOffsetPos.png" />
-    <None Include="btnImages\Config\ConS_ImplementPivot.png" />
-    <None Include="btnImages\Images\z_Tire.png" />
-    <None Include="btnImages\Config\SectionLookAheadOff.gif" />
-    <None Include="btnImages\Config\SectionOnLookAhead.gif" />
-    <None Include="btnImages\ToolHitchPageFrontHarvester.png" />
-    <None Include="btnImages\Config\SectionLookAheadDelay.gif" />
-    <None Include="btnImages\ABSnapNudgeMenuRef.png" />
-    <None Include="btnImages\Config\Con_RightMenuEdit.png" />
-    <None Include="btnImages\BoundaryCenter.png" />
-    <None Include="btnImages\AutoTrackOff.png" />
-    <None Include="btnImages\Images\z_TramOnOff.png" />
-    <None Include="btnImages\ZoomOGL.png" />
-    <None Include="btnImages\BoundaryReduce.png" />
-    <None Include="btnImages\BoundarySmooth.png" />
-    <None Include="btnImages\BoundaryMakeLine.png" />
-    <None Include="btnImages\APlusPlusA.png" />
-    <None Include="btnImages\APlusPlusB.png" />
-    <None Include="btnImages\APlusMinusA.png" />
-    <None Include="btnImages\APlusMinusB.png" />
-    <None Include="btnImages\Images\z_RateMap1.png" />
-    <None Include="btnImages\Images\z_RateMap2.png" />
-    <None Include="btnImages\Images\z_RateMap3.png" />
     <Content Include="OGL.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\rtk_lost.wav" />
-    <None Include="btnImages\BrightnessDn.png" />
-    <None Include="btnImages\BrightnessUp.png" />
-    <None Include="btnImages\Config\ConU_UturnRadius.png" />
-    <None Include="btnImages\Config\Brand\TriangleVehicle.png" />
-    <None Include="btnImages\Images\VehicleOpacity.png" />
-    <None Include="btnImages\Config\Con_SourcesGPSDual.png" />
-    <None Include="btnImages\Config\Con_SourcesGPSSingle.png" />
-    <None Include="btnImages\Config\Con_SourcesRTKAlarm.png" />
-    <None Include="btnImages\Config\Con_SourcesHead.png" />
-    <Content Include="btnImages\Images\z_NoGPS.png" />
-    <None Include="btnImages\Reset_Default.png" />
-    <None Include="btnImages\WizardWand.png" />
-    <None Include="btnImages\WizWasZeroReset.png" />
-    <None Include="btnImages\WizWasZero.png" />
-    <None Include="btnImages\WizSteerDot.png" />
-    <None Include="btnImages\SteerRight.png" />
-    <None Include="btnImages\SteerLeft.png" />
-    <None Include="btnImages\Previous.png" />
-    <None Include="btnImages\Next.png" />
-    <None Include="btnImages\First.gif" />
-    <None Include="btnImages\ResetTool.png" />
-    <None Include="btnImages\MapGray.png" />
-    <None Include="btnImages\MapColor.png" />
-    <None Include="btnImages\Images\z_bingMap.png" />
-    <None Include="btnImages\pathResumeStart.png" />
-    <None Include="btnImages\pathResumeLast.png" />
-    <None Include="btnImages\pathResumeClose.png" />
-    <None Include="btnImages\SwitchActiveOpen.png" />
-    <None Include="btnImages\SwitchActiveClosed.png" />
-    <None Include="btnImages\Config\ConSt_SteerForm.png" />
-    <None Include="btnImages\QR\AgOpenYouTubeChannel.jpg" />
-    <None Include="btnImages\OpManual.png" />
-    <None Include="btnImages\VideoLink.png" />
-    <None Include="btnImages\HelpCancel.png" />
-    <None Include="btnImages\Config\ConF_HydLiftSound.png" />
-    <None Include="btnImages\Config\ConF_TurnSound.png" />
-    <None Include="btnImages\Config\ConF_SteerSound.png" />
-    <None Include="Resources\SteerOn.wav" />
-    <None Include="Resources\SteerOff.wav" />
-    <None Include="btnImages\Trash.png" />
-    <None Include="btnImages\Images\z_LateralManual.png" />
-    <None Include="btnImages\Config\ConV_GuidanceLookAhead.png" />
-    <None Include="btnImages\Config\ConS_Respnse.png" />
-    <None Include="btnImages\Config\ConV_ABLineLength.png" />
-    <None Include="btnImages\Config\ConD_FloorTexture.png" />
-    <None Include="btnImages\Config\Con_FeatureMenu.png" />
-    <None Include="btnImages\Config\ConSt_Mandatory.png" />
-    <None Include="btnImages\Config\ConSt_TurnSensorCurrent.png" />
-    <None Include="btnImages\Config\ConSt_TurnSensorPressure.png" />
-    <None Include="btnImages\Config\Con_SourcesGPS.png" />
-    <None Include="btnImages\Images\z_SpeedoNeedle.png" />
-    <None Include="btnImages\Images\z_SteerPointer.png" />
-    <None Include="btnImages\Images\z_SteerDot.png" />
-    <None Include="btnImages\Images\z_SkyNight.png" />
-    <None Include="btnImages\Images\z_SkyDay.png" />
-    <None Include="btnImages\Images\z_Tractor.png" />
-    <None Include="btnImages\Images\z_Harvester.png" />
-    <None Include="btnImages\Images\z_4WDRear.png" />
-    <None Include="btnImages\Images\z_4WDFront.png" />
-    <None Include="btnImages\RadiusWheelBaseHarvester.png" />
-    <None Include="btnImages\RadiusWheelBase4WD.png" />
-    <None Include="btnImages\ModeStanley.png" />
-    <None Include="btnImages\ModePurePursuit.png" />
-    <None Include="Resources\HydUp.wav" />
-    <None Include="Resources\HydDown.wav" />
-    <None Include="Resources\Alarm10.wav" />
-    <None Include="btnImages\ABLineCycle.png" />
-    <None Include="btnImages\fileMenu.png" />
-    <None Include="btnImages\SwitchOff.png" />
-    <None Include="btnImages\SwitchOn.png" />
-    <None Include="btnImages\AddNew.png" />
-    <None Include="btnImages\OK64.png" />
-    <None Include="btnImages\AutoManualIsAuto.png" />
-    <None Include="btnImages\SnapLeft.png" />
-    <None Include="btnImages\SnapRight.png" />
-    <None Include="btnImages\ABSwapPoints.png" />
-    <None Include="btnImages\BoundaryLoadMultiFromGE.png" />
-    <None Include="btnImages\BoundaryLoadFromGE.png" />
-    <None Include="btnImages\TramAll.png" />
-    <None Include="btnImages\TramLines.png" />
-    <None Include="btnImages\TramOff.png" />
-    <None Include="btnImages\TramOuter.png" />
-    <None Include="btnImages\HeadlandMenu.png" />
-    <None Include="btnImages\HeadlandDeletePoints.png" />
-    <None Include="btnImages\HeadlandTouchSave.png" />
-    <None Include="btnImages\HeadlandOff.png" />
-    <None Include="btnImages\HeadlandOn.png" />
-    <None Include="btnImages\PointAdd.png" />
-    <None Include="btnImages\ToolChkTBT.png" />
-    <None Include="btnImages\ToolChkFront.png" />
-    <None Include="btnImages\ToolChkRear.png" />
-    <None Include="btnImages\ToolChkTrailing.png" />
-    <None Include="btnImages\ToolAcceptChange.png" />
-    <None Include="btnImages\vehiclePage4WD.png" />
-    <None Include="btnImages\vehiclePageHarvester.png" />
-    <None Include="btnImages\vehiclePageTractor.png" />
-    <None Include="btnImages\WindowDayMode.png" />
-    <None Include="btnImages\WindowNightMode.png" />
-    <None Include="btnImages\Boundary.png" />
-    <None Include="btnImages\CameraNorth2D.png" />
-    <None Include="btnImages\HydraulicLiftOff.png" />
-    <None Include="btnImages\HydraulicLiftOn.png" />
-    <None Include="btnImages\Sort.png" />
-    <None Include="btnImages\FileSaveAs.png" />
-    <None Include="btnImages\ColorBackGnd.png" />
-    <None Include="btnImages\ToolHitchPageFront.png" />
-    <None Include="btnImages\ToolHitchPageRear.png" />
-    <None Include="btnImages\ToolHitchPageTBT.png" />
-    <None Include="btnImages\ToolHitchPageTrailing.png" />
-    <None Include="btnImages\SnapToPivot.png" />
-    <None Include="btnImages\Antenna4WD.png" />
-    <None Include="btnImages\AntennaHarvester.png" />
-    <None Include="btnImages\AntennaTractor.png" />
-    <None Include="btnImages\RadiusWheelBase.png" />
-    <None Include="btnImages\AgIO.png" />
-    <None Include="btnImages\Config\Con_ImplementMenu.png" />
-    <None Include="btnImages\Config\Con_ModulesMenu.png" />
-    <None Include="btnImages\Config\Con_SourcesMenu.png" />
-    <None Include="btnImages\Config\Con_UTurnMenu.png" />
-    <None Include="btnImages\Config\Con_VehicleMenu.png" />
-    <None Include="btnImages\Config\ConS_SourcesRoll.png" />
-    <None Include="btnImages\Config\ConS_ImplementAntenna.png" />
-    <None Include="btnImages\Config\ConS_ImplementConfig.png" />
-    <None Include="btnImages\Config\ConS_ImplementHitch.png" />
-    <None Include="btnImages\Config\ConS_ImplementSection.png" />
-    <None Include="btnImages\Config\ConS_ImplementSettings.png" />
-    <None Include="btnImages\Config\ConS_ImplementSwitch.png" />
-    <None Include="btnImages\Config\ConS_ModulesMachine.png" />
-    <None Include="btnImages\Config\ConS_ModulesSteer.png" />
-    <None Include="btnImages\Config\ConS_SourceFix.png" />
-    <None Include="btnImages\Config\ConS_SourcesHeading.png" />
-    <None Include="btnImages\Config\ConS_VehicleConfig.png" />
-    <None Include="btnImages\Config\ConS_VehicleDim.png" />
-    <None Include="btnImages\Config\ConS_VehicleLines.png" />
-    <None Include="btnImages\Config\ConV_CmPixel.png" />
-    <None Include="btnImages\Config\ConV_LineWith.png" />
-    <None Include="btnImages\Config\ConV_SnapDistance.png" />
-    <None Include="btnImages\SteerCenter.png" />
-    <None Include="btnImages\SteerDriveOff.png" />
-    <None Include="btnImages\SteerDriveOn.png" />
-    <None Include="btnImages\SteerZero.png" />
-    <None Include="btnImages\NavigationSettings.png" />
-    <None Include="btnImages\ColorLocked.png" />
-    <None Include="btnImages\ColorUnlocked.png" />
-    <None Include="btnImages\ColourPick.png" />
-    <None Include="btnImages\Config\ConD_AutoDayNight.png" />
-    <None Include="btnImages\Config\ConD_ExtraGuides.png" />
-    <None Include="btnImages\Config\ConD_FullScreenBegin.png" />
-    <None Include="btnImages\Config\ConD_Grid.png" />
-    <None Include="btnImages\Config\ConD_Imperial.png" />
-    <None Include="btnImages\Config\ConD_LogNMEA.png" />
-    <None Include="btnImages\Config\ConD_Metric.png" />
-    <None Include="btnImages\Config\ConD_Poligons.png" />
-    <None Include="btnImages\Config\ConD_Sky.png" />
-    <None Include="btnImages\Config\ConD_Speedometer.png" />
-    <None Include="btnImages\WindowClose.png" />
-    <None Include="btnImages\WindowMaximize.png" />
-    <None Include="btnImages\WindowMinimize.png" />
-    <None Include="btnImages\Config\ConD_KeyBoard.png" />
-    <None Include="btnImages\Config\ConD_LightBar.png" />
-    <None Include="btnImages\Config\ConSt_InvertDirection.png" />
-    <None Include="btnImages\Config\ConSt_InvertRelay.png" />
-    <None Include="btnImages\Config\ConSt_InvertWAS.png" />
-    <None Include="btnImages\Config\ConSt_TurnSensor.png" />
-    <None Include="btnImages\Config\ConU_UturnDistance.png" />
-    <None Include="btnImages\Config\ConU_UturnLength.png" />
-    <None Include="btnImages\Config\ConU_UTurnSmooth.png" />
-    <None Include="btnImages\Config\ConMa_LiftLowerTime.png" />
-    <None Include="btnImages\Config\ConMa_LiftRaiseTime.png" />
-    <None Include="btnImages\Config\ConDa_InvertRoll.png" />
-    <None Include="btnImages\Config\ConDa_RollSetZero.png" />
-    <None Include="btnImages\Config\ConDa_RemoveOffset.png" />
-    <None Include="btnImages\JobNameCalendar.png" />
-    <None Include="btnImages\JobNameTime.png" />
-    <None Include="btnImages\SectionMapping.png" />
-    <None Include="btnImages\ExitAOG.png" />
-    <None Include="btnImages\Steer\Sf_GainTab.png" />
-    <None Include="btnImages\Steer\Sf_SteerTab.png" />
-    <None Include="btnImages\Steer\Sf_PP.png" />
-    <None Include="btnImages\Steer\Sf_Stanley.png" />
-    <None Include="btnImages\Config\ConT_TramSpacing.png" />
-    <None Include="btnImages\Config\Con_TramMenu.png" />
-    <None Include="btnImages\FileCopy.png" />
-    <None Include="btnImages\FileEditName.png" />
-    <None Include="btnImages\SnapLeftHalf.png" />
-    <None Include="btnImages\SnapRightHalf.png" />
-    <None Include="btnImages\BoundaryCurveLine.png" />
-    <None Include="btnImages\Config\ConD_RollHelper.png" />
-    <None Include="btnImages\MappingOff.png" />
-    <None Include="btnImages\MappingOn.png" />
-    <None Include="btnImages\Config\ConSt_Danfoss.png" />
-    <None Include="btnImages\LatLon.png" />
-    <None Include="btnImages\SectionsExample.png" />
-    <None Include="btnImages\Config\ConDa_ResetIMU.png" />
-    <None Include="btnImages\SectionOffBelow.png" />
-    <None Include="btnImages\SectionWidth.png" />
-    <None Include="btnImages\YouSkipOff.png" />
-    <None Include="btnImages\YouSkipOn.png" />
-    <None Include="btnImages\Images\z_Compass.png" />
-    <None Include="btnImages\Images\z_Floor.png" />
-    <None Include="btnImages\Images\z_Font.png" />
-    <None Include="btnImages\Images\z_FrontWheels.png" />
-    <None Include="btnImages\Images\z_Lift.png" />
-    <None Include="btnImages\Images\z_QuestionMark.png" />
-    <None Include="btnImages\Images\z_Speedo.png" />
-    <None Include="btnImages\Images\z_Turn.png" />
-    <None Include="btnImages\Images\z_TurnCancel.png" />
-    <None Include="btnImages\Images\z_TurnManual.png" />
-    <None Include="btnImages\ImplementSettings.png" />
-    <None Include="btnImages\ManualOff.png" />
-    <None Include="btnImages\ManualOn.png" />
-    <None Include="btnImages\JobActive.png" />
-    <None Include="btnImages\FileSave.png" />
-    <None Include="btnImages\Play.png" />
-    <None Include="btnImages\Stop.png" />
-    <None Include="btnImages\back-button.png" />
-    <None Include="btnImages\FileDontSave.png" />
-    <None Include="btnImages\FileNew.png" />
-    <None Include="btnImages\FileOpen.png" />
-    <None Include="btnImages\FilePrevious.png" />
-    <None Include="btnImages\ContourOff.png" />
-    <None Include="btnImages\ContourOn.png" />
-    <None Include="btnImages\ZoomIn48.png" />
-    <None Include="btnImages\ZoomOut48.png" />
-    <None Include="btnImages\FlagRed.png" />
-    <None Include="btnImages\FlagGrn.png" />
-    <None Include="btnImages\FlagYel.png" />
-    <None Include="btnImages\FlagDelete.png" />
-    <None Include="btnImages\TiltDown.png" />
-    <None Include="btnImages\TiltUp.png" />
-    <None Include="btnImages\FlagDeleteAll.png" />
-    <None Include="btnImages\GoogleEarth.png" />
-    <None Include="btnImages\DnArrow64.png" />
-    <None Include="btnImages\AutoSteerOff.png" />
-    <None Include="btnImages\AutoSteerOn.png" />
-    <None Include="btnImages\ArrowLeft.png" />
-    <None Include="btnImages\ArrowRight.png" />
-    <None Include="btnImages\BoundaryLeft.png" />
-    <None Include="btnImages\BoundaryRight.png" />
-    <None Include="btnImages\boundaryPause.png" />
-    <None Include="btnImages\boundaryPlay.png" />
-    <None Include="btnImages\boundaryStop.png" />
-    <None Include="btnImages\BoundaryOuter.png" />
-    <None Include="btnImages\BoundaryRecord.png" />
-    <None Include="btnImages\FileExplorerWindows.png" />
-    <None Include="btnImages\SemiCircle.png" />
-    <None Include="btnImages\SettingsGear64.png" />
-    <None Include="btnImages\Youturn80.png" />
-    <None Include="btnImages\PointDelete.png" />
-    <None Include="btnImages\PointDone.png" />
-    <None Include="btnImages\PointStart.png" />
-    <None Include="btnImages\YouTurnReverse.png" />
-    <None Include="btnImages\Settings48.png" />
-    <None Include="btnImages\AutoSteerConf.png" />
-    <None Include="btnImages\Help.png" />
-    <None Include="btnImages\Webcam.png" />
-    <None Include="btnImages\AutoStop.png" />
-    <None Include="btnImages\Chart.png" />
-    <None Include="btnImages\ABSmooth.png" />
-    <None Include="btnImages\SpecialFunctions.png" />
-    <None Include="btnImages\Camera2D64.png" />
-    <None Include="btnImages\Camera3D64.png" />
-    <None Include="btnImages\CameraNorth64.png" />
-    <None Include="btnImages\RecPath.png" />
-    <None Include="btnImages\FileDelete.png" />
-    <None Include="btnImages\FileUse.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Control.Draggable" Version="1.0.5049.269" />
@@ -1365,21 +50,253 @@
     <PackageReference Include="WinFormsMapControl" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AgLibrary\AgLibrary.csproj">
-      <Project>{692b4970-37f1-4f02-8f7f-a514283fc399}</Project>
-      <Name>AgLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Keypad\Keypad.csproj">
-      <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>
-      <Name>Keypad</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
+    <ProjectReference Include="..\Keypad\Keypad.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Compile Update="Culture\gStr.af.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.af.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.da.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.da.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.de.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.de.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.es.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.es.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.fi.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.fi.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.fr.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.hu.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.hu.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.it.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.it.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.lt.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.lt.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.lv.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.lv.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.nl.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.no.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.no.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.pl.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.pl.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.pt.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.ru.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.sk.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.sk.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.tr.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.tr.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.uk.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.uk.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Culture\gStr.zh-CHS.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>gStr.zh-CHS.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Controls.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\GUI.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Position.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\SaveOpen.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigData.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigHelp.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigMenu.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigModule.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigTool.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Settings\ConfigVehicle.Designer.cs">
+      <DependentUpon>FormConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\OpenGL.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\PGN.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\Sections.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\UDPComm.Designer.cs">
+      <DependentUpon>FormGPS.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Culture/gStr.af.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.af.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.da.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.da.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.es.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.es.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.fi.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.fi.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.hu.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.hu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.it.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.lt.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.lt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.lv.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.lv.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.nl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.no.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.no.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.pl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.pl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.pt.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.sk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.sk.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.tr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.tr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.uk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.uk.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Culture/gStr.zh-CHS.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>gStr.zh-CHS.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

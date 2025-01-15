@@ -5,6 +5,7 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -54,14 +55,10 @@ namespace AgOpenGPS
             if (mf.worldGrid.isGeoMap)
             {
                 cboxDrawMap.Checked = true;
-                btnGray.Visible = true;
-                btnBuildFieldBackground.Visible = true;
             }
             else
             {
                 cboxDrawMap.Checked = false;
-                btnGray.Visible = false;
-                btnBuildFieldBackground.Visible = false;
             }
 
             if (mf.worldGrid.isGeoMap) cboxDrawMap.Image = Properties.Resources.MappingOn;
@@ -73,6 +70,8 @@ namespace AgOpenGPS
                 Left = 0;
             }
 
+            btnDeleteAll.Enabled = true;
+            label3.Text = gStr.gsBoundary;
         }
 
         private void FormMap_FormClosing(object sender, FormClosingEventArgs e)
@@ -258,7 +257,6 @@ namespace AgOpenGPS
             mapControl.Markers.Clear();
             mapControl.Invalidate();
 
-            btnDeleteAll.Enabled = false;
             btnAddFence.Enabled = false;
             btnDeletePoint.Enabled = false;
         }
@@ -272,6 +270,13 @@ namespace AgOpenGPS
                 mapControl.Invalidate();
                 return;
             }
+
+            if (mf.bnd.bndList == null || mf.bnd.bndList.Count == 0)
+            {
+                mf.TimedMessageBox(2000, gStr.gsBoundary, gStr.gsNoBoundary);
+                return;
+            }
+
             DialogResult result3 = MessageBox.Show("Delete Last Field Boundary Made?",
                 gStr.gsDeleteForSure,
                 MessageBoxButtons.YesNo,
@@ -280,7 +285,6 @@ namespace AgOpenGPS
 
             if (result3 == DialogResult.Yes)
             {
-                if (mf.bnd.bndList == null || mf.bnd.bndList.Count == 0) return;
                 int cnt = mf.bnd.bndList.Count;
                 mf.bnd.bndList[cnt-1].hdLine?.Clear();
                 mf.bnd.bndList.RemoveAt(cnt - 1);
@@ -305,7 +309,6 @@ namespace AgOpenGPS
             mapControl.Markers.Clear();
             mapControl.Invalidate();
 
-            btnDeleteAll.Enabled = false;
             btnAddFence.Enabled = false;
             btnDeletePoint.Enabled = false;
         }
@@ -314,12 +317,13 @@ namespace AgOpenGPS
         {
             if (cboxEnableLineDraw.Checked)
             {
-                btnDeleteAll.Enabled = true;
+                mf.TimedMessageBox(3000, "Boundary Create Mode", "Touch Map to Create The Boundary");
                 btnAddFence.Enabled = true;
                 btnDeletePoint.Enabled = true;
                 bingLine.Clear();
                 mapControl.Markers.Clear();
                 mapControl.Invalidate();
+                Log.EventWriter("Bing Touch Boundary started");
             }
             else
             {
@@ -327,104 +331,16 @@ namespace AgOpenGPS
                 mapControl.Markers.Clear();
                 mapControl.Invalidate();
 
-                btnDeleteAll.Enabled = false;
                 btnAddFence.Enabled = false;
                 btnDeletePoint.Enabled = false;
+
             }
         }
-
-        private void cboxDrawMap_Click(object sender, EventArgs e)
-        {
-            if (bingLine.Count > 0)
-            {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, "Finish Making Boundary");
-                cboxDrawMap.Checked = !cboxDrawMap.Checked;
-                return;
-            }
-
-            if (cboxDrawMap.Checked)
-            {
-                cboxDrawMap.Image = Properties.Resources.MappingOn;
-                btnGray.Visible = true;
-                btnBuildFieldBackground.Visible = true;
-            }
-            else
-            {
-                cboxDrawMap.Image = Properties.Resources.MappingOff;
-                ResetMapGrid();
-                mf.FileSaveBackPic();
-
-                mf.worldGrid.isGeoMap = false;
-                btnGray.Visible = false;
-                btnBuildFieldBackground.Visible = false;
-            }
-        }
-
-        private void ResetMapGrid()
-        {
-            using (Bitmap bitmap = Properties.Resources.z_bingMap)
-            {
-                GL.GenTextures(1, out mf.texture[(int)FormGPS.textures.bingGrid]);
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.bingGrid]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-            }
-
-            string fileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, "BackPic.png");
-            try
-            {
-                if (File.Exists(fileAndDirectory))
-                    File.Delete(fileAndDirectory);
-            }
-            catch { }
-
-            mf.worldGrid.isGeoMap = false;
-            bingLine.Clear();
-            mapControl.Markers.Clear();
-            mapControl.Invalidate();
-        }
-
-        private void btnGray_Click(object sender, EventArgs e)
-        {
-            isColorMap = !isColorMap;
-            if (isColorMap)
-            {
-                btnGray.Image = Properties.Resources.MapColor;
-            }
-            else
-            {
-                btnGray.Image = Properties.Resources.MapGray;
-            }
-        }
-
-        private void btnZoomOut_Click(object sender, EventArgs e)
-        {
-            int zoom = mapControl.ZoomLevel;
-            zoom--;
-            if (zoom < 12) zoom = 12;
-            mapControl.ZoomLevel = zoom;//mapControl
-            mapControl.Invalidate();
-            UpdateWindowTitle();
-        }
-
-        private void btnZoomIn_Click(object sender, EventArgs e)
-        {
-            int zoom = mapControl.ZoomLevel;
-            zoom++;
-            if (zoom > 19) zoom = 19;
-            mapControl.ZoomLevel = zoom;//mapControl
-            mapControl.Invalidate();
-            UpdateWindowTitle();
-        }
-
         private void SaveBackgroundImage()
         {
             if (bingLine.Count > 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, "Finish Making Boundary");
+                mf.TimedMessageBox(3000, gStr.gsBoundary, "Finish Making Boundary or Delete");
                 return;
             }
 
@@ -481,8 +397,40 @@ namespace AgOpenGPS
                 Log.EventWriter("GeoMap File in Use, Try Reload");
                 return;
             }
+            SaveBackgroundGeoFile();
+        }
 
-            mf.FileSaveBackPic();
+        private void SaveBackgroundGeoFile()
+        {
+            //get the directory and make sure it exists, create if not
+            string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            //write out the file
+            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, "BackPic.Txt")))
+            {
+                writer.WriteLine("$BackPic");
+                //outer track of outer boundary tram
+                if (mf.worldGrid.isGeoMap)
+                {
+                    writer.WriteLine(true);
+                    writer.WriteLine(mf.worldGrid.eastingMaxGeo.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine(mf.worldGrid.eastingMinGeo.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine(mf.worldGrid.northingMaxGeo.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine(mf.worldGrid.northingMinGeo.ToString(CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    writer.WriteLine(false);
+                    writer.WriteLine(300);
+                    writer.WriteLine(-300);
+                    writer.WriteLine(300);
+                    writer.WriteLine(-300);
+                }
+            }
+
         }
 
         private void btnBuildFieldBackground_Click(object sender, EventArgs e)
@@ -495,13 +443,110 @@ namespace AgOpenGPS
             SaveBackgroundImage();
         }
 
+        private void cboxDrawMap_Click(object sender, EventArgs e)
+        {
+            if (bingLine.Count > 0)
+            {
+                mf.TimedMessageBox(2000, gStr.gsBoundary, "Finish Making Boundary");
+                cboxDrawMap.Checked = !cboxDrawMap.Checked;
+                return;
+            }
+
+            if (cboxDrawMap.Checked)
+            {
+                cboxDrawMap.Image = Properties.Resources.MappingOn;
+                SaveBackgroundImage();
+            }
+            else
+            {
+                cboxDrawMap.Image = Properties.Resources.MappingOff;
+                ResetMapGrid();
+                mf.worldGrid.isGeoMap = false;
+                SaveBackgroundGeoFile();
+            }
+
+        }
+
+        private void ResetMapGrid()
+        {
+            using (Bitmap bitmap = Properties.Resources.z_bingMap)
+            {
+                GL.GenTextures(1, out mf.texture[(int)FormGPS.textures.bingGrid]);
+                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.bingGrid]);
+                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
+                bitmap.UnlockBits(bitmapData);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
+            }
+
+            string fileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, "BackPic.png");
+            try
+            {
+                if (File.Exists(fileAndDirectory))
+                    File.Delete(fileAndDirectory);
+            }
+            catch { }
+
+            mf.worldGrid.isGeoMap = false;
+            bingLine.Clear();
+            mapControl.Markers.Clear();
+            mapControl.Invalidate();
+        }
+
+        private void btnGray_Click(object sender, EventArgs e)
+        {
+            isColorMap = !isColorMap;
+            //if (isColorMap)
+            //{
+            //    btnGray.Image = Properties.Resources.MapColor;
+            //}
+            //else
+            //{
+            //    btnGray.Image = Properties.Resources.MapGray;
+            //}
+        }
+
+        private void btnZoomOut_Click(object sender, EventArgs e)
+        {
+            int zoom = mapControl.ZoomLevel;
+            zoom--;
+            if (zoom < 12) zoom = 12;
+            mapControl.ZoomLevel = zoom;//mapControl
+            mapControl.Invalidate();
+            UpdateWindowTitle();
+        }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            int zoom = mapControl.ZoomLevel;
+            zoom++;
+            if (zoom > 19) zoom = 19;
+            mapControl.ZoomLevel = zoom;//mapControl
+            mapControl.Invalidate();
+            UpdateWindowTitle();
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             lblBnds.Text = mf.bnd.bndList.Count.ToString();
             if (bingLine.Count > 0)
-                lblPoints.Text = bingLine.Count.ToString();
+                lblPoints.Text = "Pts: " + bingLine.Count.ToString();
             else
                 lblPoints.Text = "";
+
+            if (mf.bnd.bndList.Count > 1)
+            {
+                lblBnds.Text = "1 " + gStr.gsOuter +"\r\n" + (mf.bnd.bndList.Count - 1).ToString() + " " + gStr.gsInner;
+            }
+            else if (mf.bnd.bndList.Count == 1)
+            {
+                lblBnds.Text = "1 Outer\r\n";
+            }
+            else
+            {
+                lblBnds.Text = gStr.gsNone;
+            }
         }
 
     }

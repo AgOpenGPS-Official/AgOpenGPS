@@ -2137,39 +2137,6 @@ namespace AgOpenGPS
             }
         }
 
-        //save tram
-        public void FileSaveBackPic()
-        {
-            //get the directory and make sure it exists, create if not
-            string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
-
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-            { Directory.CreateDirectory(directoryName); }
-
-            //write out the file
-            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, "BackPic.Txt")))
-            {
-                writer.WriteLine("$BackPic");
-                //outer track of outer boundary tram
-                if (worldGrid.isGeoMap)
-                {
-                    writer.WriteLine(true);
-                    writer.WriteLine(worldGrid.eastingMaxGeo.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(worldGrid.eastingMinGeo.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(worldGrid.northingMaxGeo.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(worldGrid.northingMinGeo.ToString(CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    writer.WriteLine(false);
-                    writer.WriteLine(300);
-                    writer.WriteLine(-300);
-                    writer.WriteLine(300);
-                    writer.WriteLine(-300);
-                }
-            }
-        }
-
         //save the headland
         public void FileSaveHeadland()
         {

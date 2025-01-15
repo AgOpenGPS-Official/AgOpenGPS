@@ -405,7 +405,7 @@ namespace AgOpenGPS
             deleteContourPathsToolStripMenuItem.Text = gStr.gsDeleteContourPaths;
             deleteAppliedToolStripMenuItem.Text = gStr.gsDeleteAppliedArea;
             tramLinesMenuField.Text = gStr.gsTramLines;
-            tramsMultiMenuField.Text = gStr.gsTramLines + " Add";
+            tramsMultiMenuField.Text = gStr.gsTramLines + " Builder";
             recordedPathStripMenu.Text = gStr.gsRecordedPathMenu;
             flagByLatLonToolStripMenuItem.Text = gStr.gsFlagByLatLon;
             boundaryToolToolStripMenu.Text = gStr.gsBoundary + " Tool";
@@ -896,6 +896,7 @@ namespace AgOpenGPS
                     case 7:
                         panelRight.Controls.Add(btnContour);
                         panelRight.Controls.Add(btnContourLock);
+                        panelRight.Controls.Add(btnIsobusSC);
                         break;
 
                     default:

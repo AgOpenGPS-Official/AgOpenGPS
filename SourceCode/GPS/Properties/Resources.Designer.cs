@@ -2250,6 +2250,46 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IncrementMinus {
+            get {
+                object obj = ResourceManager.GetObject("IncrementMinus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IncrementPlus {
+            get {
+                object obj = ResourceManager.GetObject("IncrementPlus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IsobusSectionControlOff {
+            get {
+                object obj = ResourceManager.GetObject("IsobusSectionControlOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IsobusSectionControlOn {
+            get {
+                object obj = ResourceManager.GetObject("IsobusSectionControlOn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ISOXML {
             get {
                 object obj = ResourceManager.GetObject("ISOXML", resourceCulture);
@@ -4347,6 +4387,16 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap ZoomOGL {
             get {
                 object obj = ResourceManager.GetObject("ZoomOGL", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ZoomOut {
+            get {
+                object obj = ResourceManager.GetObject("ZoomOut", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

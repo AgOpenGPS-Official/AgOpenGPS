@@ -1,414 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C88A8244-47F5-4275-AA35-54CC884E9EDE}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AgIO</RootNamespace>
-    <AssemblyName>AgIO</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <OutputPath>..\..\..\AgOpenGPS\</OutputPath>
+    <ApplicationIcon>AgIO_ico.ico</ApplicationIcon>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
     <!-- Only write to build log in one project (AgOpenGPS), otherwise GitVersion will fail -->
     <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\AgOpenGPS\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\AgOpenGPS\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>AgIO_ico.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RepeatButtonControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\RepeatButtonControl.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CGLM.cs" />
-    <Compile Include="Classes\ListViewColumnSorterExt.cs" />
-    <Compile Include="Classes\CRadioChannel.cs" />
-    <Compile Include="Classes\CSettings.cs" />
-    <Compile Include="Forms\FormProfiles.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormProfiles.designer.cs">
-      <DependentUpon>FormProfiles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormCommSetGPS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormCommSetGPS.Designer.cs">
-      <DependentUpon>FormCommSetGPS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEventViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEventViewer.Designer.cs">
-      <DependentUpon>FormEventViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormSerialMonitor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormSerialMonitor.designer.cs">
-      <DependentUpon>FormSerialMonitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormGPSData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormGPSData.Designer.cs">
-      <DependentUpon>FormGPSData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormKeyboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormKeyboard.designer.cs">
-      <DependentUpon>FormKeyboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormLoop.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormLoop.Designer.cs">
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormRadio.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormRadio.Designer.cs">
-      <DependentUpon>FormRadio.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormRadioChannel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormRadioChannel.Designer.cs">
-      <DependentUpon>FormRadioChannel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormSerialPass.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormSerialPass.designer.cs">
-      <DependentUpon>FormSerialPass.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEthernet.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEthernet.designer.cs">
-      <DependentUpon>FormEthernet.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormUDPMonitor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormUDPMonitor.designer.cs">
-      <DependentUpon>FormUDPMonitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormPGN.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormPGN.designer.cs">
-      <DependentUpon>FormPGN.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormYes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormYes.designer.cs">
-      <DependentUpon>FormYes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormYesNo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormYesNo.designer.cs">
-      <DependentUpon>FormYesNo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\NMEA.Designer.cs">
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormNtrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormNtrip.Designer.cs">
-      <DependentUpon>FormNtrip.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormNumeric.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormNumeric.designer.cs">
-      <DependentUpon>FormNumeric.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormSource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormSource.designer.cs">
-      <DependentUpon>FormSource.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormTimedMessage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormTimedMessage.designer.cs">
-      <DependentUpon>FormTimedMessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormUDP.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormUDP.designer.cs">
-      <DependentUpon>FormUDP.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\FormProfiles.resx">
-      <DependentUpon>FormProfiles.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormCommSetGPS.resx">
-      <DependentUpon>FormCommSetGPS.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEventViewer.resx">
-      <DependentUpon>FormEventViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormSerialMonitor.resx">
-      <DependentUpon>FormSerialMonitor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormGPSData.resx">
-      <DependentUpon>FormGPSData.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormKeyboard.resx">
-      <DependentUpon>FormKeyboard.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormLoop.resx">
-      <DependentUpon>FormLoop.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormNtrip.resx">
-      <DependentUpon>FormNtrip.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormNumeric.resx">
-      <DependentUpon>FormNumeric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormRadio.resx">
-      <DependentUpon>FormRadio.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormRadioChannel.resx">
-      <DependentUpon>FormRadioChannel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormSource.resx">
-      <DependentUpon>FormSource.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormSerialPass.resx">
-      <DependentUpon>FormSerialPass.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEthernet.resx">
-      <DependentUpon>FormEthernet.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormUDPMonitor.resx">
-      <DependentUpon>FormUDPMonitor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormPGN.resx">
-      <DependentUpon>FormPGN.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormYes.resx">
-      <DependentUpon>FormYes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormYesNo.resx">
-      <DependentUpon>FormYesNo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormtimedMessage.resx">
-      <DependentUpon>FormTimedMessage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormUDP.resx">
-      <DependentUpon>FormUDP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Forms\SerialComm.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\NTRIPComm.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\UDP.Designer.cs">
-      <SubType>Form</SubType>
-      <DependentUpon>FormLoop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\ArrowLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\ArrowRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\Cancel64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\DnArrow64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\NtripSettings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\OK64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\Settings48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\SwitchOff.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="btnImages\UpArrow64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AgIO_ico.ico" />
-    <None Include="btnImages\FileSaveAs.png" />
-    <None Include="btnImages\Reset_Default.png" />
-    <None Include="btnImages\LogViewer.png" />
-    <None Include="btnImages\ModuleSim2.png" />
-    <None Include="btnImages\EthernetOff.png" />
-    <None Include="btnImages\WindowMinimize.png" />
-    <None Include="btnImages\WindowClose.png" />
-    <None Include="btnImages\GPS_Out.png" />
-    <None Include="Resources\TF012.WAV" />
-    <None Include="btnImages\SerialMonitor.png" />
-    <None Include="btnImages\EthernetSetup.png" />
-    <None Include="btnImages\Help.png" />
-    <None Include="btnImages\ConSt_Mandatory.png" />
-    <None Include="btnImages\back-button.png" />
-    <None Include="btnImages\SubnetSend.png" />
-    <None Include="btnImages\Nmea.png" />
-    <None Include="btnImages\ConS_ImplementAntenna.png" />
-    <None Include="btnImages\ScanNetwork.png" />
-    <None Include="btnImages\ToolAcceptChange.png" />
-    <None Include="btnImages\TestRelays.png" />
-    <None Include="btnImages\NTRIP_Client.png" />
-    <None Include="btnImages\NTRIP_Serial.png" />
-    <None Include="btnImages\Sort.png" />
-    <None Include="btnImages\ResetTimer.png" />
-    <None Include="btnImages\NtripToUDP.png" />
-    <None Include="btnImages\NtripToSerial.png" />
-    <None Include="btnImages\www.png" />
-    <None Include="btnImages\LogNMEA.png" />
-    <None Include="btnImages\ArrowGrnRight.png" />
-    <None Include="btnImages\ArrowGrnLeft.png" />
-    <None Include="btnImages\WindowsShutDown.png" />
-    <None Include="btnImages\Check_OK.png" />
-    <None Include="btnImages\Check_Error.png" />
-    <None Include="btnImages\AgIO_First.gif" />
-    <None Include="btnImages\Trash.png" />
-    <None Include="btnImages\AddNew.png" />
-    <None Include="btnImages\Edit.png" />
-    <None Include="btnImages\RadioSettings.png" />
-    <None Include="btnImages\B_UDP.png" />
-    <None Include="btnImages\B_Machine.png" />
-    <None Include="btnImages\B_IMU.png" />
-    <None Include="btnImages\B_GPS.png" />
-    <None Include="btnImages\B_Autosteer.png" />
-    <None Include="btnImages\InOut.png" />
-    <None Include="btnImages\satellite.png" />
-    <None Include="btnImages\Com_Module2.png" />
-    <None Include="btnImages\Com_IMUModule.png" />
-    <None Include="btnImages\Com_AutosteerModule.png" />
-    <None Include="btnImages\USB_Disconnect.png" />
-    <None Include="btnImages\USB_Connect.png" />
-    <None Include="btnImages\ScanPorts.png" />
-    <None Include="btnImages\DeviceManager.png" />
-    <None Include="btnImages\AgIOBtn.png" />
-    <None Include="btnImages\VehFileLoad.png" />
-    <None Include="btnImages\VehFileSave.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AgLibrary\AgLibrary.csproj">
-      <Project>{692b4970-37f1-4f02-8f7f-a514283fc399}</Project>
-      <Name>AgLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Keypad\Keypad.csproj">
-      <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>
-      <Name>Keypad</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\AgLibrary\AgLibrary.csproj" />
+    <ProjectReference Include="..\..\Keypad\Keypad.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GitVersion.MsBuild" Version="5.12.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Update="Forms\Controls.Designer.cs">
+      <DependentUpon>FormLoop.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\NMEA.Designer.cs">
+      <DependentUpon>FormLoop.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\NTRIPComm.Designer.cs">
+      <DependentUpon>FormLoop.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\SerialComm.Designer.cs">
+      <DependentUpon>FormLoop.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\UDP.Designer.cs">
+      <DependentUpon>FormLoop.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>
