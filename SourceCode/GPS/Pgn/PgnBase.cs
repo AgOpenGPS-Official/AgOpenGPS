@@ -36,7 +36,8 @@ namespace AgOpenGPS
 
         public void FindRefactoringBugs(byte[] oldMessage)
         {
-            for (int i = 0; i < _message.Length - 1; i++)
+            ComputeCrc();
+            for (int i = 0; i < _message.Length; i++)
             {
                 if (_message[i] != oldMessage[i])
                 {

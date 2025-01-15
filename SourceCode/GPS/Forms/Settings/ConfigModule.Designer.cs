@@ -392,9 +392,8 @@ namespace AgOpenGPS
                 pgn235.SetSectionWidth(i, mf.section[i].sectionWidth);
             }
             pgn235.SetNumberOfSections(mf.tool.numOfSections);
-            pgn235.FindRefactoringBugs(mf.p_235.pgn);
 
-            mf.SendPgnToLoop(mf.p_235.pgn);
+            mf.SendPgnToLoop(mf.p_235.pgn, pgn235);
         }
 
         private void btnRelaySetDefaultConfig_Click(object sender, EventArgs e)

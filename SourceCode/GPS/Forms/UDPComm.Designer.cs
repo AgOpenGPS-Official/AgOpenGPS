@@ -358,7 +358,7 @@ namespace AgOpenGPS
             }
         }
 
-        public void SendPgnToLoop(byte[] byteData)
+        public void SendPgnToLoop(byte[] byteData, PgnBase pgn = null)
         {
             if (loopBackSocket != null && byteData.Length > 2)
             {
@@ -370,6 +370,10 @@ namespace AgOpenGPS
                         crc += byteData[i];
                     }
                     byteData[byteData.Length - 1] = (byte)crc;
+                    if (pgn != null)
+                    {
+                        pgn.FindRefactoringBugs(byteData);
+                    }
 
                     loopBackSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None,
                         epAgIO, new AsyncCallback(SendAsyncLoopData), null);

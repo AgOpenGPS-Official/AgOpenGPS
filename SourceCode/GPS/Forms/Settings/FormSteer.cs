@@ -401,9 +401,8 @@ namespace AgOpenGPS
                 pgn252.SetLowSteerPwm(hsbarHighSteerPWM.Value / 3);
                 pgn252.SetProportionalGain(hsbarProportionalGain.Value);
                 pgn252.SetMinSteerPwm(hsbarMinPWM.Value);
-                pgn252.FindRefactoringBugs(mf.p_252.pgn);
 
-                mf.SendPgnToLoop(mf.p_252.pgn);
+                mf.SendPgnToLoop(mf.p_252.pgn, pgn252);
                 toSend = false;
                 counter = 0;
             }
