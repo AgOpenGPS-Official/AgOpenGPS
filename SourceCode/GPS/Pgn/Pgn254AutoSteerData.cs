@@ -17,10 +17,6 @@ namespace AgOpenGPS
         {
         }
 
-        public Pgn254AutoSteerData() : base(254, 8)
-        {
-        }
-
         public void SetDist(bool isOff, short guidanceLineDistanceOffInCm)
         {
             if (isOff)
