@@ -2,6 +2,8 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/agopengps-official/AgOpenGPS)](https://github.com/agopengps-official/AgOpenGPS/releases/latest)
 
+# USE VISUAL STUDIO TO CLONE THIS REPOSITORY!!
+
 Ag Precision Mapping and Section Control Software
 
 AgOpenGPS is 2 programs. AgIO is the communication hub to the outside world and AgOpenGPS is the 
