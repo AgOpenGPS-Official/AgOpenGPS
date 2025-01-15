@@ -382,6 +382,27 @@ namespace AgOpenGPS
             }
         }
 
+        // Not used yet
+
+        public void SendPgnToLoop(PgnBase pgn)
+        {
+            var byteData = pgn.Message;
+            if (loopBackSocket != null && byteData.Length > 2)
+            {
+                try
+                {
+                    loopBackSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None,
+                        epAgIO, new AsyncCallback(SendAsyncLoopData), null);
+                }
+                catch (Exception)
+                {
+                    //Log.EventWriter("Sending UDP Message" + e.ToString());
+                    //MessageBox.Show("Send Error: " + e.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
         public void SendAsyncLoopData(IAsyncResult asyncResult)
         {
             try

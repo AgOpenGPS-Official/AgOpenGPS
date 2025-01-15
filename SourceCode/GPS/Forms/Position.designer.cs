@@ -1010,7 +1010,7 @@ namespace AgOpenGPS
             }
 
             //out serial to autosteer module  //indivdual classes load the distance and heading deltas
-            pgn254.AssertEqual(p_254);
+            pgn254.FindRefactoringBugs(p_254.pgn);
             SendPgnToLoop(p_254.pgn);
 
             //for average cross track error

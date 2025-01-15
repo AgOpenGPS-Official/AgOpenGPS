@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-using static AgOpenGPS.FormGPS;
-
-namespace AgOpenGPS
+﻿namespace AgOpenGPS
 {
-    public class Pgn252AutoSteerSettings
+
+    public class Pgn252AutoSteerSettings : PgnBase
     {
-        public byte[] message = new byte[] { 0x80, 0x81, 0x7f, 0xFC, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
         private const int _proportionalGain = 5;
         private const int _highSteerPwm = 6;
         private const int _lowSteerPwm = 7;
@@ -14,6 +11,10 @@ namespace AgOpenGPS
         private const int _wasOffsetLo = 10;
         private const int _wasOffsetHi = 11;
         private const int _ackerman = 12;
+
+        public Pgn252AutoSteerSettings() : base(252, 8)
+        {
+        }
 
         public byte SetProportionalGain(int proportionalGain)
         {
@@ -75,21 +76,6 @@ namespace AgOpenGPS
             message[_lowSteerPwm] = Properties.Settings.Default.setAS_lowSteerPWM;
             message[_proportionalGain] = Properties.Settings.Default.setAS_Kp;
             message[_minSteerPWM] = Properties.Settings.Default.setAS_minSteerPWM;
-        }
-
-        public void AssertEqual(CPGN_FC p)
-        {
-            for (int i = 0; i < message.Length - 1; i++)
-            {
-                byte a = message[i];
-                byte b = p.pgn[i];
-
-                if (a != b)
-                {
-
-                }
-                Debug.Assert(message[i] == p.pgn[i]);
-            }
         }
 
     }
