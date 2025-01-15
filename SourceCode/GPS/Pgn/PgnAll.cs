@@ -2,8 +2,8 @@
 {
     public class PgnAll
     {
-        private readonly Pgn254AutoSteerData _pgn254 = new Pgn254AutoSteerData();
-        private readonly Pgn252AutoSteerSettings _pgn252 = new Pgn252AutoSteerSettings();
+        private readonly Pgn254AutoSteerData _pgn254;
+        private readonly Pgn252AutoSteerSettings _pgn252;
 
         public PgnAll()
         {
