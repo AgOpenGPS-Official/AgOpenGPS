@@ -633,10 +633,12 @@
       <DependentUpon>gStr.zh-CHS.resx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ScreenHelper.cs" />
+    <Compile Include="Pgn\IPgnErrorPresenter.cs" />
     <Compile Include="Pgn\PgnAll.cs" />
     <Compile Include="Pgn\Pgn252AutoSteerSettings.cs" />
     <Compile Include="Pgn\Pgn254AutoSteerData.cs" />
     <Compile Include="Pgn\PgnBase.cs" />
+    <Compile Include="Pgn\WinFormsPgnErrorPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\UDPComm.Designer.cs">

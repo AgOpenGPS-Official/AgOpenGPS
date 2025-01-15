@@ -282,7 +282,8 @@ namespace AgOpenGPS
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
-            _pgnAll = new PgnAll();
+
+            _pgnAll = new PgnAll(new WinFormsPgnErrorPresenter());
 
             //create the world grid
             worldGrid = new CWorldGrid(this);

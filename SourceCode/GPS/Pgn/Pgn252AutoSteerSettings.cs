@@ -12,7 +12,7 @@
         private const int _wasOffsetHiIndex = 11;
         private const int _ackermanIndex = 12;
 
-        public Pgn252AutoSteerSettings() : base(252, 8)
+        public Pgn252AutoSteerSettings(IPgnErrorPresenter errorPresenter) : base(252, 8, errorPresenter)
         {
         }
 

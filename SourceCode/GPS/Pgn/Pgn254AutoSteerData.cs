@@ -13,7 +13,7 @@ namespace AgOpenGPS
         private const int _sectionControl1to8Index = 11;
         private const int _sectionControl9to16Index = 12;
 
-        public Pgn254AutoSteerData() : base(254, 8)
+        public Pgn254AutoSteerData(IPgnErrorPresenter errorPresenter) : base(254, 8, errorPresenter)
         {
         }
 
