@@ -349,7 +349,7 @@ namespace AgOpenGPS
             mf.p_236.pgn[mf.p_236.pin22] = (byte)int.Parse(words[22]);
             mf.p_236.pgn[mf.p_236.pin23] = (byte)int.Parse(words[23]);
 
-            Pgn236RelayConfig pgn236 = mf.PgnAll.Pgn236;
+            Pgn236RelayConfig pgn236 = new Pgn236RelayConfig(new WinFormsPgnErrorPresenter());
             for (int i = 0; i < 23; i++)
             {
                 pgn236.SetPin(i, words[i]);
@@ -391,7 +391,7 @@ namespace AgOpenGPS
 
             mf.p_235.pgn[mf.p_235.numSections] = (byte)mf.tool.numOfSections;
 
-            Pgn235SectionDimensions pgn235 = mf.PgnAll.Pgn235;
+            Pgn235SectionDimensions pgn235 = new Pgn235SectionDimensions(new WinFormsPgnErrorPresenter());
             for (int i = 0; i < 16; i++)
             {
                 pgn235.SetSectionWidth(i, mf.section[i].sectionWidth);
