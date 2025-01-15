@@ -348,8 +348,13 @@ namespace AgOpenGPS
             mf.p_236.pgn[mf.p_236.pin21] = (byte)int.Parse(words[21]);
             mf.p_236.pgn[mf.p_236.pin22] = (byte)int.Parse(words[22]);
             mf.p_236.pgn[mf.p_236.pin23] = (byte)int.Parse(words[23]);
-            mf.SendPgnToLoop(mf.p_236.pgn);
 
+            Pgn236RelayConfig pgn236 = mf.PgnAll.Pgn236;
+            for (int i = 0; i < 23; i++)
+            {
+                pgn236.SetPin(i, words[i]);
+            }
+            mf.SendPgnToLoop(mf.p_236.pgn, pgn236);
 
             mf.p_235.pgn[mf.p_235.sec0Lo] = unchecked((byte)(mf.section[0].sectionWidth * 100));
             mf.p_235.pgn[mf.p_235.sec0Hi] = unchecked((byte)((int)((mf.section[0].sectionWidth * 100)) >> 8));
