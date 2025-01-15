@@ -15,9 +15,9 @@ namespace AgOpenGPS
             message = new byte[5 + contentSize + 1];
             message[0] = 0x80;
             message[1] = 0x81;
-            message[1] = 0x7f;
-            message[2] = id;
-            message[3] = _contentSize;
+            message[2] = 0x7f;
+            message[3] = id;
+            message[4] = _contentSize;
         }
 
         // This exposes the message to all kind of harm from outside the pgn classes.
