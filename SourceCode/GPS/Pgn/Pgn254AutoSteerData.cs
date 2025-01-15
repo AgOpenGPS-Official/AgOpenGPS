@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace AgOpenGPS
 {
@@ -15,6 +14,10 @@ namespace AgOpenGPS
         private const int _sectionControl9to16Index = 12;
 
         public Pgn254AutoSteerData(IPgnErrorPresenter errorPresenter) : base(254, 8, errorPresenter)
+        {
+        }
+
+        public Pgn254AutoSteerData() : base(254, 8)
         {
         }
 
