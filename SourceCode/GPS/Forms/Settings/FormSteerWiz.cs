@@ -508,7 +508,7 @@ namespace AgOpenGPS
 
         private void SetPgn252AndDefaultSettings()
         {
-            Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
             Properties.Settings.Default.setAS_countsPerDegree = pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
             Properties.Settings.Default.setAS_ackerman = pgn252.SetAckerman(hsbarAckerman.Value);
             Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;

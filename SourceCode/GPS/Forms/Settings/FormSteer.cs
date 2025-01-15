@@ -298,7 +298,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-            Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
             Properties.Settings.Default.setAS_countsPerDegree = pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
             Properties.Settings.Default.setAS_ackerman = pgn252.SetAckerman(hsbarAckerman.Value);
             Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;
@@ -393,7 +393,7 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-                Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+                Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
                 pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
                 pgn252.SetAckerman(hsbarAckerman.Value);
                 pgn252.SetWasOffset(hsbarWasOffset.Value);

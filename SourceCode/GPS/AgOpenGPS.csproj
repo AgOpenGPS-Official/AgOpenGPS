@@ -636,7 +636,6 @@
     <Compile Include="Pgn\IPgnErrorPresenter.cs" />
     <Compile Include="Pgn\Pgn235SectionDimensions.cs" />
     <Compile Include="Pgn\Pgn236RelayConfig.cs" />
-    <Compile Include="Pgn\PgnAll.cs" />
     <Compile Include="Pgn\Pgn252AutoSteerSettings.cs" />
     <Compile Include="Pgn\Pgn254AutoSteerData.cs" />
     <Compile Include="Pgn\PgnBase.cs" />

@@ -7,7 +7,6 @@ namespace AgOpenGPS.Pgn
         private const int _contentSize = 33;
         private const int _maxSections = (_contentSize - 1) / 2;
         private const int _section0LoIndex = 5;
-        private const int _section0HiIndex = 6;
         private const int _numberOfSectionsIndex = 37;
 
         public Pgn235SectionDimensions(IPgnErrorPresenter errorPresenter) : base(235, _contentSize, errorPresenter)
