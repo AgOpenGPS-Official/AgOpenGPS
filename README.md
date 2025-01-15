@@ -2,8 +2,6 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/agopengps-official/AgOpenGPS)](https://github.com/agopengps-official/AgOpenGPS/releases/latest)
 
-# USE VISUAL STUDIO TO CLONE THIS REPOSITORY!!
-
 Ag Precision Mapping and Section Control Software
 
 AgOpenGPS is 2 programs. AgIO is the communication hub to the outside world and AgOpenGPS is the 
@@ -30,6 +28,12 @@ See the PCB repo for PCB layouts, firmware for steering and rate control, machin
 2. Unzip or extract the contents to a folder (folder accessible by user not the root of C:\\)
 Even on your desktop
 3. Run AgOpenGPS.exe
+
+## Add your own code
+
+1. You need to use Visua Studio to clone this repository.
+2. When succesfully cloned it create a git structure which is necessary to build the program.
+3. add your code and (re)build.
 
 ## Contributing
 
