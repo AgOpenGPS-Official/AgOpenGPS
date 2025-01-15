@@ -4,14 +4,14 @@ namespace AgOpenGPS
 {
     public class Pgn254AutoSteerData : PgnBase
     {
-        private const int _speedLo = 5;
-        private const int _speedHi = 6;
-        private const int _status = 7;
-        private const int _steerAngleLo = 8;
-        private const int _steerAngleHi = 9;
-        private const int _lineDistance = 10;
-        private const int _sc1to8 = 11;
-        private const int _sc9to16 = 12;
+        private const int _speedLoIndex = 5;
+        private const int _speedHiIndex = 6;
+        private const int _statusIndex = 7;
+        private const int _steerAngleLoIndex = 8;
+        private const int _steerAngleHiIndex = 9;
+        private const int _lineDistanceIndex = 10;
+        private const int _sectionControl1to8Index = 11;
+        private const int _sectionControl9to16Index = 12;
 
         public Pgn254AutoSteerData() : base(254, 8)
         {
@@ -21,7 +21,7 @@ namespace AgOpenGPS
         {
             if (isOff)
             {
-                message[_lineDistance] = 255;
+                _message[_lineDistanceIndex] = 255;
             }
             else
             {
@@ -30,47 +30,44 @@ namespace AgOpenGPS
                 distanceX2 = Math.Max(distanceX2, -127);
                 distanceX2 = Math.Min(distanceX2, 127);
                 distanceX2 += 127;
-                message[_lineDistance] = unchecked((byte)distanceX2);
+                _message[_lineDistanceIndex] = unchecked((byte)distanceX2);
             }
         }
 
         public void SetSpeedInKmh(double speed)
         {
-            int scaledSpeed = (int)(10.0 * Math.Abs(speed));
-            message[_speedLo] = unchecked((byte)scaledSpeed);
-            message[_speedHi] = unchecked((byte)(scaledSpeed >> 8));
+            double scaledSpeed = 10.0 * Math.Abs(speed);
+            SetDoubleLoHi(_speedLoIndex, scaledSpeed);
         }
 
         public void SetStatus(bool isOn)
         {
-            message[_status] = (byte)(isOn ? 1 : 0);
+            SetBool(_statusIndex, isOn);
         }
 
         public bool GetStatus()
         {
-            return 0 != message[_status];
+            return 0 != _message[_statusIndex];
         }
 
-        public void SetGuidanceLineSteerAngle(short angle)
+        public void SetGuidanceLineSteerAngle(Int16 angle)
         {
-            message[_steerAngleHi] = unchecked((byte)(angle >> 8));
-            message[_steerAngleLo] = unchecked((byte)(angle));
+            SetInt16LoHi(_steerAngleLoIndex, angle);
         }
 
         public void SetSectionControl1to16(UInt16 bits)
         {
-            message[_sc1to8] = unchecked((byte)bits);
-            message[_sc9to16] = unchecked((byte)(bits >> 8));
+            SetUInt16LoHi(_sectionControl1to8Index, bits);
         }
 
         public byte GetSc1to8()
         {
-            return message[_sc1to8];
+            return _message[_sectionControl1to8Index];
         }
 
         public byte GetSc9to16()
         {
-            return message[_sc9to16];
+            return _message[_sectionControl9to16Index];
         }
 
     }

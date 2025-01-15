@@ -510,7 +510,8 @@ namespace AgOpenGPS
         {
             Properties.Settings.Default.setAS_countsPerDegree = mf.pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
             Properties.Settings.Default.setAS_ackerman = mf.pgn252.SetAckerman(hsbarAckerman.Value);
-            Properties.Settings.Default.setAS_wasOffset = mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
+            Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;
+            mf.pgn252.SetWasOffset(hsbarWasOffset.Value);
             Properties.Settings.Default.setAS_highSteerPWM = mf.pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
             Properties.Settings.Default.setAS_lowSteerPWM = mf.pgn252.SetLowSteerPwm(hsbarLowSteerPWM.Value);
             Properties.Settings.Default.setAS_Kp = mf.pgn252.SetProportionalGain(hsbarProportionalGain.Value);
