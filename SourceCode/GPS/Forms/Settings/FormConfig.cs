@@ -116,6 +116,7 @@ namespace AgOpenGPS
             tab1.SelectedTab = tabSummary;
             tboxVehicleNameSave.Focus();
             //Label translations
+            //configload-save
             labelSaveAs.Text = gStr.gsSaveAs;
             labelNew.Text = gStr.gsNew;
             labelUnits.Text = gStr.gsUnit;
@@ -126,10 +127,153 @@ namespace AgOpenGPS
             labelLookAhead.Text = gStr.gsLookAhead;
             labelNudge.Text = gStr.gsNudge;
             labelTramW.Text = gStr.gsTramWidth;
+            labelUnitsBottom.Text = gStr.gsUnit;
+            labelToolWidthBottom.Text = gStr.gsWidth;
+            labelOpen.Text = gStr.gsOpen;
+            labelDelete.Text = gStr.gsDelete;
+            //tractorconfig
             labelWheelBase.Text = gStr.gsWheelbase;
             labelVehicleGroupBox.Text = gStr.gsVhiclegroupbox;
             labelImage.Text = gStr.gsImage;
             labelOpacity.Text = gStr.gsOpacity;
+            labelBoxAttachmentStyle.Text = gStr.gsAttachmentStyle;
+            labelTractorUnits.Text = gStr.gsUnit;
+            labelHitchLength.Text = gStr.gsHitchLength;
+            labelWheelBase2.Text = gStr.gsWheelbase;
+            labelTrack.Text = gStr.gsTrack;
+            //antennadistanceconfig
+            labelPivotDistance.Text = gStr.gsPivotDistance;
+            labelAntHeight.Text = gStr.gsAntennaHeight;
+            labelAntOffset.Text = gStr.gsAntennaOffset;
+            labelLeft.Text = gStr.gsLeft;
+            labelCenter.Text = gStr.gsCenter;
+            labelRight.Text = gStr.gsRight;
+            labelDualPositionOnRight.Text = gStr.gsDualpositionAntennaRight;
+            //toolconfig
+            labelToolOffset.Text = gStr.gsToolOffset;
+            labelOverlapGap.Text = gStr.gsOverlapGap;   
+            labelToolLeft.Text = gStr.gsToolLeft;   
+            labelToolRight.Text = gStr.gsToolRight;
+            labelOverlap2.Text = gStr.gsOverlap;
+            labelGap.Text = gStr.gsGap;
+            //sections
+            labelZone1.Text = gStr.gsZone + 1;
+            labelZone2.Text = gStr.gsZone + 2;
+            labelZone3.Text = gStr.gsZone + 3;
+            labelZone4.Text = gStr.gsZone + 4;
+            labelZone5.Text = gStr.gsZone + 5;
+            labelZone6.Text = gStr.gsZone + 6;
+            labelZone7.Text = gStr.gsZone + 7;
+            labelZone8.Text = gStr.gsZone + 8;
+            labelZonesBox.Text = gStr.gsZones;
+            labelSectionWidth.Text = gStr.gsWidth;
+            labelNumOfSections.Text = gStr.gsSections;
+            labelChoose.Text = gStr.gsChoose;
+            labelBoundary.Text = gStr.gsBoundary;
+            labelCoverage.Text = gStr.gsCoverage;
+            //sectionswitches
+            labelGroupWorkSwitch.Text = gStr.gsWorkSwitch;
+            labelGroupSteerSwitch.Text = gStr.gsSteerSwitch;
+            chkSelectWorkSwitch.Text = gStr.gsActive;
+            chkSelectSteerSwitch.Text = gStr.gsActive;
+            chkSetManualSections.Text = gStr.gsManual + gStr.gsSections;
+            chkSetManualSectionsSteer.Text = gStr.gsManual + gStr.gsSections;
+            chkSetAutoSections.Text = gStr.gsAuto + gStr.gsSections;
+            chkSetAutoSectionsSteer.Text = gStr.gsAuto + gStr.gsSections;
+            //sectiontiming
+            labelLookAheadTiming.Text = gStr.gsLookAheadTiming;
+            labelOnTime.Text = gStr.gsOn + "(secs)";
+            labelOffTime.Text = gStr.gsOff + "(secs)";
+            labelDelayTime.Text = gStr.gsTurnOffDelay + "(secs)";
+            //antenna-imu configuration
+            labelGboxDual.Text = gStr.gsDualAntennaSetting;
+            labelGboxSingle.Text = gStr.gsSingleAntennaSetting;
+            labelHeadingOffset.Text = gStr.gsHeadingOffset;
+            labelReverseDistance.Text = gStr.gsReverseDistance;
+            labelGpsStep.Text = gStr.gsGpsStep;
+            labelFixAlarm.Text = gStr.gsFixAlarm;
+            labelFixAlarmStop.Text = gStr.gsFixAlarmStop;
+            labelFix2Fix.Text = gStr.gsFix2Fix;
+            labelIMUFusion.Text = gStr.gsImuFusion;
+            cboxIsReverseOn.Text = gStr.gsReverseSteer;
+            //rollconfig
+            labelRemoveOffset.Text = gStr.gsRemoveOffset;
+            labelZeroRoll.Text = gStr.gsZeroRoll;
+            labelInvertRoll.Text = gStr.gsInvertRoll;
+            labelLess.Text = gStr.gsLess;
+            labelMore.Text = gStr.gsMore;
+            labelRollFilter.Text = gStr.gsRollFilter;
+            //uturnconfig
+            labelUturnExtend.Text = gStr.gsUturnExtension;
+            labelUturnSmooth.Text = gStr.gsUturnSmooth;
+            labelSendandSave.Text = gStr.gsSendAndSave;
+            //hydraulicliftconfig
+            labelGroupHyd.Text = gStr.gsHydraulicLiftConfig;
+            labelEnable.Text = gStr.gsEnable;
+            labelRaiseTime.Text = gStr.gsRaiseTime;
+            labelLowTime.Text = gStr.gsLowerTime;
+            labelPlantPop.Text = gStr.gsPlantPop;
+            labelHydLiftSec.Text = gStr.gsHydraulicLiftLookAhead;
+            labelUser1.Text = gStr.gsUser1;
+            labelUser2.Text = gStr.gsUser2;
+            labelUser3.Text = gStr.gsUser3;
+            labelUser4.Text = gStr.gsUser4;
+            labelHydLiftInvert.Text = gStr.gsInvertHydraulicRelays;
+            labelSendSaveHydraulicLift.Text = gStr.gsSendAndSave;
+            //tramsconfig
+            labelTramWidth.Text = gStr.gsTramWidth;
+            labelDisplay.Text = gStr.gsDisplay + "?";
+            labelOverride.Text = gStr.gsOverride;
+            //softbuttonsactivatorconfig
+            labelFieldMenu.Text = gStr.gsFieldMenu;
+            labelToolsMenu.Text = gStr.gsToolsMenu;
+            labelScreenButtons.Text = gStr.gsScreenButtons;
+            labelBottomMenu.Text = gStr.gsBottomMenu;
+            labelRightMenu.Text = gStr.gsRightMenu;
+            labelTramlineOnOff.Text = gStr.gsTramLines;
+            labelHeadlandOnOff.Text = gStr.gsHeadland;
+            labelBoundOnOff.Text = gStr.gsBoundary;
+            labelRecPathOnOff.Text = gStr.gsRecordedPathMenu;
+            labelABSmoothOnOff.Text = gStr.gsSmoothABCurve;
+            labelContourOnOff.Text = gStr.gsContourOn;
+            labelCamOnOff.Text = gStr.gsWebCam;
+            labelOffsetFixOnOff.Text = gStr.gsOffsetFix;
+            labelUturnOnOff.Text = gStr.gsUturn;
+            labelLateralOnOff.Text = gStr.gsLateral;
+            labelNudgeCtrlOnOff.Text = gStr.gsNudge;
+            labelPowerLossOnOff.Text = gStr.gsPowerLoss;
+            labelStartAgIO.Text = gStr.gsAutoStartAgIO;
+            labelOffAgIO.Text = gStr.gsAutoOffAgIO;
+            labelHardwareMessage.Text = gStr.gsHardwareMessages;
+            labelSounds.Text = gStr.gsSound;
+            labelAutosteerSoundOnOff.Text = gStr.gsAutoSteer;
+            labelUturnSoundOnOff.Text = gStr.gsUturn;
+            labelHydLiftSoundOnOff.Text = gStr.gsHydraulicLift;
+            labelSectionSoundOnOff.Text = gStr.gsSections;
+            //displaybuttonsconfig
+            labelPolyOnOff.Text = gStr.gsPolygons;
+            labelBrightnessOnOff.Text = gStr.gsBrightness;
+            labelFieldTextureOnOff.Text = gStr.gsFieldTexture;
+            labelLineSmoothOnOff.Text = gStr.gsLineSmooth;
+            labelSpeedoOnOff.Text = gStr.gsSpeedo;
+            labelSvenArrowOnOff.Text = gStr.gsSvennArrow;
+            labelGridOnOff.Text = gStr.gsGrid;
+            labelDirectionMarkOnOff.Text = gStr.gsDirectionMarkers;
+            labelKeyboardOnOff.Text = gStr.gsKeyboard;
+            labelFullscreenOnOff.Text = gStr.gsStartFullscreen;
+            labelGuideLinesOnOff.Text = gStr.gsExtraGuideLines;
+            labelSectionLinesOnOff.Text = gStr.gsSectionLines;
+            labelElevationOnOff.Text = gStr.gsElevationlog;
+            unitsGroupBox.Text = gStr.gsUnits;
+
+
+
+
+
+
+
+
+
 
 
             UpdateSummary();

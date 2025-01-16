@@ -129,17 +129,35 @@
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Actie geannuleerd</value>
   </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>Activeer</value>
+  </data>
   <data name="gsActual" xml:space="preserve">
     <value>Actueel</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agressiviteit</value>
   </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antenne Hoogte</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Antenne-verschuiving</value>
+  </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Weet u het zeker?</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Oppervlakte</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Type werktuig</value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value>Sluit AgIO af bij afsluiten</value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value>Start AgIO bij opstarten</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Autostuur</value>
@@ -153,6 +171,9 @@
   <data name="gsBasedOnField" xml:space="preserve">
     <value>Gebaseerd op veld:</value>
   </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Onderste Rij Menu</value>
+  </data>
   <data name="gsBoundary" xml:space="preserve">
     <value>Perceelgrens</value>
   </data>
@@ -162,14 +183,23 @@
   <data name="gsBoundaryMenu" xml:space="preserve">
     <value>Perceelgrens Menu</value>
   </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Schermverlichting</value>
+  </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>maar veld is geladen</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Midden</value>
   </data>
   <data name="gsCentimeters" xml:space="preserve">
     <value>Centimeter</value>
   </data>
   <data name="gsCharts" xml:space="preserve">
     <value>Grafiek</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Kies Modus</value>
   </data>
   <data name="gsChooseADifferentField" xml:space="preserve">
     <value>Kies een ander perceel</value>
@@ -207,6 +237,9 @@
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
     <value>Geen juist pad</value>
   </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% Dekking</value>
+  </data>
   <data name="gsCreateABoundaryFirst" xml:space="preserve">
     <value>Maak eerst een perceelgrens</value>
   </data>
@@ -225,11 +258,17 @@
   <data name="gsCurveNotOn" xml:space="preserve">
     <value>AB Curve niet ingeschakeld</value>
   </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Verwijder</value>
+  </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
     <value>Verwijder alle secties en contouren</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Verwijder bewerkte oppervlakte</value>
+  </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>Deze actie verwijdert de perceelgrens!</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Verwijder contour-paden</value>
@@ -237,11 +276,17 @@
   <data name="gsDeleteForSure" xml:space="preserve">
     <value>Zeker verwijderen?</value>
   </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Richting Markeurs</value>
+  </data>
   <data name="gsDirectories" xml:space="preserve">
     <value>Mappen</value>
   </data>
   <data name="gsDirectoryExists" xml:space="preserve">
     <value>Map bestaat</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Activeer Knoppen</value>
   </data>
   <data name="gsDistance" xml:space="preserve">
     <value>Afstand</value>
@@ -255,6 +300,12 @@
   <data name="gsDriving" xml:space="preserve">
     <value>Rijden</value>
   </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>2 Antennes</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Positie Antenne bij 2-antenne syteem zit rechts</value>
+  </data>
   <data name="gsEast" xml:space="preserve">
     <value>Oost</value>
   </data>
@@ -266,6 +317,12 @@
   </data>
   <data name="gsEditFieldName" xml:space="preserve">
     <value>Bewerk perceel naam</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Registreer hoogte</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Activeer</value>
   </data>
   <data name="gsEncoderCounts" xml:space="preserve">
     <value>Stappen</value>
@@ -285,6 +342,9 @@
   <data name="gsErrorreadingKML" xml:space="preserve">
     <value>Fout bij lezen KML</value>
   </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Extra geleidingslijnen</value>
+  </data>
   <data name="gsField" xml:space="preserve">
     <value>Perceel</value>
   </data>
@@ -294,11 +354,23 @@
   <data name="gsFieldIsOpen" xml:space="preserve">
     <value>Perceel is geopend</value>
   </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Perceel-menu</value>
+  </data>
   <data name="gsFieldNotOpen" xml:space="preserve">
     <value>Geen perceel geopend</value>
   </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Achtergrond Textuur</value>
+  </data>
   <data name="gsFileError" xml:space="preserve">
     <value>Bestandfout</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Fix tot Fix afstand</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarm stopt geleiding</value>
   </data>
   <data name="gsFlagByLatLon" xml:space="preserve">
     <value>Vlag van Lat Lon</value>
@@ -315,8 +387,23 @@
   <data name="gsFromKml" xml:space="preserve">
     <value>Vanuit KML</value>
   </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Gat</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Minimale Afstand tussen Fix</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Autostuur gestopt</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>Hardware berichtgeving</value>
+  </data>
   <data name="gsHeadingChart" xml:space="preserve">
     <value>Richting grafiek</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Richting Correctie (Graden)</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Kopakker</value>
@@ -324,11 +411,26 @@
   <data name="gsHeadlandForm" xml:space="preserve">
     <value>Maak / Wijzig Kopakker</value>
   </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Hef-lengte</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>Hefinrichting</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>Hefinrichting Configuratie</value>
+  </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value>Goal-punt Tijd</value>
+  </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Verkeerde richting? Druk op Voertuig</value>
   </data>
   <data name="gsImage" xml:space="preserve">
     <value>Geen afbeelding:</value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>Fusering</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>inch</value>
@@ -336,17 +438,44 @@
   <data name="gsInner" xml:space="preserve">
     <value>Binnenste</value>
   </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>Inverteer Relais </value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Inverteer Gyroscoop</value>
+  </data>
   <data name="gsKMH" xml:space="preserve">
     <value>km/u</value>
   </data>
   <data name="gsLanguage" xml:space="preserve">
     <value>Taal</value>
   </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>Laterale lijn-swap</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>Minder</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Lijn afvlakking</value>
+  </data>
   <data name="gsLookAhead" xml:space="preserve">
     <value>Goal-punt:</value>
   </data>
+  <data name="gsLookAheadTiming" xml:space="preserve">
+    <value>In/Uitschakeltijd Configuratie</value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value>Daal-tijd</value>
+  </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mijl/u</value>
+  </data>
+  <data name="gsMachineModule" xml:space="preserve">
+    <value>Hef-module</value>
   </data>
   <data name="gsMachinePort" xml:space="preserve">
     <value>Machine besturing poort</value>
@@ -374,6 +503,9 @@
   </data>
   <data name="gsMissingSectionFile" xml:space="preserve">
     <value>Secties bestand ontbreekt</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>Meer</value>
   </data>
   <data name="gsN_East" xml:space="preserve">
     <value>NoordOost</value>
@@ -414,11 +546,17 @@
   <data name="gsNudge" xml:space="preserve">
     <value>Lijn-Nudge:</value>
   </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>Uit</value>
+  </data>
   <data name="gsOffset" xml:space="preserve">
     <value>Verschuiving</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
     <value>FIX verschuiving</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>Aan</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
     <value>Transparantie:</value>
@@ -432,6 +570,12 @@
   <data name="gsOverlap" xml:space="preserve">
     <value>Overlapping:</value>
   </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>Overlapping / Gat</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>Handmatig inschakelen</value>
+  </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Reduceer over-de-lijn reactie</value>
   </data>
@@ -441,11 +585,23 @@
   <data name="gsPasses" xml:space="preserve">
     <value>Werkgangen</value>
   </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Einde Curve bereikt!</value>
+  </data>
   <data name="gsPause" xml:space="preserve">
     <value>Pauze</value>
   </data>
+  <data name="gsPivotDistance" xml:space="preserve">
+    <value>Afstand antenne tot achteras</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Plant-actie</value>
+  </data>
   <data name="gsPleaseEnterABLine" xml:space="preserve">
     <value>Volg AB lijn aub</value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value>Schakel uit op batterij</value>
   </data>
   <data name="gsPressureSensorValueLabel" xml:space="preserve">
     <value>Bar</value>
@@ -455,6 +611,9 @@
   </data>
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>Programma word afgesloten, start opnieuw</value>
+  </data>
+  <data name="gsRaiseTime" xml:space="preserve">
+    <value>Hef-tijd</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
     <value>Alles terugzetten naar defaults</value>
@@ -468,6 +627,9 @@
   <data name="gsRecordedPathMenu" xml:space="preserve">
     <value>Opgenomen pad Menu</value>
   </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Verwijder Offset</value>
+  </data>
   <data name="gsResetAll" xml:space="preserve">
     <value>Zet alles terug</value>
   </data>
@@ -476,6 +638,21 @@
   </data>
   <data name="gsResume" xml:space="preserve">
     <value>Hervat</value>
+  </data>
+  <data name="gsReverseDistance" xml:space="preserve">
+    <value>Achteruit-Afstand</value>
+  </data>
+  <data name="gsReverseSteer" xml:space="preserve">
+    <value>Achteruit geleiding</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Rechts</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Rechter Menu</value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value>Gyroscoop Filter</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
     <value>ZuidOost</value>
@@ -489,8 +666,17 @@
   <data name="gsSaveAs" xml:space="preserve">
     <value>Opslaan als</value>
   </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Scherm Knoppen</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Sectie scheidingslijnen</value>
+  </data>
   <data name="gsSections" xml:space="preserve">
     <value>Secties:</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Vestuur + Sla op</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Verstuur naar machine-besturing</value>
@@ -504,6 +690,9 @@
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulator Aan</value>
   </data>
+  <data name="gsSingleAntennaSetting" xml:space="preserve">
+    <value>1 Antenne</value>
+  </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
     <value>Vertraag hieronder</value>
   </data>
@@ -513,17 +702,32 @@
   <data name="gsSort" xml:space="preserve">
     <value>Sorteer</value>
   </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Geluiden</value>
+  </data>
   <data name="gsSouth" xml:space="preserve">
     <value>Zuid</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
     <value>Afstand (cm)</value>
   </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Kilometerteller</value>
+  </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Start of verwijder perceelgrens</value>
   </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Start volledig Scherm</value>
+  </data>
   <data name="gsStartNewField" xml:space="preserve">
     <value>Start nieuw perceel</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Stuur grafiek</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Stuur Schakelaar</value>
   </data>
   <data name="gsSteerWizard" xml:space="preserve">
     <value>Stuur-wizard</value>
@@ -531,14 +735,32 @@
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Stop opnemen Pauzeer perceelgrens</value>
   </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Svenn Pijl</value>
+  </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Naar bestand</value>
   </data>
   <data name="gsTooFast" xml:space="preserve">
     <value>Te snel</value>
   </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Werktuig Links</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Werktuig Offset richting</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Werktuig Rechts</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Overig Menu</value>
+  </data>
   <data name="gsTopFieldView" xml:space="preserve">
     <value>Bovenaanzicht Perceel</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Spoorbreedte</value>
   </data>
   <data name="gsTramLines" xml:space="preserve">
     <value>Spuitpaden</value>
@@ -549,14 +771,29 @@
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Schakel AB Curve in</value>
   </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Uitschakel Vertraging</value>
+  </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
     <value>Schakel Contour of AB lijn in</value>
   </data>
   <data name="gsUnit" xml:space="preserve">
     <value>Maatvoering:</value>
   </data>
+  <data name="gsUnits" xml:space="preserve">
+    <value>Metrisch/Imperiaal</value>
+  </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>gebruik geselecteerde</value>
+  </data>
+  <data name="gsUturn" xml:space="preserve">
+    <value>U-bocht</value>
+  </data>
+  <data name="gsUturnExtension" xml:space="preserve">
+    <value>Extensie Lengte is minimaal 2-3x Radius</value>
+  </data>
+  <data name="gsUturnSmooth" xml:space="preserve">
+    <value>Minimale afvlakking is 3-4x Radius</value>
   </data>
   <data name="gsVhiclegroupbox" xml:space="preserve">
     <value>Voertuig Type:</value>
@@ -570,7 +807,13 @@
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Ramen nog open</value>
   </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Werk Schakelaar</value>
+  </data>
   <data name="gsXTEChart" xml:space="preserve">
     <value>XTE Grafiek</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Calibreer Gyroscoop</value>
   </data>
 </root>
