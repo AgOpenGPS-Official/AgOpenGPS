@@ -527,8 +527,6 @@ namespace AgOpenGPS
                 }
                 PgnAll.Pgn254.SectionControl1to16 = sectionControl1to16;
 
-                Pgn254AutoSteerData pgn254 = new Pgn254AutoSteerData(new WinFormsPgnErrorPresenter());
-                pgn254.SetSectionControl1to16(sectionControl1to16);
 
                 //machine pgn
                 p_239.pgn[p_239.sc1to8] = p_254.pgn[p_254.sc1to8];

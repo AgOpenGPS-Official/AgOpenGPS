@@ -63,9 +63,8 @@ namespace AgOpenGPS
                         mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)Properties.Settings.Default.setAS_Kp);
                         mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)Properties.Settings.Default.setAS_minSteerPWM);
 
-                        Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
-                        pgn252.SetFromDefaultSettings();
-                        mf.SendPgnToLoop(mf.p_252.pgn, pgn252);
+                        mf.PgnAll.Pgn252.SetFromDefaultSettings();
+                        mf.SendPgnToLoop(mf.p_252.pgn);
 
                         //machine module settings
                         mf.p_238.pgn[mf.p_238.set0] = Properties.Settings.Default.setArdMac_setting0;
@@ -318,9 +317,8 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.lowPWM] = unchecked((byte)Properties.Settings.Default.setAS_lowSteerPWM);
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)Properties.Settings.Default.setAS_Kp);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)Properties.Settings.Default.setAS_minSteerPWM);
+                mf.PgnAll.Pgn252.SetFromDefaultSettings();
 
-                Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
-                pgn252.SetFromDefaultSettings();
                 mf.SendPgnToLoop(mf.p_252.pgn);
 
                 //machine module settings
