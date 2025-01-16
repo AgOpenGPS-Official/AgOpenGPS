@@ -10,7 +10,7 @@ namespace AgOpenGPS
             form.Show();
         }
 
-        void IPgnErrorPresenter.PresentOverflowErrorDoubleToUInt16(string className, byte index, double inputValue, ushort errorValue)
+        void IPgnErrorPresenter.PresentOverflowErrorDoubleToUInt16(string className, int index, double inputValue, ushort errorValue)
         {
             string msg = "Class name:" + className + " Index:" + index + " Input value:" + inputValue + " Output value:" + errorValue;
             TimedMessageBox(5000, "Pgn overflow bug found", msg);

@@ -8,6 +8,6 @@ namespace AgOpenGPS
         void PresentOverflowErrorIntToByte(string className, int index, int inputValue, byte errorValue);
         void PresentOverflowErrorIntToUInt16(string className, int index, int inputValue, UInt16 errorValue);
 
-        void PresentOverflowErrorDoubleToUInt16(string className, byte index, double inputValue, UInt16 errorValue);
+        void PresentOverflowErrorDoubleToUInt16(string className, int index, double inputValue, UInt16 errorValue);
     }
 }
