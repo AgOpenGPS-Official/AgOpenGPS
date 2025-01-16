@@ -67,6 +67,11 @@ namespace AgOpenGPS
             _message[index] = (byte)(boolValue ? 1 : 0);
         }
 
+        protected bool GetBool(byte index)
+        {
+            return(0 != _message[index]);
+        }
+
         protected void SetInt16LoHi(byte loIndex, Int16 int16Value)
         {
             _message[loIndex] = (byte)(int16Value & byte.MaxValue);

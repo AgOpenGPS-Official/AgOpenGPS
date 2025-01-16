@@ -22,9 +22,9 @@ namespace AgOpenGPS.Pgn
             SetDoubleLoHi((byte)sectionLoIndex, 100.0 * sectionWidthInMeters);
         }
 
-        public void SetNumberOfSections(int numberOfSections)
+        public int NumberOfSections
         {
-            SetInt(_numberOfSectionsIndex, numberOfSections);
+            set { SetInt(_numberOfSectionsIndex, value); }
         }
     }
 }

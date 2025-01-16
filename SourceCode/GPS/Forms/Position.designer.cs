@@ -867,7 +867,7 @@ namespace AgOpenGPS
                 //fill up0 the appropriate arrays with new values
                 p_254.pgn[p_254.speedHi] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0) >> 8));
                 p_254.pgn[p_254.speedLo] = unchecked((byte)((int)(Math.Abs(avgSpeed) * 10.0)));
-                pgn254.SetSpeedInKmh(avgSpeed);
+                pgn254.SpeedInKmh = avgSpeed;
                 //mc.machineControlData[mc.cnSpeed] = mc.autoSteerData[mc.sdSpeed];
 
                 //save distance for display
@@ -879,12 +879,12 @@ namespace AgOpenGPS
                     p_254.pgn[p_254.status] = 0;
                 }
                 else p_254.pgn[p_254.status] = 1;
-                pgn254.SetStatus(isBtnAutoSteerOn);
+                pgn254.IsAutoSteerOn = isBtnAutoSteerOn;
 
                 if (recPath.isDrivingRecordedPath || recPath.isFollowingDubinsToPath)
                 {
                     p_254.pgn[p_254.status] = 1;
-                    pgn254.SetStatus(true);
+                    pgn254.IsAutoSteerOn = true;
                 }
 
                 //mc.autoSteerData[7] = unchecked((byte)(guidanceLineDistanceOff >> 8));
@@ -959,14 +959,14 @@ namespace AgOpenGPS
                 if (isChangingDirection && ahrs.imuHeading == 99999)
                 {
                     p_254.pgn[p_254.status] = 0;
-                    pgn254.SetStatus(false);
+                    pgn254.IsAutoSteerOn = false;
                 }
 
                 //for now if backing up, turn off autosteer
                 if (!isSteerInReverse)
                 {
                     if (isReverse) p_254.pgn[p_254.status] = 0;
-                    if (isReverse) pgn254.SetStatus(false);
+                    if (isReverse) pgn254.IsAutoSteerOn = false;
                 }
 
                 // delay on dead zone.
@@ -988,7 +988,7 @@ namespace AgOpenGPS
                 {
                     p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                     p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));
-                    pgn254.SetGuidanceLineSteerAngle(guidanceLineSteerAngle);
+                    pgn254.GuidanceLineSteerAngle = guidanceLineSteerAngle;
                 }
             }
 

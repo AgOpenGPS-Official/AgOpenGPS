@@ -1,6 +1,5 @@
 ﻿namespace AgOpenGPS
 {
-
     public class Pgn252AutoSteerSettings : PgnBase
     {
         private const int _proportionalGainIndex = 5;
@@ -16,41 +15,48 @@
         {
         }
 
-        public byte SetProportionalGain(int proportionalGain)
+        public int ProportionalGain
         {
-            return SetInt(_proportionalGainIndex, proportionalGain);
+            set { SetInt(_proportionalGainIndex, value); }
         }
 
-        public byte SetHighSteerPwm(int highSteerPwm)
+        public int HighSteerPwm
         {
-            return SetInt(_highSteerPwmIndex, highSteerPwm);
+            set { SetInt(_highSteerPwmIndex, value); }
         }
 
-        public byte SetLowSteerPwm(int lowSteerPwm)
+        public int LowSteerPwm
         {
-            return SetInt(_lowSteerPwmIndex, lowSteerPwm);
+            set { SetInt(_lowSteerPwmIndex, value); }
         }
 
-        public byte SetMinSteerPwm(int minSteerPwm)
+        public int MinSteerPwm
         {
-            return SetInt(_minSteerPwmIndex, minSteerPwm);
+            set { SetInt(_minSteerPwmIndex, value); }
         }
 
-        public byte SetCountsPerDegree(int countsPerDegree)
+        public int CountsPerDegree
         {
-            return SetInt(_countsPerDegreeIndex, countsPerDegree);
+            set { SetInt(_countsPerDegreeIndex, value); }
         }
 
-        public byte SetAckerman(int ackerman)
+        public int WheelAngleSensorOffset
         {
-            return SetInt(_ackermanIndex, ackerman);
+            set { SetIntLoHi(_wasOffsetLoIndex, value); }
         }
 
-        // Wheel Angle Sensor
-        public void SetWasOffset(int wasOffset)
+        public int Ackerman
         {
-            SetIntLoHi(_wasOffsetLoIndex, wasOffset);
+            set { SetInt(_ackermanIndex, value); }
         }
+
+        public byte ProportionalGainByte => _message[_proportionalGainIndex];
+        public byte HighSteerPwmByte => _message[_highSteerPwmIndex];
+        public byte LowSteerPwmByte => _message[_lowSteerPwmIndex];
+        public byte MinSteerPwmByte => _message[_minSteerPwmIndex];
+        public byte CountsPerDegreeByte => _message[_countsPerDegreeIndex];
+        public byte AckermanByte => _message[_ackermanIndex];
+
 
         public void SetFromDefaultSettings()
         {

@@ -508,15 +508,23 @@ namespace AgOpenGPS
 
         private void SetPgn252AndDefaultSettings()
         {
-            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter());
-            Properties.Settings.Default.setAS_countsPerDegree = pgn252.SetCountsPerDegree(hsbarCountsPerDegree.Value);
-            Properties.Settings.Default.setAS_ackerman = pgn252.SetAckerman(hsbarAckerman.Value);
+            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter())
+            {
+                CountsPerDegree = hsbarCountsPerDegree.Value,
+                Ackerman = hsbarAckerman.Value,
+                WheelAngleSensorOffset = hsbarWasOffset.Value,
+                HighSteerPwm = hsbarHighSteerPWM.Value,
+                LowSteerPwm = hsbarLowSteerPWM.Value,
+                ProportionalGain = hsbarProportionalGain.Value,
+                MinSteerPwm = hsbarMinPWM.Value
+            };
+            Properties.Settings.Default.setAS_countsPerDegree = pgn252.CountsPerDegreeByte;
+            Properties.Settings.Default.setAS_ackerman = pgn252.AckermanByte;
             Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;
-            pgn252.SetWasOffset(hsbarWasOffset.Value);
-            Properties.Settings.Default.setAS_highSteerPWM = pgn252.SetHighSteerPwm(hsbarHighSteerPWM.Value);
-            Properties.Settings.Default.setAS_lowSteerPWM = pgn252.SetLowSteerPwm(hsbarLowSteerPWM.Value);
-            Properties.Settings.Default.setAS_Kp = pgn252.SetProportionalGain(hsbarProportionalGain.Value);
-            Properties.Settings.Default.setAS_minSteerPWM = pgn252.SetLowSteerPwm(hsbarMinPWM.Value);
+            Properties.Settings.Default.setAS_highSteerPWM = pgn252.HighSteerPwmByte;
+            Properties.Settings.Default.setAS_lowSteerPWM = pgn252.LowSteerPwmByte;
+            Properties.Settings.Default.setAS_Kp = pgn252.ProportionalGainByte;
+            Properties.Settings.Default.setAS_minSteerPWM = pgn252.MinSteerPwmByte; //// *************** JvR
         }
 
         private void sideBarTimer_Tick(object sender, EventArgs e)

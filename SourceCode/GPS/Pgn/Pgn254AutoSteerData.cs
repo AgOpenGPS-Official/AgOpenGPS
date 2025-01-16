@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace AgOpenGPS
 {
@@ -34,40 +35,25 @@ namespace AgOpenGPS
             }
         }
 
-        public void SetSpeedInKmh(double speed)
+        public double SpeedInKmh
         {
-            double scaledSpeed = 10.0 * Math.Abs(speed);
-            SetDoubleLoHi(_speedLoIndex, scaledSpeed);
+            set { SetDoubleLoHi(_speedLoIndex, 10.0 * Math.Abs(value)); }
         }
 
-        public void SetStatus(bool isOn)
+        public bool IsAutoSteerOn
         {
-            SetBool(_statusIndex, isOn);
+            set { SetBool(_statusIndex, value); }
+            get { return GetBool(_statusIndex); }
         }
 
-        public bool GetStatus()
+        public Int16 GuidanceLineSteerAngle
         {
-            return 0 != _message[_statusIndex];
+            set { SetInt16LoHi(_steerAngleLoIndex, value); }
         }
 
-        public void SetGuidanceLineSteerAngle(Int16 angle)
+        public UInt16 SectionControl1to16
         {
-            SetInt16LoHi(_steerAngleLoIndex, angle);
-        }
-
-        public void SetSectionControl1to16(UInt16 bits)
-        {
-            SetUInt16LoHi(_sectionControl1to8Index, bits);
-        }
-
-        public byte GetSc1to8()
-        {
-            return _message[_sectionControl1to8Index];
-        }
-
-        public byte GetSc9to16()
-        {
-            return _message[_sectionControl9to16Index];
+            set { SetUInt16LoHi(_sectionControl1to8Index, value); }
         }
 
     }

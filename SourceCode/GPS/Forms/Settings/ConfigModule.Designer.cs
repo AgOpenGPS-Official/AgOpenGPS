@@ -396,7 +396,7 @@ namespace AgOpenGPS
             {
                 pgn235.SetSectionWidth(i, mf.section[i].sectionWidth);
             }
-            pgn235.SetNumberOfSections(mf.tool.numOfSections);
+            pgn235.NumberOfSections = mf.tool.numOfSections;
 
             mf.SendPgnToLoop(mf.p_235.pgn, pgn235);
         }
