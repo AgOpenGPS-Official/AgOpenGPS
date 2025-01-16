@@ -29,6 +29,12 @@ See the PCB repo for PCB layouts, firmware for steering and rate control, machin
 Even on your desktop
 3. Run AgOpenGPS.exe
 
+## Add your own code
+
+1. Clone this repository (e.g. use Visual Studio to do so)
+2. When succesfully cloned it create a git structure which is necessary to build the program.
+3. add your code and (re)build.
+
 ## Contributing
 
 The `master` branch contains the most stable version of AgOpenGPS, while the `develop` branch
