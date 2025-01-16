@@ -298,16 +298,14 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.Settings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter())
-            {
-                CountsPerDegree = hsbarCountsPerDegree.Value,
-                Ackerman = hsbarAckerman.Value,
-                WheelAngleSensorOffset = hsbarWasOffset.Value,
-                HighSteerPwm = hsbarHighSteerPWM.Value,
-                LowSteerPwm = hsbarHighSteerPWM.Value / 3,
-                ProportionalGain = hsbarProportionalGain.Value,
-                MinSteerPwm = hsbarMinPWM.Value
-            };
+            Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+            pgn252.CountsPerDegree = hsbarCountsPerDegree.Value;
+            pgn252.Ackerman = hsbarAckerman.Value;
+            pgn252.WheelAngleSensorOffset = hsbarWasOffset.Value;
+            pgn252.HighSteerPwm = hsbarHighSteerPWM.Value;
+            pgn252.LowSteerPwm = hsbarHighSteerPWM.Value / 3;
+            pgn252.ProportionalGain = hsbarProportionalGain.Value;
+            pgn252.MinSteerPwm = hsbarMinPWM.Value;
 
             Properties.Settings.Default.setAS_countsPerDegree = pgn252.CountsPerDegreeByte;
             Properties.Settings.Default.setAS_ackerman = pgn252.AckermanByte;
@@ -400,16 +398,15 @@ namespace AgOpenGPS
                 mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-                Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter())
-                {
-                    CountsPerDegree = hsbarCountsPerDegree.Value,
-                    Ackerman = hsbarAckerman.Value,
-                    WheelAngleSensorOffset = hsbarWasOffset.Value,
-                    HighSteerPwm = hsbarHighSteerPWM.Value,
-                    LowSteerPwm = hsbarHighSteerPWM.Value / 3,
-                    ProportionalGain = hsbarProportionalGain.Value,
-                    MinSteerPwm = hsbarMinPWM.Value,
-                };
+                Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+                pgn252.CountsPerDegree = hsbarCountsPerDegree.Value;
+                pgn252.Ackerman = hsbarAckerman.Value;
+                pgn252.WheelAngleSensorOffset = hsbarWasOffset.Value;
+                pgn252.HighSteerPwm = hsbarHighSteerPWM.Value;
+                pgn252.LowSteerPwm = hsbarHighSteerPWM.Value / 3;
+                pgn252.ProportionalGain = hsbarProportionalGain.Value;
+                pgn252.MinSteerPwm = hsbarMinPWM.Value;
+
                 mf.SendPgnToLoop(mf.p_252.pgn, pgn252);
                 toSend = false;
                 counter = 0;

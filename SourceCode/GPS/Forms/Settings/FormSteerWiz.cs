@@ -508,23 +508,21 @@ namespace AgOpenGPS
 
         private void SetPgn252AndDefaultSettings()
         {
-            Pgn252AutoSteerSettings pgn252 = new Pgn252AutoSteerSettings(new WinFormsPgnErrorPresenter())
-            {
-                CountsPerDegree = hsbarCountsPerDegree.Value,
-                Ackerman = hsbarAckerman.Value,
-                WheelAngleSensorOffset = hsbarWasOffset.Value,
-                HighSteerPwm = hsbarHighSteerPWM.Value,
-                LowSteerPwm = hsbarLowSteerPWM.Value,
-                ProportionalGain = hsbarProportionalGain.Value,
-                MinSteerPwm = hsbarMinPWM.Value
-            };
+            Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
+            pgn252.CountsPerDegree = hsbarCountsPerDegree.Value;
+            pgn252.Ackerman = hsbarAckerman.Value;
+            pgn252.WheelAngleSensorOffset = hsbarWasOffset.Value;
+            pgn252.HighSteerPwm = hsbarHighSteerPWM.Value;
+            pgn252.LowSteerPwm = hsbarLowSteerPWM.Value;
+            pgn252.ProportionalGain = hsbarProportionalGain.Value;
+            pgn252.MinSteerPwm = hsbarMinPWM.Value;
             Properties.Settings.Default.setAS_countsPerDegree = pgn252.CountsPerDegreeByte;
             Properties.Settings.Default.setAS_ackerman = pgn252.AckermanByte;
             Properties.Settings.Default.setAS_wasOffset = hsbarWasOffset.Value;
             Properties.Settings.Default.setAS_highSteerPWM = pgn252.HighSteerPwmByte;
             Properties.Settings.Default.setAS_lowSteerPWM = pgn252.LowSteerPwmByte;
             Properties.Settings.Default.setAS_Kp = pgn252.ProportionalGainByte;
-            Properties.Settings.Default.setAS_minSteerPWM = pgn252.MinSteerPwmByte; //// *************** JvR
+            Properties.Settings.Default.setAS_minSteerPWM = pgn252.MinSteerPwmByte;
         }
 
         private void sideBarTimer_Tick(object sender, EventArgs e)
