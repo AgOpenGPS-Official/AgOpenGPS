@@ -133,7 +133,7 @@ namespace AgOpenGPS
             labelDelete.Text = gStr.gsDelete;
             //tractorconfig
             labelWheelBase.Text = gStr.gsWheelbase;
-            labelVehicleGroupBox.Text = gStr.gsVhiclegroupbox;
+            labelVehicleGroupBox.Text = gStr.gsVehiclegroupbox;
             labelImage.Text = gStr.gsImage;
             labelOpacity.Text = gStr.gsOpacity;
             labelBoxAttachmentStyle.Text = gStr.gsAttachmentStyle;

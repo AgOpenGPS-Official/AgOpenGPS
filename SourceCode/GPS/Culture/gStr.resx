@@ -825,7 +825,7 @@
   <data name="gsUturnSmooth" xml:space="preserve">
     <value>Set Smoothing 3-4x Radius</value>
   </data>
-  <data name="gsVhiclegroupbox" xml:space="preserve">
+  <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Vehicle Type:</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">

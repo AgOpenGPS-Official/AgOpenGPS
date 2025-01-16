@@ -2187,9 +2187,9 @@ namespace AgOpenGPS.Culture {
         /// <summary>
         ///   Looks up a localized string similar to Vehicle Type:.
         /// </summary>
-        public static string gsVhiclegroupbox {
+        public static string gsVehiclegroupbox {
             get {
-                return ResourceManager.GetString("gsVhiclegroupbox", resourceCulture);
+                return ResourceManager.GetString("gsVehiclegroupbox", resourceCulture);
             }
         }
         

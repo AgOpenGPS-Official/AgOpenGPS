@@ -184,7 +184,7 @@
     <value>Perceelgrens Menu</value>
   </data>
   <data name="gsBrightness" xml:space="preserve">
-    <value>Schermverlichting</value>
+    <value>Helderheid</value>
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>maar veld is geladen</value>
@@ -795,7 +795,7 @@
   <data name="gsUturnSmooth" xml:space="preserve">
     <value>Minimale afvlakking is 3-4x Radius</value>
   </data>
-  <data name="gsVhiclegroupbox" xml:space="preserve">
+  <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Voertuig Type:</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
@@ -805,7 +805,7 @@
     <value>Breedte:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
-    <value>Ramen nog open</value>
+    <value>Vensters nog geopend</value>
   </data>
   <data name="gsWorkSwitch" xml:space="preserve">
     <value>Werk Schakelaar</value>
