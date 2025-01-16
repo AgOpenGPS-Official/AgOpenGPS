@@ -31,7 +31,7 @@ Even on your desktop
 
 ## Add your own code
 
-1. You need to use Visua Studio to clone this repository.
+1. Clone this repository (e.g. use Visual Studio to do so)
 2. When succesfully cloned it create a git structure which is necessary to build the program.
 3. add your code and (re)build.
 
