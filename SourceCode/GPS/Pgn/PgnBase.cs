@@ -101,7 +101,7 @@ namespace AgOpenGPS
             return b;
         }
 
-        public void SetDoubleLoHi(byte loIndex, double inputValue)
+        protected void SetDoubleLoHi(byte loIndex, double inputValue)
         {
             UInt16 outputValue = unchecked((UInt16)inputValue);
             if (UInt16.MaxValue < inputValue)
@@ -114,7 +114,7 @@ namespace AgOpenGPS
                 OverflowErrorDoubleToUInt16(loIndex, inputValue, outputValue);
                 outputValue = unchecked((UInt16)Int16.MinValue);
             }
-            _message[loIndex] = checked((byte)(outputValue & byte.MaxValue)); 
+            _message[loIndex] = checked((byte)(outputValue & byte.MaxValue));
             _message[loIndex + 1] = checked((byte)(outputValue >> 8));
         }
 
