@@ -958,8 +958,8 @@ namespace AgOpenGPS
 
                 if (isChangingDirection && ahrs.imuHeading == 99999)
                 {
+                    p_254.pgn[p_254.status] = 0;
                     pgn254.SetStatus(false);
-
                 }
 
                 //for now if backing up, turn off autosteer
