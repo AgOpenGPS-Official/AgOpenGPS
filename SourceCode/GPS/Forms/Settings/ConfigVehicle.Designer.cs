@@ -1014,273 +1014,146 @@ namespace AgOpenGPS
 
         private void rbtnBrandTAgOpenGPS_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                {
-                    brand = TBrand.AGOpenGPS;
-                    pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                    original = null;
-                    SetOpacity();
-                }
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.AGOpenGPS);
         }
 
         private void rbtnBrandTCase_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                {
-                    brand = TBrand.Case;
-                    pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                    original = null;
-                    SetOpacity();
-                }
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Case);
         }
 
         private void rbtnBrandTClaas_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                {
-                    brand = TBrand.Claas;
-                    pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                    original = null;
-                    SetOpacity();
-                }
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Claas);
         }
 
         private void rbtnBrandTDeutz_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Deutz;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Deutz);
         }
 
         private void rbtnBrandTFendt_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Fendt;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Fendt);
         }
 
         private void rbtnBrandTJDeere_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.JDeere;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.JDeere);
         }
 
         private void rbtnBrandTKubota_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Kubota;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Kubota);
         }
 
         private void rbtnBrandTMassey_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Massey;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Massey);
         }
 
         private void rbtnBrandTNH_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.NewHolland;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.NewHolland);
         }
 
         private void rbtnBrandTSame_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Same;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Same);
         }
 
         private void rbtnBrandTSteyr_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Steyr;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Steyr);
         }
 
         private void rbtnBrandTUrsus_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Ursus;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Ursus);
         }
 
         private void rbtnBrandTValtra_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand = TBrand.Valtra;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectTractorBrand(TBrand.Valtra);
         }
 
         private void rbtnBrandHAgOpenGPS_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brandH = HBrand.AgOpenGPS;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectHarvesterBrand(HBrand.AgOpenGPS);
         }
 
         private void rbtnBrandHCase_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brandH = HBrand.Case;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectHarvesterBrand(HBrand.Case);
         }
 
         private void rbtnBrandHClaas_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brandH = HBrand.Claas;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectHarvesterBrand(HBrand.Claas);
         }
 
         private void rbtnBrandHJDeere_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                {
-                    brandH = HBrand.JDeere;
-                    pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
-                    original = null;
-                    SetOpacity();
-                }
-            }
+            if ((sender as RadioButton).Checked) SelectHarvesterBrand(HBrand.JDeere);
         }
 
         private void rbtnBrandHNH_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brandH = HBrand.NewHolland;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectHarvesterBrand(HBrand.NewHolland);
         }
 
         private void rbtnBrand4WDAgOpenGPS_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.AgOpenGPS;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.AgOpenGPS);
         }
 
         private void rbtnBrand4WDCase_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.Case;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.Case);
         }
 
         private void rbtnBrand4WDChallenger_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.Challenger;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.Challenger);
         }
 
         private void rbtnBrand4WDJDeere_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.JDeere;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.JDeere);
         }
 
         private void rbtnBrand4WDNH_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.NewHolland;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.NewHolland);
         }
+
         private void rbtnBrand4WDHolder_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender as RadioButton).Checked)
-            {
-                brand4WD = WDBrand.Holder;
-                pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
-                original = null;
-                SetOpacity();
-            }
+            if ((sender as RadioButton).Checked) SelectWDBrand(WDBrand.Holder);
+        }
+
+        private void SelectTractorBrand(TBrand tractorBrand)
+        {
+            brand = tractorBrand;
+            pboxAlpha.BackgroundImage = mf.GetTractorBrand(brand);
+            original = null;
+            SetOpacity();
+        }
+
+        private void SelectHarvesterBrand(HBrand harvesterBrand)
+        {
+            brandH = harvesterBrand;
+            pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(brandH);
+            original = null;
+            SetOpacity();
+        }
+
+        private void SelectWDBrand(WDBrand brand)
+        {
+            brand4WD = brand;
+            pboxAlpha.BackgroundImage = mf.Get4WDBrandFront(brand4WD);
+            original = null;
+            SetOpacity();
         }
 
         #endregion
