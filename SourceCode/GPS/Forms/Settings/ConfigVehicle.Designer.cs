@@ -938,13 +938,6 @@ namespace AgOpenGPS
 
             mf.SendPgnToLoop(mf.p_252.pgn);
 
-            //machine module settings
-            mf.p_238.pgn[mf.p_238.set0] = Properties.Settings.Default.setArdMac_setting0;
-            mf.p_238.pgn[mf.p_238.raiseTime] = Properties.Settings.Default.setArdMac_hydRaiseTime;
-            mf.p_238.pgn[mf.p_238.lowerTime] = Properties.Settings.Default.setArdMac_hydLowerTime;
-
-            mf.SendPgnToLoop(mf.p_238.pgn);
-
             //steer config
             mf.p_251.pgn[mf.p_251.set0] = Properties.Settings.Default.setArdSteer_setting0;
             mf.p_251.pgn[mf.p_251.set1] = Properties.Settings.Default.setArdSteer_setting1;
