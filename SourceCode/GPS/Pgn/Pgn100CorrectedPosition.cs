@@ -8,7 +8,10 @@ namespace AgOpenGPS
         private const int _latitudeIndex = 13;
         private const int _headingIndex = 21;
 
-        public Pgn100CorrectedPosition(IPgnErrorPresenter errorPresenter) : base(100, 24, errorPresenter)
+        public Pgn100CorrectedPosition(
+            IPgnErrorPresenter errorPresenter
+        )
+            : base(100, 24, errorPresenter)
         {
         }
 

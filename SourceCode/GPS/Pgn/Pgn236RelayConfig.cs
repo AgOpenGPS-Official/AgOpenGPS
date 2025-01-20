@@ -8,7 +8,10 @@ namespace AgOpenGPS.Pgn
         private const int _contentSize = 23;
         private const int _pin0Index = 5;
 
-        public Pgn236RelayConfig(IPgnErrorPresenter errorPresenter) : base(236, _contentSize, errorPresenter)
+        public Pgn236RelayConfig(
+            IPgnErrorPresenter errorPresenter
+        )
+            : base(236, _contentSize, errorPresenter)
         {
         }
 

@@ -8,12 +8,12 @@ namespace AgOpenGPS
         private const int _speedIndex = 6;
         private const int _hydraulicLiftIndex = 7;
         private const int _tramIndex = 8;
-        //    public int geoStop = 9; //out of bounds etc
-        //                            //public int  = 10;
-        private int _sectionControl1to8Index = 11;
-        //    public int sc9to16 = 12;
+        private const int _sectionControl1to8Index = 11;
 
-        public Pgn239MachineData(IPgnErrorPresenter errorPresenter) : base(239, 8, errorPresenter)
+        public Pgn239MachineData(
+            IPgnErrorPresenter errorPresenter
+        )
+            : base(239, 8, errorPresenter)
         {
         }
 

@@ -4,14 +4,16 @@
     {
         private const int _raiseTimeIndex = 5;
         private const int _lowerTimeIndex = 6;
-        //    private const int _enableHydIndex = 7;
         private const int _settings0Index = 8;
         private const int _user1Index = 9;
         private const int _user2Index= 10;
         private const int _user3Index= 11;
         private const int _user4Index= 12;
 
-        public Pgn238MachineConfig(IPgnErrorPresenter errorPresenter) :base(238, 8, errorPresenter)
+        public Pgn238MachineConfig(
+            IPgnErrorPresenter errorPresenter
+        )
+            :base(238, 8, errorPresenter)
         {
         }
 

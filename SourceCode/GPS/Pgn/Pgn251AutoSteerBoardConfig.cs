@@ -8,7 +8,10 @@
         private const int _settings1Index = 8;
         private const int _angVelIndex  = 9;
 
-        public Pgn251AutoSteerBoardConfig(IPgnErrorPresenter errorPresenter) : base(251, 8, errorPresenter)
+        public Pgn251AutoSteerBoardConfig(
+            IPgnErrorPresenter errorPresenter
+        )
+            : base(251, 8, errorPresenter)
         {
         }
 
