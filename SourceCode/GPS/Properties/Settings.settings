@@ -153,7 +153,7 @@
       <Value Profile="(Default)">-62208,-12299010,-16190712,-1505559,-3621034,-16712458,-7330570,-1546731,-24406,-3289866,-2756674,-538377,-134768,-4457734,-1848839,-530985</Value>
     </Setting>
     <Setting Name="setDisplay_isTermsAccepted" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="setGPS_isRTK" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -781,6 +781,12 @@
     </Setting>
     <Setting Name="setWindow_tramLineSize" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">921, 676</Value>
+    </Setting>
+    <Setting Name="dadMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Oglsize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.71</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -626,7 +626,7 @@ namespace AgOpenGPS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool setDisplay_isTermsAccepted {
             get {
                 return ((bool)(this["setDisplay_isTermsAccepted"]));
@@ -3141,6 +3141,30 @@ namespace AgOpenGPS.Properties {
             }
             set {
                 this["setWindow_tramLineSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool dadMode {
+            get {
+                return ((bool)(this["dadMode"]));
+            }
+            set {
+                this["dadMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.71")]
+        public double Oglsize {
+            get {
+                return ((double)(this["Oglsize"]));
+            }
+            set {
+                this["Oglsize"] = value;
             }
         }
     }

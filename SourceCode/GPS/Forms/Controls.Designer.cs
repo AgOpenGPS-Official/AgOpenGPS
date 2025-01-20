@@ -136,7 +136,8 @@ namespace AgOpenGPS
 
                 //position of panel
                 flp1.Top = this.Height - 120 - (btnCount*75);
-                flp1.Left = this.Width - 120 - flp1.Width;
+                //flp1.Left = this.Width - 120 - flp1.Width;
+                flp1.Left = 500;
                 trackMethodPanelCounter = 4;
             }
 
@@ -614,6 +615,10 @@ namespace AgOpenGPS
             trk.idx = -1;
 
             PanelUpdateRightAndBottom();
+            if (isJobStarted)
+            {
+                btnTrack_Click(this, EventArgs.Empty); // mods by P
+            }
         }
         public void FileSaveEverythingBeforeClosingField()
         {

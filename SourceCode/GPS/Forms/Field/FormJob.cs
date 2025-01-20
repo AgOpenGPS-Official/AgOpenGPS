@@ -38,6 +38,19 @@ namespace AgOpenGPS
 
             string fileAndDirectory = Path.Combine(directoryName, "Field.txt");
 
+            if (mf.dadMode)
+            {
+                btnFromISOXML.Visible = false;
+                btnFromKML.Visible = false;
+                btnFromExisting.Visible = false;
+            }
+            else
+            {
+                btnFromISOXML.Visible = true;
+                btnFromKML.Visible = true;
+                btnFromExisting.Visible = true;
+            }
+
             if (!File.Exists(fileAndDirectory))
             {
                 lblResumeField.Text = "";

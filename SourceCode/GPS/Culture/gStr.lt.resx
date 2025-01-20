@@ -142,22 +142,19 @@
     <value>Plotas</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
-    <value>Automatinio vairavimo</value>
-  </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Konfigūracija</value>
+    <value>Vairo parametrai</value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Automatinio vairavimo konfigūracija</value>
   </data>
   <data name="gsAutoSteerPort" xml:space="preserve">
-    <value>Automatinio vairavimo prievadas</value>
+    <value>Automatinio vairavimo portas</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
     <value>Remiantis lauku:</value>
   </data>
   <data name="gsBoundary" xml:space="preserve">
-    <value>Riba</value>
+    <value>Ribos sukūrimas</value>
   </data>
   <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
     <value>Ribinių linijų failas sugadintas</value>
@@ -169,7 +166,7 @@
     <value>Laukas užkrautas</value>
   </data>
   <data name="gsCentimeters" xml:space="preserve">
-    <value>Centimetras</value>
+    <value>cm</value>
   </data>
   <data name="gsCharts" xml:space="preserve">
     <value>Diagramos</value>
@@ -184,16 +181,23 @@
     <value>Pasirinkite arba sukurkite kitą</value>
   </data>
   <data name="gsClose" xml:space="preserve">
-    <value>Baigti</value>
+    <value>Uždaryti</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="gsCloseAllWindowsFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
-    <value>Pirmiausia uždaryti lauką</value>
+    <value>Pirmiausia uždarykite lauką</value>
   </data>
   <data name="gsColors" xml:space="preserve">
     <value>Spalvos</value>
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Visiškai ištrinkite ribą</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Nustatymai</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Sugadintas kontūro failas</value>
@@ -211,7 +215,7 @@
     <value>Kurti naują lauką</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>Srovė</value>
+    <value>Pasirinktas</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Kreivės linijos failas sugadintas</value>
@@ -220,19 +224,19 @@
     <value>Kreivė neįjungta</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
-    <value>Ištrinkite visas sekcijas ir kontūrus</value>
+    <value>Ar tikrai išvalyti ?</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
-    <value>Ištrinti taikomą plotą</value>
+    <value>Išvalyti apdirbta plotą</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
-    <value>Ištrinkite kontūro kelius</value>
+    <value>Ištrinti kontūrus</value>
   </data>
   <data name="gsDeleteForSure" xml:space="preserve">
     <value>Ar tikrai ištrinti?</value>
   </data>
   <data name="gsDirectories" xml:space="preserve">
-    <value>Katalogas</value>
+    <value>Failai</value>
   </data>
   <data name="gsDirectoryExists" xml:space="preserve">
     <value>Katalogas egzistuoja</value>
@@ -241,7 +245,7 @@
     <value>Nuotolis</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
-    <value>Įvažiuokite</value>
+    <value>Artimiausias Laukas</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
     <value> Važiuoti pro</value>
@@ -265,13 +269,13 @@
     <value>Skaičiavimas</value>
   </data>
   <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
-    <value>Įveskite simuliatoriaus koordinates</value>
+    <value>Simuliatoriaus koordinatės</value>
   </data>
   <data name="gsEnterFieldName" xml:space="preserve">
-    <value>Įveskite lauko pavadinimą</value>
+    <value>Lauko pavadinimas</value>
   </data>
   <data name="gsEnterSimCoords" xml:space="preserve">
-    <value>Įveskite simuliatoriaus koordinates</value>
+    <value>Simuliatoriaus koordinatės</value>
   </data>
   <data name="gsError" xml:space="preserve">
     <value>Klaida</value>
@@ -304,7 +308,7 @@
     <value>Kol kas</value>
   </data>
   <data name="gsFromExisting" xml:space="preserve">
-    <value>Iš esamų</value>
+    <value>Sukurti Kopiją</value>
   </data>
   <data name="gsFromKml" xml:space="preserve">
     <value>Iš KML</value>
@@ -313,16 +317,16 @@
     <value>Važiavimo krypties diagrama</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
-    <value>Užribis</value>
+    <value>Galulaukė</value>
   </data>
   <data name="gsHeadlandForm" xml:space="preserve">
-    <value>Užribio kūrimas ir redagavimas</value>
+    <value>Galulaukė</value>
   </data>
   <data name="gsHelp" xml:space="preserve">
     <value>Pagalba</value>
   </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
-    <value>Jei neteisinga kryptis, palieskite transporto priemonė</value>
+    <value>Jei neteisinga kryptis, Bagstelėkite per traktoriuką</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Colis</value>
@@ -340,7 +344,7 @@
     <value>Mph</value>
   </data>
   <data name="gsMachinePort" xml:space="preserve">
-    <value>Mašinos prievadas</value>
+    <value>Purkštuvo Portas</value>
   </data>
   <data name="gsMakeBoundaryContours" xml:space="preserve">
     <value>Padarykite ribos kontūrus</value>
@@ -349,7 +353,7 @@
     <value>Vadovas</value>
   </data>
   <data name="gsMeters" xml:space="preserve">
-    <value>Metrai</value>
+    <value>m</value>
   </data>
   <data name="gsMissingABLinesFile" xml:space="preserve">
     <value>Trūksta AB eilučių failo</value>
@@ -373,7 +377,7 @@
     <value>Šiaurės vakarai</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Naujas</value>
+    <value>Sukurti Naują</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
     <value>Nėra aktyvios AB linijos</value>
@@ -406,22 +410,25 @@
     <value>Poslinkis</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
-    <value>Poslinkio pataisymas</value>
+    <value>Žemelapio pastumimas</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
-    <value>Atidaryta</value>
+    <value>Laukų Sąrašas</value>
   </data>
   <data name="gsOuter" xml:space="preserve">
-    <value>Išorinis</value>
+    <value>Išorinė</value>
   </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Vairo persukimo sumažinimas</value>
   </data>
   <data name="gsPass" xml:space="preserve">
-    <value>Praleisti</value>
+    <value>Važiavimas</value>
   </data>
   <data name="gsPasses" xml:space="preserve">
-    <value>Praleidimai</value>
+    <value>Važiavimai</value>
+  </data>
+  <data name="gsPastEndOfCurve" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="gsPause" xml:space="preserve">
     <value>Pauzė</value>
@@ -442,7 +449,7 @@
     <value>Nustatyti iš naujo</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
-    <value>Įrašas</value>
+    <value>Įrašyti</value>
   </data>
   <data name="gsRecordedPathFileIsCorrupt" xml:space="preserve">
     <value>Sugadintas įrašyto kelio failas</value>
@@ -451,13 +458,13 @@
     <value>Įrašytas kelias</value>
   </data>
   <data name="gsResetAll" xml:space="preserve">
-    <value>Iš naujo nustatyti viską</value>
+    <value>Atkurti gamyklinius parametrus</value>
   </data>
   <data name="gsResetAllForSure" xml:space="preserve">
-    <value>Ar tikrai iš naujo nustatyti viską?</value>
+    <value>Ar tikrai norite atkurti gamyklinius parametrus?</value>
   </data>
   <data name="gsResume" xml:space="preserve">
-    <value>Atnaujinti</value>
+    <value>Pratęsti</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
     <value>Pietryčiai</value>
@@ -469,7 +476,7 @@
     <value>Išsaugoti ir grįžti</value>
   </data>
   <data name="gsSaveAs" xml:space="preserve">
-    <value>Įrašyti kaip</value>
+    <value>Įšsaugoti kaip kopija</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Išsiųsta į mašinos modulį</value>
@@ -487,7 +494,7 @@
     <value>Sulėtinkite tempą </value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
-    <value>Lygi AB kreivė</value>
+    <value>Sušvelninti AB kreivę</value>
   </data>
   <data name="gsSort" xml:space="preserve">
     <value>Rikiuoti</value>
@@ -502,13 +509,16 @@
     <value>Ribos paleidimas arba naikinimas</value>
   </data>
   <data name="gsStartNewField" xml:space="preserve">
-    <value>Pradėti naują lauką</value>
+    <value>Laukų valdymas</value>
+  </data>
+  <data name="gsSteerChart" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="gsSteerWizard" xml:space="preserve">
     <value>Vairavimo vedlys</value>
   </data>
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
-    <value>Sustabdyti ribų pristabdymo įrašus</value>
+    <value>Ribos įrašymas</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Į failą</value>
@@ -536,6 +546,9 @@
   </data>
   <data name="gsWest" xml:space="preserve">
     <value>Vakarai</value>
+  </data>
+  <data name="gsWindowsStillOpen" xml:space="preserve">
+    <value />
   </data>
   <data name="gsWizards" xml:space="preserve">
     <value>Vedliai</value>

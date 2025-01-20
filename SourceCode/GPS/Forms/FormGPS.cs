@@ -268,6 +268,10 @@ namespace AgOpenGPS
             }
         }
 
+        public bool dadMode;
+        public double OGlsize = Settings.Default.Oglsize;// veikia su 0.5
+        
+
         public FormGPS()
         {
             //winform initialization
@@ -360,6 +364,7 @@ namespace AgOpenGPS
 
         private void FormGPS_Load(object sender, EventArgs e)
         {
+            /*
             if (!isTermsAccepted)
             {
                 if (!Properties.Settings.Default.setDisplay_isTermsAccepted)
@@ -374,11 +379,11 @@ namespace AgOpenGPS
                         else
                         {
                             Log.EventWriter("Terms Accepted");
-                        }
+                        } 
                     }
                 }
             }
-
+            */
             this.MouseWheel += ZoomByMouseWheel;
 
             Log.EventWriter("Program Started: " 
@@ -399,8 +404,14 @@ namespace AgOpenGPS
             oglMain.Left = 75;
             oglMain.Width = this.Width - statusStripLeft.Width - 84;
 
-            panelSim.Left = Width / 2 - 330;
-            panelSim.Width = 700;
+            
+            //panelSim.Location 
+            panelSim.Left = 80;
+            //panelSim.Left = (int)(panelSim.Left * OGlsize);
+            panelSim.Width = (700);
+            
+            int banana = panelSim.Location.X;
+
             panelSim.Top = Height - 60;
 
             //set the language to last used
@@ -514,6 +525,12 @@ namespace AgOpenGPS
                     form.ShowDialog(this);
                 }
             }
+            bool test = Settings.Default.dadMode;
+            if (test)
+            {
+                TSM_DadMode_Click(this, EventArgs.Empty);
+            }
+
         }
 
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
@@ -623,6 +640,9 @@ namespace AgOpenGPS
                 finally { }
             }
 
+            
+            
+            
             if (Properties.Settings.Default.setDisplay_isAutoOffAgIO)
             {
                 Process[] processName = Process.GetProcessesByName("AgIO");
@@ -631,6 +651,7 @@ namespace AgOpenGPS
                     processName[0].CloseMainWindow();
                 }
             }
+            
         }
 
         public int SaveOrNot(bool closing)
@@ -693,6 +714,106 @@ namespace AgOpenGPS
                 }
             }
             return PixelsVisible >= (Rec.Width * Rec.Height) * MinPercentOnScreen;
+        }
+
+        private void TSM_DadMode_Click(object sender, EventArgs e)
+        {
+            dadMode = !dadMode;
+            if (dadMode)
+            {
+                TSM_DadMode.Checked = true;
+                toolStripDropDownButton1.Visible = false;
+                toolStripDropDownButton4.Visible = false;
+                toolStripBtnFieldTools.Visible = false;
+                btnAutoSteerConfig.Visible = false;
+                btnDadClear.Visible = true;
+                btnStartAgIO.Visible = false;
+            }
+            else
+            {
+                TSM_DadMode.Checked = false;
+                toolStripDropDownButton1.Visible = true;
+                toolStripDropDownButton4.Visible = true;
+                toolStripBtnFieldTools.Visible = true;
+                btnAutoSteerConfig.Visible = true;
+                btnDadClear.Visible = false;
+                btnStartAgIO.Visible = true;
+            }
+
+            Settings.Default.dadMode = dadMode;
+            Settings.Default.Save();
+
+        }
+
+        private void btnDadClear_Click(object sender, EventArgs e)
+        {
+            if (isJobStarted)
+            {
+
+                if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
+                {
+
+                    DialogResult result3 = MessageBox.Show(gStr.gsDeleteAllContoursAndSections,
+                        gStr.gsDeleteForSure,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2);
+                    if (result3 == DialogResult.Yes)
+                    {
+                        //FileCreateElevation();
+
+                        if (tool.isSectionsNotZones)
+                        {
+                            //Update the button colors and text
+                            AllSectionsAndButtonsToState(btnStates.Off);
+
+                            //enable disable manual buttons
+                            LineUpIndividualSectionBtns();
+                        }
+                        else
+                        {
+                            AllZonesAndButtonsToState(btnStates.Off);
+                            LineUpAllZoneButtons();
+                        }
+
+                        //turn manual button off
+                        manualBtnState = btnStates.Off;
+                        btnSectionMasterManual.Image = Properties.Resources.ManualOff;
+
+                        //turn auto button off
+                        autoBtnState = btnStates.Off;
+                        btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
+
+
+                        //clear out the contour Lists
+                        ct.StopContourLine();
+                        ct.ResetContour();
+                        fd.workedAreaTotal = 0;
+
+                        //clear the section lists
+                        for (int j = 0; j < triStrip.Count; j++)
+                        {
+                            //clean out the lists
+                            triStrip[j].patchList?.Clear();
+                            triStrip[j].triangleList?.Clear();
+                        }
+                        patchSaveList?.Clear();
+
+                        FileCreateContour();
+                        FileCreateSections();
+
+                        //SystemEventWriter("All Section Mapping Deleted");
+                    }
+                    else
+                    {
+                        TimedMessageBox(5000, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
+                    }
+                }
+                else
+                {
+                    TimedMessageBox(5000, "Išjunkite visas sekcijas", "Negalima ištrinti");
+                }
+            }
         }
 
         private void FormGPS_Move(object sender, EventArgs e)

@@ -851,6 +851,36 @@ namespace AgOpenGPS
                     lblNumCu.Text = "";
                 }
 
+                if (dadMode)
+                {
+                    cboxpRowWidth.Visible = false;
+                    btnYouSkipEnable.Visible = false;
+                    btnTramDisplayMode.Visible = false;
+                    btnHeadlandOnOff.Visible = false;
+
+                    btnFlag.Visible = false;
+                    cboxIsSectionControlled.Visible = false;
+                    btnChangeMappingColor.Visible = false;
+                    btnResetToolHeading.Visible = false;
+
+                    cboxAutoSnapToPivot.Visible = false;
+                    btnRefNudge.Visible = false;
+                    btnNudge.Visible = false;
+                    btnABDraw.Visible = false;
+                }
+                else
+                {
+                    btnFlag.Visible = true;
+                    cboxIsSectionControlled.Visible = true;
+                    btnChangeMappingColor.Visible = true;
+                    btnResetToolHeading.Visible = true;
+
+                    cboxAutoSnapToPivot.Visible = true;
+                    btnRefNudge.Visible = true;
+                    btnNudge.Visible = true;
+                    btnABDraw.Visible = true;
+                }
+
                 PanelSizeRightAndBottom();
             }
         }
@@ -938,7 +968,7 @@ namespace AgOpenGPS
                 }
 
                 if (viz == 0) return;
-                if (viz > 9 && Width < 1190)
+                if ((viz > 9 && Width < 1190) || dadMode)
                 {
                     btnResetToolHeading.Visible = false;
                 }
@@ -966,13 +996,49 @@ namespace AgOpenGPS
 
         private void PanelsAndOGLSize()
         {
+            
+
+                //panelBottom.Visible = true;
+            //panelRight.Visible = true;
+            //panelLeft.Visible = true;
+            oglMain.Left = 80;
+
+            oglMain.Width = (int)(this.Width*OGlsize) - statusStripLeft.Width - 92; //22 modukas
+            
+
+            oglMain.Height = this.Height - 118;
+
+            if (!isJobStarted)
+            {
+                panelBottom.Visible = false;
+                panelRight.Visible = false;
+                FLP_backcover.Location = new Point(oglMain.Width + 80, 66);
+            }
+            else
+            {
+                //btnTrack.Location = new Point(10, 60);
+                
+
+                panelBottom.Visible = true;
+                panelRight.Visible = true;
+                panelLeft.Visible = true;
+                panelRight.Location = new Point(oglMain.Width + 80, 66);
+                FLP_backcover.Location = new Point(oglMain.Width + 150, 66);
+
+                //int lx = btnTrack.Location.X;
+                //flp1.Left = 200;
+            }
+            /*
+            
             if (!isJobStarted)
             {
                 panelBottom.Visible = false;
                 panelRight.Visible = false;
 
                 oglMain.Left = 80;
-                oglMain.Width = this.Width - statusStripLeft.Width - 22; //22                
+                oglMain.Width = this.Width - statusStripLeft.Width - 22; //22
+                oglMain.Width = (int)(oglMain.Width * 0.71); // mod
+                                                             //
                 oglMain.Height = this.Height - 60;
             }
             else
@@ -988,6 +1054,7 @@ namespace AgOpenGPS
 
                     oglMain.Width = this.Width - 98; //22
 
+
                     oglMain.Height = this.Height - 62;
                 }
                 else
@@ -1002,6 +1069,7 @@ namespace AgOpenGPS
                     oglMain.Height = this.Height - 118;
                 }
             }
+            */
 
             PanelSizeRightAndBottom();
 
@@ -1160,7 +1228,7 @@ namespace AgOpenGPS
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 
             //Settings.Default.setDisplay_panelSnapLocation = panelSnap.Location;
-            Settings.Default.setDisplay_panelSimLocation = panelSim.Location;
+            //Settings.Default.setDisplay_panelSimLocation = panelSim.Location;
 
             Settings.Default.Save();
         }
