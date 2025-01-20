@@ -511,7 +511,7 @@ namespace AgOpenGPS
         {
             Pgn252AutoSteerSettings pgn252 = mf.PgnAll.Pgn252;
             pgn252.CountsPerDegree = hsbarCountsPerDegree.Value;
-            pgn252.Ackerman = hsbarAckerman.Value;
+            pgn252.Ackermann = hsbarAckerman.Value;
             pgn252.WheelAngleSensorOffset = hsbarWasOffset.Value;
             pgn252.HighSteerPwm = hsbarHighSteerPWM.Value;
             pgn252.LowSteerPwm = hsbarLowSteerPWM.Value;

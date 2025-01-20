@@ -82,8 +82,8 @@
 
         public byte AckermanByte
         {
-            get { return _message[_ackermanIndex]; }
-            set { _message[_ackermanIndex] = value; }
+            get { return _message[_ackermannIndex]; }
+            set { _message[_ackermannIndex] = value; }
         }
 
     }
