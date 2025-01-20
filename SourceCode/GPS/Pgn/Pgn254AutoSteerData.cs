@@ -52,6 +52,7 @@ namespace AgOpenGPS
 
         public UInt16 SectionControl1to16
         {
+            get { return GetUInt16(_sectionControl1to8Index); }
             set { SetUInt16LoHi(_sectionControl1to8Index, value); }
         }
 

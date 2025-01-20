@@ -601,9 +601,8 @@ namespace AgOpenGPS
 
                         p_239.pgn[p_239.geoStop] = mc.isOutOfBounds ? (byte)1 : (byte)0;
 
-                        SendPgnToLoop(p_239.pgn);
 
-                        SendPgnToLoop(p_229.pgn);
+                        SendPgnToLoop(p_229.pgn, PgnAll.Pgn229);
                     }
 
                     //draw the zoom window
@@ -1768,6 +1767,7 @@ namespace AgOpenGPS
                 //mc.autoSteerData[mc.sdX] = 0;
                 p_239.pgn[p_239.uturn] = 1;
             }
+            PgnAll.Pgn239.UTurn = yt.isYouTurnTriggered;
 
             int bottom = 90;
             int two3 = oglMain.Width / 5;

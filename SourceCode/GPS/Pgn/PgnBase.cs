@@ -46,20 +46,24 @@ namespace AgOpenGPS
             }
         }
 
-        private void OverflowErrorIntToByte(int index, int intInputValue, byte byteErrorValue)
+        private void OverflowErrorIntToByte(int index, int inputValue, byte byteErrorValue)
         {
-            _errorPresenter.PresentOverflowErrorIntToByte(GetType().ToString(), index, intInputValue, byteErrorValue);
-
+            _errorPresenter.PresentOverflowErrorIntToByte(GetType().ToString(), index, inputValue, byteErrorValue);
         }
 
-        private void OverflowErrorIntToUInt16(int index, int intInputValue, UInt16 uint16ErrorValue)
+        private void OverflowErrorDoubleToByte(int index, double inputValue, byte byteErrorValue)
         {
-            _errorPresenter.PresentOverflowErrorIntToUInt16(GetType().ToString(), index, intInputValue, uint16ErrorValue);
+            _errorPresenter.PresentOverflowErrorDoubleToByte(GetType().ToString(), index, inputValue, byteErrorValue);
         }
 
-        private void OverflowErrorDoubleToUInt16(int index, double doubleInputValue, UInt16 uint16ErrorValue)
+        private void OverflowErrorIntToUInt16(int index, int inputValue, UInt16 uint16ErrorValue)
         {
-            _errorPresenter.PresentOverflowErrorDoubleToUInt16(GetType().ToString(), index, doubleInputValue, uint16ErrorValue);
+            _errorPresenter.PresentOverflowErrorIntToUInt16(GetType().ToString(), index, inputValue, uint16ErrorValue);
+        }
+
+        private void OverflowErrorDoubleToUInt16(int index, double inputValue, UInt16 uint16ErrorValue)
+        {
+            _errorPresenter.PresentOverflowErrorDoubleToUInt16(GetType().ToString(), index, inputValue, uint16ErrorValue);
         }
 
         protected void SetBool(int index, bool boolValue)
@@ -72,16 +76,14 @@ namespace AgOpenGPS
             return(0 != _message[index]);
         }
 
-        protected void SetInt16LoHi(int loIndex, Int16 int16Value)
+        protected void SetByte(int index, byte byteValue)
         {
-            _message[loIndex] = (byte)(int16Value & byte.MaxValue);
-            _message[loIndex + 1] = unchecked((byte)(int16Value >> 8));
+            _message[index] = byteValue;
         }
 
-        protected void SetUInt16LoHi(int loIndex, UInt16 uint16Value)
+        protected UInt16 GetUInt16(int index)
         {
-            _message[loIndex] = (byte)(uint16Value & byte.MaxValue);
-            _message[loIndex + 1] = (byte)(uint16Value >> 8);
+            return (UInt16)(_message[index] + _message[index + 1] << 8);
         }
 
         protected byte SetInt(int index, int inputValue)
@@ -101,21 +103,34 @@ namespace AgOpenGPS
             return b;
         }
 
-        protected void SetDoubleLoHi(int loIndex, double inputValue)
+        protected void SetDouble(int index, double inputValue)
         {
-            UInt16 outputValue = unchecked((UInt16)inputValue);
-            if (UInt16.MaxValue < inputValue)
+            byte outputValue = unchecked((byte)inputValue);
+            if (byte.MaxValue < inputValue)
             {
-                OverflowErrorDoubleToUInt16(loIndex, inputValue, outputValue);
-                outputValue = UInt16.MaxValue;
+                OverflowErrorDoubleToByte(index, inputValue, outputValue);
+                outputValue = byte.MaxValue;
             }
-            if (inputValue < UInt16.MinValue)
+            if (inputValue < byte.MinValue)
             {
-                OverflowErrorDoubleToUInt16(loIndex, inputValue, outputValue);
-                outputValue = unchecked((UInt16)Int16.MinValue);
+                OverflowErrorDoubleToByte(index, inputValue, outputValue);
+                outputValue = byte.MinValue;
             }
-            _message[loIndex] = checked((byte)(outputValue & byte.MaxValue));
-            _message[loIndex + 1] = checked((byte)(outputValue >> 8));
+            _message[index] = outputValue;
+        }
+
+
+
+        protected void SetInt16LoHi(byte loIndex, Int16 int16Value)
+        {
+            _message[loIndex] = (byte)(int16Value & byte.MaxValue);
+            _message[loIndex + 1] = unchecked((byte)(int16Value >> 8));
+        }
+
+        protected void SetUInt16LoHi(int loIndex, UInt16 uint16Value)
+        {
+            _message[loIndex] = (byte)(uint16Value & byte.MaxValue);
+            _message[loIndex + 1] = (byte)(uint16Value >> 8);
         }
 
         // Overflow detection does not work very well here, because we
@@ -136,6 +151,24 @@ namespace AgOpenGPS
             _message[loIndex] = unchecked((byte)(uint16));
             _message[loIndex + 1] = unchecked((byte)(uint16 >> 8));
         }
+
+        protected void SetDoubleLoHi(int loIndex, double inputValue)
+        {
+            UInt16 outputValue = unchecked((UInt16)inputValue);
+            if (UInt16.MaxValue < inputValue)
+            {
+                OverflowErrorDoubleToUInt16(loIndex, inputValue, outputValue);
+                outputValue = UInt16.MaxValue;
+            }
+            if (inputValue < UInt16.MinValue)
+            {
+                OverflowErrorDoubleToUInt16(loIndex, inputValue, outputValue);
+                outputValue = unchecked((UInt16)Int16.MinValue);
+            }
+            _message[loIndex] = checked((byte)(outputValue & byte.MaxValue));
+            _message[loIndex + 1] = checked((byte)(outputValue >> 8));
+        }
+
 
         private void ComputeCrc()
         {

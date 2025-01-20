@@ -372,7 +372,7 @@ namespace AgOpenGPS
 
                 Properties.Settings.Default.Save();
 
-                mf.SendPgnToLoop(mf.p_252.pgn);
+                mf.SendPgnToLoop(mf.p_252.pgn, mf.PgnAll.Pgn252);
                 toSend252 = false;
                 counter252 = 0;
             }
@@ -475,7 +475,8 @@ namespace AgOpenGPS
                 mf.p_251.pgn[mf.p_251.maxPulse] = Properties.Settings.Default.setArdSteer_maxPulseCounts;
                 mf.p_251.pgn[mf.p_251.minSpeed] = unchecked((byte)(Properties.Settings.Default.setAS_minSteerSpeed * 10)); //0.5 kmh
 
-                mf.SendPgnToLoop(mf.p_251.pgn);
+                SettingsToPgn.DefaultSettingsToPgn251(mf.PgnAll.Pgn251);
+                mf.SendPgnToLoop(mf.p_251.pgn, mf.PgnAll.Pgn251);
 
                 toSend251 = false;
                 counter251 = 0;

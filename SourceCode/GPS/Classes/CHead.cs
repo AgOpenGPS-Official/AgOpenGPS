@@ -16,6 +16,7 @@ namespace AgOpenGPS
                 if (isToolInHeadland)
                 {
                     mf.p_239.pgn[mf.p_239.hydLift] = 2;
+                    mf.PgnAll.Pgn239.HydraulicLift = 2; 
                     if (mf.sounds.isHydLiftChange != isToolInHeadland)
                     {
                         if (mf.sounds.isHydLiftSoundOn) mf.sounds.sndHydLiftUp.Play();
@@ -25,6 +26,7 @@ namespace AgOpenGPS
                 else
                 {
                     mf.p_239.pgn[mf.p_239.hydLift] = 1;
+                    mf.PgnAll.Pgn239.HydraulicLift = 1;
                     if (mf.sounds.isHydLiftChange != isToolInHeadland)
                     {
                         if (mf.sounds.isHydLiftSoundOn) mf.sounds.sndHydLiftDn.Play();

@@ -17,7 +17,6 @@ namespace AgOpenGPS
 
             public void LoadLatitudeLongitude(double lat, double lon)
             {
-                
                 int encodedAngle = (int)(lat * (0x7FFFFFFF / 90.0));
                 //double angle = (encodedAngle / (0x7FFFFFFF / 90.0));
 
@@ -44,7 +43,7 @@ namespace AgOpenGPS
             public int status = 7;
             public int steerAngleLo = 8;
             public int steerAngleHi = 9;
-            public int lineDistance  = 10;
+            public int lineDistance = 10;
             public int sc1to8 = 11;
             public int sc9to16 = 12;
 
@@ -98,7 +97,7 @@ namespace AgOpenGPS
                 pgn[lowPWM] = Properties.Settings.Default.setAS_lowSteerPWM;
                 pgn[minPWM] = Properties.Settings.Default.setAS_minSteerPWM;
                 pgn[countsPerDegree] = Properties.Settings.Default.setAS_countsPerDegree;
-                pgn[wasOffsetHi] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset >> 8));;
+                pgn[wasOffsetHi] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset >> 8)); ;
                 pgn[wasOffsetLo] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset));
                 pgn[ackerman] = Properties.Settings.Default.setAS_ackerman;
             }
@@ -121,7 +120,7 @@ namespace AgOpenGPS
             public int maxPulse = 6;
             public int minSpeed = 7;
             public int set1 = 8;
-            public int angVel  = 9;
+            public int angVel = 9;
             //public int  = 10;
             //public int  = 11;
             //public int  = 12;
@@ -175,7 +174,7 @@ namespace AgOpenGPS
             public int sc9to16 = 6;
             public int sc17to24 = 7;
             public int sc25to32 = 8;
-            public int sc33to40 = 9; 
+            public int sc33to40 = 9;
             public int sc41to48 = 10;
             public int sc49to56 = 11;
             public int sc57to64 = 12;
@@ -206,7 +205,7 @@ namespace AgOpenGPS
             public int user1 = 9;
             public int user2 = 10;
             public int user3 = 11;
-            public int user4  = 12;
+            public int user4 = 12;
 
             // PGN  - 127.239 0x7FEF
             int crc = 0;
@@ -479,9 +478,9 @@ namespace AgOpenGPS
         /// </summary>
         public CPGN_E4 p_228 = new CPGN_E4();
 
-        /// <summary>
-        /// Section Symmetric PGN - 229 - EB
-        /// </summary>
+        ///// <summary>
+        ///// Section Symmetric PGN - 229 - EB
+        ///// </summary>
         public CPGN_E5 p_229 = new CPGN_E5();
 
         /// <summary>
@@ -491,4 +490,4 @@ namespace AgOpenGPS
 
     }
 }
-    
+

@@ -179,7 +179,16 @@ namespace AgOpenGPS
             mf.p_238.pgn[mf.p_238.user3] = (byte)nudUser3.Value;
             mf.p_238.pgn[mf.p_238.user4] = (byte)nudUser4.Value;
 
-            mf.SendPgnToLoop(mf.p_238.pgn);
+            Pgn238MachineConfig pgn238 = mf.PgnAll.Pgn238;
+            pgn238.Settings0 = (byte)sett;
+            pgn238.RaiseTime = (byte)nudRaiseTime.Value;
+            pgn238.LowerTime = (byte)nudLowerTime.Value;
+            pgn238.User1 = (byte)nudUser1.Value;
+            pgn238.User2 = (byte)nudUser2.Value;
+            pgn238.User3 = (byte)nudUser3.Value;
+            pgn238.User4 = (byte)nudUser4.Value;
+
+            mf.SendPgnToLoop(mf.p_238.pgn, pgn238);
             pboxSendMachine.Visible = false;
         }
 

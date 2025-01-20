@@ -535,6 +535,11 @@ namespace AgOpenGPS
                 p_229.pgn[p_229.sc9to16] = p_254.pgn[p_254.sc9to16];
                 p_229.pgn[p_229.toolLSpeed] = unchecked((byte)(tool.farLeftSpeed * 10));
                 p_229.pgn[p_229.toolRSpeed] = unchecked((byte)(tool.farRightSpeed * 10));
+
+                PgnAll.Pgn239.SectionControl1to16 = PgnAll.Pgn254.SectionControl1to16;
+                PgnAll.Pgn229.SectionControl1to16 = PgnAll.Pgn254.SectionControl1to16;
+                PgnAll.Pgn229.ToolFarLeftSpeed = tool.farLeftSpeed;
+                PgnAll.Pgn229.ToolFarRightSpeed = tool.farRightSpeed;
             }
             else
             {
@@ -566,10 +571,26 @@ namespace AgOpenGPS
                 p_254.pgn[p_254.sc1to8] = p_229.pgn[p_229.sc1to8];
                 p_254.pgn[p_254.sc9to16] = p_229.pgn[p_229.sc9to16];
 
+
+
+                UInt64 sectionControl1to64 = 0;
+                for (int s = 0; s < 64; s++)
+                {
+                    if (section[s].isSectionOn) sectionControl1to64 |= (1UL << s);
+                }
+                PgnAll.Pgn229.SectionControl1to64 = sectionControl1to64;
+                PgnAll.Pgn229.ToolFarLeftSpeed = tool.farLeftSpeed;
+                PgnAll.Pgn229.ToolFarRightSpeed = tool.farRightSpeed;
+                PgnAll.Pgn239.SectionControl1to16 = PgnAll.Pgn229.SectionControl1to16;
+                PgnAll.Pgn254.SectionControl1to16 = PgnAll.Pgn229.SectionControl1to16;
+
             }
 
             p_239.pgn[p_239.speed] = unchecked((byte)(avgSpeed * 10));
             p_239.pgn[p_239.tram] = unchecked((byte)tram.controlByte);
+
+            PgnAll.Pgn239.Speed = avgSpeed;
+            PgnAll.Pgn239.Tram = tram.controlByte;
         }
 
 

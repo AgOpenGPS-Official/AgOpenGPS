@@ -2377,6 +2377,7 @@ namespace AgOpenGPS
             isTurnCreationTooClose = false;
             isTurnCreationNotCrossingError = false;
             mf.p_239.pgn[mf.p_239.uturn] = 0;
+            mf.PgnAll.Pgn239.UTurn = false;
         }
 
         public void ResetCreatedYouTurn()
@@ -2385,6 +2386,7 @@ namespace AgOpenGPS
             ytList?.Clear();
             mf.makeUTurnCounter = 0;
             mf.p_239.pgn[mf.p_239.uturn] = 0;
+            mf.PgnAll.Pgn239.UTurn = false;
             isOutSameCurve = false;
             isGoingStraightThrough = false;
         }

@@ -9,7 +9,7 @@
         private const int _countsPerDegreeIndex = 9;
         private const int _wasOffsetLoIndex = 10;
         private const int _wasOffsetHiIndex = 11;
-        private const int _ackermanIndex = 12;
+        private const int _ackermannIndex = 12;
 
         public Pgn252AutoSteerSettings(IPgnErrorPresenter errorPresenter) : base(252, 8, errorPresenter)
         {
@@ -45,28 +45,45 @@
             set { SetIntLoHi(_wasOffsetLoIndex, value); }
         }
 
-        public int Ackerman
+        public int Ackermann
         {
-            set { SetInt(_ackermanIndex, value); }
+            set { SetInt(_ackermannIndex, value); }
         }
 
-        public byte ProportionalGainByte => _message[_proportionalGainIndex];
-        public byte HighSteerPwmByte => _message[_highSteerPwmIndex];
-        public byte LowSteerPwmByte => _message[_lowSteerPwmIndex];
-        public byte MinSteerPwmByte => _message[_minSteerPwmIndex];
-        public byte CountsPerDegreeByte => _message[_countsPerDegreeIndex];
-        public byte AckermanByte => _message[_ackermanIndex];
-
-
-        public void SetFromDefaultSettings()
+        public byte ProportionalGainByte
         {
-            _message[_countsPerDegreeIndex] = Properties.Settings.Default.setAS_countsPerDegree;
-            _message[_ackermanIndex] = Properties.Settings.Default.setAS_ackerman;
-            SetIntLoHi(_wasOffsetLoIndex, Properties.Settings.Default.setAS_wasOffset);
-            _message[_highSteerPwmIndex] = Properties.Settings.Default.setAS_highSteerPWM;
-            _message[_lowSteerPwmIndex] = Properties.Settings.Default.setAS_lowSteerPWM;
-            _message[_proportionalGainIndex] = Properties.Settings.Default.setAS_Kp;
-            _message[_minSteerPwmIndex] = Properties.Settings.Default.setAS_minSteerPWM;
+            get { return _message[_proportionalGainIndex]; }
+            set { _message[_proportionalGainIndex] = value; }
+        }
+            
+        public byte HighSteerPwmByte
+        {
+            get { return _message[_highSteerPwmIndex]; }
+            set { _message[_highSteerPwmIndex] = value; }
+        }
+
+        public byte LowSteerPwmByte
+        {
+            get { return _message[_lowSteerPwmIndex]; }
+            set { _message[_lowSteerPwmIndex] = value; }
+        }
+
+        public byte MinSteerPwmByte
+        {
+            get { return _message[_minSteerPwmIndex]; }
+            set { _message[_minSteerPwmIndex] = value; }
+        }
+
+        public byte CountsPerDegreeByte
+        {
+            get { return _message[_countsPerDegreeIndex]; }
+            set { _message[_countsPerDegreeIndex] = value; }
+        }
+
+        public byte AckermanByte
+        {
+            get { return _message[_ackermanIndex]; }
+            set { _message[_ackermanIndex] = value; }
         }
 
     }

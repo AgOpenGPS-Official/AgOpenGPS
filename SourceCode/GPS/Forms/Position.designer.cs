@@ -809,7 +809,12 @@ namespace AgOpenGPS
             Buffer.BlockCopy(BitConverter.GetBytes(longitud), 0, correctedPosition, 5, 8);
             Buffer.BlockCopy(BitConverter.GetBytes(latitud), 0, correctedPosition, 13, 8);
             Buffer.BlockCopy(BitConverter.GetBytes(glm.toDegrees(gpsHeading)), 0, correctedPosition, 21, 8);
-            SendPgnToLoop(correctedPosition);
+
+            PgnAll.Pgn100.Longitude = longitud;
+            PgnAll.Pgn100.Latitude = latitud;
+            PgnAll.Pgn100.Heading = glm.toDegrees(gpsHeading);
+
+            SendPgnToLoop(correctedPosition, PgnAll.Pgn100);
             #endregion
 
             #region AutoSteer
@@ -984,7 +989,7 @@ namespace AgOpenGPS
                     vehicle.isInDeadZone = false;
                 }
 
-                 if (!vehicle.isInDeadZone)
+                if (!vehicle.isInDeadZone)
                 {
                     p_254.pgn[p_254.steerAngleHi] = unchecked((byte)(guidanceLineSteerAngle >> 8));
                     p_254.pgn[p_254.steerAngleLo] = unchecked((byte)(guidanceLineSteerAngle));

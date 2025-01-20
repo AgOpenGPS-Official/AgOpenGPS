@@ -1844,6 +1844,7 @@ namespace AgOpenGPS
             if (!bnd.isHeadlandOn)
             {
                 p_239.pgn[p_239.hydLift] = 0;
+                PgnAll.Pgn239.HydraulicLift = 0;
                 btnHydLift.Image = Properties.Resources.HydraulicLiftOff;
             }
 

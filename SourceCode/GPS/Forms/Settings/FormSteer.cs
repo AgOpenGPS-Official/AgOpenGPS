@@ -1018,7 +1018,7 @@ namespace AgOpenGPS
         private void btnSendSteerConfigPGN_Click(object sender, EventArgs e)
         {
             SaveSettings();
-            mf.SendPgnToLoop(mf.p_251.pgn);
+            mf.SendPgnToLoop(mf.p_251.pgn, mf.PgnAll.Pgn251);
             pboxSendSteer.Visible = false;
             Log.EventWriter("Steer Form, Send and Save Pressed");
 
@@ -1135,6 +1135,7 @@ namespace AgOpenGPS
                 mf.p_251.pgn[mf.p_251.angVel] = 1;
             else mf.p_251.pgn[mf.p_251.angVel] = 0;
 
+            SettingsToPgn.DefaultSettingsToPgn251(mf.PgnAll.Pgn251);
             pboxSendSteer.Visible = false;
         }
 
