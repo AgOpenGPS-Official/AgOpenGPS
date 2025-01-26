@@ -24,7 +24,7 @@ namespace AgOpenGPS
 
         private void Form_About_Load(object sender, EventArgs e)
         {
-            lblVersion.Text = "Version " + GitVersionInformation.SemVer;
+            lblVersion.Text = "Version " + Program.SemVer;
 
             // Add a link to the LinkLabel.
             LinkLabel.Link link = new LinkLabel.Link { LinkData = "https://github.com/AgOpenGPS-Official/AgOpenGPS" };

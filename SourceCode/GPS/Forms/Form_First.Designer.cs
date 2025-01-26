@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_First));
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelCheckForUpdates = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelDiscussionsAt = new System.Windows.Forms.Label();
             this.linkLabelGit = new System.Windows.Forms.LinkLabel();
             this.linkLabelCombineForum = new System.Windows.Forms.LinkLabel();
-            this.lblVersion = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelTermsAndVersion = new System.Windows.Forms.Label();
+            this.labelTermsOne = new System.Windows.Forms.Label();
+            this.labelTerms2 = new System.Windows.Forms.Label();
+            this.labelTerms3 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.labelDisagree = new System.Windows.Forms.Button();
+            this.labelAgree = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -50,15 +50,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
-            // label6
+            // labelCheckForUpdates
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(19, 551);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(163, 23);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Check for Updates\r\n";
+            this.labelCheckForUpdates.AutoSize = true;
+            this.labelCheckForUpdates.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCheckForUpdates.Location = new System.Drawing.Point(19, 551);
+            this.labelCheckForUpdates.Name = "labelCheckForUpdates";
+            this.labelCheckForUpdates.Size = new System.Drawing.Size(163, 23);
+            this.labelCheckForUpdates.TabIndex = 16;
+            this.labelCheckForUpdates.Text = "Check for Updates\r\n";
             // 
             // label5
             // 
@@ -69,15 +69,15 @@
             this.label5.Size = new System.Drawing.Size(0, 18);
             this.label5.TabIndex = 17;
             // 
-            // label3
+            // labelDiscussionsAt
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 489);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(150, 23);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Discussions at....";
+            this.labelDiscussionsAt.AutoSize = true;
+            this.labelDiscussionsAt.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDiscussionsAt.Location = new System.Drawing.Point(19, 489);
+            this.labelDiscussionsAt.Name = "labelDiscussionsAt";
+            this.labelDiscussionsAt.Size = new System.Drawing.Size(150, 23);
+            this.labelDiscussionsAt.TabIndex = 15;
+            this.labelDiscussionsAt.Text = "Discussions at....";
             // 
             // linkLabelGit
             // 
@@ -103,46 +103,46 @@
             this.linkLabelCombineForum.Text = "https://discourse.agopengps.com/";
             this.linkLabelCombineForum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCombineForum_LinkClicked);
             // 
-            // lblVersion
+            // labelTermsAndVersion
             // 
-            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.Location = new System.Drawing.Point(280, 23);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(714, 35);
-            this.lblVersion.TabIndex = 34;
-            this.lblVersion.Text = "Version 5.1";
-            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.labelTermsAndVersion.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTermsAndVersion.Location = new System.Drawing.Point(279, 15);
+            this.labelTermsAndVersion.Name = "labelTermsAndVersion";
+            this.labelTermsAndVersion.Size = new System.Drawing.Size(732, 35);
+            this.labelTermsAndVersion.TabIndex = 34;
+            this.labelTermsAndVersion.Text = "Version 5.1";
+            this.labelTermsAndVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label9
+            // labelTermsOne
             // 
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(280, 71);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(714, 72);
-            this.label9.TabIndex = 130;
-            this.label9.Text = "If you distribute copies of this FREE program, whether gratis or for a fee, impro" +
+            this.labelTermsOne.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTermsOne.Location = new System.Drawing.Point(280, 71);
+            this.labelTermsOne.Name = "labelTermsOne";
+            this.labelTermsOne.Size = new System.Drawing.Size(714, 72);
+            this.labelTermsOne.TabIndex = 130;
+            this.labelTermsOne.Text = "If you distribute copies of this FREE program, whether gratis or for a fee, impro" +
     "ved, changed, you must pass on to the recipients the same freedoms that you rece" +
     "ived as Outlined in the GPLv3 License.";
             // 
-            // label10
+            // labelTerms2
             // 
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(280, 153);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(714, 56);
-            this.label10.TabIndex = 129;
-            this.label10.Text = "You must make sure that they, receive or can get the source code.  And you must s" +
+            this.labelTerms2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTerms2.Location = new System.Drawing.Point(280, 153);
+            this.labelTerms2.Name = "labelTerms2";
+            this.labelTerms2.Size = new System.Drawing.Size(714, 56);
+            this.labelTerms2.TabIndex = 129;
+            this.labelTerms2.Text = "You must make sure that they, receive or can get the source code.  And you must s" +
     "how them these terms so they know their rights. Don\'t steal others work and call" +
     " it your own.";
             // 
-            // label4
+            // labelTerms3
             // 
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(280, 220);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(731, 248);
-            this.label4.TabIndex = 132;
-            this.label4.Text = resources.GetString("label4.Text");
+            this.labelTerms3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTerms3.Location = new System.Drawing.Point(280, 220);
+            this.labelTerms3.Name = "labelTerms3";
+            this.labelTerms3.Size = new System.Drawing.Size(731, 248);
+            this.labelTerms3.TabIndex = 132;
+            this.labelTerms3.Text = resources.GetString("labelTerms3.Text");
             // 
             // button3
             // 
@@ -167,13 +167,13 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(26, 622);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 23);
+            this.label1.Size = new System.Drawing.Size(271, 23);
             this.label1.TabIndex = 134;
-            this.label1.Text = "label1";
+            this.label1.Text = "LocationForDirectoryFolder";
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImage = global::AgOpenGPS.Properties.Resources.QRYouTube;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox1.Location = new System.Drawing.Point(22, 277);
             this.pictureBox1.Name = "pictureBox1";
@@ -181,43 +181,43 @@
             this.pictureBox1.TabIndex = 140;
             this.pictureBox1.TabStop = false;
             // 
-            // button2
+            // labelDisagree
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button2.Location = new System.Drawing.Point(563, 492);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(155, 89);
-            this.button2.TabIndex = 39;
-            this.button2.Text = "Disagree";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.labelDisagree.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.labelDisagree.FlatAppearance.BorderSize = 0;
+            this.labelDisagree.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelDisagree.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDisagree.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
+            this.labelDisagree.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.labelDisagree.Location = new System.Drawing.Point(563, 492);
+            this.labelDisagree.Name = "labelDisagree";
+            this.labelDisagree.Size = new System.Drawing.Size(155, 89);
+            this.labelDisagree.TabIndex = 39;
+            this.labelDisagree.Text = "Disagree";
+            this.labelDisagree.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.labelDisagree.UseVisualStyleBackColor = true;
+            this.labelDisagree.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // labelAgree
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1.Location = new System.Drawing.Point(757, 492);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(254, 107);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "I Agree to the Terms and Conditions";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.labelAgree.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.labelAgree.FlatAppearance.BorderSize = 0;
+            this.labelAgree.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelAgree.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAgree.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.labelAgree.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.labelAgree.Location = new System.Drawing.Point(757, 492);
+            this.labelAgree.Name = "labelAgree";
+            this.labelAgree.Size = new System.Drawing.Size(254, 107);
+            this.labelAgree.TabIndex = 10;
+            this.labelAgree.Text = "I Agree to the Terms and Conditions";
+            this.labelAgree.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.labelAgree.UseVisualStyleBackColor = true;
+            this.labelAgree.Click += new System.EventHandler(this.button1_Click);
             // 
             // pictureBox2
             // 
-            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImage = global::AgOpenGPS.Properties.Resources.QRAOG;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox2.Location = new System.Drawing.Point(22, 43);
             this.pictureBox2.Name = "pictureBox2";
@@ -253,22 +253,22 @@
             this.ClientSize = new System.Drawing.Size(1026, 659);
             this.ControlBox = false;
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.label10);
+            this.Controls.Add(this.labelTerms2);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.lblVersion);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.labelTerms3);
+            this.Controls.Add(this.labelTermsOne);
+            this.Controls.Add(this.labelDiscussionsAt);
+            this.Controls.Add(this.labelDisagree);
+            this.Controls.Add(this.labelTermsAndVersion);
+            this.Controls.Add(this.labelCheckForUpdates);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.linkLabelGit);
             this.Controls.Add(this.linkLabelCombineForum);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.labelAgree);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimizeBox = false;
             this.Name = "Form_First";
@@ -284,17 +284,17 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelCheckForUpdates;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelDiscussionsAt;
         private System.Windows.Forms.LinkLabel linkLabelGit;
         private System.Windows.Forms.LinkLabel linkLabelCombineForum;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button labelAgree;
+        private System.Windows.Forms.Label labelTermsAndVersion;
+        private System.Windows.Forms.Button labelDisagree;
+        private System.Windows.Forms.Label labelTermsOne;
+        private System.Windows.Forms.Label labelTerms2;
+        private System.Windows.Forms.Label labelTerms3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;

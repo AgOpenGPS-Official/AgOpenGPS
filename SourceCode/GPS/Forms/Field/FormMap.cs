@@ -26,6 +26,13 @@ namespace AgOpenGPS
             mf = callingForm as FormGPS;
 
             InitializeComponent();
+            //translate all the controls
+            this.Text = gStr.gsMapForBackground;
+            labelNewBoundary.Text = gStr.gsNew + " " + gStr.gsBoundary; 
+            labelBoundary.Text = gStr.gsBoundary;
+            lblPoints.Text = gStr.gsPoints + ":";
+            labelBackground.Text = gStr.gsBackground;
+
 
             mapControl.CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MapControl");
 
@@ -71,7 +78,6 @@ namespace AgOpenGPS
             }
 
             btnDeleteAll.Enabled = true;
-            label3.Text = gStr.gsBoundary;
         }
 
         private void FormMap_FormClosing(object sender, FormClosingEventArgs e)

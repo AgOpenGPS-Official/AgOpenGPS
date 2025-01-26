@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using AgLibrary.Logging;
 using AgOpenGPS.Helpers;
+using AgOpenGPS.Culture;
 
 namespace AgOpenGPS
 {
@@ -19,6 +20,16 @@ namespace AgOpenGPS
             //get copy of the calling main form
             mf = callingForm as FormGPS;
             InitializeComponent();
+
+            //translate all the controls
+            this.Text = gStr.gsButtonPicker;
+            groupBoxSelectButtons.Text = gStr.gsSelectButtons;
+            groupBoxAOGMenu.Text = gStr.gsAOGMenu; 
+            labelButtonArrangeOne.Text = gStr.gsArrangeText;
+            buttonLabelDefault.Text = gStr.gsDefault;
+            buttonLabelReset.Text = gStr.gsReset;
+            labelPreview.Text = gStr.gsPreview;
+
         }
 
         private void FormToolPivot_Load(object sender, EventArgs e)

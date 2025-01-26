@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS.Forms
@@ -63,7 +64,7 @@ namespace AgOpenGPS.Forms
         {
             if (mf.isKeyboardOn)
             {
-                mf.KeyboardToText((TextBox)sender, this);
+                ((TextBox)sender).ShowKeyboard(this);
                 buttonRecordCancel.Focus();
             }
         }

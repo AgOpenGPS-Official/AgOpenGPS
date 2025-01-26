@@ -193,6 +193,7 @@ namespace AgIO
             isConnectedSteer = cboxIsSteerModule.Checked = Properties.Settings.Default.setMod_isSteerConnected;
             isConnectedMachine = cboxIsMachineModule.Checked = Properties.Settings.Default.setMod_isMachineConnected;
 
+            //On or off the module rows
             SetModulesOnOff();
 
             oneSecondLoopTimer.Enabled = true;
@@ -203,9 +204,6 @@ namespace AgIO
             pictureBox1.Left = 0;
             pictureBox1.Top = 0;
             //pictureBox1.Dock = DockStyle.Fill;:
-
-            //On or off the module rows
-            SetModulesOnOff();
 
             //update Caster IP from URL, just use the old one if can't find
             if (isNTRIP_RequiredOn)
@@ -261,9 +259,9 @@ namespace AgIO
             cboxAutoRunGPS_Out.Checked = Properties.Settings.Default.setDisplay_isAutoRunGPS_Out;
             
             this.Text =
-            "AgIO  v" + GitVersionInformation.MajorMinorPatch + " Profile: " + RegistrySettings.profileName;
+            "AgIO  v" + Program.Version + " Profile: " + RegistrySettings.profileName;
 
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 Log.EventWriter("Using Default Profile At Start Warning");
 
@@ -276,12 +274,11 @@ namespace AgIO
                     {
                         Log.EventWriter("Program Reset: Saving or Selecting Profile");
 
-                        RegistrySettings.Save();
                         Application.Restart();
                         Environment.Exit(0);
                     }
                 }
-                this.Text = "AgIO  v" + GitVersionInformation.MajorMinorPatch + " Profile: "
+                this.Text = "AgIO  v" + Program.Version + " Profile: "
                     + RegistrySettings.profileName;
             }
 
@@ -302,12 +299,6 @@ namespace AgIO
             Settings.Default.setPort_wasRtcmConnected = wasRtcmConnectedLastRun;
 
             Settings.Default.Save();
-
-            if (RegistrySettings.profileName != "Default Profile")
-                RegistrySettings.Save();
-            else
-                YesMessageBox("Using Default Profile" + "\r\n\r\n" + "Changes will NOT be Saved");
-
 
             if (loopBackSocket != null)
             {
@@ -334,18 +325,9 @@ namespace AgIO
             }
 
             Log.EventWriter("Program Exit: " +
-                DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(RegistrySettings.culture)) + "\n\r");
+                DateTime.Now.ToString("f", CultureInfo.InvariantCulture) + "\n\r");
 
-            FileSaveSystemEvents();
-        }
-
-        public void FileSaveSystemEvents()
-        {
-            using (StreamWriter writer = new StreamWriter(Path.Combine(RegistrySettings.logsDirectory, "AgIO_Events_Log.txt"), true))
-            {
-                writer.Write(Log.sbEvents);
-                Log.sbEvents.Clear();
-            }
+            Log.FileSaveSystemEvents();
         }
 
         private void oneSecondLoopTimer_Tick(object sender, EventArgs e)
@@ -738,11 +720,17 @@ namespace AgIO
                 cboxIsSteerModule.BackgroundImage = Properties.Resources.AddNew;
             }
 
-            Properties.Settings.Default.setMod_isIMUConnected = isConnectedIMU;
-            Properties.Settings.Default.setMod_isSteerConnected = isConnectedSteer;
-            Properties.Settings.Default.setMod_isMachineConnected = isConnectedMachine;
+            if (cboxIsIMUModule.Checked != Properties.Settings.Default.setMod_isIMUConnected ||
+                cboxIsSteerModule.Checked != Properties.Settings.Default.setMod_isSteerConnected ||
+                cboxIsMachineModule.Checked != Properties.Settings.Default.setMod_isMachineConnected)
+            {
 
-            Properties.Settings.Default.Save();
+                Properties.Settings.Default.setMod_isIMUConnected = isConnectedIMU;
+                Properties.Settings.Default.setMod_isSteerConnected = isConnectedSteer;
+                Properties.Settings.Default.setMod_isMachineConnected = isConnectedMachine;
+
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void DoTraffic()

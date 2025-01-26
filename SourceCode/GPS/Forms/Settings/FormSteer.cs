@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
@@ -40,9 +41,65 @@ namespace AgOpenGPS
             nudSnapDistance.Minimum = Math.Round(nudSnapDistance.Minimum / 2.54M);
             nudSnapDistance.Maximum = Math.Round(nudSnapDistance.Maximum / 2.54M);
 
-            this.label3.Text = gStr.gsAgressiveness;
-            this.label5.Text = gStr.gsOvershootReduction;
+            //translate
             this.Text = gStr.gsAutoSteerConfiguration;
+            labelFast.Text = gStr.gsFast;
+            labelSteerResponse.Text = gStr.gsSteerResponse;
+            labelSlow.Text = gStr.gsSlow;
+            labelIntegralPP.Text = gStr.gsIntegral;
+            labelIntegralInfo.Text = gStr.gsIntegralInfo;
+            labelSteerAngle.Text = gStr.gsSteerAngle;
+            labelDiameter.Text = gStr.gsDiameter;
+            labelDistance.Text = gStr.gsAgressiveness;
+            labelHeading.Text = gStr.gsOvershootReduction;
+            labelIntergralStanley.Text = gStr.gsIntegral;
+            labelProportionalGain.Text = gStr.gsProportionalGain;
+            labelMaxLimit.Text = gStr.gsMaxLimit;
+            labelMinToMove.Text = gStr.gsMinToMove;
+            labelWasZero.Text = gStr.gsWasZero;
+            labelCountsPerDegree.Text = gStr.gsCountsPerDegree; 
+            labelAckermann.Text = gStr.gsAckermann;
+            labelMaxSteerAngle.Text = gStr.gsMaxSteerAngle; 
+            labelDeadzone.Text = gStr.gsDeadzone;
+            labelHeadingDegree.Text = gStr.gsHeading;   
+            labelOnDelay.Text = gStr.gsOnDelay;
+            labelSpeedFactor.Text = gStr.gsSpeedFactor;
+            labelAquireFactor.Text = gStr.gsAquireFactor;
+            labelAquireDescription.Text = gStr.gsAquireDescription;
+            labelDist.Text = gStr.gsDistance;
+            labelAquire2.Text = gStr.gsAquire;
+            labelHold.Text = gStr.gsHold;
+
+            //translate pop-out
+            labelEncoder.Text = gStr.gsTurnSensor;
+            labelTurnSensor.Text = gStr.gsTurnSensor;   
+            labelPressureTurnSensor.Text = gStr.gsPressureTurnSensor;
+            labelCurrentTurnSensor.Text = gStr.gsCurrentTurnSensor;
+            labelInvertWas.Text = gStr.gsInvertWas; 
+            labelInvertMotor.Text = gStr.gsInvertMotor;
+            labelInvertRelays.Text = gStr.gsInvertRelays;
+            labelMotorDriver.Text = gStr.gsMotorDriver;
+            labelADConverter.Text = gStr.gsADConverter; 
+            labelIMUAxis.Text = gStr.gsIMUAxis;
+            labelSteerEnable.Text = gStr.gsSteerEnable;
+            labelSteerDescription.Text = gStr.gsSteerDescription;
+            labelUturnCompensation.Text = gStr.gsUturnCompensation;
+            labelSideHill.Text = gStr.gsSideHillComp;
+            labelSteerInReverse.Text = gStr.gsSteerInReverse;
+            labelManualTurns.Text = gStr.gsManualTurns;
+            labelMinSpeed.Text = gStr.gsMinSpeed;
+            labelMaxSpeed.Text = gStr.gsMaxSpeed;
+            labelLineWidth.Text = gStr.gsLineWidth;
+            labelNudgeDistance.Text = gStr.gsNudgeDistance;
+            labelNextGuidanceLine.Text = gStr.gsNextGuidanceLine;
+            labelCmPix.Text = gStr.gsCmPix;
+            labelOnOff.Text = gStr.gsOnOff;
+            labelLightbar.Text = gStr.gsLightbar;
+            labelSteerBar.Text = gStr.gsSteerBar;
+            labelWizard.Text = gStr.gsWizard;
+            labelReset.Text = gStr.gsReset;
+            labelSendAndSave.Text = gStr.gsSendAndSave; 
+
             this.Width = 388;
             this.Height = 490;
         }
@@ -215,46 +272,46 @@ namespace AgOpenGPS
             {
                 cboxPressureSensor.Checked = false;
                 cboxCurrentSensor.Checked = false;
-                label61.Visible = true;
+                labelTurnSensor.Visible = true;
                 lblPercentFS.Visible = true;
                 nudMaxCounts.Visible = true;
                 pbarSensor.Visible = false;
                 hsbarSensor.Visible = false;
                 lblhsbarSensor.Visible = false;
-                label61.Text = gStr.gsEncoderCounts;
+                labelTurnSensor.Text = gStr.gsEncoderCounts;
             }
             else if (cboxPressureSensor.Checked)
             {
                 cboxEncoder.Checked = false;
                 cboxCurrentSensor.Checked = false;
-                label61.Visible = true;
+                labelTurnSensor.Visible = true;
                 lblPercentFS.Visible = true;
                 nudMaxCounts.Visible = false;
                 pbarSensor.Visible = true;
                 hsbarSensor.Visible = true;
                 lblhsbarSensor.Visible = true;
 
-                label61.Text = "Off at %";
+                labelTurnSensor.Text = "Off at %";
             }
             else if (cboxCurrentSensor.Checked)
             {
                 cboxPressureSensor.Checked = false;
                 cboxEncoder.Checked = false;
-                label61.Visible = true;
+                labelTurnSensor.Visible = true;
                 lblPercentFS.Visible = true;
                 nudMaxCounts.Visible = false;
                 pbarSensor.Visible = true;
                 hsbarSensor.Visible = true;
                 lblhsbarSensor.Visible = true;
 
-                label61.Text = "Off at %";
+                labelTurnSensor.Text = "Off at %";
             }
             else
             {
                 cboxPressureSensor.Checked = false;
                 cboxCurrentSensor.Checked = false;
                 cboxEncoder.Checked = false;
-                label61.Visible = false;
+                labelTurnSensor.Visible = false;
                 lblPercentFS.Visible = false;
                 nudMaxCounts.Visible = false;
                 pbarSensor.Visible = false;
@@ -309,7 +366,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
             //save current vehicle
-            RegistrySettings.Save();
+            Properties.Settings.Default.Save();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -437,7 +494,7 @@ namespace AgOpenGPS
                         cboxPressureSensor.Checked = false;
                         cboxCurrentSensor.Checked = false;
                         cboxEncoder.Checked = false;
-                        label61.Visible = false;
+                        labelTurnSensor.Visible = false;
                         lblPercentFS.Visible = false;
                         nudMaxCounts.Visible = false;
                         pbarSensor.Visible = false;
@@ -450,11 +507,11 @@ namespace AgOpenGPS
                     {
                         cboxEncoder.Checked = false;
                         cboxCurrentSensor.Checked = false;
-                        label61.Visible = true;
+                        labelTurnSensor.Visible = true;
                         lblPercentFS.Visible = true;
                         nudMaxCounts.Visible = false;
                         pbarSensor.Visible = true;
-                        label61.Text = "Off at %";
+                        labelTurnSensor.Text = "Off at %";
                         hsbarSensor.Visible = true;
                         lblhsbarSensor.Visible = true;
                     }
@@ -462,25 +519,25 @@ namespace AgOpenGPS
                     {
                         cboxPressureSensor.Checked = false;
                         cboxEncoder.Checked = false;
-                        label61.Visible = true;
+                        labelTurnSensor.Visible = true;
                         lblPercentFS.Visible = true;
                         nudMaxCounts.Visible = false;
                         hsbarSensor.Visible = true;
                         pbarSensor.Visible = true;
-                        label61.Text = "Off at %";
+                        labelTurnSensor.Text = "Off at %";
                         lblhsbarSensor.Visible = true;
                     }
                     else if (checkbox == cboxEncoder)
                     {
                         cboxPressureSensor.Checked = false;
                         cboxCurrentSensor.Checked = false;
-                        label61.Visible = true;
-                        lblPercentFS.Visible = true;
+                        labelTurnSensor.Visible = true;
+                        lblPercentFS.Visible = false;
                         nudMaxCounts.Visible = true;
-                        pbarSensor.Visible = true;
+                        pbarSensor.Visible = false;
                         hsbarSensor.Visible = false;
                         lblhsbarSensor.Visible = false;
-                        label61.Text = gStr.gsEncoderCounts;
+                        labelTurnSensor.Text = gStr.gsEncoderCounts;
                     }
                 }
             }
@@ -488,7 +545,7 @@ namespace AgOpenGPS
 
         private void nudMaxCounts_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 pboxSendSteer.Visible = true;
             }
@@ -622,7 +679,7 @@ namespace AgOpenGPS
 
         private void nudMinSteerSpeed_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_minSteerSpeed = ((double)nudMinSteerSpeed.Value);
                 if (!mf.isMetric) Properties.Settings.Default.setAS_minSteerSpeed *= 1.609344;
@@ -632,7 +689,7 @@ namespace AgOpenGPS
 
         private void nudMaxSteerSpeed_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_maxSteerSpeed = ((double)nudMaxSteerSpeed.Value);
                 if (!mf.isMetric) Properties.Settings.Default.setAS_maxSteerSpeed *= 1.609344;
@@ -642,7 +699,7 @@ namespace AgOpenGPS
 
         private void nudGuidanceSpeedLimit_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_functionSpeedLimit = ((double)nudGuidanceSpeedLimit.Value);
                 if (!mf.isMetric) Properties.Settings.Default.setAS_functionSpeedLimit *= 1.609344;
@@ -689,7 +746,7 @@ namespace AgOpenGPS
 
         private void nudcmPerPixel_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setDisplay_lightbarCmPerPixel = ((int)nudcmPerPixel.Value);
                 mf.lightbarCmPerPixel = Properties.Settings.Default.setDisplay_lightbarCmPerPixel;
@@ -698,7 +755,7 @@ namespace AgOpenGPS
 
         private void nudLineWidth_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setDisplay_lineWidth = (int)nudLineWidth.Value;
                 mf.ABLine.lineWidth = Properties.Settings.Default.setDisplay_lineWidth;
@@ -707,7 +764,7 @@ namespace AgOpenGPS
 
         private void nudSnapDistance_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_snapDistance = ((double)nudSnapDistance.Value * mf.inOrCm2Cm);
                 mf.ABLine.snapDistance = Properties.Settings.Default.setAS_snapDistance;
@@ -716,7 +773,7 @@ namespace AgOpenGPS
 
         private void nudGuidanceLookAhead_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_guidanceLookAheadTime = ((double)nudGuidanceLookAhead.Value);
                 mf.guidanceLookAheadTime = Properties.Settings.Default.setAS_guidanceLookAheadTime;
@@ -911,13 +968,13 @@ namespace AgOpenGPS
 
         private void nudDeadZoneHeading_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
+            ((NudlessNumericUpDown)sender).ShowKeypad(this);
             mf.vehicle.deadZoneHeading = (int)(nudDeadZoneHeading.Value * 100);
         }
 
         private void nudDeadZoneDelay_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
+            ((NudlessNumericUpDown)sender).ShowKeypad(this);
             mf.vehicle.deadZoneDelay = (int)(nudDeadZoneDelay.Value);
         }
 
@@ -999,6 +1056,8 @@ namespace AgOpenGPS
             Log.EventWriter("Steer Form, Send and Save Pressed");
 
             mf.TimedMessageBox(2000, gStr.gsAutoSteerPort, "Settings Sent To Steer Module");
+            
+            Close();
         }
 
         private void SaveSettings()
@@ -1187,7 +1246,7 @@ namespace AgOpenGPS
                 mf.isSteerInReverse = false;
 
                 //save current vehicle
-                RegistrySettings.Save();
+                Properties.Settings.Default.Save();
 
                 mf.vehicle = new CVehicle(mf);
 

@@ -3,6 +3,7 @@
 
 using System;
 using System.Windows.Forms;
+using AgOpenGPS.Culture;
 
 namespace AgOpenGPS
 {
@@ -14,6 +15,16 @@ namespace AgOpenGPS
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
+            labelTotal.Text = gStr.gsTotal;
+            labelWorked.Text = gStr.gsWorked;
+            labelApplied.Text = gStr.gsApplied;
+            labelApplied2.Text = gStr.gsApplied;
+            labelRemain.Text = gStr.gsRemain;
+            labelRemain2.Text = gStr.gsRemain;
+            labelOverlap.Text = gStr.gsOverlap;
+            labelActual.Text = gStr.gsActual;   
+            labelRate.Text = gStr.gsRate;   
+
         }
         private void FormFieldData_Load(object sender, EventArgs e)
         {

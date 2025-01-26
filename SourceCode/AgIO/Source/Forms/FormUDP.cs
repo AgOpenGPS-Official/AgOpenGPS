@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using AgIO.Controls;
 using AgLibrary.Logging;
 
 namespace AgIO
@@ -290,7 +291,7 @@ namespace AgIO
 
         private void nudFirstIP_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NumericUpDown)sender, this);
+            ((NumericUpDown)sender).ShowKeypad(this);
             ipNew[0] = (byte)nudFirstIP.Value;
             ipNew[1] = (byte)nudSecndIP.Value;
             ipNew[2] = (byte)nudThirdIP.Value;
@@ -341,7 +342,6 @@ namespace AgIO
             mf.YesMessageBox("AgIO will Restart to Disable UDP Networking Features");
             Log.EventWriter("Program Reset: Turning UDP OFF");
 
-            RegistrySettings.Save();
             Application.Restart();
             Environment.Exit(0);
 

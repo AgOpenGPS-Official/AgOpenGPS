@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCommSetGPS));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,6 +43,7 @@
             this.cboxBaud = new System.Windows.Forms.ComboBox();
             this.lblCurrentPort = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.lblCurrentBaud = new System.Windows.Forms.Label();
             this.btnCloseSerial = new System.Windows.Forms.Button();
             this.textBoxRcv = new System.Windows.Forms.TextBox();
@@ -61,11 +61,13 @@
             this.lblCurrentSteerModulePort = new System.Windows.Forms.Label();
             this.btnOpenSerialSteerModule = new System.Windows.Forms.Button();
             this.btnCloseSerialSteerModule = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cboxMachineModulePort = new System.Windows.Forms.ComboBox();
             this.lblCurrentMachineModulePort = new System.Windows.Forms.Label();
             this.btnOpenSerialMachineModule = new System.Windows.Forms.Button();
             this.btnCloseSerialMachineModule = new System.Windows.Forms.Button();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lblCurrentModule3Port = new System.Windows.Forms.Label();
             this.cboxModule3Port = new System.Windows.Forms.ComboBox();
@@ -76,9 +78,6 @@
             this.cboxIMU = new System.Windows.Forms.ComboBox();
             this.btnCloseIMU = new System.Windows.Forms.Button();
             this.btnOpenIMU = new System.Windows.Forms.Button();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnRescan = new System.Windows.Forms.Button();
             this.btnSerialOK = new System.Windows.Forms.Button();
@@ -95,14 +94,14 @@
             this.lblFromSteerModule = new System.Windows.Forms.Label();
             this.lblFromMachineModule = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -159,7 +158,7 @@
             this.btnCloseRTCM.FlatAppearance.BorderSize = 0;
             this.btnCloseRTCM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseRTCM.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseRTCM.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseRTCM.Image")));
+            this.btnCloseRTCM.Image = global::AgIO.Properties.Resources.USB_Disconnect;
             this.btnCloseRTCM.Location = new System.Drawing.Point(673, 112);
             this.btnCloseRTCM.Name = "btnCloseRTCM";
             this.btnCloseRTCM.Size = new System.Drawing.Size(56, 58);
@@ -173,7 +172,7 @@
             this.btnOpenRTCM.FlatAppearance.BorderSize = 0;
             this.btnOpenRTCM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenRTCM.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenRTCM.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenRTCM.Image")));
+            this.btnOpenRTCM.Image = global::AgIO.Properties.Resources.USB_Connect;
             this.btnOpenRTCM.Location = new System.Drawing.Point(572, 112);
             this.btnOpenRTCM.Name = "btnOpenRTCM";
             this.btnOpenRTCM.Size = new System.Drawing.Size(58, 58);
@@ -299,6 +298,16 @@
             this.label2.TabIndex = 74;
             this.label2.Text = "GPS";
             // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImage = global::AgIO.Properties.Resources.satellite;
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox4.Location = new System.Drawing.Point(12, 23);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(84, 92);
+            this.pictureBox4.TabIndex = 72;
+            this.pictureBox4.TabStop = false;
+            // 
             // lblCurrentBaud
             // 
             this.lblCurrentBaud.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -315,7 +324,7 @@
             this.btnCloseSerial.FlatAppearance.BorderSize = 0;
             this.btnCloseSerial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseSerial.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseSerial.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseSerial.Image")));
+            this.btnCloseSerial.Image = global::AgIO.Properties.Resources.USB_Disconnect;
             this.btnCloseSerial.Location = new System.Drawing.Point(673, 23);
             this.btnCloseSerial.Name = "btnCloseSerial";
             this.btnCloseSerial.Size = new System.Drawing.Size(56, 58);
@@ -346,7 +355,7 @@
             this.btnOpenSerial.FlatAppearance.BorderSize = 0;
             this.btnOpenSerial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenSerial.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenSerial.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenSerial.Image")));
+            this.btnOpenSerial.Image = global::AgIO.Properties.Resources.USB_Connect;
             this.btnOpenSerial.Location = new System.Drawing.Point(572, 23);
             this.btnOpenSerial.Name = "btnOpenSerial";
             this.btnOpenSerial.Size = new System.Drawing.Size(58, 58);
@@ -522,13 +531,23 @@
             this.btnCloseSerialSteerModule.FlatAppearance.BorderSize = 0;
             this.btnCloseSerialSteerModule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseSerialSteerModule.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseSerialSteerModule.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseSerialSteerModule.Image")));
+            this.btnCloseSerialSteerModule.Image = global::AgIO.Properties.Resources.USB_Disconnect;
             this.btnCloseSerialSteerModule.Location = new System.Drawing.Point(425, 45);
             this.btnCloseSerialSteerModule.Name = "btnCloseSerialSteerModule";
             this.btnCloseSerialSteerModule.Size = new System.Drawing.Size(101, 58);
             this.btnCloseSerialSteerModule.TabIndex = 52;
             this.btnCloseSerialSteerModule.UseVisualStyleBackColor = false;
             this.btnCloseSerialSteerModule.Click += new System.EventHandler(this.btnCloseSerialSteerModule_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = global::AgIO.Properties.Resources.Com_AutosteerModule;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox2.Location = new System.Drawing.Point(4, 29);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(108, 88);
+            this.pictureBox2.TabIndex = 70;
+            this.pictureBox2.TabStop = false;
             // 
             // groupBox4
             // 
@@ -588,13 +607,23 @@
             this.btnCloseSerialMachineModule.FlatAppearance.BorderSize = 0;
             this.btnCloseSerialMachineModule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseSerialMachineModule.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseSerialMachineModule.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseSerialMachineModule.Image")));
+            this.btnCloseSerialMachineModule.Image = global::AgIO.Properties.Resources.USB_Disconnect;
             this.btnCloseSerialMachineModule.Location = new System.Drawing.Point(425, 45);
             this.btnCloseSerialMachineModule.Name = "btnCloseSerialMachineModule";
             this.btnCloseSerialMachineModule.Size = new System.Drawing.Size(101, 58);
             this.btnCloseSerialMachineModule.TabIndex = 52;
             this.btnCloseSerialMachineModule.UseVisualStyleBackColor = false;
             this.btnCloseSerialMachineModule.Click += new System.EventHandler(this.btnCloseSerialMachineModule_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = global::AgIO.Properties.Resources.Com_Module2;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox3.Location = new System.Drawing.Point(6, 29);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(108, 88);
+            this.pictureBox3.TabIndex = 71;
+            this.pictureBox3.TabStop = false;
             // 
             // groupBox5
             // 
@@ -726,36 +755,6 @@
             this.btnOpenIMU.TabIndex = 45;
             this.btnOpenIMU.UseVisualStyleBackColor = false;
             this.btnOpenIMU.Click += new System.EventHandler(this.btnOpenIMU_Click);
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BackgroundImage = global::AgIO.Properties.Resources.satellite;
-            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(12, 23);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(84, 92);
-            this.pictureBox4.TabIndex = 72;
-            this.pictureBox4.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImage = global::AgIO.Properties.Resources.Com_Module2;
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox3.Location = new System.Drawing.Point(6, 29);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(108, 88);
-            this.pictureBox3.TabIndex = 71;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImage = global::AgIO.Properties.Resources.Com_AutosteerModule;
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.Location = new System.Drawing.Point(4, 29);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(108, 88);
-            this.pictureBox2.TabIndex = 70;
-            this.pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -985,16 +984,16 @@
             this.Load += new System.EventHandler(this.FormCommSet_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

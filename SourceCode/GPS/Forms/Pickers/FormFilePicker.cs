@@ -22,8 +22,12 @@ namespace AgOpenGPS
             mf = callingForm as FormGPS;
 
             InitializeComponent();
+            //translate all the controls
+            this.Text = gStr.gsFieldPicker;
             btnByDistance.Text = gStr.gsSort;
             btnOpenExistingLv.Text = gStr.gsUseSelected;
+            labelDeleteField.Text = gStr.gsDeleteField;
+            labelCancel.Text = gStr.gsCancel;
         }
 
         private void FormFilePicker_Load(object sender, EventArgs e)

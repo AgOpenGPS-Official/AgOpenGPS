@@ -45,18 +45,18 @@
             this.btnCycleLinesBk = new System.Windows.Forms.Button();
             this.btnCycleLines = new System.Windows.Forms.Button();
             this.btnContour = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
+            this.buttonLabelReset = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.btnAll = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
+            this.buttonLabelDefault = new System.Windows.Forms.Button();
+            this.groupBoxSelectButtons = new System.Windows.Forms.GroupBox();
+            this.groupBoxAOGMenu = new System.Windows.Forms.GroupBox();
+            this.labelButtonArrangeOne = new System.Windows.Forms.Label();
             this.btnTest = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelPreview = new System.Windows.Forms.Label();
             this.flpRight.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxSelectButtons.SuspendLayout();
+            this.groupBoxAOGMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // flpRight
@@ -359,25 +359,25 @@
             this.btnContour.UseVisualStyleBackColor = false;
             this.btnContour.Click += new System.EventHandler(this.btnContour_Click);
             // 
-            // btnReset
+            // buttonLabelReset
             // 
-            this.btnReset.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnReset.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnReset.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Image = global::AgOpenGPS.Properties.Resources.back_button;
-            this.btnReset.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnReset.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnReset.Location = new System.Drawing.Point(246, 500);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(91, 115);
-            this.btnReset.TabIndex = 548;
-            this.btnReset.Text = "Reset";
-            this.btnReset.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnReset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnReset.UseVisualStyleBackColor = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.buttonLabelReset.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.buttonLabelReset.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonLabelReset.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonLabelReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLabelReset.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLabelReset.Image = global::AgOpenGPS.Properties.Resources.back_button;
+            this.buttonLabelReset.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonLabelReset.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonLabelReset.Location = new System.Drawing.Point(246, 500);
+            this.buttonLabelReset.Name = "buttonLabelReset";
+            this.buttonLabelReset.Size = new System.Drawing.Size(91, 115);
+            this.buttonLabelReset.TabIndex = 548;
+            this.buttonLabelReset.Text = "Reset";
+            this.buttonLabelReset.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonLabelReset.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonLabelReset.UseVisualStyleBackColor = false;
+            this.buttonLabelReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnCancel
             // 
@@ -412,69 +412,69 @@
             this.btnOk.UseVisualStyleBackColor = false;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // btnAll
+            // buttonLabelDefault
             // 
-            this.btnAll.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnAll.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.btnAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAll.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAll.Image = global::AgOpenGPS.Properties.Resources.ArrowRight;
-            this.btnAll.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnAll.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnAll.Location = new System.Drawing.Point(246, 301);
-            this.btnAll.Name = "btnAll";
-            this.btnAll.Size = new System.Drawing.Size(91, 115);
-            this.btnAll.TabIndex = 551;
-            this.btnAll.Text = "Default";
-            this.btnAll.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnAll.UseVisualStyleBackColor = false;
-            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
+            this.buttonLabelDefault.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.buttonLabelDefault.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonLabelDefault.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
+            this.buttonLabelDefault.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLabelDefault.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLabelDefault.Image = global::AgOpenGPS.Properties.Resources.ArrowRight;
+            this.buttonLabelDefault.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonLabelDefault.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.buttonLabelDefault.Location = new System.Drawing.Point(246, 301);
+            this.buttonLabelDefault.Name = "buttonLabelDefault";
+            this.buttonLabelDefault.Size = new System.Drawing.Size(91, 115);
+            this.buttonLabelDefault.TabIndex = 551;
+            this.buttonLabelDefault.Text = "Default";
+            this.buttonLabelDefault.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonLabelDefault.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.buttonLabelDefault.UseVisualStyleBackColor = false;
+            this.buttonLabelDefault.Click += new System.EventHandler(this.btnAll_Click);
             // 
-            // groupBox1
+            // groupBoxSelectButtons
             // 
-            this.groupBox1.Controls.Add(this.btnAutoSteer);
-            this.groupBox1.Controls.Add(this.btnContour);
-            this.groupBox1.Controls.Add(this.btnCycleLines);
-            this.groupBox1.Controls.Add(this.btnCycleLinesBk);
-            this.groupBox1.Controls.Add(this.btnTrack);
-            this.groupBox1.Controls.Add(this.btnSectionMasterManual);
-            this.groupBox1.Controls.Add(this.btnSectionMasterAuto);
-            this.groupBox1.Controls.Add(this.btnAutoYouTurn);
-            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.ForeColor = System.Drawing.Color.Black;
-            this.groupBox1.Location = new System.Drawing.Point(19, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(144, 646);
-            this.groupBox1.TabIndex = 552;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Select Buttons";
+            this.groupBoxSelectButtons.Controls.Add(this.btnAutoSteer);
+            this.groupBoxSelectButtons.Controls.Add(this.btnContour);
+            this.groupBoxSelectButtons.Controls.Add(this.btnCycleLines);
+            this.groupBoxSelectButtons.Controls.Add(this.btnCycleLinesBk);
+            this.groupBoxSelectButtons.Controls.Add(this.btnTrack);
+            this.groupBoxSelectButtons.Controls.Add(this.btnSectionMasterManual);
+            this.groupBoxSelectButtons.Controls.Add(this.btnSectionMasterAuto);
+            this.groupBoxSelectButtons.Controls.Add(this.btnAutoYouTurn);
+            this.groupBoxSelectButtons.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxSelectButtons.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSelectButtons.ForeColor = System.Drawing.Color.Black;
+            this.groupBoxSelectButtons.Location = new System.Drawing.Point(19, 12);
+            this.groupBoxSelectButtons.Name = "groupBoxSelectButtons";
+            this.groupBoxSelectButtons.Size = new System.Drawing.Size(144, 646);
+            this.groupBoxSelectButtons.TabIndex = 552;
+            this.groupBoxSelectButtons.TabStop = false;
+            this.groupBoxSelectButtons.Text = "Select Buttons";
             // 
-            // groupBox2
+            // groupBoxAOGMenu
             // 
-            this.groupBox2.Controls.Add(this.flpRight);
-            this.groupBox2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.ForeColor = System.Drawing.Color.Black;
-            this.groupBox2.Location = new System.Drawing.Point(432, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(136, 646);
-            this.groupBox2.TabIndex = 553;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "AOG Menu";
+            this.groupBoxAOGMenu.Controls.Add(this.flpRight);
+            this.groupBoxAOGMenu.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxAOGMenu.ForeColor = System.Drawing.Color.Black;
+            this.groupBoxAOGMenu.Location = new System.Drawing.Point(432, 12);
+            this.groupBoxAOGMenu.Name = "groupBoxAOGMenu";
+            this.groupBoxAOGMenu.Size = new System.Drawing.Size(136, 646);
+            this.groupBoxAOGMenu.TabIndex = 553;
+            this.groupBoxAOGMenu.TabStop = false;
+            this.groupBoxAOGMenu.Text = "AOG Menu";
             // 
-            // label15
+            // labelButtonArrangeOne
             // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label15.BackColor = System.Drawing.Color.Transparent;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.Black;
-            this.label15.Location = new System.Drawing.Point(186, 53);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(230, 173);
-            this.label15.TabIndex = 554;
-            this.label15.Text = "Touch the buttons on the left side you want to appear in the Menu (The right side" +
+            this.labelButtonArrangeOne.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelButtonArrangeOne.BackColor = System.Drawing.Color.Transparent;
+            this.labelButtonArrangeOne.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelButtonArrangeOne.ForeColor = System.Drawing.Color.Black;
+            this.labelButtonArrangeOne.Location = new System.Drawing.Point(186, 53);
+            this.labelButtonArrangeOne.Name = "labelButtonArrangeOne";
+            this.labelButtonArrangeOne.Size = new System.Drawing.Size(230, 219);
+            this.labelButtonArrangeOne.TabIndex = 554;
+            this.labelButtonArrangeOne.Text = "Touch the buttons on the left side you want to appear in the Menu (The right side" +
     "). \r\n\r\nThe order you push them will be the order they appear on the menu from bo" +
     "ttom up.";
             // 
@@ -494,18 +494,18 @@
             this.btnTest.UseVisualStyleBackColor = false;
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
-            // label1
+            // labelPreview
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(651, 209);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 26);
-            this.label1.TabIndex = 556;
-            this.label1.Text = "Preview";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelPreview.BackColor = System.Drawing.Color.Transparent;
+            this.labelPreview.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPreview.ForeColor = System.Drawing.Color.Black;
+            this.labelPreview.Location = new System.Drawing.Point(651, 209);
+            this.labelPreview.Name = "labelPreview";
+            this.labelPreview.Size = new System.Drawing.Size(82, 26);
+            this.labelPreview.TabIndex = 556;
+            this.labelPreview.Text = "Preview";
+            this.labelPreview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormButtonsRightPanel
             // 
@@ -514,15 +514,15 @@
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(741, 664);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelPreview);
             this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnAll);
+            this.Controls.Add(this.labelButtonArrangeOne);
+            this.Controls.Add(this.groupBoxAOGMenu);
+            this.Controls.Add(this.groupBoxSelectButtons);
+            this.Controls.Add(this.buttonLabelDefault);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
-            this.Controls.Add(this.btnReset);
+            this.Controls.Add(this.buttonLabelReset);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FormButtonsRightPanel";
             this.ShowInTaskbar = false;
@@ -530,9 +530,9 @@
             this.Text = "Button Arrange";
             this.Load += new System.EventHandler(this.FormToolPivot_Load);
             this.flpRight.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBoxSelectButtons.ResumeLayout(false);
+            this.groupBoxAOGMenu.ResumeLayout(false);
+            this.groupBoxAOGMenu.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -548,7 +548,7 @@
         public System.Windows.Forms.Button btnCycleLinesBk;
         public System.Windows.Forms.Button btnCycleLines;
         public System.Windows.Forms.Button btnContour;
-        public System.Windows.Forms.Button btnReset;
+        public System.Windows.Forms.Button buttonLabelReset;
         public System.Windows.Forms.Button track;
         public System.Windows.Forms.Button contour;
         public System.Windows.Forms.Button skipNext;
@@ -559,11 +559,11 @@
         public System.Windows.Forms.Button autoSteer;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
-        public System.Windows.Forms.Button btnAll;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label15;
+        public System.Windows.Forms.Button buttonLabelDefault;
+        private System.Windows.Forms.GroupBox groupBoxSelectButtons;
+        private System.Windows.Forms.GroupBox groupBoxAOGMenu;
+        private System.Windows.Forms.Label labelButtonArrangeOne;
         private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelPreview;
     }
 }

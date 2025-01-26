@@ -46,7 +46,7 @@
             this.lblHeading = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelDistanceToFlag = new System.Windows.Forms.Label();
             this.lblDistanceToFlag = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -277,17 +277,17 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // label2
+            // labelDistanceToFlag
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(29, 143);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 19);
-            this.label2.TabIndex = 215;
-            this.label2.Text = "Distance To Flag:";
+            this.labelDistanceToFlag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelDistanceToFlag.AutoSize = true;
+            this.labelDistanceToFlag.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDistanceToFlag.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelDistanceToFlag.Location = new System.Drawing.Point(29, 143);
+            this.labelDistanceToFlag.Name = "labelDistanceToFlag";
+            this.labelDistanceToFlag.Size = new System.Drawing.Size(132, 19);
+            this.labelDistanceToFlag.TabIndex = 215;
+            this.labelDistanceToFlag.Text = "Distance To Flag:";
             // 
             // lblDistanceToFlag
             // 
@@ -309,7 +309,7 @@
             this.ClientSize = new System.Drawing.Size(300, 318);
             this.ControlBox = false;
             this.Controls.Add(this.lblDistanceToFlag);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelDistanceToFlag);
             this.Controls.Add(this.lblHeading);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnDeleteFlag);
@@ -356,7 +356,7 @@
         private System.Windows.Forms.Label lblHeading;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelDistanceToFlag;
         private System.Windows.Forms.Label lblDistanceToFlag;
     }
 }

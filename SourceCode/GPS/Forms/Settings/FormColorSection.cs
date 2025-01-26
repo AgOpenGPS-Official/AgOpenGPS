@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
@@ -26,7 +27,13 @@ namespace AgOpenGPS
             InitializeComponent();
 
             //Language keys
-            //this.Text = gStr.gsColors;
+            this.Text = gStr.gsSectionColorsSet;
+            groupBoxSelectPreset.Text = gStr.gsSelectPreset;
+            labelSectionColor.Text = gStr.gsSections + " " + gStr.gsColors;
+            chkUse.Text = gStr.gsEditColor;
+            cboxIsMulti.Text = gStr.gsMultiColorSections;
+
+
 
             string[] words = Properties.Settings.Default.setDisplay_customSectionColors.Split(',');
             for (int i = 0; i < 16; i++)
@@ -167,7 +174,7 @@ namespace AgOpenGPS
         {
             if (chkUse.Checked)
             {
-                groupBox1.Text = "Select Square Below And Pick New Color";
+                groupBoxSelectPreset.Text = "Select Square Below And Pick New Color";
                 chkUse.Image = Properties.Resources.ColorUnlocked;
                 isChange = true;
                 isUse = false;
@@ -176,7 +183,7 @@ namespace AgOpenGPS
             {
                 isChange = false;
                 isUse = false;
-                groupBox1.Text = "Select Preset Color";
+                groupBoxSelectPreset.Text = "Select Preset Color";
                 chkUse.Image = Properties.Resources.ColorLocked;
             }
         }

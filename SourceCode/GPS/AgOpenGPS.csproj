@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Control.Draggable" Version="1.0.5049.269" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0" />
     <PackageReference Include="OpenTK.GLControl" Version="3.3.3" />
     <PackageReference Include="Resource.Embedder" Version="2.2.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
@@ -51,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
+    <ProjectReference Include="..\AgOpenGPS.Core\AgOpenGPS.Core.csproj" />
     <ProjectReference Include="..\Keypad\Keypad.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -201,11 +201,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Culture/gStr.af.resx">
@@ -292,11 +287,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 </Project>

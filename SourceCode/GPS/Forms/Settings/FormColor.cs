@@ -22,10 +22,15 @@ namespace AgOpenGPS
         {
             //get copy of the calling main form
             mf = callingForm as FormGPS;
-            InitializeComponent();
+            InitializeComponent();  
 
             //Language keys
             this.Text = gStr.gsColors;
+            labelCameraBehavior.Text = gStr.gsCameraBehavior;
+            labelReset.Text = gStr.gsReset;
+            labelSmooth.Text = gStr.gsSmooth;
+            labelDirect.Text = gStr.gsDirect; 
+            
         }
 
         private void FormDisplaySettings_Load(object sender, EventArgs e)

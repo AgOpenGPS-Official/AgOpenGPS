@@ -45,6 +45,8 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnDeleteLast = new System.Windows.Forms.Button();
             this.nudOffset = new AgOpenGPS.NudlessNumericUpDown();
+            this.lblPoints = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudOffset)).BeginInit();
             this.SuspendLayout();
             // 
@@ -156,7 +158,7 @@
             this.btnAntennaTool.FlatAppearance.BorderSize = 0;
             this.btnAntennaTool.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAntennaTool.Image = global::AgOpenGPS.Properties.Resources.BoundaryRecordTool;
-            this.btnAntennaTool.Location = new System.Drawing.Point(13, 172);
+            this.btnAntennaTool.Location = new System.Drawing.Point(16, 291);
             this.btnAntennaTool.Name = "btnAntennaTool";
             this.btnAntennaTool.Size = new System.Drawing.Size(80, 64);
             this.btnAntennaTool.TabIndex = 155;
@@ -185,7 +187,7 @@
             this.btnLeftRight.FlatAppearance.BorderSize = 0;
             this.btnLeftRight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLeftRight.Image = global::AgOpenGPS.Properties.Resources.BoundaryLeft;
-            this.btnLeftRight.Location = new System.Drawing.Point(5, 64);
+            this.btnLeftRight.Location = new System.Drawing.Point(5, 175);
             this.btnLeftRight.Name = "btnLeftRight";
             this.btnLeftRight.Size = new System.Drawing.Size(80, 64);
             this.btnLeftRight.TabIndex = 68;
@@ -231,7 +233,7 @@
             this.btnRestart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRestart.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnRestart.Image = global::AgOpenGPS.Properties.Resources.Trash;
-            this.btnRestart.Location = new System.Drawing.Point(18, 292);
+            this.btnRestart.Location = new System.Drawing.Point(21, 77);
             this.btnRestart.Name = "btnRestart";
             this.btnRestart.Size = new System.Drawing.Size(52, 52);
             this.btnRestart.TabIndex = 147;
@@ -277,6 +279,31 @@
             0});
             this.nudOffset.Click += new System.EventHandler(this.nudOffset_Click);
             // 
+            // lblPoints
+            // 
+            this.lblPoints.AutoSize = true;
+            this.lblPoints.BackColor = System.Drawing.Color.Transparent;
+            this.lblPoints.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPoints.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblPoints.Location = new System.Drawing.Point(62, 370);
+            this.lblPoints.Name = "lblPoints";
+            this.lblPoints.Size = new System.Drawing.Size(46, 23);
+            this.lblPoints.TabIndex = 469;
+            this.lblPoints.Text = "999";
+            this.lblPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label2.Location = new System.Drawing.Point(1, 369);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(66, 23);
+            this.label2.TabIndex = 470;
+            this.label2.Text = "Points:";
+            // 
             // FormBoundaryPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -284,6 +311,8 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(249, 483);
             this.ControlBox = false;
+            this.Controls.Add(this.lblPoints);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cboxIsRecBoundaryWhenSectionOn);
             this.Controls.Add(this.btnAntennaTool);
             this.Controls.Add(this.label5);
@@ -336,5 +365,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAntennaTool;
         private System.Windows.Forms.CheckBox cboxIsRecBoundaryWhenSectionOn;
+        private System.Windows.Forms.Label lblPoints;
+        private System.Windows.Forms.Label label2;
     }
 }

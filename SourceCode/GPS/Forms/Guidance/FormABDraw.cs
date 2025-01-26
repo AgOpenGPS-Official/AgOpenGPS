@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -316,7 +317,7 @@ namespace AgOpenGPS
 
         private void nudDistance_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
+            ((NudlessNumericUpDown)sender).ShowKeypad(this);
             btnSelectCurve.Focus();
         }
 
@@ -363,7 +364,7 @@ namespace AgOpenGPS
 
             if (mf.isKeyboardOn)
             {
-                mf.KeyboardToText((System.Windows.Forms.TextBox)sender, this);
+                ((System.Windows.Forms.TextBox)sender).ShowKeyboard(this);
                 
                 if (indx > -1)
                     gTemp[indx].name = tboxNameCurve.Text.Trim();

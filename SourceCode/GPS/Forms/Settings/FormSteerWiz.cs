@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -246,7 +247,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setIMU_invertRoll = mf.ahrs.isRollInvert;
 
             //save current vehicle
-            RegistrySettings.Save();
+            Properties.Settings.Default.Save();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -595,7 +596,7 @@ namespace AgOpenGPS
             counter251 = 2;
 
             //save current vehicle
-            RegistrySettings.Save();
+            Properties.Settings.Default.Save();
 
             FormSteer_Load(this, e);
         }
@@ -626,7 +627,7 @@ namespace AgOpenGPS
 
         private void nudMaxCounts_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 if (isWizardStarted)
                 {
@@ -1162,7 +1163,7 @@ namespace AgOpenGPS
 
         private void nudWheelbase_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
                 mf.vehicle.wheelbase = Properties.Settings.Default.setVehicle_wheelbase;
@@ -1172,7 +1173,7 @@ namespace AgOpenGPS
 
         private void nudVehicleTrack_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
                 mf.vehicle.trackWidth = Properties.Settings.Default.setVehicle_trackWidth;
@@ -1183,7 +1184,7 @@ namespace AgOpenGPS
 
         private void nudAntennaPivot_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setVehicle_antennaPivot = (double)nudAntennaPivot.Value * mf.inchOrCm2m;
                 mf.vehicle.antennaPivot = Properties.Settings.Default.setVehicle_antennaPivot;
@@ -1227,7 +1228,7 @@ namespace AgOpenGPS
 
         private void nudAntennaHeight_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setVehicle_antennaHeight = (double)nudAntennaHeight.Value * mf.inchOrCm2m;
                 mf.vehicle.antennaHeight = Properties.Settings.Default.setVehicle_antennaHeight;
@@ -1237,7 +1238,7 @@ namespace AgOpenGPS
 
         private void nudAntennaOffset_Click(object sender, EventArgs e)
         {
-            if (mf.KeypadToNUD((NudlessNumericUpDown)sender, this))
+            if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setVehicle_antennaOffset = (double)nudAntennaOffset.Value * mf.inchOrCm2m;
                 mf.vehicle.antennaOffset = Properties.Settings.Default.setVehicle_antennaOffset;

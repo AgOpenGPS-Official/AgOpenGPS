@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSerialMonitor));
             this.btnSerialCancel = new System.Windows.Forms.Button();
             this.cboxPort = new System.Windows.Forms.ComboBox();
             this.cboxBaud = new System.Windows.Forms.ComboBox();
@@ -122,7 +121,7 @@
             this.btnCloseSerial.FlatAppearance.BorderSize = 0;
             this.btnCloseSerial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseSerial.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseSerial.Image = ((System.Drawing.Image)(resources.GetObject("btnCloseSerial.Image")));
+            this.btnCloseSerial.Image = global::AgIO.Properties.Resources.USB_Disconnect;
             this.btnCloseSerial.Location = new System.Drawing.Point(467, 6);
             this.btnCloseSerial.Name = "btnCloseSerial";
             this.btnCloseSerial.Size = new System.Drawing.Size(56, 58);
@@ -136,7 +135,7 @@
             this.btnOpenSerial.FlatAppearance.BorderSize = 0;
             this.btnOpenSerial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenSerial.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenSerial.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenSerial.Image")));
+            this.btnOpenSerial.Image = global::AgIO.Properties.Resources.USB_Connect;
             this.btnOpenSerial.Location = new System.Drawing.Point(380, 6);
             this.btnOpenSerial.Name = "btnOpenSerial";
             this.btnOpenSerial.Size = new System.Drawing.Size(58, 58);

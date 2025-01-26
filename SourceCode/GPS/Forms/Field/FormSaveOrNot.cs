@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using AgOpenGPS.Culture;    
 
 namespace AgOpenGPS
 {
@@ -13,13 +14,20 @@ namespace AgOpenGPS
         public FormSaveOrNot(bool closing)
         {
             InitializeComponent();
+
+            //translations
+            labelExit.Text = gStr.gsExit;
+            labelShutdown.Text = gStr.gsShutdown;
+            labelCancel.Text = gStr.gsCancel;
+            labelExitToWindows.Text = gStr.gsExitToWindows;
+            labelShutdownIn.Text = gStr.gsShutdownIn;
         }
 
         private void FormSaveOrNot_Load(object sender, EventArgs e)
         {
-            lblExit.Visible = !Properties.Settings.Default.setWindow_isShutdownComputer;
+            labelExitToWindows.Visible = !Properties.Settings.Default.setWindow_isShutdownComputer;
             lblExitCtr.Visible = !Properties.Settings.Default.setWindow_isShutdownComputer;
-            lblShut.Visible = Properties.Settings.Default.setWindow_isShutdownComputer;
+            labelShutdownIn.Visible = Properties.Settings.Default.setWindow_isShutdownComputer;
             lblShutCtr.Visible = Properties.Settings.Default.setWindow_isShutdownComputer;
 
             lblExitCtr.Text = countExit.ToString();

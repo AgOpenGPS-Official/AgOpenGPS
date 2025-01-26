@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
@@ -84,7 +85,7 @@ namespace AgOpenGPS
 
         private void nudSnapDistance_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
+            ((NudlessNumericUpDown)sender).ShowKeypad(this);
             snapAdj = (double)nudSnapDistance.Value * mf.inchOrCm2m;
             Properties.Settings.Default.setAS_snapDistance = snapAdj*100;
             Properties.Settings.Default.Save();

@@ -93,9 +93,9 @@ namespace AgOpenGPS
             label126.Text = Properties.Settings.Default.setTool_trailingToolToPivotLength.ToString();
             label128.Text = Properties.Settings.Default.setVehicle_hitchLength.ToString();
             label130.Text = Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead.ToString();
-            label132.Text = Properties.Settings.Default.setVehicle_isPivotBehindAntenna.ToString();
+            label132.Text = "*****";
             label134.Text = Properties.Settings.Default.setVehicle_isStanleyUsed.ToString();
-            label136.Text = Properties.Settings.Default.setVehicle_isSteerAxleAhead.ToString();
+            label136.Text = "*****";
             label138.Text = Properties.Settings.Default.setVehicle_maxAngularVelocity.ToString();
             label140.Text = Properties.Settings.Default.set_youTurnRadius.ToString();
             label142.Text = Properties.Settings.Default.setVehicle_numSections.ToString();

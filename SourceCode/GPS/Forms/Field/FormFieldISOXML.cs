@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -38,11 +39,11 @@ namespace AgOpenGPS
             tboxFieldName.Text = "";
             btnBuildFields.Enabled = false;
 
-            label1.Text = gStr.gsEditFieldName;
+            labelFieldname.Text = gStr.gsEditFieldName;
 
-            this.Text = gStr.gsCreateNewField;
+            this.Text = gStr.gsCreateNewFromIsoXML;
 
-            lblField.Text = gStr.gsBasedOnField;
+            labelField.Text = gStr.gsBasedOnField;
 
             tree.Nodes?.Clear();
 
@@ -175,7 +176,7 @@ namespace AgOpenGPS
             if (tree.SelectedNode.Parent == null)
             {
                 idxFieldSelected = tree.SelectedNode.Index;
-                lblField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
+                labelField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
                 tboxFieldName.Text = pfd[idxFieldSelected].Attributes["C"].Value;
             }
 
@@ -183,7 +184,7 @@ namespace AgOpenGPS
             else
             {
                 idxFieldSelected = tree.SelectedNode.Parent.Index;
-                lblField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
+                labelField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
                 tboxFieldName.Text = pfd[idxFieldSelected].Attributes["C"].Value;
             }
 
@@ -860,7 +861,7 @@ namespace AgOpenGPS
         {
             if (mf.isKeyboardOn)
             {
-                mf.KeyboardToText((System.Windows.Forms.TextBox)sender, this);
+                ((TextBox)sender).ShowKeyboard(this);
                 btnSerialCancel.Focus();
             }
         }

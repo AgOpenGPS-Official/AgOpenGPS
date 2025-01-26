@@ -1,9 +1,6 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Properties;
-using Microsoft.Win32;
 using System;
-using System.Configuration;
-using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -16,17 +13,17 @@ namespace AgOpenGPS
         /// </summary>
         private static readonly Mutex Mutex = new Mutex(true, "{516-0AC5-B9A1-55fd-A8CE-72F04E6BDE8F}");
 
+        public static readonly string Version = Assembly.GetEntryAssembly().GetName().Version.ToString(3); // Major.Minor.Patch
+        public static readonly string SemVer = Application.ProductVersion.Split('+').First();
+        public static readonly bool IsPreRelease = Application.ProductVersion.Contains('-');
+        public static readonly bool IsDevelopVersion = Application.ProductVersion == "1.0.0.0";
+
         [STAThread]
         private static void Main()
         {
-            //reset to default Vehicle and save
-            Settings.Default.Reset();
-            Settings.Default.Save();
-            
-            RegistrySettings.Load();
-
             if (Mutex.WaitOne(TimeSpan.Zero, true))
             {
+                RegistrySettings.Load();
                 Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
                 Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
                 Application.EnableVisualStyles();
@@ -40,17 +37,3 @@ namespace AgOpenGPS
         }
     }
 }
-
-////check for corrupt settings file
-//try
-//{
-//    Settings.Default.setF_culture = regKey.GetValue("Language").ToString();
-//}
-//catch (System.Configuration.ConfigurationErrorsException ex)
-//{
-//    // Corrupted XML! Delete the file, the user can just reload when this fails to appear. No need to worry them
-//    MessageBoxButtons btns = MessageBoxButtons.OK;
-//    System.Windows.Forms.MessageBox.Show("Error detected in config file - fixing it now", "Problem!", btns);
-//    string filename = ((ex.InnerException as System.Configuration.ConfigurationErrorsException)?.Filename) as string;
-//    System.IO.File.Delete(filename);
-//}

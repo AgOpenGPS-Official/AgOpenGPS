@@ -32,33 +32,33 @@
             this.oglSelf = new OpenTK.GLControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.cboxPointDistance = new System.Windows.Forms.ComboBox();
-            this.lblReducedPoints = new System.Windows.Forms.Label();
+            this.labelReducedPoints = new System.Windows.Forms.Label();
             this.cboxSmooth = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelSpacing = new System.Windows.Forms.Label();
+            this.labelSmooth = new System.Windows.Forms.Label();
             this.cboxIsZoom = new System.Windows.Forms.CheckBox();
             this.btnCenterOGL = new System.Windows.Forms.Button();
             this.btnSlice = new System.Windows.Forms.Button();
             this.btnMakeBoundary = new System.Windows.Forms.Button();
             this.btnStartStop = new System.Windows.Forms.Button();
-            this.btnResetReduce = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.btnCancelTouch = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnZoomOut = new System.Windows.Forms.Button();
             this.btnZoomIn = new System.Windows.Forms.Button();
             this.tlp1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnAddPoints = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblPointToProcess = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lblI = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.btnMoveDn = new System.Windows.Forms.Button();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveLeft = new System.Windows.Forms.Button();
             this.btnMoveRight = new System.Windows.Forms.Button();
+            this.btnMoveDn = new System.Windows.Forms.Button();
+            this.labelCreate = new System.Windows.Forms.Label();
+            this.btnAddPoints = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelPleaseWait = new System.Windows.Forms.Label();
+            this.lblPointToProcess = new System.Windows.Forms.Label();
+            this.labelPointsToProcess = new System.Windows.Forms.Label();
+            this.lblI = new System.Windows.Forms.Label();
+            this.labelPoints = new System.Windows.Forms.Label();
             this.tlp1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -113,19 +113,19 @@
             this.cboxPointDistance.TabIndex = 541;
             this.cboxPointDistance.SelectedIndexChanged += new System.EventHandler(this.cboxPointDistance_SelectedIndexChanged);
             // 
-            // lblReducedPoints
+            // labelReducedPoints
             // 
-            this.lblReducedPoints.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.tlp1.SetColumnSpan(this.lblReducedPoints, 3);
-            this.lblReducedPoints.Enabled = false;
-            this.lblReducedPoints.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReducedPoints.ForeColor = System.Drawing.Color.Black;
-            this.lblReducedPoints.Location = new System.Drawing.Point(166, 92);
-            this.lblReducedPoints.Name = "lblReducedPoints";
-            this.lblReducedPoints.Size = new System.Drawing.Size(120, 25);
-            this.lblReducedPoints.TabIndex = 542;
-            this.lblReducedPoints.Text = "***";
-            this.lblReducedPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelReducedPoints.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.tlp1.SetColumnSpan(this.labelReducedPoints, 3);
+            this.labelReducedPoints.Enabled = false;
+            this.labelReducedPoints.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelReducedPoints.ForeColor = System.Drawing.Color.Black;
+            this.labelReducedPoints.Location = new System.Drawing.Point(166, 92);
+            this.labelReducedPoints.Name = "labelReducedPoints";
+            this.labelReducedPoints.Size = new System.Drawing.Size(120, 25);
+            this.labelReducedPoints.TabIndex = 542;
+            this.labelReducedPoints.Text = "***";
+            this.labelReducedPoints.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cboxSmooth
             // 
@@ -152,33 +152,33 @@
             this.cboxSmooth.TabIndex = 547;
             this.cboxSmooth.SelectedIndexChanged += new System.EventHandler(this.cboxSmooth_SelectedIndexChanged);
             // 
-            // label1
+            // labelSpacing
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.tlp1.SetColumnSpan(this.label1, 3);
-            this.label1.Enabled = false;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(12, 92);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(130, 25);
-            this.label1.TabIndex = 562;
-            this.label1.Text = "Spacing (m)";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelSpacing.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.tlp1.SetColumnSpan(this.labelSpacing, 3);
+            this.labelSpacing.Enabled = false;
+            this.labelSpacing.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSpacing.ForeColor = System.Drawing.Color.Black;
+            this.labelSpacing.Location = new System.Drawing.Point(12, 92);
+            this.labelSpacing.Name = "labelSpacing";
+            this.labelSpacing.Size = new System.Drawing.Size(130, 25);
+            this.labelSpacing.TabIndex = 562;
+            this.labelSpacing.Text = "Spacing (m)";
+            this.labelSpacing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // labelSmooth
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label6.AutoSize = true;
-            this.tlp1.SetColumnSpan(this.label6, 3);
-            this.label6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(41, 210);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 19);
-            this.label6.TabIndex = 569;
-            this.label6.Text = "Smooth";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelSmooth.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.labelSmooth.AutoSize = true;
+            this.tlp1.SetColumnSpan(this.labelSmooth, 3);
+            this.labelSmooth.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSmooth.ForeColor = System.Drawing.Color.Black;
+            this.labelSmooth.Location = new System.Drawing.Point(41, 210);
+            this.labelSmooth.Name = "labelSmooth";
+            this.labelSmooth.Size = new System.Drawing.Size(71, 19);
+            this.labelSmooth.TabIndex = 569;
+            this.labelSmooth.Text = "Smooth";
+            this.labelSmooth.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cboxIsZoom
             // 
@@ -280,28 +280,28 @@
             this.btnStartStop.UseVisualStyleBackColor = false;
             this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
             // 
-            // btnResetReduce
+            // btnStart
             // 
-            this.btnResetReduce.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnResetReduce.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnResetReduce.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tlp1.SetColumnSpan(this.btnResetReduce, 3);
-            this.btnResetReduce.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnResetReduce.FlatAppearance.BorderSize = 0;
-            this.btnResetReduce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResetReduce.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnResetReduce.Image = global::AgOpenGPS.Properties.Resources.SwitchOn;
-            this.btnResetReduce.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnResetReduce.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnResetReduce.Location = new System.Drawing.Point(30, 4);
-            this.btnResetReduce.Margin = new System.Windows.Forms.Padding(0);
-            this.btnResetReduce.Name = "btnResetReduce";
-            this.btnResetReduce.Size = new System.Drawing.Size(93, 81);
-            this.btnResetReduce.TabIndex = 540;
-            this.btnResetReduce.Text = "Start";
-            this.btnResetReduce.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnResetReduce.UseVisualStyleBackColor = false;
-            this.btnResetReduce.Click += new System.EventHandler(this.btnResetReduce_Click);
+            this.btnStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnStart.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tlp1.SetColumnSpan(this.btnStart, 3);
+            this.btnStart.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnStart.FlatAppearance.BorderSize = 0;
+            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStart.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.btnStart.Image = global::AgOpenGPS.Properties.Resources.SwitchOn;
+            this.btnStart.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnStart.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnStart.Location = new System.Drawing.Point(30, 4);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(0);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(93, 81);
+            this.btnStart.TabIndex = 540;
+            this.btnStart.Text = "Start";
+            this.btnStart.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnStart.UseVisualStyleBackColor = false;
+            this.btnStart.Click += new System.EventHandler(this.btnResetReduce_Click);
             // 
             // btnCancelTouch
             // 
@@ -393,19 +393,19 @@
             this.tlp1.Controls.Add(this.btnMoveLeft, 3, 7);
             this.tlp1.Controls.Add(this.btnMoveRight, 5, 7);
             this.tlp1.Controls.Add(this.btnMoveDn, 0, 7);
-            this.tlp1.Controls.Add(this.label6, 0, 3);
-            this.tlp1.Controls.Add(this.btnResetReduce, 0, 0);
+            this.tlp1.Controls.Add(this.labelSmooth, 0, 3);
+            this.tlp1.Controls.Add(this.btnStart, 0, 0);
             this.tlp1.Controls.Add(this.cboxPointDistance, 0, 2);
             this.tlp1.Controls.Add(this.btnCancelTouch, 3, 6);
             this.tlp1.Controls.Add(this.btnSlice, 3, 5);
             this.tlp1.Controls.Add(this.btnCenterOGL, 0, 6);
             this.tlp1.Controls.Add(this.btnStartStop, 3, 2);
-            this.tlp1.Controls.Add(this.label1, 0, 1);
-            this.tlp1.Controls.Add(this.lblReducedPoints, 3, 1);
+            this.tlp1.Controls.Add(this.labelSpacing, 0, 1);
+            this.tlp1.Controls.Add(this.labelReducedPoints, 3, 1);
             this.tlp1.Controls.Add(this.btnMakeBoundary, 3, 4);
             this.tlp1.Controls.Add(this.cboxSmooth, 0, 4);
             this.tlp1.Controls.Add(this.cboxIsZoom, 0, 5);
-            this.tlp1.Controls.Add(this.label2, 3, 3);
+            this.tlp1.Controls.Add(this.labelCreate, 3, 3);
             this.tlp1.Controls.Add(this.btnAddPoints, 3, 0);
             this.tlp1.Controls.Add(this.btnZoomOut, 0, 8);
             this.tlp1.Controls.Add(this.btnZoomIn, 2, 8);
@@ -425,126 +425,6 @@
             this.tlp1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlp1.Size = new System.Drawing.Size(299, 700);
             this.tlp1.TabIndex = 572;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label2.AutoSize = true;
-            this.tlp1.SetColumnSpan(this.label2, 3);
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(194, 210);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 19);
-            this.label2.TabIndex = 572;
-            this.label2.Text = "Create";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnAddPoints
-            // 
-            this.btnAddPoints.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnAddPoints.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnAddPoints.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.tlp1.SetColumnSpan(this.btnAddPoints, 3);
-            this.btnAddPoints.Enabled = false;
-            this.btnAddPoints.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnAddPoints.FlatAppearance.BorderSize = 0;
-            this.btnAddPoints.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddPoints.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnAddPoints.Image = global::AgOpenGPS.Properties.Resources.PointAdd;
-            this.btnAddPoints.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnAddPoints.Location = new System.Drawing.Point(189, 11);
-            this.btnAddPoints.Name = "btnAddPoints";
-            this.btnAddPoints.Size = new System.Drawing.Size(74, 68);
-            this.btnAddPoints.TabIndex = 574;
-            this.btnAddPoints.UseVisualStyleBackColor = false;
-            this.btnAddPoints.Click += new System.EventHandler(this.btnAddPoints_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.MistyRose;
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.lblPointToProcess);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.lblI);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(137, 181);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(445, 305);
-            this.panel1.TabIndex = 573;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(159, 71);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(161, 25);
-            this.label4.TabIndex = 529;
-            this.label4.Text = "Please Wait";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblPointToProcess
-            // 
-            this.lblPointToProcess.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPointToProcess.ForeColor = System.Drawing.Color.Black;
-            this.lblPointToProcess.Location = new System.Drawing.Point(260, 152);
-            this.lblPointToProcess.Name = "lblPointToProcess";
-            this.lblPointToProcess.Size = new System.Drawing.Size(98, 25);
-            this.lblPointToProcess.TabIndex = 527;
-            this.lblPointToProcess.Text = "100,000";
-            this.lblPointToProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label3
-            // 
-            this.label3.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(84, 151);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(180, 25);
-            this.label3.TabIndex = 526;
-            this.label3.Text = "Points to Process: ";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblI
-            // 
-            this.lblI.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblI.ForeColor = System.Drawing.Color.Black;
-            this.lblI.Location = new System.Drawing.Point(205, 202);
-            this.lblI.Name = "lblI";
-            this.lblI.Size = new System.Drawing.Size(139, 25);
-            this.lblI.TabIndex = 525;
-            this.lblI.Text = "Points";
-            this.lblI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(132, 201);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(82, 25);
-            this.label5.TabIndex = 528;
-            this.label5.Text = "Points:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btnMoveDn
-            // 
-            this.btnMoveDn.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnMoveDn.BackColor = System.Drawing.Color.White;
-            this.btnMoveDn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnMoveDn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnMoveDn.FlatAppearance.BorderSize = 0;
-            this.btnMoveDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMoveDn.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMoveDn.Image = global::AgOpenGPS.Properties.Resources.DnArrow64;
-            this.btnMoveDn.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnMoveDn.Location = new System.Drawing.Point(11, 544);
-            this.btnMoveDn.Name = "btnMoveDn";
-            this.btnMoveDn.Size = new System.Drawing.Size(55, 60);
-            this.btnMoveDn.TabIndex = 574;
-            this.btnMoveDn.UseVisualStyleBackColor = false;
-            this.btnMoveDn.Click += new System.EventHandler(this.btnMoveDn_Click);
             // 
             // btnMoveUp
             // 
@@ -600,12 +480,132 @@
             this.btnMoveRight.UseVisualStyleBackColor = false;
             this.btnMoveRight.Click += new System.EventHandler(this.btnMoveRight_Click);
             // 
+            // btnMoveDn
+            // 
+            this.btnMoveDn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnMoveDn.BackColor = System.Drawing.Color.White;
+            this.btnMoveDn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnMoveDn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnMoveDn.FlatAppearance.BorderSize = 0;
+            this.btnMoveDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMoveDn.Font = new System.Drawing.Font("Tahoma", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMoveDn.Image = global::AgOpenGPS.Properties.Resources.DnArrow64;
+            this.btnMoveDn.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnMoveDn.Location = new System.Drawing.Point(11, 544);
+            this.btnMoveDn.Name = "btnMoveDn";
+            this.btnMoveDn.Size = new System.Drawing.Size(55, 60);
+            this.btnMoveDn.TabIndex = 574;
+            this.btnMoveDn.UseVisualStyleBackColor = false;
+            this.btnMoveDn.Click += new System.EventHandler(this.btnMoveDn_Click);
+            // 
+            // labelCreate
+            // 
+            this.labelCreate.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.labelCreate.AutoSize = true;
+            this.tlp1.SetColumnSpan(this.labelCreate, 3);
+            this.labelCreate.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCreate.ForeColor = System.Drawing.Color.Black;
+            this.labelCreate.Location = new System.Drawing.Point(194, 210);
+            this.labelCreate.Name = "labelCreate";
+            this.labelCreate.Size = new System.Drawing.Size(64, 19);
+            this.labelCreate.TabIndex = 572;
+            this.labelCreate.Text = "Create";
+            this.labelCreate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnAddPoints
+            // 
+            this.btnAddPoints.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnAddPoints.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnAddPoints.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tlp1.SetColumnSpan(this.btnAddPoints, 3);
+            this.btnAddPoints.Enabled = false;
+            this.btnAddPoints.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnAddPoints.FlatAppearance.BorderSize = 0;
+            this.btnAddPoints.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddPoints.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.btnAddPoints.Image = global::AgOpenGPS.Properties.Resources.PointAdd;
+            this.btnAddPoints.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnAddPoints.Location = new System.Drawing.Point(189, 11);
+            this.btnAddPoints.Name = "btnAddPoints";
+            this.btnAddPoints.Size = new System.Drawing.Size(74, 68);
+            this.btnAddPoints.TabIndex = 574;
+            this.btnAddPoints.UseVisualStyleBackColor = false;
+            this.btnAddPoints.Click += new System.EventHandler(this.btnAddPoints_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.MistyRose;
+            this.panel1.Controls.Add(this.labelPleaseWait);
+            this.panel1.Controls.Add(this.lblPointToProcess);
+            this.panel1.Controls.Add(this.labelPointsToProcess);
+            this.panel1.Controls.Add(this.lblI);
+            this.panel1.Controls.Add(this.labelPoints);
+            this.panel1.Location = new System.Drawing.Point(137, 181);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(445, 305);
+            this.panel1.TabIndex = 573;
+            // 
+            // labelPleaseWait
+            // 
+            this.labelPleaseWait.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPleaseWait.ForeColor = System.Drawing.Color.Black;
+            this.labelPleaseWait.Location = new System.Drawing.Point(159, 71);
+            this.labelPleaseWait.Name = "labelPleaseWait";
+            this.labelPleaseWait.Size = new System.Drawing.Size(161, 25);
+            this.labelPleaseWait.TabIndex = 529;
+            this.labelPleaseWait.Text = "Please Wait";
+            this.labelPleaseWait.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblPointToProcess
+            // 
+            this.lblPointToProcess.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPointToProcess.ForeColor = System.Drawing.Color.Black;
+            this.lblPointToProcess.Location = new System.Drawing.Point(260, 152);
+            this.lblPointToProcess.Name = "lblPointToProcess";
+            this.lblPointToProcess.Size = new System.Drawing.Size(98, 25);
+            this.lblPointToProcess.TabIndex = 527;
+            this.lblPointToProcess.Text = "100,000";
+            this.lblPointToProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelPointsToProcess
+            // 
+            this.labelPointsToProcess.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPointsToProcess.ForeColor = System.Drawing.Color.Black;
+            this.labelPointsToProcess.Location = new System.Drawing.Point(84, 151);
+            this.labelPointsToProcess.Name = "labelPointsToProcess";
+            this.labelPointsToProcess.Size = new System.Drawing.Size(180, 25);
+            this.labelPointsToProcess.TabIndex = 526;
+            this.labelPointsToProcess.Text = "Points to Process: ";
+            this.labelPointsToProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblI
+            // 
+            this.lblI.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblI.ForeColor = System.Drawing.Color.Black;
+            this.lblI.Location = new System.Drawing.Point(205, 202);
+            this.lblI.Name = "lblI";
+            this.lblI.Size = new System.Drawing.Size(139, 25);
+            this.lblI.TabIndex = 525;
+            this.lblI.Text = "Points";
+            this.lblI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelPoints
+            // 
+            this.labelPoints.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPoints.ForeColor = System.Drawing.Color.Black;
+            this.labelPoints.Location = new System.Drawing.Point(132, 201);
+            this.labelPoints.Name = "labelPoints";
+            this.labelPoints.Size = new System.Drawing.Size(82, 25);
+            this.labelPoints.TabIndex = 528;
+            this.labelPoints.Text = "Points:";
+            this.labelPoints.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormBndTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(1006, 703);
+            this.ClientSize = new System.Drawing.Size(1006, 726);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tlp1);
@@ -636,26 +636,26 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnCancelTouch;
         private System.Windows.Forms.ComboBox cboxPointDistance;
-        private System.Windows.Forms.Button btnResetReduce;
-        private System.Windows.Forms.Label lblReducedPoints;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Label labelReducedPoints;
         private System.Windows.Forms.Button btnStartStop;
         private System.Windows.Forms.Button btnMakeBoundary;
         private System.Windows.Forms.ComboBox cboxSmooth;
         private System.Windows.Forms.Button btnSlice;
         private System.Windows.Forms.Button btnCenterOGL;
         private System.Windows.Forms.CheckBox cboxIsZoom;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelSpacing;
+        private System.Windows.Forms.Label labelSmooth;
         private System.Windows.Forms.Button btnZoomOut;
         private System.Windows.Forms.Button btnZoomIn;
         private System.Windows.Forms.TableLayoutPanel tlp1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelCreate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblI;
         private System.Windows.Forms.Label lblPointToProcess;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelPointsToProcess;
+        private System.Windows.Forms.Label labelPoints;
+        private System.Windows.Forms.Label labelPleaseWait;
         private System.Windows.Forms.Button btnAddPoints;
         private System.Windows.Forms.Button btnMoveDn;
         private System.Windows.Forms.Button btnMoveUp;

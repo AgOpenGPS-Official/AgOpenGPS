@@ -5,6 +5,7 @@ using System;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,24 +15,22 @@ namespace AgIO
     {
         private static readonly Mutex Mutex = new Mutex(true, "{8F6F0AC4-B9A1-55fd-A8CF-72F04E6BDE8F}");
 
+        public static readonly string Version = Assembly.GetEntryAssembly().GetName().Version.ToString(3); // Major.Minor.Patch
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main()
         {
-            //reset to Default Profile and save
-            Settings.Default.Reset();
-            Settings.Default.Save();
-
-            Log.EventWriter("Program Started: " + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(RegistrySettings.culture)));
-            Log.EventWriter("AgIO Version: " + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
-
-            //load the profile name and set profile directory
-            RegistrySettings.Load();
-
             if (Mutex.WaitOne(TimeSpan.Zero, true))
             {
+                //load the profile name and set profile directory
+                RegistrySettings.Load();
+
+                Log.EventWriter("Program Started: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
+                Log.EventWriter("AgIO Version: " + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
+
                 Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
                 Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
                 Application.EnableVisualStyles();
@@ -40,7 +39,7 @@ namespace AgIO
             }
         }
     }
-}               
+}
 
 //catch (System.Configuration.ConfigurationErrorsException ex)
 //{

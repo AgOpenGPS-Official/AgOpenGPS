@@ -20,6 +20,12 @@ namespace AgOpenGPS.Forms.Pickers
             mf = callingForm as FormGPS;
 
             InitializeComponent();
+            //translate all the controls
+            this.Text = gStr.gsRecordedPathPicker;
+            buttonOpenExistingLv.Text = gStr.gsUseSelected;
+            labelCancel.Text = gStr.gsCancel;
+            labelDeleteRecord.Text = gStr.gsDelete;
+            labelPathOff.Text = gStr.gsTurnOffRecordedPath;
         }
 
         private void FormRecordPicker_Load(object sender, EventArgs e)

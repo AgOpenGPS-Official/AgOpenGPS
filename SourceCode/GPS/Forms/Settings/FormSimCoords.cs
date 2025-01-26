@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Culture;
+﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
 
@@ -68,7 +69,7 @@ namespace AgOpenGPS
 
         private void nud_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NudlessNumericUpDown)sender, this);
+            ((NudlessNumericUpDown)sender).ShowKeypad(this);
         }
     }
 }

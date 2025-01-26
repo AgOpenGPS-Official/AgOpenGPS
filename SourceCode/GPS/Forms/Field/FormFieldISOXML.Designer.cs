@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFieldISOXML));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelFieldname = new System.Windows.Forms.Label();
             this.btnSerialCancel = new System.Windows.Forms.Button();
-            this.lblField = new System.Windows.Forms.Label();
+            this.labelField = new System.Windows.Forms.Label();
             this.tboxFieldName = new System.Windows.Forms.TextBox();
             this.btnBuildFields = new System.Windows.Forms.Button();
             this.tree = new System.Windows.Forms.TreeView();
@@ -41,17 +40,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // labelFieldname
             // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(6, 54);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(296, 23);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Field Name";
+            this.labelFieldname.BackColor = System.Drawing.Color.Transparent;
+            this.labelFieldname.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFieldname.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelFieldname.Location = new System.Drawing.Point(6, 54);
+            this.labelFieldname.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelFieldname.Name = "labelFieldname";
+            this.labelFieldname.Size = new System.Drawing.Size(296, 23);
+            this.labelFieldname.TabIndex = 4;
+            this.labelFieldname.Text = "Field Name";
             // 
             // btnSerialCancel
             // 
@@ -63,7 +62,7 @@
             this.btnSerialCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSerialCancel.Font = new System.Drawing.Font("Tahoma", 12F);
             this.btnSerialCancel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnSerialCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnSerialCancel.Image")));
+            this.btnSerialCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
             this.btnSerialCancel.Location = new System.Drawing.Point(524, 303);
             this.btnSerialCancel.Name = "btnSerialCancel";
             this.btnSerialCancel.Size = new System.Drawing.Size(83, 79);
@@ -72,15 +71,15 @@
             this.btnSerialCancel.UseVisualStyleBackColor = false;
             this.btnSerialCancel.Click += new System.EventHandler(this.btnSerialCancel_Click);
             // 
-            // lblField
+            // labelField
             // 
-            this.lblField.AutoSize = true;
-            this.lblField.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblField.Location = new System.Drawing.Point(5, 140);
-            this.lblField.Name = "lblField";
-            this.lblField.Size = new System.Drawing.Size(119, 25);
-            this.lblField.TabIndex = 155;
-            this.lblField.Text = "Fieldname";
+            this.labelField.AutoSize = true;
+            this.labelField.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelField.Location = new System.Drawing.Point(5, 140);
+            this.labelField.Name = "labelField";
+            this.labelField.Size = new System.Drawing.Size(119, 25);
+            this.labelField.TabIndex = 155;
+            this.labelField.Text = "Fieldname";
             // 
             // tboxFieldName
             // 
@@ -188,7 +187,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(612, 499);
+            this.ClientSize = new System.Drawing.Size(614, 524);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -197,8 +196,8 @@
             this.Controls.Add(this.tree);
             this.Controls.Add(this.btnBuildFields);
             this.Controls.Add(this.tboxFieldName);
-            this.Controls.Add(this.lblField);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelField);
+            this.Controls.Add(this.labelFieldname);
             this.Controls.Add(this.btnSerialCancel);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -216,8 +215,8 @@
 
         #endregion
         private System.Windows.Forms.Button btnSerialCancel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblField;
+        private System.Windows.Forms.Label labelFieldname;
+        private System.Windows.Forms.Label labelField;
         private System.Windows.Forms.TextBox tboxFieldName;
         private System.Windows.Forms.Button btnBuildFields;
         private System.Windows.Forms.TreeView tree;

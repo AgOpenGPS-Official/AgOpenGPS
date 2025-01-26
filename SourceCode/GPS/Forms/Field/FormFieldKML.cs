@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -23,7 +24,7 @@ namespace AgOpenGPS
 
             InitializeComponent();
 
-            label1.Text = gStr.gsEnterFieldName;
+            labelFieldname.Text = gStr.gsEnterFieldName;
             this.Text = gStr.gsCreateNewField;
         }
 
@@ -70,7 +71,7 @@ namespace AgOpenGPS
         {
             if (mf.isKeyboardOn)
             {
-                mf.KeyboardToText((TextBox)sender, this);
+                ((TextBox)sender).ShowKeyboard(this);
                 btnSerialCancel.Focus();
             }
         }

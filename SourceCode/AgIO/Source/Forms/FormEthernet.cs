@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using AgIO.Controls;
 using AgLibrary.Logging;
 
 namespace AgIO
@@ -42,7 +43,7 @@ namespace AgIO
 
         private void nudFirstIP_Click(object sender, EventArgs e)
         {
-            mf.KeypadToNUD((NumericUpDown)sender, this);
+            ((NumericUpDown)sender).ShowKeypad(this);
         }
 
         private void btnSerialCancel_Click(object sender, EventArgs e)
@@ -64,7 +65,6 @@ namespace AgIO
             mf.YesMessageBox("AgIO will Restart to Enable UDP Networking Features");
             Log.EventWriter("Program Reset: Start Ethernet Selected");
 
-            RegistrySettings.Save();
             Application.Restart();
             Environment.Exit(0);
             Close();

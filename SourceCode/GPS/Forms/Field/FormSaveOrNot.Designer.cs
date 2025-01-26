@@ -33,13 +33,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblExitCtr = new System.Windows.Forms.Label();
-            this.lblExit = new System.Windows.Forms.Label();
+            this.labelExitToWindows = new System.Windows.Forms.Label();
             this.lblShutCtr = new System.Windows.Forms.Label();
-            this.lblShut = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelShutdownIn = new System.Windows.Forms.Label();
+            this.labelShutdown = new System.Windows.Forms.Label();
+            this.labelCancel = new System.Windows.Forms.Label();
             this.btnShutDown = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelExit = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnReturn = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -71,13 +71,13 @@
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel1.BackColor = System.Drawing.Color.AliceBlue;
             this.panel1.Controls.Add(this.lblExitCtr);
-            this.panel1.Controls.Add(this.lblExit);
+            this.panel1.Controls.Add(this.labelExitToWindows);
             this.panel1.Controls.Add(this.lblShutCtr);
-            this.panel1.Controls.Add(this.lblShut);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.labelShutdownIn);
+            this.panel1.Controls.Add(this.labelShutdown);
+            this.panel1.Controls.Add(this.labelCancel);
             this.panel1.Controls.Add(this.btnShutDown);
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.labelExit);
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Controls.Add(this.btnReturn);
             this.panel1.Location = new System.Drawing.Point(21, 18);
@@ -96,16 +96,17 @@
             this.lblExitCtr.TabIndex = 268;
             this.lblExitCtr.Text = "3";
             // 
-            // lblExit
+            // labelExitToWindows
             // 
-            this.lblExit.AutoSize = true;
-            this.lblExit.BackColor = System.Drawing.Color.Transparent;
-            this.lblExit.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblExit.Location = new System.Drawing.Point(569, 145);
-            this.lblExit.Name = "lblExit";
-            this.lblExit.Size = new System.Drawing.Size(196, 25);
-            this.lblExit.TabIndex = 269;
-            this.lblExit.Text = "Exit To Windows:";
+            this.labelExitToWindows.AutoSize = true;
+            this.labelExitToWindows.BackColor = System.Drawing.Color.Transparent;
+            this.labelExitToWindows.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelExitToWindows.Location = new System.Drawing.Point(569, 145);
+            this.labelExitToWindows.Name = "labelExitToWindows";
+            this.labelExitToWindows.Size = new System.Drawing.Size(196, 25);
+            this.labelExitToWindows.TabIndex = 269;
+            this.labelExitToWindows.Text = "Exit To Windows:";
+            this.labelExitToWindows.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblShutCtr
             // 
@@ -118,38 +119,38 @@
             this.lblShutCtr.TabIndex = 266;
             this.lblShutCtr.Text = "10";
             // 
-            // lblShut
+            // labelShutdownIn
             // 
-            this.lblShut.AutoSize = true;
-            this.lblShut.BackColor = System.Drawing.Color.Transparent;
-            this.lblShut.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShut.Location = new System.Drawing.Point(32, 145);
-            this.lblShut.Name = "lblShut";
-            this.lblShut.Size = new System.Drawing.Size(155, 25);
-            this.lblShut.TabIndex = 267;
-            this.lblShut.Text = "Shutdown In:";
+            this.labelShutdownIn.AutoSize = true;
+            this.labelShutdownIn.BackColor = System.Drawing.Color.Transparent;
+            this.labelShutdownIn.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelShutdownIn.Location = new System.Drawing.Point(32, 145);
+            this.labelShutdownIn.Name = "labelShutdownIn";
+            this.labelShutdownIn.Size = new System.Drawing.Size(155, 25);
+            this.labelShutdownIn.TabIndex = 267;
+            this.labelShutdownIn.Text = "Shutdown In:";
             // 
-            // label4
+            // labelShutdown
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(67, 30);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(90, 19);
-            this.label4.TabIndex = 265;
-            this.label4.Text = "Shutdown";
+            this.labelShutdown.AutoSize = true;
+            this.labelShutdown.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelShutdown.ForeColor = System.Drawing.Color.Black;
+            this.labelShutdown.Location = new System.Drawing.Point(67, 30);
+            this.labelShutdown.Name = "labelShutdown";
+            this.labelShutdown.Size = new System.Drawing.Size(90, 19);
+            this.labelShutdown.TabIndex = 265;
+            this.labelShutdown.Text = "Shutdown";
             // 
-            // label5
+            // labelCancel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(357, 30);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 19);
-            this.label5.TabIndex = 262;
-            this.label5.Text = "Cancel";
+            this.labelCancel.AutoSize = true;
+            this.labelCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCancel.ForeColor = System.Drawing.Color.Black;
+            this.labelCancel.Location = new System.Drawing.Point(357, 30);
+            this.labelCancel.Name = "labelCancel";
+            this.labelCancel.Size = new System.Drawing.Size(63, 19);
+            this.labelCancel.TabIndex = 262;
+            this.labelCancel.Text = "Cancel";
             // 
             // btnShutDown
             // 
@@ -166,16 +167,17 @@
             this.btnShutDown.UseVisualStyleBackColor = false;
             this.btnShutDown.Click += new System.EventHandler(this.btnShutDown_Click);
             // 
-            // label3
+            // labelExit
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(653, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 19);
-            this.label3.TabIndex = 260;
-            this.label3.Text = "Exit";
+            this.labelExit.AutoSize = true;
+            this.labelExit.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelExit.ForeColor = System.Drawing.Color.Black;
+            this.labelExit.Location = new System.Drawing.Point(653, 30);
+            this.labelExit.Name = "labelExit";
+            this.labelExit.Size = new System.Drawing.Size(41, 19);
+            this.labelExit.TabIndex = 260;
+            this.labelExit.Text = "Exit";
+            this.labelExit.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // btnOk
             // 
@@ -244,14 +246,14 @@
         private System.Windows.Forms.Button btnReturn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelCancel;
+        private System.Windows.Forms.Label labelExit;
         private System.Windows.Forms.Button btnShutDown;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelShutdown;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblShutCtr;
-        private System.Windows.Forms.Label lblShut;
+        private System.Windows.Forms.Label labelShutdownIn;
         private System.Windows.Forms.Label lblExitCtr;
-        private System.Windows.Forms.Label lblExit;
+        private System.Windows.Forms.Label labelExitToWindows;
     }
 }

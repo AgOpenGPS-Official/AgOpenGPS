@@ -32,7 +32,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.bntOK = new System.Windows.Forms.Button();
             this.cboxIsMulti = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelSectionColor = new System.Windows.Forms.Label();
             this.btnC02 = new System.Windows.Forms.Button();
             this.btnC10 = new System.Windows.Forms.Button();
             this.btnC01 = new System.Windows.Forms.Button();
@@ -66,8 +66,8 @@
             this.cb10 = new System.Windows.Forms.CheckBox();
             this.cb11 = new System.Windows.Forms.CheckBox();
             this.cb09 = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxSelectPreset = new System.Windows.Forms.GroupBox();
+            this.groupBoxSelectPreset.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -110,17 +110,17 @@
             this.cboxIsMulti.UseVisualStyleBackColor = false;
             this.cboxIsMulti.Click += new System.EventHandler(this.cboxIsMulti_Click);
             // 
-            // label1
+            // labelSectionColor
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(373, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 25);
-            this.label1.TabIndex = 467;
-            this.label1.Text = "Section Color";
+            this.labelSectionColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelSectionColor.AutoSize = true;
+            this.labelSectionColor.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSectionColor.ForeColor = System.Drawing.Color.Black;
+            this.labelSectionColor.Location = new System.Drawing.Point(373, 19);
+            this.labelSectionColor.Name = "labelSectionColor";
+            this.labelSectionColor.Size = new System.Drawing.Size(150, 25);
+            this.labelSectionColor.TabIndex = 467;
+            this.labelSectionColor.Text = "Section Color";
             // 
             // btnC02
             // 
@@ -654,32 +654,32 @@
             this.cb09.UseVisualStyleBackColor = true;
             this.cb09.Click += new System.EventHandler(this.cb01_Click);
             // 
-            // groupBox1
+            // groupBoxSelectPreset
             // 
-            this.groupBox1.Controls.Add(this.btnC02);
-            this.groupBox1.Controls.Add(this.btnC10);
-            this.groupBox1.Controls.Add(this.btnC01);
-            this.groupBox1.Controls.Add(this.btnC03);
-            this.groupBox1.Controls.Add(this.btnC09);
-            this.groupBox1.Controls.Add(this.btnC11);
-            this.groupBox1.Controls.Add(this.btnC16);
-            this.groupBox1.Controls.Add(this.btnC04);
-            this.groupBox1.Controls.Add(this.btnC08);
-            this.groupBox1.Controls.Add(this.btnC12);
-            this.groupBox1.Controls.Add(this.btnC15);
-            this.groupBox1.Controls.Add(this.btnC05);
-            this.groupBox1.Controls.Add(this.btnC07);
-            this.groupBox1.Controls.Add(this.btnC13);
-            this.groupBox1.Controls.Add(this.btnC14);
-            this.groupBox1.Controls.Add(this.btnC06);
-            this.groupBox1.Controls.Add(this.chkUse);
-            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 254);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(859, 220);
-            this.groupBox1.TabIndex = 468;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Select Preset Color";
+            this.groupBoxSelectPreset.Controls.Add(this.btnC02);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC10);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC01);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC03);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC09);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC11);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC16);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC04);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC08);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC12);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC15);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC05);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC07);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC13);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC14);
+            this.groupBoxSelectPreset.Controls.Add(this.btnC06);
+            this.groupBoxSelectPreset.Controls.Add(this.chkUse);
+            this.groupBoxSelectPreset.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSelectPreset.Location = new System.Drawing.Point(12, 254);
+            this.groupBoxSelectPreset.Name = "groupBoxSelectPreset";
+            this.groupBoxSelectPreset.Size = new System.Drawing.Size(859, 220);
+            this.groupBoxSelectPreset.TabIndex = 468;
+            this.groupBoxSelectPreset.TabStop = false;
+            this.groupBoxSelectPreset.Text = "Select Preset Color";
             // 
             // FormColorSection
             // 
@@ -706,8 +706,8 @@
             this.Controls.Add(this.cb02);
             this.Controls.Add(this.cb03);
             this.Controls.Add(this.cb01);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.groupBoxSelectPreset);
+            this.Controls.Add(this.labelSectionColor);
             this.Controls.Add(this.cboxIsMulti);
             this.Controls.Add(this.bntOK);
             this.DoubleBuffered = true;
@@ -722,7 +722,7 @@
             this.Text = "Section Color Set";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSectionColor_FormClosing);
             this.Load += new System.EventHandler(this.FormDisplaySettings_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.groupBoxSelectPreset.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -732,7 +732,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button bntOK;
         private System.Windows.Forms.CheckBox cboxIsMulti;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelSectionColor;
         private System.Windows.Forms.Button btnC02;
         private System.Windows.Forms.Button btnC10;
         private System.Windows.Forms.Button btnC01;
@@ -766,6 +766,6 @@
         private System.Windows.Forms.CheckBox cb10;
         private System.Windows.Forms.CheckBox cb11;
         private System.Windows.Forms.CheckBox cb09;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxSelectPreset;
     }
 }

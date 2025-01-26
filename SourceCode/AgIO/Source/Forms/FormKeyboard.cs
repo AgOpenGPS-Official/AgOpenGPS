@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AgIO
@@ -22,7 +23,14 @@ namespace AgIO
             keyboardString.SelectionLength = 0;
             keyboard1.Focus();
 
-            this.Height = 500;
+            if (Thread.CurrentThread.CurrentCulture.Name == "fr")
+            {
+                this.Height = 575;
+            }
+            else
+            {
+                this.Height = 500;
+            }
         }
 
         private void RegisterKeyboard1_ButtonPressed(object sender, KeyPressEventArgs e)

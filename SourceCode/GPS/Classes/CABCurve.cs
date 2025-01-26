@@ -40,6 +40,9 @@ namespace AgOpenGPS
         //the list of points of curve to drive on
         public List<vec3> curList = new List<vec3>();
 
+        //guidelines
+        private List<List<vec3>> guideArr = new List<List<vec3>>();
+
         bool isBusyWorking = false;
 
         public bool isCurveValid;
@@ -188,6 +191,17 @@ namespace AgOpenGPS
                     curList = await Task.Run(() => BuildNewOffsetList(distAway, track));
                     isBusyWorking = false;
                     findGlobalNearestCurvePoint = true;
+
+                    if (mf.isSideGuideLines && mf.camera.camSetDistance > mf.tool.width * -400)
+                    {
+                        //build the list list of guide lines
+                        guideArr = await Task.Run(() => BuildCurveGuidelines(distAway, mf.ABLine.numGuideLines, track));
+                    }
+                    else
+                    {
+                        guideArr?.Clear();
+                    }
+
                 }
             }
         }
@@ -478,6 +492,104 @@ namespace AgOpenGPS
 
             return newCurList;
         }
+
+        private List<List<vec3>> BuildCurveGuidelines(double distAway, int _passes, CTrk track)
+        {
+            // the listlist of all the guidelines
+            List<List<vec3>> newGuideLL = new List<List<vec3>>();
+
+            try
+            {
+                for (int numGuides = -_passes; numGuides <= _passes; numGuides++)
+                {
+                    if (numGuides == 0) continue;
+
+                    //the list of points of curve new list from async
+                    List<vec3> newGuideList = new List<vec3>();
+
+                    newGuideLL.Add(newGuideList);
+
+                    double nextGuideDist = (mf.tool.width - mf.tool.overlap) * numGuides +
+                        (isHeadingSameWay ? -mf.tool.offset : mf.tool.offset) + track.nudgeDistance;
+
+                    //nextGuideDist += (0.5 * (mf.tool.width - mf.tool.overlap));
+
+                    nextGuideDist += distAway;
+
+                    double step = (mf.tool.width - mf.tool.overlap) * 0.48;
+                    if (step > 4) step = 4;
+                    if (step < 1) step = 1;
+
+                    double distSqAway = (nextGuideDist * nextGuideDist) - 0.01;
+
+                    int refCount = track.curvePts.Count;
+                    for (int i = 0; i < refCount; i++)
+                    {
+                        vec3 point = new vec3(
+                        track.curvePts[i].easting + (Math.Sin(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
+                        track.curvePts[i].northing + (Math.Cos(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
+                        track.curvePts[i].heading);
+                        bool add = true;
+
+                        for (int t = 0; t < refCount; t++)
+                        {
+                            double dist = ((point.easting - track.curvePts[t].easting) * (point.easting - track.curvePts[t].easting))
+                                + ((point.northing - track.curvePts[t].northing) * (point.northing - track.curvePts[t].northing));
+                            if (dist < distSqAway)
+                            {
+                                add = false;
+                                break;
+                            }
+                        }
+
+                        if (add)
+                        {
+                            if (newGuideList.Count > 0)
+                            {
+                                double dist = ((point.easting - newGuideList[newGuideList.Count - 1].easting) * (point.easting - newGuideList[newGuideList.Count - 1].easting))
+                                    + ((point.northing - newGuideList[newGuideList.Count - 1].northing) * (point.northing - newGuideList[newGuideList.Count - 1].northing));
+                                if (dist > step)
+                                {
+                                    if (mf.bnd.bndList.Count > 0)
+                                    {
+                                        if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
+                                        {
+                                            newGuideList.Add(point);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        newGuideList.Add(point);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (mf.bnd.bndList.Count > 0)
+                                {
+                                    if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
+                                    {
+                                        newGuideList.Add(point);
+                                    }
+                                }
+                                else
+                                {
+                                    newGuideList.Add(point);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.EventWriter("Exception Build new offset curve" + e.ToString());
+            }
+
+            return newGuideLL;
+        }
+
 
         public void GetCurrentCurveLine(vec3 pivot, vec3 steer)
         {
@@ -843,8 +955,8 @@ namespace AgOpenGPS
                 if (mf.font.isFontOn)
                 {
                     GL.Color3(0.40f, 0.90f, 0.95f);
-                    mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].curvePts[0].easting, mf.trk.gArr[mf.trk.idx].curvePts[0].northing, "&A");
-                    mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].curvePts[mf.trk.gArr[mf.trk.idx].curvePts.Count - 1].easting, mf.trk.gArr[mf.trk.idx].curvePts[mf.trk.gArr[mf.trk.idx].curvePts.Count - 1].northing, "&B");
+                    mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].ptA.easting, mf.trk.gArr[mf.trk.idx].ptA.northing, "&A");
+                    mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].ptB.easting, mf.trk.gArr[mf.trk.idx].ptB.northing, "&B");
                 }
 
                 //just draw ref and smoothed line if smoothing window is open
@@ -935,6 +1047,44 @@ namespace AgOpenGPS
                     //GL.PointSize(1.0f);
                 }
             }
+
+            if (guideArr.Count > 0)
+            {
+                GL.LineWidth(mf.ABLine.lineWidth * 3);
+                GL.Color3(0, 0, 0);
+
+                if (mf.trk.gArr[mf.trk.idx].mode != TrackMode.bndCurve)
+                    GL.Begin(PrimitiveType.LineStrip);
+                else
+                    GL.Begin(PrimitiveType.LineLoop);
+
+                for (int i = 0; i < guideArr.Count; i++)
+                {
+                    GL.Begin(PrimitiveType.LineStrip);
+                    for (int h = 0; h < guideArr[i].Count; h++)
+                        GL.Vertex3(guideArr[i][h].easting, guideArr[i][h].northing, 0);
+                    GL.End();
+                }
+                GL.End();
+
+                GL.LineWidth(mf.ABLine.lineWidth);
+                GL.Color4(0.2, 0.5, 0.2, 0.6);
+
+                if (mf.trk.gArr[mf.trk.idx].mode != TrackMode.bndCurve)
+                    GL.Begin(PrimitiveType.LineStrip);
+                else
+                    GL.Begin(PrimitiveType.LineLoop);
+
+                for (int i = 0; i < guideArr.Count; i++)
+                {
+                    GL.Begin(PrimitiveType.LineStrip);
+                    for (int h = 0; h < guideArr[i].Count; h++)
+                        GL.Vertex3(guideArr[i][h].easting, guideArr[i][h].northing, 0);
+                    GL.End();
+                }
+                GL.End();
+            }
+
             GL.PointSize(1.0f);
         }
 

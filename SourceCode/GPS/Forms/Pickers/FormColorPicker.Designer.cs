@@ -46,12 +46,12 @@
             this.btn07 = new System.Windows.Forms.Button();
             this.btn00 = new System.Windows.Forms.Button();
             this.btn08 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxSelectPresetColor = new System.Windows.Forms.GroupBox();
             this.chkUse = new System.Windows.Forms.CheckBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.colorBox2D = new MechanikaDesign.WinForms.UI.ColorPicker.ColorBox2D();
             this.colorSlider = new MechanikaDesign.WinForms.UI.ColorPicker.ColorSliderVertical();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxSelectPresetColor.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnDay
@@ -273,31 +273,31 @@
             this.btn08.UseVisualStyleBackColor = false;
             this.btn08.Click += new System.EventHandler(this.btn00_Click);
             // 
-            // groupBox1
+            // groupBoxSelectPresetColor
             // 
-            this.groupBox1.Controls.Add(this.btn01);
-            this.groupBox1.Controls.Add(this.btn09);
-            this.groupBox1.Controls.Add(this.btn00);
-            this.groupBox1.Controls.Add(this.btn02);
-            this.groupBox1.Controls.Add(this.btn08);
-            this.groupBox1.Controls.Add(this.btn10);
-            this.groupBox1.Controls.Add(this.btn15);
-            this.groupBox1.Controls.Add(this.btn03);
-            this.groupBox1.Controls.Add(this.btn07);
-            this.groupBox1.Controls.Add(this.btn11);
-            this.groupBox1.Controls.Add(this.btn14);
-            this.groupBox1.Controls.Add(this.btn04);
-            this.groupBox1.Controls.Add(this.btn06);
-            this.groupBox1.Controls.Add(this.btn12);
-            this.groupBox1.Controls.Add(this.btn13);
-            this.groupBox1.Controls.Add(this.btn05);
-            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 387);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(468, 216);
-            this.groupBox1.TabIndex = 258;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Select Preset Color";
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn01);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn09);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn00);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn02);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn08);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn10);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn15);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn03);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn07);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn11);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn14);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn04);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn06);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn12);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn13);
+            this.groupBoxSelectPresetColor.Controls.Add(this.btn05);
+            this.groupBoxSelectPresetColor.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSelectPresetColor.Location = new System.Drawing.Point(12, 387);
+            this.groupBoxSelectPresetColor.Name = "groupBoxSelectPresetColor";
+            this.groupBoxSelectPresetColor.Size = new System.Drawing.Size(468, 216);
+            this.groupBoxSelectPresetColor.TabIndex = 258;
+            this.groupBoxSelectPresetColor.TabStop = false;
+            this.groupBoxSelectPresetColor.Text = "Select Preset Color";
             // 
             // chkUse
             // 
@@ -361,7 +361,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.colorSlider);
             this.Controls.Add(this.colorBox2D);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxSelectPresetColor);
             this.Controls.Add(this.chkUse);
             this.Controls.Add(this.btnNight);
             this.Controls.Add(this.btnDay);
@@ -373,7 +373,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Color Picker";
             this.Load += new System.EventHandler(this.FormColorPicker_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.groupBoxSelectPresetColor.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -399,7 +399,7 @@
         private System.Windows.Forms.Button btn00;
         private System.Windows.Forms.Button btn08;
         private System.Windows.Forms.CheckBox chkUse;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxSelectPresetColor;
         private MechanikaDesign.WinForms.UI.ColorPicker.ColorBox2D colorBox2D;
         private MechanikaDesign.WinForms.UI.ColorPicker.ColorSliderVertical colorSlider;
     }

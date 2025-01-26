@@ -32,9 +32,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.nudLatitude = new NudlessNumericUpDown();
-            this.nudLongitude = new NudlessNumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
+            this.nudLatitude = new AgOpenGPS.NudlessNumericUpDown();
+            this.nudLongitude = new AgOpenGPS.NudlessNumericUpDown();
+            this.labelPoint = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnYellow = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
@@ -107,6 +107,11 @@
             this.nudLatitude.Size = new System.Drawing.Size(274, 52);
             this.nudLatitude.TabIndex = 198;
             this.nudLatitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudLatitude.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudLatitude.Click += new System.EventHandler(this.nudLatitude_Click);
             // 
             // nudLongitude
@@ -129,18 +134,23 @@
             this.nudLongitude.Size = new System.Drawing.Size(298, 52);
             this.nudLongitude.TabIndex = 197;
             this.nudLongitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudLongitude.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.nudLongitude.Click += new System.EventHandler(this.nudLongitude_Click);
             // 
-            // label2
+            // labelPoint
             // 
-            this.label2.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(22, 76);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 34);
-            this.label2.TabIndex = 205;
-            this.label2.Text = "Point A";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelPoint.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPoint.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelPoint.Location = new System.Drawing.Point(22, 76);
+            this.labelPoint.Name = "labelPoint";
+            this.labelPoint.Size = new System.Drawing.Size(125, 34);
+            this.labelPoint.TabIndex = 205;
+            this.labelPoint.Text = "Point A";
+            this.labelPoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnCancel
             // 
@@ -221,7 +231,7 @@
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnYellow);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelPoint);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
@@ -248,7 +258,7 @@
         private System.Windows.Forms.Label label18;
         private NudlessNumericUpDown nudLatitude;
         private NudlessNumericUpDown nudLongitude;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelPoint;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Button btnRed;

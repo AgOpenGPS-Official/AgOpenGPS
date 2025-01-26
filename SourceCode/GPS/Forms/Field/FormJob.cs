@@ -46,8 +46,7 @@ namespace AgOpenGPS
                 btnJobResume.Enabled = false;
                 mf.currentFieldDirectory = "";
 
-                Properties.Settings.Default.setF_CurrentDir = "";
-                Properties.Settings.Default.Save();
+                Log.EventWriter("Field Directory is Empty or Missing");
             }
             else
             {
@@ -87,8 +86,6 @@ namespace AgOpenGPS
 
         private void btnJobResume_Click(object sender, EventArgs e)
         {
-            if (mf.isJobStarted) mf.FileSaveEverythingBeforeClosingField();
-
             //open the Resume.txt and continue from last exit
             mf.FileOpenField("Resume");
 
@@ -108,7 +105,6 @@ namespace AgOpenGPS
                 //returns full field.txt file dir name
                 if (form.ShowDialog(this) == DialogResult.Yes)
                 {
-                    if (mf.isJobStarted) mf.FileSaveEverythingBeforeClosingField();
                     mf.FileOpenField(mf.filePickerFileAndDirectory);
 
                     Close();
@@ -189,7 +185,6 @@ namespace AgOpenGPS
                         //returns full field.txt file dir name
                         if (form.ShowDialog(this) == DialogResult.Yes)
                         {
-                            if (mf.isJobStarted) mf.FileSaveEverythingBeforeClosingField();
                             mf.FileOpenField(mf.filePickerFileAndDirectory);
                             Close();
                         }

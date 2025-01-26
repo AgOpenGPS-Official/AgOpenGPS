@@ -9,9 +9,6 @@ namespace AgOpenGPS
     {
         private readonly FormGPS mf;
 
-        public bool isSteerAxleAhead;
-        public bool isPivotBehindAntenna;
-
         public double antennaHeight;
         public double antennaPivot;
         public double wheelbase;
@@ -53,13 +50,11 @@ namespace AgOpenGPS
             //constructor
             mf = _f;
 
-            isPivotBehindAntenna = Properties.Settings.Default.setVehicle_isPivotBehindAntenna;
             antennaHeight = Properties.Settings.Default.setVehicle_antennaHeight;
             antennaPivot = Properties.Settings.Default.setVehicle_antennaPivot;
             antennaOffset = Properties.Settings.Default.setVehicle_antennaOffset;
 
             wheelbase = Properties.Settings.Default.setVehicle_wheelbase;
-            isSteerAxleAhead = Properties.Settings.Default.setVehicle_isSteerAxleAhead;
 
             slowSpeedCutoff = Properties.Settings.Default.setVehicle_slowSpeedCutoff;
 
@@ -467,21 +462,21 @@ namespace AgOpenGPS
                 GL.End();
             }
 
-            //if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
-            //{
-            //    //draw the bright antenna dot
-            //    GL.PointSize(16);
-            //    GL.Begin(PrimitiveType.Points);
-            //    GL.Color3(0, 0, 0);
-            //    GL.Vertex3(-antennaOffset, antennaPivot, 0.1);
-            //    GL.End();
+            if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
+            {
+                //draw the bright antenna dot
+                GL.PointSize(16);
+                GL.Begin(PrimitiveType.Points);
+                GL.Color3(0, 0, 0);
+                GL.Vertex3(-antennaOffset, antennaPivot, 0.1);
+                GL.End();
 
-            //    GL.PointSize(10);
-            //    GL.Begin(PrimitiveType.Points);
-            //    GL.Color3(0.20, 0.98, 0.98);
-            //    GL.Vertex3(-antennaOffset, antennaPivot, 0.1);
-            //    GL.End();
-            //}
+                GL.PointSize(10);
+                GL.Begin(PrimitiveType.Points);
+                GL.Color3(0.20, 0.98, 0.98);
+                GL.Vertex3(-antennaOffset, antennaPivot, 0.1);
+                GL.End();
+            }
 
             if (mf.bnd.isBndBeingMade && mf.bnd.isDrawAtPivot)
             {

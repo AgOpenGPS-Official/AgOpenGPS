@@ -872,7 +872,7 @@ namespace AgIO
             // 
             this.cboxIsIMUModule.Appearance = System.Windows.Forms.Appearance.Button;
             this.cboxIsIMUModule.BackColor = System.Drawing.Color.Transparent;
-            this.cboxIsIMUModule.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cboxIsIMUModule.BackgroundImage")));
+            this.cboxIsIMUModule.BackgroundImage = global::AgIO.Properties.Resources.AddNew;
             this.cboxIsIMUModule.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cboxIsIMUModule.Checked = true;
             this.cboxIsIMUModule.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -889,7 +889,7 @@ namespace AgIO
             // 
             this.cboxIsMachineModule.Appearance = System.Windows.Forms.Appearance.Button;
             this.cboxIsMachineModule.BackColor = System.Drawing.Color.Transparent;
-            this.cboxIsMachineModule.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cboxIsMachineModule.BackgroundImage")));
+            this.cboxIsMachineModule.BackgroundImage = global::AgIO.Properties.Resources.AddNew;
             this.cboxIsMachineModule.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.cboxIsMachineModule.Checked = true;
             this.cboxIsMachineModule.CheckState = System.Windows.Forms.CheckState.Checked;

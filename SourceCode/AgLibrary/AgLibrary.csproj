@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!-- Only write to build log in one project (AgOpenGPS), otherwise GitVersion will fail -->
-    <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0" />
-  </ItemGroup>
+
 </Project>

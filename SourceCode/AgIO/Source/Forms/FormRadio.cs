@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows.Forms;
+using AgIO.Controls;
 using AgLibrary.Logging;
 
 namespace AgIO
@@ -337,7 +338,7 @@ namespace AgIO
         {
             if (mf.isKeyboardOn)
             {
-                mf.KeyboardToText((TextBox)sender, this);
+                ((TextBox)sender).ShowKeyboard(this);
             }
         }
     }

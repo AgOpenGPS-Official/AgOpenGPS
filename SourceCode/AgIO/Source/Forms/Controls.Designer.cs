@@ -118,7 +118,7 @@ namespace AgIO
 
         private void btnUDP_Click(object sender, EventArgs e)
         {
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 TimedMessageBox(3000, "Using Default Profile", "Choose Existing or Create New Profile");
                 return;
@@ -134,7 +134,7 @@ namespace AgIO
 
         private void btnNTRIP_Click(object sender, EventArgs e)
         {
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 TimedMessageBox(3000, "Using Default Profile", "Choose Existing or Create New Profile");
                 return;
@@ -150,7 +150,7 @@ namespace AgIO
 
         private void btnRadio_Click(object sender, EventArgs e)
         {
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 TimedMessageBox(3000, "Using Default Profile", "Choose Existing or Create New Profile");
                 return;
@@ -241,7 +241,7 @@ namespace AgIO
 
         private void serialPassThroughToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 TimedMessageBox(3000, "Using Default Profile", "Choose Existing or Create New Profile");
                 return;
@@ -272,7 +272,7 @@ namespace AgIO
 
         private void toolStripMenuProfiles_Click(object sender, EventArgs e)
         {
-            if (RegistrySettings.profileName == "Default Profile")
+            if (RegistrySettings.profileName == "")
             {
                 TimedMessageBox(3000, "AgIO Default Profile Used", "Create or Choose a Profile");
             }
@@ -283,13 +283,12 @@ namespace AgIO
                 if (form.DialogResult == DialogResult.Yes)
                 {
                     Log.EventWriter("Program Reset: Saving or Selecting Profile");
-
-                    RegistrySettings.Save();
+                    
                     Application.Restart();
                     Environment.Exit(0);
                 }
             }
-            this.Text = "AgIO  v" + GitVersionInformation.MajorMinorPatch + "   Using Profile: " 
+            this.Text = "AgIO  v" + Program.Version + "   Using Profile: " 
                 + RegistrySettings.profileName;
         }
 
@@ -498,33 +497,6 @@ namespace AgIO
                 ShowWindow(processName[0].MainWindowHandle, 9);
                 SetForegroundWindow(processName[0].MainWindowHandle);
             }
-        }
-
-        public void KeypadToNUD(NumericUpDown sender, Form owner)
-        {
-            sender.BackColor = System.Drawing.Color.Red;
-            using (var form = new FormNumeric((double)sender.Minimum, (double)sender.Maximum, (double)sender.Value))
-            {
-                if (form.ShowDialog(owner) == DialogResult.OK)
-                {
-                    sender.Value = (decimal)form.ReturnValue;
-                }
-            }
-            sender.BackColor = System.Drawing.Color.AliceBlue;
-        }
-
-        public void KeyboardToText(TextBox sender, Form owner)
-        {
-            TextBox tbox = (TextBox)sender;
-            tbox.BackColor = System.Drawing.Color.Red;
-            using (var form = new FormKeyboard((string)tbox.Text))
-            {
-                if (form.ShowDialog(owner) == DialogResult.OK)
-                {
-                    tbox.Text = (string)form.ReturnString;
-                }
-            }
-            tbox.BackColor = System.Drawing.Color.AliceBlue;
         }
 
         private ToolStripDropDownButton toolStripDropDownButton1;

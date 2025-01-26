@@ -33,7 +33,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSerialCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelEnterFieldName = new System.Windows.Forms.Label();
             this.btnAddTime = new System.Windows.Forms.Button();
             this.btnAddDate = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -111,18 +111,18 @@
             this.btnSerialCancel.UseVisualStyleBackColor = false;
             this.btnSerialCancel.Click += new System.EventHandler(this.btnSerialCancel_Click);
             // 
-            // label1
+            // labelEnterFieldName
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(34, 25);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(174, 23);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Enter Field Name";
+            this.labelEnterFieldName.AutoSize = true;
+            this.labelEnterFieldName.BackColor = System.Drawing.Color.Transparent;
+            this.labelEnterFieldName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEnterFieldName.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelEnterFieldName.Location = new System.Drawing.Point(34, 25);
+            this.labelEnterFieldName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelEnterFieldName.Name = "labelEnterFieldName";
+            this.labelEnterFieldName.Size = new System.Drawing.Size(174, 23);
+            this.labelEnterFieldName.TabIndex = 4;
+            this.labelEnterFieldName.Text = "Enter Field Name";
             // 
             // btnAddTime
             // 
@@ -167,7 +167,7 @@
             this.Controls.Add(this.btnAddTime);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelEnterFieldName);
             this.Controls.Add(this.tboxFieldName);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnSerialCancel);
@@ -191,7 +191,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelEnterFieldName;
         private System.Windows.Forms.Button btnAddTime;
         private System.Windows.Forms.Button btnAddDate;
     }

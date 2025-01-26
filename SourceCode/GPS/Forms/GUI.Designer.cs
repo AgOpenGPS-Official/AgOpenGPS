@@ -7,11 +7,8 @@ using System.Windows.Forms;
 using AgOpenGPS.Properties;
 using System.Globalization;
 using System.IO;
-using System.Media;
-using System.Reflection;
 using System.Collections.Generic;
 using AgOpenGPS.Culture;
-using System.Text;
 using AgOpenGPS.Helpers;
 using AgLibrary.Logging;
 
@@ -58,7 +55,7 @@ namespace AgOpenGPS
         public bool isPureDisplayOn = true, isSkyOn = true, isRollMeterOn = false, isTextureOn = true;
         public bool isDay = true, isDayTime = true, isBrightnessOn = true;
         public bool isLogElevation = false, isDirectionMarkers;
-        public bool isKeyboardOn = true, isAutoStartAgIO = true, isSvennArrowOn = true, isTermsAccepted = false;
+        public bool isKeyboardOn = true, isAutoStartAgIO = true, isSvennArrowOn = true;
         public bool isSectionlinesOn = true, isLineSmooth = true;
 
         public bool isLightBarNotSteerBar = false;
@@ -377,10 +374,8 @@ namespace AgOpenGPS
 
         }//wait till timer fires again.         
 
-        public void LoadSettings()
-        {            
-            CheckSettingsNotNull();
-
+        public void LoadText()
+        {
             enterSimCoordsToolStripMenuItem.Text = gStr.gsEnterSimCoords;
             aboutToolStripMenuItem.Text = gStr.gsAbout;
             menustripLanguage.Text = gStr.gsLanguage;
@@ -417,8 +412,11 @@ namespace AgOpenGPS
             steerChartToolStripMenuItem.Text = gStr.gsSteerChart;
             headingChartToolStripMenuItem.Text = gStr.gsHeadingChart;
             xTEChartToolStripMenuItem.Text = gStr.gsXTEChart;
+        }
 
-            btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
+        public void LoadSettings()
+        {
+            btnChangeMappingColor.Text = Program.Version;
 
             //metric settings
             isMetric = Settings.Default.setMenu_isMetric;
@@ -498,13 +496,6 @@ namespace AgOpenGPS
             fieldColorDay = Properties.Settings.Default.setDisplay_colorFieldDay.CheckColorFor255();
             fieldColorNight = Properties.Settings.Default.setDisplay_colorFieldNight.CheckColorFor255();
 
-            Properties.Settings.Default.setDisplay_colorDayFrame = frameDayColor;
-            Properties.Settings.Default.setDisplay_colorNightFrame = frameNightColor;
-            Properties.Settings.Default.setDisplay_colorSectionsDay = sectionColorDay;
-            Properties.Settings.Default.setDisplay_colorFieldDay = fieldColorDay;
-            Properties.Settings.Default.setDisplay_colorFieldNight = fieldColorNight;
-            Properties.Settings.Default.Save();
-
             //load up colors
             textColorDay = Settings.Default.setDisplay_colorTextDay.CheckColorFor255();
             textColorNight = Settings.Default.setDisplay_colorTextNight.CheckColorFor255();
@@ -519,14 +510,6 @@ namespace AgOpenGPS
                 int iCol = (test.A << 24) | (test.R << 16) | (test.G << 8) | test.B;
                 customColorsList[i] = iCol;
             }
-
-            Properties.Settings.Default.setDisplay_customColors = "";
-            for (int i = 0; i < 15; i++)
-                Properties.Settings.Default.setDisplay_customColors += customColorsList[i].ToString() + ",";
-            Properties.Settings.Default.setDisplay_customColors += customColorsList[15].ToString();
-
-            Properties.Settings.Default.Save();
-
 
             isTextureOn = Settings.Default.setDisplay_isTextureOn;
             isLogElevation = Settings.Default.setDisplay_isLogElevation;
@@ -587,7 +570,7 @@ namespace AgOpenGPS
             else btnHeadlandOnOff.Image = Properties.Resources.HeadlandOff;
 
             //btnChangeMappingColor.BackColor = sectionColorDay;
-            btnChangeMappingColor.Text = GitVersionInformation.MajorMinorPatch;
+            btnChangeMappingColor.Text = Program.Version;
 
             if (Properties.Settings.Default.setDisplay_isStartFullScreen)
             {

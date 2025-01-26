@@ -35,18 +35,18 @@
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblBnds = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelNewBoundary = new System.Windows.Forms.Label();
             this.btnZoomIn = new System.Windows.Forms.Button();
             this.btnZoomOut = new System.Windows.Forms.Button();
-            this.cboxDrawMap = new System.Windows.Forms.CheckBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnGo = new System.Windows.Forms.Button();
             this.cboxEnableLineDraw = new System.Windows.Forms.CheckBox();
             this.btnDeleteAll = new System.Windows.Forms.Button();
+            this.labelBackground = new System.Windows.Forms.Label();
             this.btnAddFence = new System.Windows.Forms.Button();
             this.btnDeletePoint = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelBoundary = new System.Windows.Forms.Label();
+            this.cboxDrawMap = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,17 +132,17 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.57143F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.64286F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.78571F));
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelNewBoundary, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnZoomIn, 2, 8);
             this.tableLayoutPanel1.Controls.Add(this.btnZoomOut, 0, 8);
             this.tableLayoutPanel1.Controls.Add(this.btnExit, 2, 9);
             this.tableLayoutPanel1.Controls.Add(this.btnGo, 0, 9);
             this.tableLayoutPanel1.Controls.Add(this.cboxEnableLineDraw, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnDeleteAll, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.labelBackground, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.btnAddFence, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnDeletePoint, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.labelBoundary, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.lblBnds, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.lblPoints, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.cboxDrawMap, 0, 6);
@@ -162,6 +162,19 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(241, 776);
             this.tableLayoutPanel1.TabIndex = 491;
+            // 
+            // labelNewBoundary
+            // 
+            this.labelNewBoundary.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.labelNewBoundary.BackColor = System.Drawing.Color.Transparent;
+            this.labelNewBoundary.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNewBoundary.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelNewBoundary.Location = new System.Drawing.Point(3, 82);
+            this.labelNewBoundary.Name = "labelNewBoundary";
+            this.labelNewBoundary.Size = new System.Drawing.Size(99, 23);
+            this.labelNewBoundary.TabIndex = 491;
+            this.labelNewBoundary.Text = "New Bnd";
+            this.labelNewBoundary.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnZoomIn
             // 
@@ -192,25 +205,6 @@
             this.btnZoomOut.TabIndex = 485;
             this.btnZoomOut.UseVisualStyleBackColor = false;
             this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
-            // 
-            // cboxDrawMap
-            // 
-            this.cboxDrawMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.cboxDrawMap.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cboxDrawMap.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.cboxDrawMap, 3);
-            this.cboxDrawMap.FlatAppearance.BorderSize = 0;
-            this.cboxDrawMap.FlatAppearance.CheckedBackColor = System.Drawing.Color.MediumAquamarine;
-            this.cboxDrawMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxDrawMap.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboxDrawMap.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cboxDrawMap.Image = global::AgOpenGPS.Properties.Resources.MappingOff;
-            this.cboxDrawMap.Location = new System.Drawing.Point(81, 449);
-            this.cboxDrawMap.Name = "cboxDrawMap";
-            this.cboxDrawMap.Size = new System.Drawing.Size(78, 76);
-            this.cboxDrawMap.TabIndex = 482;
-            this.cboxDrawMap.UseVisualStyleBackColor = false;
-            this.cboxDrawMap.Click += new System.EventHandler(this.cboxDrawMap_Click);
             // 
             // btnExit
             // 
@@ -276,6 +270,20 @@
             this.btnDeleteAll.UseVisualStyleBackColor = false;
             this.btnDeleteAll.Click += new System.EventHandler(this.btnDeleteAll_Click);
             // 
+            // labelBackground
+            // 
+            this.labelBackground.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.labelBackground.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelBackground, 3);
+            this.labelBackground.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBackground.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelBackground.Location = new System.Drawing.Point(15, 528);
+            this.labelBackground.Name = "labelBackground";
+            this.labelBackground.Size = new System.Drawing.Size(210, 31);
+            this.labelBackground.TabIndex = 490;
+            this.labelBackground.Text = "Background ";
+            this.labelBackground.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // btnAddFence
             // 
             this.btnAddFence.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -306,46 +314,38 @@
             this.btnDeletePoint.UseVisualStyleBackColor = false;
             this.btnDeletePoint.Click += new System.EventHandler(this.btnDeletePoint_Click);
             // 
-            // label1
+            // labelBoundary
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 3);
-            this.label1.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(15, 528);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 31);
-            this.label1.TabIndex = 490;
-            this.label1.Text = "Background ";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelBoundary.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelBoundary.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelBoundary, 2);
+            this.labelBoundary.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBoundary.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelBoundary.Location = new System.Drawing.Point(108, 234);
+            this.labelBoundary.Name = "labelBoundary";
+            this.labelBoundary.Size = new System.Drawing.Size(130, 23);
+            this.labelBoundary.TabIndex = 492;
+            this.labelBoundary.Text = "Boundary";
+            this.labelBoundary.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // cboxDrawMap
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(3, 82);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 23);
-            this.label2.TabIndex = 491;
-            this.label2.Text = "New Bnd";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(108, 234);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(130, 23);
-            this.label3.TabIndex = 492;
-            this.label3.Text = "Boundary";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxDrawMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.cboxDrawMap.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxDrawMap.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.cboxDrawMap, 3);
+            this.cboxDrawMap.FlatAppearance.BorderSize = 0;
+            this.cboxDrawMap.FlatAppearance.CheckedBackColor = System.Drawing.Color.MediumAquamarine;
+            this.cboxDrawMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxDrawMap.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxDrawMap.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxDrawMap.Image = global::AgOpenGPS.Properties.Resources.MappingOff;
+            this.cboxDrawMap.Location = new System.Drawing.Point(81, 449);
+            this.cboxDrawMap.Name = "cboxDrawMap";
+            this.cboxDrawMap.Size = new System.Drawing.Size(78, 76);
+            this.cboxDrawMap.TabIndex = 482;
+            this.cboxDrawMap.UseVisualStyleBackColor = false;
+            this.cboxDrawMap.Click += new System.EventHandler(this.cboxDrawMap_Click);
             // 
             // FormMap
             // 
@@ -388,8 +388,8 @@
         private System.Windows.Forms.Button btnZoomOut;
         private System.Windows.Forms.Label lblBnds;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelBackground;
+        private System.Windows.Forms.Label labelNewBoundary;
+        private System.Windows.Forms.Label labelBoundary;
     }
 }

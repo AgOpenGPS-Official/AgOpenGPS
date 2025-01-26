@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keypad", "Keypad\Keypad.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgLibrary", "AgLibrary\AgLibrary.csproj", "{692B4970-37F1-4F02-8F7F-A514283FC399}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgLibrary.Tests", "AgLibrary.Tests\AgLibrary.Tests.csproj", "{69DD4FB4-9119-4ABA-A7E4-5B789C49DC6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.Core", "AgOpenGPS.Core\AgOpenGPS.Core.csproj", "{F2486554-D063-4CB0-8220-52883AFEF238}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,14 @@ Global
 		{692B4970-37F1-4F02-8F7F-A514283FC399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692B4970-37F1-4F02-8F7F-A514283FC399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DD4FB4-9119-4ABA-A7E4-5B789C49DC6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DD4FB4-9119-4ABA-A7E4-5B789C49DC6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DD4FB4-9119-4ABA-A7E4-5B789C49DC6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DD4FB4-9119-4ABA-A7E4-5B789C49DC6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2486554-D063-4CB0-8220-52883AFEF238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2486554-D063-4CB0-8220-52883AFEF238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2486554-D063-4CB0-8220-52883AFEF238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2486554-D063-4CB0-8220-52883AFEF238}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
