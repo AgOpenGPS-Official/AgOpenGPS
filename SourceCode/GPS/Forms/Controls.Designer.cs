@@ -1548,7 +1548,14 @@ namespace AgOpenGPS
         {
             SetLanguage("zh-CHS");
         }
-
+        private void menuLanguageSerbie_Click(object sender, EventArgs e)
+        {
+            SetLanguage("sr");
+        }
+        private void menuLanguageNorsk_Click(object sender, EventArgs e)
+        {
+            SetLanguage("no");
+        }
         private void SetLanguage(string lang)
         {
             //reset them all to false
@@ -1570,6 +1577,8 @@ namespace AgOpenGPS
             menuLanguageLatvian.Checked = false;
             menuLanguageChinese.Checked = false;
             menuLanguagePortugese.Checked = false;
+            menuLanguageSerbie.Checked = false;
+            menuLanguageNorsk.Checked = false;
 
             menuLanguageTest.Checked = false;
 
@@ -1650,6 +1659,14 @@ namespace AgOpenGPS
                 case "zh-CHS":
                     menuLanguageChinese.Checked = true;
                     break;
+
+                case "sr":
+                    menuLanguageSerbie.Checked = true;
+                    break;  
+
+                case "no":
+                    menuLanguageNorsk.Checked = true;
+                    break;  
 
                 default:
                     menuLanguageEnglish.Checked = true;

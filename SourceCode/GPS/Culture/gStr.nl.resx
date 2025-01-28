@@ -312,10 +312,10 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Maaak een nieuw perceel vanuit een ISO-XML Bestand</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>Huidig</value>
+    <value>Stroom (A)</value>
   </data>
   <data name="gsCurrentSensorValueLabel" xml:space="preserve">
-    <value>Huidige Waarde</value>
+    <value>Stroom-waarde (A)</value>
   </data>
   <data name="gsCurrentTurnSensor" xml:space="preserve">
     <value>Stroom-sensor</value>

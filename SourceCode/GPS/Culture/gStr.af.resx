@@ -141,6 +141,16 @@
   <data name="gsArea" xml:space="preserve">
     <value>zArea</value>
   </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>
+"Dotknij przycisków po lewej stronie, które chcesz, aby pojawiły się w Menu (po prawej stronie).
+
+Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią się w menu od dołu do góry."
+</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią się w menu od dołu do góry."</value>
+  </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>zAuto Steer</value>
   </data>

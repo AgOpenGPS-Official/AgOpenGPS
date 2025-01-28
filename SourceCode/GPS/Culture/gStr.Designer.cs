@@ -223,7 +223,7 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aquire.
+        ///   Looks up a localized string similar to Acquire.
         /// </summary>
         public static string gsAquire {
             get {
@@ -711,7 +711,7 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current.
+        ///   Looks up a localized string similar to Current (A).
         /// </summary>
         public static string gsCurrent {
             get {
@@ -720,7 +720,7 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current Value.
+        ///   Looks up a localized string similar to Current Value (A).
         /// </summary>
         public static string gsCurrentSensorValueLabel {
             get {

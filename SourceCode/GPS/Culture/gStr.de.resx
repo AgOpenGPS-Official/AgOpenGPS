@@ -135,6 +135,9 @@
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivität</value>
   </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antennenhöhe</value>
+  </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Sind Sie sicher?</value>
   </data>
