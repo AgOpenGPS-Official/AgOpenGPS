@@ -15,15 +15,15 @@ namespace AgOpenGPS
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
-            labelTotal.Text = gStr.gsTotal;
+            labelTotal.Text = gStr.gsTotal + ":";
             labelWorked.Text = gStr.gsWorked;
-            labelApplied.Text = gStr.gsApplied;
-            labelApplied2.Text = gStr.gsApplied;
-            labelRemain.Text = gStr.gsRemain;
-            labelRemain2.Text = gStr.gsRemain;
-            labelOverlap.Text = gStr.gsOverlap;
-            labelActual.Text = gStr.gsActual;   
-            labelRate.Text = gStr.gsRate;   
+            labelApplied.Text = gStr.gsApplied + ":";
+            labelApplied2.Text = gStr.gsApplied + ":";
+            labelRemain.Text = gStr.gsRemain + ":";
+            labelRemain2.Text = gStr.gsRemain + ":";
+            labelOverlap.Text = gStr.gsOverlap + ":";
+            labelActual.Text = gStr.gsActual;
+            labelRate.Text = gStr.gsRate + ":";
 
         }
         private void FormFieldData_Load(object sender, EventArgs e)
@@ -43,6 +43,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateHectares;
                 lblApplied.Text = mf.fd.WorkedHectares;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedHectares;
+                labelHaAc.Text = "Ha";
 
             }
             else
@@ -50,6 +51,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateAcres;
                 lblApplied.Text = mf.fd.WorkedAcres;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedAcres;
+                labelHaAc.Text = "Ac";  
             }
 
             if (mf.bnd.bndList.Count > 0)

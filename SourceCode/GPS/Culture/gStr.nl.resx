@@ -142,7 +142,7 @@
     <value>Actueel</value>
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
-    <value>Creer Uitgebreide Spuitpaden</value>
+    <value>Creer uitgebreide spuitpaden</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Ik stem in met de algemene voorwaarden.</value>
@@ -163,7 +163,7 @@
     <value>Aquisitie</value>
   </data>
   <data name="gsAquireFactor" xml:space="preserve">
-    <value>Aquisitie-Factor</value>
+    <value>Lijn Aquisitie</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Weet u het zeker?</value>
@@ -759,7 +759,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Buitenste</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Overlapping:</value>
+    <value>Overlapping</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Overlapping / Gat</value>

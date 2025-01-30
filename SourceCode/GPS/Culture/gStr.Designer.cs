@@ -2160,7 +2160,7 @@ namespace AgOpenGPS.Culture {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overlap:.
+        ///   Looks up a localized string similar to Overlap.
         /// </summary>
         public static string gsOverlap {
             get {

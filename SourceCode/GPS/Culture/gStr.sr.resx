@@ -670,7 +670,7 @@
     <value>Spoljni</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Preklop:</value>
+    <value>Preklop</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Preklop/razmak</value>

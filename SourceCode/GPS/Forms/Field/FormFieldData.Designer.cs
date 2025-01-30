@@ -50,6 +50,7 @@
             this.labelWorked = new System.Windows.Forms.Label();
             this.lblActualRemain = new System.Windows.Forms.Label();
             this.labelRemain2 = new System.Windows.Forms.Label();
+            this.labelHaAc = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // timer1
@@ -63,7 +64,7 @@
             this.lblTimeRemaining.AutoSize = true;
             this.lblTimeRemaining.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimeRemaining.ForeColor = System.Drawing.Color.White;
-            this.lblTimeRemaining.Location = new System.Drawing.Point(87, 153);
+            this.lblTimeRemaining.Location = new System.Drawing.Point(114, 153);
             this.lblTimeRemaining.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTimeRemaining.Name = "lblTimeRemaining";
             this.lblTimeRemaining.Size = new System.Drawing.Size(18, 23);
@@ -87,7 +88,7 @@
             this.lblAreaRemain.AutoSize = true;
             this.lblAreaRemain.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAreaRemain.ForeColor = System.Drawing.Color.White;
-            this.lblAreaRemain.Location = new System.Drawing.Point(87, 95);
+            this.lblAreaRemain.Location = new System.Drawing.Point(114, 95);
             this.lblAreaRemain.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblAreaRemain.Name = "lblAreaRemain";
             this.lblAreaRemain.Size = new System.Drawing.Size(18, 23);
@@ -99,7 +100,7 @@
             this.lblWorkRate.AutoSize = true;
             this.lblWorkRate.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWorkRate.ForeColor = System.Drawing.Color.White;
-            this.lblWorkRate.Location = new System.Drawing.Point(58, 325);
+            this.lblWorkRate.Location = new System.Drawing.Point(101, 325);
             this.lblWorkRate.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblWorkRate.Name = "lblWorkRate";
             this.lblWorkRate.Size = new System.Drawing.Size(18, 23);
@@ -123,7 +124,7 @@
             this.lblTotalArea.AutoSize = true;
             this.lblTotalArea.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalArea.ForeColor = System.Drawing.Color.White;
-            this.lblTotalArea.Location = new System.Drawing.Point(76, 0);
+            this.lblTotalArea.Location = new System.Drawing.Point(99, 0);
             this.lblTotalArea.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblTotalArea.Name = "lblTotalArea";
             this.lblTotalArea.Size = new System.Drawing.Size(18, 23);
@@ -135,7 +136,7 @@
             this.labelTotal.AutoSize = true;
             this.labelTotal.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTotal.ForeColor = System.Drawing.Color.White;
-            this.labelTotal.Location = new System.Drawing.Point(23, 0);
+            this.labelTotal.Location = new System.Drawing.Point(13, 0);
             this.labelTotal.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelTotal.Name = "labelTotal";
             this.labelTotal.Size = new System.Drawing.Size(58, 23);
@@ -147,7 +148,7 @@
             this.lblApplied.AutoSize = true;
             this.lblApplied.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblApplied.ForeColor = System.Drawing.Color.White;
-            this.lblApplied.Location = new System.Drawing.Point(87, 66);
+            this.lblApplied.Location = new System.Drawing.Point(114, 66);
             this.lblApplied.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblApplied.Name = "lblApplied";
             this.lblApplied.Size = new System.Drawing.Size(18, 23);
@@ -171,7 +172,7 @@
             this.lblRemainPercent.AutoSize = true;
             this.lblRemainPercent.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRemainPercent.ForeColor = System.Drawing.Color.White;
-            this.lblRemainPercent.Location = new System.Drawing.Point(87, 123);
+            this.lblRemainPercent.Location = new System.Drawing.Point(114, 123);
             this.lblRemainPercent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblRemainPercent.Name = "lblRemainPercent";
             this.lblRemainPercent.Size = new System.Drawing.Size(18, 23);
@@ -184,19 +185,19 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(7, 38);
+            this.label1.Location = new System.Drawing.Point(10, 38);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(162, 19);
+            this.label1.Size = new System.Drawing.Size(189, 19);
             this.label1.TabIndex = 488;
-            this.label1.Text = "_________________";
+            this.label1.Text = "____________________";
             // 
             // lblActualLessOverlap
             // 
             this.lblActualLessOverlap.AutoSize = true;
             this.lblActualLessOverlap.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblActualLessOverlap.ForeColor = System.Drawing.Color.White;
-            this.lblActualLessOverlap.Location = new System.Drawing.Point(85, 229);
+            this.lblActualLessOverlap.Location = new System.Drawing.Point(112, 229);
             this.lblActualLessOverlap.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblActualLessOverlap.Name = "lblActualLessOverlap";
             this.lblActualLessOverlap.Size = new System.Drawing.Size(18, 23);
@@ -220,19 +221,19 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(7, 203);
+            this.label7.Location = new System.Drawing.Point(4, 203);
             this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(162, 19);
+            this.label7.Size = new System.Drawing.Size(189, 19);
             this.label7.TabIndex = 491;
-            this.label7.Text = "_________________";
+            this.label7.Text = "____________________";
             // 
             // lblOverlapPercent
             // 
             this.lblOverlapPercent.AutoSize = true;
             this.lblOverlapPercent.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOverlapPercent.ForeColor = System.Drawing.Color.White;
-            this.lblOverlapPercent.Location = new System.Drawing.Point(86, 287);
+            this.lblOverlapPercent.Location = new System.Drawing.Point(113, 287);
             this.lblOverlapPercent.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblOverlapPercent.Name = "lblOverlapPercent";
             this.lblOverlapPercent.Size = new System.Drawing.Size(18, 23);
@@ -256,7 +257,7 @@
             this.labelActual.AutoSize = true;
             this.labelActual.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelActual.ForeColor = System.Drawing.Color.White;
-            this.labelActual.Location = new System.Drawing.Point(51, 193);
+            this.labelActual.Location = new System.Drawing.Point(71, 189);
             this.labelActual.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelActual.Name = "labelActual";
             this.labelActual.Size = new System.Drawing.Size(61, 23);
@@ -268,7 +269,7 @@
             this.labelWorked.AutoSize = true;
             this.labelWorked.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWorked.ForeColor = System.Drawing.Color.White;
-            this.labelWorked.Location = new System.Drawing.Point(45, 30);
+            this.labelWorked.Location = new System.Drawing.Point(71, 29);
             this.labelWorked.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelWorked.Name = "labelWorked";
             this.labelWorked.Size = new System.Drawing.Size(74, 23);
@@ -280,7 +281,7 @@
             this.lblActualRemain.AutoSize = true;
             this.lblActualRemain.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblActualRemain.ForeColor = System.Drawing.Color.White;
-            this.lblActualRemain.Location = new System.Drawing.Point(86, 258);
+            this.lblActualRemain.Location = new System.Drawing.Point(113, 258);
             this.lblActualRemain.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblActualRemain.Name = "lblActualRemain";
             this.lblActualRemain.Size = new System.Drawing.Size(18, 23);
@@ -299,12 +300,25 @@
             this.labelRemain2.TabIndex = 496;
             this.labelRemain2.Text = "Remain:";
             // 
+            // labelHaAc
+            // 
+            this.labelHaAc.AutoSize = true;
+            this.labelHaAc.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHaAc.ForeColor = System.Drawing.Color.White;
+            this.labelHaAc.Location = new System.Drawing.Point(165, 0);
+            this.labelHaAc.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelHaAc.Name = "labelHaAc";
+            this.labelHaAc.Size = new System.Drawing.Size(33, 23);
+            this.labelHaAc.TabIndex = 498;
+            this.labelHaAc.Text = "Ha";
+            // 
             // FormFieldData
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(176, 356);
+            this.ClientSize = new System.Drawing.Size(199, 356);
+            this.Controls.Add(this.labelHaAc);
             this.Controls.Add(this.lblWorkRate);
             this.Controls.Add(this.lblActualRemain);
             this.Controls.Add(this.labelRemain2);
@@ -362,5 +376,6 @@
         private System.Windows.Forms.Label labelWorked;
         private System.Windows.Forms.Label lblActualRemain;
         private System.Windows.Forms.Label labelRemain2;
+        private System.Windows.Forms.Label labelHaAc;
     }
 }

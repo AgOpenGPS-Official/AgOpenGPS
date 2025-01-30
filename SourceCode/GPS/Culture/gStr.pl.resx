@@ -145,7 +145,7 @@
     <value>Aktywuj</value>
   </data>
   <data name="gsActual" xml:space="preserve">
-    <value>Bieżący</value>
+    <value>Aktualny</value>
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Utwórz zaawansowane linie tramwajowe.</value>
@@ -166,7 +166,7 @@
     <value>Przesunięcie anteny</value>
   </data>
   <data name="gsApplied" xml:space="preserve">
-    <value>Zastosowane</value>
+    <value>Ukończono</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Jesteś pewny?</value>
@@ -179,7 +179,7 @@
 Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią się w menu od dołu do góry.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
-    <value>Styl załącznika</value>
+    <value>Rodzaj Narzędzia</value>
   </data>
   <data name="gsAuto" xml:space="preserve">
     <value>Auto</value>
@@ -475,6 +475,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsFieldPicker" xml:space="preserve">
     <value>Załaduj plik</value>
   </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Tekstura pola</value>
+  </data>
   <data name="gsFileError" xml:space="preserve">
     <value>Błąd pliku</value>
   </data>
@@ -524,7 +527,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Wykres Nagłówków</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Przesunięcie nagłówka (stopień)</value>
+    <value>Przesunięcie nagłówka</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Uwrocie</value>
@@ -614,10 +617,10 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Spójrz w przyszłość:</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
-    <value>Ustawienia czasu patrzenia w przyszłość</value>
+    <value>Ustawienia czasu patrzenia z wyprzedzeniem</value>
   </data>
   <data name="gsLowerTime" xml:space="preserve">
-    <value>Niższy czas</value>
+    <value>Czas opuszczania</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mph</value>
@@ -656,7 +659,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Min Speed</value>
   </data>
   <data name="gsMinToMove" xml:space="preserve">
-    <value>Minimum do ruchu</value>
+    <value>Minimum by ruszyć</value>
   </data>
   <data name="gsMissingABLinesFile" xml:space="preserve">
     <value>Brak pliku linii AB</value>
@@ -752,13 +755,13 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Zewnętrzny</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Nakładka:</value>
+    <value>Nakładka</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
-    <value>Nakładka / Luka</value>
+    <value>Nakładka / Odstęp</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
-    <value>Nadpisywanie</value>
+    <value>Zastąpić</value>
   </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Redukcja przekroczenia</value>
@@ -833,7 +836,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Załaduj nagrana ścieżkę</value>
   </data>
   <data name="gsRemain" xml:space="preserve">
-    <value>Pozostań</value>
+    <value>Pozostało</value>
   </data>
   <data name="gsRemoveOffset" xml:space="preserve">
     <value>Usuń przesunięcie</value>
@@ -1007,10 +1010,10 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value>Czujnik skrętu</value>
   </data>
   <data name="gsUnit" xml:space="preserve">
-    <value>Units:</value>
+    <value>Jednostka:</value>
   </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Units</value>
+    <value>Jednostka</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Użyj wybranych</value>

@@ -118,22 +118,52 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABCurve" xml:space="preserve">
-    <value>AB Eğri</value>
+    <value>AB Eğrisi</value>
+  </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>AB çizgisinde rota oluşturmak için 2 sınır noktasına tıkla </value>
   </data>
   <data name="gsABline" xml:space="preserve">
-    <value>AB Çizgi</value>
+    <value>AB Çizgisi</value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>AD dönüştürücüsü</value>
+  </data>
+  <data name="gsAOGMenu" xml:space="preserve">
+    <value>AOG Menü</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
     <value>Hakkında...</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>İşlem İptal Edildi</value>
   </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>aktifleştir</value>
+  </data>
   <data name="gsActual" xml:space="preserve">
-    <value>Actual</value>
+    <value>gerçek</value>
+  </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>Gelişmiş Rota oluştur</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>şartlar ve koşulları kabul ediyorum</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
-    <value>Agressif</value>
+    <value>Agresif</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Anten Yüksekliği</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>anten sapma değeri</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Emin misin ?</value>
@@ -143,9 +173,6 @@
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Otomatik Yönlendirme</value>
-  </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Yapılandırması</value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Otomatik Yönlendirme Yapılandırması</value>
@@ -191,6 +218,9 @@
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Sınırı Tamamen Sil</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Yapılandırması</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Kontur Dosyası Bozuk</value>

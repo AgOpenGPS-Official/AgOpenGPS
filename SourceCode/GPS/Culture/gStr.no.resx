@@ -796,7 +796,7 @@
     <value>Ytre</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Overlapp:</value>
+    <value>Overlapp</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Overlapp / Gap</value>
