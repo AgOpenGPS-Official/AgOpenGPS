@@ -952,7 +952,7 @@ namespace AgOpenGPS
 
         private void BuildTramBnd()
         {
-            mf.tram.displayMode = 1;
+            mf.tram.displayMode = 1; //t
             mf.tram.tramBndOuterArr?.Clear();
             mf.tram.tramBndInnerArr?.Clear();
             CreateBndOuterTramTrack();

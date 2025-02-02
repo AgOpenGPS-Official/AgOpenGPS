@@ -529,7 +529,7 @@ namespace AgOpenGPS
                     }
 
                     bool isPreRelease = !string.IsNullOrEmpty(GitVersionInformation.PreReleaseTag);
-                    if (isPreRelease) DrawBeta();
+                    //if (isPreRelease) DrawBeta();
 
                     if (pn.age > pn.ageAlarm) DrawAge();
 

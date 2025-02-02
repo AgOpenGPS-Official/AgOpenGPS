@@ -289,6 +289,7 @@ namespace AgIO
                 StartGPS_Out();
                 Log.EventWriter("Run GPS_Out");
             }
+        btnMinimizeMainForm_Click(this,EventArgs.Empty);
 
         }
 

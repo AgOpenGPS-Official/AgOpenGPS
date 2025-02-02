@@ -1635,7 +1635,7 @@ namespace AgOpenGPS
 
                                     tram.tramBndOuterArr.Add(vecPt);
                                 }
-                                tram.displayMode = 1;
+                                tram.displayMode = 1; 
                             }
 
                             //inner track of boundary tram
@@ -1685,6 +1685,8 @@ namespace AgOpenGPS
                         }
 
                         FixTramModeButton();
+                        tram.displayMode = 0;//tramod
+                        
                     }
 
                     catch (Exception e)

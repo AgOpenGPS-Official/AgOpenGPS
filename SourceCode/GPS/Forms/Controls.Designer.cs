@@ -16,6 +16,7 @@ using AgOpenGPS.Forms.Pickers;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;
 using OpenTK.Input;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace AgOpenGPS
 {
@@ -611,6 +612,8 @@ namespace AgOpenGPS
             toolStripBtnFieldTools.Enabled = isJobStarted;
 
             bnd.isHeadlandOn = (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0);
+
+            bnd.isHeadlandOn = false; //headlandmod
 
             trk.idx = -1;
 
