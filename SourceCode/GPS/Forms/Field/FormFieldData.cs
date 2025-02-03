@@ -1,9 +1,9 @@
 ﻿//Please, if you use this give me some credit
 //Copyright BrianTee, copy right out of it.
 
+using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
-using AgOpenGPS.Culture;
 
 namespace AgOpenGPS
 {
@@ -23,12 +23,13 @@ namespace AgOpenGPS
             labelRemain2.Text = gStr.gsRemain;
             labelOverlap.Text = gStr.gsOverlap;
             labelActual.Text = gStr.gsActual;   
-            labelRate.Text = gStr.gsRate;   
+            labelRate.Text = gStr.gsRate;
 
         }
         private void FormFieldData_Load(object sender, EventArgs e)
         {
             timer1_Tick(this, EventArgs.Empty);
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -43,6 +44,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateHectares;
                 lblApplied.Text = mf.fd.WorkedHectares;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedHectares;
+                labelTripDist.Text = mf.fd.WorkedUserHectares + " ha";
 
             }
             else
@@ -50,6 +52,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateAcres;
                 lblApplied.Text = mf.fd.WorkedAcres;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedAcres;
+                labelTripDist.Text = mf.fd.WorkedUserAcres +" ac";
             }
 
             if (mf.bnd.bndList.Count > 0)
@@ -85,6 +88,10 @@ namespace AgOpenGPS
             }
         }
 
+        private void btnTripReset_Click(object sender, EventArgs e)
+        {
+            mf.fd.workedAreaTotalUser = 0;
+        }
     }
 }
 

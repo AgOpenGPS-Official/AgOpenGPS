@@ -1937,6 +1937,7 @@ namespace AgOpenGPS
                         ct.StopContourLine();
                         ct.ResetContour();
                         fd.workedAreaTotal = 0;
+                        fd.workedAreaTotalUser = 0;
 
                         //clear the section lists
                         for (int j = 0; j < triStrip.Count; j++)
