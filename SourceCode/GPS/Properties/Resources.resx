@@ -1297,9 +1297,6 @@
   <data name="APlusPlusA" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\APlusPlusA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="JCB1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\btnImages\Config\Brand\JCB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="vehiclePageTractor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\vehiclePageTractor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1428,8 +1425,5 @@
   </data>
   <data name="pathResumeStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\pathResumeStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="JCB2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\btnImages\Config\Brand\JCB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
