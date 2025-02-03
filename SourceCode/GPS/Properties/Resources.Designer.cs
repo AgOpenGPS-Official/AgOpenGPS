@@ -2280,6 +2280,36 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap JCB {
+            get {
+                object obj = ResourceManager.GetObject("JCB", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap JCB1 {
+            get {
+                object obj = ResourceManager.GetObject("JCB1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap JCB2 {
+            get {
+                object obj = ResourceManager.GetObject("JCB2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap JobActive {
             get {
                 object obj = ResourceManager.GetObject("JobActive", resourceCulture);
@@ -4227,6 +4257,16 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap z_TractorFendt {
             get {
                 object obj = ResourceManager.GetObject("z_TractorFendt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap z_TractorJCB {
+            get {
+                object obj = ResourceManager.GetObject("z_TractorJCB", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

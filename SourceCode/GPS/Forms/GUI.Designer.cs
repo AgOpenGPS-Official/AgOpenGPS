@@ -14,7 +14,7 @@ using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {
-    public enum TBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra }
+    public enum TBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra, JCB }
     public enum HBrand { AgOpenGPS, Case, Claas, JDeere, NewHolland }
     public enum WDBrand { AgOpenGPS, Case, Challenger, JDeere, NewHolland, Holder }
 
@@ -1606,6 +1606,9 @@ namespace AgOpenGPS
                 bitmap = Resources.z_TractorUrsus;
             else if (brand == TBrand.Valtra)
                 bitmap = Resources.z_TractorValtra;
+            else if (brand == TBrand.JCB)
+                bitmap = Resources.z_TractorJCB;
+
             else
                 bitmap = Resources.z_TractorAoG;
 

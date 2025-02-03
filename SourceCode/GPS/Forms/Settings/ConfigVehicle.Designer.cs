@@ -720,6 +720,8 @@ namespace AgOpenGPS
                         rbtnBrandTUrsus.Checked = true;
                     else if (brand == TBrand.Valtra)
                         rbtnBrandTValtra.Checked = true;
+                    else if (brand == TBrand.JCB)
+                        rbtnBrandTJCB.Checked = true;
 
                     pboxAlpha.BackgroundImage = mf.GetTractorBrand(Settings.Default.setBrand_TBrand);
                 }
