@@ -3,6 +3,7 @@ using AgOpenGPS.Culture;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AgOpenGPS
@@ -61,6 +62,9 @@ namespace AgOpenGPS
 
         // Should we find the global nearest curve point (instead of local) on the next search.
         private bool findGlobalNearestCurvePoint = true;
+        private CancellationTokenSource cts;
+        private Task<List<vec3>> build;
+        private Task<List<List<vec3>>> buildList;
 
         public CABCurve(FormGPS _f)
         {
@@ -188,17 +192,28 @@ namespace AgOpenGPS
 
                     distAway += (0.5 * widthMinusOverlap);
 
-                    curList = await Task.Run(() => BuildNewOffsetList(distAway, track));
-                    isBusyWorking = false;
-                    findGlobalNearestCurvePoint = true;
+                    if (cts != null)
+                    {
+                        cts.Cancel();
+                    }
+                    cts = new CancellationTokenSource();
+
+                    if (build != null) await build;
+
+                    build = Task.Run(() => BuildNewOffsetList(distAway, track, cts), cts.Token);
+                    curList = await build;
 
                     if (mf.isSideGuideLines && mf.camera.camSetDistance > mf.tool.width * -400)
                     {
+                        if (buildList != null)
+                            await buildList;
                         //build the list list of guide lines
-                        guideArr = await Task.Run(() => BuildCurveGuidelines(distAway, mf.ABLine.numGuideLines, track));
+                        buildList = Task.Run(() => BuildCurveGuidelines(distAway, mf.ABLine.numGuideLines, track, cts), cts.Token);
+                        guideArr = await buildList;
                     }
                     else
                     {
+                        if (buildList != null) await buildList;
                         guideArr?.Clear();
                     }
 
@@ -206,8 +221,11 @@ namespace AgOpenGPS
             }
         }
 
-        public List<vec3> BuildNewOffsetList(double distAway, CTrk track)
+        
+        public List<vec3> BuildNewOffsetList(double distAway, CTrk track, CancellationTokenSource cts = null)
         {
+            if (cts == null) cts = new CancellationTokenSource();
+
             //the list of points of curve new list from async
             List<vec3> newCurList = new List<vec3>();
 
@@ -283,6 +301,8 @@ namespace AgOpenGPS
                     int refCount = track.curvePts.Count;
                     for (int i = 0; i < refCount; i++)
                     {
+                        if (cts.IsCancellationRequested)
+                            break;
                         point = new vec3(
                         track.curvePts[i].easting + (Math.Sin(glm.PIBy2 + track.curvePts[i].heading) * distAway),
                         track.curvePts[i].northing + (Math.Cos(glm.PIBy2 + track.curvePts[i].heading) * distAway),
@@ -314,7 +334,7 @@ namespace AgOpenGPS
                     }
 
                     int cnt = newCurList.Count;
-                    if (cnt > 6)
+                    if (cnt > 6 && !cts.IsCancellationRequested)
                     {
                         vec3[] arr = new vec3[cnt];
                         newCurList.CopyTo(arr);
@@ -323,6 +343,8 @@ namespace AgOpenGPS
 
                         for (int i = 0; i < (arr.Length - 1); i++)
                         {
+                            if (cts.IsCancellationRequested)
+                                break;
                             arr[i].heading = Math.Atan2(arr[i + 1].easting - arr[i].easting, arr[i + 1].northing - arr[i].northing);
                             if (arr[i].heading < 0) arr[i].heading += glm.twoPI;
                             if (arr[i].heading >= glm.twoPI) arr[i].heading -= glm.twoPI;
@@ -375,6 +397,8 @@ namespace AgOpenGPS
 
                         for (int i = 0; i < cnt - 3; i++)
                         {
+                            if (cts.IsCancellationRequested)
+                                break;
                             // add p1
                             newCurList.Add(arr[i + 1]);
 
@@ -422,7 +446,7 @@ namespace AgOpenGPS
                         if (pt33.heading < 0) pt33.heading += glm.twoPI;
                         newCurList.Add(pt33);
 
-                        if (mf.bnd.bndList.Count > 0 && !(track.mode == TrackMode.bndCurve))
+                        if (!cts.IsCancellationRequested && mf.bnd.bndList.Count > 0 && !(track.mode == TrackMode.bndCurve))
                         {
                             int ptCnt = newCurList.Count - 1;
 
@@ -430,6 +454,8 @@ namespace AgOpenGPS
                             //end
                             while (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(newCurList[newCurList.Count - 1]))
                             {
+                                if (cts.IsCancellationRequested)
+                                    break;
                                 isAdding = true;
                                 for (int i = 1; i < 10; i++)
                                 {
@@ -459,6 +485,8 @@ namespace AgOpenGPS
 
                             while (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(newCurList[0]))
                             {
+                                if (cts.IsCancellationRequested)
+                                    break;
                                 isAdding = true;
                                 pt33 = new vec3(newCurList[0]);
 
@@ -489,11 +517,13 @@ namespace AgOpenGPS
             {
                 Log.EventWriter("Exception Build new offset curve" + e.ToString());
             }
-
+            
+            isBusyWorking = false;
+            findGlobalNearestCurvePoint = true;
             return newCurList;
         }
 
-        private List<List<vec3>> BuildCurveGuidelines(double distAway, int _passes, CTrk track)
+        private List<List<vec3>> BuildCurveGuidelines(double distAway, int _passes, CTrk track, CancellationTokenSource cts)
         {
             // the listlist of all the guidelines
             List<List<vec3>> newGuideLL = new List<List<vec3>>();
@@ -502,6 +532,8 @@ namespace AgOpenGPS
             {
                 for (int numGuides = -_passes; numGuides <= _passes; numGuides++)
                 {
+                    if (cts.IsCancellationRequested)
+                        break;
                     if (numGuides == 0) continue;
 
                     //the list of points of curve new list from async
@@ -525,6 +557,9 @@ namespace AgOpenGPS
                     int refCount = track.curvePts.Count;
                     for (int i = 0; i < refCount; i++)
                     {
+                        if (cts.IsCancellationRequested)
+                            break;
+
                         vec3 point = new vec3(
                         track.curvePts[i].easting + (Math.Sin(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
                         track.curvePts[i].northing + (Math.Cos(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
