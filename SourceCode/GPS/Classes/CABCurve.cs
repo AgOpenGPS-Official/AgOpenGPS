@@ -44,8 +44,6 @@ namespace AgOpenGPS
         //guidelines
         private List<List<vec3>> guideArr = new List<List<vec3>>();
 
-        bool isBusyWorking = false;
-
         public bool isCurveValid;
 
         public double lastSecond = 0;
