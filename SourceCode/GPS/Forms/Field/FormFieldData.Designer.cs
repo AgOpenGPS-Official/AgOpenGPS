@@ -51,7 +51,7 @@
             this.lblActualRemain = new System.Windows.Forms.Label();
             this.labelRemain2 = new System.Windows.Forms.Label();
             this.labelTripDist = new System.Windows.Forms.Label();
-            this.labelTrip = new System.Windows.Forms.Label();
+            this.labelArea = new System.Windows.Forms.Label();
             this.btnTripReset = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.labelDistance = new System.Windows.Forms.Label();
@@ -311,31 +311,31 @@
             this.labelTripDist.AutoSize = true;
             this.labelTripDist.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTripDist.ForeColor = System.Drawing.Color.White;
-            this.labelTripDist.Location = new System.Drawing.Point(58, 382);
+            this.labelTripDist.Location = new System.Drawing.Point(59, 382);
             this.labelTripDist.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelTripDist.Name = "labelTripDist";
             this.labelTripDist.Size = new System.Drawing.Size(18, 23);
             this.labelTripDist.TabIndex = 499;
             this.labelTripDist.Text = "-";
             // 
-            // labelTrip
+            // labelArea
             // 
-            this.labelTrip.AutoSize = true;
-            this.labelTrip.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTrip.ForeColor = System.Drawing.Color.White;
-            this.labelTrip.Location = new System.Drawing.Point(10, 382);
-            this.labelTrip.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.labelTrip.Name = "labelTrip";
-            this.labelTrip.Size = new System.Drawing.Size(50, 23);
-            this.labelTrip.TabIndex = 498;
-            this.labelTrip.Text = "Trip:";
+            this.labelArea.AutoSize = true;
+            this.labelArea.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelArea.ForeColor = System.Drawing.Color.White;
+            this.labelArea.Location = new System.Drawing.Point(10, 382);
+            this.labelArea.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelArea.Name = "labelArea";
+            this.labelArea.Size = new System.Drawing.Size(55, 23);
+            this.labelArea.TabIndex = 498;
+            this.labelArea.Text = "Area:";
             // 
             // btnTripReset
             // 
             this.btnTripReset.Image = global::AgOpenGPS.Properties.Resources.back_button;
-            this.btnTripReset.Location = new System.Drawing.Point(31, 432);
+            this.btnTripReset.Location = new System.Drawing.Point(52, 436);
             this.btnTripReset.Name = "btnTripReset";
-            this.btnTripReset.Size = new System.Drawing.Size(115, 48);
+            this.btnTripReset.Size = new System.Drawing.Size(76, 44);
             this.btnTripReset.TabIndex = 500;
             this.btnTripReset.UseVisualStyleBackColor = true;
             this.btnTripReset.Click += new System.EventHandler(this.btnTripReset_Click);
@@ -381,25 +381,25 @@
             this.labelUser.AutoSize = true;
             this.labelUser.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUser.ForeColor = System.Drawing.Color.White;
-            this.labelUser.Location = new System.Drawing.Point(51, 358);
+            this.labelUser.Location = new System.Drawing.Point(59, 357);
             this.labelUser.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelUser.Name = "labelUser";
-            this.labelUser.Size = new System.Drawing.Size(47, 23);
+            this.labelUser.Size = new System.Drawing.Size(43, 23);
             this.labelUser.TabIndex = 504;
-            this.labelUser.Text = "User";
+            this.labelUser.Text = "Trip";
             // 
             // FormFieldData
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(176, 488);
+            this.ClientSize = new System.Drawing.Size(176, 483);
             this.Controls.Add(this.labelUser);
             this.Controls.Add(this.labelDistanceDriven);
             this.Controls.Add(this.labelDistance);
             this.Controls.Add(this.btnTripReset);
             this.Controls.Add(this.labelTripDist);
-            this.Controls.Add(this.labelTrip);
+            this.Controls.Add(this.labelArea);
             this.Controls.Add(this.lblWorkRate);
             this.Controls.Add(this.lblActualRemain);
             this.Controls.Add(this.labelRemain2);
@@ -459,7 +459,7 @@
         private System.Windows.Forms.Label lblActualRemain;
         private System.Windows.Forms.Label labelRemain2;
         private System.Windows.Forms.Label labelTripDist;
-        private System.Windows.Forms.Label labelTrip;
+        private System.Windows.Forms.Label labelArea;
         private System.Windows.Forms.Button btnTripReset;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelDistance;
