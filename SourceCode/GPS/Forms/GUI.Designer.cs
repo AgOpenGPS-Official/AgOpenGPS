@@ -324,6 +324,7 @@ namespace AgOpenGPS
                 isFlashOnOff = !isFlashOnOff;
 
                 //the main formgps window
+                /*
                 if (isMetric)  //metric or imperial
                 {
                     //status strip values
@@ -336,6 +337,7 @@ namespace AgOpenGPS
                     //status strip values
                     distanceToolBtn.Text = fd.DistanceUserFeet + " ft";
                 }
+                */
 
                 //Make sure it is off when it should
                 if (!ct.isContourBtnOn && trk.idx == -1 && isBtnAutoSteerOn) 
