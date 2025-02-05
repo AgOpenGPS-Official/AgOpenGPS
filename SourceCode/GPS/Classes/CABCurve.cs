@@ -216,7 +216,7 @@ namespace AgOpenGPS
         }
 
         
-        public List<vec3> BuildNewOffsetList(double distAway, CTrk track, CancellationToken ct = new CancellationToken())
+        public List<vec3> BuildNewOffsetList(double distAway, CTrk track, CancellationToken ct = default)
         {
             //the list of points of curve new list from async
             List<vec3> newCurList = new List<vec3>();
