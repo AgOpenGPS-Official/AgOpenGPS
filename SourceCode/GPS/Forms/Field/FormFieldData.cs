@@ -44,7 +44,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateHectares;
                 lblApplied.Text = mf.fd.WorkedHectares;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedHectares;
-                labelTripDist.Text = mf.fd.WorkedUserHectares + " ha";
+                labelAreaValue.Text = mf.fd.WorkedUserHectares + " ha";
                 labelDistanceDriven.Text = mf.fd.DistanceUserMeters + " m";
 
             }
@@ -53,7 +53,7 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateAcres;
                 lblApplied.Text = mf.fd.WorkedAcres;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedAcres;
-                labelTripDist.Text = mf.fd.WorkedUserAcres +" ac";
+                labelAreaValue.Text = mf.fd.WorkedUserAcres +" ac";
                 labelDistanceDriven.Text = mf.fd.DistanceUserFeet + " ft";
             }
 
