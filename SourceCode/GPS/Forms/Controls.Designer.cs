@@ -972,7 +972,6 @@ namespace AgOpenGPS
         private void toolStripDropDownButtonDistance_Click(object sender, EventArgs e)
         {
             fd.distanceUser = 0;
-            fd.workedAreaTotalUser = 0;
         }          
         private void btnNavigationSettings_Click(object sender, EventArgs e)
         {
