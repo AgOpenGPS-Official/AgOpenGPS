@@ -39,7 +39,28 @@ namespace AgOpenGPS
             InitializeComponent();
 
             //btnPausePlay.Text = gStr.gsPause;
-            this.Text = "Tracks";
+            this.Text = gStr.gsTracks;
+            labelABLine.Text = gStr.gsABline;
+            labelCurve.Text = gStr.gsCurve;
+            labelAPlus.Text = gStr.gsAPlus;
+            labelABLine.Text = gStr.gsABline; 
+            labelABLine2.Text = gStr.gsABline;
+            labelABCurve.Text = gStr.gsCurve;
+            labelCurve2.Text = gStr.gsCurve;  
+            labelEditName.Text = gStr.gsEnterName;
+            labelEnterName.Text = gStr.gsEnterName;
+            labelLatLon.Text = gStr.gsLatLon;
+            labelLatLonHeading.Text = gStr.gsLatLon + " " + gStr.gsHeading;
+            labelLatitude.Text = gStr.gsLatitude;
+            labelLongtitude.Text = gStr.gsLongtitude;
+            labelPivot.Text = gStr.gsPivot;
+            labelHeading.Text = gStr.gsHeading;
+            labelLatitudeA.Text = gStr.gsLatitude + " A";
+            labelLongtitudeA.Text = gStr.gsLongtitude + " A";  
+            labelLatitudeB.Text = gStr.gsLatitude + " B";
+            labelLongtitudeB.Text = gStr.gsLongtitude + "B";
+            labelStatus.Text = gStr.gsStatus + ":";
+
         }
 
         private void FormBuildTracks_Load(object sender, EventArgs e)

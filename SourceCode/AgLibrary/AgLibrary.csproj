@@ -6,4 +6,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+
 </Project>

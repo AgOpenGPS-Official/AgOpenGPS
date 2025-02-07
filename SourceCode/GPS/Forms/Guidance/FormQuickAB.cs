@@ -29,8 +29,14 @@ namespace AgOpenGPS
             mf = _mf as FormGPS;
             InitializeComponent();
 
-            //btnPausePlay.Text = gStr.gsPause;
-            this.Text = "Tracks";
+            //translate all the controls
+            this.Text = gStr.gsQuickAB;
+            labelABLine.Text = gStr.gsABline;
+            labelCurve.Text = gStr.gsCurve;
+            labelAPlus.Text = gStr.gsAPlus;
+            labelStatus.Text = gStr.gsStatus;
+
+
         }
 
         private void FormQuickAB_Load(object sender, EventArgs e)

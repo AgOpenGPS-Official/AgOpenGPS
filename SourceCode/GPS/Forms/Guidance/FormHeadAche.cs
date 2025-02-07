@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -70,6 +71,11 @@ namespace AgOpenGPS
                 Top = 0;
                 Left = 0;
             }
+            //translate
+            this.Text = gStr.gsHeadlandForm;
+            btnBndLoop.Text = gStr.gsBuild;
+            btnDeleteHeadland.Text = gStr.gsReset;
+
         }
 
         private void FormHeadLine_FormClosing(object sender, FormClosingEventArgs e)

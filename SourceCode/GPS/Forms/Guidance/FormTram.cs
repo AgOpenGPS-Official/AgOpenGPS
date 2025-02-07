@@ -20,8 +20,13 @@ namespace AgOpenGPS
             mf = callingForm as FormGPS;
             InitializeComponent();
 
-            this.Text = gStr.gsTramLines;
-            label3.Text = gStr.gsPasses;
+            this.Text = gStr.gsSimpleTramLines;
+            labelPasses.Text = gStr.gsPasses;
+            labelMode.Text = gStr.gsMode;
+            labelAlpha.Text = gStr.gsAlpha; 
+            labelSeed.Text = gStr.gsWorkWidth;
+            labelSprayWidth.Text = gStr.gsTramWidth;
+            labelTrack.Text = gStr.gsTrack;
             lblTramWidth.Text = (mf.tram.tramWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
             lblSeedWidth.Text = (mf.tool.width * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
 

@@ -35,9 +35,9 @@
             this.lblToolWidth = new System.Windows.Forms.Label();
             this.cboxToolWidths = new System.Windows.Forms.ComboBox();
             this.tlp1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSlice = new System.Windows.Forms.Button();
+            this.btnClipLine = new System.Windows.Forms.Button();
             this.nudSetDistance = new AgOpenGPS.NudlessNumericUpDown();
-            this.cboxIsZoom = new System.Windows.Forms.CheckBox();
+            this.checkBoxZoomIn = new System.Windows.Forms.CheckBox();
             this.btnDeletePoints = new System.Windows.Forms.Button();
             this.btnBndLoop = new System.Windows.Forms.Button();
             this.btnAShrink = new System.Windows.Forms.Button();
@@ -133,9 +133,9 @@
             this.tlp1.ColumnCount = 2;
             this.tlp1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.30263F));
             this.tlp1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.69737F));
-            this.tlp1.Controls.Add(this.btnSlice, 0, 6);
+            this.tlp1.Controls.Add(this.btnClipLine, 0, 6);
             this.tlp1.Controls.Add(this.nudSetDistance, 0, 3);
-            this.tlp1.Controls.Add(this.cboxIsZoom, 0, 7);
+            this.tlp1.Controls.Add(this.checkBoxZoomIn, 0, 7);
             this.tlp1.Controls.Add(this.btnDeletePoints, 1, 5);
             this.tlp1.Controls.Add(this.btnBndLoop, 0, 5);
             this.tlp1.Controls.Add(this.btnAShrink, 1, 1);
@@ -166,26 +166,26 @@
             this.tlp1.Size = new System.Drawing.Size(298, 701);
             this.tlp1.TabIndex = 565;
             // 
-            // btnSlice
+            // btnClipLine
             // 
-            this.btnSlice.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSlice.BackColor = System.Drawing.Color.Transparent;
-            this.btnSlice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnSlice.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnSlice.FlatAppearance.BorderSize = 0;
-            this.btnSlice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSlice.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnSlice.Image = global::AgOpenGPS.Properties.Resources.HeadlandSlice;
-            this.btnSlice.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnSlice.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSlice.Location = new System.Drawing.Point(25, 439);
-            this.btnSlice.Name = "btnSlice";
-            this.btnSlice.Size = new System.Drawing.Size(104, 93);
-            this.btnSlice.TabIndex = 519;
-            this.btnSlice.Text = "Clip Line";
-            this.btnSlice.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSlice.UseVisualStyleBackColor = false;
-            this.btnSlice.Click += new System.EventHandler(this.btnSlice_Click);
+            this.btnClipLine.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnClipLine.BackColor = System.Drawing.Color.Transparent;
+            this.btnClipLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnClipLine.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnClipLine.FlatAppearance.BorderSize = 0;
+            this.btnClipLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClipLine.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.btnClipLine.Image = global::AgOpenGPS.Properties.Resources.HeadlandSlice;
+            this.btnClipLine.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnClipLine.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnClipLine.Location = new System.Drawing.Point(25, 439);
+            this.btnClipLine.Name = "btnClipLine";
+            this.btnClipLine.Size = new System.Drawing.Size(104, 93);
+            this.btnClipLine.TabIndex = 519;
+            this.btnClipLine.Text = "Clip Line";
+            this.btnClipLine.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnClipLine.UseVisualStyleBackColor = false;
+            this.btnClipLine.Click += new System.EventHandler(this.btnSlice_Click);
             // 
             // nudSetDistance
             // 
@@ -211,27 +211,27 @@
             0});
             this.nudSetDistance.Click += new System.EventHandler(this.nudSetDistance_Click);
             // 
-            // cboxIsZoom
+            // checkBoxZoomIn
             // 
-            this.cboxIsZoom.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.cboxIsZoom.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cboxIsZoom.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cboxIsZoom.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.cboxIsZoom.FlatAppearance.BorderSize = 0;
-            this.cboxIsZoom.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(255)))), ((int)(((byte)(160)))));
-            this.cboxIsZoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxIsZoom.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboxIsZoom.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.cboxIsZoom.Image = global::AgOpenGPS.Properties.Resources.ZoomOGL;
-            this.cboxIsZoom.Location = new System.Drawing.Point(25, 539);
-            this.cboxIsZoom.Name = "cboxIsZoom";
-            this.cboxIsZoom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.cboxIsZoom.Size = new System.Drawing.Size(104, 81);
-            this.cboxIsZoom.TabIndex = 564;
-            this.cboxIsZoom.Text = "Zoom In";
-            this.cboxIsZoom.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.cboxIsZoom.UseVisualStyleBackColor = false;
-            this.cboxIsZoom.CheckedChanged += new System.EventHandler(this.cboxIsZoom_CheckedChanged);
+            this.checkBoxZoomIn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.checkBoxZoomIn.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxZoomIn.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.checkBoxZoomIn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.checkBoxZoomIn.FlatAppearance.BorderSize = 0;
+            this.checkBoxZoomIn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(255)))), ((int)(((byte)(160)))));
+            this.checkBoxZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxZoomIn.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxZoomIn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.checkBoxZoomIn.Image = global::AgOpenGPS.Properties.Resources.ZoomOGL;
+            this.checkBoxZoomIn.Location = new System.Drawing.Point(25, 539);
+            this.checkBoxZoomIn.Name = "checkBoxZoomIn";
+            this.checkBoxZoomIn.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.checkBoxZoomIn.Size = new System.Drawing.Size(104, 81);
+            this.checkBoxZoomIn.TabIndex = 564;
+            this.checkBoxZoomIn.Text = "Zoom In";
+            this.checkBoxZoomIn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.checkBoxZoomIn.UseVisualStyleBackColor = false;
+            this.checkBoxZoomIn.CheckedChanged += new System.EventHandler(this.cboxIsZoom_CheckedChanged);
             // 
             // btnDeletePoints
             // 
@@ -266,9 +266,9 @@
             this.btnBndLoop.Image = global::AgOpenGPS.Properties.Resources.HeadlandBuild;
             this.btnBndLoop.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBndLoop.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnBndLoop.Location = new System.Drawing.Point(25, 339);
+            this.btnBndLoop.Location = new System.Drawing.Point(6, 339);
             this.btnBndLoop.Name = "btnBndLoop";
-            this.btnBndLoop.Size = new System.Drawing.Size(104, 93);
+            this.btnBndLoop.Size = new System.Drawing.Size(142, 93);
             this.btnBndLoop.TabIndex = 504;
             this.btnBndLoop.Text = "Build";
             this.btnBndLoop.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -473,7 +473,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1006, 708);
+            this.ClientSize = new System.Drawing.Size(1006, 726);
             this.ControlBox = false;
             this.Controls.Add(this.tlp1);
             this.Controls.Add(this.headingGroupBox);
@@ -513,10 +513,10 @@
         private System.Windows.Forms.Label lblToolWidth;
         private System.Windows.Forms.ComboBox cboxToolWidths;
         private System.Windows.Forms.Button btnHeadlandOff;
-        private System.Windows.Forms.Button btnSlice;
+        private System.Windows.Forms.Button btnClipLine;
         private System.Windows.Forms.Button btnAShrink;
         private System.Windows.Forms.Button btnBShrink;
-        private System.Windows.Forms.CheckBox cboxIsZoom;
+        private System.Windows.Forms.CheckBox checkBoxZoomIn;
         private System.Windows.Forms.TableLayoutPanel tlp1;
     }
 }

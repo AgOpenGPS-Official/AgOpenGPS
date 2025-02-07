@@ -29,8 +29,8 @@ namespace AgOpenGPS.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblFilename = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelFilename = new System.Windows.Forms.Label();
+            this.labelEnterRecordName = new System.Windows.Forms.Label();
             this.tboxFieldName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,32 +40,32 @@ namespace AgOpenGPS.Forms
             this.buttonRecordCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lblFilename
+            // labelFilename
             // 
-            this.lblFilename.AutoSize = true;
-            this.lblFilename.BackColor = System.Drawing.Color.Transparent;
-            this.lblFilename.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFilename.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblFilename.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblFilename.Location = new System.Drawing.Point(31, 86);
-            this.lblFilename.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblFilename.Name = "lblFilename";
-            this.lblFilename.Size = new System.Drawing.Size(83, 19);
-            this.lblFilename.TabIndex = 153;
-            this.lblFilename.Text = "Filename";
+            this.labelFilename.AutoSize = true;
+            this.labelFilename.BackColor = System.Drawing.Color.Transparent;
+            this.labelFilename.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFilename.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelFilename.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelFilename.Location = new System.Drawing.Point(31, 86);
+            this.labelFilename.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelFilename.Name = "labelFilename";
+            this.labelFilename.Size = new System.Drawing.Size(83, 19);
+            this.labelFilename.TabIndex = 153;
+            this.labelFilename.Text = "Filename";
             // 
-            // label1
+            // labelEnterRecordName
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(31, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(175, 23);
-            this.label1.TabIndex = 152;
-            this.label1.Text = "Enter Record Name";
+            this.labelEnterRecordName.AutoSize = true;
+            this.labelEnterRecordName.BackColor = System.Drawing.Color.Transparent;
+            this.labelEnterRecordName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEnterRecordName.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.labelEnterRecordName.Location = new System.Drawing.Point(31, 22);
+            this.labelEnterRecordName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelEnterRecordName.Name = "labelEnterRecordName";
+            this.labelEnterRecordName.Size = new System.Drawing.Size(175, 23);
+            this.labelEnterRecordName.TabIndex = 152;
+            this.labelEnterRecordName.Text = "Enter Record Name";
             // 
             // tboxFieldName
             // 
@@ -183,9 +183,9 @@ namespace AgOpenGPS.Forms
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(676, 234);
             this.ControlBox = false;
-            this.Controls.Add(this.lblFilename);
+            this.Controls.Add(this.labelFilename);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelEnterRecordName);
             this.Controls.Add(this.tboxFieldName);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.checkBoxRecordAddTime);
@@ -207,8 +207,8 @@ namespace AgOpenGPS.Forms
         }
 
         #endregion
-        private System.Windows.Forms.Label lblFilename;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelFilename;
+        private System.Windows.Forms.Label labelEnterRecordName;
         private System.Windows.Forms.TextBox tboxFieldName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;

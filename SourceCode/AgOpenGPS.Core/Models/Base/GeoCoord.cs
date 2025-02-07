@@ -33,6 +33,22 @@ namespace AgOpenGPS.Core.Models
             return new GeoCoord(Math.Max(this.Northing, bCoord.Northing), Math.Max(this.Easting, bCoord.Easting));
         }
 
+        public GeoArea TriangleArea(GeoCoord b, GeoCoord c)
+        {
+            // AbsoluteValue of (Ax(By-Cy) + Bx(Cy-Ay) + Cx(Ay-By)/2)
+
+            double area2 =
+                Easting * (b.Northing - c.Northing) +
+                b.Easting * (c.Northing - Northing) +
+                c.Easting * (Northing - b.Northing);
+            return new GeoArea(Math.Abs(0.5 * area2));
+        }
+
+        public GeoArea QuadArea(GeoCoord q2, GeoCoord q3, GeoCoord q4)
+        {
+            return TriangleArea(q2, q3) + TriangleArea(q3, q4);
+        }
+
         public static GeoDelta operator -(GeoCoord aCoord, GeoCoord bCoord)
         {
             return new GeoDelta(aCoord.Northing - bCoord.Northing, aCoord.Easting - bCoord.Easting);

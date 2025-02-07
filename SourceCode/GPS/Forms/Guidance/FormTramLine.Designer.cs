@@ -36,7 +36,7 @@
             this.btnDnAlpha = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelAlpha = new System.Windows.Forms.Label();
             this.cboxIsOuter = new System.Windows.Forms.CheckBox();
             this.btnDeleteAllTrams = new System.Windows.Forms.Button();
             this.btnCancelTouch = new System.Windows.Forms.Button();
@@ -102,13 +102,12 @@
             this.tlp1.Controls.Add(this.btnDnAlpha, 0, 0);
             this.tlp1.Controls.Add(this.btnCancel, 0, 8);
             this.tlp1.Controls.Add(this.btnSave, 2, 8);
-            this.tlp1.Controls.Add(this.label2, 1, 0);
+            this.tlp1.Controls.Add(this.labelAlpha, 1, 0);
             this.tlp1.Controls.Add(this.cboxIsOuter, 2, 3);
             this.tlp1.Controls.Add(this.btnDeleteAllTrams, 1, 2);
             this.tlp1.Controls.Add(this.btnCancelTouch, 0, 3);
             this.tlp1.Controls.Add(this.btnSwapAB, 0, 2);
             this.tlp1.Controls.Add(this.lblNumPasses, 1, 6);
-            this.tlp1.Controls.Add(this.lblStartPass, 1, 5);
             this.tlp1.Controls.Add(this.btnSelectCurveBk, 0, 4);
             this.tlp1.Controls.Add(this.lblCurveSelected, 1, 4);
             this.tlp1.Controls.Add(this.btnSelectCurve, 2, 4);
@@ -120,6 +119,7 @@
             this.tlp1.Controls.Add(this.btnUpStartTram, 2, 5);
             this.tlp1.Controls.Add(this.btnUpTrams, 2, 6);
             this.tlp1.Controls.Add(this.btnResize, 2, 2);
+            this.tlp1.Controls.Add(this.lblStartPass, 1, 5);
             this.tlp1.Location = new System.Drawing.Point(703, 0);
             this.tlp1.Name = "tlp1";
             this.tlp1.RowCount = 9;
@@ -190,19 +190,19 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // label2
+            // labelAlpha
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(119, 2);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 23);
-            this.label2.TabIndex = 571;
-            this.label2.Text = "Alpha";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelAlpha.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelAlpha.AutoSize = true;
+            this.labelAlpha.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelAlpha.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAlpha.ForeColor = System.Drawing.Color.Black;
+            this.labelAlpha.Location = new System.Drawing.Point(119, 2);
+            this.labelAlpha.Name = "labelAlpha";
+            this.labelAlpha.Size = new System.Drawing.Size(57, 23);
+            this.labelAlpha.TabIndex = 571;
+            this.labelAlpha.Text = "Alpha";
+            this.labelAlpha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cboxIsOuter
             // 
@@ -292,15 +292,17 @@
             // 
             // lblStartPass
             // 
-            this.lblStartPass.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblStartPass.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStartPass.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblStartPass.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStartPass.ForeColor = System.Drawing.Color.Black;
-            this.lblStartPass.Location = new System.Drawing.Point(102, 356);
+            this.lblStartPass.Location = new System.Drawing.Point(102, 344);
             this.lblStartPass.Name = "lblStartPass";
-            this.lblStartPass.Size = new System.Drawing.Size(92, 68);
+            this.lblStartPass.Size = new System.Drawing.Size(92, 92);
             this.lblStartPass.TabIndex = 580;
-            this.lblStartPass.Text = "Start\r\n12";
+            this.lblStartPass.Text = "Start\r\n 12";
             this.lblStartPass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSelectCurveBk
@@ -508,7 +510,7 @@
         private System.Windows.Forms.Button btnUpTrams;
         private System.Windows.Forms.Button btnSwapAB;
         private System.Windows.Forms.Label lblAplha;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelAlpha;
         private System.Windows.Forms.Button btnAddLines;
         private System.Windows.Forms.Button btnCancelTouch;
         private System.Windows.Forms.Button btnUpStartTram;

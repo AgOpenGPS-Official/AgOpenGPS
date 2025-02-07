@@ -49,6 +49,9 @@ namespace AgOpenGPS
 
         private void FormABDraw_Load(object sender, EventArgs e)
         {
+            //translate
+            this.Text = gStr.gsABDraw;
+
             originalLine = mf.trk.idx;
 
             gTemp.Clear();

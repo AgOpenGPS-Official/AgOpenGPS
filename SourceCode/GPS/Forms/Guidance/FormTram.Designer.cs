@@ -30,52 +30,52 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblSmallSnapRight = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelSprayWidth = new System.Windows.Forms.Label();
+            this.labelPasses = new System.Windows.Forms.Label();
             this.btnMode = new System.Windows.Forms.Button();
             this.btnSwapAB = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblTrack = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelTrack = new System.Windows.Forms.Label();
             this.lblTramWidth = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelSeed = new System.Windows.Forms.Label();
             this.lblSeedWidth = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelMode = new System.Windows.Forms.Label();
             this.btnDnTrams = new System.Windows.Forms.Button();
             this.btnUpTrams = new System.Windows.Forms.Button();
             this.tbarTramAlpha = new System.Windows.Forms.TrackBar();
             this.lblAplha = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelAlpha = new System.Windows.Forms.Label();
             this.nudPasses = new AgOpenGPS.NudlessNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.tbarTramAlpha)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPasses)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblSmallSnapRight
+            // labelSprayWidth
             // 
-            this.lblSmallSnapRight.AutoSize = true;
-            this.lblSmallSnapRight.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.lblSmallSnapRight.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmallSnapRight.ForeColor = System.Drawing.Color.Black;
-            this.lblSmallSnapRight.Location = new System.Drawing.Point(102, 298);
-            this.lblSmallSnapRight.Name = "lblSmallSnapRight";
-            this.lblSmallSnapRight.Size = new System.Drawing.Size(49, 19);
-            this.lblSmallSnapRight.TabIndex = 424;
-            this.lblSmallSnapRight.Text = "Spray";
-            this.lblSmallSnapRight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelSprayWidth.AutoSize = true;
+            this.labelSprayWidth.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelSprayWidth.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSprayWidth.ForeColor = System.Drawing.Color.Black;
+            this.labelSprayWidth.Location = new System.Drawing.Point(87, 298);
+            this.labelSprayWidth.Name = "labelSprayWidth";
+            this.labelSprayWidth.Size = new System.Drawing.Size(49, 19);
+            this.labelSprayWidth.TabIndex = 424;
+            this.labelSprayWidth.Text = "Spray";
+            this.labelSprayWidth.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label3
+            // labelPasses
             // 
-            this.label3.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(90, 120);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(99, 48);
-            this.label3.TabIndex = 435;
-            this.label3.Text = "Passes";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.labelPasses.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelPasses.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPasses.ForeColor = System.Drawing.Color.Black;
+            this.labelPasses.Location = new System.Drawing.Point(61, 144);
+            this.labelPasses.Name = "labelPasses";
+            this.labelPasses.Size = new System.Drawing.Size(160, 24);
+            this.labelPasses.TabIndex = 435;
+            this.labelPasses.Text = "Passes";
+            this.labelPasses.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // btnMode
             // 
@@ -122,7 +122,7 @@
             this.btnCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.btnCancel.Location = new System.Drawing.Point(3, 260);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(98, 67);
+            this.btnCancel.Size = new System.Drawing.Size(78, 67);
             this.btnCancel.TabIndex = 421;
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -150,25 +150,25 @@
             this.lblTrack.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblTrack.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTrack.ForeColor = System.Drawing.Color.Black;
-            this.lblTrack.Location = new System.Drawing.Point(155, 325);
+            this.lblTrack.Location = new System.Drawing.Point(191, 325);
             this.lblTrack.Name = "lblTrack";
             this.lblTrack.Size = new System.Drawing.Size(68, 23);
             this.lblTrack.TabIndex = 465;
             this.lblTrack.Text = "10 cm";
             this.lblTrack.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label6
+            // labelTrack
             // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(101, 328);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 19);
-            this.label6.TabIndex = 464;
-            this.label6.Text = "Track";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelTrack.AutoSize = true;
+            this.labelTrack.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelTrack.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTrack.ForeColor = System.Drawing.Color.Black;
+            this.labelTrack.Location = new System.Drawing.Point(86, 328);
+            this.labelTrack.Name = "labelTrack";
+            this.labelTrack.Size = new System.Drawing.Size(48, 19);
+            this.labelTrack.TabIndex = 464;
+            this.labelTrack.Text = "Track";
+            this.labelTrack.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTramWidth
             // 
@@ -176,25 +176,25 @@
             this.lblTramWidth.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblTramWidth.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTramWidth.ForeColor = System.Drawing.Color.Black;
-            this.lblTramWidth.Location = new System.Drawing.Point(155, 295);
+            this.lblTramWidth.Location = new System.Drawing.Point(191, 295);
             this.lblTramWidth.Name = "lblTramWidth";
             this.lblTramWidth.Size = new System.Drawing.Size(68, 23);
             this.lblTramWidth.TabIndex = 462;
             this.lblTramWidth.Text = "10 cm";
             this.lblTramWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label1
+            // labelSeed
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(102, 267);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 19);
-            this.label1.TabIndex = 466;
-            this.label1.Text = "Seed";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelSeed.AutoSize = true;
+            this.labelSeed.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelSeed.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSeed.ForeColor = System.Drawing.Color.Black;
+            this.labelSeed.Location = new System.Drawing.Point(87, 267);
+            this.labelSeed.Name = "labelSeed";
+            this.labelSeed.Size = new System.Drawing.Size(43, 19);
+            this.labelSeed.TabIndex = 466;
+            this.labelSeed.Text = "Seed";
+            this.labelSeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblSeedWidth
             // 
@@ -202,25 +202,25 @@
             this.lblSeedWidth.BackColor = System.Drawing.Color.WhiteSmoke;
             this.lblSeedWidth.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSeedWidth.ForeColor = System.Drawing.Color.Black;
-            this.lblSeedWidth.Location = new System.Drawing.Point(155, 264);
+            this.lblSeedWidth.Location = new System.Drawing.Point(191, 264);
             this.lblSeedWidth.Name = "lblSeedWidth";
             this.lblSeedWidth.Size = new System.Drawing.Size(68, 23);
             this.lblSeedWidth.TabIndex = 467;
             this.lblSeedWidth.Text = "10 cm";
             this.lblSeedWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label4
+            // labelMode
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(155, 3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 19);
-            this.label4.TabIndex = 468;
-            this.label4.Text = "Mode";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelMode.AutoSize = true;
+            this.labelMode.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelMode.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMode.ForeColor = System.Drawing.Color.Black;
+            this.labelMode.Location = new System.Drawing.Point(155, 3);
+            this.labelMode.Name = "labelMode";
+            this.labelMode.Size = new System.Drawing.Size(47, 19);
+            this.labelMode.TabIndex = 468;
+            this.labelMode.Text = "Mode";
+            this.labelMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnDnTrams
             // 
@@ -279,18 +279,18 @@
             this.lblAplha.Text = "100%";
             this.lblAplha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label2
+            // labelAlpha
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(290, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 19);
-            this.label2.TabIndex = 473;
-            this.label2.Text = "Alpha";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelAlpha.AutoSize = true;
+            this.labelAlpha.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.labelAlpha.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAlpha.ForeColor = System.Drawing.Color.Black;
+            this.labelAlpha.Location = new System.Drawing.Point(290, 3);
+            this.labelAlpha.Name = "labelAlpha";
+            this.labelAlpha.Size = new System.Drawing.Size(50, 19);
+            this.labelAlpha.TabIndex = 473;
+            this.labelAlpha.Text = "Alpha";
+            this.labelAlpha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // nudPasses
             // 
@@ -329,23 +329,23 @@
             this.ClientSize = new System.Drawing.Size(353, 354);
             this.ControlBox = false;
             this.Controls.Add(this.lblAplha);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelAlpha);
             this.Controls.Add(this.tbarTramAlpha);
             this.Controls.Add(this.btnUpTrams);
             this.Controls.Add(this.btnDnTrams);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelMode);
+            this.Controls.Add(this.labelSeed);
             this.Controls.Add(this.lblSeedWidth);
             this.Controls.Add(this.nudPasses);
             this.Controls.Add(this.lblTrack);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelPasses);
             this.Controls.Add(this.btnSwapAB);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.lblSmallSnapRight);
+            this.Controls.Add(this.labelTrack);
+            this.Controls.Add(this.labelSprayWidth);
             this.Controls.Add(this.lblTramWidth);
             this.Controls.Add(this.btnMode);
+            this.Controls.Add(this.btnCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
             this.MaximizeBox = false;
@@ -367,21 +367,21 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label lblSmallSnapRight;
+        private System.Windows.Forms.Label labelSprayWidth;
         private NudlessNumericUpDown nudPasses;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelPasses;
         private System.Windows.Forms.Button btnSwapAB;
         private System.Windows.Forms.Button btnMode;
         private System.Windows.Forms.Label lblTramWidth;
         private System.Windows.Forms.Label lblTrack;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelTrack;
+        private System.Windows.Forms.Label labelSeed;
         private System.Windows.Forms.Label lblSeedWidth;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelMode;
         private System.Windows.Forms.Button btnDnTrams;
         private System.Windows.Forms.Button btnUpTrams;
         private System.Windows.Forms.TrackBar tbarTramAlpha;
         private System.Windows.Forms.Label lblAplha;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelAlpha;
     }
 }

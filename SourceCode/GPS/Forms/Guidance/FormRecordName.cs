@@ -20,12 +20,15 @@ namespace AgOpenGPS.Forms
             mf = _callingForm as FormGPS;
 
             InitializeComponent();
+            //translate all the controls
+            labelEnterRecordName.Text = Culture.gStr.gsEnterRecordName;
+
         }
 
         private void FormRecordName_Load(object sender, EventArgs e)
         {
             buttonSave.Enabled = false;
-            lblFilename.Text = "";
+            labelFilename.Text = "";
             tboxFieldName.Focus();
 
             if (!ScreenHelper.IsOnScreen(Bounds))
@@ -51,7 +54,7 @@ namespace AgOpenGPS.Forms
                 buttonSave.Enabled = true;
             }
 
-            lblFilename.Text = tboxFieldName.Text.Trim();
+            labelFilename.Text = tboxFieldName.Text.Trim();
         }
 
         private void buttonRecordCancel_Click(object sender, EventArgs e)
@@ -71,10 +74,10 @@ namespace AgOpenGPS.Forms
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            if (checkBoxRecordAddDate.Checked) lblFilename.Text += " " + DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            if (checkBoxRecordAddTime.Checked) lblFilename.Text += " " + DateTime.Now.ToString("HH-mm", CultureInfo.InvariantCulture);
+            if (checkBoxRecordAddDate.Checked) labelFilename.Text += " " + DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            if (checkBoxRecordAddTime.Checked) labelFilename.Text += " " + DateTime.Now.ToString("HH-mm", CultureInfo.InvariantCulture);
 
-            filename = lblFilename.Text;
+            filename = labelFilename.Text;
             DialogResult = DialogResult.OK;
         }
     }

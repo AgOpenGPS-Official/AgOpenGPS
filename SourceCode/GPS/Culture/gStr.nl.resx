@@ -120,6 +120,9 @@
   <data name="gsABCurve" xml:space="preserve">
     <value>AB-Curve</value>
   </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Maak AB - Klik 2 punten om te beginnen</value>
+  </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB-lijn</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="gsActual" xml:space="preserve">
     <value>Actueel</value>
+  </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>Creer Uitgebreide Spuitpaden</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Ik stem in met de algemene voorwaarden.</value>
@@ -212,6 +218,12 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsBrightness" xml:space="preserve">
     <value>Helderheid</value>
   </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>Maak</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Maak rondom</value>
+  </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>maar veld is geladen</value>
   </data>
@@ -247,6 +259,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsChooseBuildDifferentone" xml:space="preserve">
     <value>Kies of maak een ander</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Snij af</value>
   </data>
   <data name="gsClose" xml:space="preserve">
     <value>Sluiten</value>
@@ -407,6 +422,12 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsEnterFieldName" xml:space="preserve">
     <value>Voer perceelnaam in</value>
   </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Voer Naam In</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Typ hier een naam</value>
+  </data>
   <data name="gsEnterSimCoords" xml:space="preserve">
     <value>Voer sim-coörd. in</value>
   </data>
@@ -566,6 +587,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsLateral" xml:space="preserve">
     <value>Laterale lijn-swap</value>
   </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value>Lengtegraad</value>
+  </data>
   <data name="gsLeft" xml:space="preserve">
     <value>Links</value>
   </data>
@@ -577,6 +601,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsLineWidth" xml:space="preserve">
     <value>Lijn-dikte</value>
+  </data>
+  <data name="gsLongtitude" xml:space="preserve">
+    <value>Breedtegraad</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
     <value>Goal-punt:</value>
@@ -641,6 +668,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsMissingSectionFile" xml:space="preserve">
     <value>Secties bestand ontbreekt</value>
   </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>Modus</value>
+  </data>
   <data name="gsMore" xml:space="preserve">
     <value>Meer</value>
   </data>
@@ -698,6 +728,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Verplaats-afstand</value>
   </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>Verplaatst Referentie Lijn</value>
+  </data>
   <data name="gsOff" xml:space="preserve">
     <value>Uit</value>
   </data>
@@ -749,6 +782,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsPause" xml:space="preserve">
     <value>Pauze</value>
   </data>
+  <data name="gsPivot" xml:space="preserve">
+    <value>Cirkel</value>
+  </data>
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Afstand antenne tot achteras</value>
   </data>
@@ -793,6 +829,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsProportionalGain" xml:space="preserve">
     <value>Versterking</value>
+  </data>
+  <data name="gsQuickAB" xml:space="preserve">
+    <value>Snelle AB-lijn maken</value>
   </data>
   <data name="gsRaiseTime" xml:space="preserve">
     <value>Hef-tijd</value>
@@ -902,6 +941,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Helling-Compensatie</value>
   </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Maak Eenvoudige Spuitpaden</value>
+  </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulator Aan</value>
   </data>
@@ -937,6 +979,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsSpeedo" xml:space="preserve">
     <value>Kilometerteller</value>
+  </data>
+  <data name="gsStart" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Start of verwijder perceelgrens</value>
@@ -1016,6 +1061,9 @@ GEBRUIK OP EIGEN RISICO.</value>
   <data name="gsTrack" xml:space="preserve">
     <value>Spoorbreedte</value>
   </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Maak Geleidingslijnen</value>
+  </data>
   <data name="gsTramLines" xml:space="preserve">
     <value>Spuitpaden</value>
   </data>
@@ -1075,6 +1123,9 @@ GEBRUIK OP EIGEN RISICO.</value>
   </data>
   <data name="gsWorkSwitch" xml:space="preserve">
     <value>Werk Schakelaar</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Werkbreedte</value>
   </data>
   <data name="gsWorked" xml:space="preserve">
     <value>Gedaan</value>

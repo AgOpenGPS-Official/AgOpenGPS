@@ -972,7 +972,6 @@ namespace AgOpenGPS
         private void toolStripDropDownButtonDistance_Click(object sender, EventArgs e)
         {
             fd.distanceUser = 0;
-            fd.workedAreaTotalUser = 0;
         }          
         private void btnNavigationSettings_Click(object sender, EventArgs e)
         {
@@ -1937,6 +1936,8 @@ namespace AgOpenGPS
                         ct.StopContourLine();
                         ct.ResetContour();
                         fd.workedAreaTotal = 0;
+                        fd.workedAreaTotalUser = 0;
+                        fd.distanceUser = 0;
 
                         //clear the section lists
                         for (int j = 0; j < triStrip.Count; j++)

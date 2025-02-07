@@ -1,20 +1,20 @@
 ﻿//Please, if you use this, share the improvements
 
-using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Windows.Forms;
-using AgOpenGPS.Properties;
-using System.Globalization;
-using System.IO;
-using System.Collections.Generic;
+using AgLibrary.Logging;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
-using AgLibrary.Logging;
+using AgOpenGPS.Properties;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Windows.Forms;
 
 namespace AgOpenGPS
 {
-    public enum TBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra }
+    public enum TBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra, JCB }
     public enum HBrand { AgOpenGPS, Case, Claas, JDeere, NewHolland }
     public enum WDBrand { AgOpenGPS, Case, Challenger, JDeere, NewHolland, Holder }
 
@@ -323,19 +323,7 @@ namespace AgOpenGPS
 
                 isFlashOnOff = !isFlashOnOff;
 
-                //the main formgps window
-                if (isMetric)  //metric or imperial
-                {
-                    //status strip values
-                    distanceToolBtn.Text = fd.DistanceUserMeters + "\r\n" + fd.WorkedUserHectares;
-
-                }
-                else  //Imperial Measurements
-                {
-                    //acres on the master section soft control and sections
-                    //status strip values
-                    distanceToolBtn.Text = fd.DistanceUserFeet + "\r\n" + fd.WorkedUserAcres;
-                }
+                //the main formgps windows
 
                 //Make sure it is off when it should
                 if (!ct.isContourBtnOn && trk.idx == -1 && isBtnAutoSteerOn) 
@@ -1607,6 +1595,9 @@ namespace AgOpenGPS
                 bitmap = Resources.z_TractorUrsus;
             else if (brand == TBrand.Valtra)
                 bitmap = Resources.z_TractorValtra;
+            else if (brand == TBrand.JCB)
+                bitmap = Resources.z_TractorJCB;
+
             else
                 bitmap = Resources.z_TractorAoG;
 

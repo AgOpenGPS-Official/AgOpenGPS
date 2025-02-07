@@ -20,7 +20,6 @@ namespace AgOpenGPS
 
             this.bntOK.Text = gStr.gsForNow;
             this.btnSave.Text = gStr.gsToFile;
-
             this.Text = gStr.gsSmoothABCurve;
         }
 

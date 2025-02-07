@@ -11,7 +11,7 @@ namespace AgOpenGPS.Core.Models
             Debug.Assert(a < b + epsilon);
         }
 
-        public static void AssertEqual(bool a, bool b)
+        public static void AreEqual(bool a, bool b)
         {
             Debug.Assert(a == b);
         }

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.lblCurveExists = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.panelName = new System.Windows.Forms.Panel();
-            this.label11 = new System.Windows.Forms.Label();
+            this.labelEnterName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnAddTime = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -51,14 +51,14 @@
             this.btnNewTrack = new System.Windows.Forms.Button();
             this.btnListUse = new System.Windows.Forms.Button();
             this.panelCurve = new System.Windows.Forms.Panel();
-            this.label21 = new System.Windows.Forms.Label();
+            this.labelCurve = new System.Windows.Forms.Label();
             this.btnRefSideCurve = new System.Windows.Forms.Button();
             this.btnCancel_Curve = new System.Windows.Forms.Button();
             this.btnACurve = new System.Windows.Forms.Button();
             this.btnBCurve = new System.Windows.Forms.Button();
             this.btnPausePlay = new System.Windows.Forms.Button();
             this.panelEditName = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
+            this.labelEditName = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddTimeEdit = new System.Windows.Forms.Button();
             this.btnSaveEditName = new System.Windows.Forms.Button();
@@ -67,14 +67,14 @@
             this.panelKML = new System.Windows.Forms.Panel();
             this.btnCancel_KML = new System.Windows.Forms.Button();
             this.panelChoose = new System.Windows.Forms.Panel();
-            this.label14 = new System.Windows.Forms.Label();
+            this.labelPivot = new System.Windows.Forms.Label();
             this.btnLatLonPivot = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelABCurve = new System.Windows.Forms.Label();
+            this.labelCurve2 = new System.Windows.Forms.Label();
+            this.labelABLine = new System.Windows.Forms.Label();
+            this.labelAPlus = new System.Windows.Forms.Label();
+            this.labelLatLonHeading = new System.Windows.Forms.Label();
+            this.labelLatLon = new System.Windows.Forms.Label();
             this.btnzLatLonPlusHeading = new System.Windows.Forms.Button();
             this.btnCancelChoose = new System.Windows.Forms.Button();
             this.btnzLatLon = new System.Windows.Forms.Button();
@@ -84,23 +84,23 @@
             this.btnzABCurve = new System.Windows.Forms.Button();
             this.panelABLine = new System.Windows.Forms.Panel();
             this.btnRefSideAB = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
+            this.labelABLine2 = new System.Windows.Forms.Label();
             this.btnCancel_ABLine = new System.Windows.Forms.Button();
             this.btnEnter_AB = new System.Windows.Forms.Button();
             this.btnALine = new System.Windows.Forms.Button();
             this.btnBLine = new System.Windows.Forms.Button();
             this.panelAPlus = new System.Windows.Forms.Panel();
             this.btnRefSideAPlus = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
+            this.labelAPlus2 = new System.Windows.Forms.Label();
             this.btnCancel_APlus = new System.Windows.Forms.Button();
             this.btnEnter_APlus = new System.Windows.Forms.Button();
             this.nudHeading = new AgOpenGPS.NudlessNumericUpDown();
             this.btnAPlus = new System.Windows.Forms.Button();
             this.panelLatLonPlus = new System.Windows.Forms.Panel();
             this.btnFillLatLonPlus = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
+            this.labelHeading = new System.Windows.Forms.Label();
+            this.labelLongtitude = new System.Windows.Forms.Label();
+            this.labelLatitude = new System.Windows.Forms.Label();
             this.nudLatitudePlus = new AgOpenGPS.NudlessNumericUpDown();
             this.nudLongitudePlus = new AgOpenGPS.NudlessNumericUpDown();
             this.btnCancel_LatLonPlus = new System.Windows.Forms.Button();
@@ -111,20 +111,20 @@
             this.btnFillLatLonLatLonA = new System.Windows.Forms.Button();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
+            this.labelLongtitudeB = new System.Windows.Forms.Label();
+            this.labelLatitudeB = new System.Windows.Forms.Label();
             this.nudLatitudeB = new AgOpenGPS.NudlessNumericUpDown();
             this.nudLongitudeB = new AgOpenGPS.NudlessNumericUpDown();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.labelLongtitudeA = new System.Windows.Forms.Label();
+            this.labelLatitudeA = new System.Windows.Forms.Label();
             this.nudLatitudeA = new AgOpenGPS.NudlessNumericUpDown();
             this.nudLongitudeA = new AgOpenGPS.NudlessNumericUpDown();
             this.btnCancelLatLonLatLon = new System.Windows.Forms.Button();
             this.btnEnter_LatLonLatLon = new System.Windows.Forms.Button();
             this.panelPivot = new System.Windows.Forms.Panel();
             this.btnFillLAtLonPivot = new System.Windows.Forms.Button();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
+            this.labelLongtitudePivot = new System.Windows.Forms.Label();
+            this.labelLatitudePivot = new System.Windows.Forms.Label();
             this.nudLatitudePivot = new AgOpenGPS.NudlessNumericUpDown();
             this.nudLongitudePivot = new AgOpenGPS.NudlessNumericUpDown();
             this.btnCancel_Pivot = new System.Windows.Forms.Button();
@@ -166,23 +166,23 @@
             this.lblCurveExists.Text = "> OFF <";
             this.lblCurveExists.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // labelStatus
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(36, 195);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 23);
-            this.label2.TabIndex = 148;
-            this.label2.Text = "Status: ";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus.ForeColor = System.Drawing.Color.Black;
+            this.labelStatus.Location = new System.Drawing.Point(36, 195);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(84, 23);
+            this.labelStatus.TabIndex = 148;
+            this.labelStatus.Text = "Status: ";
+            this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelName
             // 
             this.panelName.BackColor = System.Drawing.Color.White;
-            this.panelName.Controls.Add(this.label11);
+            this.panelName.Controls.Add(this.labelEnterName);
             this.panelName.Controls.Add(this.label1);
             this.panelName.Controls.Add(this.btnAddTime);
             this.panelName.Controls.Add(this.btnAdd);
@@ -193,18 +193,18 @@
             this.panelName.Size = new System.Drawing.Size(241, 310);
             this.panelName.TabIndex = 434;
             // 
-            // label11
+            // labelEnterName
             // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(16, 14);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(66, 16);
-            this.label11.TabIndex = 450;
-            this.label11.Text = "Add Name";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelEnterName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelEnterName.AutoSize = true;
+            this.labelEnterName.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEnterName.ForeColor = System.Drawing.Color.Black;
+            this.labelEnterName.Location = new System.Drawing.Point(16, 14);
+            this.labelEnterName.Name = "labelEnterName";
+            this.labelEnterName.Size = new System.Drawing.Size(66, 16);
+            this.labelEnterName.TabIndex = 450;
+            this.labelEnterName.Text = "Add Name";
+            this.labelEnterName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -472,31 +472,31 @@
             // panelCurve
             // 
             this.panelCurve.BackColor = System.Drawing.Color.White;
-            this.panelCurve.Controls.Add(this.label21);
+            this.panelCurve.Controls.Add(this.labelCurve);
             this.panelCurve.Controls.Add(this.btnRefSideCurve);
             this.panelCurve.Controls.Add(this.btnCancel_Curve);
             this.panelCurve.Controls.Add(this.btnACurve);
             this.panelCurve.Controls.Add(this.btnBCurve);
             this.panelCurve.Controls.Add(this.btnPausePlay);
             this.panelCurve.Controls.Add(this.lblCurveExists);
-            this.panelCurve.Controls.Add(this.label2);
+            this.panelCurve.Controls.Add(this.labelStatus);
             this.panelCurve.Location = new System.Drawing.Point(248, 434);
             this.panelCurve.Name = "panelCurve";
             this.panelCurve.Size = new System.Drawing.Size(241, 310);
             this.panelCurve.TabIndex = 436;
             // 
-            // label21
+            // labelCurve
             // 
-            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.ForeColor = System.Drawing.Color.Black;
-            this.label21.Location = new System.Drawing.Point(4, 4);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(40, 16);
-            this.label21.TabIndex = 449;
-            this.label21.Text = "Curve";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelCurve.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelCurve.AutoSize = true;
+            this.labelCurve.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCurve.ForeColor = System.Drawing.Color.Black;
+            this.labelCurve.Location = new System.Drawing.Point(4, 4);
+            this.labelCurve.Name = "labelCurve";
+            this.labelCurve.Size = new System.Drawing.Size(40, 16);
+            this.labelCurve.TabIndex = 449;
+            this.labelCurve.Text = "Curve";
+            this.labelCurve.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnRefSideCurve
             // 
@@ -586,7 +586,7 @@
             // panelEditName
             // 
             this.panelEditName.BackColor = System.Drawing.Color.White;
-            this.panelEditName.Controls.Add(this.label8);
+            this.panelEditName.Controls.Add(this.labelEditName);
             this.panelEditName.Controls.Add(this.label3);
             this.panelEditName.Controls.Add(this.btnAddTimeEdit);
             this.panelEditName.Controls.Add(this.btnSaveEditName);
@@ -597,18 +597,18 @@
             this.panelEditName.Size = new System.Drawing.Size(241, 310);
             this.panelEditName.TabIndex = 437;
             // 
-            // label8
+            // labelEditName
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(22, 14);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(65, 16);
-            this.label8.TabIndex = 449;
-            this.label8.Text = "Edit Name";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelEditName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelEditName.AutoSize = true;
+            this.labelEditName.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEditName.ForeColor = System.Drawing.Color.Black;
+            this.labelEditName.Location = new System.Drawing.Point(22, 14);
+            this.labelEditName.Name = "labelEditName";
+            this.labelEditName.Size = new System.Drawing.Size(65, 16);
+            this.labelEditName.TabIndex = 449;
+            this.labelEditName.Text = "Edit Name";
+            this.labelEditName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -718,14 +718,14 @@
             // panelChoose
             // 
             this.panelChoose.BackColor = System.Drawing.Color.Gainsboro;
-            this.panelChoose.Controls.Add(this.label14);
+            this.panelChoose.Controls.Add(this.labelPivot);
             this.panelChoose.Controls.Add(this.btnLatLonPivot);
-            this.panelChoose.Controls.Add(this.label9);
-            this.panelChoose.Controls.Add(this.label6);
-            this.panelChoose.Controls.Add(this.label10);
-            this.panelChoose.Controls.Add(this.label5);
-            this.panelChoose.Controls.Add(this.label7);
-            this.panelChoose.Controls.Add(this.label4);
+            this.panelChoose.Controls.Add(this.labelABCurve);
+            this.panelChoose.Controls.Add(this.labelCurve2);
+            this.panelChoose.Controls.Add(this.labelABLine);
+            this.panelChoose.Controls.Add(this.labelAPlus);
+            this.panelChoose.Controls.Add(this.labelLatLonHeading);
+            this.panelChoose.Controls.Add(this.labelLatLon);
             this.panelChoose.Controls.Add(this.btnzLatLonPlusHeading);
             this.panelChoose.Controls.Add(this.btnCancelChoose);
             this.panelChoose.Controls.Add(this.btnzLatLon);
@@ -738,18 +738,18 @@
             this.panelChoose.Size = new System.Drawing.Size(630, 425);
             this.panelChoose.TabIndex = 441;
             // 
-            // label14
+            // labelPivot
             // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.ForeColor = System.Drawing.Color.Black;
-            this.label14.Location = new System.Drawing.Point(288, 406);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(34, 16);
-            this.label14.TabIndex = 451;
-            this.label14.Text = "Pivot";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelPivot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelPivot.AutoSize = true;
+            this.labelPivot.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPivot.ForeColor = System.Drawing.Color.Black;
+            this.labelPivot.Location = new System.Drawing.Point(288, 406);
+            this.labelPivot.Name = "labelPivot";
+            this.labelPivot.Size = new System.Drawing.Size(34, 16);
+            this.labelPivot.TabIndex = 451;
+            this.labelPivot.Text = "Pivot";
+            this.labelPivot.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnLatLonPivot
             // 
@@ -767,86 +767,86 @@
             this.btnLatLonPivot.UseVisualStyleBackColor = false;
             this.btnLatLonPivot.Click += new System.EventHandler(this.btnLatLonPivot_Click);
             // 
-            // label9
+            // labelABCurve
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(107, 265);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(71, 16);
-            this.label9.TabIndex = 449;
-            this.label9.Text = "AB + Curve";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelABCurve.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelABCurve.AutoSize = true;
+            this.labelABCurve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelABCurve.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelABCurve.ForeColor = System.Drawing.Color.Black;
+            this.labelABCurve.Location = new System.Drawing.Point(107, 265);
+            this.labelABCurve.Name = "labelABCurve";
+            this.labelABCurve.Size = new System.Drawing.Size(71, 16);
+            this.labelABCurve.TabIndex = 449;
+            this.labelABCurve.Text = "AB + Curve";
+            this.labelABCurve.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // labelCurve2
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(499, 406);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(40, 16);
-            this.label6.TabIndex = 448;
-            this.label6.Text = "Curve";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelCurve2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelCurve2.AutoSize = true;
+            this.labelCurve2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCurve2.ForeColor = System.Drawing.Color.Black;
+            this.labelCurve2.Location = new System.Drawing.Point(499, 406);
+            this.labelCurve2.Name = "labelCurve2";
+            this.labelCurve2.Size = new System.Drawing.Size(40, 16);
+            this.labelCurve2.TabIndex = 448;
+            this.labelCurve2.Text = "Curve";
+            this.labelCurve2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label10
+            // labelABLine
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(496, 264);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(49, 16);
-            this.label10.TabIndex = 448;
-            this.label10.Text = "AB Line";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelABLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelABLine.AutoSize = true;
+            this.labelABLine.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelABLine.ForeColor = System.Drawing.Color.Black;
+            this.labelABLine.Location = new System.Drawing.Point(496, 264);
+            this.labelABLine.Name = "labelABLine";
+            this.labelABLine.Size = new System.Drawing.Size(49, 16);
+            this.labelABLine.TabIndex = 448;
+            this.labelABLine.Text = "AB Line";
+            this.labelABLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // labelAPlus
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(506, 121);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 16);
-            this.label5.TabIndex = 448;
-            this.label5.Text = "A+";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAPlus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelAPlus.AutoSize = true;
+            this.labelAPlus.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAPlus.ForeColor = System.Drawing.Color.Black;
+            this.labelAPlus.Location = new System.Drawing.Point(506, 121);
+            this.labelAPlus.Name = "labelAPlus";
+            this.labelAPlus.Size = new System.Drawing.Size(23, 16);
+            this.labelAPlus.TabIndex = 448;
+            this.labelAPlus.Text = "A+";
+            this.labelAPlus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label7
+            // labelLatLonHeading
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(290, 263);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 16);
-            this.label7.TabIndex = 448;
-            this.label7.Text = "Lat/Lon +";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatLonHeading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatLonHeading.AutoSize = true;
+            this.labelLatLonHeading.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelLatLonHeading.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatLonHeading.ForeColor = System.Drawing.Color.Black;
+            this.labelLatLonHeading.Location = new System.Drawing.Point(290, 263);
+            this.labelLatLonHeading.Name = "labelLatLonHeading";
+            this.labelLatLonHeading.Size = new System.Drawing.Size(61, 16);
+            this.labelLatLonHeading.TabIndex = 448;
+            this.labelLatLonHeading.Text = "Lat/Lon +";
+            this.labelLatLonHeading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // labelLatLon
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(294, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 16);
-            this.label4.TabIndex = 448;
-            this.label4.Text = "Lat/Lon";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatLon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatLon.AutoSize = true;
+            this.labelLatLon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelLatLon.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatLon.ForeColor = System.Drawing.Color.Black;
+            this.labelLatLon.Location = new System.Drawing.Point(294, 120);
+            this.labelLatLon.Name = "labelLatLon";
+            this.labelLatLon.Size = new System.Drawing.Size(49, 16);
+            this.labelLatLon.TabIndex = 448;
+            this.labelLatLon.Text = "Lat/Lon";
+            this.labelLatLon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnzLatLonPlusHeading
             // 
@@ -965,7 +965,7 @@
             // 
             this.panelABLine.BackColor = System.Drawing.Color.White;
             this.panelABLine.Controls.Add(this.btnRefSideAB);
-            this.panelABLine.Controls.Add(this.label12);
+            this.panelABLine.Controls.Add(this.labelABLine2);
             this.panelABLine.Controls.Add(this.btnCancel_ABLine);
             this.panelABLine.Controls.Add(this.btnEnter_AB);
             this.panelABLine.Controls.Add(this.btnALine);
@@ -991,18 +991,18 @@
             this.btnRefSideAB.UseVisualStyleBackColor = false;
             this.btnRefSideAB.Click += new System.EventHandler(this.btnRefSideAB_Click);
             // 
-            // label12
+            // labelABLine2
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(5, 4);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 16);
-            this.label12.TabIndex = 447;
-            this.label12.Text = "AB Line";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelABLine2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelABLine2.AutoSize = true;
+            this.labelABLine2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelABLine2.ForeColor = System.Drawing.Color.Black;
+            this.labelABLine2.Location = new System.Drawing.Point(5, 4);
+            this.labelABLine2.Name = "labelABLine2";
+            this.labelABLine2.Size = new System.Drawing.Size(49, 16);
+            this.labelABLine2.TabIndex = 447;
+            this.labelABLine2.Text = "AB Line";
+            this.labelABLine2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnCancel_ABLine
             // 
@@ -1076,7 +1076,7 @@
             // 
             this.panelAPlus.BackColor = System.Drawing.Color.White;
             this.panelAPlus.Controls.Add(this.btnRefSideAPlus);
-            this.panelAPlus.Controls.Add(this.label13);
+            this.panelAPlus.Controls.Add(this.labelAPlus2);
             this.panelAPlus.Controls.Add(this.btnCancel_APlus);
             this.panelAPlus.Controls.Add(this.btnEnter_APlus);
             this.panelAPlus.Controls.Add(this.nudHeading);
@@ -1102,18 +1102,18 @@
             this.btnRefSideAPlus.UseVisualStyleBackColor = false;
             this.btnRefSideAPlus.Click += new System.EventHandler(this.btnRefSideAPlus_Click);
             // 
-            // label13
+            // labelAPlus2
             // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.Black;
-            this.label13.Location = new System.Drawing.Point(6, 4);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 16);
-            this.label13.TabIndex = 447;
-            this.label13.Text = "A+";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAPlus2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelAPlus2.AutoSize = true;
+            this.labelAPlus2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAPlus2.ForeColor = System.Drawing.Color.Black;
+            this.labelAPlus2.Location = new System.Drawing.Point(6, 4);
+            this.labelAPlus2.Name = "labelAPlus2";
+            this.labelAPlus2.Size = new System.Drawing.Size(23, 16);
+            this.labelAPlus2.TabIndex = 447;
+            this.labelAPlus2.Text = "A+";
+            this.labelAPlus2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnCancel_APlus
             // 
@@ -1196,9 +1196,9 @@
             // 
             this.panelLatLonPlus.BackColor = System.Drawing.Color.Gainsboro;
             this.panelLatLonPlus.Controls.Add(this.btnFillLatLonPlus);
-            this.panelLatLonPlus.Controls.Add(this.label17);
-            this.panelLatLonPlus.Controls.Add(this.label16);
-            this.panelLatLonPlus.Controls.Add(this.label15);
+            this.panelLatLonPlus.Controls.Add(this.labelHeading);
+            this.panelLatLonPlus.Controls.Add(this.labelLongtitude);
+            this.panelLatLonPlus.Controls.Add(this.labelLatitude);
             this.panelLatLonPlus.Controls.Add(this.nudLatitudePlus);
             this.panelLatLonPlus.Controls.Add(this.nudLongitudePlus);
             this.panelLatLonPlus.Controls.Add(this.btnCancel_LatLonPlus);
@@ -1225,44 +1225,44 @@
             this.btnFillLatLonPlus.UseVisualStyleBackColor = false;
             this.btnFillLatLonPlus.Click += new System.EventHandler(this.btnFillLatLonPlus_Click);
             // 
-            // label17
+            // labelHeading
             // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.ForeColor = System.Drawing.Color.Black;
-            this.label17.Location = new System.Drawing.Point(90, 230);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(60, 18);
-            this.label17.TabIndex = 454;
-            this.label17.Text = "Heading";
-            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelHeading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelHeading.AutoSize = true;
+            this.labelHeading.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHeading.ForeColor = System.Drawing.Color.Black;
+            this.labelHeading.Location = new System.Drawing.Point(90, 230);
+            this.labelHeading.Name = "labelHeading";
+            this.labelHeading.Size = new System.Drawing.Size(60, 18);
+            this.labelHeading.TabIndex = 454;
+            this.labelHeading.Text = "Heading";
+            this.labelHeading.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label16
+            // labelLongtitude
             // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.ForeColor = System.Drawing.Color.Black;
-            this.label16.Location = new System.Drawing.Point(90, 118);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(137, 18);
-            this.label16.TabIndex = 453;
-            this.label16.Text = "Longitude ( +- 180)";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLongtitude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLongtitude.AutoSize = true;
+            this.labelLongtitude.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLongtitude.ForeColor = System.Drawing.Color.Black;
+            this.labelLongtitude.Location = new System.Drawing.Point(90, 118);
+            this.labelLongtitude.Name = "labelLongtitude";
+            this.labelLongtitude.Size = new System.Drawing.Size(137, 18);
+            this.labelLongtitude.TabIndex = 453;
+            this.labelLongtitude.Text = "Longitude ( +- 180)";
+            this.labelLongtitude.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label15
+            // labelLatitude
             // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.Black;
-            this.label15.Location = new System.Drawing.Point(90, 38);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(118, 18);
-            this.label15.TabIndex = 452;
-            this.label15.Text = "Lattitude (+- 90)";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatitude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatitude.AutoSize = true;
+            this.labelLatitude.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatitude.ForeColor = System.Drawing.Color.Black;
+            this.labelLatitude.Location = new System.Drawing.Point(90, 38);
+            this.labelLatitude.Name = "labelLatitude";
+            this.labelLatitude.Size = new System.Drawing.Size(118, 18);
+            this.labelLatitude.TabIndex = 452;
+            this.labelLatitude.Text = "Lattitude (+- 90)";
+            this.labelLatitude.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nudLatitudePlus
             // 
@@ -1388,12 +1388,12 @@
             this.panelLatLonLatLon.Controls.Add(this.btnFillLatLonLatLonA);
             this.panelLatLonLatLon.Controls.Add(this.label24);
             this.panelLatLonLatLon.Controls.Add(this.label23);
-            this.panelLatLonLatLon.Controls.Add(this.label18);
-            this.panelLatLonLatLon.Controls.Add(this.label22);
+            this.panelLatLonLatLon.Controls.Add(this.labelLongtitudeB);
+            this.panelLatLonLatLon.Controls.Add(this.labelLatitudeB);
             this.panelLatLonLatLon.Controls.Add(this.nudLatitudeB);
             this.panelLatLonLatLon.Controls.Add(this.nudLongitudeB);
-            this.panelLatLonLatLon.Controls.Add(this.label19);
-            this.panelLatLonLatLon.Controls.Add(this.label20);
+            this.panelLatLonLatLon.Controls.Add(this.labelLongtitudeA);
+            this.panelLatLonLatLon.Controls.Add(this.labelLatitudeA);
             this.panelLatLonLatLon.Controls.Add(this.nudLatitudeA);
             this.panelLatLonLatLon.Controls.Add(this.nudLongitudeA);
             this.panelLatLonLatLon.Controls.Add(this.btnCancelLatLonLatLon);
@@ -1461,31 +1461,31 @@
             this.label23.Text = "A";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label18
+            // labelLongtitudeB
             // 
-            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.ForeColor = System.Drawing.Color.Black;
-            this.label18.Location = new System.Drawing.Point(81, 253);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(137, 18);
-            this.label18.TabIndex = 457;
-            this.label18.Text = "Longitude ( +- 180)";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLongtitudeB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLongtitudeB.AutoSize = true;
+            this.labelLongtitudeB.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLongtitudeB.ForeColor = System.Drawing.Color.Black;
+            this.labelLongtitudeB.Location = new System.Drawing.Point(81, 253);
+            this.labelLongtitudeB.Name = "labelLongtitudeB";
+            this.labelLongtitudeB.Size = new System.Drawing.Size(137, 18);
+            this.labelLongtitudeB.TabIndex = 457;
+            this.labelLongtitudeB.Text = "Longitude ( +- 180)";
+            this.labelLongtitudeB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label22
+            // labelLatitudeB
             // 
-            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.ForeColor = System.Drawing.Color.Black;
-            this.label22.Location = new System.Drawing.Point(81, 174);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(118, 18);
-            this.label22.TabIndex = 456;
-            this.label22.Text = "Lattitude (+- 90)";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatitudeB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatitudeB.AutoSize = true;
+            this.labelLatitudeB.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatitudeB.ForeColor = System.Drawing.Color.Black;
+            this.labelLatitudeB.Location = new System.Drawing.Point(81, 174);
+            this.labelLatitudeB.Name = "labelLatitudeB";
+            this.labelLatitudeB.Size = new System.Drawing.Size(118, 18);
+            this.labelLatitudeB.TabIndex = 456;
+            this.labelLatitudeB.Text = "Lattitude (+- 90)";
+            this.labelLatitudeB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nudLatitudeB
             // 
@@ -1543,31 +1543,31 @@
             -2147024896});
             this.nudLongitudeB.Click += new System.EventHandler(this.nudLongitudeB_Click);
             // 
-            // label19
+            // labelLongtitudeA
             // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.ForeColor = System.Drawing.Color.Black;
-            this.label19.Location = new System.Drawing.Point(81, 87);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(137, 18);
-            this.label19.TabIndex = 453;
-            this.label19.Text = "Longitude ( +- 180)";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLongtitudeA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLongtitudeA.AutoSize = true;
+            this.labelLongtitudeA.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLongtitudeA.ForeColor = System.Drawing.Color.Black;
+            this.labelLongtitudeA.Location = new System.Drawing.Point(81, 87);
+            this.labelLongtitudeA.Name = "labelLongtitudeA";
+            this.labelLongtitudeA.Size = new System.Drawing.Size(137, 18);
+            this.labelLongtitudeA.TabIndex = 453;
+            this.labelLongtitudeA.Text = "Longitude ( +- 180)";
+            this.labelLongtitudeA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label20
+            // labelLatitudeA
             // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(81, 7);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(118, 18);
-            this.label20.TabIndex = 452;
-            this.label20.Text = "Lattitude (+- 90)";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatitudeA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatitudeA.AutoSize = true;
+            this.labelLatitudeA.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatitudeA.ForeColor = System.Drawing.Color.Black;
+            this.labelLatitudeA.Location = new System.Drawing.Point(81, 7);
+            this.labelLatitudeA.Name = "labelLatitudeA";
+            this.labelLatitudeA.Size = new System.Drawing.Size(118, 18);
+            this.labelLatitudeA.TabIndex = 452;
+            this.labelLatitudeA.Text = "Lattitude (+- 90)";
+            this.labelLatitudeA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nudLatitudeA
             // 
@@ -1665,8 +1665,8 @@
             // 
             this.panelPivot.BackColor = System.Drawing.Color.Gainsboro;
             this.panelPivot.Controls.Add(this.btnFillLAtLonPivot);
-            this.panelPivot.Controls.Add(this.label25);
-            this.panelPivot.Controls.Add(this.label26);
+            this.panelPivot.Controls.Add(this.labelLongtitudePivot);
+            this.panelPivot.Controls.Add(this.labelLatitudePivot);
             this.panelPivot.Controls.Add(this.nudLatitudePivot);
             this.panelPivot.Controls.Add(this.nudLongitudePivot);
             this.panelPivot.Controls.Add(this.btnCancel_Pivot);
@@ -1692,31 +1692,31 @@
             this.btnFillLAtLonPivot.UseVisualStyleBackColor = false;
             this.btnFillLAtLonPivot.Click += new System.EventHandler(this.btnFillLAtLonPivot_Click);
             // 
-            // label25
+            // labelLongtitudePivot
             // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.ForeColor = System.Drawing.Color.Black;
-            this.label25.Location = new System.Drawing.Point(101, 118);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(137, 18);
-            this.label25.TabIndex = 453;
-            this.label25.Text = "Longitude ( +- 180)";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLongtitudePivot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLongtitudePivot.AutoSize = true;
+            this.labelLongtitudePivot.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLongtitudePivot.ForeColor = System.Drawing.Color.Black;
+            this.labelLongtitudePivot.Location = new System.Drawing.Point(101, 118);
+            this.labelLongtitudePivot.Name = "labelLongtitudePivot";
+            this.labelLongtitudePivot.Size = new System.Drawing.Size(137, 18);
+            this.labelLongtitudePivot.TabIndex = 453;
+            this.labelLongtitudePivot.Text = "Longitude ( +- 180)";
+            this.labelLongtitudePivot.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label26
+            // labelLatitudePivot
             // 
-            this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.ForeColor = System.Drawing.Color.Black;
-            this.label26.Location = new System.Drawing.Point(101, 38);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(118, 18);
-            this.label26.TabIndex = 452;
-            this.label26.Text = "Lattitude (+- 90)";
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelLatitudePivot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelLatitudePivot.AutoSize = true;
+            this.labelLatitudePivot.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLatitudePivot.ForeColor = System.Drawing.Color.Black;
+            this.labelLatitudePivot.Location = new System.Drawing.Point(101, 38);
+            this.labelLatitudePivot.Name = "labelLatitudePivot";
+            this.labelLatitudePivot.Size = new System.Drawing.Size(118, 18);
+            this.labelLatitudePivot.TabIndex = 452;
+            this.labelLatitudePivot.Text = "Lattitude (+- 90)";
+            this.labelLatitudePivot.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nudLatitudePivot
             // 
@@ -1885,7 +1885,7 @@
         private System.Windows.Forms.Button btnPausePlay;
         private System.Windows.Forms.Button btnListDelete;
         private System.Windows.Forms.Button btnListUse;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button btnNewTrack;
         private System.Windows.Forms.Button btnCancel_Curve;
         private System.Windows.Forms.Panel panelName;
@@ -1912,28 +1912,28 @@
         private System.Windows.Forms.Button btnMoveDn;
         private System.Windows.Forms.Button btnHideShow;
         private System.Windows.Forms.Panel panelChoose;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelCurve2;
+        private System.Windows.Forms.Label labelAPlus;
+        private System.Windows.Forms.Label labelLatLonHeading;
+        private System.Windows.Forms.Label labelLatLon;
         private System.Windows.Forms.Button btnzLatLonPlusHeading;
         private System.Windows.Forms.Button btnCancelChoose;
         private System.Windows.Forms.Button btnzLatLon;
         private System.Windows.Forms.Button btnzABLine;
         private System.Windows.Forms.Button btnzABCurve;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label labelABLine;
         private System.Windows.Forms.Button btnzAPlus;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelEnterName;
+        private System.Windows.Forms.Label labelEditName;
         private System.Windows.Forms.Panel panelABLine;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label labelABLine2;
         private System.Windows.Forms.Button btnCancel_ABLine;
         private System.Windows.Forms.Button btnEnter_AB;
         private System.Windows.Forms.Button btnALine;
         private System.Windows.Forms.Button btnBLine;
         private NudlessNumericUpDown nudHeading;
         private System.Windows.Forms.Panel panelAPlus;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label labelAPlus2;
         private System.Windows.Forms.Button btnCancel_APlus;
         private System.Windows.Forms.Button btnEnter_APlus;
         private System.Windows.Forms.Button btnAPlus;
@@ -1943,33 +1943,33 @@
         private NudlessNumericUpDown nudHeadingLatLonPlus;
         private NudlessNumericUpDown nudLatitudePlus;
         private NudlessNumericUpDown nudLongitudePlus;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label labelLatitude;
+        private System.Windows.Forms.Label labelHeading;
+        private System.Windows.Forms.Label labelLongtitude;
         private System.Windows.Forms.Panel panelLatLonLatLon;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label labelLongtitudeA;
+        private System.Windows.Forms.Label labelLatitudeA;
         private NudlessNumericUpDown nudLatitudeA;
         private NudlessNumericUpDown nudLongitudeA;
         private System.Windows.Forms.Button btnCancelLatLonLatLon;
         private System.Windows.Forms.Button btnEnter_LatLonLatLon;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label labelLongtitudeB;
+        private System.Windows.Forms.Label labelLatitudeB;
         private NudlessNumericUpDown nudLatitudeB;
         private NudlessNumericUpDown nudLongitudeB;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button btnLoadABFromKML;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label labelABCurve;
         private System.Windows.Forms.Button btnCancelMain;
         private System.Windows.Forms.Button btnRefSideCurve;
         private System.Windows.Forms.Button btnRefSideAB;
         private System.Windows.Forms.Button btnRefSideAPlus;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label labelPivot;
         private System.Windows.Forms.Button btnLatLonPivot;
         private System.Windows.Forms.Panel panelPivot;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label labelLongtitudePivot;
+        private System.Windows.Forms.Label labelLatitudePivot;
         private NudlessNumericUpDown nudLatitudePivot;
         private NudlessNumericUpDown nudLongitudePivot;
         private System.Windows.Forms.Button btnCancel_Pivot;
@@ -1978,7 +1978,7 @@
         private System.Windows.Forms.Button btnFillLatLonLatLonB;
         private System.Windows.Forms.Button btnFillLatLonLatLonA;
         private System.Windows.Forms.Button btnFillLAtLonPivot;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label labelCurve;
         private System.Windows.Forms.Timer timer1;
     }
 }

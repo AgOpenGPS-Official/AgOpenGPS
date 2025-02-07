@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 
 namespace AgOpenGPS.Protocols.ISOBUS
@@ -25,7 +26,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                 xml.WriteStartElement("PFD");//Field
                 xml.WriteAttributeString("A", "PFD-1");
                 xml.WriteAttributeString("C", designator);
-                xml.WriteAttributeString("D", area.ToString());
+                xml.WriteAttributeString("D", area.ToString(CultureInfo.InvariantCulture));
 
                 double lat = 0;
                 double lon = 0;
@@ -56,8 +57,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
                             pn.ConvertLocalToWGS84(bndList[i].fenceLineEar[j].northing, bndList[i].fenceLineEar[j].easting, out lat, out lon);
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "2");
-                            xml.WriteAttributeString("C", lat.ToString());
-                            xml.WriteAttributeString("D", lon.ToString());
+                            xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
+                            xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
                             xml.WriteEndElement(); //Boundary Points                   
                         }
 
@@ -84,8 +85,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                 pn.ConvertLocalToWGS84(bndList[i].hdLine[j].northing, bndList[i].hdLine[j].easting, out lat, out lon);
                                 xml.WriteStartElement("PNT");//Boundary Points
                                 xml.WriteAttributeString("A", "2");
-                                xml.WriteAttributeString("C", lat.ToString());
-                                xml.WriteAttributeString("D", lon.ToString());
+                                xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
+                                xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
                                 xml.WriteEndElement(); //Boundary Points                   
                             }
 
@@ -109,7 +110,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                             xml.WriteStartElement("LSG");//Line
                             xml.WriteAttributeString("A", "5");
                             xml.WriteAttributeString("B", trk.gArr[i].name);
-                            ///xml.WriteAttributeString("C", (tool.width).ToString());
+                            ///xml.WriteAttributeString("C", (tool.width).ToString(CultureInfo.InvariantCulture));
                             {
                                 xml.WriteStartElement("PNT");//A
 
@@ -117,8 +118,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                     trk.gArr[i].ptA.easting - Math.Sin(trk.gArr[i].heading) * 1000, out lat, out lon);
 
                                 xml.WriteAttributeString("A", "2");
-                                xml.WriteAttributeString("C", lat.ToString());
-                                xml.WriteAttributeString("D", lon.ToString());
+                                xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
+                                xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
 
                                 xml.WriteEndElement();//A
                                 xml.WriteStartElement("PNT");//B
@@ -128,8 +129,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                                 xml.WriteAttributeString("A", "2");
 
-                                xml.WriteAttributeString("C", lat.ToString());
-                                xml.WriteAttributeString("D", lon.ToString());
+                                xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
+                                xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
                             }
                             xml.WriteEndElement();//B
                             xml.WriteEndElement();//Line
@@ -151,7 +152,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                             xml.WriteStartElement("LSG");//Curve
                             xml.WriteAttributeString("A", "5"); //denotes guidance
                             xml.WriteAttributeString("B", trk.gArr[i].name);
-                            //xml.WriteAttributeString("C", (tool.width).ToString());
+                            //xml.WriteAttributeString("C", (tool.width).ToString(CultureInfo.InvariantCulture));
 
                             for (int j = 0; j < trk.gArr[i].curvePts.Count; j++)
                             {
@@ -160,8 +161,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                     trk.gArr[i].curvePts[j].easting, out lat, out lon);
 
                                 xml.WriteAttributeString("A", "2");
-                                xml.WriteAttributeString("C", lat.ToString());
-                                xml.WriteAttributeString("D", lon.ToString());
+                                xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
+                                xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
 
                                 xml.WriteEndElement();//point
                             }
