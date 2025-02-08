@@ -116,10 +116,10 @@ namespace AgOpenGPS
                             }
                         }
 
-                        //First kind of Gudance  GGP\GPN\LSG\PNT
+                        //First kind of Guidance  GGP\GPN\LSG\PNT
                         foreach (XmlNode nodePart in fieldParts)
                         {
-                            if (nodePart.Name == "GGP")
+                            if (nodePart.Name == "GGP" && nodePart.ChildNodes[0].Attributes.GetNamedItem("B") != null && nodePart.ChildNodes[0].Attributes.GetNamedItem("C") != null)
                             {
                                 //in GPN "B" is the name and "C" is the type
                                 if (nodePart.ChildNodes[0].Attributes["C"].Value == "1")
@@ -135,16 +135,17 @@ namespace AgOpenGPS
                             }
                         }
 
-                        //Second type of Gudance LSG\PNT
+                        //Second type of Guidance LSG\PNT
                         foreach (XmlNode nodePart in fieldParts)
                         {
                             //LSG with a "5" in [A] means Guidance line [B] is the name of line
-                            if (nodePart.Name == "LSG" && nodePart.Attributes["A"].Value == "5")
+                            if (nodePart.Name == "LSG" && nodePart.ChildNodes[0].Attributes.GetNamedItem("A") != null && nodePart.Attributes["A"].Value == "5")
                             {
-                                if (nodePart.ChildNodes.Count < 3)
-                                    tree.Nodes[tree.Nodes.Count - 1].Nodes.Add("ABLine: " + nodePart.Attributes["B"].Value);
-                                else
-                                    tree.Nodes[tree.Nodes.Count - 1].Nodes.Add("Curve: " + nodePart.Attributes["B"].Value);
+                                if (nodePart.ChildNodes[0].Attributes.GetNamedItem("B") != null)
+                                    if (nodePart.ChildNodes.Count < 3)
+                                        tree.Nodes[tree.Nodes.Count - 1].Nodes.Add("ABLine: " + nodePart.Attributes["B"].Value);
+                                    else
+                                        tree.Nodes[tree.Nodes.Count - 1].Nodes.Add("Curve: " + nodePart.Attributes["B"].Value);
                             }
                         }
                     }
@@ -549,7 +550,10 @@ namespace AgOpenGPS
                                 if (nodePart.ChildNodes[0].ChildNodes[0].Attributes["A"].Value == "5") //Guidance Pattern
                                 {
                                     //get the name
-                                    mf.ABLine.desName = nodePart.ChildNodes[0].Attributes["B"].Value;
+                                    if (nodePart.ChildNodes[0].Attributes.GetNamedItem("B") != null)
+                                        mf.ABLine.desName = nodePart.ChildNodes[0].Attributes["B"].Value;
+                                    else if(nodePart.ChildNodes[0].Attributes.GetNamedItem("A") != null)
+                                        mf.ABLine.desName = nodePart.Attributes["B"].Value; // fallback, if ChildNodes[0].Attributes["B"] is null
 
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
@@ -597,8 +601,12 @@ namespace AgOpenGPS
                             {
                                 if (nodePart.ChildNodes[0].ChildNodes[0].Attributes["A"].Value == "5") //Guidance Pattern
                                 {
+                                    if (nodePart.ChildNodes[0].Attributes.GetNamedItem("B") != null)
+                                        mf.curve.desName = nodePart.ChildNodes[0].Attributes["B"].Value;
+                                    else if (nodePart.ChildNodes[0].Attributes.GetNamedItem("A") != null)
+                                        mf.curve.desName = nodePart.Attributes["B"].Value;  // fallback, if ChildNodes[0].Attributes["B"] is null
                                     //get the name
-                                    mf.curve.desName = nodePart.ChildNodes[0].Attributes["B"].Value;
+                                    //mf.curve.desName = nodePart.ChildNodes[0].Attributes["B"].Value;
 
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);

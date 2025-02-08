@@ -347,7 +347,15 @@ namespace AgOpenGPS
                     MessageBoxDefaultButton.Button2);
                 if (result3 == DialogResult.Yes)
                 {
-                    System.IO.Directory.Delete(dir2Delete, true);
+                    try
+                    {
+                        System.IO.Directory.Delete(dir2Delete, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error Deleting Field: " + ex.ToString(), gStr.gsFileError,
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else return;
             }
