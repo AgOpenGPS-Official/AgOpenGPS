@@ -1234,6 +1234,18 @@ namespace AgOpenGPS
             if (ahrs.isAutoSteerAuto || mc.isRemoteWorkSystemOn)
                 mc.CheckWorkAndSteerSwitch();
 
+            // Check ISOBUS for actual section states
+            if (isobus.IsAlive())
+            {
+                for (int j = 0; j < tool.numOfSections; j++)
+                {
+                    if (isobus.IsSectionOn(j))
+                        section[j].isMappingOn = true;
+                    else
+                        section[j].isMappingOn = false;
+                }
+            }
+
             // check if any sections have changed status
             number = 0;
 

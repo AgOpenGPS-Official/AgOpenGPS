@@ -198,6 +198,7 @@
             this.btnAutoYouTurn = new System.Windows.Forms.Button();
             this.btnSectionMasterAuto = new System.Windows.Forms.Button();
             this.btnSectionMasterManual = new System.Windows.Forms.Button();
+            this.btnIsobusSectionControl = new System.Windows.Forms.Button();
             this.btnAutoTrack = new System.Windows.Forms.Button();
             this.btnCycleLinesBk = new System.Windows.Forms.Button();
             this.btnCycleLines = new System.Windows.Forms.Button();
@@ -2635,6 +2636,7 @@
             this.panelRight.Controls.Add(this.btnAutoYouTurn);
             this.panelRight.Controls.Add(this.btnSectionMasterAuto);
             this.panelRight.Controls.Add(this.btnSectionMasterManual);
+            this.panelRight.Controls.Add(this.btnIsobusSectionControl);
             this.panelRight.Controls.Add(this.btnAutoTrack);
             this.panelRight.Controls.Add(this.btnCycleLinesBk);
             this.panelRight.Controls.Add(this.btnCycleLines);
@@ -2736,6 +2738,29 @@
             this.btnSectionMasterManual.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSectionMasterManual.UseVisualStyleBackColor = false;
             this.btnSectionMasterManual.Click += new System.EventHandler(this.btnSectionMasterManual_Click);
+            // 
+            // btnIsobusSectionControl
+            // 
+            this.btnIsobusSectionControl.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnIsobusSectionControl.BackColor = System.Drawing.Color.Transparent;
+            this.btnIsobusSectionControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnIsobusSectionControl.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue;
+            this.btnIsobusSectionControl.FlatAppearance.BorderSize = 0;
+            this.btnIsobusSectionControl.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent;
+            this.btnIsobusSectionControl.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnIsobusSectionControl.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnIsobusSectionControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnIsobusSectionControl.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnIsobusSectionControl.Image = global::AgOpenGPS.Properties.Resources.IsobusSectionControlOff;
+            this.btnIsobusSectionControl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnIsobusSectionControl.Location = new System.Drawing.Point(3, 379);
+            this.btnIsobusSectionControl.Name = "btnIsobusSectionControl";
+            this.btnIsobusSectionControl.Size = new System.Drawing.Size(64, 64);
+            this.btnIsobusSectionControl.TabIndex = 544;
+            this.btnIsobusSectionControl.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnIsobusSectionControl.UseVisualStyleBackColor = false;
+            this.btnIsobusSectionControl.Visible = false;
+            this.btnIsobusSectionControl.Click += new System.EventHandler(this.btnIsobusSC_Click);
             // 
             // btnAutoTrack
             // 
@@ -3272,6 +3297,7 @@
         private System.Windows.Forms.ToolStripMenuItem eventViewerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guidelinesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tramsMultiMenuField;
+        public System.Windows.Forms.Button btnIsobusSectionControl;
     }
 }
 

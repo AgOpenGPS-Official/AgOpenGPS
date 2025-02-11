@@ -907,12 +907,7 @@ namespace AgOpenGPS
                 //save distance for display
                 lightbarDistance = guidanceLineDistanceOff;
 
-                if (!isBtnAutoSteerOn) //32020 means auto steer is off
-                {
-                    guidanceLineDistanceOff = 32020;
-                    p_254.pgn[p_254.status] = 0;
-                }
-
+                if (!isBtnAutoSteerOn) p_254.pgn[p_254.status] = 0;
                 else p_254.pgn[p_254.status] = 1;
 
                 if (recPath.isDrivingRecordedPath || recPath.isFollowingDubinsToPath) p_254.pgn[p_254.status] = 1;
