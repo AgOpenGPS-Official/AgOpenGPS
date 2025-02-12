@@ -150,9 +150,18 @@ namespace AgOpenGPS
                     if (isBtnAutoSteerOn)
                     {
                         isBtnAutoSteerOn = false;
-                        btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
+                        if (!cboxAutoSnapToPivot.Checked)
+                        {
+                            btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
+                        }
+                        else
+                        {
+                            btnAutoSteer.Image = Properties.Resources.AutoSteerSnapToPivot;
+                        }
                         //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                         if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
+
+                        
                     }
 
                     Log.EventWriter("Steer Off, Above Max Safe Speed for Autosteer");
@@ -169,7 +178,14 @@ namespace AgOpenGPS
             if (isBtnAutoSteerOn)
             {
                 isBtnAutoSteerOn = false;
-                btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
+                if (!cboxAutoSnapToPivot.Checked)
+                {
+                    btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
+                }
+                else
+                {
+                    btnAutoSteer.Image = Properties.Resources.AutoSteerSnapToPivot;
+                }
                 //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                 if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
             }
@@ -178,7 +194,14 @@ namespace AgOpenGPS
                 if (ct.isContourBtnOn | trk.idx > -1)
                 {
                     isBtnAutoSteerOn = true;
-                    btnAutoSteer.Image = Properties.Resources.AutoSteerOn;
+                    if (!cboxAutoSnapToPivot.Checked)
+                    {
+                        btnAutoSteer.Image = Properties.Resources.AutoSteerOn;
+                    }
+                    else
+                    { 
+                        btnAutoSteer.Image = Properties.Resources.AutoSteerSnapToPivot; 
+                    } 
                     if (sounds.isSteerSoundOn) sounds.sndAutoSteerOn.Play();
 
                     //redraw uturn if btn enabled.
@@ -460,6 +483,9 @@ namespace AgOpenGPS
         {
             trk.isAutoSnapToPivot = cboxAutoSnapToPivot.Checked;
             trackMethodPanelCounter = 1;
+            if (cboxAutoSnapToPivot.Checked)
+                btnAutoSteer.Image = Properties.Resources.AutoSteerSnapToPivot;
+            else btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
         }
         #endregion
 
