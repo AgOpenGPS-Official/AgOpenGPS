@@ -1,9 +1,9 @@
 ﻿//Please, if you use this give me some credit
 //Copyright BrianTee, copy right out of it.
 
+using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
-using AgOpenGPS.Culture;
 
 namespace AgOpenGPS
 {
@@ -23,12 +23,13 @@ namespace AgOpenGPS
             labelRemain2.Text = gStr.gsRemain;
             labelOverlap.Text = gStr.gsOverlap;
             labelActual.Text = gStr.gsActual;   
-            labelRate.Text = gStr.gsRate;   
+            labelRate.Text = gStr.gsRate;
 
         }
         private void FormFieldData_Load(object sender, EventArgs e)
         {
             timer1_Tick(this, EventArgs.Empty);
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -43,6 +44,8 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateHectares;
                 lblApplied.Text = mf.fd.WorkedHectares;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedHectares;
+                labelAreaValue.Text = mf.fd.WorkedUserHectares + " ha";
+                labelDistanceDriven.Text = mf.fd.DistanceUserMeters + " m";
 
             }
             else
@@ -50,32 +53,47 @@ namespace AgOpenGPS
                 lblWorkRate.Text = mf.fd.WorkRateAcres;
                 lblApplied.Text = mf.fd.WorkedAcres;
                 lblActualLessOverlap.Text = mf.fd.ActualAreaWorkedAcres;
+                labelAreaValue.Text = mf.fd.WorkedUserAcres +" ac";
+                labelDistanceDriven.Text = mf.fd.DistanceUserFeet + " ft";
             }
 
             if (mf.bnd.bndList.Count > 0)
             {
                 lblTimeRemaining.Text = mf.fd.TimeTillFinished;
                 lblRemainPercent.Text = mf.fd.WorkedAreaRemainPercentage;
+                lblTotalArea.Visible = true;
+                lblAreaRemain.Visible = true;
+                lblTimeRemaining.Visible = true;
+                lblRemainPercent.Visible = true;
+                labelRemain.Visible = true;
+                lblActualRemain.Visible = true;
+                labelRemain2.Visible = true;
 
                 if (mf.isMetric)
                 {
                     lblTotalArea.Text = mf.fd.AreaBoundaryLessInnersHectares;
                     lblAreaRemain.Text = mf.fd.WorkedAreaRemainHectares;
                     lblActualRemain.Text = mf.fd.ActualRemainHectares;
+                    
                 }
                 else
                 {
                     lblTotalArea.Text = mf.fd.AreaBoundaryLessInnersAcres;
                     lblAreaRemain.Text = mf.fd.WorkedAreaRemainAcres;
                     lblActualRemain.Text = mf.fd.ActualRemainAcres;
+                    
                 }
             }
             else
             {
-                lblTotalArea.Text = "-";
-                lblAreaRemain.Text = "-";
-                lblTimeRemaining.Text = "-";
-                lblRemainPercent.Text = "-";
+                lblTotalArea.Visible = false;
+                lblAreaRemain.Visible = false;
+                lblTimeRemaining.Visible = false;
+                lblRemainPercent.Visible = false;
+                lblActualRemain.Visible = false;
+                labelRemain2.Visible = false;
+                labelRemain.Visible = false;
+                
 
                 //if (mf.isMetric) lblActualLessOverlap.Text = 
                 //        ((100-mf.fd.overlapPercent) * 0.01 * mf.fd.workedAreaTotal * glm.m2ha).ToString("N2");
@@ -85,6 +103,11 @@ namespace AgOpenGPS
             }
         }
 
+        private void btnTripReset_Click(object sender, EventArgs e)
+        {
+            mf.fd.workedAreaTotalUser = 0;
+            mf.fd.distanceUser = 0;
+        }
     }
 }
 

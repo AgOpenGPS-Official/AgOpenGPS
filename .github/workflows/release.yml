@@ -65,7 +65,7 @@ jobs:
         release_name: Release ${{ env.GitVersion_SemVer }}
         body: |
           Automated Release by GitHub Action CI
-        draft: false
+        draft: ${{ github.ref_name == 'master' }}
         prerelease: ${{ contains(github.ref_name, 'release/') }}
 
     - name: Upload Release Asset

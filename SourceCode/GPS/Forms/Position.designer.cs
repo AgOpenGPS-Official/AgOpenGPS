@@ -265,19 +265,19 @@ namespace AgOpenGPS
                                 camHeading = glm.toDegrees(gpsHeading);
 
                                 //now we have a heading, fix the first 3
-                                if (vehicle.antennaOffset != 0)
+                                if (vehicle.VehicleConfig.AntennaOffset != 0)
                                 {
                                     for (int i = 0; i < 3; i++)
                                     {
-                                        stepFixPts[i].easting = (Math.Cos(-gpsHeading) * vehicle.antennaOffset) + stepFixPts[i].easting;
-                                        stepFixPts[i].northing = (Math.Sin(-gpsHeading) * vehicle.antennaOffset) + stepFixPts[i].northing;
+                                        stepFixPts[i].easting = (Math.Cos(-gpsHeading) * vehicle.VehicleConfig.AntennaOffset) + stepFixPts[i].easting;
+                                        stepFixPts[i].northing = (Math.Sin(-gpsHeading) * vehicle.VehicleConfig.AntennaOffset) + stepFixPts[i].northing;
                                     }
                                 }
 
                                 if (ahrs.imuRoll != 88888)
                                 {
                                     //change for roll to the right is positive times -1
-                                    rollCorrectionDistance = Math.Tan(glm.toRadians((ahrs.imuRoll))) * -vehicle.antennaHeight;
+                                    rollCorrectionDistance = Math.Tan(glm.toRadians((ahrs.imuRoll))) * -vehicle.VehicleConfig.AntennaHeight;
 
                                     // roll to left is positive  **** important!!
                                     // not any more - April 30, 2019 - roll to right is positive Now! Still Important
@@ -305,10 +305,10 @@ namespace AgOpenGPS
                         #endregion
 
                         #region Offset Roll
-                        if (vehicle.antennaOffset != 0)
+                        if (vehicle.VehicleConfig.AntennaOffset != 0)
                         {
-                            pn.fix.easting = (Math.Cos(-gpsHeading) * vehicle.antennaOffset) + pn.fix.easting;
-                            pn.fix.northing = (Math.Sin(-gpsHeading) * vehicle.antennaOffset) + pn.fix.northing;
+                            pn.fix.easting = (Math.Cos(-gpsHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.easting;
+                            pn.fix.northing = (Math.Sin(-gpsHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.northing;
                         }
 
                         uncorrectedEastingGraph = pn.fix.easting;
@@ -317,7 +317,7 @@ namespace AgOpenGPS
                         if (ahrs.imuRoll != 88888)
                         {
                             //change for roll to the right is positive times -1
-                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.antennaHeight;
+                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.VehicleConfig.AntennaHeight;
                             correctionDistanceGraph = rollCorrectionDistance;
 
                             pn.fix.easting = (Math.Cos(-gpsHeading) * rollCorrectionDistance) + pn.fix.easting;
@@ -394,10 +394,10 @@ namespace AgOpenGPS
                             }
 
                             if (isReverse)
-                                newGPSHeading -= glm.toRadians(vehicle.antennaPivot / 1
+                                newGPSHeading -= glm.toRadians(vehicle.VehicleConfig.AntennaPivot / 1
                                     * mc.actualSteerAngleDegrees * ahrs.reverseComp);
                             else
-                                newGPSHeading -= glm.toRadians(vehicle.antennaPivot / 1
+                                newGPSHeading -= glm.toRadians(vehicle.VehicleConfig.AntennaPivot / 1
                                     * mc.actualSteerAngleDegrees * ahrs.forwardComp);
 
                             if (newGPSHeading < 0) newGPSHeading += glm.twoPI;
@@ -489,10 +489,10 @@ namespace AgOpenGPS
                                     isReverse = false;
 
                                 if (isReverse)
-                                    newGPSHeading -= glm.toRadians(vehicle.antennaPivot / 1
+                                    newGPSHeading -= glm.toRadians(vehicle.VehicleConfig.AntennaPivot / 1
                                         * mc.actualSteerAngleDegrees * ahrs.reverseComp);
                                 else
-                                    newGPSHeading -= glm.toRadians(vehicle.antennaPivot / 1
+                                    newGPSHeading -= glm.toRadians(vehicle.VehicleConfig.AntennaPivot / 1
                                         * mc.actualSteerAngleDegrees * ahrs.forwardComp);
 
                                 if (newGPSHeading < 0) newGPSHeading += glm.twoPI;
@@ -597,10 +597,10 @@ namespace AgOpenGPS
 
                         #region Antenna Offset
 
-                        if (vehicle.antennaOffset != 0)
+                        if (vehicle.VehicleConfig.AntennaOffset != 0)
                         {
-                            pn.fix.easting = (Math.Cos(-fixHeading) * vehicle.antennaOffset) + pn.fix.easting;
-                            pn.fix.northing = (Math.Sin(-fixHeading) * vehicle.antennaOffset) + pn.fix.northing;
+                            pn.fix.easting = (Math.Cos(-fixHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.easting;
+                            pn.fix.northing = (Math.Sin(-fixHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.northing;
                         }
                         #endregion
 
@@ -660,7 +660,7 @@ namespace AgOpenGPS
                         if (ahrs.imuRoll != 88888)
                         {
                             //change for roll to the right is positive times -1
-                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.antennaHeight;
+                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.VehicleConfig.AntennaHeight;
                             correctionDistanceGraph = rollCorrectionDistance;
 
                             // roll to left is positive  **** important!!
@@ -695,17 +695,17 @@ namespace AgOpenGPS
 
                         uncorrectedEastingGraph = pn.fix.easting;
 
-                        if (vehicle.antennaOffset != 0)
+                        if (vehicle.VehicleConfig.AntennaOffset != 0)
                         {
-                            pn.fix.easting = (Math.Cos(-fixHeading) * vehicle.antennaOffset) + pn.fix.easting;
-                            pn.fix.northing = (Math.Sin(-fixHeading) * vehicle.antennaOffset) + pn.fix.northing;
+                            pn.fix.easting = (Math.Cos(-fixHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.easting;
+                            pn.fix.northing = (Math.Sin(-fixHeading) * vehicle.VehicleConfig.AntennaOffset) + pn.fix.northing;
                         }
 
-                        if (ahrs.imuRoll != 88888 && vehicle.antennaHeight != 0)
+                        if (ahrs.imuRoll != 88888 && vehicle.VehicleConfig.AntennaHeight != 0)
                         {
 
                             //change for roll to the right is positive times -1
-                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.antennaHeight;
+                            rollCorrectionDistance = Math.Sin(glm.toRadians((ahrs.imuRoll))) * -vehicle.VehicleConfig.AntennaHeight;
                             correctionDistanceGraph = rollCorrectionDistance;
 
                             pn.fix.easting = (Math.Cos(-gpsHeading) * rollCorrectionDistance) + pn.fix.easting;
@@ -1197,7 +1197,7 @@ namespace AgOpenGPS
                 sbGrid.Append(
                       pn.latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
                     + pn.longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
-                    + Math.Round((pn.altitude - vehicle.antennaHeight),3).ToString(CultureInfo.InvariantCulture) + ","
+                    + Math.Round((pn.altitude - vehicle.VehicleConfig.AntennaHeight),3).ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fixQuality.ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fix.easting.ToString("N2", CultureInfo.InvariantCulture) + ","
                     + pn.fix.northing.ToString("N2", CultureInfo.InvariantCulture) + ","
@@ -1253,12 +1253,12 @@ namespace AgOpenGPS
 
             //translate from pivot position to steer axle and pivot axle position
             //translate world to the pivot axle
-            pivotAxlePos.easting = pn.fix.easting - (Math.Sin(fixHeading) * vehicle.antennaPivot);
-            pivotAxlePos.northing = pn.fix.northing - (Math.Cos(fixHeading) * vehicle.antennaPivot);
+            pivotAxlePos.easting = pn.fix.easting - (Math.Sin(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
+            pivotAxlePos.northing = pn.fix.northing - (Math.Cos(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
             pivotAxlePos.heading = fixHeading;
 
-            steerAxlePos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * vehicle.wheelbase);
-            steerAxlePos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * vehicle.wheelbase);
+            steerAxlePos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * vehicle.VehicleConfig.Wheelbase);
+            steerAxlePos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * vehicle.VehicleConfig.Wheelbase);
             steerAxlePos.heading = fixHeading;
 
             //guidance look ahead distance based on time or tool width at least 
@@ -1269,8 +1269,8 @@ namespace AgOpenGPS
             
 
             //determine where the rigid vehicle hitch ends
-            hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (tool.hitchLength - vehicle.antennaPivot));
-            hitchPos.northing = pn.fix.northing + (Math.Cos(fixHeading) * (tool.hitchLength - vehicle.antennaPivot));
+            hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
+            hitchPos.northing = pn.fix.northing + (Math.Cos(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
 
             //tool attached via a trailing hitch
             if (tool.isToolTrailing)
@@ -1655,7 +1655,7 @@ namespace AgOpenGPS
                 {
                     pn.latStart = pn.latitude;
                     pn.lonStart = pn.longitude;
-                    pn.SetLocalMetersPerDegree();
+                    pn.SetLocalMetersPerDegree(false);
                 }
 
                 pn.ConvertWGS84ToLocal(pn.latitude, pn.longitude, out pn.fix.northing, out pn.fix.easting);

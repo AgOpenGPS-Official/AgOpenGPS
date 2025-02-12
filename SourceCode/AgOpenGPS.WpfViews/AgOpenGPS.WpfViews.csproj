@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AgOpenGPS.Core\AgOpenGPS.Core.csproj" />
+  </ItemGroup>
+
+</Project>

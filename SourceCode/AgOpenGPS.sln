@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgLibrary.Tests", "AgLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.Core", "AgOpenGPS.Core\AgOpenGPS.Core.csproj", "{F2486554-D063-4CB0-8220-52883AFEF238}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.Core.Tests", "AgOpenGPS.Core.Tests\AgOpenGPS.Core.Tests.csproj", "{C11215F6-2903-4CE6-BEA2-B70F831770D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.WpfApp", "AgOpenGPS.WpfApp\AgOpenGPS.WpfApp.csproj", "{CCBC7CE7-6A6A-47F7-9781-36A864FDCBD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.WpfViews", "AgOpenGPS.WpfViews\AgOpenGPS.WpfViews.csproj", "{03B426E1-59BD-4E72-9528-DE37429E21C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,16 +68,28 @@ Global
 		{F2486554-D063-4CB0-8220-52883AFEF238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2486554-D063-4CB0-8220-52883AFEF238}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2486554-D063-4CB0-8220-52883AFEF238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11215F6-2903-4CE6-BEA2-B70F831770D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11215F6-2903-4CE6-BEA2-B70F831770D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11215F6-2903-4CE6-BEA2-B70F831770D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11215F6-2903-4CE6-BEA2-B70F831770D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBC7CE7-6A6A-47F7-9781-36A864FDCBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBC7CE7-6A6A-47F7-9781-36A864FDCBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBC7CE7-6A6A-47F7-9781-36A864FDCBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBC7CE7-6A6A-47F7-9781-36A864FDCBD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_ResXSortingComparison = Ordinal
-		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
-		RESX_ShowErrorsInErrorList = False
-		RESX_SortFileContentOnSave = True
-		RESX_NeutralResourcesLanguage = en-US
 		RESX_ConfirmAddLanguageFile = True
+		RESX_NeutralResourcesLanguage = en-US
+		RESX_SortFileContentOnSave = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
+		RESX_ResXSortingComparison = Ordinal
 	EndGlobalSection
 EndGlobal

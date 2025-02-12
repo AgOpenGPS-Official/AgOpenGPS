@@ -1,0 +1,25 @@
+﻿<Window x:Class="AgOpenGPS.WpfApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+
+    xmlns:mv="clr-namespace:AgOpenGPS.WpfApp.MainViews"
+    xmlns:vv="clr-namespace:AgOpenGPS.WpfApp.ViewportViews"
+
+    Height="700" Width="1200">
+
+    <DockPanel LastChildFill="True">
+        <mv:HeaderBar DockPanel.Dock="Top"/>
+        <mv:LeftButtonStrip x:Name="leftButtonStrip"
+            DockPanel.Dock="Left" Width="100"/>
+        <mv:RightButtonStrip x:Name="rightButtonStrip"
+            DockPanel.Dock="Right"/>
+        <mv:BottomButtonStrip x:Name="bottomButtonStrip"
+            DockPanel.Dock="Bottom"/>
+        <Grid x:Name="viewportGrid">
+            <Grid x:Name="viewport" Background="Black"/>
+            <vv:ViewportOverlay/>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -278,7 +278,7 @@ namespace AgOpenGPS
                                 }
                                 patchCount = triStrip[j].patchList.Count-1;
 
-                                if (patchCount > 0)
+                                if (patchCount > -1)
                                 {
                                     try
                                     {
@@ -358,7 +358,7 @@ namespace AgOpenGPS
                         }
 
                         //Draw headland
-                        if (bnd.isHeadlandOn)
+                        if (bnd.isHeadlandOn && bnd.bndList.Count > 0)
                         {
                             GL.LineWidth(ABLine.lineWidth * 3);
 
@@ -964,7 +964,7 @@ namespace AgOpenGPS
             double deg = glm.toDegrees(Math.Atan(theta));
 
             //tram and hydraulics
-            if (tram.displayMode > 0 && tool.width > vehicle.trackWidth)
+            if (tram.displayMode > 0 && tool.width > vehicle.VehicleConfig.TrackWidth)
             {
                 tram.controlByte = 0;
                 //1 pixels in is there a tram line?

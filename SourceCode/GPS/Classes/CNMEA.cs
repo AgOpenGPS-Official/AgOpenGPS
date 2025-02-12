@@ -50,8 +50,15 @@ namespace AgOpenGPS
             mf.avgSpeed = (mf.avgSpeed * 0.75) + (speed * 0.25);
         }
 
-        public void SetLocalMetersPerDegree()
+        public void SetLocalMetersPerDegree(bool setSim)
         {
+            if (setSim && mf.timerSim.Enabled)
+            {
+                latitude = mf.sim.latitude = Properties.Settings.Default.setGPS_SimLatitude = latStart;
+                longitude = mf.sim.longitude = Properties.Settings.Default.setGPS_SimLongitude = lonStart;
+                Properties.Settings.Default.Save();
+            }
+
             mPerDegreeLat = 111132.92 - 559.82 * Math.Cos(2.0 * latStart * 0.01745329251994329576923690766743) + 1.175
             * Math.Cos(4.0 * latStart * 0.01745329251994329576923690766743) - 0.0023
             * Math.Cos(6.0 * latStart * 0.01745329251994329576923690766743);

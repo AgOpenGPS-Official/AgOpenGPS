@@ -67,6 +67,8 @@
             this.panelKML = new System.Windows.Forms.Panel();
             this.btnCancel_KML = new System.Windows.Forms.Button();
             this.panelChoose = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnLatLonPivotCircle = new System.Windows.Forms.Button();
             this.labelPivot = new System.Windows.Forms.Label();
             this.btnLatLonPivot = new System.Windows.Forms.Button();
             this.labelABCurve = new System.Windows.Forms.Label();
@@ -718,6 +720,8 @@
             // panelChoose
             // 
             this.panelChoose.BackColor = System.Drawing.Color.Gainsboro;
+            this.panelChoose.Controls.Add(this.label2);
+            this.panelChoose.Controls.Add(this.btnLatLonPivotCircle);
             this.panelChoose.Controls.Add(this.labelPivot);
             this.panelChoose.Controls.Add(this.btnLatLonPivot);
             this.panelChoose.Controls.Add(this.labelABCurve);
@@ -737,6 +741,35 @@
             this.panelChoose.Name = "panelChoose";
             this.panelChoose.Size = new System.Drawing.Size(630, 425);
             this.panelChoose.TabIndex = 441;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(122, 121);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 16);
+            this.label2.TabIndex = 453;
+            this.label2.Text = "Pivot";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnLatLonPivotCircle
+            // 
+            this.btnLatLonPivotCircle.BackColor = System.Drawing.Color.White;
+            this.btnLatLonPivotCircle.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnLatLonPivotCircle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLatLonPivotCircle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLatLonPivotCircle.Image = global::AgOpenGPS.Properties.Resources.ABPivotCircle;
+            this.btnLatLonPivotCircle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnLatLonPivotCircle.Location = new System.Drawing.Point(89, 10);
+            this.btnLatLonPivotCircle.Name = "btnLatLonPivotCircle";
+            this.btnLatLonPivotCircle.Size = new System.Drawing.Size(100, 107);
+            this.btnLatLonPivotCircle.TabIndex = 452;
+            this.btnLatLonPivotCircle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnLatLonPivotCircle.UseVisualStyleBackColor = false;
+            this.btnLatLonPivotCircle.Click += new System.EventHandler(this.btnLatLonPivot2_Click);
             // 
             // labelPivot
             // 
@@ -1980,5 +2013,7 @@
         private System.Windows.Forms.Button btnFillLAtLonPivot;
         private System.Windows.Forms.Label labelCurve;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnLatLonPivotCircle;
     }
 }

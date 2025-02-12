@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using System;
@@ -28,7 +29,7 @@ namespace AgOpenGPS
         {
             lblInchCm2.Text = mf.unitsInCm.ToString();
 
-            if (mf.vehicle.vehicleType != 1)
+            if (mf.vehicle.VehicleConfig.Type != VehicleType.Harvester)
             {
                 pboxConfigHarvester.Visible = false;
 
@@ -79,7 +80,7 @@ namespace AgOpenGPS
         }
         private void tabTConfig_Leave(object sender, EventArgs e)
         {
-            if (mf.vehicle.vehicleType != 1)
+            if (mf.vehicle.VehicleConfig.Type != VehicleType.Harvester)
             {
                 if (rbtnFront.Checked)
                 {
@@ -139,7 +140,7 @@ namespace AgOpenGPS
 
         private void tabTHitch_Enter(object sender, EventArgs e)
         {
-            if (mf.vehicle.vehicleType != 1)
+            if (mf.vehicle.VehicleConfig.Type != VehicleType.Harvester)
             {
                 //fixed -hitch only on vehicle
                 if (Properties.Settings.Default.setTool_isToolFront)

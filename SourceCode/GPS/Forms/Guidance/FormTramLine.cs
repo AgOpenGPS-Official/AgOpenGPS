@@ -894,7 +894,7 @@ namespace AgOpenGPS
         private void FixLabelsCurve()
         {
             this.Text = gStr.gsTramLines;
-            this.Text += "    Track: " + (mf.vehicle.trackWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
+            this.Text += "    Track: " + (mf.vehicle.VehicleConfig.TrackWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
             this.Text += "    Tram: " + (mf.tram.tramWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
             this.Text += "    Seed: " + (mf.tool.width * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
 

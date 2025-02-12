@@ -7,7 +7,7 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class GeoStreamWriter : StreamWriter
     {
-        public GeoStreamWriter(string fullPath) : base(fullPath)
+        public GeoStreamWriter(string fullPath, bool append = false) : base(fullPath, append)
         {
         }
 
@@ -53,14 +53,19 @@ namespace AgOpenGPS.Core.Streamers
                 HeadingStringH(heading, headingFormatString);
         }
 
+        public void WriteBool(bool boolValue)
+        {
+            WriteLine(BoolString(boolValue));
+        }
+
         public void WriteInt(int intValue)
         {
             WriteLine(IntString(intValue));
         }
 
-        public void WriteBool(bool boolValue)
+        public void WriteColorRgb(ColorRgb colorRgb)
         {
-            WriteLine(BoolString(boolValue));
+            WriteLine(IntString(colorRgb.Red) + "," + IntString(colorRgb.Green) + "," + IntString(colorRgb.Blue));
         }
 
         public void WriteGeoCoordEN(GeoCoord coord)

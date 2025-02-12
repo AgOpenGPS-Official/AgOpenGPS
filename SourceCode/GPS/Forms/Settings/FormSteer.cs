@@ -385,7 +385,7 @@ namespace AgOpenGPS
 
                 if (cntr > 9)
                 {
-                    steerAngleRight = Math.Atan(mf.vehicle.wheelbase / ((diameter - mf.vehicle.trackWidth * 0.5) / 2));
+                    steerAngleRight = Math.Atan(mf.vehicle.VehicleConfig.Wheelbase / ((diameter - mf.vehicle.VehicleConfig.TrackWidth * 0.5) / 2));
                     steerAngleRight = glm.toDegrees(steerAngleRight);
                     //steerAngleLeft = Math.Atan(mf.vehicle.wheelbase / (diameter / 2 ));
                     //steerAngleLeft = glm.toDegrees(steerAngleLeft);

@@ -795,7 +795,7 @@ namespace AgIO
 
             else sbGGA.Append("1,");
 
-            sbGGA.Append(altitudeData.ToString("#.###", CultureInfo.InvariantCulture)).Append(',');
+            sbGGA.Append(altitudeData.ToString("0.###", CultureInfo.InvariantCulture)).Append(',');
             sbGGA.Append("M,");
             sbGGA.Append("46.4,M,");  //udulation
             sbGGA.Append(ageData.ToString("0.#", CultureInfo.InvariantCulture)).Append(','); //age

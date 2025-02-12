@@ -334,8 +334,8 @@ namespace AgOpenGPS
             //draw the sections
             GL.LineWidth(2);
 
-            double hite = mf.camera.camSetDistance / -150;
-            if (hite > 8) hite = 8;
+            double hite = mf.camera.camSetDistance / -250;
+            if (hite > 4) hite = 4;
             if (hite < 1) hite = 1;
 
             //TooDoo

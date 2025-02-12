@@ -117,7 +117,7 @@ namespace AgOpenGPS.Properties
         public Color setColor_sec16 = Color.FromArgb(247, 229, 215);
         public bool setColor_isMultiColorSections = false;
         public string setDisplay_customSectionColors = "-62208,-12299010,-16190712,-1505559,-3621034,-16712458,-7330570,-1546731,-24406,-3289866,-2756674,-538377,-134768,-4457734,-1848839,-530985";
-        public TBrand setBrand_TBrand = TBrand.AGOpenGPS;
+        public TractorBrand setBrand_TBrand = TractorBrand.AGOpenGPS;
         public bool setHeadland_isSectionControlled = true;
         public bool setSound_isAutoSteerOn = true;
         public string setRelay_pinConfig = "1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
@@ -224,8 +224,8 @@ namespace AgOpenGPS.Properties
         public double setAS_functionSpeedLimit = 12;
         public double setAS_maxSteerSpeed = 15;
         public double setAS_minSteerSpeed = 0;
-        public HBrand setBrand_HBrand = HBrand.AgOpenGPS;
-        public WDBrand setBrand_WDBrand = WDBrand.AgOpenGPS;
+        public HarvesterBrand setBrand_HBrand = HarvesterBrand.AgOpenGPS;
+        public ArticulatedBrand setBrand_WDBrand = ArticulatedBrand.AgOpenGPS;
         public double setIMU_fusionWeight2 = 0.06;
         public bool setDisplay_isSvennArrowOn = false;
         public bool setTool_isTramOuterInverted = false;

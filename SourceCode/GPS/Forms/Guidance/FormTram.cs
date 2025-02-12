@@ -48,7 +48,7 @@ namespace AgOpenGPS
             nudPasses.Value = Properties.Settings.Default.setTram_passes;
             nudPasses.ValueChanged += nudPasses_ValueChanged;
 
-            lblTrack.Text = (mf.vehicle.trackWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
+            lblTrack.Text = (mf.vehicle.VehicleConfig.TrackWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
 
             mf.tool.halfWidth = (mf.tool.width - mf.tool.overlap) / 2.0;
 

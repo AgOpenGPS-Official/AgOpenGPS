@@ -16,6 +16,11 @@ namespace AgOpenGPS.Core.Streamers
             return bool.Parse(boolWord);
         }
 
+        public byte ParseByte(string byteWord)
+        {
+            return byte.Parse(byteWord);
+        }
+
         public double ParseDouble(string doubleWord)
         {
             return double.Parse(doubleWord, CultureInfo.InvariantCulture);
@@ -47,6 +52,14 @@ namespace AgOpenGPS.Core.Streamers
         public int ReadInt()
         {
             return int.Parse(ReadLine());
+        }
+
+        public ColorRgb ReadColorRgb()
+        {
+            string line = ReadLine();
+            string[] words = line.Split(',');
+
+            return new ColorRgb(ParseByte(words[0]), ParseByte(words[1]), ParseByte(words[2]));
         }
 
         public GeoCoord ReadGeoCoord()
