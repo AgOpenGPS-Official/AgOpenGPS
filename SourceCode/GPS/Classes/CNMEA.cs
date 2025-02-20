@@ -98,14 +98,14 @@ namespace AgOpenGPS
             return new Wgs84(latitude, longitude);
         }
 
-        public string GetLocalToWSG84_KML(double Easting, double Northing)
+        public string GetGeoCoordToWSG84_KML(GeoCoord geoCoord)
         {
-            double Lat = (Northing / mPerDegreeLat) + latStart;
+            double Lat = (geoCoord.Northing / mPerDegreeLat) + latStart;
             mPerDegreeLon =
                 111412.84 * Math.Cos(Lat * degreesToRadians)
                 - 93.5 * Math.Cos(3.0 * Lat * degreesToRadians)
                 + 0.118 * Math.Cos(5.0 * Lat * degreesToRadians);
-            double Lon = (Easting / mPerDegreeLon) + lonStart;
+            double Lon = (geoCoord.Easting / mPerDegreeLon) + lonStart;
 
             return Lon.ToString("N7", CultureInfo.InvariantCulture) + ',' + Lat.ToString("N7", CultureInfo.InvariantCulture) + ",0 ";
         }

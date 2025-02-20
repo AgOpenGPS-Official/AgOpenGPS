@@ -2123,12 +2123,12 @@ namespace AgOpenGPS
 
             string linePts = "";
 
-            for (int i = 0; i < trk.gArr.Count; i++)
+            foreach (CTrk track in trk.gArr)
             {
                 kml.WriteStartElement("Placemark");
                 kml.WriteElementString("visibility", "0");
 
-                kml.WriteElementString("name", trk.gArr[i].name);
+                kml.WriteElementString("name", track.name);
                 kml.WriteStartElement("Style");
 
                 kml.WriteStartElement("LineStyle");
@@ -2141,17 +2141,15 @@ namespace AgOpenGPS
                 kml.WriteElementString("tessellate", "1");
                 kml.WriteStartElement("coordinates");
 
-                linePts = pn.GetLocalToWSG84_KML(trk.gArr[i].ptA.easting - (Math.Sin(trk.gArr[i].heading) * ABLine.abLength),
-                    trk.gArr[i].ptA.northing - (Math.Cos(trk.gArr[i].heading) * ABLine.abLength));
-                linePts += pn.GetLocalToWSG84_KML(trk.gArr[i].ptA.easting + (Math.Sin(trk.gArr[i].heading) * ABLine.abLength),
-                    trk.gArr[i].ptA.northing + (Math.Cos(trk.gArr[i].heading) * ABLine.abLength));
+                GeoCoord pointA = track.ptA.AsGeoCoord;
+                GeoDir heading = new GeoDir(track.heading);
+                linePts = pn.GetGeoCoordToWSG84_KML(pointA - ABLine.abLength * heading);
+                linePts += pn.GetGeoCoordToWSG84_KML(pointA + ABLine.abLength * heading);
                 kml.WriteRaw(linePts);
 
                 kml.WriteEndElement(); // <coordinates>
                 kml.WriteEndElement(); // <LineString>
-
                 kml.WriteEndElement(); // <Placemark>
-
             }
             kml.WriteEndElement(); // <Folder>   
 
@@ -2179,9 +2177,9 @@ namespace AgOpenGPS
                 kml.WriteElementString("tessellate", "1");
                 kml.WriteStartElement("coordinates");
 
-                for (int j = 0; j < trk.gArr[i].curvePts.Count; j++)
+                foreach (vec3 v3 in trk.gArr[i].curvePts)
                 {
-                    linePts += pn.GetLocalToWSG84_KML(trk.gArr[i].curvePts[j].easting, trk.gArr[i].curvePts[j].northing);
+                    linePts += pn.GetGeoCoordToWSG84_KML(v3.AsGeoCoord);
                 }
                 kml.WriteRaw(linePts);
 
@@ -2216,7 +2214,7 @@ namespace AgOpenGPS
 
             for (int j = 0; j < recPath.recList.Count; j++)
             {
-                linePts += pn.GetLocalToWSG84_KML(recPath.recList[j].easting, recPath.recList[j].northing);
+                linePts += pn.GetGeoCoordToWSG84_KML(recPath.recList[j].AsGeoCoord);
             }
             kml.WriteRaw(linePts);
 
@@ -2307,13 +2305,13 @@ namespace AgOpenGPS
                             secPts = "";
                             for (int i = 1; i < triList.Count; i += 2)
                             {
-                                secPts += pn.GetLocalToWSG84_KML(triList[i].easting, triList[i].northing);
+                                secPts += pn.GetGeoCoordToWSG84_KML(triList[i].AsGeoCoord);
                             }
                             for (int i = triList.Count - 1; i > 1; i -= 2)
                             {
-                                secPts += pn.GetLocalToWSG84_KML(triList[i].easting, triList[i].northing);
+                                secPts += pn.GetGeoCoordToWSG84_KML(triList[i].AsGeoCoord);
                             }
-                            secPts += pn.GetLocalToWSG84_KML(triList[1].easting, triList[1].northing);
+                            secPts += pn.GetGeoCoordToWSG84_KML(triList[1].AsGeoCoord);
 
                             kml.WriteRaw(secPts);
                             kml.WriteEndElement(); // <coordinates>
