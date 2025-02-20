@@ -2143,8 +2143,8 @@ namespace AgOpenGPS
 
                 GeoCoord pointA = track.ptA.AsGeoCoord;
                 GeoDir heading = new GeoDir(track.heading);
-                linePts = pn.GetGeoCoordToWSG84_KML(pointA - ABLine.abLength * heading);
-                linePts += pn.GetGeoCoordToWSG84_KML(pointA + ABLine.abLength * heading);
+                linePts = pn.GetGeoCoordToWgs84_KML(pointA - ABLine.abLength * heading);
+                linePts += pn.GetGeoCoordToWgs84_KML(pointA + ABLine.abLength * heading);
                 kml.WriteRaw(linePts);
 
                 kml.WriteEndElement(); // <coordinates>
@@ -2179,7 +2179,7 @@ namespace AgOpenGPS
 
                 foreach (vec3 v3 in trk.gArr[i].curvePts)
                 {
-                    linePts += pn.GetGeoCoordToWSG84_KML(v3.AsGeoCoord);
+                    linePts += pn.GetGeoCoordToWgs84_KML(v3.AsGeoCoord);
                 }
                 kml.WriteRaw(linePts);
 
@@ -2214,7 +2214,7 @@ namespace AgOpenGPS
 
             for (int j = 0; j < recPath.recList.Count; j++)
             {
-                linePts += pn.GetGeoCoordToWSG84_KML(recPath.recList[j].AsGeoCoord);
+                linePts += pn.GetGeoCoordToWgs84_KML(recPath.recList[j].AsGeoCoord);
             }
             kml.WriteRaw(linePts);
 
@@ -2305,13 +2305,13 @@ namespace AgOpenGPS
                             secPts = "";
                             for (int i = 1; i < triList.Count; i += 2)
                             {
-                                secPts += pn.GetGeoCoordToWSG84_KML(triList[i].AsGeoCoord);
+                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].AsGeoCoord);
                             }
                             for (int i = triList.Count - 1; i > 1; i -= 2)
                             {
-                                secPts += pn.GetGeoCoordToWSG84_KML(triList[i].AsGeoCoord);
+                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].AsGeoCoord);
                             }
-                            secPts += pn.GetGeoCoordToWSG84_KML(triList[1].AsGeoCoord);
+                            secPts += pn.GetGeoCoordToWgs84_KML(triList[1].AsGeoCoord);
 
                             kml.WriteRaw(secPts);
                             kml.WriteEndElement(); // <coordinates>

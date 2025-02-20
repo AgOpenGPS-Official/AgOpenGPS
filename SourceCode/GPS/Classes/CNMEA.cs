@@ -98,7 +98,7 @@ namespace AgOpenGPS
             return new Wgs84(latitude, longitude);
         }
 
-        public string GetGeoCoordToWSG84_KML(GeoCoord geoCoord)
+        public string GetGeoCoordToWgs84_KML(GeoCoord geoCoord)
         {
             double Lat = (geoCoord.Northing / mPerDegreeLat) + latStart;
             mPerDegreeLon =
