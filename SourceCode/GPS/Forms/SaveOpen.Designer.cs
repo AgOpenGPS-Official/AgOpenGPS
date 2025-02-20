@@ -12,6 +12,7 @@ using System.Text;
 using AgOpenGPS.Culture;
 using AgLibrary.Logging;
 using AgOpenGPS.Protocols.ISOBUS;
+using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS
 {
@@ -1922,10 +1923,7 @@ namespace AgOpenGPS
         //generate KML file from flag
         public void FileSaveSingleFlagKML2(int flagNumber)
         {
-            double lat = 0;
-            double lon = 0;
-
-            pn.ConvertLocalToWGS84(flagPts[flagNumber - 1].northing, flagPts[flagNumber - 1].easting, out lat, out lon);
+            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(flagPts[flagNumber - 1].AsGeoCoord);
 
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
@@ -1940,14 +1938,12 @@ namespace AgOpenGPS
             {
                 //match new fix to current position
 
-
                 writer.WriteLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>     ");
                 writer.WriteLine(@"<kml xmlns=""http://www.opengis.net/kml/2.2""> ");
 
                 int count2 = flagPts.Count;
 
                 writer.WriteLine(@"<Document>");
-
                 writer.WriteLine(@"  <Placemark>                                  ");
                 writer.WriteLine(@"<Style> <IconStyle>");
                 if (flagPts[flagNumber - 1].color == 0)  //red - xbgr
@@ -1958,16 +1954,16 @@ namespace AgOpenGPS
                     writer.WriteLine(@"<color>ff44ffff</color>");
                 writer.WriteLine(@"</IconStyle> </Style>");
                 writer.WriteLine(@" <name> " + flagNumber.ToString(CultureInfo.InvariantCulture) + @"</name>");
-                writer.WriteLine(@"<Point><coordinates> " +
-                                lon.ToString(CultureInfo.InvariantCulture) + "," + lat.ToString(CultureInfo.InvariantCulture) + ",0" +
-                                @"</coordinates> </Point> ");
+                writer.WriteLine(@"<Point><coordinates> "
+                    + latLon.Longitude.ToString(CultureInfo.InvariantCulture) + ","
+                    + latLon.Latitude.ToString(CultureInfo.InvariantCulture) + ",0"
+                    + @"</coordinates> </Point> ");
                 writer.WriteLine(@"  </Placemark>                                 ");
                 writer.WriteLine(@"</Document>");
                 writer.WriteLine(@"</kml>                                         ");
-
             }
         }
-                                   
+
         //generate KML file from flag
         public void FileSaveSingleFlagKML(int flagNumber)
         {
@@ -2351,14 +2347,12 @@ namespace AgOpenGPS
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < bnd.bndList[bndNum].fenceLine.Count; i++)
+            foreach(vec3 v3 in bnd.bndList[bndNum].fenceLine)
             {
-                double lat = 0;
-                double lon = 0;
-
-                pn.ConvertLocalToWGS84(bnd.bndList[bndNum].fenceLine[i].northing, bnd.bndList[bndNum].fenceLine[i].easting, out lat, out lon);
-
-                sb.Append(lon.ToString("N7", CultureInfo.InvariantCulture) + ',' + lat.ToString("N7", CultureInfo.InvariantCulture) + ",0 ");
+                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.AsGeoCoord);
+                sb.Append(
+                    latLon.Longitude.ToString("N7", CultureInfo.InvariantCulture) + ',' +
+                    latLon.Latitude.ToString("N7", CultureInfo.InvariantCulture) + ",0 ");
             }
             return sb.ToString();
         }

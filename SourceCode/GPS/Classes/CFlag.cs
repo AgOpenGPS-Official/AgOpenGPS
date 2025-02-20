@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Core.Models;
+using System;
 
 namespace AgOpenGPS
 {
@@ -33,5 +34,7 @@ namespace AgOpenGPS
             ID = _ID;
             notes = _notes;
         }
+
+        public GeoCoord AsGeoCoord => new GeoCoord(northing, easting);
     }
 }
