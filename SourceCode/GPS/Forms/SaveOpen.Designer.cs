@@ -1923,7 +1923,7 @@ namespace AgOpenGPS
         //generate KML file from flag
         public void FileSaveSingleFlagKML2(int flagNumber)
         {
-            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(flagPts[flagNumber - 1].AsGeoCoord);
+            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(flagPts[flagNumber - 1].GeoCoord);
 
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);

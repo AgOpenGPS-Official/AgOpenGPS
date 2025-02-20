@@ -89,13 +89,13 @@ namespace AgOpenGPS
 
         public Wgs84 ConvertGeoCoordToWgs84(GeoCoord geoCoord)
         {
-            latitude = ((geoCoord.Northing + fixOffset.northing) / mPerDegreeLat) + latStart;
+            double lat = ((geoCoord.Northing + fixOffset.northing) / mPerDegreeLat) + latStart;
             mPerDegreeLon =
-                111412.84 * Math.Cos(latitude * degreesToRadians)
-                - 93.5 * Math.Cos(3.0 * latitude * degreesToRadians)
-                + 0.118 * Math.Cos(5.0 * latitude * degreesToRadians);
-            longitude = ((geoCoord.Easting + fixOffset.easting) / mPerDegreeLon) + lonStart;
-            return new Wgs84(latitude, longitude);
+                111412.84 * Math.Cos(lat * degreesToRadians)
+                - 93.5 * Math.Cos(3.0 * lat * degreesToRadians)
+                + 0.118 * Math.Cos(5.0 * lat * degreesToRadians);
+            double lon = ((geoCoord.Easting + fixOffset.easting) / mPerDegreeLon) + lonStart;
+            return new Wgs84(lat, lon);
         }
 
         public string GetGeoCoordToWgs84_KML(GeoCoord geoCoord)
