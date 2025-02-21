@@ -151,7 +151,7 @@ namespace AgOpenGPS
         //Finds the point where an AB Curve crosses the turn line
         public bool BuildCurveDubinsYouTurn()
         {
-            //if mode is skip workedTracks -> next lane is an already worked lane, find the next not worked lane and use it.
+            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
             if (skip_mode == SkipMode.ignoreWorkedTracks)
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, false);
 
@@ -185,7 +185,7 @@ namespace AgOpenGPS
 
         public bool BuildABLineDubinsYouTurn()
         {
-            //if mode is skip workedTracks -> next lane is an already worked lane, find the next not worked lane and use it.
+            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
             if (skip_mode == SkipMode.ignoreWorkedTracks)
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, true);
 
