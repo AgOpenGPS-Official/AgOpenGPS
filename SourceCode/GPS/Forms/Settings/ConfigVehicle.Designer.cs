@@ -556,44 +556,18 @@ namespace AgOpenGPS
             if (rbtnTractor.Checked)
             {
                 Settings.Default.setBrand_TBrand = tractorBrand;
-
-                Bitmap bitmap = mf.GetTractorBrand(tractorBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.Tractor.SetBitmap(mf.GetTractorBrand(tractorBrand));
             }
-
             if (rbtnHarvester.Checked)
             {
                 Settings.Default.setBrand_HBrand = harvesterBrand;
-
-                Bitmap bitmap = mf.GetHarvesterBrand(harvesterBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Harvester]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.Harvester.SetBitmap(mf.GetHarvesterBrand(harvesterBrand));
             }
-
             if (rbtnArticulated.Checked)
             {
                 Settings.Default.setBrand_WDBrand = articulatedBrand;
-
-                Bitmap bitmap = mf.GetArticulatedBrandFront(articulatedBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
-                bitmap = mf.GetArticulatedBrandRear(articulatedBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);
-                bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(mf.GetArticulatedBrandFront(articulatedBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(mf.GetArticulatedBrandRear(articulatedBrand));
             }
             Properties.Settings.Default.Save();
         }
@@ -808,44 +782,18 @@ namespace AgOpenGPS
 
         private void LoadBrandImage()
         {
-            if (rbtnTractor.Checked == true)
+            if (rbtnTractor.Checked)
             {
-                Bitmap bitmap = mf.GetTractorBrand(Settings.Default.setBrand_TBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
+                mf.VehicleTextures.Tractor.SetBitmap(mf.GetTractorBrand(Settings.Default.setBrand_TBrand));
             }
-
-            if (rbtnHarvester.Checked == true)
-
+            if (rbtnHarvester.Checked)
             {
-                Bitmap bitmap = mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Harvester]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
+                mf.VehicleTextures.Harvester.SetBitmap(mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand));
             }
-
-            if (rbtnArticulated.Checked == true)
-
+            if (rbtnArticulated.Checked)
             {
-                Bitmap bitmap = mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                bitmap = mf.GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);
-                bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(mf.GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand));
             }
         }
 

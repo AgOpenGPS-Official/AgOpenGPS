@@ -496,7 +496,6 @@ namespace AgOpenGPS
             }
         }
 
-
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
         {
             Form f = Application.OpenForms["FormGPSData"];
@@ -684,10 +683,6 @@ namespace AgOpenGPS
         public enum textures : uint
         {
             Floor,
-            Tractor,
-            ArticulatedFront,
-            ArticulatedRear,
-            Harvester,
             bingGrid,
             CrossTrackBkgrnd
         }
@@ -699,10 +694,6 @@ namespace AgOpenGPS
             Bitmap[] oglTextures = new Bitmap[]
             {
                 Resources.z_Floor,
-                GetTractorBrand(Settings.Default.setBrand_TBrand),
-                GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand),
-                GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand),
-                GetHarvesterBrand(Settings.Default.setBrand_HBrand),
                 Resources.z_bingMap,
                 Resources.z_crossTrackBkgnd
             };

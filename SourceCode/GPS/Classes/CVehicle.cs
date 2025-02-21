@@ -234,23 +234,16 @@ namespace AgOpenGPS
                 if (VehicleConfig.Type == VehicleType.Tractor)
                 {
                     //vehicle body
-                    GL.Enable(EnableCap.Texture2D);
                     GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);        // Select Our Texture
 
                     AckermannAngles(
                         - (mf.timerSim.Enabled ? mf.sim.steerangleAve : mf.mc.actualSteerAngleDegrees),
                         out double leftAckermann,
                         out double rightAckermann);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.5); // Bottom Left
-
-                    GL.End();                       // Done Building Triangle Strip
-                    GL.Disable(EnableCap.Texture2D);
+                    XyCoord tractorCenter = new XyCoord(0.0, 0.5 * VehicleConfig.Wheelbase);
+                    mf.VehicleTextures.Tractor.DrawCentered(
+                        tractorCenter,
+                        new XyDelta(VehicleConfig.TrackWidth, -1.5 * VehicleConfig.Wheelbase));
 
                     //right wheel
                     GL.PushMatrix();
@@ -300,18 +293,10 @@ namespace AgOpenGPS
                     mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(forntWheelDelta);
                     GL.PopMatrix();
 
-                    GL.Enable(EnableCap.Texture2D);
                     GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(uint)FormGPS.textures.Harvester]);        // Select Our Texture
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 1.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 1.5); // Bottom Left
-
-                    GL.End();                       // Done Building Triangle Strip
+                    mf.VehicleTextures.Harvester.DrawCenteredAroundOrigin(
+                        new XyDelta(VehicleConfig.TrackWidth, -1.5 * VehicleConfig.Wheelbase));
                     //disable, straight color
-                    GL.Disable(EnableCap.Texture2D);
                 }
                 else if (VehicleConfig.Type == VehicleType.Articulated)
                 {
@@ -322,39 +307,20 @@ namespace AgOpenGPS
                     else
                         modelSteerAngle = 0.5 * mf.mc.actualSteerAngleDegrees;
 
-                    GL.Enable(EnableCap.Texture2D);
                     GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
 
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);        // Select Our Texture
-
+                    XyDelta articulated = new XyDelta(VehicleConfig.TrackWidth, -0.65 * VehicleConfig.Wheelbase);
                     GL.PushMatrix();
                     GL.Translate(0, -VehicleConfig.Wheelbase * 0.5, 0);
                     GL.Rotate(modelSteerAngle, 0, 0, 1);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    mf.VehicleTextures.ArticulatedRear.DrawCenteredAroundOrigin(articulated);
                     GL.PopMatrix();
-
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);        // Select Our Texture
 
                     GL.PushMatrix();
                     GL.Translate(0, VehicleConfig.Wheelbase * 0.5, 0);
                     GL.Rotate(-modelSteerAngle, 0, 0, 1);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    mf.VehicleTextures.ArticulatedFront.DrawCenteredAroundOrigin(articulated);
                     GL.PopMatrix();
-                    GL.Disable(EnableCap.Texture2D);
                 }
             }
             else

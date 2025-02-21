@@ -11,8 +11,8 @@ namespace AgOpenGPS.Core.Drawing
         private readonly int _textureId;
         public Texture2D(Bitmap bitmap)
         {
-            GL.GenTextures(1, out _textureId);
-            SetBitmap(bitmap);
+            _textureId = GL.GenTexture();
+            if (bitmap != null) SetBitmap(bitmap);
         }
 
         public void Bind()
@@ -52,9 +52,8 @@ namespace AgOpenGPS.Core.Drawing
             Draw(center - centerToU1V1, center + centerToU1V1);
         }
 
-        private void SetBitmap(Bitmap bitmap)
+        public void SetBitmap(Bitmap bitmap)
         {
-            GL.Enable(EnableCap.Texture2D);
             GL.BindTexture(TextureTarget.Texture2D, _textureId);
             BitmapData bitmapData = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -73,7 +72,7 @@ namespace AgOpenGPS.Core.Drawing
             bitmap.UnlockBits(bitmapData);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-            GL.Disable(EnableCap.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
     }
