@@ -32,7 +32,7 @@ namespace AgOpenGPS.Classes
         {
             get
             {
-                if (_harvester == null) _harvester = new Texture2D(Resources.z_HarvesterAoG);
+                if (_harvester == null) _harvester = new Texture2D(null);
                 return _harvester;
             }
         }
