@@ -1370,11 +1370,7 @@ namespace AgOpenGPS
                         if (File.Exists(fileAndDirectory))
                         {
                             var bitmap = new Bitmap(Image.FromFile(fileAndDirectory));
-
-                            GL.BindTexture(TextureTarget.Texture2D, texture[(int)textures.bingGrid]);
-                            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                            bitmap.UnlockBits(bitmapData);
+                            worldGrid.BingGridTexture.SetBitmap(bitmap);
                         }
                         else
                         {
