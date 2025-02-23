@@ -7,7 +7,6 @@ namespace AgOpenGPS.Core.Drawing
 {
     public class Texture2D
     {
-
         private readonly int _textureId;
         public Texture2D(Bitmap bitmap)
         {
@@ -22,7 +21,7 @@ namespace AgOpenGPS.Core.Drawing
 
         public void Draw(
             XyCoord u0v0, // The corner (u==0.0 && v==0.0) of the texture will be mapped to this coord
-            XyCoord u1v1  // The coord (u==1.0 && v==1.0) of the texture will be apped to this coord
+            XyCoord u1v1  // The corner (u==1.0 && v==1.0) of the texture will be apped to this coord
         )
         {
             GL.Enable(EnableCap.Texture2D);
