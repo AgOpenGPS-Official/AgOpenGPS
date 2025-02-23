@@ -47,7 +47,6 @@ namespace AgOpenGPS
         private void oglMain_Load(object sender, EventArgs e)
         {
             oglMain.MakeCurrent();
-            LoadGLTextures();
             SetVehicleTextures();
             GL.ClearColor(0.14f, 0.14f, 0.37f, 1.0f);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -2089,13 +2088,6 @@ namespace AgOpenGPS
 
                 int center = -(int)(((double)(hede.Length) * 0.5) * 22);
 
-                GL.Enable(EnableCap.Texture2D);
-                GL.BindTexture(TextureTarget.Texture2D, texture[(int)FormGPS.textures.CrossTrackBkgrnd]);        // Select Our Texture
-
-                // Select Our Texture
-                GL.Enable(EnableCap.Texture2D);
-                GL.BindTexture(TextureTarget.Texture2D, texture[(int)FormGPS.textures.CrossTrackBkgrnd]);
-
                 double green = Math.Abs(avgPivDistance);
                 double red = green;
                 if (green > 400) green = 400;
@@ -2113,13 +2105,9 @@ namespace AgOpenGPS
                 //if (wide < 75) wide = 75;
                 int wide = 50;
 
-                GL.TexCoord2(0, 1); GL.Vertex2(-wide, 50); // 
-                GL.TexCoord2(1, 1); GL.Vertex2(wide, 50); // 
-                GL.TexCoord2(1, 0); GL.Vertex2(wide, 2); // 
-                GL.TexCoord2(0, 0); GL.Vertex2(-wide, 2); //
-
-                GL.End();
-                GL.Disable(EnableCap.Texture2D);
+                XyCoord u0v0 = new XyCoord(-wide, 2);
+                XyCoord u1v1 = new XyCoord(wide, 50);
+                ScreenTextures.CrossTrackBackground.Draw(u0v0, u1v1);
 
                 GL.Color4(0.0, 0.0, 0.0, 1.0);
                 font.DrawText(center, 2, hede, 1.5);
@@ -2265,14 +2253,8 @@ namespace AgOpenGPS
                     center = (int)(-40 * (1 + textSize));
                 }
 
-
                 int wide = (int)((double)oglMain.Width / 18);
                 if (wide < 64) wide = 64;
-
-
-                // Select Our Texture
-                GL.Enable(EnableCap.Texture2D);
-                GL.BindTexture(TextureTarget.Texture2D, texture[(int)FormGPS.textures.CrossTrackBkgrnd]);
 
                 double green = Math.Abs(avgPivDistance);
                 double red = green;
@@ -2285,14 +2267,9 @@ namespace AgOpenGPS
 
                 GL.Color4(red, green, 0.3, 1.0);
 
-                GL.Begin(PrimitiveType.Quads);              // Build Quad From A Triangle Strip
-                GL.TexCoord2(0, 1); GL.Vertex2(-wide, 3); // 
-                GL.TexCoord2(1, 1); GL.Vertex2(wide, 3); // 
-                GL.TexCoord2(1, 0); GL.Vertex2(wide, 35 * (1 + textSize)); // 
-                GL.TexCoord2(0, 0); GL.Vertex2(-wide, 35 * (1 + textSize)); //
-                GL.End();
-
-                GL.Disable(EnableCap.Texture2D);
+                XyCoord u0v0 = new XyCoord(-wide, 35 * (1 + textSize));
+                XyCoord u1v1 = new XyCoord(wide, 3);
+                ScreenTextures.CrossTrackBackground.Draw(u0v0, u1v1);
 
                 GL.Color4(0.12f, 0.12770f, 0.120f, 1);
 
