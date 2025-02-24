@@ -26,8 +26,8 @@ namespace AgOpenGPS
 
         public int rowSkipsWidth = 1, uTurnSmoothing;
 
-        public bool previousBigSkip = true;
-        public SkipMode skipMode = SkipMode.Normal;
+        public bool alternateSkips = false, previousBigSkip = true;
+        public SkipMode skip_mode = SkipMode.Normal;
         public int rowSkipsWidth2 = 3, turnSkips = 2;
 
         /// <summary>  /// distance from headland as offset where to start turn shape /// </summary>
