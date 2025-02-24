@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AgOpenGPS
 {
-    public enum SkipMode { Normal, Alternative, ignoreWorkedTracks };
+    public enum SkipMode { Normal, Alternative, IgnoreWorkedTracks };
 
     public class CYouTurn
     {
@@ -26,8 +26,8 @@ namespace AgOpenGPS
 
         public int rowSkipsWidth = 1, uTurnSmoothing;
 
-        public bool alternateSkips = false, previousBigSkip = true;
-        public SkipMode skip_mode = SkipMode.Normal;
+        public bool previousBigSkip = true;
+        public SkipMode skipMode = SkipMode.Normal;
         public int rowSkipsWidth2 = 3, turnSkips = 2;
 
         /// <summary>  /// distance from headland as offset where to start turn shape /// </summary>
@@ -152,7 +152,7 @@ namespace AgOpenGPS
         public bool BuildCurveDubinsYouTurn()
         {
             //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
-            if (skip_mode == SkipMode.ignoreWorkedTracks)
+            if (skipMode == SkipMode.IgnoreWorkedTracks)
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, false);
 
             //TODO: is calculated many taimes after the priveous turn is complete
@@ -186,7 +186,7 @@ namespace AgOpenGPS
         public bool BuildABLineDubinsYouTurn()
         {
             //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
-            if (skip_mode == SkipMode.ignoreWorkedTracks)
+            if (skipMode == SkipMode.IgnoreWorkedTracks)
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, true);
 
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth
@@ -2388,7 +2388,7 @@ namespace AgOpenGPS
                 mf.ABLine.howManyPathsAway += (isTurnLeft ^ mf.ABLine.isHeadingSameWay) ? rowSkipsWidth : -rowSkipsWidth;
                 mf.ABLine.isHeadingSameWay = !mf.ABLine.isHeadingSameWay;
 
-                if (alternateSkips && rowSkipsWidth2 > 1)
+                if (skipMode == SkipMode.Alternative && rowSkipsWidth2 > 1)
                 {
                     if (--turnSkips == 0)
                     {

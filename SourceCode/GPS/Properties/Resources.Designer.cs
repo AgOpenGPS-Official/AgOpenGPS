@@ -3734,9 +3734,9 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap YouSkipWT {
+        internal static System.Drawing.Bitmap YouSkipWorkedTracks {
             get {
-                object obj = ResourceManager.GetObject("YouSkipWT", resourceCulture);
+                object obj = ResourceManager.GetObject("YouSkipWorkedTracks", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
