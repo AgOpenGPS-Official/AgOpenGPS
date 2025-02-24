@@ -1753,25 +1753,52 @@ namespace AgOpenGPS
         }
         private void btnYouSkipEnable_Click(object sender, EventArgs e)
         {
-            yt.alternateSkips = !yt.alternateSkips;
-            if (yt.alternateSkips)
+
+            yt.skip_mode++;
+            if ((int)yt.skip_mode > 2) yt.skip_mode = SkipMode.Normal;
+
+            yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
+
+            switch (yt.skip_mode)
             {
-                btnYouSkipEnable.Image = Resources.YouSkipOn;
-                //make sure at least 1
-                if (yt.rowSkipsWidth < 2)
-                {
-                    yt.rowSkipsWidth = 2;
-                    cboxpRowWidth.Text = "1";
-                }
-                yt.Set_Alternate_skips();
-                yt.ResetCreatedYouTurn();
-                if (!yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
+                case SkipMode.Normal:
+                    btnYouSkipEnable.Image = Resources.YouSkipOff;
+
+                    break;
+                case SkipMode.Alternative:
+                    btnYouSkipEnable.Image = Resources.YouSkipOn;
+
+                    //make sure at least 1
+                    if (yt.rowSkipsWidth < 2)
+                    {
+                        yt.rowSkipsWidth = 2;
+                        cboxpRowWidth.Text = "1";
+                    }
+                    yt.Set_Alternate_skips();
+
+                    break;
+                case SkipMode.ignoreWorkedTracks:
+
+                    btnYouSkipEnable.Image = Resources.YouSkipWT;
+
+                    //make sure at least 1
+                    if (yt.rowSkipsWidth < 2)
+                    {
+                        yt.rowSkipsWidth = 2;
+                        cboxpRowWidth.Text = "1";
+                    }
+
+                    break;
+
+                default:
+                    break;
             }
-            else
-            {
-                btnYouSkipEnable.Image = Resources.YouSkipOff;
-            }
+
+            yt.ResetCreatedYouTurn();
+
         }
+
+
         private void cboxpRowWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
             yt.rowSkipsWidth = cboxpRowWidth.SelectedIndex + 1;
@@ -1938,6 +1965,12 @@ namespace AgOpenGPS
                             triStrip[j].triangleList?.Clear();
                         }
                         patchSaveList?.Clear();
+
+                        //delete all worked Lanes too
+                        foreach (CTrk trkitm in trk.gArr)
+                        {
+                            trkitm.workedTracks.Clear();
+                        }
 
                         FileCreateContour();
                         FileCreateSections();
