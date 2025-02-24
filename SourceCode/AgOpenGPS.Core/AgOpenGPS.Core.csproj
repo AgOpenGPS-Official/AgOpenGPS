@@ -11,5 +11,20 @@
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\BrandBitmaps.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BrandBitmaps.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\BrandBitmaps.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrandBitmaps.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 
 </Project>

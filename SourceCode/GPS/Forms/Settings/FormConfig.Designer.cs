@@ -1,3 +1,5 @@
+using AgOpenGPS.Core.Models;
+
 namespace AgOpenGPS
 {
     partial class FormConfig
@@ -1843,13 +1845,13 @@ namespace AgOpenGPS
             this.rbtnBrandAHolder.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandAHolder.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandAHolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandAHolder.Image = global::AgOpenGPS.Properties.Resources.Holder;
+            this.rbtnBrandAHolder.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandHolder;
             this.rbtnBrandAHolder.Location = new System.Drawing.Point(8, 395);
             this.rbtnBrandAHolder.Name = "rbtnBrandAHolder";
             this.rbtnBrandAHolder.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandAHolder.TabIndex = 136;
             this.rbtnBrandAHolder.TabStop = true;
-            this.rbtnBrandAHolder.Tag = AgOpenGPS.ArticulatedBrand.Holder;
+            this.rbtnBrandAHolder.Tag = ArticulatedBrand.Holder;
             this.rbtnBrandAHolder.UseVisualStyleBackColor = true;
             this.rbtnBrandAHolder.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1861,12 +1863,12 @@ namespace AgOpenGPS
             this.rbtnBrandAAgOpenGPS.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandAAgOpenGPS.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandAAgOpenGPS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandAAgOpenGPS.Image = global::AgOpenGPS.Properties.Resources.AoG;
+            this.rbtnBrandAAgOpenGPS.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandAoG;
             this.rbtnBrandAAgOpenGPS.Location = new System.Drawing.Point(8, 6);
             this.rbtnBrandAAgOpenGPS.Name = "rbtnBrandAAgOpenGPS";
             this.rbtnBrandAAgOpenGPS.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandAAgOpenGPS.TabIndex = 131;
-            this.rbtnBrandAAgOpenGPS.Tag = AgOpenGPS.ArticulatedBrand.AgOpenGPS;
+            this.rbtnBrandAAgOpenGPS.Tag = ArticulatedBrand.AgOpenGPS;
             this.rbtnBrandAAgOpenGPS.UseVisualStyleBackColor = true;
             this.rbtnBrandAAgOpenGPS.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1879,13 +1881,13 @@ namespace AgOpenGPS
             this.rbtnBrandAChallenger.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandAChallenger.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandAChallenger.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandAChallenger.Image = global::AgOpenGPS.Properties.Resources.Challenger;
+            this.rbtnBrandAChallenger.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandChallenger;
             this.rbtnBrandAChallenger.Location = new System.Drawing.Point(8, 84);
             this.rbtnBrandAChallenger.Name = "rbtnBrandAChallenger";
             this.rbtnBrandAChallenger.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandAChallenger.TabIndex = 132;
             this.rbtnBrandAChallenger.TabStop = true;
-            this.rbtnBrandAChallenger.Tag = AgOpenGPS.ArticulatedBrand.Challenger;
+            this.rbtnBrandAChallenger.Tag = ArticulatedBrand.Challenger;
             this.rbtnBrandAChallenger.UseVisualStyleBackColor = true;
             this.rbtnBrandAChallenger.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1898,13 +1900,13 @@ namespace AgOpenGPS
             this.rbtnBrandACase.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandACase.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandACase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandACase.Image = global::AgOpenGPS.Properties.Resources.Case;
+            this.rbtnBrandACase.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandCase;
             this.rbtnBrandACase.Location = new System.Drawing.Point(8, 162);
             this.rbtnBrandACase.Name = "rbtnBrandACase";
             this.rbtnBrandACase.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandACase.TabIndex = 133;
             this.rbtnBrandACase.TabStop = true;
-            this.rbtnBrandACase.Tag = AgOpenGPS.ArticulatedBrand.Case;
+            this.rbtnBrandACase.Tag = ArticulatedBrand.Case;
             this.rbtnBrandACase.UseVisualStyleBackColor = true;
             this.rbtnBrandACase.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1917,13 +1919,13 @@ namespace AgOpenGPS
             this.rbtnBrandANH.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandANH.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandANH.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandANH.Image = global::AgOpenGPS.Properties.Resources.NewHolland;
+            this.rbtnBrandANH.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandNewHolland;
             this.rbtnBrandANH.Location = new System.Drawing.Point(8, 318);
             this.rbtnBrandANH.Name = "rbtnBrandANH";
             this.rbtnBrandANH.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandANH.TabIndex = 135;
             this.rbtnBrandANH.TabStop = true;
-            this.rbtnBrandANH.Tag = AgOpenGPS.ArticulatedBrand.NewHolland;
+            this.rbtnBrandANH.Tag = ArticulatedBrand.NewHolland;
             this.rbtnBrandANH.UseVisualStyleBackColor = true;
             this.rbtnBrandANH.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1936,13 +1938,13 @@ namespace AgOpenGPS
             this.rbtnBrandAJDeere.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandAJDeere.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandAJDeere.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandAJDeere.Image = global::AgOpenGPS.Properties.Resources.JohnDeere;
+            this.rbtnBrandAJDeere.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandJohnDeere;
             this.rbtnBrandAJDeere.Location = new System.Drawing.Point(8, 240);
             this.rbtnBrandAJDeere.Name = "rbtnBrandAJDeere";
             this.rbtnBrandAJDeere.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandAJDeere.TabIndex = 134;
             this.rbtnBrandAJDeere.TabStop = true;
-            this.rbtnBrandAJDeere.Tag = AgOpenGPS.ArticulatedBrand.JDeere;
+            this.rbtnBrandAJDeere.Tag = ArticulatedBrand.JohnDeere;
             this.rbtnBrandAJDeere.UseVisualStyleBackColor = true;
             this.rbtnBrandAJDeere.CheckedChanged += new System.EventHandler(this.ArticulatedBrandCheckedChanged);
             // 
@@ -1979,12 +1981,12 @@ namespace AgOpenGPS
             this.rbtnBrandHAgOpenGPS.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandHAgOpenGPS.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandHAgOpenGPS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandHAgOpenGPS.Image = global::AgOpenGPS.Properties.Resources.AoG;
+            this.rbtnBrandHAgOpenGPS.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandAoG;
             this.rbtnBrandHAgOpenGPS.Location = new System.Drawing.Point(8, 6);
             this.rbtnBrandHAgOpenGPS.Name = "rbtnBrandHAgOpenGPS";
             this.rbtnBrandHAgOpenGPS.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandHAgOpenGPS.TabIndex = 127;
-            this.rbtnBrandHAgOpenGPS.Tag = AgOpenGPS.HarvesterBrand.AgOpenGPS;
+            this.rbtnBrandHAgOpenGPS.Tag = HarvesterBrand.AgOpenGPS;
             this.rbtnBrandHAgOpenGPS.UseVisualStyleBackColor = true;
             this.rbtnBrandHAgOpenGPS.CheckedChanged += new System.EventHandler(this.HarvesterBrandCheckedChanged);
             // 
@@ -1997,13 +1999,13 @@ namespace AgOpenGPS
             this.rbtnBrandHCase.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandHCase.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandHCase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandHCase.Image = global::AgOpenGPS.Properties.Resources.Case;
+            this.rbtnBrandHCase.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandCase;
             this.rbtnBrandHCase.Location = new System.Drawing.Point(8, 102);
             this.rbtnBrandHCase.Name = "rbtnBrandHCase";
             this.rbtnBrandHCase.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandHCase.TabIndex = 114;
             this.rbtnBrandHCase.TabStop = true;
-            this.rbtnBrandHCase.Tag = AgOpenGPS.HarvesterBrand.Case;
+            this.rbtnBrandHCase.Tag = HarvesterBrand.Case;
             this.rbtnBrandHCase.UseVisualStyleBackColor = true;
             this.rbtnBrandHCase.CheckedChanged += new System.EventHandler(this.HarvesterBrandCheckedChanged);
             // 
@@ -2016,13 +2018,13 @@ namespace AgOpenGPS
             this.rbtnBrandHClaas.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandHClaas.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandHClaas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandHClaas.Image = global::AgOpenGPS.Properties.Resources.Claas;
+            this.rbtnBrandHClaas.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandClaas;
             this.rbtnBrandHClaas.Location = new System.Drawing.Point(8, 198);
             this.rbtnBrandHClaas.Name = "rbtnBrandHClaas";
             this.rbtnBrandHClaas.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandHClaas.TabIndex = 116;
             this.rbtnBrandHClaas.TabStop = true;
-            this.rbtnBrandHClaas.Tag = AgOpenGPS.HarvesterBrand.Claas;
+            this.rbtnBrandHClaas.Tag = HarvesterBrand.Claas;
             this.rbtnBrandHClaas.UseVisualStyleBackColor = true;
             this.rbtnBrandHClaas.CheckedChanged += new System.EventHandler(this.HarvesterBrandCheckedChanged);
             // 
@@ -2035,13 +2037,13 @@ namespace AgOpenGPS
             this.rbtnBrandHJDeere.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandHJDeere.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandHJDeere.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandHJDeere.Image = global::AgOpenGPS.Properties.Resources.JohnDeere;
+            this.rbtnBrandHJDeere.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandJohnDeere;
             this.rbtnBrandHJDeere.Location = new System.Drawing.Point(8, 294);
             this.rbtnBrandHJDeere.Name = "rbtnBrandHJDeere";
             this.rbtnBrandHJDeere.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandHJDeere.TabIndex = 129;
             this.rbtnBrandHJDeere.TabStop = true;
-            this.rbtnBrandHJDeere.Tag = AgOpenGPS.HarvesterBrand.JDeere;
+            this.rbtnBrandHJDeere.Tag = HarvesterBrand.JohnDeere;
             this.rbtnBrandHJDeere.UseVisualStyleBackColor = true;
             this.rbtnBrandHJDeere.CheckedChanged += new System.EventHandler(this.HarvesterBrandCheckedChanged);
             // 
@@ -2054,13 +2056,13 @@ namespace AgOpenGPS
             this.rbtnBrandHNH.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandHNH.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandHNH.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandHNH.Image = global::AgOpenGPS.Properties.Resources.NewHolland;
+            this.rbtnBrandHNH.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandNewHolland;
             this.rbtnBrandHNH.Location = new System.Drawing.Point(8, 390);
             this.rbtnBrandHNH.Name = "rbtnBrandHNH";
             this.rbtnBrandHNH.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandHNH.TabIndex = 130;
             this.rbtnBrandHNH.TabStop = true;
-            this.rbtnBrandHNH.Tag = AgOpenGPS.HarvesterBrand.NewHolland;
+            this.rbtnBrandHNH.Tag = HarvesterBrand.NewHolland;
             this.rbtnBrandHNH.UseVisualStyleBackColor = true;
             this.rbtnBrandHNH.CheckedChanged += new System.EventHandler(this.HarvesterBrandCheckedChanged);
             // 
@@ -2095,12 +2097,12 @@ namespace AgOpenGPS
             this.rbtnBrandTJCB.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTJCB.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTJCB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTJCB.Image = global::AgOpenGPS.Properties.Resources.JCB;
+            this.rbtnBrandTJCB.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandJCB;
             this.rbtnBrandTJCB.Location = new System.Drawing.Point(13, 6);
             this.rbtnBrandTJCB.Name = "rbtnBrandTJCB";
             this.rbtnBrandTJCB.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTJCB.TabIndex = 127;
-            this.rbtnBrandTJCB.Tag = AgOpenGPS.TractorBrand.JCB;
+            this.rbtnBrandTJCB.Tag = TractorBrand.JCB;
             this.rbtnBrandTJCB.UseVisualStyleBackColor = true;
             this.rbtnBrandTJCB.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2112,19 +2114,19 @@ namespace AgOpenGPS
             this.rbtnBrandTAgOpenGPS.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTAgOpenGPS.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTAgOpenGPS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTAgOpenGPS.Image = global::AgOpenGPS.Properties.Resources.AoG;
+            this.rbtnBrandTAgOpenGPS.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandAoG;
             this.rbtnBrandTAgOpenGPS.Location = new System.Drawing.Point(112, 6);
             this.rbtnBrandTAgOpenGPS.Name = "rbtnBrandTAgOpenGPS";
             this.rbtnBrandTAgOpenGPS.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTAgOpenGPS.TabIndex = 126;
-            this.rbtnBrandTAgOpenGPS.Tag = AgOpenGPS.TractorBrand.AGOpenGPS;
+            this.rbtnBrandTAgOpenGPS.Tag = TractorBrand.AGOpenGPS;
             this.rbtnBrandTAgOpenGPS.UseVisualStyleBackColor = true;
             this.rbtnBrandTAgOpenGPS.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
             // rbtnBrandTCase
             // 
             this.rbtnBrandTCase.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnBrandTCase.BackgroundImage = global::AgOpenGPS.Properties.Resources.Case;
+            this.rbtnBrandTCase.BackgroundImage = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandCase;
             this.rbtnBrandTCase.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.rbtnBrandTCase.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.rbtnBrandTCase.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
@@ -2134,7 +2136,7 @@ namespace AgOpenGPS
             this.rbtnBrandTCase.Name = "rbtnBrandTCase";
             this.rbtnBrandTCase.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTCase.TabIndex = 114;
-            this.rbtnBrandTCase.Tag = AgOpenGPS.TractorBrand.Case;
+            this.rbtnBrandTCase.Tag = TractorBrand.Case;
             this.rbtnBrandTCase.UseVisualStyleBackColor = true;
             this.rbtnBrandTCase.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2146,12 +2148,12 @@ namespace AgOpenGPS
             this.rbtnBrandTClaas.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTClaas.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTClaas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTClaas.Image = global::AgOpenGPS.Properties.Resources.Claas;
+            this.rbtnBrandTClaas.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandClaas;
             this.rbtnBrandTClaas.Location = new System.Drawing.Point(112, 102);
             this.rbtnBrandTClaas.Name = "rbtnBrandTClaas";
             this.rbtnBrandTClaas.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTClaas.TabIndex = 115;
-            this.rbtnBrandTClaas.Tag = AgOpenGPS.TractorBrand.Claas;
+            this.rbtnBrandTClaas.Tag = TractorBrand.Claas;
             this.rbtnBrandTClaas.UseVisualStyleBackColor = true;
             this.rbtnBrandTClaas.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2163,12 +2165,12 @@ namespace AgOpenGPS
             this.rbtnBrandTDeutz.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTDeutz.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTDeutz.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTDeutz.Image = global::AgOpenGPS.Properties.Resources.Deutz;
+            this.rbtnBrandTDeutz.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandDeutz;
             this.rbtnBrandTDeutz.Location = new System.Drawing.Point(211, 102);
             this.rbtnBrandTDeutz.Name = "rbtnBrandTDeutz";
             this.rbtnBrandTDeutz.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTDeutz.TabIndex = 116;
-            this.rbtnBrandTDeutz.Tag = AgOpenGPS.TractorBrand.Deutz;
+            this.rbtnBrandTDeutz.Tag = TractorBrand.Deutz;
             this.rbtnBrandTDeutz.UseVisualStyleBackColor = true;
             this.rbtnBrandTDeutz.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2180,12 +2182,12 @@ namespace AgOpenGPS
             this.rbtnBrandTFendt.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTFendt.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTFendt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTFendt.Image = global::AgOpenGPS.Properties.Resources.Fendt;
+            this.rbtnBrandTFendt.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandFendt;
             this.rbtnBrandTFendt.Location = new System.Drawing.Point(13, 390);
             this.rbtnBrandTFendt.Name = "rbtnBrandTFendt";
             this.rbtnBrandTFendt.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTFendt.TabIndex = 117;
-            this.rbtnBrandTFendt.Tag = AgOpenGPS.TractorBrand.Fendt;
+            this.rbtnBrandTFendt.Tag = TractorBrand.Fendt;
             this.rbtnBrandTFendt.UseVisualStyleBackColor = true;
             this.rbtnBrandTFendt.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2197,12 +2199,12 @@ namespace AgOpenGPS
             this.rbtnBrandTJDeere.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTJDeere.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTJDeere.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTJDeere.Image = global::AgOpenGPS.Properties.Resources.JohnDeere;
+            this.rbtnBrandTJDeere.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandJohnDeere;
             this.rbtnBrandTJDeere.Location = new System.Drawing.Point(211, 294);
             this.rbtnBrandTJDeere.Name = "rbtnBrandTJDeere";
             this.rbtnBrandTJDeere.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTJDeere.TabIndex = 118;
-            this.rbtnBrandTJDeere.Tag = AgOpenGPS.TractorBrand.JDeere;
+            this.rbtnBrandTJDeere.Tag = TractorBrand.JohnDeere;
             this.rbtnBrandTJDeere.UseVisualStyleBackColor = true;
             this.rbtnBrandTJDeere.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2214,12 +2216,12 @@ namespace AgOpenGPS
             this.rbtnBrandTKubota.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTKubota.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTKubota.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTKubota.Image = global::AgOpenGPS.Properties.Resources.Kubota;
+            this.rbtnBrandTKubota.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandKubota;
             this.rbtnBrandTKubota.Location = new System.Drawing.Point(211, 390);
             this.rbtnBrandTKubota.Name = "rbtnBrandTKubota";
             this.rbtnBrandTKubota.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTKubota.TabIndex = 119;
-            this.rbtnBrandTKubota.Tag = AgOpenGPS.TractorBrand.Kubota;
+            this.rbtnBrandTKubota.Tag = TractorBrand.Kubota;
             this.rbtnBrandTKubota.UseVisualStyleBackColor = true;
             this.rbtnBrandTKubota.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2231,12 +2233,12 @@ namespace AgOpenGPS
             this.rbtnBrandTMassey.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTMassey.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTMassey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTMassey.Image = global::AgOpenGPS.Properties.Resources.Massey;
+            this.rbtnBrandTMassey.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandMassey;
             this.rbtnBrandTMassey.Location = new System.Drawing.Point(13, 198);
             this.rbtnBrandTMassey.Name = "rbtnBrandTMassey";
             this.rbtnBrandTMassey.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTMassey.TabIndex = 120;
-            this.rbtnBrandTMassey.Tag = AgOpenGPS.TractorBrand.Massey;
+            this.rbtnBrandTMassey.Tag = TractorBrand.Massey;
             this.rbtnBrandTMassey.UseVisualStyleBackColor = true;
             this.rbtnBrandTMassey.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2248,12 +2250,12 @@ namespace AgOpenGPS
             this.rbtnBrandTNH.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTNH.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTNH.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTNH.Image = global::AgOpenGPS.Properties.Resources.NewHolland;
+            this.rbtnBrandTNH.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandNewHolland;
             this.rbtnBrandTNH.Location = new System.Drawing.Point(112, 198);
             this.rbtnBrandTNH.Name = "rbtnBrandTNH";
             this.rbtnBrandTNH.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTNH.TabIndex = 121;
-            this.rbtnBrandTNH.Tag = AgOpenGPS.TractorBrand.NewHolland;
+            this.rbtnBrandTNH.Tag = TractorBrand.NewHolland;
             this.rbtnBrandTNH.UseVisualStyleBackColor = true;
             this.rbtnBrandTNH.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2265,12 +2267,12 @@ namespace AgOpenGPS
             this.rbtnBrandTSame.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTSame.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTSame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTSame.Image = global::AgOpenGPS.Properties.Resources.Same;
+            this.rbtnBrandTSame.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandSame;
             this.rbtnBrandTSame.Location = new System.Drawing.Point(211, 198);
             this.rbtnBrandTSame.Name = "rbtnBrandTSame";
             this.rbtnBrandTSame.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTSame.TabIndex = 122;
-            this.rbtnBrandTSame.Tag = AgOpenGPS.TractorBrand.Same;
+            this.rbtnBrandTSame.Tag = TractorBrand.Same;
             this.rbtnBrandTSame.UseVisualStyleBackColor = true;
             this.rbtnBrandTSame.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2282,12 +2284,12 @@ namespace AgOpenGPS
             this.rbtnBrandTSteyr.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTSteyr.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTSteyr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTSteyr.Image = global::AgOpenGPS.Properties.Resources.Steyr;
+            this.rbtnBrandTSteyr.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandSteyr;
             this.rbtnBrandTSteyr.Location = new System.Drawing.Point(112, 390);
             this.rbtnBrandTSteyr.Name = "rbtnBrandTSteyr";
             this.rbtnBrandTSteyr.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTSteyr.TabIndex = 123;
-            this.rbtnBrandTSteyr.Tag = AgOpenGPS.TractorBrand.Steyr;
+            this.rbtnBrandTSteyr.Tag = TractorBrand.Steyr;
             this.rbtnBrandTSteyr.UseVisualStyleBackColor = true;
             this.rbtnBrandTSteyr.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2299,12 +2301,12 @@ namespace AgOpenGPS
             this.rbtnBrandTValtra.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTValtra.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTValtra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTValtra.Image = global::AgOpenGPS.Properties.Resources.Valtra;
+            this.rbtnBrandTValtra.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandValtra;
             this.rbtnBrandTValtra.Location = new System.Drawing.Point(112, 294);
             this.rbtnBrandTValtra.Name = "rbtnBrandTValtra";
             this.rbtnBrandTValtra.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTValtra.TabIndex = 125;
-            this.rbtnBrandTValtra.Tag = AgOpenGPS.TractorBrand.Valtra;
+            this.rbtnBrandTValtra.Tag = TractorBrand.Valtra;
             this.rbtnBrandTValtra.UseVisualStyleBackColor = true;
             this.rbtnBrandTValtra.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2316,12 +2318,12 @@ namespace AgOpenGPS
             this.rbtnBrandTUrsus.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.rbtnBrandTUrsus.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
             this.rbtnBrandTUrsus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnBrandTUrsus.Image = global::AgOpenGPS.Properties.Resources.Ursus;
+            this.rbtnBrandTUrsus.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandUrsus;
             this.rbtnBrandTUrsus.Location = new System.Drawing.Point(13, 294);
             this.rbtnBrandTUrsus.Name = "rbtnBrandTUrsus";
             this.rbtnBrandTUrsus.Size = new System.Drawing.Size(64, 64);
             this.rbtnBrandTUrsus.TabIndex = 124;
-            this.rbtnBrandTUrsus.Tag = AgOpenGPS.TractorBrand.Ursus;
+            this.rbtnBrandTUrsus.Tag = TractorBrand.Ursus;
             this.rbtnBrandTUrsus.UseVisualStyleBackColor = true;
             this.rbtnBrandTUrsus.CheckedChanged += new System.EventHandler(this.TractorBrandCheckedChanged);
             // 
@@ -2366,7 +2368,7 @@ namespace AgOpenGPS
             // pboxAlpha
             // 
             this.pboxAlpha.BackColor = System.Drawing.Color.Transparent;
-            this.pboxAlpha.BackgroundImage = global::AgOpenGPS.Properties.Resources.z_TractorDeutz;
+            this.pboxAlpha.BackgroundImage = global::AgOpenGPS.Core.Resources.BrandBitmaps.TractorDeutz;
             this.pboxAlpha.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pboxAlpha.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pboxAlpha.Location = new System.Drawing.Point(0, 0);
@@ -2400,7 +2402,7 @@ namespace AgOpenGPS
             this.cboxIsImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cboxIsImage.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxIsImage.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cboxIsImage.Image = global::AgOpenGPS.Properties.Resources.TriangleVehicle;
+            this.cboxIsImage.Image = global::AgOpenGPS.Core.Resources.BrandBitmaps.BrandTriangleVehicle;
             this.cboxIsImage.Location = new System.Drawing.Point(651, 17);
             this.cboxIsImage.Name = "cboxIsImage";
             this.cboxIsImage.RightToLeft = System.Windows.Forms.RightToLeft.Yes;

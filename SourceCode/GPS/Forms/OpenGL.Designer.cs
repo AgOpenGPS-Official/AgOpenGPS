@@ -37,10 +37,10 @@ namespace AgOpenGPS
 
         private void SetVehicleTextures()
         {
-            VehicleTextures.Tractor.SetBitmap(GetTractorBrand(Settings.Default.setBrand_TBrand));
-            VehicleTextures.Harvester.SetBitmap(GetHarvesterBrand(Settings.Default.setBrand_HBrand));
-            VehicleTextures.ArticulatedFront.SetBitmap(GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand));
-            VehicleTextures.ArticulatedRear.SetBitmap(GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand));
+            VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(Settings.Default.setBrand_TBrand));
+            VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(Settings.Default.setBrand_HBrand));
+            VehicleTextures.ArticulatedFront.SetBitmap(ArticulatedBitmaps.GetFrontBitmap(Settings.Default.setBrand_WDBrand));
+            VehicleTextures.ArticulatedRear.SetBitmap(ArticulatedBitmaps.GetRearBitmap(Settings.Default.setBrand_WDBrand));
         }
 
         // When oglMain is created

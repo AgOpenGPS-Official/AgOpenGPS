@@ -11,6 +11,7 @@ using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using OpenTK.Graphics.OpenGL;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Resources;
 
 namespace AgOpenGPS
 {
@@ -556,18 +557,18 @@ namespace AgOpenGPS
             if (rbtnTractor.Checked)
             {
                 Settings.Default.setBrand_TBrand = tractorBrand;
-                mf.VehicleTextures.Tractor.SetBitmap(mf.GetTractorBrand(tractorBrand));
+                mf.VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(tractorBrand));
             }
             if (rbtnHarvester.Checked)
             {
                 Settings.Default.setBrand_HBrand = harvesterBrand;
-                mf.VehicleTextures.Harvester.SetBitmap(mf.GetHarvesterBrand(harvesterBrand));
+                mf.VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(harvesterBrand));
             }
             if (rbtnArticulated.Checked)
             {
                 Settings.Default.setBrand_WDBrand = articulatedBrand;
-                mf.VehicleTextures.ArticulatedFront.SetBitmap(mf.GetArticulatedBrandFront(articulatedBrand));
-                mf.VehicleTextures.ArticulatedRear.SetBitmap(mf.GetArticulatedBrandRear(articulatedBrand));
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(ArticulatedBitmaps.GetFrontBitmap(articulatedBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(ArticulatedBitmaps.GetRearBitmap(articulatedBrand));
             }
             Properties.Settings.Default.Save();
         }
@@ -677,7 +678,7 @@ namespace AgOpenGPS
                         rbtnBrandTDeutz.Checked = true;
                     else if (tractorBrand == TractorBrand.Fendt)
                         rbtnBrandTFendt.Checked = true;
-                    else if (tractorBrand == TractorBrand.JDeere)
+                    else if (tractorBrand == TractorBrand.JohnDeere)
                         rbtnBrandTJDeere.Checked = true;
                     else if (tractorBrand == TractorBrand.Kubota)
                         rbtnBrandTKubota.Checked = true;
@@ -696,7 +697,7 @@ namespace AgOpenGPS
                     else if (tractorBrand == TractorBrand.JCB)
                         rbtnBrandTJCB.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetTractorBrand(Settings.Default.setBrand_TBrand);
+                    pboxAlpha.BackgroundImage = TractorBitmaps.GetBitmap(Settings.Default.setBrand_TBrand);
                 }
                 else if (mf.vehicle.VehicleConfig.Type == VehicleType.Harvester)
                 {
@@ -710,12 +711,12 @@ namespace AgOpenGPS
                         rbtnBrandHCase.Checked = true;
                     else if (harvesterBrand == HarvesterBrand.Claas)
                         rbtnBrandHClaas.Checked = true;
-                    else if (harvesterBrand == HarvesterBrand.JDeere)
+                    else if (harvesterBrand == HarvesterBrand.JohnDeere)
                         rbtnBrandHJDeere.Checked = true;
                     else if (harvesterBrand == HarvesterBrand.NewHolland)
                         rbtnBrandHNH.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand);
+                    pboxAlpha.BackgroundImage = HarvesterBitmaps.GetBitmap(Settings.Default.setBrand_HBrand);
                 }
                 else if (mf.vehicle.VehicleConfig.Type == VehicleType.Articulated)
                 {
@@ -729,14 +730,14 @@ namespace AgOpenGPS
                         rbtnBrandACase.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.Challenger)
                         rbtnBrandAChallenger.Checked = true;
-                    else if (articulatedBrand == ArticulatedBrand.JDeere)
+                    else if (articulatedBrand == ArticulatedBrand.JohnDeere)
                         rbtnBrandAJDeere.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.NewHolland)
                         rbtnBrandANH.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.Holder)
                         rbtnBrandAHolder.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand);
+                    pboxAlpha.BackgroundImage = ArticulatedBitmaps.GetFrontBitmap(Settings.Default.setBrand_WDBrand);
                 }
 
                 Properties.Settings.Default.setDisplay_vehicleOpacity = (int)(mf.vehicle.VehicleConfig.Opacity * 100);
@@ -745,7 +746,7 @@ namespace AgOpenGPS
             }
             else
             {
-                pboxAlpha.BackgroundImage = Properties.Resources.TriangleVehicle;
+                pboxAlpha.BackgroundImage = BrandBitmaps.BrandTriangleVehicle;
                 lblOpacityPercent.Text = ((int)(mf.vehicle.VehicleConfig.Opacity * 100)).ToString() + "%";
                 mf.vehicle.VehicleConfig.Color = new ColorRgb(254, 254, 254);
             }
@@ -784,16 +785,16 @@ namespace AgOpenGPS
         {
             if (rbtnTractor.Checked)
             {
-                mf.VehicleTextures.Tractor.SetBitmap(mf.GetTractorBrand(Settings.Default.setBrand_TBrand));
+                mf.VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(Settings.Default.setBrand_TBrand));
             }
             if (rbtnHarvester.Checked)
             {
-                mf.VehicleTextures.Harvester.SetBitmap(mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand));
+                mf.VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(Settings.Default.setBrand_HBrand));
             }
             if (rbtnArticulated.Checked)
             {
-                mf.VehicleTextures.ArticulatedFront.SetBitmap(mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand));
-                mf.VehicleTextures.ArticulatedRear.SetBitmap(mf.GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand));
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(ArticulatedBitmaps.GetFrontBitmap(Settings.Default.setBrand_WDBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(ArticulatedBitmaps.GetRearBitmap(Settings.Default.setBrand_WDBrand));
             }
         }
 
@@ -844,7 +845,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 harvesterBrand = (HarvesterBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(harvesterBrand);
+                pboxAlpha.BackgroundImage = HarvesterBitmaps.GetBitmap(harvesterBrand);
                 original = null;
                 SetOpacity();
             }
@@ -856,7 +857,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 tractorBrand = (TractorBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(tractorBrand);
+                pboxAlpha.BackgroundImage = TractorBitmaps.GetBitmap(tractorBrand);
                 original = null;
                 SetOpacity();
             }
@@ -868,7 +869,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 articulatedBrand = (ArticulatedBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetArticulatedBrandFront(articulatedBrand);
+                pboxAlpha.BackgroundImage = ArticulatedBitmaps.GetFrontBitmap(articulatedBrand);
                 original = null;
                 SetOpacity();
             }
