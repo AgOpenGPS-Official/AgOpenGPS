@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AgOpenGPS
 {
-    public enum SkipMode { Normal, Alternative, ignoreWorkedTracks };
+    public enum SkipMode { Normal, Alternative, IgnoreWorkedTracks };
 
     public class CYouTurn
     {
