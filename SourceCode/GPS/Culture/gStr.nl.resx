@@ -876,7 +876,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Achteruit-Afstand</value>
   </data>
   <data name="gsReverseSteer" xml:space="preserve">
-    <value>Achteruit geleiding</value>
+    <value>Achteruit Detectie</value>
   </data>
   <data name="gsRight" xml:space="preserve">
     <value>Rechts</value>
