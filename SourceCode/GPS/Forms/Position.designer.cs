@@ -833,7 +833,7 @@ namespace AgOpenGPS
             #endregion
 
             #region Corrected Position
-            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pn.fix.AsGeoCoord);
+            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord);
             byte[] correctedPosition = new byte[30];
             correctedPosition[0] = 0x80;
             correctedPosition[1] = 0x81;

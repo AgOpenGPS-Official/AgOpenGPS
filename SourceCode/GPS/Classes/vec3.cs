@@ -30,7 +30,7 @@ namespace AgOpenGPS
             heading = v.heading;
         }
 
-        public GeoCoord AsGeoCoord => new GeoCoord(northing, easting);
+        public GeoCoord ToGeoCoord => new GeoCoord(northing, easting);
     }
 
     public struct vecFix2Fix
@@ -66,7 +66,7 @@ namespace AgOpenGPS
             northing = v.northing;
         }
 
-        public GeoCoord AsGeoCoord => new GeoCoord(northing, easting);
+        public GeoCoord ToGeoCoord => new GeoCoord(northing, easting);
 
         public static vec2 operator -(vec2 lhs, vec2 rhs)
         {
