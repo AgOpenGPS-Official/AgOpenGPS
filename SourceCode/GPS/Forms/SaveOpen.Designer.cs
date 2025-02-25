@@ -2141,7 +2141,7 @@ namespace AgOpenGPS
                 kml.WriteElementString("tessellate", "1");
                 kml.WriteStartElement("coordinates");
 
-                GeoCoord pointA = track.ptA.ToGeoCoord;
+                GeoCoord pointA = track.ptA.ToGeoCoord();
                 GeoDir heading = new GeoDir(track.heading);
                 linePts = pn.GetGeoCoordToWgs84_KML(pointA - ABLine.abLength * heading);
                 linePts += pn.GetGeoCoordToWgs84_KML(pointA + ABLine.abLength * heading);
@@ -2179,7 +2179,7 @@ namespace AgOpenGPS
 
                 foreach (vec3 v3 in trk.gArr[i].curvePts)
                 {
-                    linePts += pn.GetGeoCoordToWgs84_KML(v3.ToGeoCoord);
+                    linePts += pn.GetGeoCoordToWgs84_KML(v3.ToGeoCoord());
                 }
                 kml.WriteRaw(linePts);
 
@@ -2305,13 +2305,13 @@ namespace AgOpenGPS
                             secPts = "";
                             for (int i = 1; i < triList.Count; i += 2)
                             {
-                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord);
+                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
                             }
                             for (int i = triList.Count - 1; i > 1; i -= 2)
                             {
-                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord);
+                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
                             }
-                            secPts += pn.GetGeoCoordToWgs84_KML(triList[1].ToGeoCoord);
+                            secPts += pn.GetGeoCoordToWgs84_KML(triList[1].ToGeoCoord());
 
                             kml.WriteRaw(secPts);
                             kml.WriteEndElement(); // <coordinates>
@@ -2347,7 +2347,7 @@ namespace AgOpenGPS
 
             foreach(vec3 v3 in bnd.bndList[bndNum].fenceLine)
             {
-                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord);
+                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
                 sb.Append(
                     latLon.Longitude.ToString("N7", CultureInfo.InvariantCulture) + ',' +
                     latLon.Latitude.ToString("N7", CultureInfo.InvariantCulture) + ",0 ");

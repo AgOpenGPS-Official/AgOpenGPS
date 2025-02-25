@@ -49,7 +49,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                         foreach (vec2 v2 in bndList[i].fenceLineEar)
                         {
-                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v2.ToGeoCoord);
+                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v2.ToGeoCoord());
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "2");
                             xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
@@ -72,7 +72,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                         foreach(vec3 v3 in boudaryList.hdLine)
                         {
-                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord);
+                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "2");
                             xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
@@ -102,7 +102,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                             {
                                 xml.WriteStartElement("PNT");//A
 
-                                GeoCoord pointA = track.ptA.ToGeoCoord;
+                                GeoCoord pointA = track.ptA.ToGeoCoord();
                                 GeoDir heading = new GeoDir(track.heading);
                                 Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pointA - 1000.0 * heading);
                                 xml.WriteAttributeString("A", "2");
@@ -142,7 +142,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                             foreach(vec3 v3 in track.curvePts)
                             {
                                 xml.WriteStartElement("PNT");//point
-                                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord);
+                                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
 
                                 xml.WriteAttributeString("A", "2");
                                 xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
