@@ -454,9 +454,10 @@ namespace AgOpenGPS
                 pictureBox1.Image = Properties.Resources.RadiusWheelBaseArticulated;
             }
 
-            nudTractorHitchLength.Visible = Properties.Settings.Default.setTool_isToolTrailing || Properties.Settings.Default.setTool_isToolTBT;
-            label94.Visible = nudTractorHitchLength.Visible;
-            labelHitchLength.Visible = nudTractorHitchLength.Visible;
+            nudTractorHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            label94.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            labelHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            HitchLengthBlindBox.Visible = rbtnFixedRear.Checked || rbtnFront.Checked; 
 
             label94.Text = mf.unitsInCm;
             label95.Text = mf.unitsInCm;
