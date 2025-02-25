@@ -13,6 +13,7 @@ using AgOpenGPS.Culture;
 using AgLibrary.Logging;
 using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Streamers;
 
 namespace AgOpenGPS
 {
@@ -743,7 +744,7 @@ namespace AgOpenGPS
 
             //start to read the file
             string line;
-            using (StreamReader reader = new StreamReader(fileAndDirectory))
+            using (GeoStreamReader reader = new GeoStreamReader(fileAndDirectory))
             {
                 try
                 {
@@ -778,12 +779,7 @@ namespace AgOpenGPS
                     //start positions
                     if (!reader.EndOfStream)
                     {
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        offs = line.Split(',');
-
-                        pn.latStart = double.Parse(offs[0], CultureInfo.InvariantCulture);
-                        pn.lonStart = double.Parse(offs[1], CultureInfo.InvariantCulture);
+                        pn.StartLatLon = reader.ReadWgs84();
 
                         pn.SetLocalMetersPerDegree(true);
                     }

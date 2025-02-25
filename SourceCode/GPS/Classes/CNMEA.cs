@@ -8,13 +8,15 @@ namespace AgOpenGPS
     public class CNMEA
     {
         const double degreesToRadians = 2.0 * Math.PI / 360.0;
-        //WGS84 Lat Long
-        public double latitude, longitude;
 
-        public double prevLatitude, prevLongitude;
+        public Wgs84 CurrentLatLon { get; set; }
+        public double latitude => CurrentLatLon.Latitude;
+        public double longitude => CurrentLatLon.Longitude;
 
         //local plane geometry
-        public double latStart, lonStart;
+        public Wgs84 StartLatLon { get; set; }
+        public double latStart => StartLatLon.Latitude;
+        public double lonStart => StartLatLon.Longitude;
 
         public double mPerDegreeLat, mPerDegreeLon;
 
@@ -40,8 +42,7 @@ namespace AgOpenGPS
         {
             //constructor, grab the main form reference
             mf = f;
-            latStart = 0;
-            lonStart = 0;
+            StartLatLon = new Wgs84(0, 0);
             ageAlarm = Properties.Settings.Default.setGPS_ageAlarm;
         }
 
@@ -56,8 +57,11 @@ namespace AgOpenGPS
         {
             if (setSim && mf.timerSim.Enabled)
             {
-                latitude = mf.sim.latitude = Properties.Settings.Default.setGPS_SimLatitude = latStart;
-                longitude = mf.sim.longitude = Properties.Settings.Default.setGPS_SimLongitude = lonStart;
+                CurrentLatLon = StartLatLon;
+                mf.sim.CurrentLatLon = StartLatLon;
+
+                Properties.Settings.Default.setGPS_SimLatitude = latStart;
+                Properties.Settings.Default.setGPS_SimLongitude = lonStart;
                 Properties.Settings.Default.Save();
             }
 

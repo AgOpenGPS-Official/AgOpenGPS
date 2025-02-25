@@ -101,8 +101,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.pn.latStart = mf.pn.latitude;
-                    mf.pn.lonStart = mf.pn.longitude;
+                    mf.pn.StartLatLon = mf.pn.CurrentLatLon;
 
                     mf.pn.SetLocalMetersPerDegree(false);
 

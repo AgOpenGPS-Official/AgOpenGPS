@@ -333,8 +333,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.pn.latStart = latK;
-                    mf.pn.lonStart = lonK;
+                    mf.pn.StartLatLon = new Wgs84(latK, lonK);
 
                     mf.pn.SetLocalMetersPerDegree(true);
 

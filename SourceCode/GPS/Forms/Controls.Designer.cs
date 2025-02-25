@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Pickers;
@@ -2244,8 +2245,9 @@ namespace AgOpenGPS
         }
         private void btnResetSim_Click(object sender, EventArgs e)
         {
-            sim.latitude = Properties.Settings.Default.setGPS_SimLatitude;
-            sim.longitude = Properties.Settings.Default.setGPS_SimLongitude;
+            sim.CurrentLatLon = new Wgs84(
+                Properties.Settings.Default.setGPS_SimLatitude,
+                Properties.Settings.Default.setGPS_SimLongitude);
         }
         private void btnSimSetSpeedToZero_Click(object sender, EventArgs e)
         {

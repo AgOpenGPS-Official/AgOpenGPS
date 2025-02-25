@@ -11,7 +11,7 @@ namespace AgOpenGPS
 
         public double altitude = 300;
 
-        public double latitude, longitude;
+        public Wgs84 CurrentLatLon { get; set; }
 
         public double headingTrue, stepDistance = 0.0, steerAngle, steerangleAve = 0.0;
         public double steerAngleScrollBar = 0;
@@ -23,8 +23,9 @@ namespace AgOpenGPS
         public CSim(FormGPS _f)
         {
             mf = _f;
-            latitude = Properties.Settings.Default.setGPS_SimLatitude;
-            longitude = Properties.Settings.Default.setGPS_SimLongitude;
+            CurrentLatLon = new Wgs84(
+                Properties.Settings.Default.setGPS_SimLatitude,
+                Properties.Settings.Default.setGPS_SimLongitude);
         }
 
         public void DoSimTick(double _st)
@@ -73,17 +74,16 @@ namespace AgOpenGPS
             mf.pn.AverageTheSpeed();
 
             //Calculate the next Lat Long based on heading and distance
-            CalculateNewPostionFromBearingDistance(glm.toRadians(latitude), glm.toRadians(longitude), headingTrue, stepDistance / 1000.0);
+            CurrentLatLon = CurrentLatLon.CalculateNewPostionFromBearingDistance(headingTrue, stepDistance);
 
-            GeoCoord fixCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latitude, longitude));
+            GeoCoord fixCoord = mf.pn.ConvertWgs84ToGeoCoord(CurrentLatLon);
             mf.pn.fix.northing = fixCoord.Northing;
             mf.pn.fix.easting = fixCoord.Easting;
             mf.pn.headingTrue = mf.pn.headingTrueDual = glm.toDegrees(headingTrue);
             mf.ahrs.imuHeading = mf.pn.headingTrue;
             if (mf.ahrs.imuHeading >= 360) mf.ahrs.imuHeading -= 360;
 
-            mf.pn.latitude = latitude;
-            mf.pn.longitude = longitude;
+            mf.pn.CurrentLatLon = CurrentLatLon;
 
             mf.pn.hdop = 0.7;
 
@@ -118,15 +118,5 @@ namespace AgOpenGPS
             }
         }
 
-        public void CalculateNewPostionFromBearingDistance(double lat, double lng, double bearing, double distance)
-        {
-            double R = distance / 6371.0; // Earth Radius in Km
-
-            double lat2 = Math.Asin((Math.Sin(lat) * Math.Cos(R)) + (Math.Cos(lat) * Math.Sin(R) * Math.Cos(bearing)));
-            double lon2 = lng + Math.Atan2(Math.Sin(bearing) * Math.Sin(R) * Math.Cos(lat), Math.Cos(R) - (Math.Sin(lat) * Math.Sin(lat2)));
-
-            latitude = glm.toDegrees(lat2);
-            longitude = glm.toDegrees(lon2);
-        }
     }
 }

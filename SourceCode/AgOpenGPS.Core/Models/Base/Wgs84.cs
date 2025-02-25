@@ -34,6 +34,22 @@ namespace AgOpenGPS.Core.Models
         {
             return 0.001 * DistanceInMeters(b);
         }
+
+        public Wgs84 CalculateNewPostionFromBearingDistance(double bearing, double distanceInMeters)
+        {
+            const double degreesToRadians = Math.PI / 180.0;
+            const double radiansToDegrees = 1.0 / degreesToRadians;
+            double latRadians = Latitude * degreesToRadians;
+            double lonRadians = Longitude * degreesToRadians;
+
+            double R = distanceInMeters / (6371.0 * 1000);
+
+            double lat2 = Math.Asin((Math.Sin(latRadians) * Math.Cos(R)) + (Math.Cos(latRadians) * Math.Sin(R) * Math.Cos(bearing)));
+            double lon2 = lonRadians + Math.Atan2(Math.Sin(bearing) * Math.Sin(R) * Math.Cos(latRadians), Math.Cos(R) - (Math.Sin(latRadians) * Math.Sin(lat2)));
+
+            return new Wgs84(lat2 * radiansToDegrees, lon2 * radiansToDegrees);
+        }
+
     }
 
 }
