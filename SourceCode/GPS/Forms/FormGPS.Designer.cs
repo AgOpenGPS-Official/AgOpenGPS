@@ -1875,7 +1875,6 @@ namespace AgOpenGPS
             this.toolStripDropDownButton1.ShowDropDownArrow = false;
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(66, 80);
             this.toolStripDropDownButton1.Text = "All";
-            this.toolStripDropDownButton1.Click += new System.EventHandler(this.toolStripDropDownButton1_Click);
             // 
             // toolStripConfig
             // 
