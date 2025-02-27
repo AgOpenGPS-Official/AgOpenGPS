@@ -26,7 +26,7 @@ namespace AgOpenGPS
 
         public int rowSkipsWidth = 1, uTurnSmoothing;
 
-        public bool alternateSkips = false, previousBigSkip = true;
+        public bool previousBigSkip = true;
         public SkipMode skipMode = SkipMode.Normal;
         public int rowSkipsWidth2 = 3, turnSkips = 2;
 
