@@ -54,7 +54,7 @@ namespace AgOpenGPS
                     manualBtnState = btnStates.On;
                     btnSectionMasterManual.Image = Properties.Resources.ManualOn;
 
-                    //add current Lane when it doesnt exist in the worked lane list
+                    //add current track when it doesn't exist in the worked track list
                     markAsWorkedTrack();
 
                     break;
@@ -86,7 +86,7 @@ namespace AgOpenGPS
                     btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOn;
                     if (sounds.isSectionsSoundOn) sounds.sndSectionOn.Play();
 
-                    //add current Lane when it doesnt exist in the worked lane list
+                    //add current track when it doesn't exist in the worked track list
                     markAsWorkedTrack();
 
                     break;
