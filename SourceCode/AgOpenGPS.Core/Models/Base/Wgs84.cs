@@ -5,6 +5,7 @@ namespace AgOpenGPS.Core.Models
     // Represents a coordinate in the World Geodetic System 1984
     public struct Wgs84
     {
+        const double EarthRadiusInMeters = 6371 * 1000.0;
         public Wgs84(double latitude, double longitude)
         {
             Latitude = latitude;
@@ -16,18 +17,15 @@ namespace AgOpenGPS.Core.Models
 
         public double DistanceInMeters(Wgs84 b)
         {
-            const double EarthRadius = 6371 * 1000.0;
-            double degreesToRad = Math.PI / 180.0;
-
-            double aLatRad = Latitude * degreesToRad;
-            double aLongRad = Longitude * degreesToRad;
-            double bLatRad = b.Latitude * degreesToRad;
-            double bLongRad = b.Longitude * degreesToRad;
+            double aLatRad = DegreesToRadians(Latitude);
+            double aLongRad = DegreesToRadians(Longitude);
+            double bLatRad = DegreesToRadians(b.Latitude);
+            double bLongRad = DegreesToRadians(b.Longitude);
             double sinHalfLongDelta = Math.Sin(0.5 * (bLongRad - aLongRad));
             double sinHalfLatDelta = Math.Sin(0.5 * (bLatRad - aLatRad));
 
             double d3 = sinHalfLatDelta * sinHalfLatDelta + Math.Cos(aLatRad) * Math.Cos(bLatRad) * sinHalfLongDelta * sinHalfLongDelta;
-            return EarthRadius * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
+            return EarthRadiusInMeters * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
         }
 
         public double DistanceInKiloMeters(Wgs84 b)
@@ -37,17 +35,27 @@ namespace AgOpenGPS.Core.Models
 
         public Wgs84 CalculateNewPostionFromBearingDistance(double bearing, double distanceInMeters)
         {
-            const double degreesToRadians = Math.PI / 180.0;
-            const double radiansToDegrees = 1.0 / degreesToRadians;
-            double latRadians = Latitude * degreesToRadians;
-            double lonRadians = Longitude * degreesToRadians;
+            double latRadians = DegreesToRadians(Latitude);
+            double lonRadians = DegreesToRadians(Longitude);
 
-            double R = distanceInMeters / (6371.0 * 1000);
+            double R = distanceInMeters / EarthRadiusInMeters;
 
             double lat2 = Math.Asin((Math.Sin(latRadians) * Math.Cos(R)) + (Math.Cos(latRadians) * Math.Sin(R) * Math.Cos(bearing)));
             double lon2 = lonRadians + Math.Atan2(Math.Sin(bearing) * Math.Sin(R) * Math.Cos(latRadians), Math.Cos(R) - (Math.Sin(latRadians) * Math.Sin(lat2)));
 
-            return new Wgs84(lat2 * radiansToDegrees, lon2 * radiansToDegrees);
+            return new Wgs84(RadiansToDegrees(lat2), RadiansToDegrees(lon2));
+        }
+
+        private double RadiansToDegrees(double radians)
+        {
+            const double radiansToDegrees = 180.0 / Math.PI;
+            return radians * radiansToDegrees;
+        }
+
+        private double DegreesToRadians(double degrees)
+        {
+            const double degreesToRadians = Math.PI / 180.0;
+            return degrees * degreesToRadians;
         }
 
     }
