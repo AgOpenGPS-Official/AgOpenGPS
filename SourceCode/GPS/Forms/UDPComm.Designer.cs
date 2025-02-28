@@ -68,13 +68,11 @@ namespace AgOpenGPS
 
                             if (Lon != double.MaxValue && Lat != double.MaxValue)
                             {
-                                if (timerSim.Enabled)
-                                    DisableSim();
+                                if (timerSim.Enabled) DisableSim();
 
-                                pn.longitude = Lon;
-                                pn.latitude = Lat;
+                                pn.CurrentLatLon = new Wgs84(Lat, Lon);
 
-                                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(new Wgs84(Lat, Lon));
+                                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(pn.CurrentLatLon);
                                 pn.fix.northing = fixCoord.Northing;
                                 pn.fix.easting = fixCoord.Easting;
 

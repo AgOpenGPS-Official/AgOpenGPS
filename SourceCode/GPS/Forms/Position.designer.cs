@@ -1651,8 +1651,7 @@ namespace AgOpenGPS
             {
                 if (!isJobStarted)
                 {
-                    pn.latStart = pn.latitude;
-                    pn.lonStart = pn.longitude;
+                    pn.StartLatLon = pn.CurrentLatLon;
                     pn.SetLocalMetersPerDegree(false);
                 }
 
