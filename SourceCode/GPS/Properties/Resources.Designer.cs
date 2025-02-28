@@ -332,16 +332,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AoG {
-            get {
-                object obj = ResourceManager.GetObject("AoG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap APlusMinusA {
             get {
                 object obj = ResourceManager.GetObject("APlusMinusA", resourceCulture);
@@ -772,26 +762,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Case {
-            get {
-                object obj = ResourceManager.GetObject("Case", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Challenger {
-            get {
-                object obj = ResourceManager.GetObject("Challenger", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap ChargeIndicator {
             get {
                 object obj = ResourceManager.GetObject("ChargeIndicator", resourceCulture);
@@ -815,16 +785,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap Chart {
             get {
                 object obj = ResourceManager.GetObject("Chart", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Claas {
-            get {
-                object obj = ResourceManager.GetObject("Claas", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1762,16 +1722,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Deutz {
-            get {
-                object obj = ResourceManager.GetObject("Deutz", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap DnArrow64 {
             get {
                 object obj = ResourceManager.GetObject("DnArrow64", resourceCulture);
@@ -1785,16 +1735,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap ExitAOG {
             get {
                 object obj = ResourceManager.GetObject("ExitAOG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Fendt {
-            get {
-                object obj = ResourceManager.GetObject("Fendt", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2200,16 +2140,6 @@ namespace AgOpenGPS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Holder {
-            get {
-                object obj = ResourceManager.GetObject("Holder", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream HydDown {
@@ -2290,16 +2220,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap JCB {
-            get {
-                object obj = ResourceManager.GetObject("JCB", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap JobActive {
             get {
                 object obj = ResourceManager.GetObject("JobActive", resourceCulture);
@@ -2323,26 +2243,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap JobNameTime {
             get {
                 object obj = ResourceManager.GetObject("JobNameTime", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap JohnDeere {
-            get {
-                object obj = ResourceManager.GetObject("JohnDeere", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Kubota {
-            get {
-                object obj = ResourceManager.GetObject("Kubota", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2440,16 +2340,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Massey {
-            get {
-                object obj = ResourceManager.GetObject("Massey", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap MenuHideShow {
             get {
                 object obj = ResourceManager.GetObject("MenuHideShow", resourceCulture);
@@ -2483,16 +2373,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap NavigationSettings {
             get {
                 object obj = ResourceManager.GetObject("NavigationSettings", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap NewHolland {
-            get {
-                object obj = ResourceManager.GetObject("NewHolland", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2723,16 +2603,6 @@ namespace AgOpenGPS.Properties {
         internal static System.IO.UnmanagedMemoryStream rtk_lost {
             get {
                 return ResourceManager.GetStream("rtk_lost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Same {
-            get {
-                object obj = ResourceManager.GetObject("Same", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -3088,16 +2958,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap SteerZero {
             get {
                 object obj = ResourceManager.GetObject("SteerZero", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Steyr {
-            get {
-                object obj = ResourceManager.GetObject("Steyr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3514,39 +3374,9 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TriangleVehicle {
-            get {
-                object obj = ResourceManager.GetObject("TriangleVehicle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap UpArrow64 {
             get {
                 object obj = ResourceManager.GetObject("UpArrow64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ursus {
-            get {
-                object obj = ResourceManager.GetObject("Ursus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Valtra {
-            get {
-                object obj = ResourceManager.GetObject("Valtra", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -3804,136 +3634,6 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontAoG {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontAoG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontCase {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontCase", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontChallenger {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontChallenger", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontHolder {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontHolder", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontJDeere {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontJDeere", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedFrontNH {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedFrontNH", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRear {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRear", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearAoG {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearAoG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearCase {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearCase", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearChallenger {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearChallenger", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearHolder {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearHolder", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearJDeere {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearJDeere", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_ArticulatedRearNH {
-            get {
-                object obj = ResourceManager.GetObject("z_ArticulatedRearNH", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap z_bingMap {
             get {
                 object obj = ResourceManager.GetObject("z_bingMap", resourceCulture);
@@ -3997,56 +3697,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap z_Harvester {
             get {
                 object obj = ResourceManager.GetObject("z_Harvester", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_HarvesterAoG {
-            get {
-                object obj = ResourceManager.GetObject("z_HarvesterAoG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_HarvesterCase {
-            get {
-                object obj = ResourceManager.GetObject("z_HarvesterCase", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_HarvesterClaas {
-            get {
-                object obj = ResourceManager.GetObject("z_HarvesterClaas", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_HarvesterJD {
-            get {
-                object obj = ResourceManager.GetObject("z_HarvesterJD", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_HarvesterNH {
-            get {
-                object obj = ResourceManager.GetObject("z_HarvesterNH", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -4207,146 +3857,6 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap z_Tractor {
             get {
                 object obj = ResourceManager.GetObject("z_Tractor", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorAoG {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorAoG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorCase {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorCase", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorClaas {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorClaas", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorDeutz {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorDeutz", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorFendt {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorFendt", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorJCB {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorJCB", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorJDeere {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorJDeere", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorKubota {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorKubota", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorMassey {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorMassey", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorNH {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorNH", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorSame {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorSame", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorSteyr {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorSteyr", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorUrsus {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorUrsus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap z_TractorValtra {
-            get {
-                object obj = ResourceManager.GetObject("z_TractorValtra", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

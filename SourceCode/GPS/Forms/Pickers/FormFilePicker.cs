@@ -1,4 +1,6 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Culture;
 using System;
 using System.Collections.Generic;
@@ -50,38 +52,25 @@ namespace AgOpenGPS
 
             foreach (string dir in dirs)
             {
-                double latStart = 0;
-                double lonStart = 0;
-                double distance = 0;
                 string fieldDirectory = Path.GetFileName(dir);
                 string filename = Path.Combine(dir, "Field.txt");
-                string line;
 
                 //make sure directory has a field.txt in it
                 if (File.Exists(filename))
                 {
-                    using (StreamReader reader = new StreamReader(filename))
+                    using (GeoStreamReader reader = new GeoStreamReader(filename))
                     {
                         try
                         {
-                            //Date time line
+                            // Skip 8 lines
                             for (int i = 0; i < 8; i++)
                             {
-                                line = reader.ReadLine();
+                                reader.ReadLine();
                             }
-
-                            //start positions
                             if (!reader.EndOfStream)
                             {
-                                line = reader.ReadLine();
-                                string[] offs = line.Split(',');
-
-                                latStart = (double.Parse(offs[0], CultureInfo.InvariantCulture));
-                                lonStart = (double.Parse(offs[1], CultureInfo.InvariantCulture));
-
-                                distance = Math.Pow((latStart - mf.pn.latitude), 2) + Math.Pow((lonStart - mf.pn.longitude), 2);
-                                distance = Math.Sqrt(distance);
-                                distance *= 100;
+                                Wgs84 startLatLon = reader.ReadWgs84();
+                                double distance = startLatLon.DistanceInKiloMeters(new Wgs84(mf.pn.latitude, mf.pn.longitude));
 
                                 fileList.Add(fieldDirectory);
                                 fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
@@ -112,6 +101,7 @@ namespace AgOpenGPS
                 if (File.Exists(filename))
                 {
                     List<vec3> pointList = new List<vec3>();
+                    string line;
                     double area = 0;
 
                     using (StreamReader reader = new StreamReader(filename))

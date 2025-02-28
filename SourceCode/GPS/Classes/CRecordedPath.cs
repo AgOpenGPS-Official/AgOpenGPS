@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using AgOpenGPS.Core.Models;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +23,8 @@ namespace AgOpenGPS
             speed = _speed;
             autoBtnState = _autoBtnState;
         }
+
+        public GeoCoord AsGeoCoord => new GeoCoord(northing, easting);
     }
 
     public class CRecordedPath

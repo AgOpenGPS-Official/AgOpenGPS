@@ -1,4 +1,5 @@
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -13,7 +14,7 @@ namespace AgOpenGPS
     {
         private readonly FormGPS mf = null;
 
-        private double easting, norting, latK, lonK;
+        private double latK, lonK;
         private int fenceSelected = -1;
 
         private bool isClosing;
@@ -383,10 +384,8 @@ namespace AgOpenGPS
                                         double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                         double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                        mf.pn.ConvertWGS84ToLocal(latK, lonK, out norting, out easting);
-
-                                        //add the point to boundary
-                                        New.fenceLine.Add(new vec3(easting, norting, 0));
+                                        GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                        New.fenceLine.Add(new vec3(geoCoord));
                                     }
 
                                     New.CalculateFenceArea(mf.bnd.bndList.Count);

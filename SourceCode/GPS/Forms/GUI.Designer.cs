@@ -12,12 +12,10 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Resources;
 
 namespace AgOpenGPS
 {
-    public enum TractorBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra, JCB }
-    public enum HarvesterBrand { AgOpenGPS, Case, Claas, JDeere, NewHolland }
-    public enum ArticulatedBrand { AgOpenGPS, Case, Challenger, JDeere, NewHolland, Holder }
 
     public partial class FormGPS
     {
@@ -104,7 +102,18 @@ namespace AgOpenGPS
             if (++sentenceCounter > 20)
             {
                 ShowNoGPSWarning();
+                //make sure settings and others can't be openend, the program is in standby
+                toolStripDropDownButton1.Enabled = false;
+                toolStripDropDownButton4.Enabled = false;
+                btnJobMenu.Enabled = false;
                 return;
+            }
+            else
+            {
+                //turn on buttons when GPS is active again (or SIM is enabled)
+                toolStripDropDownButton1.Enabled = true;
+                toolStripDropDownButton4.Enabled = true;
+                btnJobMenu.Enabled = true;
             }
 
             ////////////////////////////////////////////// 10 second ///////////////////////////////////////////////////////
@@ -1565,95 +1574,7 @@ namespace AgOpenGPS
         #endregion properties 
 
         //Load Bitmaps brand
-        public Bitmap GetTractorBrand(TractorBrand brand)
-        {
-            switch (brand)
-            {
-                case TractorBrand.Case:
-                    return Resources.z_TractorCase;
-                case TractorBrand.Claas:
-                    return Resources.z_TractorClaas;
-                case TractorBrand.Deutz:
-                    return Resources.z_TractorDeutz;
-                case TractorBrand.Fendt:
-                    return Resources.z_TractorFendt;
-                case TractorBrand.JDeere:
-                    return Resources.z_TractorJDeere;
-                case TractorBrand.Kubota:
-                    return Resources.z_TractorKubota;
-                case TractorBrand.Massey:
-                    return Resources.z_TractorMassey;
-                case TractorBrand.NewHolland:
-                    return Resources.z_TractorNH;
-                case TractorBrand.Same:
-                    return Resources.z_TractorSame;
-                case TractorBrand.Steyr:
-                    return Resources.z_TractorSteyr;
-                case TractorBrand.Ursus:
-                    return Resources.z_TractorUrsus;
-                case TractorBrand.Valtra:
-                    return Resources.z_TractorValtra;
-                case TractorBrand.JCB:
-                    return Resources.z_TractorJCB;
-                default:
-                    return Resources.z_TractorAoG;
-            }
-        }
 
-        public Bitmap GetHarvesterBrand(HarvesterBrand brand)
-        {
-            switch (brand)
-            {
-                case HarvesterBrand.Case:
-                    return Resources.z_HarvesterCase;
-                case HarvesterBrand.Claas:
-                    return Resources.z_HarvesterClaas;
-                case HarvesterBrand.JDeere:
-                    return Resources.z_HarvesterJD;
-                case HarvesterBrand.NewHolland:
-                    return Resources.z_HarvesterNH;
-                default:
-                    return Resources.z_HarvesterAoG;
-            }
-        }
-
-        public Bitmap GetArticulatedBrandFront(ArticulatedBrand brand)
-        {
-            switch (brand)
-            {
-                case ArticulatedBrand.Case:
-                    return Resources.z_ArticulatedFrontCase;
-                case ArticulatedBrand.Challenger:
-                    return Resources.z_ArticulatedFrontChallenger;
-                case ArticulatedBrand.JDeere:
-                    return Resources.z_ArticulatedFrontJDeere;
-                case ArticulatedBrand.NewHolland:
-                    return Resources.z_ArticulatedFrontNH;
-                case ArticulatedBrand.Holder:
-                    return Resources.z_ArticulatedFrontHolder;
-                default:
-                    return Resources.z_ArticulatedFrontAoG;
-            }
-        }
-        
-        public Bitmap GetArticulatedBrandRear(ArticulatedBrand brand)
-        {
-            switch (brand)
-            {
-                case ArticulatedBrand.Case:
-                    return Resources.z_ArticulatedRearCase;
-                case ArticulatedBrand.Challenger:
-                    return Resources.z_ArticulatedRearChallenger;
-                case ArticulatedBrand.JDeere:
-                    return Resources.z_ArticulatedRearJDeere;
-                case ArticulatedBrand.NewHolland:
-                    return Resources.z_ArticulatedRearNH;
-                case ArticulatedBrand.Holder:
-                    return Resources.z_ArticulatedRearHolder;
-                default:
-                    return Resources.z_ArticulatedRearAoG;
-            }
-        }
 
     }//end class
 }//end namespace

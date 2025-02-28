@@ -14,7 +14,7 @@ namespace AgOpenGPS.Core.Models
         public double Latitude { get; }
         public double Longitude { get; }
 
-        public double Distance(Wgs84 b) // In meters
+        public double DistanceInMeters(Wgs84 b)
         {
             const double EarthRadius = 6371 * 1000.0;
             double degreesToRad = Math.PI / 180.0;
@@ -28,6 +28,11 @@ namespace AgOpenGPS.Core.Models
 
             double d3 = sinHalfLatDelta * sinHalfLatDelta + Math.Cos(aLatRad) * Math.Cos(bLatRad) * sinHalfLongDelta * sinHalfLongDelta;
             return EarthRadius * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
+        }
+
+        public double DistanceInKiloMeters(Wgs84 b)
+        {
+            return 0.001 * DistanceInMeters(b);
         }
     }
 

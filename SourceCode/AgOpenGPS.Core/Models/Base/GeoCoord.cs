@@ -59,5 +59,10 @@ namespace AgOpenGPS.Core.Models
             return new GeoCoord(coord.Northing + delta.NorthingDelta, coord.Easting + delta.EastingDelta);
         }
 
+        public static GeoCoord operator -(GeoCoord coord, GeoDelta delta)
+        {
+            return new GeoCoord(coord.Northing - delta.NorthingDelta, coord.Easting - delta.EastingDelta);
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -15,7 +16,7 @@ namespace AgOpenGPS
         //class variables
         private readonly FormGPS mf = null;
 
-        private double easting, northing, latK, lonK;
+        private double latK, lonK;
 
         public FormFieldKML(Form _callingForm)
         {
@@ -171,10 +172,8 @@ namespace AgOpenGPS
                                     double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                     double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                    mf.pn.ConvertWGS84ToLocal(latK, lonK, out northing, out easting);
-
-                                    //add the point to boundary
-                                    New.fenceLine.Add(new vec3(easting, northing, 0));
+                                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    New.fenceLine.Add(new vec3(geoCoord));
                                 }
 
                                 //build the boundary, make sure is clockwise for outer counter clockwise for inner

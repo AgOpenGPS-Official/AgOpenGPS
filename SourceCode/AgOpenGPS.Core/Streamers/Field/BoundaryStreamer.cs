@@ -11,10 +11,10 @@ namespace AgOpenGPS.Core.Streamers
         {
         }
 
-        public Boundary TryRead(string fieldPath)
+        public Boundary TryRead(DirectoryInfo fieldDirectory)
         {
             Boundary boundary = new Boundary();
-            string fullPath = FullPath(fieldPath);
+            string fullPath = FullPath(fieldDirectory);
             if (!File.Exists(fullPath))
             {
                 _presenter.PresentBoundaryFileMissing();
@@ -23,7 +23,7 @@ namespace AgOpenGPS.Core.Streamers
             {
                 try
                 {
-                    boundary = Read(fieldPath);
+                    boundary = Read(fieldDirectory);
                 }
 
                 catch (Exception e)
@@ -35,10 +35,10 @@ namespace AgOpenGPS.Core.Streamers
             return boundary;
         }
 
-        public Boundary Read(string fieldPath)
+        public Boundary Read(DirectoryInfo fieldDirectory)
         {
             Boundary boundary = new Boundary();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldPath)))
+            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
             {
                 reader.ReadLine(); // skip header Boundary
                 boundary.OuterBoundary = ReadBoundaryPolygon(reader);
@@ -72,10 +72,10 @@ namespace AgOpenGPS.Core.Streamers
             writer.WriteGeoPolygonWithHeading(polygon);
         }
 
-        public void Write(Boundary boundary, string fieldPath)
+        public void Write(Boundary boundary, DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath)))
+            fieldDirectory.Create();
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
             {
                 writer.WriteLine("$Boundary");
                 if (boundary.OuterBoundary != null)
@@ -89,10 +89,10 @@ namespace AgOpenGPS.Core.Streamers
             }
         }
 
-        public void CreateFile(string fieldPath)
+        public void CreateFile(DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            File.Create(FullPath(fieldPath));
+            fieldDirectory.Create();
+            File.Create(FullPath(fieldDirectory));
         }
     }
 }

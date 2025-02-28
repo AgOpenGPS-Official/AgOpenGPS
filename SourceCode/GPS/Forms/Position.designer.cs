@@ -1,6 +1,7 @@
 ﻿//Please, if you use this, share the improvements
 
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using System;
 using System.Collections.Generic;
@@ -832,18 +833,15 @@ namespace AgOpenGPS
             #endregion
 
             #region Corrected Position
-            double latitud;
-            double longitud;
-
-            pn.ConvertLocalToWGS84(pn.fix.northing, pn.fix.easting, out latitud, out longitud);
+            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord());
             byte[] correctedPosition = new byte[30];
             correctedPosition[0] = 0x80;
             correctedPosition[1] = 0x81;
             correctedPosition[2] = 0x7F;
             correctedPosition[3] = 0x64;
             correctedPosition[4] = 24;
-            Buffer.BlockCopy(BitConverter.GetBytes(longitud), 0, correctedPosition, 5, 8);
-            Buffer.BlockCopy(BitConverter.GetBytes(latitud), 0, correctedPosition, 13, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(latLon.Longitude), 0, correctedPosition, 5, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(latLon.Latitude), 0, correctedPosition, 13, 8);
             Buffer.BlockCopy(BitConverter.GetBytes(glm.toDegrees(gpsHeading)), 0, correctedPosition, 21, 8);
             SendPgnToLoop(correctedPosition);
             #endregion
@@ -1658,8 +1656,9 @@ namespace AgOpenGPS
                     pn.SetLocalMetersPerDegree(false);
                 }
 
-                pn.ConvertWGS84ToLocal(pn.latitude, pn.longitude, out pn.fix.northing, out pn.fix.easting);
-
+                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(new Wgs84(pn.latitude, pn.longitude));
+                pn.fix.northing = fixCoord.Northing;
+                pn.fix.easting = fixCoord.Easting;
                 //Draw a grid once we know where in the world we are.
                 isFirstFixPositionSet = true;
 

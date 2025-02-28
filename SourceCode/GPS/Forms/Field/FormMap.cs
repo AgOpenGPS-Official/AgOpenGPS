@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using OpenTK.Graphics.OpenGL;
@@ -238,9 +239,8 @@ namespace AgOpenGPS
                 CBoundaryList New = new CBoundaryList();
                 for (int i = 0; i < bingLine.Count; i++)
                 {
-                    mf.pn.ConvertWGS84ToLocal(bingLine[i].Latitude, bingLine[i].Longitude, out double nort, out double east);
-                    vec3 v = new vec3(east, nort, 0);
-                    New.fenceLine.Add(v);
+                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(bingLine[i].Latitude, bingLine[i].Longitude));
+                    New.fenceLine.Add(new vec3(geoCoord));
                 }
 
                 New.CalculateFenceArea(mf.bnd.bndList.Count);
@@ -339,9 +339,9 @@ namespace AgOpenGPS
 
                 btnAddFence.Enabled = false;
                 btnDeletePoint.Enabled = false;
-
             }
         }
+
         private void SaveBackgroundImage()
         {
             if (bingLine.Count > 0)
@@ -350,20 +350,21 @@ namespace AgOpenGPS
                 return;
             }
 
-            mf.worldGrid.isGeoMap = true;
-
             GeoPoint geoRef = mapControl.TopLeft;
-            mf.pn.ConvertWGS84ToLocal(geoRef.Latitude, geoRef.Longitude, out double nor, out double eas);
-            if (Math.Abs(nor) > 4000 || Math.Abs(eas) > 4000) mf.worldGrid.isGeoMap = false;
-            mf.worldGrid.northingMaxGeo = nor;
-            mf.worldGrid.eastingMinGeo = eas;
+            GeoCoord topLeftGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            mf.worldGrid.northingMaxGeo = topLeftGeoCoord.Northing;
+            mf.worldGrid.eastingMinGeo = topLeftGeoCoord.Easting;
 
             geoRef = mapControl.BottomRight;
-            mf.pn.ConvertWGS84ToLocal(geoRef.Latitude, geoRef.Longitude, out nor, out eas);
-            if (Math.Abs(nor) > 4000 || Math.Abs(eas) > 4000) mf.worldGrid.isGeoMap = false;
-            mf.worldGrid.northingMinGeo = nor;
-            mf.worldGrid.eastingMaxGeo = eas;
+            GeoCoord bottomRightGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            mf.worldGrid.northingMinGeo = bottomRightGeoCoord.Northing;
+            mf.worldGrid.eastingMaxGeo = bottomRightGeoCoord.Easting;
 
+            mf.worldGrid.isGeoMap =
+                Math.Abs(mf.worldGrid.northingMaxGeo) <= 4000 &&
+                Math.Abs(mf.worldGrid.eastingMinGeo) <= 4000 &&
+                Math.Abs(mf.worldGrid.northingMinGeo) <= 4000 &&
+                Math.Abs(mf.worldGrid.eastingMaxGeo) <= 4000;
 
             if (!mf.worldGrid.isGeoMap)
             {
@@ -387,15 +388,7 @@ namespace AgOpenGPS
                 if (File.Exists(fileAndDirectory))
                     File.Delete(fileAndDirectory);
                 bitmap.Save(fileAndDirectory, ImageFormat.Png);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.bingGrid]);
-                BitmapData bitmapData = bitmap.LockBits(new
-                    Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
-                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0,
-                    PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0,
-                    OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.worldGrid.BingGridTexture.SetBitmap(bitmap);
             }
             catch
             {
@@ -436,7 +429,6 @@ namespace AgOpenGPS
                     writer.WriteLine(-300);
                 }
             }
-
         }
 
         private void btnBuildFieldBackground_Click(object sender, EventArgs e)
@@ -475,17 +467,7 @@ namespace AgOpenGPS
 
         private void ResetMapGrid()
         {
-            using (Bitmap bitmap = Properties.Resources.z_bingMap)
-            {
-                GL.GenTextures(1, out mf.texture[(int)FormGPS.textures.bingGrid]);
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.bingGrid]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-            }
-
+            mf.worldGrid.ResetBingGridTexture();
             string fileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, "BackPic.png");
             try
             {

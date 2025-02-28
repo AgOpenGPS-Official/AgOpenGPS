@@ -49,11 +49,10 @@ In order to contribute to AgOpenGPS, follow these steps:
 
 ## Links
 
-- [AgOpenGPS Wiki](https://github.com/agopengps-official/AgOpenGPS/wiki)
+- [AgOpenGPS Documentation](https://docs.agopengps.com/)
 - [AgOpenGPS Forum](https://discourse.agopengps.com/)
 - [PCB and Firmware Repository](https://github.com/agopengps-official/Boards)
 - [SK21 Rate Control Repository](https://github.com/agopengps-official/Rate_Control)
-- [Hardware Wiki](https://github.com/agopengps-official/Boards/wiki)
 
 ## License
 

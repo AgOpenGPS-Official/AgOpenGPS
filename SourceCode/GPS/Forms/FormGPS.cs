@@ -496,7 +496,6 @@ namespace AgOpenGPS
             }
         }
 
-
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
         {
             Form f = Application.OpenForms["FormGPSData"];
@@ -681,50 +680,7 @@ namespace AgOpenGPS
             }
         }
 
-        public enum textures : uint
-        {
-            Floor,
-            Tractor,
-            ArticulatedFront,
-            ArticulatedRear,
-            Harvester,
-            bingGrid,
-            CrossTrackBkgrnd
-        }
-
-        public void LoadGLTextures()
-        {
-            GL.Enable(EnableCap.Texture2D);
-
-            Bitmap[] oglTextures = new Bitmap[]
-            {
-                Resources.z_Floor,
-                GetTractorBrand(Settings.Default.setBrand_TBrand),
-                GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand),
-                GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand),
-                GetHarvesterBrand(Settings.Default.setBrand_HBrand),
-                Resources.z_bingMap,
-                Resources.z_crossTrackBkgnd
-            };
-
-            texture = new uint[oglTextures.Length];
-
-            for (int h = 0; h < oglTextures.Length; h++)
-            {
-                using (Bitmap bitmap = oglTextures[h])
-                {
-                    GL.GenTextures(1, out texture[h]);
-                    GL.BindTexture(TextureTarget.Texture2D, texture[h]);
-                    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                    bitmap.UnlockBits(bitmapData);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-                }
-            }
-        }
-
-        //request a new job
+         //request a new job
         public void JobNew()
         {
             //SendSteerSettingsOutAutoSteerPort();
@@ -1036,16 +992,7 @@ namespace AgOpenGPS
 
             btnSection1Man.Text = "1";
 
-            using (Bitmap bitmap = Properties.Resources.z_bingMap)
-            {
-                GL.GenTextures(1, out texture[(int)FormGPS.textures.bingGrid]);
-                GL.BindTexture(TextureTarget.Texture2D, texture[(int)FormGPS.textures.bingGrid]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-            }
+            worldGrid.ResetBingGridTexture();
         }
 
         public void FieldMenuButtonEnableDisable(bool isOn)

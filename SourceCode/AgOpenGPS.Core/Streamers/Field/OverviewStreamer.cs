@@ -11,10 +11,10 @@ namespace AgOpenGPS.Core.Streamers
         {
         }
 
-        public FieldOverview TryRead(string fieldPath)
+        public FieldOverview TryRead(DirectoryInfo directoryInfo)
         {
             FieldOverview fieldOverview = null;
-            string fullPath = FullPath(fieldPath);
+            string fullPath = FullPath(directoryInfo);
             if (!File.Exists(fullPath))
             {
                 _presenter.PresentBoundaryFileMissing();
@@ -23,7 +23,7 @@ namespace AgOpenGPS.Core.Streamers
             {
                 try
                 {
-                    fieldOverview = Read(fieldPath);
+                    fieldOverview = Read(directoryInfo);
                 }
                 catch (Exception e)
                 {
@@ -34,10 +34,10 @@ namespace AgOpenGPS.Core.Streamers
             return fieldOverview;
         }
 
-        public FieldOverview Read(string fieldPath)
+        public FieldOverview Read(DirectoryInfo fieldDirectory)
         {
             FieldOverview fieldOverview = null;
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldPath)))
+            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
             {
                 reader.ReadLine(); // Skip Date time
                 reader.ReadLine(); // Skip "$FieldDir"
@@ -53,10 +53,10 @@ namespace AgOpenGPS.Core.Streamers
             return fieldOverview;
         }
 
-        public void Write(FieldOverview fieldOverview, string fieldPath)
+        public void Write(FieldOverview fieldOverview, DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath)))
+            fieldDirectory.Create();
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
             {
                 writer.WriteDateTime();
                 writer.WriteLine("$FieldDir");

@@ -6,6 +6,7 @@ namespace AgOpenGPS.Classes
     public class ScreenTextures
     {
         private Texture2D _compass;
+        private Texture2D _crossTrackBackGround;
         private Texture2D _font;
         private Texture2D _lateralManual;
         private Texture2D _lift;
@@ -36,6 +37,15 @@ namespace AgOpenGPS.Classes
             {
                 if (_compass == null) _compass = new Texture2D(Resources.z_Compass);
                 return _compass;
+            }
+        }
+
+        public Texture2D CrossTrackBackground
+        {
+            get
+            {
+                if (_crossTrackBackGround == null) _crossTrackBackGround = new Texture2D(Resources.ZoomOut48);
+                return _crossTrackBackGround;
             }
         }
 

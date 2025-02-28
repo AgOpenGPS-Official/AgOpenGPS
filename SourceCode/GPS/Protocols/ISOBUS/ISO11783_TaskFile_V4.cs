@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
@@ -30,9 +31,6 @@ namespace AgOpenGPS.Protocols.ISOBUS
                 xml.WriteAttributeString("C", designator);
                 xml.WriteAttributeString("D", area.ToString(CultureInfo.InvariantCulture));
 
-                double lat = 0;
-                double lon = 0;
-
                 {
                     //all the boundaries
                     /*
@@ -52,48 +50,39 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                         xml.WriteStartElement("LSG");//Polygon
                         xml.WriteAttributeString("A", "1");
-                        for (int j = 0; j < bndList[i].fenceLineEar.Count; j++)
+                        foreach(vec2 v2 in bndList[i].fenceLineEar)
                         {
-
-                            pn.ConvertLocalToWGS84(bndList[i].fenceLineEar[j].northing, bndList[i].fenceLineEar[j].easting, out lat, out lon);
+                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v2.ToGeoCoord());
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "10");
-                            xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
-                            xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
-                            xml.WriteEndElement(); //Boundary Points                   
+                            xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
+                            xml.WriteAttributeString("D", latLon.Longitude.ToString(CultureInfo.InvariantCulture));
+                            xml.WriteEndElement(); //Boundary Points
                         }
-
                         xml.WriteEndElement();//Polygon
                         xml.WriteEndElement();//BND
                     }
-
                     //all the headlands A=10
-                    if (bndList.Count > 0)
+                    foreach(CBoundaryList boundarList in bndList)
                     {
-                        for (int i = 0; i < bndList.Count; i++)
+                        if (boundarList.hdLine.Count < 1) continue;
+
+                        xml.WriteStartElement("PLN");//BND
+                        xml.WriteAttributeString("A", "10"); //headland
+
+                        xml.WriteStartElement("LSG");//Polygon
+                        xml.WriteAttributeString("A", "1");
+                        foreach (vec3 v3 in boundarList.hdLine)
                         {
-                            if (bndList[i].hdLine.Count < 1) continue;
-
-                            xml.WriteStartElement("PLN");//BND
-
-                            xml.WriteAttributeString("A", "10"); //headland
-
-                            xml.WriteStartElement("LSG");//Polygon
-                            xml.WriteAttributeString("A", "1");
-
-                            for (int j = 0; j < bndList[i].hdLine.Count; j++)
-                            {
-                                pn.ConvertLocalToWGS84(bndList[i].hdLine[j].northing, bndList[i].hdLine[j].easting, out lat, out lon);
-                                xml.WriteStartElement("PNT");//Boundary Points
-                                xml.WriteAttributeString("A", "10");
-                                xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
-                                xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
-                                xml.WriteEndElement(); //Boundary Points                   
-                            }
-
-                            xml.WriteEndElement();//Polygon
-                            xml.WriteEndElement();//BND
+                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
+                            xml.WriteStartElement("PNT");//Boundary Points
+                            xml.WriteAttributeString("A", "10");
+                            xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
+                            xml.WriteAttributeString("D", latLon.Longitude.ToString(CultureInfo.InvariantCulture));
+                            xml.WriteEndElement(); //Boundary Points
                         }
+                        xml.WriteEndElement();//Polygon
+                        xml.WriteEndElement();//BND
                     }
 
                     //AB Lines
@@ -104,19 +93,19 @@ namespace AgOpenGPS.Protocols.ISOBUS
                     </ LSG >
                     */
 
-                    if (trk.gArr != null && trk.gArr.Count > 0)
+                    if (trk.gArr != null)
                     {
-                        for (int i = 0; i < trk.gArr.Count; i++)
+                        foreach(CTrk track in trk.gArr)
                         {
                             xml.WriteStartElement("GGP");//Guide-P
                             string name = "GGP" + lineCounter.ToString(CultureInfo.InvariantCulture);
                             lineCounter++;
                             xml.WriteAttributeString("A", name);
-                            xml.WriteAttributeString("B", trk.gArr[i].name);
+                            xml.WriteAttributeString("B", track.name);
                             {
                                 xml.WriteStartElement("GPN");//Guide-N
                                 xml.WriteAttributeString("A", name);
-                                xml.WriteAttributeString("B", trk.gArr[i].name);
+                                xml.WriteAttributeString("B", track.name);
                                 xml.WriteAttributeString("C", "1");
                                 xml.WriteAttributeString("E", "1");
                                 xml.WriteAttributeString("F", "1");
@@ -127,23 +116,23 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                     {
                                         xml.WriteStartElement("PNT");//A
 
-                                        pn.ConvertLocalToWGS84(trk.gArr[i].ptA.northing - (Math.Cos(trk.gArr[i].heading) * 1000),
-                                            trk.gArr[i].ptA.easting - (Math.Sin(trk.gArr[i].heading) * 1000), out lat, out lon);
+                                        GeoCoord pointA = track.ptA.ToGeoCoord();
+                                        GeoDir heading = new GeoDir(track.heading);
+                                        Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pointA - 1000.0 * heading);
 
                                         xml.WriteAttributeString("A", "6");
-                                        xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
-                                        xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("D", latLon.Longitude.ToString(CultureInfo.InvariantCulture));
 
                                         xml.WriteEndElement();//A
                                         xml.WriteStartElement("PNT");//B
 
-                                        pn.ConvertLocalToWGS84(trk.gArr[i].ptA.northing + (Math.Cos(trk.gArr[i].heading) * 1000),
-                                            trk.gArr[i].ptA.easting + (Math.Sin(trk.gArr[i].heading) * 1000), out lat, out lon);
+                                        latLon = pn.ConvertGeoCoordToWgs84(pointA + 1000.0 * heading);
 
                                         xml.WriteAttributeString("A", "7");
 
-                                        xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
-                                        xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("D", latLon.Longitude.ToString(CultureInfo.InvariantCulture));
                                         xml.WriteEndElement();//B
                                     }
                                     xml.WriteEndElement();//Line
@@ -163,19 +152,19 @@ namespace AgOpenGPS.Protocols.ISOBUS
                     </ LSG >
                     */
 
-                    if (trk.gArr != null && trk.gArr.Count > 0)
+                    if (trk.gArr != null)
                     {
-                        for (int i = 0; i < trk.gArr.Count; i++)
+                        foreach(CTrk track in trk.gArr)
                         {
                             xml.WriteStartElement("GGP");//Guide-P
                             string name = "GGP" + lineCounter.ToString(CultureInfo.InvariantCulture);
                             lineCounter++;
                             xml.WriteAttributeString("A", name);
-                            xml.WriteAttributeString("B", trk.gArr[i].name);
+                            xml.WriteAttributeString("B", track.name);
                             {
                                 xml.WriteStartElement("GPN");//Guide-N
                                 xml.WriteAttributeString("A", name);
-                                xml.WriteAttributeString("B", trk.gArr[i].name);
+                                xml.WriteAttributeString("B", track.name);
                                 xml.WriteAttributeString("C", "3");
                                 xml.WriteAttributeString("E", "1");
                                 xml.WriteAttributeString("F", "1");
@@ -184,16 +173,15 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                     xml.WriteStartElement("LSG");//Curve
                                     xml.WriteAttributeString("A", "5"); //denotes guidance
 
-                                    for (int j = 0; j < trk.gArr[i].curvePts.Count; j++)
+                                    for (int j = 0; j < track.curvePts.Count; j++)
                                     {
                                         xml.WriteStartElement("PNT");//point
-                                        pn.ConvertLocalToWGS84(trk.gArr[i].curvePts[j].northing,
-                                            trk.gArr[i].curvePts[j].easting, out lat, out lon);
+                                        Wgs84 latLon = pn.ConvertGeoCoordToWgs84(track.curvePts[j].ToGeoCoord());
                                         if (j == 0)
                                         {
                                             xml.WriteAttributeString("A", "6");
                                         }
-                                        else if (j == trk.gArr[i].curvePts.Count - 1)
+                                        else if (j == track.curvePts.Count - 1)
                                         {
                                             xml.WriteAttributeString("A", "7");
                                         }
@@ -201,8 +189,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                         {
                                             xml.WriteAttributeString("A", "9");
                                         }
-                                        xml.WriteAttributeString("C", lat.ToString(CultureInfo.InvariantCulture));
-                                        xml.WriteAttributeString("D", lon.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
+                                        xml.WriteAttributeString("D", latLon.Longitude.ToString(CultureInfo.InvariantCulture));
 
                                         xml.WriteEndElement();//point
                                     }

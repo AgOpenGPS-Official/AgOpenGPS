@@ -10,16 +10,16 @@ namespace AgOpenGPS.Core.Streamers
         {
         }
 
-        public Contour TryRead(string fieldPath)
+        public Contour TryRead(DirectoryInfo fieldDirectory)
         {
             Contour contour = null;
-            if (!File.Exists(FullPath(fieldPath)))
+            if (!File.Exists(FullPath(fieldDirectory)))
             {
                 _presenter.PresentSectionFileMissing();
             }
             try
             {
-                contour = Read(fieldPath);
+                contour = Read(fieldDirectory);
             }
             catch (System.Exception e)
             {
@@ -29,10 +29,10 @@ namespace AgOpenGPS.Core.Streamers
             return contour;
         }
 
-        public Contour Read(string fieldPath)
+        public Contour Read(DirectoryInfo fieldDirectory)
         {
             Contour contour = new Contour();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldPath)))
+            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
             {
                 //read header
                 while (!reader.EndOfStream)
@@ -44,9 +44,9 @@ namespace AgOpenGPS.Core.Streamers
             return contour;
         }
 
-        public void AppendUnsavedWork(Contour contour, string fieldPath)
+        public void AppendUnsavedWork(Contour contour, DirectoryInfo fieldDirectory)
         {
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath), true))
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory), true))
             {
                 
                 foreach (var path in contour.UnsavedStrips)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Core.Models;
+using System;
 
 namespace AgOpenGPS
 {
@@ -74,8 +75,9 @@ namespace AgOpenGPS
             //Calculate the next Lat Long based on heading and distance
             CalculateNewPostionFromBearingDistance(glm.toRadians(latitude), glm.toRadians(longitude), headingTrue, stepDistance / 1000.0);
 
-            mf.pn.ConvertWGS84ToLocal(latitude, longitude, out mf.pn.fix.northing, out mf.pn.fix.easting);
-
+            GeoCoord fixCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latitude, longitude));
+            mf.pn.fix.northing = fixCoord.Northing;
+            mf.pn.fix.easting = fixCoord.Easting;
             mf.pn.headingTrue = mf.pn.headingTrueDual = glm.toDegrees(headingTrue);
             mf.ahrs.imuHeading = mf.pn.headingTrue;
             if (mf.ahrs.imuHeading >= 360) mf.ahrs.imuHeading -= 360;

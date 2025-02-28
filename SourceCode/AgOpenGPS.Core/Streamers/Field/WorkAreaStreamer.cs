@@ -10,16 +10,16 @@ namespace AgOpenGPS.Core.Streamers
         {
         }
 
-        public WorkedArea TryRead(string fieldPath)
+        public WorkedArea TryRead(DirectoryInfo fieldDirectory)
         {
             WorkedArea workedArea = null;
-            if (!File.Exists(FullPath(fieldPath)))
+            if (!File.Exists(FullPath(fieldDirectory)))
             {
                 _presenter.PresentSectionFileMissing();
             }
             try
             {
-                workedArea = Read(fieldPath);
+                workedArea = Read(fieldDirectory);
             }
             catch (System.Exception e)
             {
@@ -29,10 +29,10 @@ namespace AgOpenGPS.Core.Streamers
             return workedArea;
         }
 
-        public WorkedArea Read(string fieldPath)
+        public WorkedArea Read(DirectoryInfo fieldDirectory)
         {
             WorkedArea workedArea = new WorkedArea();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldPath)))
+            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
             {
                 //read header
                 while (!reader.EndOfStream)
@@ -53,9 +53,9 @@ namespace AgOpenGPS.Core.Streamers
             return workedArea;
         }
 
-        public void AppendUnsavedWork(WorkedArea workedArea, string fieldPath)
+        public void AppendUnsavedWork(WorkedArea workedArea, DirectoryInfo fieldDirectory)
         {
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath), true))
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory), true))
             {
                 //for each patch, write out the list of triangles to the file
                 foreach (var quadStrip in workedArea.UnsavedWork)
