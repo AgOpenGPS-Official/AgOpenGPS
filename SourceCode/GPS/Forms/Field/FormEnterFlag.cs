@@ -24,8 +24,8 @@ namespace AgOpenGPS
             nudLatitude.Controls[0].Enabled = false;
             nudLongitude.Controls[0].Enabled = false;
 
-            nudLatitude.Value = (decimal)mf.pn.latitude;
-            nudLongitude.Value = (decimal)mf.pn.longitude;
+            nudLatitude.Value = (decimal)mf.AppModel.latitude;
+            nudLongitude.Value = (decimal)mf.AppModel.longitude;
         }
 
         private void FormEnterAB_Load(object sender, EventArgs e)

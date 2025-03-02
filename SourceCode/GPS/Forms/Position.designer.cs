@@ -1193,8 +1193,8 @@ namespace AgOpenGPS
             {
                 //grab fix and elevation
                 sbGrid.Append(
-                      pn.latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
-                    + pn.longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
+                    AppModel.latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
+                    + AppModel.longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
                     + Math.Round((pn.altitude - vehicle.VehicleConfig.AntennaHeight),3).ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fixQuality.ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fix.easting.ToString("N2", CultureInfo.InvariantCulture) + ","
@@ -1651,11 +1651,11 @@ namespace AgOpenGPS
             {
                 if (!isJobStarted)
                 {
-                    pn.StartLatLon = pn.CurrentLatLon;
+                    AppModel.StartLatLon = AppModel.CurrentLatLon;
                     pn.SetLocalMetersPerDegree(false);
                 }
 
-                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(new Wgs84(pn.latitude, pn.longitude));
+                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
                 pn.fix.northing = fixCoord.Northing;
                 pn.fix.easting = fixCoord.Easting;
                 //Draw a grid once we know where in the world we are.

@@ -146,7 +146,7 @@ namespace AgOpenGPS
                             if (!reader.EndOfStream)
                             {
                                 Wgs84 startLatLon = reader.ReadWgs84();
-                                double distance = startLatLon.DistanceInKiloMeters(new Wgs84(mf.pn.latitude, mf.pn.longitude));
+                                double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
 
                                 if (distance < 0.5)
                                 {

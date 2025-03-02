@@ -780,7 +780,7 @@ namespace AgOpenGPS
                     if (!reader.EndOfStream)
                     {
                         reader.ReadLine(); // Skip line 'StartFix'
-                        pn.StartLatLon = reader.ReadWgs84();
+                        AppModel.StartLatLon = reader.ReadWgs84();
                         pn.SetLocalMetersPerDegree(true);
                     }
                 }
@@ -1425,7 +1425,9 @@ namespace AgOpenGPS
                 writer.WriteLine("0");
 
                 writer.WriteLine("StartFix");
-                writer.WriteLine(pn.latitude.ToString(CultureInfo.InvariantCulture) + "," + pn.longitude.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine(
+                    AppModel.latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.longitude.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -1470,7 +1472,9 @@ namespace AgOpenGPS
                 writer.WriteLine("0");
 
                 writer.WriteLine("StartFix");
-                writer.WriteLine(pn.latitude.ToString(CultureInfo.InvariantCulture) + "," + pn.longitude.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine(
+                    AppModel.latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.longitude.ToString(CultureInfo.InvariantCulture));
 
                 writer.WriteLine("Latitude,Longitude,Elevation,Quality,Easting,Northing,Heading,Roll");
             }
@@ -2001,7 +2005,7 @@ namespace AgOpenGPS
         }
 
         //generate KML file from flag
-        public void FileMakeKMLFromCurrentPosition(double lat, double lon)
+        public void FileMakeKMLFromCurrentPosition(Wgs84 currentLatLon)
         {
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
@@ -2025,9 +2029,10 @@ namespace AgOpenGPS
                 writer.WriteLine(@"<color>ff4400ff</color>");
                 writer.WriteLine(@"</IconStyle> </Style>");
                 writer.WriteLine(@" <name> Your Current Position </name>");
-                writer.WriteLine(@"<Point><coordinates> " +
-                                lon.ToString(CultureInfo.InvariantCulture) + "," + lat.ToString(CultureInfo.InvariantCulture) + ",0" +
-                                @"</coordinates> </Point> ");
+                writer.WriteLine(@"<Point><coordinates> "
+                    + currentLatLon.Longitude.ToString(CultureInfo.InvariantCulture)+ ","
+                    + currentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + ",0"
+                    + @"</coordinates> </Point> ");
                 writer.WriteLine(@"  </Placemark>                                 ");
                 writer.WriteLine(@"</Document>");
                 writer.WriteLine(@"</kml>                                         ");

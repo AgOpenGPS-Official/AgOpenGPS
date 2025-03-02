@@ -83,19 +83,11 @@ namespace AgOpenGPS
             mf.ahrs.imuHeading = mf.pn.headingTrue;
             if (mf.ahrs.imuHeading >= 360) mf.ahrs.imuHeading -= 360;
 
-            mf.pn.CurrentLatLon = CurrentLatLon;
+            mf.AppModel.CurrentLatLon = CurrentLatLon;
 
             mf.pn.hdop = 0.7;
 
-            temp = Math.Abs(mf.pn.latitude * 100);
-            temp -= ((int)(temp));
-            temp *= 100;
-            mf.pn.altitude = temp+200;
-
-            temp = Math.Abs(mf.pn.longitude * 100);
-            temp -= ((int)(temp));
-            temp *= 100;
-            mf.pn.altitude += temp;
+            mf.pn.altitude = SimulateAltitude(mf.AppModel.CurrentLatLon);
             
             mf.pn.satellitesTracked = 12;
 
@@ -109,13 +101,26 @@ namespace AgOpenGPS
                 stepDistance += 0.02;
                 if (stepDistance > 0.12) isAccelForward = false;
             }
-
             if (isAccelBack)
             {
                 isAccelForward = false;
                 stepDistance -= 0.01;
                 if (stepDistance < -0.06) isAccelBack = false;
             }
+        }
+
+        private double SimulateAltitude(Wgs84 latLon)
+        {
+            double temp = Math.Abs(latLon.Latitude * 100);
+            temp -= ((int)(temp));
+            temp *= 100;
+            double altitude = temp + 200;
+
+            temp = Math.Abs(latLon.Longitude * 100);
+            temp -= ((int)(temp));
+            temp *= 100;
+            altitude += temp;
+            return altitude;
         }
 
     }

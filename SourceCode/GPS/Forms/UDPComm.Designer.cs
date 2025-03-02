@@ -70,9 +70,9 @@ namespace AgOpenGPS
                             {
                                 if (timerSim.Enabled) DisableSim();
 
-                                pn.CurrentLatLon = new Wgs84(Lat, Lon);
+                                AppModel.CurrentLatLon = new Wgs84(Lat, Lon);
 
-                                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(pn.CurrentLatLon);
+                                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
                                 pn.fix.northing = fixCoord.Northing;
                                 pn.fix.easting = fixCoord.Easting;
 

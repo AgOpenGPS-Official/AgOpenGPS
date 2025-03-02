@@ -218,11 +218,11 @@ namespace AgOpenGPS
                             break;
 
                         case 2:
-                            lblCurrentField.Text = "Lat: " + pn.latitude.ToString("N7") + "   Lon: " + pn.longitude.ToString("N7");
+                            lblCurrentField.Text = "Lat: " + AppModel.latitude.ToString("N7") + "   Lon: " + AppModel.longitude.ToString("N7");
                             break;
 
                         case 3:
-                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");                            
+                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
 
                         case 4:
@@ -1483,8 +1483,8 @@ namespace AgOpenGPS
 
         #region Properties // ---------------------------------------------------------------------
 
-        public string Latitude { get { return Convert.ToString(Math.Round(pn.latitude, 7)); } }
-        public string Longitude { get { return Convert.ToString(Math.Round(pn.longitude, 7)); } }
+        public string Latitude { get { return Convert.ToString(Math.Round(AppModel.latitude, 7)); } }
+        public string Longitude { get { return Convert.ToString(Math.Round(AppModel.longitude, 7)); } }
         public string SatsTracked { get { return Convert.ToString(pn.satellitesTracked); } }
         public string HDOP { get { return Convert.ToString(pn.hdop); } }
         public string Heading { get { return Convert.ToString(Math.Round(glm.toDegrees(fixHeading), 1)) + "\u00B0"; } }

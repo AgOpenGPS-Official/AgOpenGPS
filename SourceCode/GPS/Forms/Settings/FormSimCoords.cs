@@ -42,7 +42,7 @@ namespace AgOpenGPS
                 mf.TimedMessageBox(2000, "Simulator is off", "Go Back To Work, No Time For Games");
                 Close();
             }
-            mf.pn.StartLatLon = new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value);
+            mf.AppModel.StartLatLon = new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value);
 
             mf.pn.SetLocalMetersPerDegree(true);
 

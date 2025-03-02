@@ -587,9 +587,7 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    double distance = Math.Pow((pn.latStart - pn.latitude), 2) + Math.Pow((pn.lonStart - pn.longitude), 2);
-                    distance = Math.Sqrt(distance);
-                    distance *= 100;
+                    double distance = AppModel.CurrentLatLon.DistanceInKiloMeters(AppModel.StartLatLon);
                     if (distance > 10)
                     {
                         TimedMessageBox(2500, "High Field Start Distance Warning", "Field Start is "
@@ -1112,7 +1110,7 @@ namespace AgOpenGPS
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.fix.easting, pn.fix.northing, 
+            CFlag flagPt = new CFlag(AppModel.latitude, AppModel.longitude, pn.fix.easting, pn.fix.northing, 
                 fixHeading, flagColor, nextflag, nextflag.ToString());
             flagPts.Add(flagPt);
             FileSaveFlags();

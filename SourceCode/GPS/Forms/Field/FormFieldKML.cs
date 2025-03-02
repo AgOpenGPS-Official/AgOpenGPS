@@ -333,7 +333,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.pn.StartLatLon = new Wgs84(latK, lonK);
+                    mf.AppModel.StartLatLon = new Wgs84(latK, lonK);
 
                     mf.pn.SetLocalMetersPerDegree(true);
 
@@ -375,7 +375,9 @@ namespace AgOpenGPS
                         writer.WriteLine("0");
 
                         writer.WriteLine("StartFix");
-                        writer.WriteLine(mf.pn.latStart.ToString(CultureInfo.InvariantCulture) + "," + mf.pn.lonStart.ToString(CultureInfo.InvariantCulture));
+                        writer.WriteLine(
+                            mf.AppModel.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                            mf.AppModel.lonStart.ToString(CultureInfo.InvariantCulture));
                     }
 
                     mf.FileCreateSections();

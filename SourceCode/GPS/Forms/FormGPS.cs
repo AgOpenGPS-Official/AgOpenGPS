@@ -3,6 +3,7 @@
 using AgLibrary.Logging;
 using AgOpenGPS;
 using AgOpenGPS.Classes;
+using AgOpenGPS.Core;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;
@@ -29,6 +30,10 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
+        public ApplicationCore AppCore { get; set; }
+
+        public ApplicationModel AppModel => AppCore.AppModel;
+
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool SetForegroundWindow(IntPtr handle);
@@ -271,6 +276,8 @@ namespace AgOpenGPS
         {
             //winform initialization
             InitializeComponent();
+
+            AppCore = new ApplicationCore(new DirectoryInfo(RegistrySettings.baseDirectory));
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;

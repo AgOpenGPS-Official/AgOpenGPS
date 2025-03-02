@@ -115,12 +115,12 @@ namespace AgOpenGPS
             nudLongitudePlus.Controls[0].Enabled = false;
             nudHeadingLatLonPlus.Controls[0].Enabled = false;   
 
-            nudLatitudeA.Value = (decimal)mf.pn.latitude;
-            nudLatitudeB.Value = (decimal)mf.pn.latitude + 0.000005m;
-            nudLongitudeA.Value = (decimal)mf.pn.longitude;
-            nudLongitudeB.Value = (decimal)mf.pn.longitude + 0.000005m;
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudeA.Value = (decimal)mf.AppModel.latitude;
+            nudLatitudeB.Value = (decimal)mf.AppModel.latitude + 0.000005m;
+            nudLongitudeA.Value = (decimal)mf.AppModel.longitude;
+            nudLongitudeB.Value = (decimal)mf.AppModel.longitude + 0.000005m;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.longitude;
             nudHeading.Value = 0;
             nudHeadingLatLonPlus.Value = 0;
 
@@ -609,8 +609,8 @@ namespace AgOpenGPS
             panelLatLonPlus.Visible = true;
             this.Size = new System.Drawing.Size(370, 460);
 
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.longitude;
             mf.Activate();
         }
 
@@ -628,8 +628,8 @@ namespace AgOpenGPS
             panelPivot.Visible = true;
             this.Size = new System.Drawing.Size(370,360);
 
-            nudLatitudePivot.Value = (decimal)mf.pn.latitude;
-            nudLongitudePivot.Value = (decimal)mf.pn.longitude;
+            nudLatitudePivot.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudePivot.Value = (decimal)mf.AppModel.longitude;
             mf.Activate();
         }
 
@@ -1293,14 +1293,14 @@ namespace AgOpenGPS
 
         private void btnFillLatLonLatLonA_Click(object sender, EventArgs e)
         {
-            nudLatitudeA.Value = (decimal)mf.pn.latitude;
-            nudLongitudeA.Value = (decimal)mf.pn.longitude;
+            nudLatitudeA.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudeA.Value = (decimal)mf.AppModel.longitude;
         }
 
         private void btnFillLatLonLatLonB_Click(object sender, EventArgs e)
         {
-            nudLatitudeB.Value = (decimal)mf.pn.latitude;
-            nudLongitudeB.Value = (decimal)mf.pn.longitude;
+            nudLatitudeB.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudeB.Value = (decimal)mf.AppModel.longitude;
         }
 
         #endregion
@@ -1354,8 +1354,8 @@ namespace AgOpenGPS
 
         private void btnFillLatLonPlus_Click(object sender, EventArgs e)
         {
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.longitude;
         }
 
         public void CalcHeadingAPlus()
@@ -1417,8 +1417,8 @@ namespace AgOpenGPS
 
         private void btnFillLAtLonPivot_Click(object sender, EventArgs e)
         {
-            nudLatitudePivot.Value = (decimal)mf.pn.latitude;
-            nudLongitudePivot.Value = (decimal)mf.pn.longitude;
+            nudLatitudePivot.Value = (decimal)mf.AppModel.latitude;
+            nudLongitudePivot.Value = (decimal)mf.AppModel.longitude;
         }
 
         #endregion

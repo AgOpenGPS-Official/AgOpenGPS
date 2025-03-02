@@ -251,7 +251,7 @@ namespace AgOpenGPS
         {
             //save new copy of kml with selected flag and view in GoogleEarth
 
-            mf.FileMakeKMLFromCurrentPosition(mf.pn.latitude, mf.pn.longitude);
+            mf.FileMakeKMLFromCurrentPosition(mf.AppModel.CurrentLatLon);
             System.Diagnostics.Process.Start(Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, "CurrentPosition.KML"));
             isClosing = true;
             Close();
