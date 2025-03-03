@@ -376,8 +376,8 @@ namespace AgOpenGPS
 
                         writer.WriteLine("StartFix");
                         writer.WriteLine(
-                            mf.AppModel.latStart.ToString(CultureInfo.InvariantCulture) + "," +
-                            mf.AppModel.lonStart.ToString(CultureInfo.InvariantCulture));
+                            mf.AppModel.StartLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                            mf.AppModel.StartLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
                     }
 
                     mf.FileCreateSections();
