@@ -30,7 +30,6 @@ namespace AgOpenGPS.Core
 
         public Wgs84 CurrentLatLon { get; set; }
 
-        //local plane geometry
-        public Wgs84 StartLatLon { get; set; }
+        public LocalPlane LocalPlane { get; set; }
     }
 }

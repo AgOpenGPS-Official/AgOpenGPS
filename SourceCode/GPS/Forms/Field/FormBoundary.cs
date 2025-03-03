@@ -384,7 +384,7 @@ namespace AgOpenGPS
                                         double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                         double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                        GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                        GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                         New.fenceLine.Add(new vec3(geoCoord));
                                     }
 

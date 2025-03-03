@@ -101,9 +101,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.AppModel.StartLatLon = mf.AppModel.CurrentLatLon;
-
-                    mf.pn.SetLocalMetersPerDegree(false);
+                    mf.pn.DefineLocalPlane(mf.AppModel.CurrentLatLon, false);
 
                     dirNewField.Create();
 

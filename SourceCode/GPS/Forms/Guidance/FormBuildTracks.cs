@@ -1105,7 +1105,7 @@ namespace AgOpenGPS
                             double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double lonK);
                             double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double latK);
 
-                            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                             mf.curve.desList.Add(new vec3(geoCoord));
                         }
                     }
@@ -1278,11 +1278,11 @@ namespace AgOpenGPS
 
         public void CalcHeadingAB()
         {
-            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeA.Value, (double)nudLongitudeA.Value));
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeA.Value, (double)nudLongitudeA.Value));
 
             mf.ABLine.desPtA = new vec2(geoCoord);
 
-            geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeB.Value, (double)nudLongitudeB.Value));
+            geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeB.Value, (double)nudLongitudeB.Value));
             mf.ABLine.desPtB = new vec2(geoCoord);
 
             // heading based on AB points
@@ -1360,7 +1360,7 @@ namespace AgOpenGPS
 
         public void CalcHeadingAPlus()
         {
-            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePlus.Value, (double)nudLongitudePlus.Value));
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePlus.Value, (double)nudLongitudePlus.Value));
 
             mf.ABLine.desHeading = glm.toRadians((double)nudHeadingLatLonPlus.Value);
             mf.ABLine.desPtA = new vec2(geoCoord);
@@ -1382,7 +1382,7 @@ namespace AgOpenGPS
 
         private void btnEnter_Pivot_Click(object sender, EventArgs e)
         {
-            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePivot.Value, (double)nudLongitudePivot.Value));
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePivot.Value, (double)nudLongitudePivot.Value));
 
             mf.trk.gArr.Add(new CTrk());
 

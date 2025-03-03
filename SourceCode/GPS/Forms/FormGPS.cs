@@ -4,6 +4,7 @@ using AgLibrary.Logging;
 using AgOpenGPS;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Core;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;
@@ -807,8 +808,7 @@ namespace AgOpenGPS
             //reset field offsets
             if (!isKeepOffsetsOn)
             {
-                pn.fixOffset.easting = 0;
-                pn.fixOffset.northing = 0;
+                LocalPlane.FixDelta = new GeoDelta(0.0, 0.0);
             }
 
             //turn off headland

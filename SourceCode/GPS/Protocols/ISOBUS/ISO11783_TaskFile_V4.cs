@@ -8,7 +8,13 @@ namespace AgOpenGPS.Protocols.ISOBUS
 {
     public class ISO11783_TaskFile_V4
     {
-        public static void Export(string fileName, string designator, int area, List<CBoundaryList> bndList, CNMEA pn, CTrack trk)
+        public static void Export(
+            string fileName,
+            string designator,
+            int area,
+            List<CBoundaryList> bndList,
+            LocalPlane localPlane,
+            CTrack trk)
         {
             int lineCounter = 0;
 
@@ -52,7 +58,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                         xml.WriteAttributeString("A", "1");
                         foreach(vec2 v2 in bndList[i].fenceLineEar)
                         {
-                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v2.ToGeoCoord());
+                            Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(v2.ToGeoCoord());
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "10");
                             xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
@@ -74,7 +80,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                         xml.WriteAttributeString("A", "1");
                         foreach (vec3 v3 in boundarList.hdLine)
                         {
-                            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
+                            Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
                             xml.WriteStartElement("PNT");//Boundary Points
                             xml.WriteAttributeString("A", "10");
                             xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
@@ -118,7 +124,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                                         GeoCoord pointA = track.ptA.ToGeoCoord();
                                         GeoDir heading = new GeoDir(track.heading);
-                                        Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pointA - 1000.0 * heading);
+                                        Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(pointA - 1000.0 * heading);
 
                                         xml.WriteAttributeString("A", "6");
                                         xml.WriteAttributeString("C", latLon.Latitude.ToString(CultureInfo.InvariantCulture));
@@ -127,7 +133,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                         xml.WriteEndElement();//A
                                         xml.WriteStartElement("PNT");//B
 
-                                        latLon = pn.ConvertGeoCoordToWgs84(pointA + 1000.0 * heading);
+                                        latLon = localPlane.ConvertGeoCoordToWgs84(pointA + 1000.0 * heading);
 
                                         xml.WriteAttributeString("A", "7");
 
@@ -176,7 +182,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                                     for (int j = 0; j < track.curvePts.Count; j++)
                                     {
                                         xml.WriteStartElement("PNT");//point
-                                        Wgs84 latLon = pn.ConvertGeoCoordToWgs84(track.curvePts[j].ToGeoCoord());
+                                        Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(track.curvePts[j].ToGeoCoord());
                                         if (j == 0)
                                         {
                                             xml.WriteAttributeString("A", "6");

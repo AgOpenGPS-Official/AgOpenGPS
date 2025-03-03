@@ -587,7 +587,7 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    double distance = AppModel.CurrentLatLon.DistanceInKiloMeters(AppModel.StartLatLon);
+                    double distance = AppModel.CurrentLatLon.DistanceInKiloMeters(AppModel.LocalPlane.Origin);
                     if (distance > 10)
                     {
                         TimedMessageBox(2500, "High Field Start Distance Warning", "Field Start is "

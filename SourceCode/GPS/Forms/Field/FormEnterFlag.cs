@@ -76,7 +76,7 @@ namespace AgOpenGPS
                 flagColor = 2;
             }
 
-            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value));
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value));
             int nextflag = mf.flagPts.Count + 1;
             CFlag flagPt = new CFlag(
                 (double)nudLatitude.Value, (double)nudLongitude.Value,

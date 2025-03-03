@@ -833,7 +833,7 @@ namespace AgOpenGPS
             #endregion
 
             #region Corrected Position
-            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord());
+            Wgs84 latLon = AppModel.LocalPlane.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord());
             byte[] correctedPosition = new byte[30];
             correctedPosition[0] = 0x80;
             correctedPosition[1] = 0x81;
@@ -1651,11 +1651,9 @@ namespace AgOpenGPS
             {
                 if (!isJobStarted)
                 {
-                    AppModel.StartLatLon = AppModel.CurrentLatLon;
-                    pn.SetLocalMetersPerDegree(false);
+                    pn.DefineLocalPlane(AppModel.CurrentLatLon, false);
                 }
-
-                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
+                GeoCoord fixCoord = AppModel.LocalPlane.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
                 pn.fix.northing = fixCoord.Northing;
                 pn.fix.easting = fixCoord.Easting;
                 //Draw a grid once we know where in the world we are.
@@ -1669,7 +1667,6 @@ namespace AgOpenGPS
 
                 return;
             }
-
             else
             {
                 prevFix.easting = pn.fix.easting; prevFix.northing = pn.fix.northing;

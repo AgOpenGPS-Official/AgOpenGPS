@@ -76,7 +76,7 @@ namespace AgOpenGPS
             //Calculate the next Lat Long based on heading and distance
             CurrentLatLon = CurrentLatLon.CalculateNewPostionFromBearingDistance(headingTrue, stepDistance);
 
-            GeoCoord fixCoord = mf.pn.ConvertWgs84ToGeoCoord(CurrentLatLon);
+            GeoCoord fixCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(CurrentLatLon);
             mf.pn.fix.northing = fixCoord.Northing;
             mf.pn.fix.easting = fixCoord.Easting;
             mf.pn.headingTrue = mf.pn.headingTrueDual = glm.toDegrees(headingTrue);

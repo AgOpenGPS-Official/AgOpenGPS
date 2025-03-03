@@ -219,7 +219,7 @@ namespace AgOpenGPS
                 CBoundaryList New = new CBoundaryList();
                 for (int i = 0; i < bingLine.Count; i++)
                 {
-                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(bingLine[i].Latitude, bingLine[i].Longitude));
+                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(bingLine[i].Latitude, bingLine[i].Longitude));
                     New.fenceLine.Add(new vec3(geoCoord));
                 }
 
@@ -331,12 +331,12 @@ namespace AgOpenGPS
             }
 
             GeoPoint geoRef = mapControl.TopLeft;
-            GeoCoord topLeftGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            GeoCoord topLeftGeoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
             mf.worldGrid.northingMaxGeo = topLeftGeoCoord.Northing;
             mf.worldGrid.eastingMinGeo = topLeftGeoCoord.Easting;
 
             geoRef = mapControl.BottomRight;
-            GeoCoord bottomRightGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            GeoCoord bottomRightGeoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
             mf.worldGrid.northingMinGeo = bottomRightGeoCoord.Northing;
             mf.worldGrid.eastingMaxGeo = bottomRightGeoCoord.Easting;
 

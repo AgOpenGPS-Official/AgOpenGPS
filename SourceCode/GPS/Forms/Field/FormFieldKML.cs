@@ -172,7 +172,7 @@ namespace AgOpenGPS
                                     double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                     double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                     New.fenceLine.Add(new vec3(geoCoord));
                                 }
 
@@ -333,9 +333,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.AppModel.StartLatLon = new Wgs84(latK, lonK);
-
-                    mf.pn.SetLocalMetersPerDegree(true);
+                    mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
 
                     //make sure directory exists, or create it
                     if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
@@ -376,8 +374,8 @@ namespace AgOpenGPS
 
                         writer.WriteLine("StartFix");
                         writer.WriteLine(
-                            mf.AppModel.StartLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
-                            mf.AppModel.StartLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
+                            mf.AppModel.LocalPlane.Origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                            mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
                     }
 
                     mf.FileCreateSections();
