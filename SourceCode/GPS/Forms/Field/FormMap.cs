@@ -141,27 +141,27 @@ namespace AgOpenGPS
 
         private void btnGo_Click(object sender, EventArgs e)
         {
-            if (bingLine.Count == 0)
-            {
-                mapControl.Markers.Clear();
-            }
             mapControl.Center = new GeoPoint(
                 (float)mf.AppModel.CurrentLatLon.Longitude,
                 (float)mf.AppModel.CurrentLatLon.Latitude);
-            if (mapControl.Markers.Count == 0)
+            if (bingLine.Count == 0)
             {
-                // Create marker's location point
-                var point = new GeoPoint(
-                    (float)mf.AppModel.CurrentLatLon.Longitude,
-                    (float)mf.AppModel.CurrentLatLon.Latitude);
+                mapControl.Markers.Clear();
+                if (mapControl.Markers.Count == 0)
+                {
+                    // Create marker's location point
+                    var point = new GeoPoint(
+                        (float)mf.AppModel.CurrentLatLon.Longitude,
+                        (float)mf.AppModel.CurrentLatLon.Latitude);
 
-                var style = new MarkerStyle(10);
+                    var style = new MarkerStyle(10);
 
-                // Create marker instance: specify location on the map, drawing style, and label
-                var marker = new Marker(point, style, "");
+                    // Create marker instance: specify location on the map, drawing style, and label
+                    var marker = new Marker(point, style, "");
 
-                // Add marker to the map
-                mapControl.Markers.Add(marker);
+                    // Add marker to the map
+                    mapControl.Markers.Add(marker);
+                }
             }
             UpdateWindowTitle();
             mapControl.Invalidate();
