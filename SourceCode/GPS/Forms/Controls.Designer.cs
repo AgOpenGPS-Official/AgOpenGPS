@@ -1110,7 +1110,10 @@ namespace AgOpenGPS
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(AppModel.latitude, AppModel.longitude, pn.fix.easting, pn.fix.northing, 
+            CFlag flagPt = new CFlag(
+                AppModel.CurrentLatLon.Latitude,
+                AppModel.CurrentLatLon.Longitude,
+                pn.fix.easting, pn.fix.northing, 
                 fixHeading, flagColor, nextflag, nextflag.ToString());
             flagPts.Add(flagPt);
             FileSaveFlags();

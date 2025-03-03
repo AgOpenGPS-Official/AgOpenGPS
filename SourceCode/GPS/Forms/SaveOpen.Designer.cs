@@ -1426,8 +1426,8 @@ namespace AgOpenGPS
 
                 writer.WriteLine("StartFix");
                 writer.WriteLine(
-                    AppModel.latitude.ToString(CultureInfo.InvariantCulture) + "," +
-                    AppModel.longitude.ToString(CultureInfo.InvariantCulture));
+                    AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.CurrentLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -1473,8 +1473,8 @@ namespace AgOpenGPS
 
                 writer.WriteLine("StartFix");
                 writer.WriteLine(
-                    AppModel.latitude.ToString(CultureInfo.InvariantCulture) + "," +
-                    AppModel.longitude.ToString(CultureInfo.InvariantCulture));
+                    AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.CurrentLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
 
                 writer.WriteLine("Latitude,Longitude,Elevation,Quality,Easting,Northing,Heading,Roll");
             }

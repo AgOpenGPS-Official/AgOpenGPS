@@ -55,7 +55,9 @@ namespace AgOpenGPS
             Size = Properties.Settings.Default.setWindow_BingMapSize;
 
             mapControl.ZoomLevel = Properties.Settings.Default.setWindow_BingZoom;//mapControl
-            mapControl.Center = new GeoPoint((float)mf.AppModel.longitude, (float)mf.AppModel.latitude);
+            mapControl.Center = new GeoPoint(
+                (float)mf.AppModel.CurrentLatLon.Longitude,
+                (float)mf.AppModel.CurrentLatLon.Latitude);
 
             mapControl.Invalidate();
 
@@ -143,11 +145,15 @@ namespace AgOpenGPS
             {
                 mapControl.Markers.Clear();
             }
-            mapControl.Center = new GeoPoint((float)mf.AppModel.longitude, (float)mf.AppModel.latitude);
+            mapControl.Center = new GeoPoint(
+                (float)mf.AppModel.CurrentLatLon.Longitude,
+                (float)mf.AppModel.CurrentLatLon.Latitude);
             if (mapControl.Markers.Count == 0)
             {
                 // Create marker's location point
-                var point = new GeoPoint((float)mf.AppModel.longitude, (float)mf.AppModel.latitude);
+                var point = new GeoPoint(
+                    (float)mf.AppModel.CurrentLatLon.Longitude,
+                    (float)mf.AppModel.CurrentLatLon.Latitude);
 
                 var style = new MarkerStyle(10);
 

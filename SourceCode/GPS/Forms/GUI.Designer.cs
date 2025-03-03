@@ -212,23 +212,20 @@ namespace AgOpenGPS
                         case 0:
                             lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
                             break;
-
                         case 1:
                             lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 2:
-                            lblCurrentField.Text = "Lat: " + AppModel.latitude.ToString("N7") + "   Lon: " + AppModel.longitude.ToString("N7");
+                            lblCurrentField.Text = "Lat: " +
+                                AppModel.CurrentLatLon.Latitude.ToString("N7") + "   Lon: " +
+                                AppModel.CurrentLatLon.Longitude.ToString("N7");
                             break;
-
                         case 3:
                             lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 4:
                             lblCurrentField.Text = "";
                             break;
-
                         default:
                             break;
                     }
@@ -1483,8 +1480,8 @@ namespace AgOpenGPS
 
         #region Properties // ---------------------------------------------------------------------
 
-        public string Latitude { get { return Convert.ToString(Math.Round(AppModel.latitude, 7)); } }
-        public string Longitude { get { return Convert.ToString(Math.Round(AppModel.longitude, 7)); } }
+        public string Latitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Latitude, 7)); } }
+        public string Longitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Longitude, 7)); } }
         public string SatsTracked { get { return Convert.ToString(pn.satellitesTracked); } }
         public string HDOP { get { return Convert.ToString(pn.hdop); } }
         public string Heading { get { return Convert.ToString(Math.Round(glm.toDegrees(fixHeading), 1)) + "\u00B0"; } }
