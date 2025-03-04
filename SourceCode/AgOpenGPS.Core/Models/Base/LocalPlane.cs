@@ -6,8 +6,7 @@ namespace AgOpenGPS.Core.Models
     // system that uses Northing and Easting coordinates.
     public class LocalPlane
     {
-        // Used to offset the antenna position to compensate for drift
-        static public GeoDelta FixDelta = new GeoDelta(0, 0);
+        static public GeoDelta MultiFieldDriftCompensation = new GeoDelta(0, 0);
 
         private double _metersPerDegreeLat;
         private double _metersPerDegreeLon;
@@ -29,6 +28,7 @@ namespace AgOpenGPS.Core.Models
 
         public Wgs84 ConvertGeoCoordToWgs84(GeoCoord geoCoord)
         {
+            geoCoord += MultiFieldDriftCompensation;
             double lat = (geoCoord.Northing / _metersPerDegreeLat) + Origin.Latitude;
             double lon = (geoCoord.Easting / _metersPerDegreeLon) + Origin.Longitude;
             return new Wgs84(lat, lon);

@@ -1540,16 +1540,6 @@ namespace AgOpenGPS
             }
         }
 
-        public string FixOffset { get { return (
-            LocalPlane.FixDelta.EastingDelta.ToString("N2") + ", " +
-            LocalPlane.FixDelta.NorthingDelta.ToString("N2")
-        ); } }
-
-        public string FixOffsetInch { get { return (
-            (LocalPlane.FixDelta.EastingDelta * glm.m2in).ToString("N0")+ ", " +
-            (LocalPlane.FixDelta.NorthingDelta * glm.m2in).ToString("N0")
-        ); } }
-
         public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude,2)); } }
         public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084),1))); } }
         public string DistPivotM
