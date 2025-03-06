@@ -8,6 +8,7 @@ namespace AgOpenGPS
 {
     public class CNMEA
     {
+        
         //our current fix
         public vec2 fix = new vec2(0, 0);
 
@@ -27,9 +28,12 @@ namespace AgOpenGPS
         {
             //constructor, grab the main form reference
             mf = f;
-            mf.AppModel.LocalPlane = new LocalPlane(new Wgs84(0, 0));
+            SharedFieldProperties = new SharedFieldProperties();
+            mf.AppModel.LocalPlane = new LocalPlane(new Wgs84(0, 0), SharedFieldProperties);
             ageAlarm = Properties.Settings.Default.setGPS_ageAlarm;
         }
+
+        public SharedFieldProperties SharedFieldProperties { get; }
 
         public void AverageTheSpeed()
         {
@@ -40,7 +44,7 @@ namespace AgOpenGPS
 
         public void DefineLocalPlane(Wgs84 origin, bool setSim)
         {
-            mf.AppModel.LocalPlane = new LocalPlane(origin);
+            mf.AppModel.LocalPlane = new LocalPlane(origin, SharedFieldProperties);
             if (setSim && mf.timerSim.Enabled)
             {
                 mf.AppModel.CurrentLatLon = origin;

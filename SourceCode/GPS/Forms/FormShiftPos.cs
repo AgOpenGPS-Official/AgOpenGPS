@@ -28,8 +28,9 @@ namespace AgOpenGPS
 
         private void FormShiftPos_Load(object sender, EventArgs e)
         {
-            nudNorth.Value = 100 * (decimal)LocalPlane.MultiFieldDriftCompensation.NorthingDelta;
-            nudEast.Value = 100 * (decimal)LocalPlane.MultiFieldDriftCompensation.EastingDelta;
+            GeoDelta driftCompensation = mf.pn.SharedFieldProperties.DriftCompensation;
+            nudNorth.Value = 100 * (decimal)driftCompensation.NorthingDelta;
+            nudEast.Value = 100 * (decimal)driftCompensation.EastingDelta;
             chkOffsetsOn.Checked = mf.isKeepOffsetsOn;
             if (chkOffsetsOn.Checked) chkOffsetsOn.Text = "On";
             else chkOffsetsOn.Text = "Off";
@@ -89,7 +90,8 @@ namespace AgOpenGPS
 
         private void SetFixDelta()
         {
-            LocalPlane.MultiFieldDriftCompensation = new GeoDelta((double)nudNorth.Value / 100, (double)nudEast.Value / 100);
+            mf.pn.SharedFieldProperties.DriftCompensation =
+                new GeoDelta((double)nudNorth.Value / 100, (double)nudEast.Value / 100);
         }
     }
 }

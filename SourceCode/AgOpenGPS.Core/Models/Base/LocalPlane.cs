@@ -6,14 +6,14 @@ namespace AgOpenGPS.Core.Models
     // system that uses Northing and Easting coordinates.
     public class LocalPlane
     {
-        static public GeoDelta MultiFieldDriftCompensation = new GeoDelta(0, 0);
-
+        private SharedFieldProperties _sharedFieldProperties;
         private double _metersPerDegreeLat;
         private double _metersPerDegreeLon;
 
-        public LocalPlane(Wgs84 origin)
+        public LocalPlane(Wgs84 origin, SharedFieldProperties sharedFieldProperties)
         {
             Origin = origin;
+            _sharedFieldProperties = sharedFieldProperties;
             SetLocalMetersPerDegree();
         }
 
@@ -28,7 +28,7 @@ namespace AgOpenGPS.Core.Models
 
         public Wgs84 ConvertGeoCoordToWgs84(GeoCoord geoCoord)
         {
-            geoCoord += MultiFieldDriftCompensation;
+            geoCoord += _sharedFieldProperties.DriftCompensation;
             double lat = (geoCoord.Northing / _metersPerDegreeLat) + Origin.Latitude;
             double lon = (geoCoord.Easting / _metersPerDegreeLon) + Origin.Longitude;
             return new Wgs84(lat, lon);

@@ -808,7 +808,7 @@ namespace AgOpenGPS
             //reset field offsets
             if (!isKeepOffsetsOn)
             {
-                LocalPlane.MultiFieldDriftCompensation = new GeoDelta(0.0, 0.0);
+                pn.SharedFieldProperties.DriftCompensation = new GeoDelta(0.0, 0.0);
             }
 
             //turn off headland
