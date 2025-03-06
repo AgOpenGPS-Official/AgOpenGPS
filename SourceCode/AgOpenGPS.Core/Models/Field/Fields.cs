@@ -35,8 +35,6 @@ namespace AgOpenGPS.Core.Models
         {
             DirectoryInfo[] fieldDirectories = _fieldsDirectory.GetDirectories();
             List<FieldDescription> list = new List<FieldDescription>();
-            BoundaryStreamer boundaryStreamer = new BoundaryStreamer();
-            OverviewStreamer overviewStreamer = new OverviewStreamer();
 
             foreach(DirectoryInfo fieldDirectory in fieldDirectories)
             {
@@ -44,13 +42,11 @@ namespace AgOpenGPS.Core.Models
 
                 if (0 < fileInfos.Length)
                 {
-                    var fieldDescription = new FieldDescription(fieldDirectory.Name);
-                    var boundary = boundaryStreamer.Read(fieldDirectory);
-                    fieldDescription.Area = boundary.Area;
-
-                    var overview = overviewStreamer.Read(fieldDirectory);
-                    fieldDescription.Wgs84Start = overview.Start;
-                    list.Add(fieldDescription);
+                    var fieldDescription = new FieldDescription(fieldDirectory);
+                    if (fieldDescription.Wgs84Start.HasValue)
+                    {
+                        list.Add(fieldDescription);
+                    }
                 }
             }
             return list.AsReadOnly();
