@@ -12,8 +12,9 @@ namespace AgOpenGPS.Core
 
         public ApplicationModel(DirectoryInfo baseDirectory)
         {
-            BaseDirectories = new BaseDirectories(baseDirectory);
-            Fields = new Fields(BaseDirectories.FieldsDirectory);
+            FieldsDirectory = baseDirectory.CreateSubdirectory("Fields");
+            VehiclesDirectory = baseDirectory.CreateSubdirectory("Vehicles");
+            Fields = new Fields(FieldsDirectory);
         }
 
         public void SetPresenter(IApplicationPresenter applicationPresenter)
@@ -22,7 +23,8 @@ namespace AgOpenGPS.Core
             FieldStreamer.SetPresenter(_applicationPresenter.FieldStreamerPresenter);
         }
 
-        public BaseDirectories BaseDirectories { get; }
+        public DirectoryInfo FieldsDirectory { get; }
+        public DirectoryInfo VehiclesDirectory { get; }
 
         public Fields Fields { get; }
 
