@@ -284,8 +284,7 @@ namespace AgIO
                 {
                     Log.EventWriter("Program Reset: Saving or Selecting Profile");
                     
-                    Application.Restart();
-                    Environment.Exit(0);
+                    Program.Restart();
                 }
             }
             this.Text = "AgIO  v" + Program.Version + "   Using Profile: " 

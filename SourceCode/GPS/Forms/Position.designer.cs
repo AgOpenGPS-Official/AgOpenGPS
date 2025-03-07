@@ -833,7 +833,7 @@ namespace AgOpenGPS
             #endregion
 
             #region Corrected Position
-            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord());
+            Wgs84 latLon = AppModel.LocalPlane.ConvertGeoCoordToWgs84(pn.fix.ToGeoCoord());
             byte[] correctedPosition = new byte[30];
             correctedPosition[0] = 0x80;
             correctedPosition[1] = 0x81;
@@ -1193,8 +1193,8 @@ namespace AgOpenGPS
             {
                 //grab fix and elevation
                 sbGrid.Append(
-                      pn.latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
-                    + pn.longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
+                    AppModel.CurrentLatLon.Latitude.ToString("N7", CultureInfo.InvariantCulture) + ","
+                    + AppModel.CurrentLatLon.Longitude.ToString("N7", CultureInfo.InvariantCulture) + ","
                     + Math.Round((pn.altitude - vehicle.VehicleConfig.AntennaHeight),3).ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fixQuality.ToString(CultureInfo.InvariantCulture) + ","
                     + pn.fix.easting.ToString("N2", CultureInfo.InvariantCulture) + ","
@@ -1651,12 +1651,9 @@ namespace AgOpenGPS
             {
                 if (!isJobStarted)
                 {
-                    pn.latStart = pn.latitude;
-                    pn.lonStart = pn.longitude;
-                    pn.SetLocalMetersPerDegree(false);
+                    pn.DefineLocalPlane(AppModel.CurrentLatLon, false);
                 }
-
-                GeoCoord fixCoord = pn.ConvertWgs84ToGeoCoord(new Wgs84(pn.latitude, pn.longitude));
+                GeoCoord fixCoord = AppModel.LocalPlane.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
                 pn.fix.northing = fixCoord.Northing;
                 pn.fix.easting = fixCoord.Easting;
                 //Draw a grid once we know where in the world we are.
@@ -1670,7 +1667,6 @@ namespace AgOpenGPS
 
                 return;
             }
-
             else
             {
                 prevFix.easting = pn.fix.easting; prevFix.northing = pn.fix.northing;

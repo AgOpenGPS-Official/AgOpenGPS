@@ -1,6 +1,5 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgOpenGPS.Classes;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -30,7 +29,7 @@ namespace AgOpenGPS
         public double hydLiftLookAheadDistanceLeft, hydLiftLookAheadDistanceRight;
 
         public bool isHydLiftOn;
-        public double stanleyIntegralDistanceAwayTriggerAB, stanleyIntegralGainAB, purePursuitIntegralGain;
+        public double stanleyIntegralGainAB, purePursuitIntegralGain;
 
         //flag for free drive window to control autosteer
         public bool isInFreeDriveMode;
@@ -73,7 +72,6 @@ namespace AgOpenGPS
             VehicleConfig.TrackWidth = Properties.Settings.Default.setVehicle_trackWidth;
 
             stanleyIntegralGainAB = Properties.Settings.Default.stanleyIntegralGainAB;
-            stanleyIntegralDistanceAwayTriggerAB = Properties.Settings.Default.stanleyIntegralDistanceAwayTriggerAB;
 
             purePursuitIntegralGain = Properties.Settings.Default.purePursuitIntegralGainAB;
             VehicleConfig.Type = (VehicleType)Properties.Settings.Default.setVehicle_vehicleType;

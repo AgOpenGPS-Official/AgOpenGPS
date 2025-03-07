@@ -251,7 +251,7 @@ namespace AgOpenGPS
         {
             //save new copy of kml with selected flag and view in GoogleEarth
 
-            mf.FileMakeKMLFromCurrentPosition(mf.pn.latitude, mf.pn.longitude);
+            mf.FileMakeKMLFromCurrentPosition(mf.AppModel.CurrentLatLon);
             System.Diagnostics.Process.Start(Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, "CurrentPosition.KML"));
             isClosing = true;
             Close();
@@ -384,7 +384,7 @@ namespace AgOpenGPS
                                         double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                         double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                        GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                        GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                         New.fenceLine.Add(new vec3(geoCoord));
                                     }
 

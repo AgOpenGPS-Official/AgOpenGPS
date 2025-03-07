@@ -12,7 +12,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Resources;
 
 namespace AgOpenGPS
 {
@@ -47,7 +46,7 @@ namespace AgOpenGPS
 
         //Is it in 2D or 3D, metric or imperial, display lightbar, display grid etc
         public bool isMetric = true, isLightbarOn = true, isGridOn, isFullScreen;
-        public bool isUTurnAlwaysOn, isCompassOn, isSpeedoOn, isSideGuideLines = true;
+        public bool isUTurnAlwaysOn, isSpeedoOn, isSideGuideLines = true;
         public bool isPureDisplayOn = true, isSkyOn = true, isRollMeterOn = false, isTextureOn = true;
         public bool isDay = true, isDayTime = true, isBrightnessOn = true;
         public bool isLogElevation = false, isDirectionMarkers;
@@ -212,23 +211,20 @@ namespace AgOpenGPS
                         case 0:
                             lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
                             break;
-
                         case 1:
                             lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 2:
-                            lblCurrentField.Text = "Lat: " + pn.latitude.ToString("N7") + "   Lon: " + pn.longitude.ToString("N7");
+                            lblCurrentField.Text = "Lat: " +
+                                AppModel.CurrentLatLon.Latitude.ToString("N7") + "   Lon: " +
+                                AppModel.CurrentLatLon.Longitude.ToString("N7");
                             break;
-
                         case 3:
-                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");                            
+                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 4:
                             lblCurrentField.Text = "";
                             break;
-
                         default:
                             break;
                     }
@@ -514,7 +510,6 @@ namespace AgOpenGPS
             isGridOn = Settings.Default.setMenu_isGridOn;
             isBrightnessOn = Settings.Default.setDisplay_isBrightnessOn;
 
-            isCompassOn = Settings.Default.setMenu_isCompassOn;
             isSpeedoOn = Settings.Default.setMenu_isSpeedoOn;
             isSideGuideLines = Settings.Default.setMenu_isSideGuideLines;
             isSvennArrowOn = Settings.Default.setDisplay_isSvennArrowOn;
@@ -1139,9 +1134,6 @@ namespace AgOpenGPS
 
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 
-            //Settings.Default.setDisplay_panelSnapLocation = panelSnap.Location;
-            Settings.Default.setDisplay_panelSimLocation = panelSim.Location;
-
             Settings.Default.Save();
         }
 
@@ -1483,8 +1475,8 @@ namespace AgOpenGPS
 
         #region Properties // ---------------------------------------------------------------------
 
-        public string Latitude { get { return Convert.ToString(Math.Round(pn.latitude, 7)); } }
-        public string Longitude { get { return Convert.ToString(Math.Round(pn.longitude, 7)); } }
+        public string Latitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Latitude, 7)); } }
+        public string Longitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Longitude, 7)); } }
         public string SatsTracked { get { return Convert.ToString(pn.satellitesTracked); } }
         public string HDOP { get { return Convert.ToString(pn.hdop); } }
         public string Heading { get { return Convert.ToString(Math.Round(glm.toDegrees(fixHeading), 1)) + "\u00B0"; } }
@@ -1547,9 +1539,6 @@ namespace AgOpenGPS
                     return (avgSpeed).ToString("N2");
             }
         }
-
-        public string FixOffset { get { return (pn.fixOffset.easting.ToString("N2") + ", " + pn.fixOffset.northing.ToString("N2")); } }
-        public string FixOffsetInch { get { return ((pn.fixOffset.easting*glm.m2in).ToString("N0")+ ", " + (pn.fixOffset.northing*glm.m2in).ToString("N0")); } }
 
         public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude,2)); } }
         public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084),1))); } }

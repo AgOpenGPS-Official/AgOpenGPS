@@ -295,10 +295,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.pn.latStart = latK;
-                    mf.pn.lonStart = lonK;
-
-                    mf.pn.SetLocalMetersPerDegree(true);
+                    mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
 
                     //make sure directory exists, or create it
                     if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
@@ -339,7 +336,9 @@ namespace AgOpenGPS
                         writer.WriteLine("0");
 
                         writer.WriteLine("StartFix");
-                        writer.WriteLine(mf.pn.latStart.ToString(CultureInfo.InvariantCulture) + "," + mf.pn.lonStart.ToString(CultureInfo.InvariantCulture));
+                        writer.WriteLine(
+                            mf.AppModel.LocalPlane.Origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                            mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
                     }
 
                     mf.FileCreateSections();
@@ -384,7 +383,7 @@ namespace AgOpenGPS
                                     double.TryParse(pnt.Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(pnt.Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
 
                                     NewList.fenceLine.Add(new vec3(geoCoord));
                                 }
@@ -435,7 +434,7 @@ namespace AgOpenGPS
                                         double.TryParse(pnt.Attributes["D"].Value, NumberStyles.Float,
                                             CultureInfo.InvariantCulture, out lonK);
 
-                                        GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                        GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                         NewList.fenceLine.Add(new vec3(geoCoord));
                                     }
                                     //build the boundary, make sure is clockwise for outer counter clockwise for inner
@@ -480,7 +479,7 @@ namespace AgOpenGPS
                                         double.TryParse(pnt.Attributes["D"].Value, NumberStyles.Float,
                                             CultureInfo.InvariantCulture, out lonK);
 
-                                        GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                        GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                         desList.Add(new vec3(geoCoord));
                                     }
 
@@ -541,13 +540,13 @@ namespace AgOpenGPS
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                     mf.ABLine.desPtA = new vec2(geoCoord);
 
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[1].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[1].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                                    geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                     mf.ABLine.desPtB = new vec2(geoCoord);
 
                                     // heading based on AB points
@@ -589,7 +588,7 @@ namespace AgOpenGPS
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
 
                                     if (nodePart.ChildNodes[0].ChildNodes[0].ChildNodes.Count > 2)
                                     {
@@ -602,7 +601,7 @@ namespace AgOpenGPS
                                             //calculate the point inside the boundary
                                             double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[i].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                             double.TryParse(nodePart.ChildNodes[0].ChildNodes[0].ChildNodes[i].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
-                                            geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                            geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
 
                                             mf.curve.desList.Add(new vec3(geoCoord));
                                         }
@@ -691,13 +690,13 @@ namespace AgOpenGPS
                             double.TryParse(nodePart.ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                             double.TryParse(nodePart.ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                             mf.ABLine.desPtA = new vec2(geoCoord);
 
                             double.TryParse(nodePart.ChildNodes[1].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                             double.TryParse(nodePart.ChildNodes[1].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                            geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                            geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
 
                             mf.ABLine.desPtB = new vec2(geoCoord);
 
@@ -730,7 +729,7 @@ namespace AgOpenGPS
                             double.TryParse(nodePart.ChildNodes[0].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                             double.TryParse(nodePart.ChildNodes[0].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
 
-                            GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
 
                             if (nodePart.ChildNodes.Count > 2)
                             {
@@ -743,7 +742,7 @@ namespace AgOpenGPS
                                     //calculate the point inside the boundary
                                     double.TryParse(nodePart.ChildNodes[i].Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
                                     double.TryParse(nodePart.ChildNodes[i].Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
-                                    geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
                                     mf.curve.desList.Add(new vec3(geoCoord));
                                 }
 

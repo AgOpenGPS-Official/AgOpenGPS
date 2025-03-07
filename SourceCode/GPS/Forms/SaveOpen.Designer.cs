@@ -13,6 +13,7 @@ using AgOpenGPS.Culture;
 using AgLibrary.Logging;
 using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Streamers;
 
 namespace AgOpenGPS
 {
@@ -38,7 +39,13 @@ namespace AgOpenGPS
 
             try
             {
-                ISO11783_TaskFile_V3.Export(outputFileName, currentFieldDirectory, (int)(fd.areaOuterBoundary), bnd.bndList, pn, trk);
+                ISO11783_TaskFile_V3.Export(
+                    outputFileName,
+                    currentFieldDirectory,
+                    (int)(fd.areaOuterBoundary),
+                    bnd.bndList,
+                    AppModel.LocalPlane,
+                    trk);
             }
             catch (Exception e)
             {
@@ -59,7 +66,12 @@ namespace AgOpenGPS
 
             try
             {
-                ISO11783_TaskFile_V4.Export(outputFileName, currentFieldDirectory, (int)(fd.areaOuterBoundary), bnd.bndList, pn, trk);
+                ISO11783_TaskFile_V4.Export(
+                    outputFileName,
+                    currentFieldDirectory,
+                    (int)(fd.areaOuterBoundary),
+                    bnd.bndList,
+                    AppModel.LocalPlane, trk);
             }
             catch (Exception e)
             {
@@ -743,7 +755,7 @@ namespace AgOpenGPS
 
             //start to read the file
             string line;
-            using (StreamReader reader = new StreamReader(fileAndDirectory))
+            using (GeoStreamReader reader = new GeoStreamReader(fileAndDirectory))
             {
                 try
                 {
@@ -778,17 +790,10 @@ namespace AgOpenGPS
                     //start positions
                     if (!reader.EndOfStream)
                     {
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        offs = line.Split(',');
-
-                        pn.latStart = double.Parse(offs[0], CultureInfo.InvariantCulture);
-                        pn.lonStart = double.Parse(offs[1], CultureInfo.InvariantCulture);
-
-                        pn.SetLocalMetersPerDegree(true);
+                        reader.ReadLine(); // Skip line 'StartFix'
+                        pn.DefineLocalPlane(reader.ReadWgs84(), true);
                     }
                 }
-
                 catch (Exception e)
                 {
                     Log.EventWriter("While Opening Field" + e.ToString());
@@ -1429,7 +1434,9 @@ namespace AgOpenGPS
                 writer.WriteLine("0");
 
                 writer.WriteLine("StartFix");
-                writer.WriteLine(pn.latitude.ToString(CultureInfo.InvariantCulture) + "," + pn.longitude.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine(
+                    AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.CurrentLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -1474,7 +1481,9 @@ namespace AgOpenGPS
                 writer.WriteLine("0");
 
                 writer.WriteLine("StartFix");
-                writer.WriteLine(pn.latitude.ToString(CultureInfo.InvariantCulture) + "," + pn.longitude.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine(
+                    AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    AppModel.CurrentLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
 
                 writer.WriteLine("Latitude,Longitude,Elevation,Quality,Easting,Northing,Heading,Roll");
             }
@@ -1919,7 +1928,7 @@ namespace AgOpenGPS
         //generate KML file from flag
         public void FileSaveSingleFlagKML2(int flagNumber)
         {
-            Wgs84 latLon = pn.ConvertGeoCoordToWgs84(flagPts[flagNumber - 1].GeoCoord);
+            Wgs84 latLon = AppModel.LocalPlane.ConvertGeoCoordToWgs84(flagPts[flagNumber - 1].GeoCoord);
 
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
@@ -2005,7 +2014,7 @@ namespace AgOpenGPS
         }
 
         //generate KML file from flag
-        public void FileMakeKMLFromCurrentPosition(double lat, double lon)
+        public void FileMakeKMLFromCurrentPosition(Wgs84 currentLatLon)
         {
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
@@ -2029,9 +2038,10 @@ namespace AgOpenGPS
                 writer.WriteLine(@"<color>ff4400ff</color>");
                 writer.WriteLine(@"</IconStyle> </Style>");
                 writer.WriteLine(@" <name> Your Current Position </name>");
-                writer.WriteLine(@"<Point><coordinates> " +
-                                lon.ToString(CultureInfo.InvariantCulture) + "," + lat.ToString(CultureInfo.InvariantCulture) + ",0" +
-                                @"</coordinates> </Point> ");
+                writer.WriteLine(@"<Point><coordinates> "
+                    + currentLatLon.Longitude.ToString(CultureInfo.InvariantCulture)+ ","
+                    + currentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + ",0"
+                    + @"</coordinates> </Point> ");
                 writer.WriteLine(@"  </Placemark>                                 ");
                 writer.WriteLine(@"</Document>");
                 writer.WriteLine(@"</kml>                                         ");
@@ -2139,8 +2149,8 @@ namespace AgOpenGPS
 
                 GeoCoord pointA = track.ptA.ToGeoCoord();
                 GeoDir heading = new GeoDir(track.heading);
-                linePts = pn.GetGeoCoordToWgs84_KML(pointA - ABLine.abLength * heading);
-                linePts += pn.GetGeoCoordToWgs84_KML(pointA + ABLine.abLength * heading);
+                linePts = GetGeoCoordToWgs84_KML(pointA - ABLine.abLength * heading);
+                linePts += GetGeoCoordToWgs84_KML(pointA + ABLine.abLength * heading);
                 kml.WriteRaw(linePts);
 
                 kml.WriteEndElement(); // <coordinates>
@@ -2175,7 +2185,7 @@ namespace AgOpenGPS
 
                 foreach (vec3 v3 in trk.gArr[i].curvePts)
                 {
-                    linePts += pn.GetGeoCoordToWgs84_KML(v3.ToGeoCoord());
+                    linePts += GetGeoCoordToWgs84_KML(v3.ToGeoCoord());
                 }
                 kml.WriteRaw(linePts);
 
@@ -2210,7 +2220,7 @@ namespace AgOpenGPS
 
             for (int j = 0; j < recPath.recList.Count; j++)
             {
-                linePts += pn.GetGeoCoordToWgs84_KML(recPath.recList[j].AsGeoCoord);
+                linePts += GetGeoCoordToWgs84_KML(recPath.recList[j].AsGeoCoord);
             }
             kml.WriteRaw(linePts);
 
@@ -2301,13 +2311,13 @@ namespace AgOpenGPS
                             secPts = "";
                             for (int i = 1; i < triList.Count; i += 2)
                             {
-                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
+                                secPts += GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
                             }
                             for (int i = triList.Count - 1; i > 1; i -= 2)
                             {
-                                secPts += pn.GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
+                                secPts += GetGeoCoordToWgs84_KML(triList[i].ToGeoCoord());
                             }
-                            secPts += pn.GetGeoCoordToWgs84_KML(triList[1].ToGeoCoord());
+                            secPts += GetGeoCoordToWgs84_KML(triList[1].ToGeoCoord());
 
                             kml.WriteRaw(secPts);
                             kml.WriteEndElement(); // <coordinates>
@@ -2343,10 +2353,7 @@ namespace AgOpenGPS
 
             foreach(vec3 v3 in bnd.bndList[bndNum].fenceLine)
             {
-                Wgs84 latLon = pn.ConvertGeoCoordToWgs84(v3.ToGeoCoord());
-                sb.Append(
-                    latLon.Longitude.ToString("N7", CultureInfo.InvariantCulture) + ',' +
-                    latLon.Latitude.ToString("N7", CultureInfo.InvariantCulture) + ",0 ");
+                sb.Append(GetGeoCoordToWgs84_KML(v3.ToGeoCoord()));
             }
             return sb.ToString();
         }
@@ -2420,7 +2427,16 @@ namespace AgOpenGPS
 
             //Write the XML to file and close the kml
             kml.Close();
-
         }
+
+        private string GetGeoCoordToWgs84_KML(GeoCoord geoCoord)
+        {
+            Wgs84 latLon = AppModel.LocalPlane.ConvertGeoCoordToWgs84(geoCoord);
+
+            return
+                latLon.Longitude.ToString("N7", CultureInfo.InvariantCulture) + ',' +
+                latLon.Latitude.ToString("N7", CultureInfo.InvariantCulture) + ",0 ";
+        }
+
     }
 }

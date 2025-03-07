@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using AgOpenGPS.Core;
+using AgOpenGPS.Core.Models;
 using System;
 using System.Globalization;
 using System.Text;
@@ -7,24 +8,11 @@ namespace AgOpenGPS
 {
     public class CNMEA
     {
-        const double degreesToRadians = 2.0 * Math.PI / 360.0;
-        //WGS84 Lat Long
-        public double latitude, longitude;
-
-        public double prevLatitude, prevLongitude;
-
-        //local plane geometry
-        public double latStart, lonStart;
-
-        public double mPerDegreeLat, mPerDegreeLon;
-
+        
         //our current fix
         public vec2 fix = new vec2(0, 0);
 
         public vec2 prevSpeedFix = new vec2(0, 0);
-
-        //used to offset the antenna position to compensate for drift
-        public vec2 fixOffset = new vec2(0, 0);
 
         //other GIS Info
         public double altitude, speed, newSpeed, vtgSpeed = float.MaxValue;
@@ -40,10 +28,12 @@ namespace AgOpenGPS
         {
             //constructor, grab the main form reference
             mf = f;
-            latStart = 0;
-            lonStart = 0;
+            SharedFieldProperties = new SharedFieldProperties();
+            mf.AppModel.LocalPlane = new LocalPlane(new Wgs84(0, 0), SharedFieldProperties);
             ageAlarm = Properties.Settings.Default.setGPS_ageAlarm;
         }
+
+        public SharedFieldProperties SharedFieldProperties { get; }
 
         public void AverageTheSpeed()
         {
@@ -52,60 +42,21 @@ namespace AgOpenGPS
             mf.avgSpeed = (mf.avgSpeed * 0.75) + (speed * 0.25);
         }
 
-        public void SetLocalMetersPerDegree(bool setSim)
+        public void DefineLocalPlane(Wgs84 origin, bool setSim)
         {
+            mf.AppModel.LocalPlane = new LocalPlane(origin, SharedFieldProperties);
             if (setSim && mf.timerSim.Enabled)
             {
-                latitude = mf.sim.latitude = Properties.Settings.Default.setGPS_SimLatitude = latStart;
-                longitude = mf.sim.longitude = Properties.Settings.Default.setGPS_SimLongitude = lonStart;
+                mf.AppModel.CurrentLatLon = origin;
+                mf.sim.CurrentLatLon = origin;
+
+                Properties.Settings.Default.setGPS_SimLatitude = mf.AppModel.LocalPlane.Origin.Latitude;
+                Properties.Settings.Default.setGPS_SimLongitude = mf.AppModel.LocalPlane.Origin.Longitude;
                 Properties.Settings.Default.Save();
             }
-
-            mPerDegreeLat = 111132.92 - 559.82 * Math.Cos(2.0 * latStart * degreesToRadians) + 1.175
-            * Math.Cos(4.0 * latStart * degreesToRadians) - 0.0023
-            * Math.Cos(6.0 * latStart * degreesToRadians);
-
-            mPerDegreeLon = 111412.84 * Math.Cos(latStart * degreesToRadians) - 93.5
-            * Math.Cos(3.0 * latStart * degreesToRadians) + 0.118
-            * Math.Cos(5.0 * latStart * degreesToRadians);
-
-            GeoCoord geoCoord = ConvertWgs84ToGeoCoord(new Wgs84(latitude, longitude));
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(mf.AppModel.CurrentLatLon);
             mf.worldGrid.checkZoomWorldGrid(geoCoord);
         }
 
-        public GeoCoord ConvertWgs84ToGeoCoord(Wgs84 latLon)
-        {
-            mPerDegreeLon =
-                111412.84 * Math.Cos(latLon.Latitude * degreesToRadians)
-                - 93.5 * Math.Cos(3.0 * latLon.Latitude * degreesToRadians)
-                + 0.118 * Math.Cos(5.0 * latLon.Latitude * degreesToRadians);
-
-            return new GeoCoord(
-                (latLon.Latitude - latStart) * mPerDegreeLat,
-                (latLon.Longitude - lonStart) * mPerDegreeLon);
-        }
-
-        public Wgs84 ConvertGeoCoordToWgs84(GeoCoord geoCoord)
-        {
-            double lat = ((geoCoord.Northing + fixOffset.northing) / mPerDegreeLat) + latStart;
-            mPerDegreeLon =
-                111412.84 * Math.Cos(lat * degreesToRadians)
-                - 93.5 * Math.Cos(3.0 * lat * degreesToRadians)
-                + 0.118 * Math.Cos(5.0 * lat * degreesToRadians);
-            double lon = ((geoCoord.Easting + fixOffset.easting) / mPerDegreeLon) + lonStart;
-            return new Wgs84(lat, lon);
-        }
-
-        public string GetGeoCoordToWgs84_KML(GeoCoord geoCoord)
-        {
-            double Lat = (geoCoord.Northing / mPerDegreeLat) + latStart;
-            mPerDegreeLon =
-                111412.84 * Math.Cos(Lat * degreesToRadians)
-                - 93.5 * Math.Cos(3.0 * Lat * degreesToRadians)
-                + 0.118 * Math.Cos(5.0 * Lat * degreesToRadians);
-            double Lon = (geoCoord.Easting / mPerDegreeLon) + lonStart;
-
-            return Lon.ToString("N7", CultureInfo.InvariantCulture) + ',' + Lat.ToString("N7", CultureInfo.InvariantCulture) + ",0 ";
-        }
     }
 }

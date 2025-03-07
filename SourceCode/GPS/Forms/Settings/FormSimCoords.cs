@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
@@ -41,12 +42,7 @@ namespace AgOpenGPS
                 mf.TimedMessageBox(2000, "Simulator is off", "Go Back To Work, No Time For Games");
                 Close();
             }
-
-            mf.pn.latStart = (double)nudLatitude.Value;
-            mf.pn.lonStart = (double)nudLongitude.Value;
-
-            mf.pn.SetLocalMetersPerDegree(true);
-
+            mf.pn.DefineLocalPlane(new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value), true);
             Close();
         }
 

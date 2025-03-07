@@ -34,7 +34,6 @@ namespace AgOpenGPS
             lblPoints.Text = gStr.gsPoints + ":";
             labelBackground.Text = gStr.gsBackground;
 
-
             mapControl.CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MapControl");
 
             ITileServer[] tileServers = new ITileServer[]
@@ -56,18 +55,13 @@ namespace AgOpenGPS
             Size = Properties.Settings.Default.setWindow_BingMapSize;
 
             mapControl.ZoomLevel = Properties.Settings.Default.setWindow_BingZoom;//mapControl
-            mapControl.Center = new GeoPoint((float)mf.pn.longitude, (float)mf.pn.latitude);
+            mapControl.Center = new GeoPoint(
+                (float)mf.AppModel.CurrentLatLon.Longitude,
+                (float)mf.AppModel.CurrentLatLon.Latitude);
 
             mapControl.Invalidate();
 
-            if (mf.worldGrid.isGeoMap)
-            {
-                cboxDrawMap.Checked = true;
-            }
-            else
-            {
-                cboxDrawMap.Checked = false;
-            }
+            cboxDrawMap.Checked = mf.worldGrid.isGeoMap;
 
             if (mf.worldGrid.isGeoMap) cboxDrawMap.Image = Properties.Resources.MappingOn;
             else cboxDrawMap.Image = Properties.Resources.MappingOff;
@@ -88,7 +82,6 @@ namespace AgOpenGPS
                 e.Cancel = true;
                 return;
             }
-
             Properties.Settings.Default.setWindow_BingMapSize = Size;
             Properties.Settings.Default.setWindow_BingZoom = mapControl.ZoomLevel;
             Properties.Settings.Default.Save();
@@ -148,15 +141,18 @@ namespace AgOpenGPS
 
         private void btnGo_Click(object sender, EventArgs e)
         {
+            mapControl.Center = new GeoPoint(
+                (float)mf.AppModel.CurrentLatLon.Longitude,
+                (float)mf.AppModel.CurrentLatLon.Latitude);
             if (bingLine.Count == 0)
             {
+                mapControl.Markers.Clear();
                 if (mapControl.Markers.Count == 0)
                 {
-                    mapControl.Markers.Clear();
-                    mapControl.Center = new GeoPoint((float)mf.pn.longitude, (float)mf.pn.latitude);
-
                     // Create marker's location point
-                    var point = new GeoPoint((float)mf.pn.longitude, (float)mf.pn.latitude);
+                    var point = new GeoPoint(
+                        (float)mf.AppModel.CurrentLatLon.Longitude,
+                        (float)mf.AppModel.CurrentLatLon.Latitude);
 
                     var style = new MarkerStyle(10);
 
@@ -165,26 +161,10 @@ namespace AgOpenGPS
 
                     // Add marker to the map
                     mapControl.Markers.Add(marker);
-
-                    UpdateWindowTitle();
-                    mapControl.Invalidate();
-                }
-                else
-                {
-                    mapControl.Markers.Clear();
-                    mapControl.Center = new GeoPoint((float)mf.pn.longitude, (float)mf.pn.latitude);
-
-                    UpdateWindowTitle();
-                    mapControl.Invalidate();
                 }
             }
-            else
-            {
-                mapControl.Center = new GeoPoint((float)mf.pn.longitude, (float)mf.pn.latitude);
-
-                UpdateWindowTitle();
-                mapControl.Invalidate();
-            }
+            UpdateWindowTitle();
+            mapControl.Invalidate();
         }
 
         private void mapControl_Click(object sender, EventArgs e)
@@ -239,7 +219,7 @@ namespace AgOpenGPS
                 CBoundaryList New = new CBoundaryList();
                 for (int i = 0; i < bingLine.Count; i++)
                 {
-                    GeoCoord geoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(bingLine[i].Latitude, bingLine[i].Longitude));
+                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(bingLine[i].Latitude, bingLine[i].Longitude));
                     New.fenceLine.Add(new vec3(geoCoord));
                 }
 
@@ -351,12 +331,12 @@ namespace AgOpenGPS
             }
 
             GeoPoint geoRef = mapControl.TopLeft;
-            GeoCoord topLeftGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            GeoCoord topLeftGeoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
             mf.worldGrid.northingMaxGeo = topLeftGeoCoord.Northing;
             mf.worldGrid.eastingMinGeo = topLeftGeoCoord.Easting;
 
             geoRef = mapControl.BottomRight;
-            GeoCoord bottomRightGeoCoord = mf.pn.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
+            GeoCoord bottomRightGeoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(geoRef.Latitude, geoRef.Longitude));
             mf.worldGrid.northingMinGeo = bottomRightGeoCoord.Northing;
             mf.worldGrid.eastingMaxGeo = bottomRightGeoCoord.Easting;
 

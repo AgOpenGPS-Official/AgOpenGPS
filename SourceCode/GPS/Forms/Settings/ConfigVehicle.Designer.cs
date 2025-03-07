@@ -303,7 +303,6 @@ namespace AgOpenGPS
             Properties.Settings.Default.setDisplay_isBrightnessOn = mf.isBrightnessOn;
             Properties.Settings.Default.setDisplay_isTextureOn = mf.isTextureOn;
             Properties.Settings.Default.setMenu_isGridOn = mf.isGridOn;
-            Properties.Settings.Default.setMenu_isCompassOn = mf.isCompassOn;
 
             Properties.Settings.Default.setDisplay_isSvennArrowOn = mf.isSvennArrowOn;
             Properties.Settings.Default.setMenu_isSpeedoOn = mf.isSpeedoOn;

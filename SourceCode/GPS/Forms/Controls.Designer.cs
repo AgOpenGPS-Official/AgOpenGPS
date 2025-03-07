@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Pickers;
@@ -586,9 +587,7 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    double distance = Math.Pow((pn.latStart - pn.latitude), 2) + Math.Pow((pn.lonStart - pn.longitude), 2);
-                    distance = Math.Sqrt(distance);
-                    distance *= 100;
+                    double distance = AppModel.CurrentLatLon.DistanceInKiloMeters(AppModel.LocalPlane.Origin);
                     if (distance > 10)
                     {
                         TimedMessageBox(2500, "High Field Start Distance Warning", "Field Start is "
@@ -1111,7 +1110,10 @@ namespace AgOpenGPS
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.fix.easting, pn.fix.northing, 
+            CFlag flagPt = new CFlag(
+                AppModel.CurrentLatLon.Latitude,
+                AppModel.CurrentLatLon.Longitude,
+                pn.fix.easting, pn.fix.northing, 
                 fixHeading, flagColor, nextflag, nextflag.ToString());
             flagPts.Add(flagPt);
             FileSaveFlags();
@@ -2266,8 +2268,9 @@ namespace AgOpenGPS
         }
         private void btnResetSim_Click(object sender, EventArgs e)
         {
-            sim.latitude = Properties.Settings.Default.setGPS_SimLatitude;
-            sim.longitude = Properties.Settings.Default.setGPS_SimLongitude;
+            sim.CurrentLatLon = new Wgs84(
+                Properties.Settings.Default.setGPS_SimLatitude,
+                Properties.Settings.Default.setGPS_SimLongitude);
         }
         private void btnSimSetSpeedToZero_Click(object sender, EventArgs e)
         {

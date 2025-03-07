@@ -751,10 +751,10 @@ namespace AgOpenGPS
             //to draw or not the triangle patch
             bool isDraw;
 
-            double pivEplus = pivotAxlePos.easting + 50;
-            double pivEminus = pivotAxlePos.easting - 50;
-            double pivNplus = pivotAxlePos.northing + 50;
-            double pivNminus = pivotAxlePos.northing - 50;
+            double pivEplus = toolPos.easting + 50;
+            double pivEminus = toolPos.easting - 50;
+            double pivNplus = toolPos.northing + 50;
+            double pivNminus = toolPos.northing - 50;
 
             //draw patches j= # of sections
             for (int j = 0; j < triStrip.Count; j++)
