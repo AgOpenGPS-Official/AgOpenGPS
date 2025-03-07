@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace AgOpenGPS.Core.Models.Base
+namespace AgOpenGPS.Core.Models
 {
     public struct ColorRgba
     {
