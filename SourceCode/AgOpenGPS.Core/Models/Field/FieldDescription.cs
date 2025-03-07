@@ -11,27 +11,36 @@ namespace AgOpenGPS.Core.Models
     public class FieldDescription
     {
         private readonly DirectoryInfo _fieldDirectory;
-        public FieldDescription(DirectoryInfo fieldDirectory)
+        public FieldDescription(DirectoryInfo fieldDirectory, Wgs84? wgs84Start, double? area)
         {
             _fieldDirectory = fieldDirectory;
+            Wgs84Start = wgs84Start;
+            Area = area;
+        }
+
+        public static FieldDescription CreateFieldDescription(DirectoryInfo fieldDirectory)
+        {
+            Wgs84? wgs84Start = null;
+            double? area = null;
             try
             {
                 var overview = new OverviewStreamer().Read(fieldDirectory);
-                Wgs84Start = overview.Start;
+                wgs84Start = overview.Start;
             }
-            catch (Exception )
+            catch (Exception)
             {
-                Log.EventWriter("Field (" + _fieldDirectory.Name + ") file (Field.txt) could not be read.");
+                Log.EventWriter("Field (" + fieldDirectory.Name + ") file (Field.txt) could not be read.");
             }
             try
             {
                 var boundary = new BoundaryStreamer().Read(fieldDirectory);
-                Area = boundary.Area;
+                area = boundary.Area;
             }
             catch (Exception)
             {
-                Log.EventWriter("Field (" + _fieldDirectory.Name + ") file (Boundary.txt) could not be read.");
+                Log.EventWriter("Field (" + fieldDirectory.Name + ") file (Boundary.txt) could not be read.");
             }
+            return new FieldDescription(fieldDirectory, wgs84Start, area);
         }
 
         public string Name => _fieldDirectory.Name;

@@ -42,7 +42,7 @@ namespace AgOpenGPS.Core.Models
 
                 if (0 < fileInfos.Length)
                 {
-                    var fieldDescription = new FieldDescription(fieldDirectory);
+                    var fieldDescription = FieldDescription.CreateFieldDescription(fieldDirectory);
                     if (fieldDescription.Wgs84Start.HasValue)
                     {
                         list.Add(fieldDescription);
