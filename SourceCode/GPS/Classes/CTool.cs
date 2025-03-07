@@ -1,4 +1,5 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Drawing;
@@ -123,6 +124,31 @@ namespace AgOpenGPS
             isDisplayTramControl = Properties.Settings.Default.setTool_isDisplayTramControl;
         }
 
+        private void DrawHitchLayer(bool isBackgroundLayer, double trailingTank)
+        {
+            GL.LineWidth(isBackgroundLayer ? 6 : 1);
+            (isBackgroundLayer ? Colors.Black : Colors.HitchColor).SetColor();
+
+            //draw the rigid hitch
+            GL.Begin(PrimitiveType.LineLoop);
+            GL.Vertex3(-0.57, trailingTank, 0);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0.57, trailingTank, 0);
+            GL.End();
+        }
+
+        private void DrawTrailingHitchLayer(bool isBackgroundLayer, double trailingTool)
+        {
+            GL.LineWidth(isBackgroundLayer ? 6 : 1);
+            (isBackgroundLayer ? Colors.Black : Colors.TrailingToolColor).SetColor();
+
+            GL.Begin(PrimitiveType.LineLoop);
+            GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
+            GL.Vertex3(0, 0, 0);
+            GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
+            GL.End();
+        }
+
         public void DrawTool()
         {
             //translate and rotate at pivot axle
@@ -148,25 +174,8 @@ namespace AgOpenGPS
                 //rotate to tank heading
                 GL.Rotate(glm.toDegrees(-mf.tankPos.heading), 0.0, 0.0, 1.0);
 
-                //draw the tank hitch
-                GL.LineWidth(6);
-                //draw the rigid hitch
-                GL.Color3(0, 0, 0);
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.57, trailingTank, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.57, trailingTank, 0);
-
-                GL.End();
-
-                GL.LineWidth(1);
-                //draw the rigid hitch
-                GL.Color3(0.765f, 0.76f, 0.32f);
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.57, trailingTank, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.57, trailingTank, 0);
-                GL.End();
+                DrawHitchLayer(true, trailingTank);
+                DrawHitchLayer(false, trailingTank);
 
                 GL.Color4(1, 1, 1, 0.75);
                 XyCoord toolAxleCenter = new XyCoord(0.0, trailingTank);
@@ -182,22 +191,8 @@ namespace AgOpenGPS
             //draw the hitch if trailing
             if (isToolTrailing)
             {
-                GL.LineWidth(6);
-                GL.Color3(0, 0, 0);
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
-                GL.End();
-
-                GL.LineWidth(1);
-                //draw the rigid hitch
-                GL.Color3(0.7f, 0.4f, 0.2f);
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
-                GL.End();
+                DrawTrailingHitchLayer(true, trailingTool);
+                DrawTrailingHitchLayer(false, trailingTool);
 
                 if (Math.Abs(trailingToolToPivotLength) > 1 && mf.camera.camSetDistance > -100)
                 {
@@ -326,63 +321,21 @@ namespace AgOpenGPS
                         GL.PointSize(12);
                     else GL.PointSize(8);
 
-                    if (mf.tram.isOuter)
-                    {
-                        //section markers
-                        GL.Begin(PrimitiveType.Points);
-
-                        //right side
-                        if (((mf.tram.controlByte) & 1) == 1) GL.Color3(0.0f, 0.900f, 0.39630f);
-                        else GL.Color3(0, 0, 0);
-                        GL.Vertex3(farRightPosition - mf.tram.halfWheelTrack, trailingTool, 0);
-
-                        //left side
-                        if ((mf.tram.controlByte & 2) == 2) GL.Color3(0.0f, 0.900f, 0.3930f);
-                        else GL.Color3(0, 0, 0);
-                        GL.Vertex3(farLeftPosition + mf.tram.halfWheelTrack, trailingTool, 0);
-                        GL.End();
-                    }
-                    else
-                    {
-                        GL.Begin(PrimitiveType.Points);
-
-                        //right side
-                        if (((mf.tram.controlByte) & 1) == 1) GL.Color3(0.0f, 0.900f, 0.39630f);
-                        else GL.Color3(0, 0, 0);
-                        GL.Vertex3(mf.tram.halfWheelTrack, trailingTool, 0);
-
-                        //left side
-                        if ((mf.tram.controlByte & 2) == 2) GL.Color3(0.0f, 0.900f, 0.3930f);
-                        else GL.Color3(0, 0, 0);
-                        GL.Vertex3(-mf.tram.halfWheelTrack, trailingTool, 0);
-                        GL.End();
-                    }
+                    ColorRgb rightMarkerColor = ((mf.tram.controlByte) & 1) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
+                    ColorRgb leftMarkerColor = ((mf.tram.controlByte) & 2) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
+                    double rightX = mf.tram.isOuter ? farRightPosition - mf.tram.halfWheelTrack : mf.tram.halfWheelTrack;
+                    double leftX = mf.tram.isOuter ? farLeftPosition + mf.tram.halfWheelTrack : -mf.tram.halfWheelTrack;
+                    // section markers
+                    GL.Begin(PrimitiveType.Points);
+                    // right side
+                    rightMarkerColor.SetColor();
+                    GL.Vertex3(rightX, trailingTool, 0);
+                    // left size
+                    leftMarkerColor.SetColor();
+                    GL.Vertex3(leftX, trailingTool, 0);
+                    GL.End();
                 }
             }
-
-
-            //GL.End();
-
-            //draw section markers if close enough
-            //if (mf.camera.camSetDistance > -250)
-            //{
-            //    GL.Color3(0.0f, 0.0f, 0.0f);
-            //    //section markers
-            //    GL.PointSize(3.0f);
-            //    GL.Begin(PrimitiveType.Points);
-            //    for (int j = 0; j < numOfSections - 1; j++)
-            //        GL.Vertex3(mf.section[j].positionRight, trailingTool, 0);
-            //    GL.End();
-            //}
-
-            //GL.Color3(0.30f, 1.0f, 1.0f);
-            ////section markers
-            //GL.PointSize(4.0f);
-            //GL.Begin(PrimitiveType.Points);
-            ////for (int j = 0; j < numOfSections - 1; j++)
-            //GL.Vertex3(mf.section[0].positionLeft, (mf.vehicle.hydLiftLookAheadDistanceLeft * 0.1) + trailingTool, 0);
-            //GL.Vertex3(mf.section[mf.tool.numOfSections - 1].positionRight, (mf.vehicle.hydLiftLookAheadDistanceRight * 0.1) + trailingTool, 0);
-            //GL.End();
 
             GL.PopMatrix();
         }

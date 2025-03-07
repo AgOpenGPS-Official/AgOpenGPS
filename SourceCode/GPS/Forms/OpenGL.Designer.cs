@@ -1841,6 +1841,13 @@ namespace AgOpenGPS
             GL.PopMatrix();
         }
 
+        private ColorRgba TramDotColor(bool isManual, bool isFlashOn, bool controlBitOn)
+        {
+            return isManual
+                ? (isFlashOn ? Colors.TramDotManualFlashOnColor : Colors.TramDotManualFlashOffColor)
+                : (controlBitOn ? Colors.TramDotAutomaticControlBitOnColor : Colors.TramDotAutomaticControlBitOffColor);
+        }
+
         private void DrawTramMarkers()
         {
             //int sizer = 60;
@@ -1849,25 +1856,12 @@ namespace AgOpenGPS
             XyCoord rightDotCenter = new XyCoord(+50, bottomSide);
             XyDelta dotDelta = new XyDelta(24, 24);
 
-            if ((tram.controlByte & 2) == 2) GL.Color4(0.29f, 0.990f, 0.290f, 0.983f);
-            else GL.Color4(0.9f, 0.0f, 0.0f, 0.53f);
-
-            if (tram.isLeftManualOn)
-            {
-                if (isFlashOnOff) GL.Color4(0.0f, 0.0f, 0.0f, 0.993f);
-                else GL.Color4(0.99f, 0.990f, 0.0f, 0.993f);
-            }
+            ColorRgba leftDotColor = TramDotColor(tram.isLeftManualOn, isFlashOnOff, (tram.controlByte & 2) != 0);
+            leftDotColor.SetColor();
             ScreenTextures.TramDot.DrawCentered(leftDotCenter, dotDelta);
 
-            if ((tram.controlByte & 1) == 1) GL.Color4(0.29f, 0.990f, 0.290f, 0.983f);
-            else GL.Color4(0.9f, 0.0f, 0.0f, 0.53f);
-
-            if (tram.isRightManualOn)
-            {
-                if (isFlashOnOff) GL.Color4(0.0f, 0.0f, 0.0f, 0.993f);
-                else GL.Color4(0.99f, 0.990f, 0.0f, 0.993f);
-            }
-
+            ColorRgba rightDotColor = TramDotColor(tram.isRightManualOn, isFlashOnOff, (tram.controlByte & 1) != 0);
+            rightDotColor.SetColor();
             ScreenTextures.TramDot.DrawCentered(rightDotCenter, dotDelta);
         }
 
@@ -1922,33 +1916,27 @@ namespace AgOpenGPS
         {
             try
             {
-                int flagCnt = flagPts.Count;
-                for (int f = 0; f < flagCnt; f++)
+                foreach (CFlag flag in flagPts)
                 {
                     GL.PointSize(8.0f);
                     GL.Begin(PrimitiveType.Points);
+                    ColorRgb flagColorRgb = Colors.FlagRedColor;
                     string flagColor = "&";
-                    if (flagPts[f].color == 0)
+                    if (flag.color == 1)
                     {
-                        GL.Color3((byte)255, (byte)0, (byte)flagPts[f].ID);
-                    }
-                    if (flagPts[f].color == 1)
-                    {
-                        GL.Color3((byte)0, (byte)255, (byte)flagPts[f].ID);
+                        flagColorRgb = Colors.FlagGreenColor;
                         flagColor = "|";
                     }
-                    if (flagPts[f].color == 2)
+                    if (flag.color == 2)
                     {
-                        GL.Color3((byte)255, (byte)255, (byte)flagPts[f].ID);
+                        flagColorRgb = Colors.FlagYellowColor;
                         flagColor = "~";
                     }
-
-                    GL.Vertex3(flagPts[f].easting, flagPts[f].northing, 0);
+                    flagColorRgb.Blue = (byte)flag.ID;
+                    GL.Vertex3(flag.easting, flag.northing, 0);
                     GL.End();
 
-                    font.DrawText3D(flagPts[f].easting, flagPts[f].northing, flagColor + flagPts[f].notes);
-                    //else
-                    //    font.DrawText3D(flagPts[f].easting, flagPts[f].northing, "&");
+                    font.DrawText3D(flag.easting, flag.northing, flagColor + flag.notes);
                 }
 
                 if (flagNumberPicked != 0)
@@ -1964,13 +1952,6 @@ namespace AgOpenGPS
                     GL.Vertex3(flagPts[flagNumberPicked - 1].easting + offSet, flagPts[flagNumberPicked - 1].northing, 0);
                     GL.Vertex3(flagPts[flagNumberPicked - 1].easting, flagPts[flagNumberPicked - 1].northing + offSet, 0);
                     GL.End();
-
-                    //draw the flag with a black dot inside
-                    //GL.PointSize(4.0f);
-                    //GL.Color3(0, 0, 0);
-                    //GL.Begin(PrimitiveType.Points);
-                    //GL.Vertex3(flagPts[flagNumberPicked - 1].easting, flagPts[flagNumberPicked - 1].northing, 0);
-                    //GL.End();
                 }
             }
             catch { }

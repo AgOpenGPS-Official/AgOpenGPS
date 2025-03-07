@@ -1,4 +1,6 @@
-﻿namespace AgOpenGPS.Core.Models
+﻿using OpenTK.Graphics.OpenGL;
+
+namespace AgOpenGPS.Core.Models
 {
     public struct ColorRgb
     {
@@ -9,9 +11,22 @@
             Blue = blue;
         }
 
-        public byte Red { get; }
-        public byte Green { get; }
-        public byte Blue { get; }
+        public ColorRgb(float red, float green, float blue) :
+        this(
+            ColorRgb.FloatToByte(red),
+            ColorRgb.FloatToByte(green),
+            ColorRgb.FloatToByte(blue))
+        {
+        }
+
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
+
+        public void SetColor()
+        {
+            GL.Color3(Red, Green, Blue);
+        }
 
         public static explicit operator System.Drawing.Color(ColorRgb color)
         {
@@ -22,5 +37,11 @@
         {
             return new ColorRgb(color.R, color.G, color.B);
         }
+
+        static private byte FloatToByte(float fraction)
+        {
+            return (byte)(255 * fraction);
+        }
     }
+
 }
