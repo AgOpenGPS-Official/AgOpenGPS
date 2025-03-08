@@ -1857,11 +1857,11 @@ namespace AgOpenGPS
             XyDelta dotDelta = new XyDelta(24, 24);
 
             ColorRgba leftDotColor = TramDotColor(tram.isLeftManualOn, isFlashOnOff, (tram.controlByte & 2) != 0);
-            leftDotColor.SetColor();
+            GLW.SetColor(leftDotColor);
             ScreenTextures.TramDot.DrawCentered(leftDotCenter, dotDelta);
 
             ColorRgba rightDotColor = TramDotColor(tram.isRightManualOn, isFlashOnOff, (tram.controlByte & 1) != 0);
-            rightDotColor.SetColor();
+            GLW.SetColor(rightDotColor);
             ScreenTextures.TramDot.DrawCentered(rightDotCenter, dotDelta);
         }
 
@@ -1933,6 +1933,7 @@ namespace AgOpenGPS
                         flagColor = "~";
                     }
                     flagColorRgb.Blue = (byte)flag.ID;
+                    GLW.SetColor(flagColorRgb);
                     GL.Vertex3(flag.easting, flag.northing, 0);
                     GL.End();
 

@@ -124,29 +124,40 @@ namespace AgOpenGPS
             isDisplayTramControl = Properties.Settings.Default.setTool_isDisplayTramControl;
         }
 
-        private void DrawHitchLayer(bool isBackgroundLayer, double trailingTank)
+        private void DrawHitch(double trailingTank)
         {
-            GL.LineWidth(isBackgroundLayer ? 6 : 1);
-            (isBackgroundLayer ? Colors.Black : Colors.HitchColor).SetColor();
+            LineStyle backgroundLineStyle = new LineStyle(6.0f, Colors.Black);
+            LineStyle foregroundLineStyle = new LineStyle(1.0f, Colors.HitchColor);
+            LineStyle[] lineStyles = { backgroundLineStyle, foregroundLineStyle };
 
-            //draw the rigid hitch
-            GL.Begin(PrimitiveType.LineLoop);
-            GL.Vertex3(-0.57, trailingTank, 0);
-            GL.Vertex3(0, 0, 0);
-            GL.Vertex3(0.57, trailingTank, 0);
-            GL.End();
+            foreach (LineStyle lineStyle in lineStyles)
+            {
+                GLW.SetLineStyle(lineStyle);
+
+                GL.Begin(PrimitiveType.LineLoop);
+                GL.Vertex3(-0.57, trailingTank, 0);
+                GL.Vertex3(0, 0, 0);
+                GL.Vertex3(0.57, trailingTank, 0);
+                GL.End();
+            }
         }
 
-        private void DrawTrailingHitchLayer(bool isBackgroundLayer, double trailingTool)
+        private void DrawTrailingHitch(double trailingTool)
         {
-            GL.LineWidth(isBackgroundLayer ? 6 : 1);
-            (isBackgroundLayer ? Colors.Black : Colors.TrailingToolColor).SetColor();
+            LineStyle backgroundLineStyle = new LineStyle(6.0f, Colors.Black);
+            LineStyle foregroundLineStyle = new LineStyle(1.0f, Colors.HitchTrailingColor);
+            LineStyle[] lineStyles = { backgroundLineStyle, foregroundLineStyle };
 
-            GL.Begin(PrimitiveType.LineLoop);
-            GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
-            GL.Vertex3(0, 0, 0);
-            GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
-            GL.End();
+            foreach (LineStyle lineStyle in lineStyles)
+            {
+                GLW.SetLineStyle(lineStyle);
+
+                GL.Begin(PrimitiveType.LineLoop);
+                GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
+                GL.Vertex3(0, 0, 0);
+                GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
+                GL.End();
+            }
         }
 
         public void DrawTool()
@@ -174,8 +185,7 @@ namespace AgOpenGPS
                 //rotate to tank heading
                 GL.Rotate(glm.toDegrees(-mf.tankPos.heading), 0.0, 0.0, 1.0);
 
-                DrawHitchLayer(true, trailingTank);
-                DrawHitchLayer(false, trailingTank);
+                DrawHitch(trailingTank);
 
                 GL.Color4(1, 1, 1, 0.75);
                 XyCoord toolAxleCenter = new XyCoord(0.0, trailingTank);
@@ -191,8 +201,7 @@ namespace AgOpenGPS
             //draw the hitch if trailing
             if (isToolTrailing)
             {
-                DrawTrailingHitchLayer(true, trailingTool);
-                DrawTrailingHitchLayer(false, trailingTool);
+                DrawTrailingHitch(trailingTool);
 
                 if (Math.Abs(trailingToolToPivotLength) > 1 && mf.camera.camSetDistance > -100)
                 {
@@ -327,11 +336,9 @@ namespace AgOpenGPS
                     double leftX = mf.tram.isOuter ? farLeftPosition + mf.tram.halfWheelTrack : -mf.tram.halfWheelTrack;
                     // section markers
                     GL.Begin(PrimitiveType.Points);
-                    // right side
-                    rightMarkerColor.SetColor();
+                    GLW.SetColor(rightMarkerColor);
                     GL.Vertex3(rightX, trailingTool, 0);
-                    // left size
-                    leftMarkerColor.SetColor();
+                    GLW.SetColor(leftMarkerColor);
                     GL.Vertex3(leftX, trailingTool, 0);
                     GL.End();
                 }

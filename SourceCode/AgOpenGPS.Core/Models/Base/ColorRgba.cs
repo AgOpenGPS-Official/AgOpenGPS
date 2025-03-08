@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -26,11 +27,6 @@ namespace AgOpenGPS.Core.Models
         public byte Blue { get; }
         public byte Alpha { get; }
 
-        public void SetColor()
-        {
-            GL.Color4(Red, Green, Blue, Alpha);
-        }
-
         public static explicit operator System.Drawing.Color(ColorRgba color)
         {
             return System.Drawing.Color.FromArgb(color.Red, color.Green, color.Blue, color.Alpha);
@@ -43,6 +39,8 @@ namespace AgOpenGPS.Core.Models
 
         static private byte FloatToByte(float fraction)
         {
+            fraction = Math.Max(fraction, 0.0f);
+            fraction = Math.Min(fraction, 1.0f);
             return (byte)(255 * fraction);
         }
 
