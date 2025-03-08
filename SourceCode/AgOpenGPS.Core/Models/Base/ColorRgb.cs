@@ -18,9 +18,9 @@ namespace AgOpenGPS.Core.Models
                 ColorRgb.FloatToByte(green),
                 ColorRgb.FloatToByte(blue))
         {
-            if (red < 0.0f || 255.0 < red) throw new ArgumentOutOfRangeException("red", "Argument out of range");
-            if (green < 0.0f || 255.0 < green) throw new ArgumentOutOfRangeException("green", "Argument out of range");
-            if (blue < 0.0f || 255.0 < blue) throw new ArgumentOutOfRangeException("blue", "Argument out of range");
+            if (red < 0.0f || 255.0 < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
+            if (green < 0.0f || 255.0 < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
+            if (blue < 0.0f || 255.0 < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
         }
 
         public byte Red { get; set; }
