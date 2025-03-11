@@ -26,6 +26,8 @@ namespace AgOpenGPS.Core.Models
             }
         }
 
+        public string CurrentFieldName => CurrentField?.Name;
+
         public FieldStreamer FieldStreamer
         {
             get { return _fieldStreamer; }
@@ -54,12 +56,12 @@ namespace AgOpenGPS.Core.Models
 
         public void DeleteField(DirectoryInfo fieldDirectory)
         {
-            fieldDirectory.Delete();
+            fieldDirectory.Delete(true);
         }
 
-        public void SelectField(string fieldName)
+        public void SelectField(DirectoryInfo fieldDirectory)
         {
-            CurrentField = new Field(fieldName);
+            CurrentField = new Field(fieldDirectory);
         }
 
     }

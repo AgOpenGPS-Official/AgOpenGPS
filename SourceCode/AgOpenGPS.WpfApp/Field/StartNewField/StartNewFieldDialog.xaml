@@ -1,0 +1,40 @@
+﻿<Window x:Class="AgOpenGPS.WpfApp.Field.StartNewFieldDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    xmlns:corevm="clr-namespace:AgOpenGPS.Core.ViewModels;assembly=AgOpenGPS.Core"
+    xmlns:local="clr-namespace:AgOpenGPS.WpfApp.Field"
+
+    d:DataContext="{d:DesignInstance Type=corevm:StartNewFieldViewModel, IsDesignTimeCreatable=False}"
+
+    Title="StartNewFieldDialog"
+    SizeToContent="WidthAndHeight">
+
+    <StackPanel>
+        <UniformGrid Rows="4" Columns="2" Width="240" Height="320">
+            <Button/>
+            <Button/>
+            <Button/>
+            <Button x:Name="driveInButton"
+                Content="Drive In"
+                Command="{Binding StartSelectNearFieldCommand}"/>
+            <Button x:Name="fromExistingButton"
+                Content="From Existing"
+                Command="{Binding StartCreateFieldFromExistingCommand}" />
+            <Button x:Name="selectFieldButton"
+                Content="Open"
+                Command="{Binding StartSelectFieldCommand}" />
+            <Button/>
+            <Button/>
+        </UniformGrid>
+        <StackPanel x:Name="bottomStackPanel" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label x:Name="resumeLabel" Content="Resume: "/>
+            <Label x:Name="currentFieldName" Content="{Binding CurrentFieldName}" />
+            <Button x:Name="cancelButton"
+                Content="Cancel"
+                IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>

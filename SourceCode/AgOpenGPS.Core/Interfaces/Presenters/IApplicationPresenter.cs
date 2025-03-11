@@ -3,8 +3,6 @@
     public interface IApplicationPresenter
     {
         IErrorPresenter ErrorPresenter { get; }
-
-        IFieldStreamerPresenter FieldStreamerPresenter { get; }
     }
 }
 

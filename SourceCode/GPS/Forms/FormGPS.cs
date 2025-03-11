@@ -5,6 +5,7 @@ using AgOpenGPS;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Core;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.ViewModels;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;
@@ -31,9 +32,10 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
-        public ApplicationCore AppCore { get; set; }
+        public ApplicationCore AppCore { get; }
 
         public ApplicationModel AppModel => AppCore.AppModel;
+        public ApplicationViewModel AppViewModel => AppCore.AppViewModel;
 
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
@@ -278,7 +280,10 @@ namespace AgOpenGPS
             //winform initialization
             InitializeComponent();
 
-            AppCore = new ApplicationCore(new DirectoryInfo(RegistrySettings.baseDirectory));
+            AppCore = new ApplicationCore(
+                new DirectoryInfo(RegistrySettings.baseDirectory),
+                null,
+                null);
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;

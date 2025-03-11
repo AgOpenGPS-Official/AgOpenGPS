@@ -10,13 +10,14 @@ namespace AgOpenGPS.Core.Models
     // Used to build a FieldDescriptionViewModel to display a row in a table of fields
     public class FieldDescription
     {
-        private readonly DirectoryInfo _fieldDirectory;
         public FieldDescription(DirectoryInfo fieldDirectory, Wgs84? wgs84Start, double? area)
         {
-            _fieldDirectory = fieldDirectory;
+            FieldDirectory = fieldDirectory;
             Wgs84Start = wgs84Start;
             Area = area;
         }
+
+        public DirectoryInfo FieldDirectory { get; }
 
         public static FieldDescription CreateFieldDescription(DirectoryInfo fieldDirectory)
         {
@@ -43,7 +44,7 @@ namespace AgOpenGPS.Core.Models
             return new FieldDescription(fieldDirectory, wgs84Start, area);
         }
 
-        public string Name => _fieldDirectory.Name;
+        public string Name => FieldDirectory.Name;
         public Wgs84? Wgs84Start { get; set; } // No value indicates error in Field.txt file
         public double? Area { get; set; } // In Square meters. No value indicates error in reading Boundary file
     }

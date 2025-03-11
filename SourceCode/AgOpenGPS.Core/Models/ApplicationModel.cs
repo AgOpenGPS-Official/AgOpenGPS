@@ -20,7 +20,6 @@ namespace AgOpenGPS.Core
         public void SetPresenter(IApplicationPresenter applicationPresenter)
         {
             _applicationPresenter = applicationPresenter;
-            FieldStreamer.SetPresenter(_applicationPresenter.FieldStreamerPresenter);
         }
 
         public DirectoryInfo FieldsDirectory { get; }
