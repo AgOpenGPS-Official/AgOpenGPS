@@ -11,8 +11,6 @@ namespace AgOpenGPS.Core.ViewModels
     public class StartNewFieldViewModel
     {
         private readonly ApplicationModel _appModel;
-        private IPanelPresenter _panelPresenter;
-
         private SelectNearFieldViewModel _selectNearFieldViewModel;
         private CreateFromExistingFieldViewModel _createFromExistingFieldViewModel;
         private SelectFieldViewModel _selectFieldViewModel;
@@ -26,12 +24,7 @@ namespace AgOpenGPS.Core.ViewModels
             CancelCommand = new RelayCommand(Cancel);
         }
 
-        public IPanelPresenter PanelPresenter
-        {
-            set {
-                _panelPresenter = value;
-            }
-        }
+        public IPanelPresenter PanelPresenter { set; private get; }
 
         public SelectNearFieldViewModel SelectNearFieldViewModel
         {
@@ -40,7 +33,7 @@ namespace AgOpenGPS.Core.ViewModels
                 if (_selectNearFieldViewModel == null)
                 {
                     _selectNearFieldViewModel =
-                        new SelectNearFieldViewModel(_appModel, _panelPresenter);
+                        new SelectNearFieldViewModel(_appModel, PanelPresenter);
                 }
                 return _selectNearFieldViewModel;
             }
@@ -53,7 +46,7 @@ namespace AgOpenGPS.Core.ViewModels
                 if (_createFromExistingFieldViewModel == null)
                 {
                     _createFromExistingFieldViewModel =
-                        new CreateFromExistingFieldViewModel(_appModel, _panelPresenter);
+                        new CreateFromExistingFieldViewModel(_appModel, PanelPresenter);
                 }
                 return _createFromExistingFieldViewModel;
             }
@@ -65,7 +58,7 @@ namespace AgOpenGPS.Core.ViewModels
             {
                 if (_selectFieldViewModel == null)
                 {
-                    _selectFieldViewModel = new SelectFieldViewModel(_appModel, _panelPresenter);
+                    _selectFieldViewModel = new SelectFieldViewModel(_appModel, PanelPresenter);
                 }
                 return _selectFieldViewModel;
             }
@@ -81,30 +74,30 @@ namespace AgOpenGPS.Core.ViewModels
         private void StartSelectNearField()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _panelPresenter.CloseStartNewFieldDialog();
+            PanelPresenter.CloseStartNewFieldDialog();
             SelectNearFieldViewModel.UpdateFields();
-            _panelPresenter.ShowSelectNearFieldDialog(SelectNearFieldViewModel);
+            PanelPresenter.ShowSelectNearFieldDialog(SelectNearFieldViewModel);
         }
 
         private void StartCreateFieldFromExisting()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _panelPresenter.CloseStartNewFieldDialog();
+            PanelPresenter.CloseStartNewFieldDialog();
             CreateFromExistingFieldViewModel.UpdateFields();
-            _panelPresenter.ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel);
+            PanelPresenter.ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel);
         }
 
         private void StartSelectField()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _panelPresenter.CloseStartNewFieldDialog();
+            PanelPresenter.CloseStartNewFieldDialog();
             SelectFieldViewModel.UpdateFields();
-            _panelPresenter.ShowSelectFieldDialog(SelectFieldViewModel);
+            PanelPresenter.ShowSelectFieldDialog(SelectFieldViewModel);
         }
 
         private void Cancel()
         {
-            _panelPresenter.CloseStartNewFieldDialog();
+            PanelPresenter.CloseStartNewFieldDialog();
         }
 
     }

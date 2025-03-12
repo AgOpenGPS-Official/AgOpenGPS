@@ -51,14 +51,16 @@ namespace AgOpenGPS.Core.ViewModels
         {
             ObservableCollection<FieldDescriptionViewModel> viewModels = new ObservableCollection<FieldDescriptionViewModel>();
             var descriptions = _appModel.Fields.GetFieldDescriptions();
-            foreach (FieldDescription fd in descriptions)
+            foreach (FieldDescription description in descriptions)
             {
                 FieldDescriptionViewModel viewModel = new FieldDescriptionViewModel(
-                    fd.FieldDirectory,
-                    fd.Area.HasValue ? fd.Area.Value.ToString() : "Error",
-                    fd.Wgs84Start.HasValue ? _appModel.CurrentLatLon.DistanceInKiloMeters(fd.Wgs84Start.Value).ToString() : "Error");
+                    description.FieldDirectory,
+                    description.Area.HasValue ? description.Area.Value.ToString() : "Error",
+                    description.Wgs84Start.HasValue ? _appModel.CurrentLatLon.DistanceInKiloMeters(description.Wgs84Start.Value).ToString() : "Error");
                 viewModels.Add(viewModel);
             }
+            // The Winforms views do not update when elements inside the ObservableCollection are changed.
+            // Therefore change the ObservableCollection as a whole.
             FieldDescriptionViewModels = viewModels;
         }
 
