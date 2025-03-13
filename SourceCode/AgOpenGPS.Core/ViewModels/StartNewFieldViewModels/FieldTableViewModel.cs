@@ -8,7 +8,7 @@ namespace AgOpenGPS.Core.ViewModels
     public class FieldTableViewModel : ViewModel
     {
         protected readonly ApplicationModel _appModel;
-        private ObservableCollection<FieldDescriptionViewModel> _fieldDescriptions;
+        private Collection<FieldDescriptionViewModel> _fieldDescriptions;
         protected FieldDescriptionViewModel _localSelectedField;
 
         public FieldTableViewModel(ApplicationModel appModel)
@@ -21,7 +21,7 @@ namespace AgOpenGPS.Core.ViewModels
         public ICommand SelectFieldCommand { get; }
         public ICommand SortCommand { get; }
 
-        public ObservableCollection<FieldDescriptionViewModel> FieldDescriptionViewModels
+        public Collection<FieldDescriptionViewModel> FieldDescriptionViewModels
         {
             get { return _fieldDescriptions; }
             set
@@ -49,7 +49,7 @@ namespace AgOpenGPS.Core.ViewModels
 
         public void UpdateFields()
         {
-            ObservableCollection<FieldDescriptionViewModel> viewModels = new ObservableCollection<FieldDescriptionViewModel>();
+            Collection<FieldDescriptionViewModel> viewModels = new Collection<FieldDescriptionViewModel>();
             var descriptions = _appModel.Fields.GetFieldDescriptions();
             foreach (FieldDescription description in descriptions)
             {

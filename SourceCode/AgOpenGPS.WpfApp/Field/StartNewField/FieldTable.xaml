@@ -18,7 +18,7 @@
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="nameColumn"
                 Header="Name"
-                Width="175" Binding="{Binding FieldName}" />
+                Width="175" Binding="{Binding FieldName, Mode=OneWay}" />
             <DataGridTextColumn x:Name="distanceColumn"
                 Header="Distance"
                 Width="175" Binding="{Binding FieldDistance}" />
