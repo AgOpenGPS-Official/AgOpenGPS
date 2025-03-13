@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -130,36 +131,12 @@ namespace AgOpenGPS
 
                 goalPointDistance *= LoekiAheadHold; 
                 goalPointDistance += LoekiAheadHold;
-
             }
             else
             {
                 goalPointDistance *= LoekiAheadAcquire; 
                 goalPointDistance += LoekiAheadAcquire;
             }
-
-            ////how far should goal point be away  - speed * seconds * kmph -> m/s then limit min value
-            ////double goalPointDistance = mf.avgSpeed * goalPointLookAhead * 0.05 * goalPointLookAheadMult;
-            //double goalPointDistance = mf.avgSpeed * goalPointLookAhead * 0.07; //0.05 * 1.4
-            //goalPointDistance += goalPointLookAhead;
-
-            //if (xTE < (modeXTE))
-            //{
-            //    if (modeTimeCounter > modeTime * 10)
-            //    {
-            //        //goalPointDistance = mf.avgSpeed * goalPointLookAheadHold * 0.05 * goalPointLookAheadMult;
-            //        goalPointDistance = mf.avgSpeed * goalPointLookAheadHold * 0.07; //0.05 * 1.4
-            //        goalPointDistance += goalPointLookAheadHold;
-            //    }
-            //    else
-            //    {
-            //        modeTimeCounter++;
-            //    }
-            //}
-            //else
-            //{
-            //    modeTimeCounter = 0;
-            //}
 
             if (goalPointDistance < 2) goalPointDistance = 2;
             goalDistance = goalPointDistance;
@@ -169,54 +146,32 @@ namespace AgOpenGPS
 
         public void DrawVehicle()
         {
-            //draw vehicle
             GL.Rotate(glm.toDegrees(-mf.fixHeading), 0.0, 0.0, 1.0);
             //mf.font.DrawText3D(0, 0, "&TGF");
             if (mf.isFirstHeadingSet && !mf.tool.isToolFrontFixed)
             {
+                // Draw the rigid hitch
+               XyCoord[] vertices;
                 if (!mf.tool.isToolRearFixed)
                 {
-                    GL.LineWidth(4);
-                    //draw the rigid hitch
-                    GL.Color3(0, 0, 0);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(0, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0, 0, 0);
-                    GL.End();
-
-                    GL.LineWidth(1);
-                    GL.Color3(1.237f, 0.037f, 0.0397f);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(0, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0, 0, 0);
-                    GL.End();
+                    vertices = new XyCoord[] {
+                        new XyCoord(0, mf.tool.hitchLength), new XyCoord(0, 0)
+                    };
                 }
                 else
                 {
-                    GL.LineWidth(4);
-                    //draw the rigid hitch
-                    GL.Color3(0, 0, 0);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(-0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(-0.350, 0, 0);
-                    GL.Vertex3(0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0.350, 0, 0);
-                    GL.End();
-
-                    GL.LineWidth(1);
-                    GL.Color3(1.237f, 0.037f, 0.0397f);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(-0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(-0.35, 0, 0);
-                    GL.Vertex3(0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0.35, 0, 0);
-                    GL.End();
+                    vertices = new XyCoord[] {
+                        new XyCoord(-0.35, mf.tool.hitchLength), new XyCoord(-0.35, 0),
+                        new XyCoord( 0.35, mf.tool.hitchLength), new XyCoord( 0.35, 0)
+                    };
                 }
+                LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);
+                LineStyle foregroundLineStyle = new LineStyle(1, Colors.HitchRigidColor);
+                LineStyle[] layerStyles = { backgroundLineStyle, foregroundLineStyle };
+                GLW.DrawPrimitiveLayered(PrimitiveType.Lines, layerStyles, vertices);
             }
-            //GL.Enable(EnableCap.Blend);
 
             //draw the vehicle Body
-
             if (!mf.isFirstHeadingSet && mf.headingFromSource != "Dual")
             {
                 GL.Color4(1,1,1, 0.75);
@@ -348,17 +303,10 @@ namespace AgOpenGPS
             if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
             {
                 //draw the bright antenna dot
-                GL.PointSize(16);
-                GL.Begin(PrimitiveType.Points);
-                GL.Color3(0, 0, 0);
-                GL.Vertex3(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
-                GL.End();
-
-                GL.PointSize(10);
-                GL.Begin(PrimitiveType.Points);
-                GL.Color3(0.20, 0.98, 0.98);
-                GL.Vertex3(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
-                GL.End();
+                PointStyle antennaBackgroundStyle = new PointStyle(16, Colors.Black);
+                PointStyle antennaForegroundStyle = new PointStyle(10, Colors.AntennaColor);
+                PointStyle[] layerStyles = { antennaBackgroundStyle, antennaForegroundStyle };
+                GLW.DrawPointLayered(layerStyles , - VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
             }
 
             if (mf.bnd.isBndBeingMade && mf.bnd.isDrawAtPivot)
@@ -376,7 +324,6 @@ namespace AgOpenGPS
                     }
                     GL.End();
                 }
-
                 //draw on left side
                 else
                 {
@@ -399,15 +346,14 @@ namespace AgOpenGPS
                 //double offs = mf.curve.distanceFromCurrentLinePivot * 0.3;
                 double svennDist = mf.camera.camSetDistance * -0.07;
                 double svennWidth = svennDist * 0.22;
-                GL.LineWidth(mf.ABLine.lineWidth);
-                GL.Color3(0.95, 0.95, 0.10);
-                GL.Begin(PrimitiveType.LineStrip);
-                {
-                    GL.Vertex3(svennWidth, VehicleConfig.Wheelbase + svennDist, 0.0);
-                    GL.Vertex3(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist, 0.0);
-                    GL.Vertex3(-svennWidth, VehicleConfig.Wheelbase + svennDist, 0.0);
-                }
-                GL.End();
+                LineStyle svenArrowLineStyle = new LineStyle(mf.ABLine.lineWidth, Colors.SvenArrowColor);
+                GLW.SetLineStyle(svenArrowLineStyle);
+                XyCoord[] vertices = {
+                    new XyCoord(svennWidth, VehicleConfig.Wheelbase + svennDist),
+                    new XyCoord(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist),
+                    new XyCoord(-svennWidth, VehicleConfig.Wheelbase + svennDist)
+                };
+                GLW.DrawPrimitive(PrimitiveType.LineStrip, vertices);
             }
             GL.LineWidth(1);
         }

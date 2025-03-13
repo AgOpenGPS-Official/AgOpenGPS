@@ -126,38 +126,28 @@ namespace AgOpenGPS
 
         private void DrawHitch(double trailingTank)
         {
+            XyCoord[] vertices = {
+                new XyCoord(-0.57, trailingTank),
+                new XyCoord(0.0, 0.0),
+                new XyCoord(0.57, trailingTank)
+            };
             LineStyle backgroundLineStyle = new LineStyle(6.0f, Colors.Black);
             LineStyle foregroundLineStyle = new LineStyle(1.0f, Colors.HitchColor);
             LineStyle[] lineStyles = { backgroundLineStyle, foregroundLineStyle };
-
-            foreach (LineStyle lineStyle in lineStyles)
-            {
-                GLW.SetLineStyle(lineStyle);
-
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.57, trailingTank, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.57, trailingTank, 0);
-                GL.End();
-            }
+            GLW.DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
         }
 
         private void DrawTrailingHitch(double trailingTool)
         {
+            XyCoord[] vertices = {
+                new XyCoord(-0.65 + mf.tool.offset, trailingTool),
+                new XyCoord(0.0, 0.0),
+                new XyCoord(0.65 + mf.tool.offset, trailingTool)
+            };
             LineStyle backgroundLineStyle = new LineStyle(6.0f, Colors.Black);
             LineStyle foregroundLineStyle = new LineStyle(1.0f, Colors.HitchTrailingColor);
             LineStyle[] lineStyles = { backgroundLineStyle, foregroundLineStyle };
-
-            foreach (LineStyle lineStyle in lineStyles)
-            {
-                GLW.SetLineStyle(lineStyle);
-
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Vertex3(-0.65 + mf.tool.offset, trailingTool, 0);
-                GL.Vertex3(0, 0, 0);
-                GL.Vertex3(0.65 + mf.tool.offset, trailingTool, 0);
-                GL.End();
-            }
+            GLW.DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
         }
 
         public void DrawTool()
@@ -274,38 +264,23 @@ namespace AgOpenGPS
                 }
 
                 double mid = (mf.section[j].positionRight - mf.section[j].positionLeft) / 2 + mf.section[j].positionLeft;
-
-                GL.Begin(PrimitiveType.TriangleFan);
-                {
-                    GL.Vertex3(mf.section[j].positionLeft, trailingTool, 0);
-                    GL.Vertex3(mf.section[j].positionLeft, trailingTool - hite, 0);
-
-                    GL.Vertex3(mid, trailingTool - hite * 1.5, 0);
-
-                    GL.Vertex3(mf.section[j].positionRight, trailingTool - hite, 0);
-                    GL.Vertex3(mf.section[j].positionRight, trailingTool, 0);
-                }
-                GL.End();
+                XyCoord[] vertices = {
+                    new XyCoord(mf.section[j].positionLeft, trailingTool),
+                    new XyCoord(mf.section[j].positionLeft, trailingTool - hite),
+                    new XyCoord(mid, trailingTool - hite * 1.5),
+                    new XyCoord(mf.section[j].positionRight, trailingTool - hite),
+                    new XyCoord(mf.section[j].positionRight, trailingTool),
+                };
+                GLW.DrawPrimitive(PrimitiveType.TriangleFan, vertices);
 
                 if (mf.camera.camSetDistance > -width * 200)
                 {
-                    GL.Begin(PrimitiveType.LineLoop);
-                    {
-                        GL.Color3(0.0, 0.0, 0.0);
-                        GL.Vertex3(mf.section[j].positionLeft, trailingTool, 0);
-                        GL.Vertex3(mf.section[j].positionLeft, trailingTool - hite, 0);
-
-                        GL.Vertex3(mid, trailingTool - hite * 1.5, 0);
-
-                        GL.Vertex3(mf.section[j].positionRight, trailingTool - hite, 0);
-                        GL.Vertex3(mf.section[j].positionRight, trailingTool, 0);
-                    }
-                    GL.End();
+                    GLW.SetColor(Colors.Black);
+                    GLW.DrawPrimitive(PrimitiveType.LineLoop, vertices);
                 }
             }
 
             //zones
-
             if (!isSectionsNotZones && zones > 0 && mf.camera.camSetDistance > -150)
             {
                 //GL.PointSize(8);

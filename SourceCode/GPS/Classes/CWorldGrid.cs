@@ -5,6 +5,7 @@ using AgOpenGPS.Core.Models;
 using AgOpenGPS.Properties;
 using OpenTK.Graphics.OpenGL;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace AgOpenGPS
@@ -119,38 +120,24 @@ namespace AgOpenGPS
 
         public void DrawWorldGrid(double _gridZoom)
         {
-            //_gridZoom *= 0.5;
-
             GL.Rotate(-gridRotation, 0, 0, 1.0);
-
-            if (mf.isDay)
-            {
-                GL.Color3(0.25, 0.25, 0.25);
-            }
-            else
-            {
-                GL.Color3(0.12, 0.12, 0.12);
-            }
-            GL.LineWidth(1);
-            GL.Begin(PrimitiveType.Lines);
+            LineStyle worldGridLineStyle = new LineStyle(1.0f, Colors.WorldGridColor(mf.isDay));
+            GLW.SetLineStyle(worldGridLineStyle);
+            List<XyCoord> vertices = new List<XyCoord>();
             for (double num = Math.Round(eastingMin / _gridZoom, MidpointRounding.AwayFromZero) * _gridZoom; num < eastingMax; num += _gridZoom)
             {
                 if (num < eastingMin) continue;
-
-                GL.Vertex3(num, northingMax, 0.1);
-                GL.Vertex3(num, northingMin, 0.1);
+                vertices.Add(new XyCoord(num, northingMax));
+                vertices.Add(new XyCoord(num, northingMin));
             }
             for (double num2 = Math.Round(northingMin / _gridZoom, MidpointRounding.AwayFromZero) * _gridZoom; num2 < northingMax; num2 += _gridZoom)
             {
                 if (num2 < northingMin) continue;
-
-                GL.Vertex3(eastingMax, num2, 0.1);
-                GL.Vertex3(eastingMin, num2, 0.1);
+                vertices.Add(new XyCoord(eastingMax, num2));
+                vertices.Add(new XyCoord(eastingMin, num2));
             }
-            GL.End();
-
+            GLW.DrawPrimitive(PrimitiveType.Lines, vertices.ToArray());
             GL.Rotate(gridRotation, 0, 0, 1.0);
-
         }
 
         public void checkZoomWorldGrid(GeoCoord geoCoord)

@@ -439,39 +439,15 @@ namespace AgOpenGPS
                     {
                         if (trk.idx > -1)
                         {
-                            if (trk.gArr[trk.idx].mode == TrackMode.AB)
-                            {
-                                GL.PointSize(12);
-                                GL.Begin(PrimitiveType.Points);
-                                GL.Color3(0, 0, 0);
-                                GL.Vertex3(ABLine.goalPointAB.easting, ABLine.goalPointAB.northing, 0.0);
-                                GL.End();
-
-                                GL.PointSize(6);
-                                GL.Begin(PrimitiveType.Points);
-                                GL.Color3(0.98, 0.98, 0.098);
-                                GL.Vertex3(ABLine.goalPointAB.easting, ABLine.goalPointAB.northing, 0.0);
-                                GL.End();
-                            }
-                            else
-                            {
-                                GL.PointSize(12);
-                                GL.Begin(PrimitiveType.Points);
-                                GL.Color3(0, 0, 0);
-                                GL.Vertex3(curve.goalPointCu.easting, curve.goalPointCu.northing, 0.0);
-                                GL.End();
-
-                                GL.PointSize(6);
-                                GL.Begin(PrimitiveType.Points);
-                                GL.Color3(0.98, 0.98, 0.098);
-                                GL.Vertex3(curve.goalPointCu.easting, curve.goalPointCu.northing, 0.0);
-                                GL.End();
-                            }
+                            PointStyle backgroundPointStyle = new PointStyle(12.0f, Colors.Black);
+                            PointStyle foregroundPointStyle = new PointStyle(6.0f, Colors.GoalPointColor);
+                            PointStyle[] pointStyles = { backgroundPointStyle, foregroundPointStyle};
+                            vec2 goalPoint = trk.gArr[trk.idx].mode == TrackMode.AB ? ABLine.goalPointAB : curve.goalPointCu;
+                            GLW.DrawPointLayered(pointStyles, goalPoint.easting, goalPoint.northing, 0.0);
                         }
                     }
 
                     // 2D Ortho ---------------------------------------////////-------------------------------------------------
-
                     GL.MatrixMode(MatrixMode.Projection);
                     GL.PushMatrix();
                     GL.LoadIdentity();
@@ -1939,20 +1915,20 @@ namespace AgOpenGPS
 
                     font.DrawText3D(flag.easting, flag.northing, flagColor + flag.notes);
                 }
-
                 if (flagNumberPicked != 0)
                 {
                     ////draw the box around flag
                     double offSet = (camera.zoomValue * camera.zoomValue * 0.01);
-                    GL.LineWidth(4);
-                    GL.Color3(0.980f, 0.0f, 0.980f);
-                    GL.Begin(PrimitiveType.LineStrip);
-                    GL.Vertex3(flagPts[flagNumberPicked - 1].easting, flagPts[flagNumberPicked - 1].northing + offSet, 0);
-                    GL.Vertex3(flagPts[flagNumberPicked - 1].easting - offSet, flagPts[flagNumberPicked - 1].northing, 0);
-                    GL.Vertex3(flagPts[flagNumberPicked - 1].easting, flagPts[flagNumberPicked - 1].northing - offSet, 0);
-                    GL.Vertex3(flagPts[flagNumberPicked - 1].easting + offSet, flagPts[flagNumberPicked - 1].northing, 0);
-                    GL.Vertex3(flagPts[flagNumberPicked - 1].easting, flagPts[flagNumberPicked - 1].northing + offSet, 0);
-                    GL.End();
+                    LineStyle boxLineStyle = new LineStyle(4.0f, Colors.FlagSelectedBoxColor);
+                    GLW.SetLineStyle(boxLineStyle);
+                    CFlag flag = flagPts[flagNumberPicked - 1];
+                    XyCoord[] squareCorners = {
+                        new XyCoord(flag.easting         , flag.northing + offSet),
+                        new XyCoord(flag.easting - offSet, flag.northing),
+                        new XyCoord(flag.easting         , flag.northing - offSet),
+                        new XyCoord(flag.easting + offSet, flag.northing),
+                    };
+                    GLW.DrawPrimitive(PrimitiveType.LineLoop, squareCorners);
                 }
             }
             catch { }
