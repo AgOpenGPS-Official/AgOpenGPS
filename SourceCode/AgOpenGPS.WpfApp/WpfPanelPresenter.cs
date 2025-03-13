@@ -71,5 +71,15 @@ namespace AgOpenGPS.WpfApp
         {
             _selectFieldDialog.Close();
         }
+
+        bool IPanelPresenter.ShowConfirmDeleteMessageBox(string fieldName)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "Are you sure you want to delete field " + fieldName + "?",
+                "Delete field",
+                MessageBoxButton.OKCancel);
+            return result == MessageBoxResult.OK;
+        }
+
     }
 }

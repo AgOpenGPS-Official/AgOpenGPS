@@ -12,5 +12,7 @@ namespace AgOpenGPS.Core.Interfaces
         void CloseSelectFieldDialog();
         void ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel viewModel);
         void CloseCreateFromExistingFieldDialog();
+
+        bool ShowConfirmDeleteMessageBox(string fieldName);
     }
 }

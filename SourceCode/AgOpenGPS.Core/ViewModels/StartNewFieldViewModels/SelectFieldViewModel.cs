@@ -22,13 +22,15 @@ namespace AgOpenGPS.Core.ViewModels
 
         private void DeleteField()
         {
-            // TODO implement confirmation dialog
             var selectedField = LocalSelectedField;
             if (null != selectedField)
             {
-                _appModel.Fields.DeleteField(selectedField.DirectoryInfo);
-                LocalSelectedField = null;
-                UpdateFields();
+                if (_panelPresenter.ShowConfirmDeleteMessageBox(selectedField.FieldName))
+                {
+                    _appModel.Fields.DeleteField(selectedField.DirectoryInfo);
+                    LocalSelectedField = null;
+                    UpdateFields();
+                }
             }
         }
 
