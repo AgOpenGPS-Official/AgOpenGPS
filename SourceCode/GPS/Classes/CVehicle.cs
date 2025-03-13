@@ -179,15 +179,13 @@ namespace AgOpenGPS
             }
 
             //3 vehicle types  tractor=0 harvestor=1 Articulated=2
-
+            ColorRgba vehicleColor = new ColorRgba(VehicleConfig.Color, (float)VehicleConfig.Opacity);
             if (mf.isVehicleImage)
             {
-                byte vehicleOpacityByte = (byte)(255 * VehicleConfig.Opacity);
-
                 if (VehicleConfig.Type == VehicleType.Tractor)
                 {
                     //vehicle body
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
+                    GLW.SetColor(vehicleColor);
 
                     AckermannAngles(
                         - (mf.timerSim.Enabled ? mf.sim.steerangleAve : mf.mc.actualSteerAngleDegrees),
@@ -202,8 +200,6 @@ namespace AgOpenGPS
                     GL.PushMatrix();
                     GL.Translate(0.5 * VehicleConfig.TrackWidth, VehicleConfig.Wheelbase, 0);
                     GL.Rotate(rightAckermann, 0, 0, 1);
-
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
 
                     XyDelta frontWheelDelta = new XyDelta(0.5 * VehicleConfig.TrackWidth, -0.75 * VehicleConfig.Wheelbase);
                     mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(frontWheelDelta);
@@ -229,8 +225,8 @@ namespace AgOpenGPS
                         mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees,
                         out double leftAckermannAngle,
                         out double rightAckermannAngle);
-
-                    GL.Color4((byte)20, (byte)20, (byte)20, vehicleOpacityByte);
+                    ColorRgba harvesterWheelColor = new ColorRgba(Colors.HarvesterWheelColor, (float)VehicleConfig.Opacity);
+                    GLW.SetColor(harvesterWheelColor);
                     //right wheel
                     GL.PushMatrix();
                     GL.Translate(VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase, 0);
@@ -246,21 +242,15 @@ namespace AgOpenGPS
                     mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(forntWheelDelta);
                     GL.PopMatrix();
 
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
+                    GLW.SetColor(vehicleColor);
                     mf.VehicleTextures.Harvester.DrawCenteredAroundOrigin(
                         new XyDelta(VehicleConfig.TrackWidth, -1.5 * VehicleConfig.Wheelbase));
                     //disable, straight color
                 }
                 else if (VehicleConfig.Type == VehicleType.Articulated)
                 {
-                    double modelSteerAngle;
-
-                    if (mf.timerSim.Enabled)
-                        modelSteerAngle = 0.5 * mf.sim.steerAngle;
-                    else
-                        modelSteerAngle = 0.5 * mf.mc.actualSteerAngleDegrees;
-
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
+                    double modelSteerAngle = 0.5 * (mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees);
+                    GLW.SetColor(vehicleColor);
 
                     XyDelta articulated = new XyDelta(VehicleConfig.TrackWidth, -0.65 * VehicleConfig.Wheelbase);
                     GL.PushMatrix();
@@ -299,7 +289,6 @@ namespace AgOpenGPS
                 }
                 GL.End();
             }
-
             if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
             {
                 //draw the bright antenna dot

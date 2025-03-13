@@ -13,6 +13,16 @@ namespace AgOpenGPS.Core.Models
             Alpha = alpha;
         }
 
+        public ColorRgba(ColorRgb colorRgb, float alpha) :
+            this(
+                colorRgb.Red,
+                colorRgb.Green,
+                colorRgb.Blue,
+                ColorRgba.FloatToByte(alpha))
+        {
+            if (alpha < 0.0f || 255.0 < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
+        }
+
         public ColorRgba(float red, float green, float blue, float alpha) :
             this(
                 ColorRgba.FloatToByte(red),

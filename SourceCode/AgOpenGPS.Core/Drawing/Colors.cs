@@ -21,6 +21,8 @@ namespace AgOpenGPS.Core.Drawing
         static public ColorRgb FlagSelectedBoxColor = new ColorRgb(0.980f, 0.0f, 0.980f);
 
         static public ColorRgb GoalPointColor = new ColorRgb(0.98f, 0.98f, 0.098f);
+        static public ColorRgb HarvesterWheelColor = new ColorRgb(20, 20, 20);
+
         static public ColorRgb HitchColor = new ColorRgb(0.765f, 0.76f, 0.32f);
         static public ColorRgb HitchTrailingColor = new ColorRgb(0.7f, 0.4f, 0.2f);
         static public ColorRgb HitchRigidColor = new ColorRgb(1.237f, 0.037f, 0.0397f);
