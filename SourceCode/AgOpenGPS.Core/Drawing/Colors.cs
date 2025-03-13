@@ -37,6 +37,5 @@ namespace AgOpenGPS.Core.Drawing
 
         static public ColorRgb WorldGridDayColor = Gray012;
         static public ColorRgb WorldGridNightColor = Gray025;
-        static public ColorRgb WorldGridColor(bool isDay) { return isDay ? WorldGridDayColor : WorldGridNightColor; }
     }
 }

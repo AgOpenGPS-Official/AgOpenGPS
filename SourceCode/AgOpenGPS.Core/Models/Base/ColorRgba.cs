@@ -20,7 +20,6 @@ namespace AgOpenGPS.Core.Models
                 colorRgb.Blue,
                 ColorRgba.FloatToByte(alpha))
         {
-            if (alpha < 0.0f || 255.0 < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
         }
 
         public ColorRgba(float red, float green, float blue, float alpha) :
@@ -30,10 +29,6 @@ namespace AgOpenGPS.Core.Models
                 ColorRgba.FloatToByte(blue),
                 ColorRgba.FloatToByte(alpha))
         {
-            if (red < 0.0f || 255.0 < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
-            if (green < 0.0f || 255.0 < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
-            if (blue < 0.0f || 255.0 < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
-            if (alpha < 0.0f || 255.0 < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
         }
 
         public byte Red { get; }
@@ -53,6 +48,8 @@ namespace AgOpenGPS.Core.Models
 
         static private byte FloatToByte(float fraction)
         {
+            if (fraction < 0.0f || 1.0f < fraction) throw new ArgumentOutOfRangeException(nameof(fraction), "Argument out of range");
+
             return (byte)(255 * fraction);
         }
 

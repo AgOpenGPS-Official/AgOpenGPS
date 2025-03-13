@@ -121,7 +121,9 @@ namespace AgOpenGPS
         public void DrawWorldGrid(double _gridZoom)
         {
             GL.Rotate(-gridRotation, 0, 0, 1.0);
-            LineStyle worldGridLineStyle = new LineStyle(1.0f, Colors.WorldGridColor(mf.isDay));
+            ColorRgb worldGridColor = mf.isDay ? Colors.WorldGridDayColor : Colors.WorldGridNightColor; 
+
+            LineStyle worldGridLineStyle = new LineStyle(1.0f, worldGridColor);
             GLW.SetLineStyle(worldGridLineStyle);
             List<XyCoord> vertices = new List<XyCoord>();
             for (double num = Math.Round(eastingMin / _gridZoom, MidpointRounding.AwayFromZero) * _gridZoom; num < eastingMax; num += _gridZoom)
