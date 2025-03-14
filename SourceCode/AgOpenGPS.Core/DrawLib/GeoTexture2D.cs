@@ -2,7 +2,7 @@
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 
-namespace AgOpenGPS.Core.Drawing
+namespace AgOpenGPS.Core.DrawLib
 {
     public class GeoTexture2D : Texture2D
     {

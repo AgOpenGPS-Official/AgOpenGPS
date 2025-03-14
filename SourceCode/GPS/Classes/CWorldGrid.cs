@@ -1,6 +1,7 @@
 ﻿//Please, if you use this, share the improvements
 
 using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Properties;
 using OpenTK.Graphics.OpenGL;

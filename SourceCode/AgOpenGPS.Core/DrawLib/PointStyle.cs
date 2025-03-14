@@ -1,6 +1,6 @@
 ﻿using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Core.Drawing
+namespace AgOpenGPS.Core.DrawLib
 {
     public class PointStyle
     {

@@ -2,7 +2,7 @@
 using OpenTK.Graphics.OpenGL;
 using System;
 
-namespace AgOpenGPS.Core.Drawing
+namespace AgOpenGPS.Core.DrawLib
 {
     public class Vertex2Array : VertexArrayBase
     {

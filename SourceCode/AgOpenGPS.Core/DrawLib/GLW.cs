@@ -2,7 +2,7 @@
 using OpenTK.Graphics.OpenGL;
 using System.Collections.Generic;
 
-namespace AgOpenGPS.Core.Drawing
+namespace AgOpenGPS.Core.DrawLib
 {
     // GLW is short for GL Wrapper.
     // Please use this class in stead of direct calls to functions in the GL toolkit.

@@ -1,4 +1,4 @@
-﻿using AgOpenGPS.Core.Drawing;
+﻿using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Properties;
 using System.Drawing;
 
