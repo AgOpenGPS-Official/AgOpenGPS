@@ -1,5 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -13,22 +12,25 @@ namespace AgOpenGPS.Core.Models
             Alpha = alpha;
         }
 
-        public ColorRgba(ColorRgb colorRgb, float alpha) :
-            this(
-                colorRgb.Red,
-                colorRgb.Green,
-                colorRgb.Blue,
-                ColorRgba.FloatToByte(alpha))
+        public ColorRgba(ColorRgb colorRgb, float alpha)
         {
+            if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
+            Red = colorRgb.Red;
+            Green = colorRgb.Green;
+            Blue = colorRgb.Blue;
+            Alpha = ColorRgba.FloatToByte(alpha);
         }
 
-        public ColorRgba(float red, float green, float blue, float alpha) :
-            this(
-                ColorRgba.FloatToByte(red),
-                ColorRgba.FloatToByte(green),
-                ColorRgba.FloatToByte(blue),
-                ColorRgba.FloatToByte(alpha))
+        public ColorRgba(float red, float green, float blue, float alpha)
         {
+            if (red < 0.0f || 1.0f < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
+            if (green < 0.0f || 1.0f < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
+            if (blue < 0.0f || 1.0f < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
+            if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
+            Red = ColorRgba.FloatToByte(red);
+            Green = ColorRgba.FloatToByte(green);
+            Blue = ColorRgba.FloatToByte(blue);
+            Alpha = ColorRgba.FloatToByte(alpha);
         }
 
         public byte Red { get; }
@@ -48,8 +50,6 @@ namespace AgOpenGPS.Core.Models
 
         static private byte FloatToByte(float fraction)
         {
-            if (fraction < 0.0f || 1.0f < fraction) throw new ArgumentOutOfRangeException(nameof(fraction), "Argument out of range");
-
             return (byte)(255 * fraction);
         }
 

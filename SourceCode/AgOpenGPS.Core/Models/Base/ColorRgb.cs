@@ -1,5 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -12,15 +11,14 @@ namespace AgOpenGPS.Core.Models
             Blue = blue;
         }
 
-        public ColorRgb(float red, float green, float blue) :
-            this(
-                ColorRgb.FloatToByte(red),
-                ColorRgb.FloatToByte(green),
-                ColorRgb.FloatToByte(blue))
+        public ColorRgb(float red, float green, float blue)
         {
-            if (red < 0.0f || 255.0 < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
-            if (green < 0.0f || 255.0 < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
-            if (blue < 0.0f || 255.0 < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
+            if (red < 0.0f || 1.0f < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
+            if (green < 0.0f || 1.0f < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
+            if (blue < 0.0f || 1.0f < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
+            Red = ColorRgb.FloatToByte(red);
+            Green = ColorRgb.FloatToByte(green);
+            Blue = ColorRgb.FloatToByte(blue);
         }
 
         public byte Red { get; set; }

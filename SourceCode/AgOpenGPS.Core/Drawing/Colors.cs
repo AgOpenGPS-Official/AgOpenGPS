@@ -25,7 +25,7 @@ namespace AgOpenGPS.Core.Drawing
 
         static public ColorRgb HitchColor = new ColorRgb(0.765f, 0.76f, 0.32f);
         static public ColorRgb HitchTrailingColor = new ColorRgb(0.7f, 0.4f, 0.2f);
-        static public ColorRgb HitchRigidColor = new ColorRgb(1.237f, 0.037f, 0.0397f);
+        static public ColorRgb HitchRigidColor = new ColorRgb(0.237f, 0.037f, 0.0397f);
 
         static public ColorRgb SvenArrowColor = new ColorRgb(0.95f, 0.95f, 0.10f);
 
