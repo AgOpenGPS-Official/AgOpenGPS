@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\BrandImages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BrandImages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

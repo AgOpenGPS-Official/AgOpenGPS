@@ -678,7 +678,7 @@ namespace AgOpenGPS
             }
             else
             {
-                pboxAlpha.BackgroundImage = BrandImages.BrandTriangleVehicle;
+                pboxAlpha.BackgroundImage = BrandResources.BrandTriangleVehicle;
                 lblOpacityPercent.Text = ((int)(mf.vehicle.VehicleConfig.Opacity * 100)).ToString() + "%";
                 mf.vehicle.VehicleConfig.Color = new ColorRgb(254, 254, 254);
             }
