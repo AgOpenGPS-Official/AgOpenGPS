@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -114,12 +115,12 @@ namespace AgOpenGPS
             nudLongitudePlus.Controls[0].Enabled = false;
             nudHeadingLatLonPlus.Controls[0].Enabled = false;   
 
-            nudLatitudeA.Value = (decimal)mf.pn.latitude;
-            nudLatitudeB.Value = (decimal)mf.pn.latitude + 0.000005m;
-            nudLongitudeA.Value = (decimal)mf.pn.longitude;
-            nudLongitudeB.Value = (decimal)mf.pn.longitude + 0.000005m;
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudeA.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLatitudeB.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude + 0.000005m;
+            nudLongitudeA.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
+            nudLongitudeB.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude + 0.000005m;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
             nudHeading.Value = 0;
             nudHeadingLatLonPlus.Value = 0;
 
@@ -608,8 +609,8 @@ namespace AgOpenGPS
             panelLatLonPlus.Visible = true;
             this.Size = new System.Drawing.Size(370, 460);
 
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
             mf.Activate();
         }
 
@@ -627,8 +628,8 @@ namespace AgOpenGPS
             panelPivot.Visible = true;
             this.Size = new System.Drawing.Size(370,360);
 
-            nudLatitudePivot.Value = (decimal)mf.pn.latitude;
-            nudLongitudePivot.Value = (decimal)mf.pn.longitude;
+            nudLatitudePivot.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudePivot.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
             mf.Activate();
         }
 
@@ -1104,10 +1105,8 @@ namespace AgOpenGPS
                             double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double lonK);
                             double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double latK);
 
-                            mf.pn.ConvertWGS84ToLocal(latK, lonK, out double norting, out double easting);
-
-                            vec3 bndPt = new vec3(easting, norting, 0);
-                            mf.curve.desList.Add(new vec3(bndPt));
+                            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                            mf.curve.desList.Add(new vec3(geoCoord));
                         }
                     }
 
@@ -1279,14 +1278,12 @@ namespace AgOpenGPS
 
         public void CalcHeadingAB()
         {
-            mf.pn.ConvertWGS84ToLocal((double)nudLatitudeA.Value, (double)nudLongitudeA.Value, out double nort, out double east);
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeA.Value, (double)nudLongitudeA.Value));
 
-            mf.ABLine.desPtA.easting = east;
-            mf.ABLine.desPtA.northing = nort;
+            mf.ABLine.desPtA = new vec2(geoCoord);
 
-            mf.pn.ConvertWGS84ToLocal((double)nudLatitudeB.Value, (double)nudLongitudeB.Value, out nort, out east);
-            mf.ABLine.desPtB.easting = east;
-            mf.ABLine.desPtB.northing = nort;
+            geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudeB.Value, (double)nudLongitudeB.Value));
+            mf.ABLine.desPtB = new vec2(geoCoord);
 
             // heading based on AB points
             mf.ABLine.desHeading = Math.Atan2(mf.ABLine.desPtB.easting - mf.ABLine.desPtA.easting,
@@ -1296,14 +1293,14 @@ namespace AgOpenGPS
 
         private void btnFillLatLonLatLonA_Click(object sender, EventArgs e)
         {
-            nudLatitudeA.Value = (decimal)mf.pn.latitude;
-            nudLongitudeA.Value = (decimal)mf.pn.longitude;
+            nudLatitudeA.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudeA.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
         }
 
         private void btnFillLatLonLatLonB_Click(object sender, EventArgs e)
         {
-            nudLatitudeB.Value = (decimal)mf.pn.latitude;
-            nudLongitudeB.Value = (decimal)mf.pn.longitude;
+            nudLatitudeB.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudeB.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
         }
 
         #endregion
@@ -1357,17 +1354,16 @@ namespace AgOpenGPS
 
         private void btnFillLatLonPlus_Click(object sender, EventArgs e)
         {
-            nudLatitudePlus.Value = (decimal)mf.pn.latitude;
-            nudLongitudePlus.Value = (decimal)mf.pn.longitude;
+            nudLatitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudePlus.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
         }
 
         public void CalcHeadingAPlus()
         {
-            mf.pn.ConvertWGS84ToLocal((double)nudLatitudePlus.Value, (double)nudLongitudePlus.Value, out double nort, out double east);
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePlus.Value, (double)nudLongitudePlus.Value));
 
             mf.ABLine.desHeading = glm.toRadians((double)nudHeadingLatLonPlus.Value);
-                mf.ABLine.desPtA.easting = east;
-                mf.ABLine.desPtA.northing = nort;            
+            mf.ABLine.desPtA = new vec2(geoCoord);
         }
 
         #endregion
@@ -1386,14 +1382,13 @@ namespace AgOpenGPS
 
         private void btnEnter_Pivot_Click(object sender, EventArgs e)
         {
-            mf.pn.ConvertWGS84ToLocal((double)nudLatitudePivot.Value, (double)nudLongitudePivot.Value, out double nort, out double east);
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePivot.Value, (double)nudLongitudePivot.Value));
 
             mf.trk.gArr.Add(new CTrk());
 
             idx = mf.trk.gArr.Count - 1;
 
-            mf.trk.gArr[idx].ptA.easting = east;
-            mf.trk.gArr[idx].ptA.northing = nort;
+            mf.trk.gArr[idx].ptA = new vec2(geoCoord);
             mf.trk.gArr[idx].mode = TrackMode.waterPivot;
 
             mf.ABLine.desName = "Piv";
@@ -1422,8 +1417,8 @@ namespace AgOpenGPS
 
         private void btnFillLAtLonPivot_Click(object sender, EventArgs e)
         {
-            nudLatitudePivot.Value = (decimal)mf.pn.latitude;
-            nudLongitudePivot.Value = (decimal)mf.pn.longitude;
+            nudLatitudePivot.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitudePivot.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
         }
 
         #endregion

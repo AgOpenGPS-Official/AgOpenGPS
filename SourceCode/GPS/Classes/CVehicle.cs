@@ -1,5 +1,7 @@
 ﻿//Please, if you use this, share the improvements
 
+using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -29,7 +31,7 @@ namespace AgOpenGPS
         public double hydLiftLookAheadDistanceLeft, hydLiftLookAheadDistanceRight;
 
         public bool isHydLiftOn;
-        public double stanleyIntegralDistanceAwayTriggerAB, stanleyIntegralGainAB, purePursuitIntegralGain;
+        public double stanleyIntegralGainAB, purePursuitIntegralGain;
 
         //flag for free drive window to control autosteer
         public bool isInFreeDriveMode;
@@ -72,7 +74,6 @@ namespace AgOpenGPS
             VehicleConfig.TrackWidth = Properties.Settings.Default.setVehicle_trackWidth;
 
             stanleyIntegralGainAB = Properties.Settings.Default.stanleyIntegralGainAB;
-            stanleyIntegralDistanceAwayTriggerAB = Properties.Settings.Default.stanleyIntegralDistanceAwayTriggerAB;
 
             purePursuitIntegralGain = Properties.Settings.Default.purePursuitIntegralGainAB;
             VehicleConfig.Type = (VehicleType)Properties.Settings.Default.setVehicle_vehicleType;
@@ -131,36 +132,12 @@ namespace AgOpenGPS
 
                 goalPointDistance *= LoekiAheadHold; 
                 goalPointDistance += LoekiAheadHold;
-
             }
             else
             {
                 goalPointDistance *= LoekiAheadAcquire; 
                 goalPointDistance += LoekiAheadAcquire;
             }
-
-            ////how far should goal point be away  - speed * seconds * kmph -> m/s then limit min value
-            ////double goalPointDistance = mf.avgSpeed * goalPointLookAhead * 0.05 * goalPointLookAheadMult;
-            //double goalPointDistance = mf.avgSpeed * goalPointLookAhead * 0.07; //0.05 * 1.4
-            //goalPointDistance += goalPointLookAhead;
-
-            //if (xTE < (modeXTE))
-            //{
-            //    if (modeTimeCounter > modeTime * 10)
-            //    {
-            //        //goalPointDistance = mf.avgSpeed * goalPointLookAheadHold * 0.05 * goalPointLookAheadMult;
-            //        goalPointDistance = mf.avgSpeed * goalPointLookAheadHold * 0.07; //0.05 * 1.4
-            //        goalPointDistance += goalPointLookAheadHold;
-            //    }
-            //    else
-            //    {
-            //        modeTimeCounter++;
-            //    }
-            //}
-            //else
-            //{
-            //    modeTimeCounter = 0;
-            //}
 
             if (goalPointDistance < 2) goalPointDistance = 2;
             goalDistance = goalPointDistance;
@@ -170,132 +147,63 @@ namespace AgOpenGPS
 
         public void DrawVehicle()
         {
-            //draw vehicle
             GL.Rotate(glm.toDegrees(-mf.fixHeading), 0.0, 0.0, 1.0);
             //mf.font.DrawText3D(0, 0, "&TGF");
             if (mf.isFirstHeadingSet && !mf.tool.isToolFrontFixed)
             {
+                // Draw the rigid hitch
+               XyCoord[] vertices;
                 if (!mf.tool.isToolRearFixed)
                 {
-                    GL.LineWidth(4);
-                    //draw the rigid hitch
-                    GL.Color3(0, 0, 0);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(0, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0, 0, 0);
-                    GL.End();
-
-                    GL.LineWidth(1);
-                    GL.Color3(1.237f, 0.037f, 0.0397f);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(0, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0, 0, 0);
-                    GL.End();
+                    vertices = new XyCoord[] {
+                        new XyCoord(0, mf.tool.hitchLength), new XyCoord(0, 0)
+                    };
                 }
                 else
                 {
-                    GL.LineWidth(4);
-                    //draw the rigid hitch
-                    GL.Color3(0, 0, 0);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(-0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(-0.350, 0, 0);
-                    GL.Vertex3(0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0.350, 0, 0);
-                    GL.End();
-
-                    GL.LineWidth(1);
-                    GL.Color3(1.237f, 0.037f, 0.0397f);
-                    GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(-0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(-0.35, 0, 0);
-                    GL.Vertex3(0.35, mf.tool.hitchLength, 0);
-                    GL.Vertex3(0.35, 0, 0);
-                    GL.End();
+                    vertices = new XyCoord[] {
+                        new XyCoord(-0.35, mf.tool.hitchLength), new XyCoord(-0.35, 0),
+                        new XyCoord( 0.35, mf.tool.hitchLength), new XyCoord( 0.35, 0)
+                    };
                 }
+                LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);
+                LineStyle foregroundLineStyle = new LineStyle(1, Colors.HitchRigidColor);
+                LineStyle[] layerStyles = { backgroundLineStyle, foregroundLineStyle };
+                GLW.DrawPrimitiveLayered(PrimitiveType.Lines, layerStyles, vertices);
             }
-            //GL.Enable(EnableCap.Blend);
 
             //draw the vehicle Body
-
             if (!mf.isFirstHeadingSet && mf.headingFromSource != "Dual")
             {
-                GL.Enable(EnableCap.Texture2D);
                 GL.Color4(1,1,1, 0.75);
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.QuestionMark]);        // Select Our Texture
-                GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                GL.TexCoord2(1, 0); GL.Vertex2(5, 5); // Top Right
-                GL.TexCoord2(0, 0); GL.Vertex2(1, 5); // Top Left
-                GL.TexCoord2(1, 1); GL.Vertex2(5, 1); // Bottom Right
-                GL.TexCoord2(0, 1); GL.Vertex2(1, 1); // Bottom Left
-                GL.End();                       // Done Building Triangle Strip
-                GL.Disable(EnableCap.Texture2D);
+                mf.ScreenTextures.QuestionMark.Draw(new XyCoord(1.0, 5.0), new XyCoord(5.0, 1.0));
             }
 
-            //3 vehicle types  tractor=0 harvestor=1 4wd=2
-
+            //3 vehicle types  tractor=0 harvestor=1 Articulated=2
+            ColorRgba vehicleColor = new ColorRgba(VehicleConfig.Color, (float)VehicleConfig.Opacity);
             if (mf.isVehicleImage)
             {
-                byte vehicleOpacityByte = (byte)(255 * VehicleConfig.Opacity);
-
                 if (VehicleConfig.Type == VehicleType.Tractor)
                 {
                     //vehicle body
-                    GL.Enable(EnableCap.Texture2D);
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);        // Select Our Texture
+                    GLW.SetColor(vehicleColor);
 
-                    double leftAckermam, rightAckerman;
-
-                    if (mf.timerSim.Enabled)
-                    {
-                        if (mf.sim.steerangleAve < 0)
-                        {
-                            leftAckermam = 1.25 * -mf.sim.steerangleAve;
-                            rightAckerman = -mf.sim.steerangleAve;
-                        }
-                        else
-                        {
-                            leftAckermam = -mf.sim.steerangleAve;
-                            rightAckerman = 1.25 * -mf.sim.steerangleAve;
-                        }
-                    }
-                    else
-                    {
-                        if (mf.mc.actualSteerAngleDegrees < 0)
-                        {
-                            leftAckermam = 1.25 * -mf.mc.actualSteerAngleDegrees;
-                            rightAckerman = -mf.mc.actualSteerAngleDegrees;
-                        }
-                        else
-                        {
-                            leftAckermam = -mf.mc.actualSteerAngleDegrees;
-                            rightAckerman = 1.25 * -mf.mc.actualSteerAngleDegrees;
-                        }
-                    }
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.5); // Bottom Left
-
-                    GL.End();                       // Done Building Triangle Strip
+                    AckermannAngles(
+                        - (mf.timerSim.Enabled ? mf.sim.steerangleAve : mf.mc.actualSteerAngleDegrees),
+                        out double leftAckermann,
+                        out double rightAckermann);
+                    XyCoord tractorCenter = new XyCoord(0.0, 0.5 * VehicleConfig.Wheelbase);
+                    mf.VehicleTextures.Tractor.DrawCentered(
+                        tractorCenter,
+                        new XyDelta(VehicleConfig.TrackWidth, -1.0 * VehicleConfig.Wheelbase));
 
                     //right wheel
                     GL.PushMatrix();
-                    GL.Translate(VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase, 0);
-                    GL.Rotate(rightAckerman, 0, 0, 1);
+                    GL.Translate(0.5 * VehicleConfig.TrackWidth, VehicleConfig.Wheelbase, 0);
+                    GL.Rotate(rightAckermann, 0, 0, 1);
 
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.FrontWheels]);        // Select Our Texture
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase * 0.75); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase * 0.75); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase * 0.75); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase * 0.75); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
+                    XyDelta frontWheelDelta = new XyDelta(0.5 * VehicleConfig.TrackWidth, -0.75 * VehicleConfig.Wheelbase);
+                    mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(frontWheelDelta);
 
                     GL.PopMatrix();
 
@@ -303,142 +211,60 @@ namespace AgOpenGPS
                     GL.PushMatrix();
 
                     GL.Translate(-VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase, 0);
-                    GL.Rotate(leftAckermam, 0, 0, 1);
+                    GL.Rotate(leftAckermann, 0, 0, 1);
 
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase * 0.75); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth * 0.5, VehicleConfig.Wheelbase * 0.75); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase * 0.75); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase * 0.75); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
+                    mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(frontWheelDelta);
 
                     GL.PopMatrix();
                     //disable, straight color
-                    GL.Disable(EnableCap.Texture2D);
-                    //GL.Disable(EnableCap.Blend);
                 }
                 else if (VehicleConfig.Type == VehicleType.Harvester)
                 {
                     //vehicle body
-                    GL.Enable(EnableCap.Texture2D);
 
-                    double leftAckermam, rightAckerman;
-
-                    if (mf.timerSim.Enabled)
-                    {
-                        if (mf.sim.steerAngle < 0)
-                        {
-                            leftAckermam = 1.25 * mf.sim.steerAngle;
-                            rightAckerman = mf.sim.steerAngle;
-                        }
-                        else
-                        {
-                            leftAckermam = mf.sim.steerAngle;
-                            rightAckerman = 1.25 * mf.sim.steerAngle;
-                        }
-                    }
-                    else
-                    {
-                        if (mf.mc.actualSteerAngleDegrees < 0)
-                        {
-                            leftAckermam = 1.25 * mf.mc.actualSteerAngleDegrees;
-                            rightAckerman = mf.mc.actualSteerAngleDegrees;
-                        }
-                        else
-                        {
-                            leftAckermam = mf.mc.actualSteerAngleDegrees;
-                            rightAckerman = 1.25 * mf.mc.actualSteerAngleDegrees;
-                        }
-                    }
-
-                    GL.Color4((byte)20, (byte)20, (byte)20, vehicleOpacityByte);
+                    AckermannAngles(
+                        mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees,
+                        out double leftAckermannAngle,
+                        out double rightAckermannAngle);
+                    ColorRgba harvesterWheelColor = new ColorRgba(Colors.HarvesterWheelColor, (float)VehicleConfig.Opacity);
+                    GLW.SetColor(harvesterWheelColor);
                     //right wheel
                     GL.PushMatrix();
                     GL.Translate(VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase, 0);
-                    GL.Rotate(rightAckerman, 0, 0, 1);
-
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.FrontWheels]);        // Select Our Texture
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth * 0.25, VehicleConfig.Wheelbase * 0.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth * 0.25, VehicleConfig.Wheelbase * 0.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth * 0.25, -VehicleConfig.Wheelbase * 0.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth * 0.25, -VehicleConfig.Wheelbase * 0.5); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    GL.Rotate(rightAckermannAngle, 0, 0, 1);
+                    XyDelta forntWheelDelta = new XyDelta(0.25 * VehicleConfig.TrackWidth, 0.5 * VehicleConfig.Wheelbase);
+                    mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(forntWheelDelta);
                     GL.PopMatrix();
 
                     //Left Wheel
                     GL.PushMatrix();
-
-                    GL.Translate(-VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase, 0);
-                    GL.Rotate(leftAckermam, 0, 0, 1);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth * 0.25, VehicleConfig.Wheelbase * 0.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth * 0.25, VehicleConfig.Wheelbase * 0.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth * 0.25, -VehicleConfig.Wheelbase * 0.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth * 0.25, -VehicleConfig.Wheelbase * 0.5); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    GL.Translate(- VehicleConfig.TrackWidth * 0.5, -VehicleConfig.Wheelbase, 0);
+                    GL.Rotate(leftAckermannAngle, 0, 0, 1);
+                    mf.VehicleTextures.FrontWheel.DrawCenteredAroundOrigin(forntWheelDelta);
                     GL.PopMatrix();
 
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(uint)FormGPS.textures.Harvester]);        // Select Our Texture
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 1.5); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 1.5); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 1.5); // Bottom Left
-
-                    GL.End();                       // Done Building Triangle Strip
-
+                    GLW.SetColor(vehicleColor);
+                    mf.VehicleTextures.Harvester.DrawCenteredAroundOrigin(
+                        new XyDelta(VehicleConfig.TrackWidth, -1.5 * VehicleConfig.Wheelbase));
                     //disable, straight color
-                    GL.Disable(EnableCap.Texture2D);
-                    //GL.Disable(EnableCap.Blend);
                 }
-                else if (VehicleConfig.Type == VehicleType.Articulated) // Image Text # Front is 16 Rear is 17
+                else if (VehicleConfig.Type == VehicleType.Articulated)
                 {
-                    double modelSteerAngle;
+                    double modelSteerAngle = 0.5 * (mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees);
+                    GLW.SetColor(vehicleColor);
 
-                    if (mf.timerSim.Enabled)
-                        modelSteerAngle = 0.5 * mf.sim.steerAngle;
-                    else
-                        modelSteerAngle = 0.5 * mf.mc.actualSteerAngleDegrees;
-
-                    GL.Enable(EnableCap.Texture2D);
-                    GL.Color4(VehicleConfig.Color.Red, VehicleConfig.Color.Green, VehicleConfig.Color.Blue, vehicleOpacityByte);
-
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);        // Select Our Texture
-
+                    XyDelta articulated = new XyDelta(VehicleConfig.TrackWidth, -0.65 * VehicleConfig.Wheelbase);
                     GL.PushMatrix();
                     GL.Translate(0, -VehicleConfig.Wheelbase * 0.5, 0);
                     GL.Rotate(modelSteerAngle, 0, 0, 1);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    mf.VehicleTextures.ArticulatedRear.DrawCenteredAroundOrigin(articulated);
                     GL.PopMatrix();
-
-                    GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);        // Select Our Texture
 
                     GL.PushMatrix();
                     GL.Translate(0, VehicleConfig.Wheelbase * 0.5, 0);
                     GL.Rotate(-modelSteerAngle, 0, 0, 1);
-
-                    GL.Begin(PrimitiveType.TriangleStrip);              // Build Quad From A Triangle Strip
-                    GL.TexCoord2(1, 0); GL.Vertex2(VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Right
-                    GL.TexCoord2(0, 0); GL.Vertex2(-VehicleConfig.TrackWidth, VehicleConfig.Wheelbase * 0.65); // Top Left
-                    GL.TexCoord2(1, 1); GL.Vertex2(VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Right
-                    GL.TexCoord2(0, 1); GL.Vertex2(-VehicleConfig.TrackWidth, -VehicleConfig.Wheelbase * 0.65); // Bottom Left
-                    GL.End();                       // Done Building Triangle Strip
-
+                    mf.VehicleTextures.ArticulatedFront.DrawCenteredAroundOrigin(articulated);
                     GL.PopMatrix();
-                    GL.Disable(EnableCap.Texture2D);
                 }
             }
             else
@@ -464,21 +290,13 @@ namespace AgOpenGPS
                 }
                 GL.End();
             }
-
             if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
             {
                 //draw the bright antenna dot
-                GL.PointSize(16);
-                GL.Begin(PrimitiveType.Points);
-                GL.Color3(0, 0, 0);
-                GL.Vertex3(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
-                GL.End();
-
-                GL.PointSize(10);
-                GL.Begin(PrimitiveType.Points);
-                GL.Color3(0.20, 0.98, 0.98);
-                GL.Vertex3(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
-                GL.End();
+                PointStyle antennaBackgroundStyle = new PointStyle(16, Colors.Black);
+                PointStyle antennaForegroundStyle = new PointStyle(10, Colors.AntennaColor);
+                PointStyle[] layerStyles = { antennaBackgroundStyle, antennaForegroundStyle };
+                GLW.DrawPointLayered(layerStyles , - VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
             }
 
             if (mf.bnd.isBndBeingMade && mf.bnd.isDrawAtPivot)
@@ -496,7 +314,6 @@ namespace AgOpenGPS
                     }
                     GL.End();
                 }
-
                 //draw on left side
                 else
                 {
@@ -519,145 +336,31 @@ namespace AgOpenGPS
                 //double offs = mf.curve.distanceFromCurrentLinePivot * 0.3;
                 double svennDist = mf.camera.camSetDistance * -0.07;
                 double svennWidth = svennDist * 0.22;
-                GL.LineWidth(mf.ABLine.lineWidth);
-                GL.Color3(0.95, 0.95, 0.10);
-                GL.Begin(PrimitiveType.LineStrip);
-                {
-                    GL.Vertex3(svennWidth, VehicleConfig.Wheelbase + svennDist, 0.0);
-                    GL.Vertex3(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist, 0.0);
-                    GL.Vertex3(-svennWidth, VehicleConfig.Wheelbase + svennDist, 0.0);
-                }
-                GL.End();
+                LineStyle svenArrowLineStyle = new LineStyle(mf.ABLine.lineWidth, Colors.SvenArrowColor);
+                GLW.SetLineStyle(svenArrowLineStyle);
+                XyCoord[] vertices = {
+                    new XyCoord(svennWidth, VehicleConfig.Wheelbase + svennDist),
+                    new XyCoord(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist),
+                    new XyCoord(-svennWidth, VehicleConfig.Wheelbase + svennDist)
+                };
+                GLW.DrawPrimitive(PrimitiveType.LineStrip, vertices);
             }
-
             GL.LineWidth(1);
-
-            //if (mf.camera.camSetDistance < -500)
-            //{
-            //    GL.Color4(0.5f, 0.5f, 1.2f, 0.25);
-            //    double theta = glm.twoPI / 20;
-            //    double c = Math.Cos(theta);//precalculate the sine and cosine
-            //    double s = Math.Sin(theta);
-
-            //    double x = mf.camera.camSetDistance * -.015;//we start at angle = 0
-            //    double y = 0;
-            //    GL.LineWidth(1);
-            //    GL.Begin(PrimitiveType.TriangleFan);
-            //    GL.Vertex3(x, y, 0.0);
-            //    for (int ii = 0; ii < 20; ii++)
-            //    {
-            //        //output vertex
-            //        GL.Vertex3(x, y, 0.0);
-
-            //        //apply the rotation matrix
-            //        double t = x;
-            //        x = (c * x) - (s * y);
-            //        y = (s * t) + (c * y);
-            //        // GL.Vertex3(x, y, 0.0);
-            //    }
-            //    GL.End();
-            //    GL.Color3(0.5f, 1.2f, 0.2f);
-            //    GL.LineWidth(2);
-            //    GL.Begin(PrimitiveType.LineLoop);
-
-            //    for (int ii = 0; ii < 20; ii++)
-            //    {
-            //        //output vertex
-            //        GL.Vertex3(x, y, 0.0);
-
-            //        //apply the rotation matrix
-            //        double t = x;
-            //        x = (c * x) - (s * y);
-            //        y = (s * t) + (c * y);
-            //        // GL.Vertex3(x, y, 0.0);
-            //    }
-            //    GL.End();
-            //}
         }
+
+        private void AckermannAngles(double wheelAngle, out double leftAckermannAngle, out double rightAckermannAngle)
+        {
+            leftAckermannAngle = wheelAngle;
+            rightAckermannAngle = wheelAngle;
+            if (wheelAngle > 0.0)
+            {
+                leftAckermannAngle *= 1.25;
+            }
+            else
+            {
+                rightAckermannAngle *= 1.25;
+            }
+        }
+
     }
 }
-
-//just a triangle for vehicle
-//GL.LineWidth(3);
-//GL.Color3(0.80, 0.80, 1.29);
-//GL.Begin(PrimitiveType.LineLoop);
-//{
-//    GL.Vertex3(-1.0, 0, 0);
-//    GL.Vertex3(1.0, 0, 0);
-//    GL.Vertex3(0, wheelbase, 0);
-//}
-//GL.End();
-
-//GL.Begin(PrimitiveType.TriangleFan);
-//{
-//    GL.Color3(1.250, 1.25, 0.32);
-//    GL.Vertex3(0, 5.5, -0.0);
-//    GL.Vertex3(0.35, 4.85, 0.0);
-//    GL.Vertex3(0, 5.2, 0.0);
-//    GL.Vertex3(-0.35, 4.85, 0.0);
-//    GL.Vertex3(0, 5.5, 0.0);
-//}
-//GL.End();
-
-//GL.LineWidth(1);
-//GL.Begin(PrimitiveType.LineLoop);
-//{
-//    GL.Color3(0.0, 0.0, 0.0);
-//    GL.Vertex3(0, 5.5, -0.0);
-//    GL.Vertex3(0.35, 4.85, 0.0);
-//    GL.Vertex3(0, 5.2, 0.0);
-//    GL.Vertex3(-0.35, 4.85, 0.0);
-//    GL.Vertex3(0, 5.5, 0.0);
-//}
-//GL.End();
-//    GL.LineWidth(2);
-//    //Svenn Arrow
-//    GL.Color3(1.2, 1.25, 0.10);
-//    GL.Begin(PrimitiveType.LineStrip);
-//    {
-//        GL.Vertex3(0.6, wheelbase + 6, 0.0);
-//        GL.Vertex3(0, wheelbase + 8, 0.0);
-//        GL.Vertex3(-0.6, wheelbase + 6, 0.0);
-//    }
-//    GL.End();
-
-////draw the vehicle Body
-
-//if (!mf.vehicle.isHydLiftOn)
-//{
-//    GL.Color3(1.2, 1.20, 0.0);
-//    GL.Begin(PrimitiveType.TriangleFan);
-//    GL.Vertex3(0, antennaPivot, -0.0);
-//    GL.Vertex3(1.0, -0, 0.0);
-//    GL.Color3(0.0, 1.20, 1.22);
-//    GL.Vertex3(0, wheelbase, 0.0);
-//    GL.Color3(1.220, 0.0, 1.2);
-//    GL.Vertex3(-1.0, -0, 0.0);
-//    GL.Vertex3(1.0, -0, 0.0);
-//    GL.End();
-//}
-//else
-//{
-//    if (mf.hd.isToolUp)
-//    {
-//        GL.Color3(0.0, 1.250, 0.0);
-//        GL.Begin(PrimitiveType.TriangleFan);
-//        GL.Vertex3(0, antennaPivot, -0.0);
-//        GL.Vertex3(1.0, -0, 0.0);
-//        GL.Vertex3(0, wheelbase, 0.0);
-//        GL.Vertex3(-1.0, -0, 0.0);
-//        GL.Vertex3(1.0, -0, 0.0);
-//        GL.End();
-//    }
-//    else
-//    {
-//        GL.Color3(1.250, 0.0, 0.0);
-//        GL.Begin(PrimitiveType.TriangleFan);
-//        GL.Vertex3(0, antennaPivot, -0.0);
-//        GL.Vertex3(1.0, -0, 0.0);
-//        GL.Vertex3(0, wheelbase, 0.0);
-//        GL.Vertex3(-1.0, -0, 0.0);
-//        GL.Vertex3(1.0, -0, 0.0);
-//        GL.End();
-//    }
-//}

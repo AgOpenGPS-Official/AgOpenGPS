@@ -1,14 +1,12 @@
-﻿using System;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Culture;
+using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Globalization;
-using System.Diagnostics;
-using System.Xml.Linq;
-using AgOpenGPS.Culture;
-using System.Text;
-using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {
@@ -70,13 +68,13 @@ namespace AgOpenGPS
 
                             if (Lon != double.MaxValue && Lat != double.MaxValue)
                             {
-                                if (timerSim.Enabled)
-                                    DisableSim();
+                                if (timerSim.Enabled) DisableSim();
 
-                                pn.longitude = Lon;
-                                pn.latitude = Lat;
+                                AppModel.CurrentLatLon = new Wgs84(Lat, Lon);
 
-                                pn.ConvertWGS84ToLocal(Lat, Lon, out pn.fix.northing, out pn.fix.easting);
+                                GeoCoord fixCoord = AppModel.LocalPlane.ConvertWgs84ToGeoCoord(AppModel.CurrentLatLon);
+                                pn.fix.northing = fixCoord.Northing;
+                                pn.fix.easting = fixCoord.Easting;
 
                                 //From dual antenna heading sentences
                                 float temp = BitConverter.ToSingle(data, 21);

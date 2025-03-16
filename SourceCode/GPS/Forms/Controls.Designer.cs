@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Pickers;
@@ -586,9 +587,7 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    double distance = Math.Pow((pn.latStart - pn.latitude), 2) + Math.Pow((pn.lonStart - pn.longitude), 2);
-                    distance = Math.Sqrt(distance);
-                    distance *= 100;
+                    double distance = AppModel.CurrentLatLon.DistanceInKiloMeters(AppModel.LocalPlane.Origin);
                     if (distance > 10)
                     {
                         TimedMessageBox(2500, "High Field Start Distance Warning", "Field Start is "
@@ -1111,7 +1110,10 @@ namespace AgOpenGPS
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.fix.easting, pn.fix.northing, 
+            CFlag flagPt = new CFlag(
+                AppModel.CurrentLatLon.Latitude,
+                AppModel.CurrentLatLon.Longitude,
+                pn.fix.easting, pn.fix.northing, 
                 fixHeading, flagColor, nextflag, nextflag.ToString());
             flagPts.Add(flagPt);
             FileSaveFlags();
@@ -1521,7 +1523,14 @@ namespace AgOpenGPS
         {
             SetLanguage("zh-CHS");
         }
-
+        private void menuLanguageSerbie_Click(object sender, EventArgs e)
+        {
+            SetLanguage("sr");
+        }
+        private void menuLanguageNorsk_Click(object sender, EventArgs e)
+        {
+            SetLanguage("no");
+        }
         private void SetLanguage(string lang)
         {
             //reset them all to false
@@ -1543,6 +1552,8 @@ namespace AgOpenGPS
             menuLanguageLatvian.Checked = false;
             menuLanguageChinese.Checked = false;
             menuLanguagePortugese.Checked = false;
+            menuLanguageSerbie.Checked = false;
+            menuLanguageNorsk.Checked = false;
 
             menuLanguageTest.Checked = false;
 
@@ -1623,6 +1634,14 @@ namespace AgOpenGPS
                 case "zh-CHS":
                     menuLanguageChinese.Checked = true;
                     break;
+
+                case "sr":
+                    menuLanguageSerbie.Checked = true;
+                    break;  
+
+                case "no":
+                    menuLanguageNorsk.Checked = true;
+                    break;  
 
                 default:
                     menuLanguageEnglish.Checked = true;
@@ -1736,25 +1755,41 @@ namespace AgOpenGPS
         }
         private void btnYouSkipEnable_Click(object sender, EventArgs e)
         {
-            yt.alternateSkips = !yt.alternateSkips;
-            if (yt.alternateSkips)
-            {
-                btnYouSkipEnable.Image = Resources.YouSkipOn;
-                //make sure at least 1
-                if (yt.rowSkipsWidth < 2)
-                {
-                    yt.rowSkipsWidth = 2;
-                    cboxpRowWidth.Text = "1";
-                }
-                yt.Set_Alternate_skips();
-                yt.ResetCreatedYouTurn();
-                if (!yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
+            yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
+            switch (yt.skipMode)
+                            {
+                case SkipMode.Normal:
+                    btnYouSkipEnable.Image = Resources.YouSkipOn;
+                    yt.skipMode = SkipMode.Alternative;
+                    //make sure at least 1
+                    if (yt.rowSkipsWidth < 2)
+                    {
+                        yt.rowSkipsWidth = 2;
+                        cboxpRowWidth.Text = "1";
+                    }
+                    yt.Set_Alternate_skips();
+                    break;
+                case SkipMode.Alternative:
+                    btnYouSkipEnable.Image = Resources.YouSkipWorkedTracks;
+                    yt.skipMode = SkipMode.IgnoreWorkedTracks;
+                    //make sure at least 1
+                    if (yt.rowSkipsWidth < 2)
+                    {
+                        yt.rowSkipsWidth = 2;
+                        cboxpRowWidth.Text = "1";
+                    }
+                    break;
+                case SkipMode.IgnoreWorkedTracks:
+                    btnYouSkipEnable.Image = Resources.YouSkipOff;
+                    yt.skipMode = SkipMode.Normal;
+                    break;
             }
-            else
-            {
-                btnYouSkipEnable.Image = Resources.YouSkipOff;
-            }
+
+            yt.ResetCreatedYouTurn();
+
         }
+
+
         private void cboxpRowWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
             yt.rowSkipsWidth = cboxpRowWidth.SelectedIndex + 1;
@@ -1921,6 +1956,12 @@ namespace AgOpenGPS
                             triStrip[j].triangleList?.Clear();
                         }
                         patchSaveList?.Clear();
+
+                        //delete all worked Lanes too
+                        foreach (CTrk TrackItem in trk.gArr)
+                        {
+                            TrackItem.workedTracks.Clear();
+                        }
 
                         FileCreateContour();
                         FileCreateSections();
@@ -2227,8 +2268,9 @@ namespace AgOpenGPS
         }
         private void btnResetSim_Click(object sender, EventArgs e)
         {
-            sim.latitude = Properties.Settings.Default.setGPS_SimLatitude;
-            sim.longitude = Properties.Settings.Default.setGPS_SimLongitude;
+            sim.CurrentLatLon = new Wgs84(
+                Properties.Settings.Default.setGPS_SimLatitude,
+                Properties.Settings.Default.setGPS_SimLongitude);
         }
         private void btnSimSetSpeedToZero_Click(object sender, EventArgs e)
         {

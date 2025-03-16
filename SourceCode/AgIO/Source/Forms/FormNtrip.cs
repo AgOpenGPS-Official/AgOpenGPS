@@ -117,8 +117,7 @@ namespace AgIO
             mf.YesMessageBox("Restart of AgIO is Required - Restarting");
             Log.EventWriter("Program Reset: Selecting NTRIP Feature");
 
-            Application.Restart();
-            Environment.Exit(0);
+            Program.Restart();
         }
 
         //get the ipv4 address only
@@ -265,8 +264,7 @@ namespace AgIO
             {
                 Log.EventWriter("Program Reset: Button Ok on Ntrip Form");
                 
-                Application.Restart();
-                Environment.Exit(0);
+                Program.Restart();
             }
         }
 

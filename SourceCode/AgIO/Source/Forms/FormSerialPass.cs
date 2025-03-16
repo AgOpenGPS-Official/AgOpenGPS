@@ -77,8 +77,7 @@ namespace AgIO
 
             Log.EventWriter("Program Reset: Button OK on Serial Pass Form");
 
-            Application.Restart();
-            Environment.Exit(0);
+            Program.Restart();
             Close();
         }
 

@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="gsABCurve" xml:space="preserve">
+    <value>AB kriva</value>
+  </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Generiši AB - Klikni 2 tačke za početak</value>
+  </data>
+  <data name="gsABline" xml:space="preserve">
+    <value>AB linija</value>
+  </data>
+  <data name="gsAbout" xml:space="preserve">
+    <value>O programu</value>
+  </data>
+  <data name="gsActionHasBeenCancelled" xml:space="preserve">
+    <value>Akcija je prekinuta</value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>Pokreni</value>
+  </data>
+  <data name="gsActual" xml:space="preserve">
+    <value>Faktička</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Slažem se sa uslovima korišćenja</value>
+  </data>
+  <data name="gsAgressiveness" xml:space="preserve">
+    <value>Agresivnost</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Visina antene</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Pomeraj antene</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>Obrađeno</value>
+  </data>
+  <data name="gsAreYouSure" xml:space="preserve">
+    <value>Da li ste sigurni?</value>
+  </data>
+  <data name="gsArea" xml:space="preserve">
+    <value>Površina</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Tip priključka</value>
+  </data>
+  <data name="gsAutoSteer" xml:space="preserve">
+    <value>Autopilot</value>
+  </data>
+  <data name="gsAutoSteerConfiguration" xml:space="preserve">
+    <value>Konfiguracija autopilota</value>
+  </data>
+  <data name="gsAutoSteerPort" xml:space="preserve">
+    <value>Port autopilota</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>Pozadina</value>
+  </data>
+  <data name="gsBasedOnField" xml:space="preserve">
+    <value>Koristi parcelu:</value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Donji meni</value>
+  </data>
+  <data name="gsBoundary" xml:space="preserve">
+    <value>Granica</value>
+  </data>
+  <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
+    <value>Fajl granične linije neispravan</value>
+  </data>
+  <data name="gsBoundaryMenu" xml:space="preserve">
+    <value>Meni granice</value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Osvetljenje</value>
+  </data>
+  <data name="gsButFieldIsLoaded" xml:space="preserve">
+    <value>Parcela je već učitana</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Prekini</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>средњи</value>
+  </data>
+  <data name="gsCentimeters" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="gsCharts" xml:space="preserve">
+    <value>Grafikoni</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Ažuriraj</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Izbor</value>
+  </data>
+  <data name="gsChooseADifferentField" xml:space="preserve">
+    <value>Izaberi drugu parcelu</value>
+  </data>
+  <data name="gsChooseADifferentName" xml:space="preserve">
+    <value>Izaberi drugi naziv</value>
+  </data>
+  <data name="gsChooseBuildDifferentone" xml:space="preserve">
+    <value>Izaberi ili generiši novo</value>
+  </data>
+  <data name="gsClose" xml:space="preserve">
+    <value>Zatvori</value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value>Najpre zatvorite sve prozore</value>
+  </data>
+  <data name="gsCloseFieldFirst" xml:space="preserve">
+    <value>Najpre zatvorite polje</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Izbor boje</value>
+  </data>
+  <data name="gsColors" xml:space="preserve">
+    <value>Boje</value>
+  </data>
+  <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
+    <value>Brisanje granice</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Podešavanja</value>
+  </data>
+  <data name="gsContourFileIsCorrupt" xml:space="preserve">
+    <value>Fajl neispravan</value>
+  </data>
+  <data name="gsContourOn" xml:space="preserve">
+    <value>Konture aktivne</value>
+  </data>
+  <data name="gsCouldntGenerateValidPath" xml:space="preserve">
+    <value>Nema putanje</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Impuls / °</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% pokrivenosti</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Kreiraj</value>
+  </data>
+  <data name="gsCreateABoundaryFirst" xml:space="preserve">
+    <value>Najpre kreirajte granicu</value>
+  </data>
+  <data name="gsCreateNewField" xml:space="preserve">
+    <value>Kreiraj novo polje</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>Novo polje iz ISO-XML</value>
+  </data>
+  <data name="gsCurrent" xml:space="preserve">
+    <value>струја</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Senzor intenziteta</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Kriva</value>
+  </data>
+  <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
+    <value>Fajl neispravan</value>
+  </data>
+  <data name="gsCurveNotOn" xml:space="preserve">
+    <value>Kriva je neaktivna</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>Dan</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>Podrazumevano</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Obriši</value>
+  </data>
+  <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
+    <value>Brisanje sekcija i kontura</value>
+  </data>
+  <data name="gsDeleteAppliedArea" xml:space="preserve">
+    <value>Brisanje obrađene površine</value>
+  </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>Da li zaista želite da obrišete granice polja?</value>
+  </data>
+  <data name="gsDeleteContourPaths" xml:space="preserve">
+    <value>Brisanje kontura</value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>Brisanje polja</value>
+  </data>
+  <data name="gsDeleteForSure" xml:space="preserve">
+    <value>Da li ste sigurni?</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Prečnik</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Markeri pravca</value>
+  </data>
+  <data name="gsDirectories" xml:space="preserve">
+    <value>Folderi</value>
+  </data>
+  <data name="gsDirectoryExists" xml:space="preserve">
+    <value>Folder postoji</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Odbij</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Diskusije:</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Displej</value>
+  </data>
+  <data name="gsDistance" xml:space="preserve">
+    <value>Rastojanje</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Rastojanje do obeležja</value>
+  </data>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>Nađi ovde</value>
+  </data>
+  <data name="gsDriveThru" xml:space="preserve">
+    <value>Pređi kroz</value>
+  </data>
+  <data name="gsDriving" xml:space="preserve">
+    <value>Vožnja</value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>Parametri dveju antena</value>
+  </data>
+  <data name="gsEast" xml:space="preserve">
+    <value>Istok</value>
+  </data>
+  <data name="gsEditABCurve" xml:space="preserve">
+    <value>Uredi AB krivu</value>
+  </data>
+  <data name="gsEditABLine" xml:space="preserve">
+    <value>Uredi AB liniju</value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Promeni boju</value>
+  </data>
+  <data name="gsEditFieldName" xml:space="preserve">
+    <value>Promeni naziv polja</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Omogući</value>
+  </data>
+  <data name="gsEncoderCounts" xml:space="preserve">
+    <value>Broj impulsa</value>
+  </data>
+  <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
+    <value>Unesi koordinate za simulator</value>
+  </data>
+  <data name="gsEnterFieldName" xml:space="preserve">
+    <value>Unesi naziv polja</value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Unesi naziv</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Unesi naziv</value>
+  </data>
+  <data name="gsEnterSimCoords" xml:space="preserve">
+    <value>Koordinate simulatora</value>
+  </data>
+  <data name="gsError" xml:space="preserve">
+    <value>Greška</value>
+  </data>
+  <data name="gsErrorreadingKML" xml:space="preserve">
+    <value>Greška pri čitanju</value>
+  </data>
+  <data name="gsExit" xml:space="preserve">
+    <value>Izlaz</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Dodatne linije</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Brzo</value>
+  </data>
+  <data name="gsField" xml:space="preserve">
+    <value>Parcela</value>
+  </data>
+  <data name="gsFieldFileIsCorrupt" xml:space="preserve">
+    <value>Neispravan fajl</value>
+  </data>
+  <data name="gsFieldIsOpen" xml:space="preserve">
+    <value>Parcela je otvorena</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Meni parcele</value>
+  </data>
+  <data name="gsFieldNotOpen" xml:space="preserve">
+    <value>Parcela nije otvorena</value>
+  </data>
+  <data name="gsFieldPicker" xml:space="preserve">
+    <value>Izbor parcele</value>
+  </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Tekstura parcele</value>
+  </data>
+  <data name="gsFileError" xml:space="preserve">
+    <value>Greška fajla</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Fix2Fix greška</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>RTK Fix alarm</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarm zaustavlja navođenje</value>
+  </data>
+  <data name="gsFlagByLatLon" xml:space="preserve">
+    <value>Obeležje (Lat/Lon)</value>
+  </data>
+  <data name="gsFlagFileIsCorrupt" xml:space="preserve">
+    <value>Neispravan fajl</value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>Kreiraj obeležje</value>
+  </data>
+  <data name="gsForNow" xml:space="preserve">
+    <value>Za sad</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>Obeležja</value>
+  </data>
+  <data name="gsFromExisting" xml:space="preserve">
+    <value>Iz postojećeg</value>
+  </data>
+  <data name="gsFromKml" xml:space="preserve">
+    <value>Iz KML-a</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Odstojanje</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Mreža</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Navođenje zaustavljeno</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>Hardverske poruke</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>Pravac</value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value>Grafikon pravca</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Pomeraj pravca (°)</value>
+  </data>
+  <data name="gsHeadland" xml:space="preserve">
+    <value>Uvrtine</value>
+  </data>
+  <data name="gsHeadlandForm" xml:space="preserve">
+    <value>Kreiraj i uredi uvrtine</value>
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value>Pomoć</value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Dužina  kuke</value>
+  </data>
+  <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
+    <value>Klikni na vozilo za obrtanje smera</value>
+  </data>
+  <data name="gsInches" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="gsInner" xml:space="preserve">
+    <value>Unutrašnja</value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>Obrni relej</value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value>Obrni pravac motora</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>Obrni releje</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Obrni ugao</value>
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value>Obrni WAS</value>
+  </data>
+  <data name="gsKMH" xml:space="preserve">
+    <value>km/h</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Tastatura</value>
+  </data>
+  <data name="gsLanguage" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Levo</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>Manje</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Navigacioni LED</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Ravnanje linija</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>Širina linije</value>
+  </data>
+  <data name="gsMPH" xml:space="preserve">
+    <value>mp/h</value>
+  </data>
+  <data name="gsMachinePort" xml:space="preserve">
+    <value>Port mašine</value>
+  </data>
+  <data name="gsMakeBoundaryContours" xml:space="preserve">
+    <value>Kreiraj konture granice</value>
+  </data>
+  <data name="gsManual" xml:space="preserve">
+    <value>Ručni</value>
+  </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>Ručno okretanje</value>
+  </data>
+  <data name="gsMapForBackground" xml:space="preserve">
+    <value>Mapa pozadine</value>
+  </data>
+  <data name="gsMaxLimit" xml:space="preserve">
+    <value>Maks.limit</value>
+  </data>
+  <data name="gsMaxSpeed" xml:space="preserve">
+    <value>Maks.brzina</value>
+  </data>
+  <data name="gsMaxSteerAngle" xml:space="preserve">
+    <value>Maks.ugao zakretanja</value>
+  </data>
+  <data name="gsMeters" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value>Min.brzina</value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value>Min.za kretanje</value>
+  </data>
+  <data name="gsMissingABLinesFile" xml:space="preserve">
+    <value>Nije pronađen fajl sa linijama</value>
+  </data>
+  <data name="gsMissingBoundaryFile" xml:space="preserve">
+    <value>Nije pronađen fajl sa granicama</value>
+  </data>
+  <data name="gsMissingContourFile" xml:space="preserve">
+    <value>Nije pronađen fajl sa konturama</value>
+  </data>
+  <data name="gsMissingFlagsFile" xml:space="preserve">
+    <value>Nije pronađen fajl sa obeležjima</value>
+  </data>
+  <data name="gsMissingSectionFile" xml:space="preserve">
+    <value>Nije pronađen fajl sa sekcijama</value>
+  </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>Više</value>
+  </data>
+  <data name="gsN_East" xml:space="preserve">
+    <value>Severoistok</value>
+  </data>
+  <data name="gsN_West" xml:space="preserve">
+    <value>Severozapad</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Nova</value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value>Noć</value>
+  </data>
+  <data name="gsNoABLineActive" xml:space="preserve">
+    <value>AB linija nije aktivna</value>
+  </data>
+  <data name="gsNoBoundary" xml:space="preserve">
+    <value>Nema granice</value>
+  </data>
+  <data name="gsNoFieldsFound" xml:space="preserve">
+    <value>Parcela nije pronađena</value>
+  </data>
+  <data name="gsNoGuidanceLines" xml:space="preserve">
+    <value>Nema linija za navođenje</value>
+  </data>
+  <data name="gsNoSettingsWithIMU" xml:space="preserve">
+    <value>Nema IMU podešavanja</value>
+  </data>
+  <data name="gsNone" xml:space="preserve">
+    <value>Nijedna</value>
+  </data>
+  <data name="gsNoneUsed" xml:space="preserve">
+    <value>Nijedna</value>
+  </data>
+  <data name="gsNorth" xml:space="preserve">
+    <value>Sever</value>
+  </data>
+  <data name="gsNothingDeleted" xml:space="preserve">
+    <value>Ništa nije obrisano</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Pomeraj</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Udaljenost</value>
+  </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>Pomeri referentnu liniju</value>
+  </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>OFF</value>
+  </data>
+  <data name="gsOffset" xml:space="preserve">
+    <value>Odstojanje</value>
+  </data>
+  <data name="gsOffsetFix" xml:space="preserve">
+    <value>Podešavanje odstojanja</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>ON</value>
+  </data>
+  <data name="gsOnOff" xml:space="preserve">
+    <value>ON/OFF</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Transparetnost</value>
+  </data>
+  <data name="gsOpen" xml:space="preserve">
+    <value>Otvori</value>
+  </data>
+  <data name="gsOuter" xml:space="preserve">
+    <value>Spoljni</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Preklop:</value>
+  </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>Preklop/razmak</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>Prepiši</value>
+  </data>
+  <data name="gsOvershootReduction" xml:space="preserve">
+    <value>Smanjite reakciju preko linije</value>
+  </data>
+  <data name="gsPass" xml:space="preserve">
+    <value>Prohod br</value>
+  </data>
+  <data name="gsPasses" xml:space="preserve">
+    <value>Prohodi</value>
+  </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Prelaz kraja krive</value>
+  </data>
+  <data name="gsPause" xml:space="preserve">
+    <value>Pauza</value>
+  </data>
+  <data name="gsPleaseEnterABLine" xml:space="preserve">
+    <value>Unesite AB Liniju</value>
+  </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value>Molim sačekajte</value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
+    <value>Tačka</value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value>Tačka</value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value>Tačke za obradu</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Poligoni</value>
+  </data>
+  <data name="gsPressureSensorValueLabel" xml:space="preserve">
+    <value>Pritisak (bar)</value>
+  </data>
+  <data name="gsPreview" xml:space="preserve">
+    <value>Pregled</value>
+  </data>
+  <data name="gsProblemMakingPath" xml:space="preserve">
+    <value>Problem pri kreiranju putanje</value>
+  </data>
+  <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
+    <value>Gašenje programa, molim restartujte</value>
+  </data>
+  <data name="gsQuickAB" xml:space="preserve">
+    <value>Brza AB linija</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Tempo</value>
+  </data>
+  <data name="gsReallyResetEverything" xml:space="preserve">
+    <value>Da li zaista želite sve da resetujete?</value>
+  </data>
+  <data name="gsRecord" xml:space="preserve">
+    <value>Upis</value>
+  </data>
+  <data name="gsRecordedPathFileIsCorrupt" xml:space="preserve">
+    <value>Fajl upisanih putanja je neispravan</value>
+  </data>
+  <data name="gsRecordedPathMenu" xml:space="preserve">
+    <value>Upisane putanje</value>
+  </data>
+  <data name="gsRemain" xml:space="preserve">
+    <value>Preost.</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Ukini pomeraj</value>
+  </data>
+  <data name="gsResetAll" xml:space="preserve">
+    <value>Resetuj sve</value>
+  </data>
+  <data name="gsResetAllForSure" xml:space="preserve">
+    <value>Da li zaista želite sve da resetujete?</value>
+  </data>
+  <data name="gsResume" xml:space="preserve">
+    <value>Nastavi</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Desno</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Desni meni</value>
+  </data>
+  <data name="gsS_East" xml:space="preserve">
+    <value>Jugoistok</value>
+  </data>
+  <data name="gsS_West" xml:space="preserve">
+    <value>Jugo zapad</value>
+  </data>
+  <data name="gsSaveAndReturn" xml:space="preserve">
+    <value>Sačuvaj</value>
+  </data>
+  <data name="gsSaveAs" xml:space="preserve">
+    <value>Sačuvaj kao</value>
+  </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Dugmad ekrana</value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value>Podešavanje boja sekcija</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Linije sekcija</value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Sekcije: </value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value>Izaberi dugme</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Izaberi boju</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Pošalji i sačuvaj</value>
+  </data>
+  <data name="gsSentToMachineModule" xml:space="preserve">
+    <value>Poslato na modul mašine</value>
+  </data>
+  <data name="gsSetPoint" xml:space="preserve">
+    <value>Podesi tačku</value>
+  </data>
+  <data name="gsShiftGPSPosition" xml:space="preserve">
+    <value>Pomeraj pocizije (cm)</value>
+  </data>
+  <data name="gsShutdown" xml:space="preserve">
+    <value>Gašenje</value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value>Gašenje za</value>
+  </data>
+  <data name="gsSimulatorOn" xml:space="preserve">
+    <value>Simulator aktivan</value>
+  </data>
+  <data name="gsSingleAntennaSetting" xml:space="preserve">
+    <value>Podešavanje jedne antene</value>
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value>Polako</value>
+  </data>
+  <data name="gsSlowDownBelow" xml:space="preserve">
+    <value>Uspori ispod</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Ublaži</value>
+  </data>
+  <data name="gsSmoothABCurve" xml:space="preserve">
+    <value>Ublaži AB krivu</value>
+  </data>
+  <data name="gsSort" xml:space="preserve">
+    <value>Sortiraj</value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Zvuk</value>
+  </data>
+  <data name="gsSouth" xml:space="preserve">
+    <value>Jug</value>
+  </data>
+  <data name="gsSpacing" xml:space="preserve">
+    <value>Razmak (cm)</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Odometar</value>
+  </data>
+  <data name="gsStart" xml:space="preserve">
+    <value>Pokreni</value>
+  </data>
+  <data name="gsStartDeleteABoundary" xml:space="preserve">
+    <value>Kreiraj ili obriši granicu</value>
+  </data>
+  <data name="gsStartNewField" xml:space="preserve">
+    <value>Novo polje</value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Ugao zakretanja</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Grafikoni upravljanja</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Dugme - Pritisni za pokretanje/zaustavljanje navođenja
+Prekidač - Uključi/isključi</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>Eksterno pokretanje</value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value>Upravljaj u rikverc</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Prekidač upravljanja</value>
+  </data>
+  <data name="gsSteerWizard" xml:space="preserve">
+    <value>Pomoćnik upravljanja</value>
+  </data>
+  <data name="gsStopRecordPauseBoundary" xml:space="preserve">
+    <value>Snimanje granice</value>
+  </data>
+  <data name="gsToFile" xml:space="preserve">
+    <value>U fajl</value>
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>Prebrzo</value>
+  </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Mašina levo</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Pomeraj mašine</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Mašina desno</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Meni mašine</value>
+  </data>
+  <data name="gsTopFieldView" xml:space="preserve">
+    <value>Pogled odozgo</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Ukupno</value>
+  </data>
+  <data name="gsTurnABCurveOn" xml:space="preserve">
+    <value>Uključi krivu</value>
+  </data>
+  <data name="gsTurnSensor" xml:space="preserve">
+    <value>Senzor skretanja</value>
+  </data>
+  <data name="gsUnit" xml:space="preserve">
+    <value>Jedinice:</value>
+  </data>
+  <data name="gsUnits" xml:space="preserve">
+    <value>Metrični/imperijalni</value>
+  </data>
+  <data name="gsUseSelected" xml:space="preserve">
+    <value>Koristi odabrano</value>
+  </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value>Korisnik 1</value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value>Korisnik 2</value>
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value>Korisnik 3</value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value>Korisnik 4</value>
+  </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value>Tip vozila:</value>
+  </data>
+  <data name="gsWasZero" xml:space="preserve">
+    <value>Nuliranje WAS</value>
+  </data>
+  <data name="gsWebCam" xml:space="preserve">
+    <value>Kamera</value>
+  </data>
+  <data name="gsWest" xml:space="preserve">
+    <value>Zapad</value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Osovina:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Širina:</value>
+  </data>
+  <data name="gsWindowsStillOpen" xml:space="preserve">
+    <value>Prozori su otvoreni</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Pomoćnik</value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value>Pomoćnici</value>
+  </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Radni prekidač</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Radna širina</value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value>Obrađ.</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Nuliranje nagiba</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Uvećaj</value>
+  </data>
+</root>

@@ -67,7 +67,7 @@ namespace AgOpenGPS
                 }
             }
 
-            GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Font]);
+            mf.ScreenTextures.Font.Bind();
             GL.Enable(EnableCap.Texture2D);
             GL.Begin(PrimitiveType.Quads);
 
@@ -129,7 +129,7 @@ namespace AgOpenGPS
                 size /= 1000;
             }
 
-            GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Font]);
+            mf.ScreenTextures.Font.Bind();
             GL.Enable(EnableCap.Texture2D);
             GL.Begin(PrimitiveType.Quads);
 
@@ -177,7 +177,7 @@ namespace AgOpenGPS
             size = Math.Pow(size, 0.8);
             size /= 800;
 
-            GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Font]);
+            mf.ScreenTextures.Font.Bind();
             GL.Enable(EnableCap.Texture2D);
             GL.Begin(PrimitiveType.Quads);
 
@@ -213,7 +213,7 @@ namespace AgOpenGPS
 
         public void DrawText(double x, double y, string text, double size = 1.0)
         {
-            GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Font]);
+            mf.ScreenTextures.Font.Bind();
             // Select Our Texture
             //GL.Color3(0.95f, 0.95f, 0.40f);
             GL.Enable(EnableCap.Texture2D);

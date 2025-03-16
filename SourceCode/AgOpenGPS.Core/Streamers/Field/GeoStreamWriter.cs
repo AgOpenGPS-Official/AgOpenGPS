@@ -53,6 +53,11 @@ namespace AgOpenGPS.Core.Streamers
                 HeadingStringH(heading, headingFormatString);
         }
 
+        public void WriteDateTime()
+        {
+            WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+        }
+
         public void WriteBool(bool boolValue)
         {
             WriteLine(BoolString(boolValue));
@@ -63,9 +68,24 @@ namespace AgOpenGPS.Core.Streamers
             WriteLine(IntString(intValue));
         }
 
+        public void WriteDouble(double doubleValue)
+        {
+            WriteLine(DoubleString(doubleValue, "N7"));
+        }
+
+        public void WriteString(string stringValue)
+        {
+            WriteLine(stringValue ?? "");
+        }
+
         public void WriteColorRgb(ColorRgb colorRgb)
         {
             WriteLine(IntString(colorRgb.Red) + "," + IntString(colorRgb.Green) + "," + IntString(colorRgb.Blue));
+        }
+
+        public void WriteWgs84(Wgs84 wgs84)
+        {
+            WriteLine(Wgs84String(wgs84));
         }
 
         public void WriteGeoCoordEN(GeoCoord coord)
@@ -78,12 +98,34 @@ namespace AgOpenGPS.Core.Streamers
             WriteLine(GeoCoordDirStringENH(coord, direction));
         }
 
+        public void WriteGeoBoundingBox(GeoBoundingBox bb)
+        {
+            WriteDouble(bb.MaxEasting);
+            WriteDouble(bb.MinEasting);
+            WriteDouble(bb.MaxNorthing);
+            WriteDouble(bb.MinNorthing);
+        }
+
         public void WriteGeoPath(GeoPath path)
         {
             WriteInt(path.Count);
             for (int i = 0; i < path.Count; i++)
             {
                 WriteGeoCoordEN(path[i]);
+            }
+        }
+
+        public void WriteGeoPathWithHeading(GeoPathWithHeading path)
+        {
+            if (null == path)
+            {
+                WriteInt(0);
+                return;
+            }
+            WriteInt(path.Count);
+            for (int i = 0; i < path.Count; i++)
+            {
+                WriteGeoCoordDirENH(path[i], path.GetHeading(i));
             }
         }
 

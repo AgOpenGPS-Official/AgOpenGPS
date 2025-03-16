@@ -11,6 +11,7 @@ using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using OpenTK.Graphics.OpenGL;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Resources;
 
 namespace AgOpenGPS
 {
@@ -183,75 +184,7 @@ namespace AgOpenGPS
             btnVehicleDelete.Enabled = false;
 
             lvVehicles.SelectedItems.Clear();
-
-            if (String.IsNullOrEmpty(tboxCreateNewVehicle.Text.Trim()))
-            {
-                btnVehicleNewSave.Enabled = false;
-                btnVehicleNewSave.BackColor = Color.Transparent;
-            }
-            else
-            {
-                btnVehicleNewSave.Enabled = true;
-                btnVehicleNewSave.BackColor = Color.LimeGreen;
-            }
         }
-
-        private void tboxCreateNewVehicle_Click(object sender, EventArgs e)
-        {
-            if (!mf.isJobStarted)
-            {
-                if (mf.isKeyboardOn)
-                {
-                    ((TextBox)sender).ShowKeyboard(this);
-                }
-            }
-            else
-            {
-                var form = new FormTimedMessage(2000, gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
-                form.Show(this);
-                tboxCreateNewVehicle.Enabled = false;
-            }
-        }
-
-        private void btnVehicleNewSave_Click(object sender, EventArgs e)
-        {
-            btnVehicleNewSave.BackColor = Color.Transparent;
-            btnVehicleNewSave.Enabled = false;
-
-            string newVehicleName = SanitizeFileName(tboxCreateNewVehicle.Text.Trim()).Trim();
-            tboxCreateNewVehicle.Text = "";
-
-            if (newVehicleName.Length > 0)
-            {
-                RegistrySettings.Save(RegKeys.vehicleFileName, newVehicleName);
-                
-                Settings.Default.Reset();
-                Settings.Default.Save();
-
-                Log.EventWriter("New Vehicle Loaded: " + RegistrySettings.vehicleFileName + ".XML");
-
-                LoadBrandImage();
-
-                mf.vehicle = new CVehicle(mf);
-                mf.tool = new CTool(mf);
-
-                //reset AOG
-                mf.LoadSettings();
-
-                SectionFeetInchesTotalWidthLabelUpdate();
-
-                SendSettings();
-
-                //Send Pin configuration
-                SendRelaySettingsToMachineModule();
-
-                ///Remind the user
-                mf.TimedMessageBox(2500, "Steer and Machine Settings Sent", "Were Modules Connected?");
-            }
-            UpdateVehicleListView();
-            UpdateSummary();
-        }        
-
         //Functions
         private static readonly Regex InvalidFileRegex = new Regex(string.Format("[{0}]", Regex.Escape(@"<>:""/\|?*")));
         public static string SanitizeFileName(string fileName)
@@ -302,7 +235,6 @@ namespace AgOpenGPS
             Properties.Settings.Default.setDisplay_isBrightnessOn = mf.isBrightnessOn;
             Properties.Settings.Default.setDisplay_isTextureOn = mf.isTextureOn;
             Properties.Settings.Default.setMenu_isGridOn = mf.isGridOn;
-            Properties.Settings.Default.setMenu_isCompassOn = mf.isCompassOn;
 
             Properties.Settings.Default.setDisplay_isSvennArrowOn = mf.isSvennArrowOn;
             Properties.Settings.Default.setMenu_isSpeedoOn = mf.isSpeedoOn;
@@ -453,9 +385,10 @@ namespace AgOpenGPS
                 pictureBox1.Image = Properties.Resources.RadiusWheelBaseArticulated;
             }
 
-            nudTractorHitchLength.Visible = Properties.Settings.Default.setTool_isToolTrailing || Properties.Settings.Default.setTool_isToolTBT;
-            label94.Visible = nudTractorHitchLength.Visible;
-            labelHitchLength.Visible = nudTractorHitchLength.Visible;
+            nudTractorHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            label94.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            labelHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
+            HitchLengthBlindBox.Visible = rbtnFixedRear.Checked || rbtnFront.Checked; 
 
             label94.Text = mf.unitsInCm;
             label95.Text = mf.unitsInCm;
@@ -556,44 +489,18 @@ namespace AgOpenGPS
             if (rbtnTractor.Checked)
             {
                 Settings.Default.setBrand_TBrand = tractorBrand;
-
-                Bitmap bitmap = mf.GetTractorBrand(tractorBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(tractorBrand));
             }
-
             if (rbtnHarvester.Checked)
             {
                 Settings.Default.setBrand_HBrand = harvesterBrand;
-
-                Bitmap bitmap = mf.GetHarvesterBrand(harvesterBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Harvester]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(harvesterBrand));
             }
-
             if (rbtnArticulated.Checked)
             {
                 Settings.Default.setBrand_WDBrand = articulatedBrand;
-
-                Bitmap bitmap = mf.GetArticulatedBrandFront(articulatedBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
-                bitmap = mf.GetArticulatedBrandRear(articulatedBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);
-                bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(ArticulatedBitmaps.GetFrontBitmap(articulatedBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(ArticulatedBitmaps.GetRearBitmap(articulatedBrand));
             }
             Properties.Settings.Default.Save();
         }
@@ -703,7 +610,7 @@ namespace AgOpenGPS
                         rbtnBrandTDeutz.Checked = true;
                     else if (tractorBrand == TractorBrand.Fendt)
                         rbtnBrandTFendt.Checked = true;
-                    else if (tractorBrand == TractorBrand.JDeere)
+                    else if (tractorBrand == TractorBrand.JohnDeere)
                         rbtnBrandTJDeere.Checked = true;
                     else if (tractorBrand == TractorBrand.Kubota)
                         rbtnBrandTKubota.Checked = true;
@@ -722,7 +629,7 @@ namespace AgOpenGPS
                     else if (tractorBrand == TractorBrand.JCB)
                         rbtnBrandTJCB.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetTractorBrand(Settings.Default.setBrand_TBrand);
+                    pboxAlpha.BackgroundImage = TractorBitmaps.GetBitmap(Settings.Default.setBrand_TBrand);
                 }
                 else if (mf.vehicle.VehicleConfig.Type == VehicleType.Harvester)
                 {
@@ -736,12 +643,12 @@ namespace AgOpenGPS
                         rbtnBrandHCase.Checked = true;
                     else if (harvesterBrand == HarvesterBrand.Claas)
                         rbtnBrandHClaas.Checked = true;
-                    else if (harvesterBrand == HarvesterBrand.JDeere)
+                    else if (harvesterBrand == HarvesterBrand.JohnDeere)
                         rbtnBrandHJDeere.Checked = true;
                     else if (harvesterBrand == HarvesterBrand.NewHolland)
                         rbtnBrandHNH.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand);
+                    pboxAlpha.BackgroundImage = HarvesterBitmaps.GetBitmap(Settings.Default.setBrand_HBrand);
                 }
                 else if (mf.vehicle.VehicleConfig.Type == VehicleType.Articulated)
                 {
@@ -755,14 +662,14 @@ namespace AgOpenGPS
                         rbtnBrandACase.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.Challenger)
                         rbtnBrandAChallenger.Checked = true;
-                    else if (articulatedBrand == ArticulatedBrand.JDeere)
+                    else if (articulatedBrand == ArticulatedBrand.JohnDeere)
                         rbtnBrandAJDeere.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.NewHolland)
                         rbtnBrandANH.Checked = true;
                     else if (articulatedBrand == ArticulatedBrand.Holder)
                         rbtnBrandAHolder.Checked = true;
 
-                    pboxAlpha.BackgroundImage = mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand);
+                    pboxAlpha.BackgroundImage = ArticulatedBitmaps.GetFrontBitmap(Settings.Default.setBrand_WDBrand);
                 }
 
                 Properties.Settings.Default.setDisplay_vehicleOpacity = (int)(mf.vehicle.VehicleConfig.Opacity * 100);
@@ -771,7 +678,7 @@ namespace AgOpenGPS
             }
             else
             {
-                pboxAlpha.BackgroundImage = Properties.Resources.TriangleVehicle;
+                pboxAlpha.BackgroundImage = BrandImages.BrandTriangleVehicle;
                 lblOpacityPercent.Text = ((int)(mf.vehicle.VehicleConfig.Opacity * 100)).ToString() + "%";
                 mf.vehicle.VehicleConfig.Color = new ColorRgb(254, 254, 254);
             }
@@ -808,44 +715,18 @@ namespace AgOpenGPS
 
         private void LoadBrandImage()
         {
-            if (rbtnTractor.Checked == true)
+            if (rbtnTractor.Checked)
             {
-                Bitmap bitmap = mf.GetTractorBrand(Settings.Default.setBrand_TBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Tractor]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
+                mf.VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(Settings.Default.setBrand_TBrand));
             }
-
-            if (rbtnHarvester.Checked == true)
-
+            if (rbtnHarvester.Checked)
             {
-                Bitmap bitmap = mf.GetHarvesterBrand(Settings.Default.setBrand_HBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.Harvester]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-
+                mf.VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(Settings.Default.setBrand_HBrand));
             }
-
-            if (rbtnArticulated.Checked == true)
-
+            if (rbtnArticulated.Checked)
             {
-                Bitmap bitmap = mf.GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedFront]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                bitmap = mf.GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand);
-
-                GL.BindTexture(TextureTarget.Texture2D, mf.texture[(int)FormGPS.textures.ArticulatedRear]);
-                bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
+                mf.VehicleTextures.ArticulatedFront.SetBitmap(ArticulatedBitmaps.GetFrontBitmap(Settings.Default.setBrand_WDBrand));
+                mf.VehicleTextures.ArticulatedRear.SetBitmap(ArticulatedBitmaps.GetRearBitmap(Settings.Default.setBrand_WDBrand));
             }
         }
 
@@ -896,7 +777,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 harvesterBrand = (HarvesterBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetHarvesterBrand(harvesterBrand);
+                pboxAlpha.BackgroundImage = HarvesterBitmaps.GetBitmap(harvesterBrand);
                 original = null;
                 SetOpacity();
             }
@@ -908,7 +789,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 tractorBrand = (TractorBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetTractorBrand(tractorBrand);
+                pboxAlpha.BackgroundImage = TractorBitmaps.GetBitmap(tractorBrand);
                 original = null;
                 SetOpacity();
             }
@@ -920,7 +801,7 @@ namespace AgOpenGPS
             if (radioButton.Checked)
             {
                 articulatedBrand = (ArticulatedBrand)radioButton.Tag;
-                pboxAlpha.BackgroundImage = mf.GetArticulatedBrandFront(articulatedBrand);
+                pboxAlpha.BackgroundImage = ArticulatedBitmaps.GetFrontBitmap(articulatedBrand);
                 original = null;
                 SetOpacity();
             }

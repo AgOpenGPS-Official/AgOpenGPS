@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.WpfApp", "AgOpenG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.WpfViews", "AgOpenGPS.WpfViews\AgOpenGPS.WpfViews.csproj", "{03B426E1-59BD-4E72-9528-DE37429E21C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgDiag", "AgDiag\AgDiag.csproj", "{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,16 +82,20 @@ Global
 		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03B426E1-59BD-4E72-9528-DE37429E21C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_ConfirmAddLanguageFile = True
-		RESX_NeutralResourcesLanguage = en-US
-		RESX_SortFileContentOnSave = True
-		RESX_ShowErrorsInErrorList = False
-		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
 		RESX_ResXSortingComparison = Ordinal
+		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
+		RESX_ShowErrorsInErrorList = False
+		RESX_SortFileContentOnSave = True
+		RESX_NeutralResourcesLanguage = en-US
+		RESX_ConfirmAddLanguageFile = True
 	EndGlobalSection
 EndGlobal

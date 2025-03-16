@@ -1,10 +1,6 @@
-﻿using AgIO.Properties;
-using AgLibrary.Logging;
-using Microsoft.Win32;
+﻿using AgLibrary.Logging;
 using System;
-using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,7 +9,7 @@ namespace AgIO
 {
     internal static class Program
     {
-        private static readonly Mutex Mutex = new Mutex(true, "{8F6F0AC4-B9A1-55fd-A8CF-72F04E6BDE8F}");
+        private static Mutex _mutex;
 
         public static readonly string Version = Assembly.GetEntryAssembly().GetName().Version.ToString(3); // Major.Minor.Patch
 
@@ -23,31 +19,39 @@ namespace AgIO
         [STAThread]
         private static void Main()
         {
-            if (Mutex.WaitOne(TimeSpan.Zero, true))
+            using (_mutex = new Mutex(true, "{8F6F0AC4-B9A1-55fd-A8CF-72F04E6BDE8F}", out bool mutexCreated))
             {
-                //load the profile name and set profile directory
-                RegistrySettings.Load();
+                if (mutexCreated)
+                {
+                    //load the profile name and set profile directory
+                    RegistrySettings.Load();
 
-                Log.EventWriter("Program Started: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
-                Log.EventWriter("AgIO Version: " + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
+                    Log.EventWriter("Program Started: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
+                    Log.EventWriter("AgIO Version: " + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
 
-                Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
-                Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new FormLoop());
+                    Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
+                    Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(RegistrySettings.culture);
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new FormLoop());
+                }
+            }
+        }
+
+        // If the application needs to be restarted, it should be done via this method.
+        // Manually disposing the Mutex before calling Application.Restart() ensures
+        // that the Mutex is not still owned by the current application instance while
+        // the new application instance is being started.
+        // See: https://stackoverflow.com/a/9456822
+        public static void Restart()
+        {
+            if (_mutex != null)
+            {
+                _mutex.ReleaseMutex();
+                _mutex.Dispose();
+                _mutex = null;
+                Application.Restart();
             }
         }
     }
 }
-
-//catch (System.Configuration.ConfigurationErrorsException ex)
-//{
-//    // Corrupted XML! Delete the file, the user can just reload when this fails to appear. No need to worry them
-//    MessageBoxButtons btns = MessageBoxButtons.OK;
-//    System.Windows.Forms.MessageBox.Show("Error detected in config file - fixing it now, please close this and restart app", "Problem!", btns);
-//    string filename = ((ex.InnerException as System.Configuration.ConfigurationErrorsException)?.Filename) as string;
-//    System.IO.File.Delete(filename);
-//    Settings.Default.Reload();
-//    Application.Exit();
-//}

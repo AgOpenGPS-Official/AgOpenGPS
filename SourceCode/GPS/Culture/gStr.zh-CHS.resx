@@ -144,9 +144,6 @@
   <data name="gsAutoSteer" xml:space="preserve">
     <value>方向盘配置</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>方向盘配置</value>
-  </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>方向盘配置</value>
   </data>
@@ -186,6 +183,9 @@
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>完全删除边界</value>
   </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>方向盘配置</value>
+  </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>边界文件损坏</value>
   </data>
@@ -202,9 +202,6 @@
     <value>创建新田块</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>当前(A)</value>
-  </data>
-  <data name="gsCurrentSensorValueLabel" xml:space="preserve">
     <value>当前(A)</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">

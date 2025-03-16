@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace AgOpenGPS
 {
+    public enum SkipMode { Normal, Alternative, IgnoreWorkedTracks };
+
     public class CYouTurn
     {
         #region Fields
@@ -24,7 +26,8 @@ namespace AgOpenGPS
 
         public int rowSkipsWidth = 1, uTurnSmoothing;
 
-        public bool alternateSkips = false, previousBigSkip = true;
+        public bool previousBigSkip = true;
+        public SkipMode skipMode = SkipMode.Normal;
         public int rowSkipsWidth2 = 3, turnSkips = 2;
 
         /// <summary>  /// distance from headland as offset where to start turn shape /// </summary>
@@ -102,9 +105,56 @@ namespace AgOpenGPS
             uTurnSmoothing = Properties.Settings.Default.setAS_uTurnSmoothing;
         }
 
+        //find next not worked lane after the defined lanes to skip
+        private int GetNextNotWorkedTrack(bool isTurnLeft, int rowSkipsWidth, bool isAB)
+        {
+            int goalLane;
+
+            if (isAB)
+            {
+
+                if ((isTurnLeft && !mf.ABLine.isHeadingSameWay) || (!isTurnLeft && mf.ABLine.isHeadingSameWay))
+                    goalLane = mf.ABLine.howManyPathsAway + rowSkipsWidth;
+                else
+                    goalLane = mf.ABLine.howManyPathsAway - rowSkipsWidth;
+
+                while (mf.trk.gArr[mf.trk.idx].workedTracks.Contains(goalLane))
+                {
+                    rowSkipsWidth++;
+                    if ((isTurnLeft && !mf.ABLine.isHeadingSameWay) || (!isTurnLeft && mf.ABLine.isHeadingSameWay))
+                        goalLane++;
+                    else
+                        goalLane--;
+                }
+            }
+            else
+            {
+                if ((isTurnLeft && !mf.curve.isHeadingSameWay) || (!isTurnLeft && mf.curve.isHeadingSameWay))
+                    goalLane = mf.curve.howManyPathsAway + rowSkipsWidth;
+                else
+                    goalLane = mf.curve.howManyPathsAway - rowSkipsWidth;
+
+                while (mf.trk.gArr[mf.trk.idx].workedTracks.Contains(goalLane))
+                {
+                    rowSkipsWidth++;
+                    if ((isTurnLeft && !mf.curve.isHeadingSameWay) || (!isTurnLeft && mf.curve.isHeadingSameWay))
+                        goalLane++;
+                    else
+                        goalLane--;
+                }
+            }
+
+
+            return rowSkipsWidth;
+        }
+
         //Finds the point where an AB Curve crosses the turn line
         public bool BuildCurveDubinsYouTurn()
         {
+            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
+            if (skipMode == SkipMode.IgnoreWorkedTracks)
+                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, false);
+
             //TODO: is calculated many taimes after the priveous turn is complete
             //grab the vehicle widths and offsets
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth + (isTurnLeft ? -mf.tool.offset * 2.0 : mf.tool.offset * 2.0);
@@ -135,6 +185,10 @@ namespace AgOpenGPS
 
         public bool BuildABLineDubinsYouTurn()
         {
+            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
+            if (skipMode == SkipMode.IgnoreWorkedTracks)
+                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, true);
+
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth
                 + (isTurnLeft ? -mf.tool.offset * 2.0 : mf.tool.offset * 2.0);
 
@@ -2334,7 +2388,7 @@ namespace AgOpenGPS
                 mf.ABLine.howManyPathsAway += (isTurnLeft ^ mf.ABLine.isHeadingSameWay) ? rowSkipsWidth : -rowSkipsWidth;
                 mf.ABLine.isHeadingSameWay = !mf.ABLine.isHeadingSameWay;
 
-                if (alternateSkips && rowSkipsWidth2 > 1)
+                if (skipMode == SkipMode.Alternative && rowSkipsWidth2 > 1)
                 {
                     if (--turnSkips == 0)
                     {

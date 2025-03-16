@@ -1039,6 +1039,11 @@ namespace AgOpenGPS
             if (mf.vehicle.driveFreeSteerAngle > 40) mf.vehicle.driveFreeSteerAngle = 40;
         }
 
+        private void label34_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void btnSteerAngleDown_MouseDown(object sender, MouseEventArgs e)
         {
             mf.vehicle.driveFreeSteerAngle--;

@@ -1,4 +1,4 @@
-﻿//Please, if you use this give me some credit
+//Please, if you use this give me some credit
 //Copyright BrianTee, copy right out of it.
 
 using AgOpenGPS.Culture;
@@ -15,15 +15,17 @@ namespace AgOpenGPS
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
-            labelTotal.Text = gStr.gsTotal;
+            labelTotal.Text = gStr.gsTotal + ":";
             labelWorked.Text = gStr.gsWorked;
-            labelApplied.Text = gStr.gsApplied;
-            labelApplied2.Text = gStr.gsApplied;
-            labelRemain.Text = gStr.gsRemain;
-            labelRemain2.Text = gStr.gsRemain;
-            labelOverlap.Text = gStr.gsOverlap;
-            labelActual.Text = gStr.gsActual;   
-            labelRate.Text = gStr.gsRate;
+            labelApplied.Text = gStr.gsApplied + ":";
+            labelApplied2.Text = gStr.gsApplied + ":";
+            labelRemain.Text = gStr.gsRemain + ":";
+            labelRemain2.Text = gStr.gsRemain + ":";
+            labelOverlap.Text = gStr.gsOverlap + ":";
+            labelActual.Text = gStr.gsActual;
+            labelRate.Text = gStr.gsRate + ":";
+            labelArea.Text = gStr.gsArea + ":";
+            labelDistance.Text = gStr.gsDistance + ":";
 
         }
         private void FormFieldData_Load(object sender, EventArgs e)

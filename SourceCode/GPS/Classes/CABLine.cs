@@ -23,7 +23,7 @@ namespace AgOpenGPS
         //List of all available ABLines
         public CTrk refLine = new CTrk();
 
-        public double howManyPathsAway, lastHowManyPathsAway;
+        public int howManyPathsAway, lastHowManyPathsAway;
         public bool isMakingABLine;
         public bool isHeadingSameWay = true, lastIsHeadingSameWay;
 

@@ -178,9 +178,9 @@
             this.btnClipLine.Image = global::AgOpenGPS.Properties.Resources.HeadlandSlice;
             this.btnClipLine.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnClipLine.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnClipLine.Location = new System.Drawing.Point(25, 439);
+            this.btnClipLine.Location = new System.Drawing.Point(3, 439);
             this.btnClipLine.Name = "btnClipLine";
-            this.btnClipLine.Size = new System.Drawing.Size(104, 93);
+            this.btnClipLine.Size = new System.Drawing.Size(149, 93);
             this.btnClipLine.TabIndex = 519;
             this.btnClipLine.Text = "Clip Line";
             this.btnClipLine.TextAlign = System.Drawing.ContentAlignment.BottomCenter;

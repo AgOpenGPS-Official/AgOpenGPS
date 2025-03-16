@@ -15,9 +15,6 @@ using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS
 {
-    public enum TractorBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra, JCB }
-    public enum HarvesterBrand { AgOpenGPS, Case, Claas, JDeere, NewHolland }
-    public enum ArticulatedBrand { AgOpenGPS, Case, Challenger, JDeere, NewHolland, Holder }
 
     public partial class FormGPS
     {
@@ -49,7 +46,7 @@ namespace AgOpenGPS
 
         //Is it in 2D or 3D, metric or imperial, display lightbar, display grid etc
         public bool isMetric = true, isLightbarOn = true, isGridOn, isFullScreen;
-        public bool isUTurnAlwaysOn, isCompassOn, isSpeedoOn, isSideGuideLines = true;
+        public bool isUTurnAlwaysOn, isSpeedoOn, isSideGuideLines = true;
         public bool isPureDisplayOn = true, isSkyOn = true, isRollMeterOn = false, isTextureOn = true;
         public bool isDay = true, isDayTime = true, isBrightnessOn = true;
         public bool isLogElevation = false, isDirectionMarkers;
@@ -104,7 +101,18 @@ namespace AgOpenGPS
             if (++sentenceCounter > 20)
             {
                 ShowNoGPSWarning();
+                //make sure settings and others can't be openend, the program is in standby
+                toolStripDropDownButton1.Enabled = false;
+                toolStripDropDownButton4.Enabled = false;
+                btnJobMenu.Enabled = false;
                 return;
+            }
+            else
+            {
+                //turn on buttons when GPS is active again (or SIM is enabled)
+                toolStripDropDownButton1.Enabled = true;
+                toolStripDropDownButton4.Enabled = true;
+                btnJobMenu.Enabled = true;
             }
 
             ////////////////////////////////////////////// 10 second ///////////////////////////////////////////////////////
@@ -203,23 +211,20 @@ namespace AgOpenGPS
                         case 0:
                             lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
                             break;
-
                         case 1:
                             lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 2:
-                            lblCurrentField.Text = "Lat: " + pn.latitude.ToString("N7") + "   Lon: " + pn.longitude.ToString("N7");
+                            lblCurrentField.Text = "Lat: " +
+                                AppModel.CurrentLatLon.Latitude.ToString("N7") + "   Lon: " +
+                                AppModel.CurrentLatLon.Longitude.ToString("N7");
                             break;
-
                         case 3:
-                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");                            
+                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
                             break;
-
                         case 4:
                             lblCurrentField.Text = "";
                             break;
-
                         default:
                             break;
                     }
@@ -374,12 +379,14 @@ namespace AgOpenGPS
             toolStripConfig.Text = gStr.gsConfiguration;
             toolStripSteerSettings.Text = gStr.gsAutoSteer;
             toolStripWorkingDirectories.Text = gStr.gsDirectories;
+            toolStripAllSettings.Text = gStr.gsAllSettings;
 
             resetEverythingToolStripMenuItem.Text = gStr.gsResetAllForSure;
             steerChartStripMenu.Text = gStr.gsCharts;
 
             //Tools Menu
             SmoothABtoolStripMenu.Text = gStr.gsSmoothABCurve;
+            guidelinesToolStripMenuItem.Text = gStr.gsExtraGuideLines;
             boundariesToolStripMenuItem.Text = gStr.gsBoundary;
             headlandToolStripMenuItem.Text = gStr.gsHeadland;
             headlandBuildToolStripMenuItem.Text = gStr.gsHeadland + " Builder";
@@ -504,7 +511,6 @@ namespace AgOpenGPS
             isGridOn = Settings.Default.setMenu_isGridOn;
             isBrightnessOn = Settings.Default.setDisplay_isBrightnessOn;
 
-            isCompassOn = Settings.Default.setMenu_isCompassOn;
             isSpeedoOn = Settings.Default.setMenu_isSpeedoOn;
             isSideGuideLines = Settings.Default.setMenu_isSideGuideLines;
             isSvennArrowOn = Settings.Default.setDisplay_isSvennArrowOn;
@@ -1129,9 +1135,6 @@ namespace AgOpenGPS
 
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 
-            //Settings.Default.setDisplay_panelSnapLocation = panelSnap.Location;
-            Settings.Default.setDisplay_panelSimLocation = panelSim.Location;
-
             Settings.Default.Save();
         }
 
@@ -1473,8 +1476,8 @@ namespace AgOpenGPS
 
         #region Properties // ---------------------------------------------------------------------
 
-        public string Latitude { get { return Convert.ToString(Math.Round(pn.latitude, 7)); } }
-        public string Longitude { get { return Convert.ToString(Math.Round(pn.longitude, 7)); } }
+        public string Latitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Latitude, 7)); } }
+        public string Longitude { get { return Convert.ToString(Math.Round(AppModel.CurrentLatLon.Longitude, 7)); } }
         public string SatsTracked { get { return Convert.ToString(pn.satellitesTracked); } }
         public string HDOP { get { return Convert.ToString(pn.hdop); } }
         public string Heading { get { return Convert.ToString(Math.Round(glm.toDegrees(fixHeading), 1)) + "\u00B0"; } }
@@ -1538,9 +1541,6 @@ namespace AgOpenGPS
             }
         }
 
-        public string FixOffset { get { return (pn.fixOffset.easting.ToString("N2") + ", " + pn.fixOffset.northing.ToString("N2")); } }
-        public string FixOffsetInch { get { return ((pn.fixOffset.easting*glm.m2in).ToString("N0")+ ", " + (pn.fixOffset.northing*glm.m2in).ToString("N0")); } }
-
         public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude,2)); } }
         public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084),1))); } }
         public string DistPivotM
@@ -1564,95 +1564,7 @@ namespace AgOpenGPS
         #endregion properties 
 
         //Load Bitmaps brand
-        public Bitmap GetTractorBrand(TractorBrand brand)
-        {
-            switch (brand)
-            {
-                case TractorBrand.Case:
-                    return Resources.z_TractorCase;
-                case TractorBrand.Claas:
-                    return Resources.z_TractorClaas;
-                case TractorBrand.Deutz:
-                    return Resources.z_TractorDeutz;
-                case TractorBrand.Fendt:
-                    return Resources.z_TractorFendt;
-                case TractorBrand.JDeere:
-                    return Resources.z_TractorJDeere;
-                case TractorBrand.Kubota:
-                    return Resources.z_TractorKubota;
-                case TractorBrand.Massey:
-                    return Resources.z_TractorMassey;
-                case TractorBrand.NewHolland:
-                    return Resources.z_TractorNH;
-                case TractorBrand.Same:
-                    return Resources.z_TractorSame;
-                case TractorBrand.Steyr:
-                    return Resources.z_TractorSteyr;
-                case TractorBrand.Ursus:
-                    return Resources.z_TractorUrsus;
-                case TractorBrand.Valtra:
-                    return Resources.z_TractorValtra;
-                case TractorBrand.JCB:
-                    return Resources.z_TractorJCB;
-                default:
-                    return Resources.z_TractorAoG;
-            }
-        }
 
-        public Bitmap GetHarvesterBrand(HarvesterBrand brand)
-        {
-            switch (brand)
-            {
-                case HarvesterBrand.Case:
-                    return Resources.z_HarvesterCase;
-                case HarvesterBrand.Claas:
-                    return Resources.z_HarvesterClaas;
-                case HarvesterBrand.JDeere:
-                    return Resources.z_HarvesterJD;
-                case HarvesterBrand.NewHolland:
-                    return Resources.z_HarvesterNH;
-                default:
-                    return Resources.z_HarvesterAoG;
-            }
-        }
-
-        public Bitmap GetArticulatedBrandFront(ArticulatedBrand brand)
-        {
-            switch (brand)
-            {
-                case ArticulatedBrand.Case:
-                    return Resources.z_ArticulatedFrontCase;
-                case ArticulatedBrand.Challenger:
-                    return Resources.z_ArticulatedFrontChallenger;
-                case ArticulatedBrand.JDeere:
-                    return Resources.z_ArticulatedFrontJDeere;
-                case ArticulatedBrand.NewHolland:
-                    return Resources.z_ArticulatedFrontNH;
-                case ArticulatedBrand.Holder:
-                    return Resources.z_ArticulatedFrontHolder;
-                default:
-                    return Resources.z_ArticulatedFrontAoG;
-            }
-        }
-        
-        public Bitmap GetArticulatedBrandRear(ArticulatedBrand brand)
-        {
-            switch (brand)
-            {
-                case ArticulatedBrand.Case:
-                    return Resources.z_ArticulatedRearCase;
-                case ArticulatedBrand.Challenger:
-                    return Resources.z_ArticulatedRearChallenger;
-                case ArticulatedBrand.JDeere:
-                    return Resources.z_ArticulatedRearJDeere;
-                case ArticulatedBrand.NewHolland:
-                    return Resources.z_ArticulatedRearNH;
-                case ArticulatedBrand.Holder:
-                    return Resources.z_ArticulatedRearHolder;
-                default:
-                    return Resources.z_ArticulatedRearAoG;
-            }
-        }
 
     }//end class
 }//end namespace

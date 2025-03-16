@@ -65,8 +65,7 @@ namespace AgIO
             mf.YesMessageBox("AgIO will Restart to Enable UDP Networking Features");
             Log.EventWriter("Program Reset: Start Ethernet Selected");
 
-            Application.Restart();
-            Environment.Exit(0);
+            Program.Restart();
             Close();
         }
 

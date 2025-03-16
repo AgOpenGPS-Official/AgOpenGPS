@@ -142,13 +142,16 @@
     <value>Actueel</value>
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
-    <value>Creer Uitgebreide Spuitpaden</value>
+    <value>Creer uitgebreide spuitpaden</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Ik stem in met de algemene voorwaarden.</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agressiviteit</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Open alle instellingen</value>
   </data>
   <data name="gsAntennaHeight" xml:space="preserve">
     <value>Antenne Hoogte</value>
@@ -163,13 +166,13 @@
     <value>Aquisitie</value>
   </data>
   <data name="gsAquireFactor" xml:space="preserve">
-    <value>Aquisitie-Factor</value>
+    <value>Lijn Aquisitie</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Weet u het zeker?</value>
   </data>
   <data name="gsArea" xml:space="preserve">
-    <value>Oppervlakte</value>
+    <value>Areaal</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
     <value>Gebruik de knoppen aan de linkerkant die u in het menu wilt laten verschijnen (de rechterkant).
@@ -314,9 +317,6 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsCurrent" xml:space="preserve">
     <value>Huidig</value>
   </data>
-  <data name="gsCurrentSensorValueLabel" xml:space="preserve">
-    <value>Huidige Waarde</value>
-  </data>
   <data name="gsCurrentTurnSensor" xml:space="preserve">
     <value>Stroom-sensor</value>
   </data>
@@ -372,7 +372,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Activeer Knoppen</value>
   </data>
   <data name="gsDistance" xml:space="preserve">
-    <value>Afstand:</value>
+    <value>Afstand</value>
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Afstand tot Vlag</value>
@@ -879,7 +879,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Achteruit-Afstand</value>
   </data>
   <data name="gsReverseSteer" xml:space="preserve">
-    <value>Achteruit geleiding</value>
+    <value>Achteruit Detectie</value>
   </data>
   <data name="gsRight" xml:space="preserve">
     <value>Rechts</value>
