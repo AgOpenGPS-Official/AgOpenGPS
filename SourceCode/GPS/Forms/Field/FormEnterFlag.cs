@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
-using AgOpenGPS.Core.Models;
 using static System.Net.WebRequestMethods;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.IO.Ports;
@@ -114,7 +113,7 @@ namespace AgOpenGPS
       
         private void btnLoadFlags_Click(object sender, EventArgs e)
         {
-            double east, nort;
+            //double east, nort;
 
             OpenFileDialog fileDialog = new OpenFileDialog();
 
@@ -139,10 +138,12 @@ namespace AgOpenGPS
                             int.TryParse(parts[2], out int flagColor))
                         {
                             string flagName = (!string.IsNullOrWhiteSpace(parts[3])) ? parts[3].Trim() : $"{mf.flagPts.Count + 1}";
-
-                            mf.pn.ConvertWGS84ToLocal(latitude, longitude, out nort, out east);
+                            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latitude, longitude));
                             int nextflag = mf.flagPts.Count + 1;
-                            CFlag flagPt = new CFlag(latitude, longitude, east, nort, 0, flagColor, nextflag, flagName);
+                             CFlag flagPt = new CFlag(
+                                latitude, longitude,
+                                geoCoord.Easting, geoCoord.Northing,
+                                0, flagColor, nextflag, flagName);
                             mf.flagPts.Add(flagPt);
                             mf.FileSaveFlags();
                         }
