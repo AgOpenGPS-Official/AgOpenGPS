@@ -1,4 +1,6 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -125,44 +127,35 @@ namespace AgOpenGPS
 
             foreach (string dir in dirs)
             {
-                double lat = 0;
-                double lon = 0;
-
                 string fieldDirectory = Path.GetFileName(dir);
                 string filename = Path.Combine(dir, "Field.txt");
-                string line;
 
                 //make sure directory has a field.txt in it
                 if (File.Exists(filename))
                 {
-                    using (StreamReader reader = new StreamReader(filename))
+                    using (GeoStreamReader reader = new GeoStreamReader(filename))
                     {
                         try
                         {
-                            //Date time line
+                            // Skip 8 lines
                             for (int i = 0; i < 8; i++)
                             {
-                                line = reader.ReadLine();
+                                reader.ReadLine();
                             }
-
                             //start positions
                             if (!reader.EndOfStream)
                             {
-                                line = reader.ReadLine();
-                                string[] offs = line.Split(',');
+                                Wgs84 startLatLon = reader.ReadWgs84();
+                                double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
 
-                                lat = (double.Parse(offs[0], CultureInfo.InvariantCulture));
-                                lon = (double.Parse(offs[1], CultureInfo.InvariantCulture));
-
-                                double dist = GetDistance(lon, lat, mf.pn.longitude, mf.pn.latitude);
-
-                                if (dist < 500)
+                                if (distance < 0.5)
                                 {
                                     numFields++;
-                                    if (string.IsNullOrEmpty(infieldList))
-                                        infieldList += Path.GetFileName(dir);
-                                    else
-                                        infieldList += "," + Path.GetFileName(dir);
+                                    if (!string.IsNullOrEmpty(infieldList))
+                                    {
+                                        infieldList += ",";
+                                    }
+                                    infieldList += Path.GetFileName(dir);
                                 }
                             }
                         }
@@ -205,17 +198,6 @@ namespace AgOpenGPS
             {
                 mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
             }
-        }
-
-        public double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
-        {
-            double d1 = latitude * (Math.PI / 180.0);
-            double num1 = longitude * (Math.PI / 180.0);
-            double d2 = otherLatitude * (Math.PI / 180.0);
-            double num2 = otherLongitude * (Math.PI / 180.0) - num1;
-            double d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
-
-            return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
         }
 
         private void btnFromKML_Click(object sender, EventArgs e)

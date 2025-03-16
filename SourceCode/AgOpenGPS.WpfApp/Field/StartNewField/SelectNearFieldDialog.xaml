@@ -1,0 +1,26 @@
+﻿<Window x:Class="AgOpenGPS.WpfApp.Field.SelectNearFieldDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    xmlns:corevm="clr-namespace:AgOpenGPS.Core.ViewModels;assembly=AgOpenGPS.Core"
+    xmlns:local="clr-namespace:AgOpenGPS.WpfApp.Field"
+
+    d:DataContext="{d:DesignInstance Type=corevm:SelectNearFieldViewModel, IsDesignTimeCreatable=False}"
+
+    Title="SelectNearFieldDialog" Height="450" Width="800">
+
+    <DockPanel LastChildFill="True">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Height="80">
+            <Button x:Name="cancelButton"
+                Content="Cancel" Width="100"
+                IsCancel="True" />
+            <Button x:Name="useSelectedButton" 
+                Content="Use Selected" Width="100"
+                Command="{Binding SelectFieldCommand}"
+                IsDefault="True"/>
+        </StackPanel>
+        <local:NearFieldTable x:Name="nearFieldTable" />
+    </DockPanel>
+</Window>

@@ -102,7 +102,10 @@
             this.Controls.Add(this.keyboardString);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Location = new System.Drawing.Point(250, 250);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormKeyboard";
+            this.ShowInTaskbar = false;
             this.Text = "Keyboard";
             this.Load += new System.EventHandler(this.FormKeyboard_Load);
             this.ResumeLayout(false);

@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -30,8 +31,8 @@ namespace AgOpenGPS
             nudLatitude.Controls[0].Enabled = false;
             nudLongitude.Controls[0].Enabled = false;
 
-            nudLatitude.Value = (decimal)mf.pn.latitude;
-            nudLongitude.Value = (decimal)mf.pn.longitude;
+            nudLatitude.Value = (decimal)mf.AppModel.CurrentLatLon.Latitude;
+            nudLongitude.Value = (decimal)mf.AppModel.CurrentLatLon.Longitude;
         }
 
         private void FormEnterAB_Load(object sender, EventArgs e)
@@ -82,11 +83,12 @@ namespace AgOpenGPS
                 flagColor = 2;
             }
 
-            double east, nort;
-
-            mf.pn.ConvertWGS84ToLocal((double)nudLatitude.Value, (double)nudLongitude.Value, out nort, out east);
+            GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value));
             int nextflag = mf.flagPts.Count + 1;
-            CFlag flagPt = new CFlag((double)nudLatitude.Value, (double)nudLongitude.Value, east, nort, 0, flagColor, nextflag, (nextflag).ToString());
+            CFlag flagPt = new CFlag(
+                (double)nudLatitude.Value, (double)nudLongitude.Value,
+                geoCoord.Easting, geoCoord.Northing,
+                0, flagColor, nextflag, (nextflag).ToString());
             mf.flagPts.Add(flagPt);
             mf.FileSaveFlags();
 

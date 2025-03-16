@@ -120,26 +120,88 @@
   <data name="gsABCurve" xml:space="preserve">
     <value>Curva AB</value>
   </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Dibujar AB - Seleccione 2 puntos en el Lindero para empezar</value>
+  </data>
   <data name="gsABline" xml:space="preserve">
-    <value>Linea AB</value>
+    <value>Línea AB</value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>Conversor AD</value>
+  </data>
+  <data name="gsAOGMenu" xml:space="preserve">
+    <value>Manú AOG</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
     <value>Acerca de</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Acción anulada</value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>Activar</value>
   </data>
   <data name="gsActual" xml:space="preserve">
     <value>Actual</value>
   </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>Crea Línea de Carril avanzada</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Estoy de acuerdo con los términos y condiciones</value>
+  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresividad</value>
   </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>Alfa</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Altura de antena</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Desfase de antena</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>Aplicado</value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>Adquirir</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Adquirir= factor * espera</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>Factor de adquirir</value>
+  </data>
   <data name="gsAreYouSure" xml:space="preserve">
-    <value>Esta seguro?</value>
+    <value>¿Está seguro?</value>
   </data>
   <data name="gsArea" xml:space="preserve">
-    <value>Area</value>
+    <value>Área</value>
+  </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>Toca los botones a la izquierda que quieres que aparezcan en el menú (lado derecho).
+
+El orden en que los presiones será el orden en que aparecerán en el menú de abajo hacia arriba.</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Estilo de acople</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value>Auto Apagado AgIO</value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value>Auto Inicio AgIO</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Autoguiado</value>
@@ -162,14 +224,41 @@
   <data name="gsBoundaryMenu" xml:space="preserve">
     <value>Contorno del lindero</value>
   </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Brillo</value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>Construir</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Construir alrededor</value>
+  </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Parcela todavía cargada</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Seleccionador de botones</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>Comportamiento de cámara</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Centro</value>
   </data>
   <data name="gsCentimeters" xml:space="preserve">
     <value>Centímetros</value>
   </data>
   <data name="gsCharts" xml:space="preserve">
     <value>Gráfico</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Revisar actualizaciones</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Escoger</value>
   </data>
   <data name="gsChooseADifferentField" xml:space="preserve">
     <value>Seleccione otra Parcela</value>
@@ -180,6 +269,9 @@
   <data name="gsChooseBuildDifferentone" xml:space="preserve">
     <value>Seleccione o cree otro</value>
   </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Línea de corte</value>
+  </data>
   <data name="gsClose" xml:space="preserve">
     <value>Cerrar</value>
   </data>
@@ -189,11 +281,17 @@
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Antes cierre el fichero</value>
   </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Pixel</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Seleccionador de colores</value>
+  </data>
   <data name="gsColors" xml:space="preserve">
     <value>Colores</value>
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
-    <value>Borrar completamente Linderos</value>
+    <value>Borrar completamente Lindero</value>
   </data>
   <data name="gsConfiguration" xml:space="preserve">
     <value>Configuración </value>
@@ -207,11 +305,23 @@
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
     <value>Ruta no válida</value>
   </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Pulsos por grado</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% Cobertura</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Crear</value>
+  </data>
   <data name="gsCreateABoundaryFirst" xml:space="preserve">
     <value>Crear antes  un lindero</value>
   </data>
   <data name="gsCreateNewField" xml:space="preserve">
     <value>Crear nueva Parcela</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>Crear nueva Parcela ISO XML</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
     <value>Actual</value>
@@ -534,20 +644,56 @@
   <data name="gsUseSelected" xml:space="preserve">
     <value>Usar seleccionado</value>
   </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value>Tipo de vehículo:</value>
+  </data>
+  <data name="gsWasZero" xml:space="preserve">
+    <value>Calibrar WAS</value>
+  </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Cámara</value>
   </data>
   <data name="gsWest" xml:space="preserve">
     <value>Oeste</value>
   </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Distancia entre ejes:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Ancho:</value>
+  </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Hay ventanas abiertas</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Asistente </value>
   </data>
   <data name="gsWizards" xml:space="preserve">
     <value>Asistentes de configuración</value>
   </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Interruptor de trabajo</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Ancho de trabajo</value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value>Trabajado</value>
+  </data>
   <data name="gsXTEChart" xml:space="preserve">
     <value>Gráfico XTE</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Calibrar giroscopio</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Zona </value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Zonas</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Zoom</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>

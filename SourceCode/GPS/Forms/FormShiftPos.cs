@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using System;
 using System.Windows.Forms;
@@ -27,8 +28,9 @@ namespace AgOpenGPS
 
         private void FormShiftPos_Load(object sender, EventArgs e)
         {
-            nudEast.Value = (decimal)mf.pn.fixOffset.easting * 100;
-            nudNorth.Value = (decimal)mf.pn.fixOffset.northing * 100;
+            GeoDelta driftCompensation = mf.pn.SharedFieldProperties.DriftCompensation;
+            nudNorth.Value = 100 * (decimal)driftCompensation.NorthingDelta;
+            nudEast.Value = 100 * (decimal)driftCompensation.EastingDelta;
             chkOffsetsOn.Checked = mf.isKeepOffsetsOn;
             if (chkOffsetsOn.Checked) chkOffsetsOn.Text = "On";
             else chkOffsetsOn.Text = "Off";
@@ -58,15 +60,13 @@ namespace AgOpenGPS
         {
             nudEast.Value = 0;
             nudNorth.Value = 0;
-            mf.pn.fixOffset.easting = 0;
-            mf.pn.fixOffset.northing = 0;
+            SetFixDelta();
         }
 
         private void bntOK_Click(object sender, EventArgs e)
         {
             mf.isKeepOffsetsOn = chkOffsetsOn.Checked;
-            mf.pn.fixOffset.northing = (double)nudNorth.Value / 100;
-            mf.pn.fixOffset.easting = (double)nudEast.Value / 100;
+            SetFixDelta();
             Close();
         }
 
@@ -79,13 +79,19 @@ namespace AgOpenGPS
         private void nudNorth_Click(object sender, EventArgs e)
         {
             ((NudlessNumericUpDown)sender).ShowKeypad(this);
-            mf.pn.fixOffset.northing = (double)nudNorth.Value / 100;
+            SetFixDelta();
         }
 
         private void nudEast_Click(object sender, EventArgs e)
         {
             ((NudlessNumericUpDown)sender).ShowKeypad(this);
-            mf.pn.fixOffset.easting = (double)nudEast.Value / 100;
+            SetFixDelta();
+        }
+
+        private void SetFixDelta()
+        {
+            mf.pn.SharedFieldProperties.DriftCompensation =
+                new GeoDelta((double)nudNorth.Value / 100, (double)nudEast.Value / 100);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AgOpenGPS.Core.Interfaces;
+﻿using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using System;
 using System.IO;
@@ -7,31 +7,28 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class RecordedPathStreamer : FieldAspectStreamer
     {
-        public RecordedPathStreamer(
-            ILogger logger
-        )
-            : base(logger, "RecPath.txt")
+        public RecordedPathStreamer() : base("RecPath.txt")
         {
         }
 
-        public RecordedPath TryRead(string fieldPath, string fileName)
+        public RecordedPath TryRead(DirectoryInfo fieldDirectory, string fileName)
         {
             RecordedPath recordedPath = null;
             try
             {
-                recordedPath = Read(fieldPath, fileName);
+                recordedPath = Read(fieldDirectory, fileName);
             }
             catch (Exception e)
             {
                 _presenter.PresentRecordedPathFileCorrupt();
-                _logger.LogError("Load Recorded Path" + e.ToString());
+                Log.EventWriter("Load Recorded Path" + e.ToString());
             }
             return recordedPath;
         }
 
-        private RecordedPath Read(string fieldPath, string fileName)
+        private RecordedPath Read(DirectoryInfo fieldDirectory, string fileName)
         {
-            string fileAndDirectory = FullPath(fieldPath, fileName);
+            string fileAndDirectory = FullPath(fieldDirectory, fileName);
             if (!File.Exists(fileAndDirectory))
             {
                 return null;
@@ -59,10 +56,10 @@ namespace AgOpenGPS.Core.Streamers
             return recordedPath;
         }
 
-        public void Write(RecordedPath path, string fieldPath, string fileName)
+        public void Write(RecordedPath path, DirectoryInfo fieldDirectory, string fileName)
         {
-            CreateDirectory(fieldPath);
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath, fileName)))
+            fieldDirectory.Create();
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory, fileName)))
             {
                 writer.WriteLine("$RecPath");
                 writer.WriteInt(path.Count);
@@ -76,10 +73,10 @@ namespace AgOpenGPS.Core.Streamers
             }
         }
 
-        public void CreateFile(string fieldPath)
+        public void CreateFile(DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            using (StreamWriter writer = new StreamWriter(FullPath(fieldPath)))
+            fieldDirectory.Create();
+            using (StreamWriter writer = new StreamWriter(FullPath(fieldDirectory)))
             {
                 //write paths # of sections
                 writer.WriteLine("$RecPath");

@@ -144,9 +144,6 @@
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Налаштування автопілота</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Налаштування</value>
-  </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Налаштування автопілота</value>
   </data>
@@ -197,6 +194,9 @@
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Повністю стерти межу</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Налаштування</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Контурний файл пошкоджено</value>

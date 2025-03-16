@@ -144,9 +144,6 @@
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Autopilota</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Nastavenie </value>
-  </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Nastavenie Autopilota</value>
   </data>
@@ -194,6 +191,9 @@
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Kompletne vymazať hranicu</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Nastavenie </value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Súbor s kontúrou je neplatný</value>

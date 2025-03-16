@@ -120,20 +120,53 @@
   <data name="gsABCurve" xml:space="preserve">
     <value>AB Kurve</value>
   </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Tegn AB - Klik 2 punkter på grænsen for at begynde</value>
+  </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linje</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
     <value>Om…</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
-    <value>Handling Afbrudt</value>
+    <value>Handling afbrudt</value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>Aktiver</value>
   </data>
   <data name="gsActual" xml:space="preserve">
     <value>Aktuel</value>
   </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>Lav avancerede sprøjtespor</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Jeg accepterer regler og vilkår</value>
+  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivitet</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antenne højde</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Antenne offset</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>Bearbejdet </value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>Erhverve</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Erhverve = Faktor * Hold</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>Erhverve Faktor</value>
   </data>
   <data name="gsAreYouSure" xml:space="preserve">
     <value>Er Du Sikker ?</value>
@@ -141,29 +174,67 @@
   <data name="gsArea" xml:space="preserve">
     <value>Areal</value>
   </data>
-  <data name="gsAutoSteer" xml:space="preserve">
-    <value>Autostyrins</value>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>Klik på de knapper til venstre, som du ønsker skal være i Menu (den højre side)
+
+Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Indstillinger</value>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Påhæng type</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="gsAutoSteer" xml:space="preserve">
+    <value>Autostyring</value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
-    <value>Autostyrins Indstillinger</value>
+    <value>Autostyring Indstillinger</value>
   </data>
   <data name="gsAutoSteerPort" xml:space="preserve">
-    <value>Autostyrrings Port</value>
+    <value>Autostyrings Port</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>Baggrund</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
     <value>Baseret På Mark</value>
   </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Bund Menu</value>
+  </data>
   <data name="gsBoundary" xml:space="preserve">
-    <value>Kant</value>
+    <value>Markgrænse</value>
   </data>
   <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
     <value>Fejl I KantlInjens Fil</value>
   </data>
+  <data name="gsBoundaryMenu" xml:space="preserve">
+    <value>Menu Markgrænse</value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Lysstyrke</value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>Byg</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Byg omkring</value>
+  </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Men Mark Er Indlæst</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Knap vælger</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>Kamera adfærd</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Afbryd</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Centrere</value>
   </data>
   <data name="gsCentimeters" xml:space="preserve">
     <value>cm</value>
@@ -171,14 +242,23 @@
   <data name="gsCharts" xml:space="preserve">
     <value>Grafik</value>
   </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Kontroller om opdatering</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Vælg</value>
+  </data>
   <data name="gsChooseADifferentField" xml:space="preserve">
-    <value>Vælg Anden Mark</value>
+    <value>Vælg anden mark</value>
   </data>
   <data name="gsChooseADifferentName" xml:space="preserve">
-    <value>Vælg Andet Navn</value>
+    <value>Vælg andet navn</value>
   </data>
   <data name="gsChooseBuildDifferentone" xml:space="preserve">
-    <value>Vælg Eller Opret En Anden</value>
+    <value>Vælg eller opret en anden</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Klip linje</value>
   </data>
   <data name="gsClose" xml:space="preserve">
     <value>Lukke</value>
@@ -187,37 +267,70 @@
     <value>Luk alle vinduer først</value>
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
-    <value>Luk Mark Først</value>
+    <value>Luk først mark</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Farve vælger</value>
   </data>
   <data name="gsColors" xml:space="preserve">
     <value>Farver</value>
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
-    <value>Slet Kant Fuldstændig</value>
+    <value>Slet kant fuldstændig</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Indstillinger</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
-    <value>Fejl i Fil Forager Spor</value>
+    <value>Fejl i kontur fil</value>
   </data>
   <data name="gsContourOn" xml:space="preserve">
-    <value>Forager Spor Til</value>
+    <value>Kontur igang</value>
   </data>
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
-    <value>Ingen Valid Sti</value>
+    <value>Ingen valid filsti</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Tæller pr. grad</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% dækning</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Lav</value>
   </data>
   <data name="gsCreateABoundaryFirst" xml:space="preserve">
-    <value>Lav En Kant Først</value>
+    <value>Lav en kant først</value>
   </data>
   <data name="gsCreateNewField" xml:space="preserve">
     <value>Opret Ny Mark</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
-    <value>Strøm</value>
+    <value>Aktuelt</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Strøm sensor</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Kurve</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
-    <value>Fejl i Kurve Fil</value>
+    <value>Fejl i kurve fil</value>
   </data>
   <data name="gsCurveNotOn" xml:space="preserve">
-    <value>Ingen Kurve Valgt</value>
+    <value>Ingen kurve valgt</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>Dag</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>Dødzone</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Slet</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
     <value>Slet Alle Sektioner Og Spor</value>
@@ -225,23 +338,56 @@
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Slet Bearbejdet Areal</value>
   </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>Dette vil slette alle markgrænser. Vil du fortsætte?</value>
+  </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
-    <value>Slet Spor</value>
+    <value>Slet  kontur spor</value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>Slet mark</value>
   </data>
   <data name="gsDeleteForSure" xml:space="preserve">
     <value>Slet, Er Du Sikker?</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Direkte</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Retnings markører</value>
   </data>
   <data name="gsDirectories" xml:space="preserve">
     <value>Bibliotek</value>
   </data>
   <data name="gsDirectoryExists" xml:space="preserve">
-    <value>Bibliotek Ekststerer Allerede</value>
+    <value>Bibliotek ekststerer allerede</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Uenig</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Vis</value>
+  </data>
+  <data name="gsDistance" xml:space="preserve">
+    <value>Afstand</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Afstand til flag</value>
+  </data>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>Kør ind</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
     <value>Kør Igennem</value>
   </data>
   <data name="gsDriving" xml:space="preserve">
-    <value>Kør</value>
+    <value>Køre</value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>Dual antenne indstillinger</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Dual positions antenne er på højre side</value>
   </data>
   <data name="gsEast" xml:space="preserve">
     <value>Øst</value>
@@ -252,6 +398,18 @@
   <data name="gsEditABLine" xml:space="preserve">
     <value>Ændre AB Linje</value>
   </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Ændre farve</value>
+  </data>
+  <data name="gsEditFieldName" xml:space="preserve">
+    <value>Ændre mark navn</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Højde log</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Aktiver</value>
+  </data>
   <data name="gsEncoderCounts" xml:space="preserve">
     <value>Føler Impulser</value>
   </data>
@@ -259,7 +417,13 @@
     <value>Indtast Koordinater Til Sim</value>
   </data>
   <data name="gsEnterFieldName" xml:space="preserve">
-    <value>Opret Mark Navn</value>
+    <value>Skriv mark navn</value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Indtast navn</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Indtast Record navn</value>
   </data>
   <data name="gsEnterSimCoords" xml:space="preserve">
     <value>Indtast Sim Koordinater</value>
@@ -270,26 +434,74 @@
   <data name="gsErrorreadingKML" xml:space="preserve">
     <value>Fejl Indlæsning KML</value>
   </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Ekstra hjælpelinjer</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Hurtig</value>
+  </data>
+  <data name="gsField" xml:space="preserve">
+    <value>Mark</value>
+  </data>
   <data name="gsFieldFileIsCorrupt" xml:space="preserve">
     <value>Fejl I Mark Fil</value>
   </data>
   <data name="gsFieldIsOpen" xml:space="preserve">
-    <value>Mark Er Åbnet</value>
+    <value>Mark er åbnet</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Mark menu</value>
   </data>
   <data name="gsFieldNotOpen" xml:space="preserve">
-    <value>Mark Ikke Åbnet</value>
+    <value>Mark Ikke åbnet</value>
   </data>
   <data name="gsFileError" xml:space="preserve">
     <value>Fejl I  Fil</value>
   </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Fix til Fix afstand</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarm stopper Autosteer</value>
+  </data>
   <data name="gsFlagByLatLon" xml:space="preserve">
-    <value>Flag af Lat Lon</value>
+    <value>Flag ifølge Lat Lon</value>
   </data>
   <data name="gsFlagFileIsCorrupt" xml:space="preserve">
-    <value>Fejl I Afmærkningsfil</value>
+    <value>Fejl I Flag-fil</value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>Opret flag</value>
   </data>
   <data name="gsForNow" xml:space="preserve">
-    <value>For Nu</value>
+    <value>Indtil videre</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="gsFromExisting" xml:space="preserve">
+    <value>Fra eksisterende</value>
+  </data>
+  <data name="gsFromKml" xml:space="preserve">
+    <value>Fra KML</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Urørt areal</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Baggrunds net</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Autostyring stoppet</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>Retning</value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value>Retning diagram</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Retning offset (grader)</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Forager</value>
@@ -297,8 +509,20 @@
   <data name="gsHeadlandForm" xml:space="preserve">
     <value>Opret og Ændre Forager</value>
   </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Trækkrog længde</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>Hydraulisk løft</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>Hydraulisk løft konfigurer</value>
+  </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Forkert retning? Tryk på Køretøj</value>
+  </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Intet billede</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Tommer</value>
@@ -306,41 +530,89 @@
   <data name="gsInner" xml:space="preserve">
     <value>Inderste</value>
   </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>Vil langsomt øge styrevinkel, for at mindske cross track fejl</value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>omvend hydraulik relæ</value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value>omvend motor retning</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>Omvend relæ</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>omvend Roll</value>
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value>omvend WAS</value>
+  </data>
   <data name="gsKMH" xml:space="preserve">
     <value>km/t</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Tastatur</value>
   </data>
   <data name="gsLanguage" xml:space="preserve">
     <value>Sprog</value>
   </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Venstre</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>Mindre</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Udjævn linje</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>Linje bredde</value>
+  </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mph</value>
+  </data>
+  <data name="gsMachineModule" xml:space="preserve">
+    <value>Maskin modul</value>
   </data>
   <data name="gsMachinePort" xml:space="preserve">
     <value>Maskin Port</value>
   </data>
   <data name="gsMakeBoundaryContours" xml:space="preserve">
-    <value>Lav Kant Spor</value>
+    <value>Lav kant kontur</value>
   </data>
   <data name="gsManual" xml:space="preserve">
     <value>Manuel</value>
   </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>Manuel vending</value>
+  </data>
   <data name="gsMeters" xml:space="preserve">
     <value>Meter</value>
   </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value>Min hastighed</value>
+  </data>
   <data name="gsMissingABLinesFile" xml:space="preserve">
-    <value>Mangler AB Linie Fil</value>
+    <value>Mangler AB linje fil</value>
   </data>
   <data name="gsMissingBoundaryFile" xml:space="preserve">
-    <value>Mangler Kant Fil</value>
+    <value>Mangler kant fil</value>
   </data>
   <data name="gsMissingContourFile" xml:space="preserve">
-    <value>Mangler Spor Fil</value>
+    <value>Mangler kontur fil</value>
   </data>
   <data name="gsMissingFlagsFile" xml:space="preserve">
-    <value>Mangler Afmærknings Fil</value>
+    <value>Mangler Flag fil</value>
   </data>
   <data name="gsMissingSectionFile" xml:space="preserve">
     <value>Mangler Sektions Fil</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>Mere</value>
+  </data>
+  <data name="gsMultiColorSections" xml:space="preserve">
+    <value>Flere farver</value>
   </data>
   <data name="gsN_East" xml:space="preserve">
     <value>Nord Øst</value>
@@ -350,6 +622,12 @@
   </data>
   <data name="gsNew" xml:space="preserve">
     <value>Ny</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Næste styrelinje</value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value>Nat</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
     <value>Ingen Aktiv AB Linie</value>
@@ -375,11 +653,20 @@
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Intet Slettet</value>
   </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Nudge</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Nudge afstand</value>
+  </data>
   <data name="gsOffset" xml:space="preserve">
     <value>Offset</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
     <value>Offset Fix</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Gennemsigtighed</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Åben</value>
@@ -402,6 +689,18 @@
   <data name="gsPleaseEnterABLine" xml:space="preserve">
     <value>Vælg AB Linie</value>
   </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value>Vent venligst</value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
+    <value>Punkt</value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value>Punkter</value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value>Punkter at bearbejde</value>
+  </data>
   <data name="gsPressureSensorValueLabel" xml:space="preserve">
     <value>Tryk (bar)</value>
   </data>
@@ -411,14 +710,29 @@
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>Program Afsluttes, Venligst Genstart</value>
   </data>
+  <data name="gsRaiseTime" xml:space="preserve">
+    <value>Løfte tid</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Dosering</value>
+  </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Helt Sikkert Nulstille Alt</value>
+    <value>Helt Sikker, Nulstille alt</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Record</value>
   </data>
   <data name="gsRecordedPathFileIsCorrupt" xml:space="preserve">
     <value> Fejl I Optaget Fil/Sti</value>
+  </data>
+  <data name="gsRecordedPathMenu" xml:space="preserve">
+    <value>Optaget sti</value>
+  </data>
+  <data name="gsRecordedPathPicker" xml:space="preserve">
+    <value>Indlæs optaget sti</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Fjern offset</value>
   </data>
   <data name="gsResetAll" xml:space="preserve">
     <value>Nulstil Alt</value>
@@ -428,6 +742,12 @@
   </data>
   <data name="gsResume" xml:space="preserve">
     <value>Genoptag</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Højre</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Højre Menu</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
     <value>SydØst</value>
@@ -441,6 +761,27 @@
   <data name="gsSaveAs" xml:space="preserve">
     <value>Gem Som</value>
   </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Skærm knapper</value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value>Indstil section farver</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Sektion linjer</value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Sektioner</value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value>Vælg knapper</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Vælg preset farve</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Send + gem</value>
+  </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Send Til Maskinmodul</value>
   </data>
@@ -450,14 +791,29 @@
   <data name="gsShiftGPSPosition" xml:space="preserve">
     <value>Skift GPS Position cm</value>
   </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Dan Simpel kørespor </value>
+  </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulator Tændt</value>
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value>Langsom</value>
+  </data>
+  <data name="gsSlowDownBelow" xml:space="preserve">
+    <value>Kør langsommere end!</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Udglat</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
     <value>Udglat Ab Kurve</value>
   </data>
   <data name="gsSort" xml:space="preserve">
-    <value>Vælg</value>
+    <value>Sorter</value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Lyde</value>
   </data>
   <data name="gsSouth" xml:space="preserve">
     <value>Syd</value>
@@ -471,17 +827,74 @@
   <data name="gsStartNewField" xml:space="preserve">
     <value>Start Ny Mark</value>
   </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Styre vinkel</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Styrestang</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Styre diagrammer</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>Ekstern aktivering</value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value>Autostyring baglæns</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Autostyring kontakt</value>
+  </data>
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Stop Record Pause Af Kant</value>
+  </data>
+  <data name="gsTermsOne" xml:space="preserve">
+    <value>Hvis du omdeler kopier af dette FRIE program, uanset om det er gratis eller mod betaling, forbedret, ændret, skal du give modtageren samme friheder som du modtog som det står i GPLv3 licensen</value>
+  </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value>AgOpenGPS er udelukkende undervisnings software, til at lære om autostyrings systemer, GPS meddelelser, og teoretisk tildeling af maskin kontrol.
+
+Det må på ingen måde bruges på rigtige maskiner.                                      En simulator er inkluderet for at tilbyde eleven, sikkert at opleve maskin styring.
+
+Der er ingen sikkerhedssystemer i softwaren, og ingen er underforstået. 
+
+ANVENDELSE PÅ EGET RISIKO</value>
+  </data>
+  <data name="gsTermsTwo" xml:space="preserve">
+    <value>Du skal sikre dig, at de modtager eller kan få kildekoden.  Og du skal vise dem disse vilkår, så de kender deres rettigheder. Stjæl ikke andres arbejde og kald det dit eget.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Gem  fil</value>
   </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>For hurtigt</value>
+  </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Redskab venstre</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Redskab ofset retning</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Redskab Højre</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Værktøj Menu</value>
+  </data>
   <data name="gsTopFieldView" xml:space="preserve">
     <value>Mark Oversigt</value>
   </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Sporbredde</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Lav spor</value>
+  </data>
   <data name="gsTramLines" xml:space="preserve">
     <value>Plejespor</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Plejespor bredde</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Tænd AB Kurve</value>
@@ -492,13 +905,34 @@
   <data name="gsUseSelected" xml:space="preserve">
     <value>Brug Valgte</value>
   </data>
+  <data name="gsUturnExtension" xml:space="preserve">
+    <value>Sæt forlængelseslinjer til 2 eller 3 *  radius</value>
+  </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value>Køretøj Type</value>
+  </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Kamera</value>
   </data>
   <data name="gsWest" xml:space="preserve">
     <value>Vest</value>
   </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Akselafstand</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Bredde</value>
+  </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows stadig åben</value>
+  </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Arbejds kontakt</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Arbejdsbredde</value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value>Bearbejdet</value>
   </data>
 </root>

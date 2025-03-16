@@ -2,6 +2,10 @@
 
 using AgLibrary.Logging;
 using AgOpenGPS;
+using AgOpenGPS.Classes;
+using AgOpenGPS.Core;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.ViewModels;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using Microsoft.Win32;
@@ -28,6 +32,11 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
+        public ApplicationCore AppCore { get; }
+
+        public ApplicationModel AppModel => AppCore.AppModel;
+        public ApplicationViewModel AppViewModel => AppCore.AppViewModel;
+
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool SetForegroundWindow(IntPtr handle);
@@ -60,6 +69,8 @@ namespace AgOpenGPS
 
         //texture holders
         public uint[] texture;
+        public ScreenTextures ScreenTextures = new ScreenTextures();
+        public VehicleTextures VehicleTextures = new VehicleTextures();
 
         //create instance of a stopwatch for timing of frames and NMEA hz determination
         private readonly Stopwatch swFrame = new Stopwatch();
@@ -268,6 +279,11 @@ namespace AgOpenGPS
         {
             //winform initialization
             InitializeComponent();
+
+            AppCore = new ApplicationCore(
+                new DirectoryInfo(RegistrySettings.baseDirectory),
+                null,
+                null);
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
@@ -677,61 +693,7 @@ namespace AgOpenGPS
             }
         }
 
-        public enum textures : uint
-        {
-            Floor, Font,
-            Turn, TurnCancel, TurnManual,
-            Compass, Speedo, SpeedoNeedle,
-            Lift, SteerPointer,
-            SteerDot, Tractor, QuestionMark,
-            FrontWheels, ArticulatedFront, ArticulatedRear,
-            Harvester,
-            Lateral, bingGrid,
-            NoGPS, ZoomIn48, ZoomOut48,
-            Pan, MenuHideShow,
-            ToolWheels, Tire, TramDot,
-            YouTurnU, YouTurnH, CrossTrackBkgrnd
-        }
-
-        public void LoadGLTextures()
-        {
-            GL.Enable(EnableCap.Texture2D);
-
-            Bitmap[] oglTextures = new Bitmap[]
-            {
-                Resources.z_Floor,Resources.z_Font,
-                Resources.z_Turn,Resources.z_TurnCancel,Resources.z_TurnManual,
-                Resources.z_Compass,Resources.z_Speedo,Resources.z_SpeedoNeedle,
-                Resources.z_Lift,Resources.z_SteerPointer,
-                Resources.z_SteerDot,GetTractorBrand(Settings.Default.setBrand_TBrand),Resources.z_QuestionMark,
-                Resources.z_FrontWheels,GetArticulatedBrandFront(Settings.Default.setBrand_WDBrand),
-                GetArticulatedBrandRear(Settings.Default.setBrand_WDBrand),
-                GetHarvesterBrand(Settings.Default.setBrand_HBrand),
-                Resources.z_LateralManual, Resources.z_bingMap,
-                Resources.z_NoGPS, Resources.ZoomIn48, Resources.ZoomOut48,
-                Resources.Pan, Resources.MenuHideShow,
-                Resources.z_Tool, Resources.z_Tire, Resources.z_TramOnOff,
-                Resources.YouTurnU, Resources.YouTurnH, Resources.z_crossTrackBkgnd
-            };
-
-            texture = new uint[oglTextures.Length];
-
-            for (int h = 0; h < oglTextures.Length; h++)
-            {
-                using (Bitmap bitmap = oglTextures[h])
-                {
-                    GL.GenTextures(1, out texture[h]);
-                    GL.BindTexture(TextureTarget.Texture2D, texture[h]);
-                    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                    bitmap.UnlockBits(bitmapData);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                    GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-                }
-            }
-        }
-
-        //request a new job
+         //request a new job
         public void JobNew()
         {
             //SendSteerSettingsOutAutoSteerPort();
@@ -851,8 +813,7 @@ namespace AgOpenGPS
             //reset field offsets
             if (!isKeepOffsetsOn)
             {
-                pn.fixOffset.easting = 0;
-                pn.fixOffset.northing = 0;
+                pn.SharedFieldProperties.DriftCompensation = new GeoDelta(0.0, 0.0);
             }
 
             //turn off headland
@@ -1043,16 +1004,7 @@ namespace AgOpenGPS
 
             btnSection1Man.Text = "1";
 
-            using (Bitmap bitmap = Properties.Resources.z_bingMap)
-            {
-                GL.GenTextures(1, out texture[(int)FormGPS.textures.bingGrid]);
-                GL.BindTexture(TextureTarget.Texture2D, texture[(int)FormGPS.textures.bingGrid]);
-                BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bitmapData.Width, bitmapData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-                bitmap.UnlockBits(bitmapData);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, 9729);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, 9729);
-            }
+            worldGrid.ResetBingGridTexture();
         }
 
         public void FieldMenuButtonEnableDisable(bool isOn)

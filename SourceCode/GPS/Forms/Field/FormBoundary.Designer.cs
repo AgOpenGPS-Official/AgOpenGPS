@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Boundary = new System.Windows.Forms.Label();
+            this.labelBounds = new System.Windows.Forms.Label();
             this.Thru = new System.Windows.Forms.Label();
             this.Area = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
@@ -53,17 +53,17 @@
             this.panelKML.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Boundary
+            // labelBounds
             // 
-            this.Boundary.BackColor = System.Drawing.Color.Transparent;
-            this.Boundary.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Boundary.ForeColor = System.Drawing.Color.Black;
-            this.Boundary.Location = new System.Drawing.Point(33, 85);
-            this.Boundary.Name = "Boundary";
-            this.Boundary.Size = new System.Drawing.Size(177, 32);
-            this.Boundary.TabIndex = 203;
-            this.Boundary.Text = "Bounds";
-            this.Boundary.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.labelBounds.BackColor = System.Drawing.Color.Transparent;
+            this.labelBounds.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBounds.ForeColor = System.Drawing.Color.Black;
+            this.labelBounds.Location = new System.Drawing.Point(33, 85);
+            this.labelBounds.Name = "labelBounds";
+            this.labelBounds.Size = new System.Drawing.Size(177, 32);
+            this.labelBounds.TabIndex = 203;
+            this.labelBounds.Text = "Bounds";
+            this.labelBounds.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // Thru
             // 
@@ -101,7 +101,7 @@
             this.panelMain.Controls.Add(this.btnCancel);
             this.panelMain.Controls.Add(this.Area);
             this.panelMain.Controls.Add(this.Thru);
-            this.panelMain.Controls.Add(this.Boundary);
+            this.panelMain.Controls.Add(this.labelBounds);
             this.panelMain.Controls.Add(this.btnOpenGoogleEarth);
             this.panelMain.Controls.Add(this.btnDelete);
             this.panelMain.Location = new System.Drawing.Point(4, 6);
@@ -369,7 +369,7 @@
 
         #endregion
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Label Boundary;
+        private System.Windows.Forms.Label labelBounds;
         private System.Windows.Forms.Label Thru;
         private System.Windows.Forms.Label Area;
         private System.Windows.Forms.Button btnCancel;

@@ -144,9 +144,6 @@
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Direção Automática</value>
   </data>
-  <data name="gsConfiguration" xml:space="preserve">
-    <value>Configuração </value>
-  </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Configuração de direção automática</value>
   </data>
@@ -197,6 +194,9 @@
   </data>
   <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
     <value>Excluir completamente o limite</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Configuração </value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Arquivo de contorno corrompido</value>

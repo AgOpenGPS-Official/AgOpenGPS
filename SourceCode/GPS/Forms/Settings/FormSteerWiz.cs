@@ -565,7 +565,6 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setArdSteer_maxPulseCounts = 0;
 
-            Properties.Settings.Default.setVehicle_goalPointLookAhead = 2.5;
             Properties.Settings.Default.setVehicle_goalPointLookAheadMult = 1;
 
             Properties.Settings.Default.stanleyHeadingErrorGain = 1;

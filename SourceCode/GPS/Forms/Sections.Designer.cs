@@ -18,6 +18,24 @@ namespace AgOpenGPS
         public btnStates manualBtnState = btnStates.Off;
         public btnStates autoBtnState = btnStates.Off;
 
+        private void MarkAsWorkedTrack()
+        {
+            // return if there was a track selected
+            if (this.trk.idx < 0) return;
+
+            var track = this.trk.gArr[this.trk.idx];
+
+            if (track.mode == TrackMode.AB)
+            {
+                track.workedTracks.Add(this.ABLine.howManyPathsAway);
+            }
+            else if (track.mode == TrackMode.Curve)
+            {
+                track.workedTracks.Add(this.curve.howManyPathsAway);
+            }
+        }
+
+
         //Section Manual and Auto buttons on right side
         private void btnSectionMasterManual_Click(object sender, EventArgs e)
         {
@@ -33,6 +51,10 @@ namespace AgOpenGPS
                 case btnStates.Off:
                     manualBtnState = btnStates.On;
                     btnSectionMasterManual.Image = Properties.Resources.ManualOn;
+
+                    //add current track when it doesn't exist in the worked track list
+                    MarkAsWorkedTrack();
+
                     break;
 
                 case btnStates.On:
@@ -61,6 +83,10 @@ namespace AgOpenGPS
                     autoBtnState = btnStates.Auto;
                     btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOn;
                     if (sounds.isSectionsSoundOn) sounds.sndSectionOn.Play();
+
+                    //add current track when it doesn't exist in the worked track list
+                    MarkAsWorkedTrack();
+
                     break;
 
                 case btnStates.Auto:

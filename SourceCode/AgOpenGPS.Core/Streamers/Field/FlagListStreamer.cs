@@ -1,4 +1,4 @@
-﻿using AgOpenGPS.Core.Interfaces;
+﻿using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -8,17 +8,14 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class FlagListStreamer : FieldAspectStreamer
     {
-        public FlagListStreamer(
-            ILogger logger
-        )
-            : base(logger, "Flags.txt")
+        public FlagListStreamer() : base("Flags.txt")
         {
         }
 
-        public List<Flag> TryRead(string fieldPath)
+        public List<Flag> TryRead(DirectoryInfo fieldDirectory)
         {
             List<Flag> flagList = null;
-            string fullPath = FullPath(fieldPath);
+            string fullPath = FullPath(fieldDirectory);
             if (!File.Exists(fullPath))
             {
                 _presenter.PresentFlagsFileMissing();
@@ -27,28 +24,28 @@ namespace AgOpenGPS.Core.Streamers
             {
                 try
                 {
-                    flagList = Read(fieldPath);
+                    flagList = Read(fieldDirectory);
                 }
 
                 catch (Exception e)
                 {
                     _presenter.PresentFlagsFileCorrupt();
-                    _logger.LogError("FieldOpen, Loading Flags, Corrupt Flag File" + e.ToString());
+                    Log.EventWriter("FieldOpen, Loading Flags, Corrupt Flag File" + e.ToString());
                 }
             }
             return flagList;
         }
 
-        public void TryWrite(List<Flag> flags, string fieldPath)
+        public void TryWrite(List<Flag> flags, DirectoryInfo fieldDirectory)
         {
             try
             {
-                Write(flags, fieldPath);
+                Write(flags, fieldDirectory);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n Cannot write to file.");
-                _logger.LogError("Saving Flags" + e.ToString());
+                Log.EventWriter("Saving Flags" + e.ToString());
             }
         }
 
@@ -64,10 +61,10 @@ namespace AgOpenGPS.Core.Streamers
             return FlagColor.Red;
         }
 
-        private List<Flag> Read(string fieldPath)
+        private List<Flag> Read(DirectoryInfo fieldDirectory)
         {
             List<Flag> flagList = new List<Flag>();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldPath)))
+            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
             {
                 string line = reader.ReadLine(); // skip header
 
@@ -105,10 +102,10 @@ namespace AgOpenGPS.Core.Streamers
             return 0;
         }
 
-        private void Write(List<Flag> flags, string fieldPath)
+        private void Write(List<Flag> flags, DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldPath)))
+            fieldDirectory.Create();
+            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
             {
                 writer.WriteLine("$Flags");
 
@@ -127,10 +124,10 @@ namespace AgOpenGPS.Core.Streamers
             }
         }
 
-        public void CreateFile(string fieldPath)
+        public void CreateFile(DirectoryInfo fieldDirectory)
         {
-            CreateDirectory(fieldPath);
-            using (StreamWriter writer = new StreamWriter(FullPath(fieldPath)))
+            fieldDirectory.Create();
+            using (StreamWriter writer = new StreamWriter(FullPath(fieldDirectory)))
             {
             }
         }

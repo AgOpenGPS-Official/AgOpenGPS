@@ -1,0 +1,31 @@
+﻿<Window x:Class="AgOpenGPS.WpfApp.Field.SelectFieldDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    xmlns:corevm="clr-namespace:AgOpenGPS.Core.ViewModels;assembly=AgOpenGPS.Core"
+    xmlns:local="clr-namespace:AgOpenGPS.WpfApp.Field"
+
+    d:DataContext="{d:DesignInstance Type=corevm:SelectFieldViewModel, IsDesignTimeCreatable=False}"
+
+    Title="FieldSelectionWindow" Height="450" Width="800">
+
+    <DockPanel LastChildFill="True">
+        <UniformGrid x:Name="buttonUniformGrid" DockPanel.Dock="Bottom" Rows="1" Height="80">
+            <Button x:Name="deleteButton"
+                Content="Delete" Width="100"
+                Command="{Binding DeleteFieldCommand}" />
+            <Button x:Name="sortButton"
+                Content="Sort" Width="100"
+                Command="{Binding SortCommand}" />
+            <Button x:Name="cancelButton"
+                Content="Cancel" Width="100"
+                IsCancel="True" />
+            <Button x:Name="useSelectedButton"
+                Content="Use Selected" Width="100"
+                Command="{Binding SelectFieldCommand}" />
+        </UniformGrid>
+        <local:FieldTable x:Name="fieldTable"/>
+    </DockPanel>
+</Window>

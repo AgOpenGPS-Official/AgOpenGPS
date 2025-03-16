@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Culture;
 using AgOpenGPS.Helpers;
 using System;
@@ -15,7 +16,7 @@ namespace AgOpenGPS
         //class variables
         private readonly FormGPS mf = null;
 
-        private double easting, northing, latK, lonK;
+        private double latK, lonK;
 
         public FormFieldKML(Form _callingForm)
         {
@@ -171,10 +172,8 @@ namespace AgOpenGPS
                                     double.TryParse(fix[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
                                     double.TryParse(fix[1], NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
 
-                                    mf.pn.ConvertWGS84ToLocal(latK, lonK, out northing, out easting);
-
-                                    //add the point to boundary
-                                    New.fenceLine.Add(new vec3(easting, northing, 0));
+                                    GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latK, lonK));
+                                    New.fenceLine.Add(new vec3(geoCoord));
                                 }
 
                                 //build the boundary, make sure is clockwise for outer counter clockwise for inner
@@ -334,10 +333,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    mf.pn.latStart = latK;
-                    mf.pn.lonStart = lonK;
-
-                    mf.pn.SetLocalMetersPerDegree(true);
+                    mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
 
                     //make sure directory exists, or create it
                     if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
@@ -377,7 +373,9 @@ namespace AgOpenGPS
                         writer.WriteLine("0");
 
                         writer.WriteLine("StartFix");
-                        writer.WriteLine(mf.pn.latStart.ToString(CultureInfo.InvariantCulture) + "," + mf.pn.lonStart.ToString(CultureInfo.InvariantCulture));
+                        writer.WriteLine(
+                            mf.AppModel.LocalPlane.Origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                            mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
                     }
 
                     mf.FileCreateSections();

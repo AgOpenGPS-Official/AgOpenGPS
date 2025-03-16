@@ -342,8 +342,7 @@ namespace AgIO
             mf.YesMessageBox("AgIO will Restart to Disable UDP Networking Features");
             Log.EventWriter("Program Reset: Turning UDP OFF");
 
-            Application.Restart();
-            Environment.Exit(0);
+            Program.Restart();
 
             Close();
         }

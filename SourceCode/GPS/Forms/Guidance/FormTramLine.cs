@@ -823,7 +823,11 @@ namespace AgOpenGPS
             }
 
             ResetStartNumLabels();
+            FixLabelsCurve();
+            lblStartPass.Text = "Start\r\n" + startPass.ToString();
+            lblNumPasses.Text = passes.ToString();
             BuildTram();
+
         }
 
         private void btnSelectCurveBk_Click(object sender, EventArgs e)
