@@ -6,6 +6,11 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
 using AgOpenGPS.Core.Models;
+using static System.Net.WebRequestMethods;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.IO.Ports;
+using System.Text.RegularExpressions;
+using System.Data;
 
 namespace AgOpenGPS
 {
@@ -104,60 +109,52 @@ namespace AgOpenGPS
 
         }
         // This loads flags of a txt or CSV file with this format: "latitude,longitude,flagColor,flagName"
-        private void btnLoad_Click(object sender, EventArgs e)
+      
+        private void btnLoadFlags_Click(object sender, EventArgs e)
         {
-
             double east, nort;
 
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Filter = "Text Document | *.txt| CSV Document | *.csv",
-                Title = "Please select points file",
-                Multiselect = false
-            };
+            OpenFileDialog fileDialog = new OpenFileDialog();
+
+            fileDialog.Filter = "Text Document | *.txt| CSV Document | *.csv";
+            fileDialog.Title = "Please select points file";
+            fileDialog.Multiselect = false;
 
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 string filePath = fileDialog.FileName;
-
                 try
                 {
-                   
-                    string[] lines = File.ReadAllLines(filePath);
+                    string[] lines = System.IO.File.ReadAllLines(filePath);
 
-                    foreach (string line in lines)
+                    for (int i = 1; i < lines.Length; i++)
                     {
-                       
+                        string line = lines[i];
                         string[] parts = line.Split(',');
-
-
                         if (parts.Length == 4 &&
-                            double.TryParse(parts[0], out double latitude) &&
-                            double.TryParse(parts[1], out double longitude) &&
+                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double latitude) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double longitude) &&
                             int.TryParse(parts[2], out int flagColor))
                         {
-                            
-                            string flagName = (parts.Length >= 4 && !string.IsNullOrWhiteSpace(parts[3]))
-                             ? parts[3].Trim() : $"{mf.flagPts.Count + 1}";
+                            string flagName = (!string.IsNullOrWhiteSpace(parts[3])) ? parts[3].Trim() : $"{mf.flagPts.Count + 1}";
 
                             mf.pn.ConvertWGS84ToLocal(latitude, longitude, out nort, out east);
                             int nextflag = mf.flagPts.Count + 1;
                             CFlag flagPt = new CFlag(latitude, longitude, east, nort, 0, flagColor, nextflag, flagName);
                             mf.flagPts.Add(flagPt);
                             mf.FileSaveFlags();
-
                         }
                         else
                         {
                             MessageBox.Show($"Invalid line in file: {line}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
-
                     MessageBox.Show("Flags successfully added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error reading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                  MessageBox.Show($"Error reading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

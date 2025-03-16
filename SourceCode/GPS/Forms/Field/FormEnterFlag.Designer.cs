@@ -32,14 +32,14 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.nudLatitude = new AgOpenGPS.NudlessNumericUpDown();
-            this.nudLongitude = new AgOpenGPS.NudlessNumericUpDown();
             this.labelPoint = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnYellow = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
             this.btnGreen = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnLoadFlags = new System.Windows.Forms.Button();
+            this.nudLatitude = new AgOpenGPS.NudlessNumericUpDown();
+            this.nudLongitude = new AgOpenGPS.NudlessNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).BeginInit();
             this.SuspendLayout();
@@ -49,10 +49,9 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Tahoma", 15.75F);
             this.label9.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label9.Location = new System.Drawing.Point(680, 49);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(510, 40);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(211, 33);
+            this.label9.Size = new System.Drawing.Size(163, 25);
             this.label9.TabIndex = 202;
             this.label9.Text = "( +180 to -180 )";
             // 
@@ -61,10 +60,9 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 15.75F);
             this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label8.Location = new System.Drawing.Point(287, 49);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(215, 40);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(173, 33);
+            this.label8.Size = new System.Drawing.Size(134, 25);
             this.label8.TabIndex = 201;
             this.label8.Text = "( +90 to -90)";
             // 
@@ -72,10 +70,9 @@
             // 
             this.label1.Font = new System.Drawing.Font("Tahoma", 15.75F);
             this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(609, 18);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(457, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(359, 31);
+            this.label1.Size = new System.Drawing.Size(269, 25);
             this.label1.TabIndex = 200;
             this.label1.Text = "Longitude";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -84,78 +81,20 @@
             // 
             this.label18.Font = new System.Drawing.Font("Tahoma", 15.75F);
             this.label18.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label18.Location = new System.Drawing.Point(213, 18);
-            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label18.Location = new System.Drawing.Point(160, 15);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(336, 31);
+            this.label18.Size = new System.Drawing.Size(252, 25);
             this.label18.TabIndex = 199;
             this.label18.Text = "Latitude";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // nudLatitude
-            // 
-            this.nudLatitude.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudLatitude.DecimalPlaces = 7;
-            this.nudLatitude.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudLatitude.Location = new System.Drawing.Point(203, 84);
-            this.nudLatitude.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.nudLatitude.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
-            this.nudLatitude.Minimum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            -2147483648});
-            this.nudLatitude.Name = "nudLatitude";
-            this.nudLatitude.Size = new System.Drawing.Size(365, 63);
-            this.nudLatitude.TabIndex = 198;
-            this.nudLatitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudLatitude.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nudLatitude.Click += new System.EventHandler(this.nudLatitude_Click);
-            // 
-            // nudLongitude
-            // 
-            this.nudLongitude.BackColor = System.Drawing.Color.AliceBlue;
-            this.nudLongitude.DecimalPlaces = 7;
-            this.nudLongitude.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudLongitude.Location = new System.Drawing.Point(597, 84);
-            this.nudLongitude.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.nudLongitude.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.nudLongitude.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
-            this.nudLongitude.Name = "nudLongitude";
-            this.nudLongitude.Size = new System.Drawing.Size(397, 63);
-            this.nudLongitude.TabIndex = 197;
-            this.nudLongitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudLongitude.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.nudLongitude.Click += new System.EventHandler(this.nudLongitude_Click);
             // 
             // labelPoint
             // 
             this.labelPoint.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPoint.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelPoint.Location = new System.Drawing.Point(29, 94);
-            this.labelPoint.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelPoint.Location = new System.Drawing.Point(22, 76);
             this.labelPoint.Name = "labelPoint";
-            this.labelPoint.Size = new System.Drawing.Size(167, 42);
+            this.labelPoint.Size = new System.Drawing.Size(125, 34);
             this.labelPoint.TabIndex = 205;
             this.labelPoint.Text = "Point A";
             this.labelPoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -170,10 +109,9 @@
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
             this.btnCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnCancel.Location = new System.Drawing.Point(367, 238);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCancel.Location = new System.Drawing.Point(275, 193);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(116, 71);
+            this.btnCancel.Size = new System.Drawing.Size(87, 58);
             this.btnCancel.TabIndex = 430;
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -187,10 +125,9 @@
             this.btnYellow.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnYellow.Image = global::AgOpenGPS.Properties.Resources.FlagYel;
             this.btnYellow.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnYellow.Location = new System.Drawing.Point(588, 238);
-            this.btnYellow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnYellow.Location = new System.Drawing.Point(441, 193);
             this.btnYellow.Name = "btnYellow";
-            this.btnYellow.Size = new System.Drawing.Size(116, 71);
+            this.btnYellow.Size = new System.Drawing.Size(87, 58);
             this.btnYellow.TabIndex = 431;
             this.btnYellow.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnYellow.UseVisualStyleBackColor = false;
@@ -205,10 +142,9 @@
             this.btnRed.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRed.Image = global::AgOpenGPS.Properties.Resources.FlagRed;
             this.btnRed.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnRed.Location = new System.Drawing.Point(896, 238);
-            this.btnRed.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRed.Location = new System.Drawing.Point(672, 193);
             this.btnRed.Name = "btnRed";
-            this.btnRed.Size = new System.Drawing.Size(116, 71);
+            this.btnRed.Size = new System.Drawing.Size(87, 58);
             this.btnRed.TabIndex = 432;
             this.btnRed.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnRed.UseVisualStyleBackColor = false;
@@ -223,34 +159,88 @@
             this.btnGreen.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGreen.Image = global::AgOpenGPS.Properties.Resources.FlagGrn;
             this.btnGreen.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnGreen.Location = new System.Drawing.Point(741, 238);
-            this.btnGreen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGreen.Location = new System.Drawing.Point(556, 193);
             this.btnGreen.Name = "btnGreen";
-            this.btnGreen.Size = new System.Drawing.Size(116, 71);
+            this.btnGreen.Size = new System.Drawing.Size(87, 58);
             this.btnGreen.TabIndex = 433;
             this.btnGreen.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnGreen.UseVisualStyleBackColor = false;
             this.btnGreen.Click += new System.EventHandler(this.btnRed_Click);
             // 
-            // btnLoad
+            // btnLoadFlags
             // 
-            this.btnLoad.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLoad.Location = new System.Drawing.Point(52, 207);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(263, 78);
-            this.btnLoad.TabIndex = 434;
-            this.btnLoad.Text = "Load Flags";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.btnLoadFlags.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLoadFlags.Location = new System.Drawing.Point(39, 168);
+            this.btnLoadFlags.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLoadFlags.Name = "btnLoadFlags";
+            this.btnLoadFlags.Size = new System.Drawing.Size(197, 63);
+            this.btnLoadFlags.TabIndex = 434;
+            this.btnLoadFlags.Text = "Load Flags";
+            this.btnLoadFlags.UseVisualStyleBackColor = true;
+            this.btnLoadFlags.Click += new System.EventHandler(this.btnLoadFlags_Click);
+            // 
+            // nudLatitude
+            // 
+            this.nudLatitude.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudLatitude.DecimalPlaces = 7;
+            this.nudLatitude.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudLatitude.Location = new System.Drawing.Point(152, 68);
+            this.nudLatitude.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            this.nudLatitude.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
+            this.nudLatitude.Name = "nudLatitude";
+            this.nudLatitude.Size = new System.Drawing.Size(274, 52);
+            this.nudLatitude.TabIndex = 198;
+            this.nudLatitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudLatitude.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudLatitude.Click += new System.EventHandler(this.nudLatitude_Click);
+            // 
+            // nudLongitude
+            // 
+            this.nudLongitude.BackColor = System.Drawing.Color.AliceBlue;
+            this.nudLongitude.DecimalPlaces = 7;
+            this.nudLongitude.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudLongitude.Location = new System.Drawing.Point(448, 68);
+            this.nudLongitude.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nudLongitude.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.nudLongitude.Name = "nudLongitude";
+            this.nudLongitude.Size = new System.Drawing.Size(298, 52);
+            this.nudLongitude.TabIndex = 197;
+            this.nudLongitude.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudLongitude.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudLongitude.Click += new System.EventHandler(this.nudLongitude_Click);
             // 
             // FormEnterFlag
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1028, 327);
+            this.ClientSize = new System.Drawing.Size(771, 266);
             this.ControlBox = false;
-            this.Controls.Add(this.btnLoad);
+            this.Controls.Add(this.btnLoadFlags);
             this.Controls.Add(this.btnGreen);
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnYellow);
@@ -263,7 +253,6 @@
             this.Controls.Add(this.nudLatitude);
             this.Controls.Add(this.nudLongitude);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormEnterFlag";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -288,6 +277,6 @@
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Button btnRed;
         private System.Windows.Forms.Button btnGreen;
-        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Button btnLoadFlags;
     }
 }
