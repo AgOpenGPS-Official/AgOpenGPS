@@ -1,12 +1,9 @@
-﻿using AgOpenGPS.ResourcesBrands;
+﻿using AgOpenGPS.Core.Models;
+using AgOpenGPS.ResourcesBrands;
 using System.Drawing;
 
 namespace AgOpenGPS
 {
-    public enum TractorBrand { AGOpenGPS, Case, Claas, Deutz, Fendt, JohnDeere, Kubota, Massey, NewHolland, Same, Steyr, Ursus, Valtra, JCB }
-    public enum HarvesterBrand { AgOpenGPS, Case, Claas, JohnDeere, NewHolland }
-    public enum ArticulatedBrand { AgOpenGPS, Case, Challenger, JohnDeere, NewHolland, Holder }
-
     public static class TractorBitmaps
     {
         public static Bitmap GetBitmap(TractorBrand brand)
