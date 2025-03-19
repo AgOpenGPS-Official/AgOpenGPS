@@ -200,6 +200,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="ResourcesBrands\BrandImages.Designer.cs">
+      <DependentUpon>BrandImages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Culture/gStr.af.resx">
@@ -285,6 +290,10 @@
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourcesBrands\BrandImages.resx">
+      <LastGenOutput>BrandImages.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

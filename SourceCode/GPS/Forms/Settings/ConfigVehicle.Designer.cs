@@ -11,7 +11,7 @@ using AgOpenGPS.Culture;
 using AgOpenGPS.Properties;
 using OpenTK.Graphics.OpenGL;
 using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Resources;
+using AgOpenGPS.ResourcesBrands;
 
 namespace AgOpenGPS
 {
