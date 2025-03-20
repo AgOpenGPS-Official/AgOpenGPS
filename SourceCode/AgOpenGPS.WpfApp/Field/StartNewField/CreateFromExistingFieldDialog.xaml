@@ -62,7 +62,8 @@
             <Button x:Name="sortButton"
                 DockPanel.Dock="Right"
                 Width="100" Height="80"
-                Content="Sort"/>
+                Content="Sort"
+                Command="{Binding SortCommand}"/>
              <Label x:Name="selectedFieldLabel"
                  DockPanel.Dock="Top"
                  Height="30"

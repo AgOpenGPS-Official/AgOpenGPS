@@ -11,4 +11,8 @@
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+
 </Project>

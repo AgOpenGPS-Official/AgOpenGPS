@@ -21,6 +21,6 @@
                 Command="{Binding SelectFieldCommand}"
                 IsDefault="True"/>
         </StackPanel>
-        <local:NearFieldTable x:Name="nearFieldTable" />
+        <local:FieldTable x:Name="nearFieldTable" />
     </DockPanel>
 </Window>
