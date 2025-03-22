@@ -18,7 +18,7 @@
                 Command="{Binding DeleteFieldCommand}" />
             <Button x:Name="sortButton"
                 Content="Sort" Width="100"
-                Command="{Binding SortCommand}" />
+                Command="{Binding NextSortModeCommand}" />
             <Button x:Name="cancelButton"
                 Content="Cancel" Width="100"
                 IsCancel="True" />

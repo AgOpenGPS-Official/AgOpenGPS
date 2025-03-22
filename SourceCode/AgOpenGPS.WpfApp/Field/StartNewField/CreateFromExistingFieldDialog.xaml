@@ -63,7 +63,7 @@
                 DockPanel.Dock="Right"
                 Width="100" Height="80"
                 Content="Sort"
-                Command="{Binding SortCommand}"/>
+                Command="{Binding NextSortModeCommand}"/>
              <Label x:Name="selectedFieldLabel"
                  DockPanel.Dock="Top"
                  Height="30"

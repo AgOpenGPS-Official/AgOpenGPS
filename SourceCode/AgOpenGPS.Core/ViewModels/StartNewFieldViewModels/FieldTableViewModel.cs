@@ -19,14 +19,14 @@ namespace AgOpenGPS.Core.ViewModels
         {
             _appModel = appModel;
             SelectFieldCommand = new RelayCommand(SelectField);
-            SortCommand = new RelayCommand(Sort);
+            NextSortModeCommand = new RelayCommand(NextSortMode);
             SortMode = FieldSortMode.ByName;
         }
         public Visibility ByNameVisibility => (SortMode == FieldSortMode.ByName) ? Visibility.Visible : Visibility.Collapsed;
         public Visibility ByDistanceVisibility => (SortMode == FieldSortMode.ByDistance) ? Visibility.Visible : Visibility.Collapsed;
         public Visibility ByAreaVisibility => (SortMode == FieldSortMode.ByArea) ? Visibility.Visible : Visibility.Collapsed;
         public ICommand SelectFieldCommand { get; }
-        public ICommand SortCommand { get; }
+        public ICommand NextSortModeCommand { get; }
 
         public FieldSortMode SortMode
         {
@@ -94,13 +94,20 @@ namespace AgOpenGPS.Core.ViewModels
             }
         }
 
-        private void Sort()
+        private void NextSortMode()
         {
-            FieldSortMode nextSortMode =
-                (FieldSortMode.ByName == SortMode)
-                ? FieldSortMode.ByDistance
-                : ((FieldSortMode.ByDistance == SortMode) ? FieldSortMode.ByArea : FieldSortMode.ByName);
-            SortMode = nextSortMode;
+            switch (SortMode)
+            {
+                case FieldSortMode.ByName:
+                    SortMode = FieldSortMode.ByDistance;
+                    break;
+                case FieldSortMode.ByDistance:
+                    SortMode = FieldSortMode.ByArea;
+                    break;
+                case FieldSortMode.ByArea:
+                    SortMode = FieldSortMode.ByName;
+                    break;
+            }
         }
     }
 
