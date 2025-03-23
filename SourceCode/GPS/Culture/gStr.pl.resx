@@ -692,7 +692,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Pn-Zach</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Nowy</value>
+    <value>Nowy z domyślnego</value>
   </data>
   <data name="gsNight" xml:space="preserve">
     <value>Noc</value>

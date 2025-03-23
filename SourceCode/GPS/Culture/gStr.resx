@@ -747,7 +747,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>NWest</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>New</value>
+    <value>New From Default</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Next Guidance Line</value>

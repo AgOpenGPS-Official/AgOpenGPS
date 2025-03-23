@@ -687,7 +687,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>NoordWest</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Nieuw</value>
+    <value>Nieuw vanaf Standaard</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Volgende lijn</value>

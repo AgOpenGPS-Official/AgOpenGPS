@@ -379,7 +379,7 @@
     <value>K Batı</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Yeni</value>
+    <value>Standarttan Yeni</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
     <value>ABLine Etkin Değil</value>

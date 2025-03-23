@@ -742,7 +742,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Északnyugat</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Új</value>
+    <value>Új alapértelmezésből</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Következő nyomvonal</value>

@@ -616,7 +616,7 @@
     <value>Северо-Запад</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Новый</value>
+    <value>Новый по умолчанию</value>
   </data>
   <data name="gsNight" xml:space="preserve">
     <value>Ночь</value>

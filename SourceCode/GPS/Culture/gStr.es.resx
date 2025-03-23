@@ -486,7 +486,7 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
     <value>Noroeste</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Nuevo</value>
+    <value>Nuevo desde estándar</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
     <value>Ninguna Línea AB activa</value>
