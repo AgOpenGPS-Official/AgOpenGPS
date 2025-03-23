@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -183,7 +183,75 @@ namespace AgOpenGPS
             btnVehicleDelete.Enabled = false;
 
             lvVehicles.SelectedItems.Clear();
+
+            if (String.IsNullOrEmpty(tboxCreateNewVehicle.Text.Trim()))
+            {
+                btnVehicleNewSave.Enabled = false;
+                btnVehicleNewSave.BackColor = Color.Transparent;
+            }
+            else
+            {
+                btnVehicleNewSave.Enabled = true;
+                btnVehicleNewSave.BackColor = Color.LimeGreen;
+            }
         }
+
+        private void tboxCreateNewVehicle_Click(object sender, EventArgs e)
+        {
+            if (!mf.isJobStarted)
+            {
+                if (mf.isKeyboardOn)
+                {
+                    ((TextBox)sender).ShowKeyboard(this);
+                }
+            }
+            else
+            {
+                var form = new FormTimedMessage(2000, gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
+                form.Show(this);
+                tboxCreateNewVehicle.Enabled = false;
+            }
+        }
+
+        private void btnVehicleNewSave_Click(object sender, EventArgs e)
+        {
+            btnVehicleNewSave.BackColor = Color.Transparent;
+            btnVehicleNewSave.Enabled = false;
+
+            string newVehicleName = SanitizeFileName(tboxCreateNewVehicle.Text.Trim()).Trim();
+            tboxCreateNewVehicle.Text = "";
+
+            if (newVehicleName.Length > 0)
+            {
+                RegistrySettings.Save(RegKeys.vehicleFileName, newVehicleName);
+                
+                Settings.Default.Reset();
+                Settings.Default.Save();
+
+                Log.EventWriter("New Vehicle Loaded: " + RegistrySettings.vehicleFileName + ".XML");
+
+                LoadBrandImage();
+
+                mf.vehicle = new CVehicle(mf);
+                mf.tool = new CTool(mf);
+
+                //reset AOG
+                mf.LoadSettings();
+
+                SectionFeetInchesTotalWidthLabelUpdate();
+
+                SendSettings();
+
+                //Send Pin configuration
+                SendRelaySettingsToMachineModule();
+
+                ///Remind the user
+                mf.TimedMessageBox(2500, "Steer and Machine Settings Sent", "Were Modules Connected?");
+            }
+            UpdateVehicleListView();
+            UpdateSummary();
+        }        
+
         //Functions
         private static readonly Regex InvalidFileRegex = new Regex(string.Format("[{0}]", Regex.Escape(@"<>:""/\|?*")));
         public static string SanitizeFileName(string fileName)

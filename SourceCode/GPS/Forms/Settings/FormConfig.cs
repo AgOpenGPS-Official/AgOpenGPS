@@ -1,4 +1,4 @@
-﻿//Please, if you use this, share the improvements
+//Please, if you use this, share the improvements
 
 using AgLibrary.Logging;
 using AgOpenGPS.Controls;
@@ -119,6 +119,7 @@ namespace AgOpenGPS
             //Label translations
             //configload-save
             labelSaveAs.Text = gStr.gsSaveAs;
+            labelNew.Text = gStr.gsNew;
             labelUnits.Text = gStr.gsUnit;
             labelWidth.Text = gStr.gsWidth;
             labelSections.Text = gStr.gsSections;

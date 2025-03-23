@@ -61,6 +61,9 @@ namespace AgOpenGPS
             this.tabSummary = new System.Windows.Forms.TabPage();
             this.lvVehicles = new System.Windows.Forms.ListView();
             this.chVehicle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnVehicleNewSave = new System.Windows.Forms.Button();
+            this.tboxCreateNewVehicle = new System.Windows.Forms.TextBox();
+            this.labelNew = new System.Windows.Forms.Label();
             this.btnVehicleSave = new System.Windows.Forms.Button();
             this.labelWidth = new System.Windows.Forms.Label();
             this.labelOverlap = new System.Windows.Forms.Label();
@@ -1240,6 +1243,9 @@ namespace AgOpenGPS
             // 
             this.tabSummary.BackColor = System.Drawing.Color.Gainsboro;
             this.tabSummary.Controls.Add(this.lvVehicles);
+            this.tabSummary.Controls.Add(this.btnVehicleNewSave);
+            this.tabSummary.Controls.Add(this.tboxCreateNewVehicle);
+            this.tabSummary.Controls.Add(this.labelNew);
             this.tabSummary.Controls.Add(this.btnVehicleSave);
             this.tabSummary.Controls.Add(this.labelWidth);
             this.tabSummary.Controls.Add(this.labelOverlap);
@@ -1304,6 +1310,47 @@ namespace AgOpenGPS
             // 
             this.chVehicle.Text = "Vehicles";
             this.chVehicle.Width = 490;
+            // 
+            // btnVehicleNewSave
+            // 
+            this.btnVehicleNewSave.BackColor = System.Drawing.Color.Transparent;
+            this.btnVehicleNewSave.Enabled = false;
+            this.btnVehicleNewSave.FlatAppearance.BorderSize = 0;
+            this.btnVehicleNewSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Turquoise;
+            this.btnVehicleNewSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVehicleNewSave.Font = new System.Drawing.Font("Tahoma", 15.75F);
+            this.btnVehicleNewSave.Image = global::AgOpenGPS.Properties.Resources.FileSave;
+            this.btnVehicleNewSave.Location = new System.Drawing.Point(762, 90);
+            this.btnVehicleNewSave.Name = "btnVehicleNewSave";
+            this.btnVehicleNewSave.Size = new System.Drawing.Size(83, 52);
+            this.btnVehicleNewSave.TabIndex = 521;
+            this.btnVehicleNewSave.UseVisualStyleBackColor = false;
+            this.btnVehicleNewSave.Click += new System.EventHandler(this.btnVehicleNewSave_Click);
+            // 
+            // tboxCreateNewVehicle
+            // 
+            this.tboxCreateNewVehicle.BackColor = System.Drawing.Color.White;
+            this.tboxCreateNewVehicle.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tboxCreateNewVehicle.Location = new System.Drawing.Point(240, 102);
+            this.tboxCreateNewVehicle.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.tboxCreateNewVehicle.Name = "tboxCreateNewVehicle";
+            this.tboxCreateNewVehicle.Size = new System.Drawing.Size(510, 33);
+            this.tboxCreateNewVehicle.TabIndex = 520;
+            this.tboxCreateNewVehicle.Click += new System.EventHandler(this.tboxCreateNewVehicle_Click);
+            this.tboxCreateNewVehicle.TextChanged += new System.EventHandler(this.tboxCreateNewVehicle_TextChanged);
+            // 
+            // labelNew
+            // 
+            this.labelNew.BackColor = System.Drawing.Color.Transparent;
+            this.labelNew.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNew.ForeColor = System.Drawing.Color.Black;
+            this.labelNew.Location = new System.Drawing.Point(95, 106);
+            this.labelNew.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelNew.Name = "labelNew";
+            this.labelNew.Size = new System.Drawing.Size(140, 23);
+            this.labelNew.TabIndex = 522;
+            this.labelNew.Text = "New:";
+            this.labelNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnVehicleSave
             // 
@@ -10414,6 +10461,9 @@ namespace AgOpenGPS
         private System.Windows.Forms.CheckBox chkSectionLines;
         private System.Windows.Forms.Label labelLineSmoothOnOff;
         private System.Windows.Forms.CheckBox chkLineSmooth;
+        private System.Windows.Forms.Button btnVehicleNewSave;
+        private System.Windows.Forms.TextBox tboxCreateNewVehicle;
+        private System.Windows.Forms.Label labelNew;
         private System.Windows.Forms.CheckBox cboxIsAutoSwitchDualFixOn;
         private System.Windows.Forms.Label labelAutoSwitchDualFixSpeed;
         private NudlessNumericUpDown nudAutoSwitchDualFixSpeed;
