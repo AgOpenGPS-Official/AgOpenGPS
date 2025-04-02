@@ -10,7 +10,7 @@ namespace AgOpenGPS.Core.ViewModels
             SortMode = FieldSortMode.ByDistance;
         }
 
-        public new void UpdateFields()
+        public override void UpdateFields()
         {
             Collection<FieldDescriptionViewModel> viewModels = new Collection<FieldDescriptionViewModel>();
             var descriptions = _appModel.Fields.GetFieldDescriptions();

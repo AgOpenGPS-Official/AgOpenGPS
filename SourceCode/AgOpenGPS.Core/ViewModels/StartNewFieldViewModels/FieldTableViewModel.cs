@@ -68,7 +68,7 @@ namespace AgOpenGPS.Core.ViewModels
             }
         }
 
-        public void UpdateFields()
+        public virtual void UpdateFields()
         {
             Collection<FieldDescriptionViewModel> viewModels = new Collection<FieldDescriptionViewModel>();
             var descriptions = _appModel.Fields.GetFieldDescriptions();
