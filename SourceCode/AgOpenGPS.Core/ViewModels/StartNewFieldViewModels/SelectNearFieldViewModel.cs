@@ -2,9 +2,8 @@
 
 namespace AgOpenGPS.Core.ViewModels
 {
-    public class SelectNearFieldViewModel : FieldTableViewModel
+    public class SelectNearFieldViewModel : NearFieldTableViewModel
     {
-        // TODO filter fields
         private readonly IPanelPresenter _panelPresenter;
 
         public SelectNearFieldViewModel(
@@ -14,7 +13,6 @@ namespace AgOpenGPS.Core.ViewModels
             : base(appModel)
         {
             _panelPresenter = panelPresenter;
-            SortMode = FieldSortMode.ByDistance;
         }
 
         protected override void SelectField()
