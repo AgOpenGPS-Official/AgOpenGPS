@@ -57,6 +57,20 @@ namespace AgOpenGPS
             }
         }
 
+        // Deprecated. Only here to avoid numerous changes to existing code that not has been refactored.
+        // Please use AppViewModel.Fields directly
+        public string currentFieldDirectory
+        {
+            get { return AppModel.Fields.CurrentFieldName; }
+            set { AppModel.Fields.SelectFieldByName(value); }
+        }
+
+        public string displayFieldName
+        {
+            get;
+            set;
+        }
+
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool SetForegroundWindow(IntPtr handle);
@@ -68,9 +82,6 @@ namespace AgOpenGPS
 
         //maximum sections available
         public const int MAXSECTIONS = 64;
-
-        //current fields
-        public string currentFieldDirectory, displayFieldName;
 
         private bool leftMouseDownOnOpenGL; //mousedown event in opengl window
         public int flagNumberPicked = 0;

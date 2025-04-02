@@ -64,5 +64,11 @@ namespace AgOpenGPS.Core.Models
             CurrentField = new Field(fieldDirectory);
         }
 
+        public void SelectFieldByName(string fieldName)
+        {
+            var fieldDirectoryInfo = new DirectoryInfo(Path.Combine(_fieldsDirectory.FullName, fieldName));
+            SelectField(fieldDirectoryInfo);
+        }
+
     }
 }
