@@ -65,11 +65,8 @@ namespace AgOpenGPS
             set { AppModel.Fields.SelectFieldByName(value); }
         }
 
-        public string displayFieldName
-        {
-            get;
-            set;
-        }
+        public string displayFieldName => isJobStarted ? AppModel.Fields.CurrentFieldName : gStr.gsNone;
+
 
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
@@ -1002,8 +999,6 @@ namespace AgOpenGPS
 
             //reset GUI areas
             fd.UpdateFieldBoundaryGUIAreas();
-
-            displayFieldName = gStr.gsNone;
 
             recPath.recList?.Clear();
             recPath.shortestDubinsList?.Clear();

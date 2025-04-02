@@ -655,8 +655,6 @@ namespace AgOpenGPS
 
             panelRight.Enabled = false;
             FieldMenuButtonEnableDisable(false);
-            displayFieldName = gStr.gsNone;
-
             JobClose();
 
             Text = "AgOpenGPS";

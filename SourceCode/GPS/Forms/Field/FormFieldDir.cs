@@ -105,8 +105,6 @@ namespace AgOpenGPS
 
                     dirNewField.Create();
 
-                    mf.displayFieldName = mf.currentFieldDirectory;
-
                     //create the field file header info
                     mf.FileCreateField();
                     mf.FileCreateSections();

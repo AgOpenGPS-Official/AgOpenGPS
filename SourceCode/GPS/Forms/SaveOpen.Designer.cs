@@ -770,8 +770,6 @@ namespace AgOpenGPS
                     currentFieldDirectory = Path.GetDirectoryName(fileAndDirectory);
                     currentFieldDirectory = new DirectoryInfo(currentFieldDirectory).Name;
 
-                    displayFieldName = currentFieldDirectory;
-
                     //Offset header
                     line = reader.ReadLine();
 

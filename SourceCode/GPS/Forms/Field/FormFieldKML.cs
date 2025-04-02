@@ -351,8 +351,6 @@ namespace AgOpenGPS
                     if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
                     { Directory.CreateDirectory(directoryName); }
 
-                    mf.displayFieldName = mf.currentFieldDirectory;
-
                     //create the field file header info
                     if (!mf.isJobStarted)
                     {
