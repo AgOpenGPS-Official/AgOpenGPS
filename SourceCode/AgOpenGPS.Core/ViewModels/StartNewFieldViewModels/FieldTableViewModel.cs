@@ -90,7 +90,7 @@ namespace AgOpenGPS.Core.ViewModels
             if (null != selectedField)
             {
                 LocalSelectedField = null;
-                _appModel.Fields.SelectField(selectedField.DirectoryInfo);
+                _appModel.Fields.OpenField(selectedField.DirectoryInfo);
             }
         }
 

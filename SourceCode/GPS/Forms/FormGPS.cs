@@ -62,10 +62,12 @@ namespace AgOpenGPS
         public string currentFieldDirectory
         {
             get { return AppModel.Fields.CurrentFieldName; }
-            set { AppModel.Fields.SelectFieldByName(value); }
+            set { AppModel.Fields.SetCurrentFieldByName(value); }
         }
 
-        public string displayFieldName => isJobStarted ? AppModel.Fields.CurrentFieldName : gStr.gsNone;
+        public bool isJobStarted => AppModel.Fields.ActiveField != null;
+
+        public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
 
         //To bring forward AgIO if running
@@ -83,8 +85,7 @@ namespace AgOpenGPS
         private bool leftMouseDownOnOpenGL; //mousedown event in opengl window
         public int flagNumberPicked = 0;
 
-        //bool for whether or not a job is active
-        public bool isJobStarted = false, isBtnAutoSteerOn;
+        public bool isBtnAutoSteerOn;
 
         //if we are saving a file
         public bool isSavingFile = false;
@@ -711,7 +712,8 @@ namespace AgOpenGPS
         public void JobNew()
         {
             //SendSteerSettingsOutAutoSteerPort();
-            isJobStarted = true;
+
+            AppModel.Fields.OpenField();
             startCounter = 0;
 
             btnFieldStats.Visible = true;
@@ -859,7 +861,8 @@ namespace AgOpenGPS
             FieldMenuButtonEnableDisable(false);
 
             menustripLanguage.Enabled = true;
-            isJobStarted = false;
+
+            AppModel.Fields.CloseField();
 
             //fix ManualOffOnAuto buttons
             manualBtnState = btnStates.Off;

@@ -32,7 +32,7 @@ namespace AgOpenGPS.Core
         public ApplicationViewModel AppViewModel { get; }
         public ApplicationPresenter AppPresenter { get; }
 
-        public Field CurrentField => AppModel.Fields.CurrentField;
+        public Field ActiveField => AppModel.Fields.ActiveField;
 
     }
 }

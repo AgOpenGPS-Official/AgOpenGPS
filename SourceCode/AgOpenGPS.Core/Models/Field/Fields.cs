@@ -8,7 +8,7 @@ namespace AgOpenGPS.Core.Models
     public class Fields
     {
         private readonly DirectoryInfo _fieldsDirectory;
-        private Field _currentField;
+        private Field _activeField;
         private FieldStreamer _fieldStreamer;
 
         public Fields(DirectoryInfo fieldsDirectory)
@@ -16,17 +16,19 @@ namespace AgOpenGPS.Core.Models
             _fieldsDirectory = fieldsDirectory;
         }
 
-        public Field CurrentField
+        public DirectoryInfo CurrentField { get; set; }
+        public string CurrentFieldName => CurrentField != null ? CurrentField.Name : "";
+
+        // Is null if no job is started.
+        public Field ActiveField
         {
-            get { return _currentField; }
+            get { return _activeField; }
             private set
             {
-                _currentField = value;
-                _fieldStreamer = new FieldStreamer(CurrentField);
+                _activeField = value;
+                _fieldStreamer = _activeField != null ? new FieldStreamer(_activeField) : null;
             }
         }
-
-        public string CurrentFieldName => CurrentField?.Name;
 
         public FieldStreamer FieldStreamer
         {
@@ -59,15 +61,26 @@ namespace AgOpenGPS.Core.Models
             fieldDirectory.Delete(true);
         }
 
-        public void SelectField(DirectoryInfo fieldDirectory)
+        public void SetCurrentFieldByName(string fieldName)
         {
-            CurrentField = new Field(fieldDirectory);
+            CurrentField = new DirectoryInfo(Path.Combine(_fieldsDirectory.FullName, fieldName));
         }
 
-        public void SelectFieldByName(string fieldName)
+        public void OpenField(DirectoryInfo fieldDirectory)
         {
-            var fieldDirectoryInfo = new DirectoryInfo(Path.Combine(_fieldsDirectory.FullName, fieldName));
-            SelectField(fieldDirectoryInfo);
+            CurrentField = fieldDirectory;
+            ActiveField = new Field(fieldDirectory);
+        }
+
+        // Open the already selected field
+        public void OpenField()
+        {
+            ActiveField = new Field(CurrentField);
+        }
+
+        public void CloseField()
+        {
+            ActiveField = null;
         }
 
     }
