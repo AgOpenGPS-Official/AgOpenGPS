@@ -73,7 +73,7 @@ namespace AgOpenGPS
                 //Partial Field Group
                 //PFD - A = Field ID, B = , C = Field Name, D = Area
                 pfd = iso.GetElementsByTagName("PFD");
-
+                int index = 0;
                 try
                 {
                     //scan thru all the fields
@@ -84,6 +84,7 @@ namespace AgOpenGPS
 
                         // PFD - A=ID, C=FieldName, D = Area in sq m
                         tree.Nodes.Add(nodePFD.Attributes["C"].Value + " Area: " + area + " Ha  " + nodePFD.Attributes["A"].Value);
+                        tree.Nodes[tree.Nodes.Count - 1].Tag = index++;
 
                         //nodes in current Partial Field like PLN, GGP, LSG etc
                         XmlNodeList fieldParts = nodePFD.ChildNodes;
@@ -161,6 +162,7 @@ namespace AgOpenGPS
                 }
 
                 if (tree.Nodes.Count == 0) btnBuildFields.Enabled = false;
+                tree.Sort();
             }
             else
             {
@@ -179,7 +181,7 @@ namespace AgOpenGPS
             //top node selected (ie the field)
             if (tree.SelectedNode.Parent == null)
             {
-                idxFieldSelected = tree.SelectedNode.Index;
+                idxFieldSelected = (int)tree.SelectedNode.Tag;
                 labelField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
                 tboxFieldName.Text = pfd[idxFieldSelected].Attributes["C"].Value;
             }
@@ -187,7 +189,7 @@ namespace AgOpenGPS
             //one of the lines or bnds selected - so set the field selected
             else
             {
-                idxFieldSelected = tree.SelectedNode.Parent.Index;
+                idxFieldSelected = (int)tree.SelectedNode.Parent.Tag;
                 labelField.Text = idxFieldSelected.ToString() + " " + pfd[idxFieldSelected].Attributes["C"].Value;
                 tboxFieldName.Text = pfd[idxFieldSelected].Attributes["C"].Value;
             }
@@ -256,10 +258,32 @@ namespace AgOpenGPS
                         }
                     }
                 }
+                //pick from the first AB
+                if(counter == 0 )
+                {
+                    foreach (XmlNode nodePart in fieldParts)
+                    {
+                        //grab the AB
+                        if(nodePart.Name == "GGP" && nodePart.FirstChild.Name == "GPN" && nodePart.FirstChild.FirstChild.Name == "LSG")
+                        {
+                            foreach (XmlNode pnt in nodePart.ChildNodes[0].ChildNodes[0].ChildNodes) //PNT
+                            {
+
+                                double.TryParse(pnt.Attributes["C"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out latK);
+                                double.TryParse(pnt.Attributes["D"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out lonK);
+
+                                lat += latK;
+                                lon += lonK;
+                                counter += 1;
+                            }
+                        }
+                    }
+                }
 
                 if (counter  == 0) 
                 {
-                    mf.YesMessageBox("Field Requires Outer Boundary.");
+
+                    mf.YesMessageBox("Can't calculate center of field. Missing Outer Boundary or AB line.");
                     return;
                 }
 
@@ -812,7 +836,7 @@ namespace AgOpenGPS
             //close out window
             if (mf.bnd.bndList.Count > 0) mf.btnABDraw.Visible = true;
 
-            mf.FieldMenuButtonEnableDisable(mf.bnd.bndList[0].hdLine.Count > 0);
+            mf.FieldMenuButtonEnableDisable(mf.bnd.bndList.Count > 0 && mf.bnd.bndList[0].hdLine.Count > 0);
 
             DialogResult = DialogResult.OK;
             Close();
