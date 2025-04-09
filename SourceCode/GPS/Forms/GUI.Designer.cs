@@ -1340,12 +1340,11 @@ namespace AgOpenGPS
                 //zoom buttons
                 if (point.X > oglMain.Width - 80)
                 {
-                    //---
+                    // --
                     if (point.Y < 260 && point.Y > 170)
                     {
-                        if (camera.zoomValue <= 20) camera.zoomValue += camera.zoomValue * 0.2;
-                        else camera.zoomValue += camera.zoomValue * 0.1;
-                        if (camera.zoomValue > 180) camera.zoomValue = 180;
+                        double adjustFactor = (camera.zoomValue <= 20) ? 1.2 : 1.1;
+                        camera.zoomValue = System.Math.Min(adjustFactor * camera.zoomValue, 180);
                         camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
                         SetZoom();
                         return;
@@ -1354,10 +1353,8 @@ namespace AgOpenGPS
                     //++
                     if (point.Y < 120 && point.Y > 30)
                     {
-                        if (camera.zoomValue <= 20)
-                        { if ((camera.zoomValue -= camera.zoomValue * 0.2) < 4.0) camera.zoomValue = 4.0; }
-                        else { if ((camera.zoomValue -= camera.zoomValue * 0.1) < 4.0) camera.zoomValue = 4.0; }
-
+                        double adjustFactor = (camera.zoomValue <= 20) ? 0.8 : 0.9;
+                        camera.zoomValue = System.Math.Max(4.0, adjustFactor * camera.zoomValue);
                         camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
                         SetZoom();
                         return;
