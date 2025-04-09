@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AgOpenGPS;
 using AgOpenGPS.Properties;
 
 public static class AgShareApi
@@ -35,6 +37,7 @@ public static class AgShareApi
             return false;
         }
     }
+
     public static async Task<bool> UploadIsoXmlFieldAsync(string fieldId, object jsonPayload)
     {
         if (string.IsNullOrWhiteSpace(ApiKey)) return false;
