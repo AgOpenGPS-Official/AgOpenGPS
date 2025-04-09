@@ -12,6 +12,7 @@ using System.Text;
 using AgOpenGPS.Culture;
 using AgLibrary.Logging;
 using AgOpenGPS.Protocols.ISOBUS;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -46,7 +47,7 @@ namespace AgOpenGPS
             }
         }
 
-        public void ExportFieldAs_ISOXMLv4()
+        public async void ExportFieldAs_ISOXMLv4()
         {
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "zISOXML", "v4");
@@ -59,6 +60,10 @@ namespace AgOpenGPS
             try
             {
                 ISO11783_TaskFile_V4.Export(outputFileName, currentFieldDirectory, (int)(fd.areaOuterBoundary), bnd.bndList, pn, trk);
+                if (Settings.Default.AgShareApiKey != "apikey")
+                {
+                    await AgShareApi.UploadIsoXmlFieldAsync(currentFieldDirectory, outputFileName);
+                }
             }
             catch (Exception e)
             {
