@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +14,7 @@ using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -53,7 +54,7 @@ namespace AgOpenGPS
             }
         }
 
-        public void ExportFieldAs_ISOXMLv4()
+        public async void ExportFieldAs_ISOXMLv4()
         {
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "zISOXML", "v4");
@@ -71,6 +72,10 @@ namespace AgOpenGPS
                     AppModel.LocalPlane,
                     trk,
                     ISO11783_TaskFile.Version.V4);
+                if (Settings.Default.AgShareApiKey != "apikey")
+                {
+                    await AgShareApi.UploadIsoXmlFieldAsync(currentFieldDirectory, outputFileName);
+                }
             }
             catch (Exception e)
             {
