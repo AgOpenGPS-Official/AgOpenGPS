@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using AgOpenGPS.Core.DrawLib;
 
 namespace AgOpenGPS
 {
@@ -8,7 +8,6 @@ namespace AgOpenGPS
         private double camPosY;
         private readonly double camPosZ;
 
-        //private double fixHeading;
         private double camYaw;
 
         public double camPitch;
@@ -19,8 +18,6 @@ namespace AgOpenGPS
 
         public bool camFollowing;
         public double camSmoothFactor;
-
-        //private double camDelta = 0;
 
         public CCamera()
         {
@@ -39,27 +36,19 @@ namespace AgOpenGPS
             camYaw = _fixHeading;
 
             //back the camera up
-            GL.Translate(0,0, camSetDistance * 0.5);
+            GLW.Translate(0,0, camSetDistance * 0.5);
 
             //rotate the camera down to look at fix
-            GL.Rotate(camPitch, 1.0, 0.0, 0.0);
+            GLW.RotateX(camPitch);
 
-            //pan if set
-            //GL.Translate(0, camSetDistance * -0.04, 0);
-            GL.Translate(panX, panY, 0); 
+            GLW.Translate(panX, panY);
 
             //following game style or N fixed cam
             if (camFollowing)
             {
-                GL.Rotate(camYaw, 0.0, 0.0, 1.0);
-                GL.Translate(-camPosX, -camPosY, -camPosZ);
-                //GL.Translate(-60, -60,0);
-
+                GLW.RotateZ(camYaw);
             }
-            else
-            {
-                GL.Translate(-camPosX, -camPosY, -camPosZ);
-            }
+            GLW.Translate(-camPosX, -camPosY, -camPosZ);
         }
     }
 }

@@ -69,9 +69,24 @@ namespace AgOpenGPS.Core.DrawLib
             vertex2Array.DeleteBuffer();
         }
 
+        public static void Translate(double x, double y, double z)
+        {
+            GL.Translate(x, y, z);
+        }
+
+        public static void Translate(double x, double y)
+        {
+            GL.Translate(x, y, 0.0);
+        }
+
+        public static void RotateX(double angleInDegrees)
+        {
+            GL.Rotate(angleInDegrees, 1.0, 0.0, 0.0);
+        }
+
         public static void RotateZ(double angleInDegrees)
         {
-            GL.Rotate(angleInDegrees, 0, 0, 1.0);
+            GL.Rotate(angleInDegrees, 0.0, 0.0, 1.0);
         }
 
     }
