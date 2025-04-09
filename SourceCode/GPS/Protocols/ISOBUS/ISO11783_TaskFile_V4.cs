@@ -1,13 +1,16 @@
-﻿using System;
+﻿using AgLibrary.Logging;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace AgOpenGPS.Protocols.ISOBUS
 {
     public class ISO11783_TaskFile_V4
     {
-        public static void Export(string fileName, string designator, int area, List<CBoundaryList> bndList, CNMEA pn, CTrack trk)
+        public static async Task Export(string fileName, string designator, int area, List<CBoundaryList> bndList, CNMEA pn, CTrack trk)
         {
             int lineCounter = 0;
 
@@ -221,20 +224,49 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
             xml.WriteEndElement();//ISO11783_TaskData Settings
 
-            xml.Flush();
+            if (Properties.Settings.Default.AgShareApiKey != "Apikey")
+            {
+                {
+                    try
+                    {
+                        var fieldPath = Path.Combine(RegistrySettings.fieldsDirectory, designator);
+                        var fieldId = AgShareUploader.GetOrGenerateFieldId(fieldPath);
 
-            //Write the XML to file and close the kml
-            xml.Close();
+                        var jsonPayload = AgShareUploader.BuildFieldUploadJsonWithConversion(
+                            designator,
+                            bndList[0].fenceLineEar,
+                            trk.gArr,
+                            pn // de planner instance die ConvertLocalToWGS84 bevat
+                        );
 
-            //xml.WriteStartElement("TSK");//Task
-            //xml.WriteAttributeString("A", "TSK1");
-            //xml.WriteAttributeString("B", "Tractor Work");
-            //xml.WriteAttributeString("C", "CTR1");
-            //xml.WriteAttributeString("E", "PFD-1");
-            //xml.WriteAttributeString("G", "1");
-            //xml.WriteAttributeString("I", "1");
-            //xml.WriteAttributeString("J", "0");
-            //xml.WriteEndElement();//Task
+                        bool success = await AgShareUploader.UploadFieldAsync(fieldId, jsonPayload);
+
+                        if (success)
+                            Log.EventWriter($"Field '{designator}' Succesfully uploaded to AgShare.");
+                        else
+                            Log.EventWriter($"Upload to AgShare failed for field '{designator}'.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter("AgShare upload fout: " + ex.Message);
+                    }
+                }
+
+                xml.Flush();
+
+                //Write the XML to file and close the kml
+                xml.Close();
+
+                //xml.WriteStartElement("TSK");//Task
+                //xml.WriteAttributeString("A", "TSK1");
+                //xml.WriteAttributeString("B", "Tractor Work");
+                //xml.WriteAttributeString("C", "CTR1");
+                //xml.WriteAttributeString("E", "PFD-1");
+                //xml.WriteAttributeString("G", "1");
+                //xml.WriteAttributeString("I", "1");
+                //xml.WriteAttributeString("J", "0");
+                //xml.WriteEndElement();//Task
+            }
         }
     }
 }

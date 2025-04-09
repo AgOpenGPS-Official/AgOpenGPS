@@ -59,7 +59,8 @@ namespace AgOpenGPS
 
             try
             {
-                ISO11783_TaskFile_V4.Export(outputFileName, currentFieldDirectory, (int)(fd.areaOuterBoundary), bnd.bndList, pn, trk);
+                await ISO11783_TaskFile_V4.Export(outputFileName, currentFieldDirectory, (int)(fd.areaOuterBoundary), bnd.bndList, pn, trk);
+                
                 if (Settings.Default.AgShareApiKey != "apikey")
                 {
                     await AgShareApi.UploadIsoXmlFieldAsync(currentFieldDirectory, outputFileName);
