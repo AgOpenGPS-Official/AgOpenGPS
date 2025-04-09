@@ -25,13 +25,13 @@ public partial class AgShareSettingsForm : Form
     }
     private async void btnTest_Click(object sender, EventArgs e)
     {
-        lblStatus.Text = "Verbinden...";
+        lblStatus.Text = "Connecting...";
         lblStatus.ForeColor = System.Drawing.Color.Gray;
 
         AgShareApi.SaveApiKey(txtApiKey.Text);
 
         bool result = await AgShareApi.TestApiKeyAsync();
-        lblStatus.Text = result ? "✔ API key is geldig" : "❌ Ongeldige API key";
+        lblStatus.Text = result ? "✔ API key valid" : "❌ API key Not Valid";
         lblStatus.ForeColor = result ? System.Drawing.Color.Green : System.Drawing.Color.Red;
     }
 
@@ -108,7 +108,7 @@ public partial class AgShareSettingsForm : Form
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(189, 25);
             this.lblStatus.TabIndex = 4;
-            this.lblStatus.Text = "Status: Connected";
+            this.lblStatus.Text = "";
             // 
             // label2
             // 
