@@ -2081,47 +2081,38 @@ namespace AgOpenGPS
 
         private void btnTiltUp_Click(object sender, EventArgs e)
         {
-            camera.camPitch -= ((camera.camPitch * 0.012) - 1);
-            if (camera.camPitch > -58) camera.camPitch = 0;
+            camera.PitchInDegrees -= ((camera.PitchInDegrees * 0.012) - 1);
+            if (camera.PitchInDegrees > -58) camera.PitchInDegrees = 0;
             navPanelCounter = 2;
         }
+
         private void btnTiltDn_Click(object sender, EventArgs e)
         {
-            if (camera.camPitch > -59) camera.camPitch = -60;
-            camera.camPitch += ((camera.camPitch * 0.012) - 1);
-            if (camera.camPitch < -70) camera.camPitch = -70;
+            if (camera.PitchInDegrees > -59) camera.PitchInDegrees = -60;
+            camera.PitchInDegrees += ((camera.PitchInDegrees * 0.012) - 1);
+            if (camera.PitchInDegrees < -70) camera.PitchInDegrees = -70;
             navPanelCounter = 2;
         }
+
         private void btnN2D_Click(object sender, EventArgs e)
         {
             camera.camFollowing = false;
-            camera.camPitch = 0;
+            camera.PitchInDegrees = 0;
             navPanelCounter = 0;
         }
         private void btn2D_Click(object sender, EventArgs e)
         {
             camera.camFollowing = true;
-            camera.camPitch = 0;
+            camera.PitchInDegrees = 0;
             navPanelCounter = 0;
         }
+
         private void btn3D_Click(object sender, EventArgs e)
         {
             camera.camFollowing = true;
-            camera.camPitch = -65;
+            camera.PitchInDegrees = -65;
             navPanelCounter = 0;
         }
-        //private void btnN2D_Click(object sender, EventArgs e)
-        //{
-        //    camera.camFollowing = false;
-        //    camera.camPitch = 0;
-        //    navPanelCounter = 0;
-        //}
-        //private void btnN3D_Click(object sender, EventArgs e)
-        //{
-        //    camera.camPitch = -65;
-        //    camera.camFollowing = false;
-        //    navPanelCounter = 0;
-        //}
 
         private void btnGrid_Click(object sender, EventArgs e)
         {

@@ -34,7 +34,7 @@ namespace AgOpenGPS
 
             GL.Translate(x1, y1, 0);
 
-            if (mf.camera.camPitch < -45)
+            if (mf.camera.PitchInDegrees < -45)
             {
                 GL.Rotate(90, 1, 0, 0);
                 if (mf.camera.camFollowing) GL.Rotate(-mf.camHeading, 0, 1, 0);
