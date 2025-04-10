@@ -110,7 +110,7 @@ namespace AgOpenGPS
                     CalcFrustum();
                     GL.Disable(EnableCap.Blend);
 
-                    worldGrid.DrawFieldSurface(fieldColor, camera.zoomValue, isTextureOn);
+                    worldGrid.DrawFieldSurface(fieldColor, camera.ZoomValue, isTextureOn);
 
                     if (isGridOn) worldGrid.DrawWorldGrid(worldGridColor);
 
@@ -1918,7 +1918,7 @@ namespace AgOpenGPS
                 if (flagNumberPicked != 0)
                 {
                     ////draw the box around flag
-                    double offSet = (camera.zoomValue * camera.zoomValue * 0.01);
+                    double offSet = (camera.ZoomValue * camera.ZoomValue * 0.01);
                     LineStyle boxLineStyle = new LineStyle(4.0f, Colors.FlagSelectedBoxColor);
                     GLW.SetLineStyle(boxLineStyle);
                     CFlag flag = flagPts[flagNumberPicked - 1];

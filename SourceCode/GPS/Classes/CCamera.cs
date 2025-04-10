@@ -6,7 +6,6 @@ namespace AgOpenGPS
     {
         public double camSetDistance = -75;
 
-        public double zoomValue;
 
         public double camSmoothFactor;
 
@@ -14,12 +13,13 @@ namespace AgOpenGPS
         {
             //get the pitch of camera from settings
             PitchInDegrees = Properties.Settings.Default.setDisplay_camPitch;
-            zoomValue = Properties.Settings.Default.setDisplay_camZoom;
+            ZoomValue = Properties.Settings.Default.setDisplay_camZoom;
             FollowDirectionHint = true;
             camSmoothFactor = ((double)(Properties.Settings.Default.setDisplay_camSmooth) * 0.004) + 0.2;
         }
 
         public double PitchInDegrees { get; set; } // 0.0 is vertical downwards -90.0 is horizontal
+        public double ZoomValue { get; set; } // Please note: bigger values mean more zoomed out !!
         public double PanX { get; set; }
         public double PanY { get; set; }
         public bool FollowDirectionHint { get; set; }

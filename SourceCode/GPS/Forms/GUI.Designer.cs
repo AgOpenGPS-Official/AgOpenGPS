@@ -743,7 +743,7 @@ namespace AgOpenGPS
             PanelsAndOGLSize();
             PanelUpdateRightAndBottom();
 
-            camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+            camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
             SetZoom();
 
             lblGuidanceLine.BringToFront();
@@ -1113,7 +1113,7 @@ namespace AgOpenGPS
             }
 
             Settings.Default.setDisplay_camPitch = camera.PitchInDegrees;
-            Properties.Settings.Default.setDisplay_camZoom = camera.zoomValue;
+            Properties.Settings.Default.setDisplay_camZoom = camera.ZoomValue;
 
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 
@@ -1343,9 +1343,9 @@ namespace AgOpenGPS
                     // --
                     if (point.Y < 260 && point.Y > 170)
                     {
-                        double adjustFactor = (camera.zoomValue <= 20) ? 1.2 : 1.1;
-                        camera.zoomValue = System.Math.Min(adjustFactor * camera.zoomValue, 180);
-                        camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                        double adjustFactor = (camera.ZoomValue <= 20) ? 1.2 : 1.1;
+                        camera.ZoomValue = System.Math.Min(adjustFactor * camera.ZoomValue, 180);
+                        camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
                         SetZoom();
                         return;
                     }
@@ -1353,9 +1353,9 @@ namespace AgOpenGPS
                     //++
                     if (point.Y < 120 && point.Y > 30)
                     {
-                        double adjustFactor = (camera.zoomValue <= 20) ? 0.8 : 0.9;
-                        camera.zoomValue = System.Math.Max(4.0, adjustFactor * camera.zoomValue);
-                        camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                        double adjustFactor = (camera.ZoomValue <= 20) ? 0.8 : 0.9;
+                        camera.ZoomValue = System.Math.Max(4.0, adjustFactor * camera.ZoomValue);
+                        camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
                         SetZoom();
                         return;
                     }
