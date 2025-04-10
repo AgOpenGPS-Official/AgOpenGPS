@@ -4,8 +4,6 @@ namespace AgOpenGPS
 {
     public class CCamera
     {
-        public double panX = 0;
-        public double panY = 0;
         public double camSetDistance = -75;
 
         public double zoomValue;
@@ -23,6 +21,8 @@ namespace AgOpenGPS
         }
 
         public double PitchInDegrees { get; set; } // 0.0 is vertical downwards -90.0 is horizontal
+        public double PanX { get; set; }
+        public double PanY { get; set; }
 
         public void SetLookAt(double lookAtX, double lookAtY, double directionHintInDegrees)
         {
@@ -30,7 +30,7 @@ namespace AgOpenGPS
             GLW.Translate(0,0, camSetDistance * 0.5);
 
             GLW.RotateX(PitchInDegrees);
-            GLW.Translate(panX, panY);
+            GLW.Translate(PanX, PanY);
 
             //following game style or N fixed cam
             if (camFollowing)
