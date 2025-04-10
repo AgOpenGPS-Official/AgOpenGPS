@@ -743,7 +743,7 @@ namespace AgOpenGPS
             PanelsAndOGLSize();
             PanelUpdateRightAndBottom();
 
-            camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
+            camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
             SetZoom();
 
             lblGuidanceLine.BringToFront();
@@ -1345,7 +1345,7 @@ namespace AgOpenGPS
                     {
                         double adjustFactor = (camera.ZoomValue <= 20) ? 1.2 : 1.1;
                         camera.ZoomValue = System.Math.Min(adjustFactor * camera.ZoomValue, 180);
-                        camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
+                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
                         SetZoom();
                         return;
                     }
@@ -1355,7 +1355,7 @@ namespace AgOpenGPS
                     {
                         double adjustFactor = (camera.ZoomValue <= 20) ? 0.8 : 0.9;
                         camera.ZoomValue = System.Math.Max(4.0, adjustFactor * camera.ZoomValue);
-                        camera.camSetDistance = camera.ZoomValue * camera.ZoomValue * -1;
+                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
                         SetZoom();
                         return;
                     }
