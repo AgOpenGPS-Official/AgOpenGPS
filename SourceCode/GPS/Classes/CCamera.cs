@@ -8,7 +8,6 @@ namespace AgOpenGPS
 
         public double zoomValue;
 
-        public bool camFollowing;
         public double camSmoothFactor;
 
         public CCamera()
@@ -16,13 +15,14 @@ namespace AgOpenGPS
             //get the pitch of camera from settings
             PitchInDegrees = Properties.Settings.Default.setDisplay_camPitch;
             zoomValue = Properties.Settings.Default.setDisplay_camZoom;
-            camFollowing = true;
+            FollowDirectionHint = true;
             camSmoothFactor = ((double)(Properties.Settings.Default.setDisplay_camSmooth) * 0.004) + 0.2;
         }
 
         public double PitchInDegrees { get; set; } // 0.0 is vertical downwards -90.0 is horizontal
         public double PanX { get; set; }
         public double PanY { get; set; }
+        public bool FollowDirectionHint { get; set; }
 
         public void SetLookAt(double lookAtX, double lookAtY, double directionHintInDegrees)
         {
@@ -32,8 +32,7 @@ namespace AgOpenGPS
             GLW.RotateX(PitchInDegrees);
             GLW.Translate(PanX, PanY);
 
-            //following game style or N fixed cam
-            if (camFollowing)
+            if (FollowDirectionHint)
             {
                 GLW.RotateZ(directionHintInDegrees);
             }

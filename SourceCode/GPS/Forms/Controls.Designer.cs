@@ -2096,20 +2096,20 @@ namespace AgOpenGPS
 
         private void btnN2D_Click(object sender, EventArgs e)
         {
-            camera.camFollowing = false;
+            camera.FollowDirectionHint = false;
             camera.PitchInDegrees = 0;
             navPanelCounter = 0;
         }
         private void btn2D_Click(object sender, EventArgs e)
         {
-            camera.camFollowing = true;
+            camera.FollowDirectionHint = true;
             camera.PitchInDegrees = 0;
             navPanelCounter = 0;
         }
 
         private void btn3D_Click(object sender, EventArgs e)
         {
-            camera.camFollowing = true;
+            camera.FollowDirectionHint = true;
             camera.PitchInDegrees = -65;
             navPanelCounter = 0;
         }
