@@ -3,7 +3,6 @@
 using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -125,7 +124,7 @@ namespace AgOpenGPS.Core
                 vertices.Add(new XyCoord(eastingMax, num2));
                 vertices.Add(new XyCoord(eastingMin, num2));
             }
-            GLW.DrawPrimitive(PrimitiveType.Lines, vertices.ToArray());
+            GLW.DrawLinesPrimitive(vertices.ToArray());
             GLW.RotateZ(gridRotation);
         }
 

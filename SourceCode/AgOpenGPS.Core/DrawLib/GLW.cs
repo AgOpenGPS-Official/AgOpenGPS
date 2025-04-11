@@ -37,11 +37,24 @@ namespace AgOpenGPS.Core.DrawLib
             GL.End();
         }
 
-        public static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
+        public static void DrawLinesPrimitive(XyCoord[] vertices)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(vertices);
-            GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
-            vertex2Array.DeleteBuffer();
+            DrawPrimitive(PrimitiveType.Lines, vertices);
+        }
+
+        public static void DrawLineLoopPrimitive(XyCoord[] vertices)
+        {
+            DrawPrimitive(PrimitiveType.LineLoop, vertices);
+        }
+
+        public static void DrawLineStripPrimitive(XyCoord[] vertices)
+        {
+            DrawPrimitive(PrimitiveType.LineStrip, vertices);
+        }
+
+        public static void DrawTriangleFanPrimitive(XyCoord[] vertices)
+        {
+            DrawPrimitive(PrimitiveType.TriangleFan, vertices);
         }
 
         public static void DrawPointLayered(
@@ -55,7 +68,33 @@ namespace AgOpenGPS.Core.DrawLib
             }
         }
 
-        public static void DrawPrimitiveLayered(
+        public static void DrawLinesPrimitiveLayered(
+            LineStyle[] lineStyles,
+            XyCoord[] vertices)
+        {
+            DrawPrimitiveLayered(PrimitiveType.Lines, lineStyles, vertices);
+        }
+
+        public static void DrawLineLoopPrimitiveLayered(
+            LineStyle[] lineStyles,
+            XyCoord[] vertices)
+        {
+            DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
+        }
+
+        public static void RotateZ(double angleInDegrees)
+        {
+            GL.Rotate(angleInDegrees, 0, 0, 1.0);
+        }
+
+        private static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
+        {
+            Vertex2Array vertex2Array = new Vertex2Array(vertices);
+            GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+            vertex2Array.DeleteBuffer();
+        }
+
+        private static void DrawPrimitiveLayered(
             PrimitiveType primitiveType,
             LineStyle[] lineStyles,
             XyCoord[] vertices)

@@ -1928,7 +1928,7 @@ namespace AgOpenGPS
                         new XyCoord(flag.easting         , flag.northing - offSet),
                         new XyCoord(flag.easting + offSet, flag.northing),
                     };
-                    GLW.DrawPrimitive(PrimitiveType.LineLoop, squareCorners);
+                    GLW.DrawLineLoopPrimitive(squareCorners);
                 }
             }
             catch { }

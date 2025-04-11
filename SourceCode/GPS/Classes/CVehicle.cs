@@ -168,7 +168,7 @@ namespace AgOpenGPS
                 LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);
                 LineStyle foregroundLineStyle = new LineStyle(1, Colors.HitchRigidColor);
                 LineStyle[] layerStyles = { backgroundLineStyle, foregroundLineStyle };
-                GLW.DrawPrimitiveLayered(PrimitiveType.Lines, layerStyles, vertices);
+                GLW.DrawLinesPrimitiveLayered(layerStyles, vertices);
             }
 
             //draw the vehicle Body
@@ -342,7 +342,7 @@ namespace AgOpenGPS
                     new XyCoord(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist),
                     new XyCoord(-svennWidth, VehicleConfig.Wheelbase + svennDist)
                 };
-                GLW.DrawPrimitive(PrimitiveType.LineStrip, vertices);
+                GLW.DrawLineStripPrimitive(vertices);
             }
             GL.LineWidth(1);
         }
