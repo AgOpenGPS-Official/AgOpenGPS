@@ -34,17 +34,17 @@ namespace AgOpenGPS
 
             GL.Translate(x1, y1, 0);
 
-            if (mf.camera.camPitch < -45)
+            if (mf.camera.PitchInDegrees < -45)
             {
                 GL.Rotate(90, 1, 0, 0);
-                if (mf.camera.camFollowing) GL.Rotate(-mf.camHeading, 0, 1, 0);
+                if (mf.camera.FollowDirectionHint) GL.Rotate(-mf.camHeading, 0, 1, 0);
                 size = -mf.camera.camSetDistance;
                 size = Math.Pow(size, 0.8);
                 size /= 800;
             }
             else
             {
-                if (mf.camera.camFollowing) GL.Rotate(-mf.camHeading, 0, 0, 1);
+                if (mf.camera.FollowDirectionHint) GL.Rotate(-mf.camHeading, 0, 0, 1);
                 size = -mf.camera.camSetDistance;
                 size = Math.Pow(size, 0.85);
                 size /= 1000;

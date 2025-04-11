@@ -82,11 +82,6 @@ namespace AgOpenGPS.Core.DrawLib
             DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
         }
 
-        public static void RotateZ(double angleInDegrees)
-        {
-            GL.Rotate(angleInDegrees, 0, 0, 1.0);
-        }
-
         private static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
         {
             Vertex2Array vertex2Array = new Vertex2Array(vertices);
@@ -106,6 +101,26 @@ namespace AgOpenGPS.Core.DrawLib
                 GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
             }
             vertex2Array.DeleteBuffer();
+        }
+
+        public static void Translate(double x, double y, double z)
+        {
+            GL.Translate(x, y, z);
+        }
+
+        public static void Translate(double x, double y)
+        {
+            GL.Translate(x, y, 0.0);
+        }
+
+        public static void RotateX(double angleInDegrees)
+        {
+            GL.Rotate(angleInDegrees, 1.0, 0.0, 0.0);
+        }
+
+        public static void RotateZ(double angleInDegrees)
+        {
+            GL.Rotate(angleInDegrees, 0.0, 0.0, 1.0);
         }
 
     }

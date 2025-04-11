@@ -743,7 +743,7 @@ namespace AgOpenGPS
             PanelsAndOGLSize();
             PanelUpdateRightAndBottom();
 
-            camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+            camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
             SetZoom();
 
             lblGuidanceLine.BringToFront();
@@ -994,27 +994,6 @@ namespace AgOpenGPS
             }
         }
 
-        private void ZoomByMouseWheel(object sender, MouseEventArgs e)
-        {
-            if (e.Delta < 0)
-            {
-                if (camera.zoomValue <= 20) camera.zoomValue += camera.zoomValue * 0.06;
-                else camera.zoomValue += camera.zoomValue * 0.02;
-                if (camera.zoomValue > 120) camera.zoomValue = 120;
-                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
-                SetZoom();
-            }
-            else
-            {
-                if (camera.zoomValue <= 20)
-                { if ((camera.zoomValue -= camera.zoomValue * 0.06) < 4.0) camera.zoomValue = 4.0; }
-                else { if ((camera.zoomValue -= camera.zoomValue * 0.02) < 4.0) camera.zoomValue = 4.0; }
-
-                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
-                SetZoom();
-            }
-        }
-
         public void SwapDayNightMode()
         {
             isDay = !isDay;
@@ -1133,8 +1112,8 @@ namespace AgOpenGPS
                 Settings.Default.setWindow_Minimized = true;
             }
 
-            Settings.Default.setDisplay_camPitch = camera.camPitch;
-            Properties.Settings.Default.setDisplay_camZoom = camera.zoomValue;
+            Settings.Default.setDisplay_camPitch = camera.PitchInDegrees;
+            Properties.Settings.Default.setDisplay_camZoom = camera.ZoomValue;
 
             Settings.Default.setF_UserTotalArea = fd.workedAreaTotalUser;
 
@@ -1361,13 +1340,12 @@ namespace AgOpenGPS
                 //zoom buttons
                 if (point.X > oglMain.Width - 80)
                 {
-                    //---
+                    // --
                     if (point.Y < 260 && point.Y > 170)
                     {
-                        if (camera.zoomValue <= 20) camera.zoomValue += camera.zoomValue * 0.2;
-                        else camera.zoomValue += camera.zoomValue * 0.1;
-                        if (camera.zoomValue > 180) camera.zoomValue = 180;
-                        camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                        double adjustFactor = (camera.ZoomValue <= 20) ? 1.2 : 1.1;
+                        camera.ZoomValue = System.Math.Min(adjustFactor * camera.ZoomValue, 180);
+                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
                         SetZoom();
                         return;
                     }
@@ -1375,11 +1353,9 @@ namespace AgOpenGPS
                     //++
                     if (point.Y < 120 && point.Y > 30)
                     {
-                        if (camera.zoomValue <= 20)
-                        { if ((camera.zoomValue -= camera.zoomValue * 0.2) < 4.0) camera.zoomValue = 4.0; }
-                        else { if ((camera.zoomValue -= camera.zoomValue * 0.1) < 4.0) camera.zoomValue = 4.0; }
-
-                        camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                        double adjustFactor = (camera.ZoomValue <= 20) ? 0.8 : 0.9;
+                        camera.ZoomValue = System.Math.Max(4.0, adjustFactor * camera.ZoomValue);
+                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
                         SetZoom();
                         return;
                     }
