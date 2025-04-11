@@ -9,7 +9,7 @@ namespace AgOpenGPS
     public partial class FormPan : Form
     {
         private readonly FormGPS mf = null;
-        private const double adjustFactor = 0.04;
+        private const double AdjustFactor = 0.04;
 
         public FormPan(Form callingForm)
         {
@@ -19,46 +19,46 @@ namespace AgOpenGPS
 
         private void btnPanUp_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY += adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY += AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnPanDn_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY -= adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY -= AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnPanRight_Click(object sender, EventArgs e)
         {
-            mf.camera.PanX += adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX += AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnPanLeft_Click(object sender, EventArgs e)
         {
-            mf.camera.PanX -= adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX -= AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnUpLeft_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY += adjustFactor * mf.camera.camSetDistance;
-            mf.camera.PanX -= adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY += AdjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX -= AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnDownRight_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY -= adjustFactor * mf.camera.camSetDistance;
-            mf.camera.PanX += adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY -= AdjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX += AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnUpRight_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY += adjustFactor * mf.camera.camSetDistance;
-            mf.camera.PanX += adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY += AdjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX += AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnDownLeft_Click(object sender, EventArgs e)
         {
-            mf.camera.PanY -= adjustFactor * mf.camera.camSetDistance;
-            mf.camera.PanX -= adjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanY -= AdjustFactor * mf.camera.camSetDistance;
+            mf.camera.PanX -= AdjustFactor * mf.camera.camSetDistance;
         }
 
         private void btnPanCancel_Click(object sender, EventArgs e)
