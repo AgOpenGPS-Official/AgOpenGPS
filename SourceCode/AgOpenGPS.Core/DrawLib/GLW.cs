@@ -82,11 +82,6 @@ namespace AgOpenGPS.Core.DrawLib
             DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
         }
 
-        public static void RotateZ(double angleInDegrees)
-        {
-            GL.Rotate(angleInDegrees, 0, 0, 1.0);
-        }
-
         private static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
         {
             Vertex2Array vertex2Array = new Vertex2Array(vertices);
