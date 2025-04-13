@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -24,33 +25,53 @@ public static class AgShareApi
     {
         if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
-        var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/users/me");
+        var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/isoxmlfields");
         request.Headers.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
 
         try
         {
             var response = await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"API key test failed: {response.StatusCode}");
+            }
             return response.IsSuccessStatusCode;
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine("API key test exception: " + ex.Message);
             return false;
         }
+
     }
 
     public static async Task<bool> UploadIsoXmlFieldAsync(string fieldId, object jsonPayload)
     {
         if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
-        using var client = new HttpClient();
         var content = new StringContent(JsonSerializer.Serialize(jsonPayload), Encoding.UTF8, "application/json");
         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
+        // ✅ gebruik gedeelde client
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
 
-        var response = await client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content);
+        try
+        {
+            var response = await client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content);
 
-        return response.IsSuccessStatusCode;
+            Debug.WriteLine("=== Response ===");
+            Debug.WriteLine("Status: " + response.StatusCode);
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Body: " + responseBody);
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Upload exception: " + ex.Message);
+            return false;
+        }
     }
+
 
 }

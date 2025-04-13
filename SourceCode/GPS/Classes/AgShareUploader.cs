@@ -57,7 +57,7 @@ public static class AgShareUploader
         return new
         {
             name = fieldName,
-            isPublic = true,
+            isPublic = false,
             originLat = boundary.Average(p => p[0]),
             originLon = boundary.Average(p => p[1]),
             boundary,
