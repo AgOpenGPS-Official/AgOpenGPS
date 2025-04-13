@@ -248,6 +248,7 @@ namespace AgOpenGPS.Properties
         public bool setAutoSwitchDualFixOn = false;
         public double setAutoSwitchDualFixSpeed = 2.0;
         public string AgShareApiKey = "apikey";
+        public bool PublicField = false;
 
         public LoadResult Load()
         {
