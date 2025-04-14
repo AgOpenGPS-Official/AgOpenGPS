@@ -1,11 +1,10 @@
 ﻿using AgOpenGPS.Core.DrawLib;
 
-namespace AgOpenGPS
+namespace AgOpenGPS.Core
 {
-    public class CCamera
+    public class Camera
     {
-
-        public CCamera(double pitchInDegrees, double zoomValue)
+        public Camera(double pitchInDegrees, double zoomValue)
         {
             PitchInDegrees = pitchInDegrees;
             ZoomValue = zoomValue;

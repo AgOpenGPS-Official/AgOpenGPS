@@ -133,10 +133,7 @@ namespace AgOpenGPS
         //isGPSData form up
         public bool isGPSSentencesOn = false, isKeepOffsetsOn = false;
 
-        /// <summary>
-        /// create the scene camera
-        /// </summary>
-        public CCamera camera;
+        public Camera camera;
 
         /// <summary>
         /// create world grid
@@ -304,7 +301,7 @@ namespace AgOpenGPS
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
-            camera = new CCamera(
+            camera = new Camera(
                 Properties.Settings.Default.setDisplay_camPitch,
                 Properties.Settings.Default.setDisplay_camZoom);
 
