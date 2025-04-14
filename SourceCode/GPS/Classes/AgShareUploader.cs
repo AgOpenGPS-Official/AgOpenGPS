@@ -60,9 +60,10 @@ public static class AgShareUploader
             isPublic = false,
             originLat = boundary.Average(p => p[0]),
             originLon = boundary.Average(p => p[1]),
-            boundary,
+            boundary = boundary,
             abLines
         };
+
     }
 
     public static async Task<bool> UploadFieldAsync(Guid fieldId, object jsonPayload)
