@@ -26,15 +26,14 @@ public static class AgShareApi
         if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
         var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/isoxmlfields");
-        request.Headers.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
+
+        client.DefaultRequestHeaders.Remove("Authorization");
+        client.DefaultRequestHeaders.Add("Authorization", $"ApiKey {ApiKey}");
 
         try
         {
             var response = await client.SendAsync(request);
-            if (!response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine($"API key test failed: {response.StatusCode}");
-            }
+            Debug.WriteLine("Test status: " + response.StatusCode);
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)
@@ -42,27 +41,24 @@ public static class AgShareApi
             Debug.WriteLine("API key test exception: " + ex.Message);
             return false;
         }
-
     }
+
 
     public static async Task<bool> UploadIsoXmlFieldAsync(string fieldId, object jsonPayload)
     {
         if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
+        // ✅ gebruik gedeelde client
+        client.DefaultRequestHeaders.Remove("Authorization");
+        client.DefaultRequestHeaders.Add("Authorization", $"ApiKey {ApiKey}");
+
         var content = new StringContent(JsonSerializer.Serialize(jsonPayload), Encoding.UTF8, "application/json");
         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-        // ✅ gebruik gedeelde client
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
 
         try
         {
             var response = await client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content);
-
-            Debug.WriteLine("=== Response ===");
-            Debug.WriteLine("Status: " + response.StatusCode);
             string responseBody = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine("Body: " + responseBody);
 
             return response.IsSuccessStatusCode;
         }
