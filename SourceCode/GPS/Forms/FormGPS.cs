@@ -304,7 +304,9 @@ namespace AgOpenGPS
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
-            camera = new CCamera();
+            camera = new CCamera(
+                Properties.Settings.Default.setDisplay_camPitch,
+                Properties.Settings.Default.setDisplay_camZoom);
 
             worldGrid = new WorldGrid(Resources.z_Floor, Resources.z_bingMap);
 

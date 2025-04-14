@@ -2,14 +2,10 @@
 
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace AgOpenGPS
 {
@@ -122,6 +118,8 @@ namespace AgOpenGPS
         //public double jumpDistance = 0, jumpDistanceMax;
         //public double jumpDistanceAlarm = 20;
         //public int jumpCounter = 0;
+
+        public double camSmoothFactor = ((double)(Properties.Settings.Default.setDisplay_camSmooth) * 0.004) + 0.2;
 
         public void UpdateFixPosition()
         {
@@ -534,7 +532,7 @@ namespace AgOpenGPS
                         if (camDelta > glm.twoPI) camDelta -= glm.twoPI;
                         else if (camDelta < -glm.twoPI) camDelta += glm.twoPI;
 
-                        smoothCamHeading -= camDelta * camera.camSmoothFactor;
+                        smoothCamHeading -= camDelta * camSmoothFactor;
 
                         if (smoothCamHeading > glm.twoPI) smoothCamHeading -= glm.twoPI;
                         else if (smoothCamHeading < -glm.twoPI) smoothCamHeading += glm.twoPI;
@@ -571,7 +569,7 @@ namespace AgOpenGPS
                         if (camDelta > glm.twoPI) camDelta -= glm.twoPI;
                         else if (camDelta < -glm.twoPI) camDelta += glm.twoPI;
 
-                        smoothCamHeading -= camDelta * camera.camSmoothFactor;
+                        smoothCamHeading -= camDelta * camSmoothFactor;
 
                         if (smoothCamHeading > glm.twoPI) smoothCamHeading -= glm.twoPI;
                         else if (smoothCamHeading < -glm.twoPI) smoothCamHeading += glm.twoPI;
@@ -742,7 +740,7 @@ namespace AgOpenGPS
                             double delta = Math.Abs(Math.PI - Math.Abs(Math.Abs(newHeading - fixHeading) - Math.PI));
 
                             //are we going backwards
-                            isReverse = delta > 2 ? true : false;
+                            isReverse = (delta > 2);
 
                             //save for next meter check
                             lastReverseFix = pn.fix;
@@ -763,7 +761,7 @@ namespace AgOpenGPS
                         if (camDelta > glm.twoPI) camDelta -= glm.twoPI;
                         else if (camDelta < -glm.twoPI) camDelta += glm.twoPI;
 
-                        smoothCamHeading -= camDelta * camera.camSmoothFactor;
+                        smoothCamHeading -= camDelta * camSmoothFactor;
 
                         if (smoothCamHeading > glm.twoPI) smoothCamHeading -= glm.twoPI;
                         else if (smoothCamHeading < -glm.twoPI) smoothCamHeading += glm.twoPI;
