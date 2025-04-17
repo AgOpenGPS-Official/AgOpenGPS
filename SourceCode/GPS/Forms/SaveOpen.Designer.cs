@@ -72,15 +72,25 @@ namespace AgOpenGPS
                     AppModel.LocalPlane,
                     trk,
                     ISO11783_TaskFile.Version.V4);
+
                 if (Settings.Default.AgShareApiKey != "apikey")
                 {
-                    await AgShareApi.UploadIsoXmlFieldAsync(currentFieldDirectory, outputFileName);
+                    var fieldName = AppModel.Fields.CurrentFieldName;
+                    var fieldId = AgShareUploader.GetOrGenerateFieldId(currentFieldDirectory);
+                    var json = AgShareUploader.BuildFieldUploadJsonWithConversion(
+                        fieldName,
+                        bnd.bndList[0].fenceLineEar,
+                        trk.gArr,
+                        AppModel.LocalPlane
+                    );
+                    await AgShareUploader.UploadFieldAsync(fieldId, json);
                 }
             }
             catch (Exception e)
             {
                 Log.EventWriter("Export Field as ISOXML: " + e.Message);
             }
+
         }
 
         public void FileSaveHeadLines()
