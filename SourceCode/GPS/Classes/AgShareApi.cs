@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -13,7 +13,7 @@ public static class AgShareApi
 {
     private static readonly HttpClient client = new();
 
-    public static string? ApiKey => Settings.Default.AgShareApiKey;
+    public static string ApiKey => Settings.Default.AgShareApiKey;
 
     public static void SaveApiKey(string key)
     {
