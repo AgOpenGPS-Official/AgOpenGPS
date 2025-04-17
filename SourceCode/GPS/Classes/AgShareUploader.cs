@@ -4,6 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using NetTopologySuite.Features;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using AgOpenGPS;
 
 public static class AgShareUploader
@@ -37,23 +41,33 @@ public static class AgShareUploader
             boundary.Add(new List<double> { lat, lon });
         }
 
-        var abLines = tracks.Select(t => new
-        {
-            name = t.name,
-            type = t.curvePts.Count > 0 ? "Curve" : "AB",
-            points = t.curvePts.Count > 0
-                ? t.curvePts.Select(c =>
-                {
-                    converter.ConvertLocalToWGS84(c.northing, c.easting, out double lat, out double lon);
-                    return new List<double> { lat, lon };
-                })
-                : new[] { t.ptA, t.ptB }.Select(p =>
-                {
-                    converter.ConvertLocalToWGS84(p.northing, p.easting, out double lat, out double lon);
-                    return new List<double> { lat, lon };
-                })
-        }).ToList();
+        var abLines = new List<object>();
 
+        foreach (var t in tracks)
+        {
+            var rawPoints = t.curvePts.Count > 0
+                ? t.curvePts.Select(p => new { p.northing, p.easting })
+                : new[] { t.ptA, t.ptB }.Select(p => new { p.northing, p.easting });
+
+            var line = new List<List<double>>();
+
+            foreach (var p in rawPoints)
+            {
+                converter.ConvertLocalToWGS84(p.northing, p.easting, out double lat, out double lon);
+                line.Add(new List<double> { lat, lon });
+            }
+
+            abLines.Add(new
+            {
+                name = t.name ?? "Unnamed",
+                type = t.curvePts.Count > 0 ? "Curve" : "AB",
+                coords = line
+            });
+        }
+
+
+
+        // Return the final field object including the boundary and AB lines
         return new
         {
             name = fieldName,
@@ -61,8 +75,10 @@ public static class AgShareUploader
             originLat = boundary.Average(p => p[0]),
             originLon = boundary.Average(p => p[1]),
             boundary = boundary,
-            abLines
+            abLines = abLines // bevat nu name, type, coords[]
         };
+
+
 
     }
 
