@@ -9,6 +9,7 @@ using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using AgOpenGPS;
+using AgOpenGPS.Core.Models;
 
 public static class AgShareUploader
 {
@@ -31,14 +32,14 @@ public static class AgShareUploader
     string fieldName,
     List<vec2> localBoundary,
     List<CTrk> tracks,
-    CNMEA converter)
-
+    LocalPlane converter)
     {
         var boundary = new List<List<double>>();
         foreach (var p in localBoundary)
         {
-            converter.ConvertLocalToWGS84(p.northing, p.easting, out double lat, out double lon);
-            boundary.Add(new List<double> { lat, lon });
+            var geo = new GeoCoord(p.northing, p.easting);
+            var wgs = converter.ConvertGeoCoordToWgs84(geo);
+            boundary.Add(new List<double> { wgs.Latitude, wgs.Longitude });
         }
 
         var abLines = new List<object>();
@@ -53,8 +54,9 @@ public static class AgShareUploader
 
             foreach (var p in rawPoints)
             {
-                converter.ConvertLocalToWGS84(p.northing, p.easting, out double lat, out double lon);
-                line.Add(new List<double> { lat, lon });
+                var geo = new GeoCoord(p.northing, p.easting);
+                var wgs = converter.ConvertGeoCoordToWgs84(geo);
+                line.Add(new List<double> { wgs.Latitude, wgs.Longitude });
             }
 
             abLines.Add(new
@@ -65,9 +67,6 @@ public static class AgShareUploader
             });
         }
 
-
-
-        // Return the final field object including the boundary and AB lines
         return new
         {
             name = fieldName,
@@ -75,12 +74,10 @@ public static class AgShareUploader
             originLat = boundary.Average(p => p[0]),
             originLon = boundary.Average(p => p[1]),
             boundary = boundary,
-            abLines = abLines // bevat nu name, type, coords[]
+            abLines = abLines
         };
-
-
-
     }
+
 
     public static async Task<bool> UploadFieldAsync(Guid fieldId, object jsonPayload)
     {
