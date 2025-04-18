@@ -77,11 +77,4 @@ public static class AgShareUploader
             abLines = abLines
         };
     }
-
-
-    public static async Task<bool> UploadFieldAsync(Guid fieldId, object jsonPayload)
-    {
-        return await AgShareApi.UploadIsoXmlFieldAsync(fieldId.ToString(), jsonPayload);
-        
-    }
 }
