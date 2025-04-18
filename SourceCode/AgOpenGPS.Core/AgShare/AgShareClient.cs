@@ -25,7 +25,7 @@ namespace AgOpenGPS.Core.AgShare
 
             try
             {
-                var response = await _client.SendAsync(request);
+                var response = await _client.SendAsync(request).ConfigureAwait(false);
                 Debug.WriteLine("Test status: " + response.StatusCode);
                 return response.IsSuccessStatusCode;
             }
@@ -49,8 +49,8 @@ namespace AgOpenGPS.Core.AgShare
 
             try
             {
-                var response = await _client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                var response = await _client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content).ConfigureAwait(false);
+                string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 return response.IsSuccessStatusCode;
             }
