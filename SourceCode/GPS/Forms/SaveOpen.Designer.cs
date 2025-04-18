@@ -15,6 +15,7 @@ using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Properties;
+using System.Threading.Tasks;
 
 namespace AgOpenGPS
 {
@@ -54,7 +55,7 @@ namespace AgOpenGPS
             }
         }
 
-        public async void ExportFieldAs_ISOXMLv4()
+        public void ExportFieldAs_ISOXMLv4()
         {
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "zISOXML", "v4");
@@ -72,25 +73,31 @@ namespace AgOpenGPS
                     AppModel.LocalPlane,
                     trk,
                     ISO11783_TaskFile.Version.V4);
-
-                if (Settings.Default.AgShareApiKey != "apikey")
-                {
-                    var fieldName = AppModel.Fields.CurrentFieldName;
-                    var fieldId = AgShareUploader.GetOrGenerateFieldId(currentFieldDirectory);
-                    var json = AgShareUploader.BuildFieldUploadJsonWithConversion(
-                        fieldName,
-                        bnd.bndList[0].fenceLineEar,
-                        trk.gArr,
-                        AppModel.LocalPlane
-                    );
-                    await _agShareClient.UploadIsoXmlFieldAsync(fieldId.ToString(), json);
-                }
             }
             catch (Exception e)
             {
                 Log.EventWriter("Export Field as ISOXML: " + e.Message);
             }
+        }
 
+        public void UploadFieldToAgShare()
+        {
+            if (Settings.Default.AgShareApiKey == "apikey")
+                return;
+
+            var fieldName = AppModel.Fields.CurrentFieldName;
+            var fieldId = AgShareUploader.GetOrGenerateFieldId(Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory));
+            var json = AgShareUploader.BuildFieldUploadJsonWithConversion(
+                fieldName,
+                bnd.bndList[0].fenceLineEar,
+                trk.gArr,
+                AppModel.LocalPlane
+            );
+
+            // This is currently a blocking operation using .GetAwaiter().GetResult()
+            // That is far from ideal, but using async void would be even worse.
+            // In the future, we need to make the entire "close field" operation asynchronous.
+            _agShareClient.UploadIsoXmlFieldAsync(fieldId.ToString(), json).GetAwaiter().GetResult();
         }
 
         public void FileSaveHeadLines()

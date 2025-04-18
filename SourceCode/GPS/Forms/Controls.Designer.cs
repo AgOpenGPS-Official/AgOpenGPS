@@ -660,7 +660,8 @@ namespace AgOpenGPS
             ExportFieldAs_KML();
             ExportFieldAs_ISOXMLv3();
             ExportFieldAs_ISOXMLv4();
-            
+
+            UploadFieldToAgShare();
 
             Log.EventWriter("** Closed **   " + currentFieldDirectory + "   "
                 + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
