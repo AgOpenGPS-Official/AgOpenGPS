@@ -83,7 +83,7 @@ namespace AgOpenGPS
                         trk.gArr,
                         AppModel.LocalPlane
                     );
-                    await AgShareUploader.UploadFieldAsync(fieldId, json);
+                    await _agShareClient.UploadIsoXmlFieldAsync(fieldId.ToString(), json);
                 }
             }
             catch (Exception e)
