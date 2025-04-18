@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="3.3.3" />
+    <PackageReference Include="System.Text.Json" Version="9.0.4" />
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="PresentationCore" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>

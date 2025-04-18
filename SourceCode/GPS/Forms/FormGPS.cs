@@ -27,12 +27,15 @@ using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using AgOpenGPS.Core.AgShare;
 
 namespace AgOpenGPS
 {
     //the main form object
     public partial class FormGPS : Form
     {
+        private readonly AgShareClient _agShareClient = new();
+
         public ApplicationCore AppCore { get; }
 
         public ApplicationModel AppModel => AppCore.AppModel;
@@ -522,6 +525,8 @@ namespace AgOpenGPS
                     form.ShowDialog(this);
                 }
             }
+
+            _agShareClient.ApiKey = Settings.Default.AgShareApiKey;
         }
 
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
