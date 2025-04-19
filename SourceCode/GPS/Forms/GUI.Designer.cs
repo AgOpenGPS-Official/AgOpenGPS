@@ -604,6 +604,11 @@ namespace AgOpenGPS
 
             ahrs = new CAHRS();
 
+            // invalidate curve/ab line to force recalculation in case dependent settings were chagned,
+            // for example, change of tool offset or tool width
+            curve.isCurveValid = false;
+            ABLine.isABValid = false;
+
             fd.UpdateFieldBoundaryGUIAreas();
 
             btnSection1Man.Visible = false;
