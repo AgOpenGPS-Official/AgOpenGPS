@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +14,8 @@ using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Properties;
+using System.Threading.Tasks;
 
 namespace AgOpenGPS
 {
@@ -76,6 +78,26 @@ namespace AgOpenGPS
             {
                 Log.EventWriter("Export Field as ISOXML: " + e.Message);
             }
+        }
+
+        public void UploadFieldToAgShare()
+        {
+            if (Settings.Default.AgShareApiKey == "apikey")
+                return;
+
+            var fieldName = AppModel.Fields.CurrentFieldName;
+            var fieldId = AgShareUploader.GetOrGenerateFieldId(currentFieldDirectory);
+            var json = AgShareUploader.BuildFieldUploadJsonWithConversion(
+                fieldName,
+                bnd.bndList[0].fenceLineEar,
+                trk.gArr,
+                AppModel.LocalPlane
+            );
+
+            // This is currently a blocking operation using .GetAwaiter().GetResult()
+            // That is far from ideal, but using async void would be even worse.
+            // In the future, we need to make the entire "close field" operation asynchronous.
+            _agShareClient.UploadIsoXmlFieldAsync(fieldId.ToString(), json).GetAwaiter().GetResult();
         }
 
         public void FileSaveHeadLines()
