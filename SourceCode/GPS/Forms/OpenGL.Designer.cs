@@ -859,8 +859,9 @@ namespace AgOpenGPS
                 for (int j = 0; j < tool.numOfSections; j++)
                 {
                     //only one first left point, the rest are all rights moved over to left
-                    isLeftIn = j == 0 ? bnd.IsPointInsideFenceArea(section[j].leftPoint) : isRightIn;
-                    isRightIn = bnd.IsPointInsideFenceArea(section[j].rightPoint);
+                    double boundaryCoverage = (100.0 - tool.minCoverage) / 100;
+                    isLeftIn = bnd.IsPointInsideFenceArea(section[j].leftPoint.ShrinkToward(section[j].rightPoint, boundaryCoverage));
+                    isRightIn = bnd.IsPointInsideFenceArea(section[j].rightPoint.ShrinkToward(section[j].leftPoint, boundaryCoverage));
 
                     if (!tool.isSectionOffWhenOut)
                     {

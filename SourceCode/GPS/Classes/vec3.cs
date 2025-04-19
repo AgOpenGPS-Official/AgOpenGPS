@@ -128,6 +128,11 @@ namespace AgOpenGPS
         {
             return new vec2(lhs.easting + rhs.easting, lhs.northing + rhs.northing);
         }
+
+        public vec2 ShrinkToward(vec2 other, double factor)
+        {
+            return this + ((other - this) * factor);
+        }
     }
 
 }
