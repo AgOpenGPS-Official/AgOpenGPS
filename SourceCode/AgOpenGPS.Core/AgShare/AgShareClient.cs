@@ -12,27 +12,29 @@ namespace AgOpenGPS.Core.AgShare
     {
         private readonly HttpClient _client = new HttpClient();
 
+        public string Server { get; set; }
         public string ApiKey { get; set; }
 
-        public async Task<bool> TestApiKeyAsync()
+        public async Task<(bool Success, string Message)> TestConnectionAsync(string server, string apiKey)
         {
-            if (string.IsNullOrWhiteSpace(ApiKey)) return false;
+            if (!Uri.TryCreate(server, UriKind.Absolute, out Uri baseAddress))
+                return (false, "Invalid server address");
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/isoxmlfields");
+            if (string.IsNullOrWhiteSpace(apiKey))
+                return (false, "No API key");
 
-            _client.DefaultRequestHeaders.Remove("Authorization");
-            _client.DefaultRequestHeaders.Add("Authorization", $"ApiKey {ApiKey}");
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(baseAddress, "/api/isoxmlfields"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
 
             try
             {
                 var response = await _client.SendAsync(request).ConfigureAwait(false);
-                Debug.WriteLine("Test status: " + response.StatusCode);
-                return response.IsSuccessStatusCode;
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return (response.IsSuccessStatusCode, content);
             }
-            catch (Exception ex)
+            catch (HttpRequestException)
             {
-                Debug.WriteLine("API key test exception: " + ex.Message);
-                return false;
+                return (false, "Failed to connect to server");
             }
         }
 
@@ -40,15 +42,15 @@ namespace AgOpenGPS.Core.AgShare
         {
             if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
-            _client.DefaultRequestHeaders.Remove("Authorization");
-            _client.DefaultRequestHeaders.Add("Authorization", $"ApiKey {ApiKey}");
+            _client.BaseAddress = new Uri(Server, UriKind.Absolute);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
 
             var content = new StringContent(JsonSerializer.Serialize(jsonPayload), Encoding.UTF8, "application/json");
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             try
             {
-                var response = await _client.PutAsync($"http://localhost:5000/api/isoxmlfields/{fieldId}", content).ConfigureAwait(false);
+                var response = await _client.PutAsync($"/api/isoxmlfields/{fieldId}", content).ConfigureAwait(false);
                 string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 return response.IsSuccessStatusCode;
