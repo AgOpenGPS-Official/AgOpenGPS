@@ -5,17 +5,17 @@ using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
-    public partial class AgShareSettingsForm : Form
+    public partial class FormAgShareSettings : Form
     {
         private readonly AgShareClient _agShareClient;
 
-        public AgShareSettingsForm()
+        public FormAgShareSettings()
         {
             InitializeComponent();
             txtApiKey.Text = Settings.Default.AgShareApiKey ?? "";
         }
 
-        public AgShareSettingsForm(AgShareClient agShareClient)
+        public FormAgShareSettings(AgShareClient agShareClient)
             : this()
         {
             _agShareClient = agShareClient;
