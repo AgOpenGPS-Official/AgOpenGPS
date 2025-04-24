@@ -34,7 +34,7 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
-        private readonly AgShareClient _agShareClient = new();
+        private readonly AgShareClient _agShareClient = new AgShareClient();
 
         public ApplicationCore AppCore { get; }
 
