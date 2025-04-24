@@ -82,7 +82,7 @@ namespace AgOpenGPS
 
         public void UploadFieldToAgShare()
         {
-            if (Settings.Default.AgShareApiKey == "apikey")
+            if (string.IsNullOrEmpty(Settings.Default.AgShareApiKey))
                 return;
 
             var fieldName = AppModel.Fields.CurrentFieldName;
