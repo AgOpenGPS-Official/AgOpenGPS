@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Properties;
@@ -9,45 +10,46 @@ namespace AgOpenGPS
     {
         private readonly AgShareClient _agShareClient;
 
-        public FormAgShareSettings()
-        {
-            InitializeComponent();
-            txtApiKey.Text = Settings.Default.AgShareApiKey ?? "";
-        }
-
         public FormAgShareSettings(AgShareClient agShareClient)
-            : this()
         {
             _agShareClient = agShareClient;
+
+            InitializeComponent();
         }
 
-        private async void btnTest_Click(object sender, EventArgs e)
+        private void FormAgShareSettings_Load(object sender, EventArgs e)
         {
-            lblStatus.Text = "Connecting...";
-            lblStatus.ForeColor = System.Drawing.Color.Gray;
-
-            SaveApiKey(txtApiKey.Text);
-
-            bool result = await _agShareClient.TestApiKeyAsync();
-            lblStatus.Text = result ? "✔ API key valid" : "❌ API key Not Valid";
-            lblStatus.ForeColor = result ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+            textBoxServer.Text = Settings.Default.AgShareServer;
+            textBoxApiKey.Text = Settings.Default.AgShareApiKey ?? "";
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void buttonTestConnection_Click(object sender, EventArgs e)
         {
-            SaveApiKey(txtApiKey.Text);
-            MessageBox.Show("API key opgeslagen.", "Opgeslagen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            labelStatus.Text = "Connecting...";
+            labelStatus.ForeColor = Color.Gray;
+
+            (bool success, string message) = await _agShareClient.TestConnectionAsync(textBoxServer.Text, textBoxApiKey.Text);
+
+            if (success)
+            {
+                labelStatus.Text = "✔ Connection successful";
+                labelStatus.ForeColor = Color.Green;
+                buttonSave.Enabled = true;
+            }
+            else
+            {
+                labelStatus.Text = $"❌ {message}";
+                labelStatus.ForeColor = Color.Red;
+            }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void buttonSave_Click(object sender, EventArgs e)
         {
-            Close();
-        }
+            _agShareClient.Server = textBoxServer.Text;
+            _agShareClient.ApiKey = textBoxApiKey.Text;
 
-        private void SaveApiKey(string key)
-        {
-            _agShareClient.ApiKey = key;
-            Settings.Default.AgShareApiKey = key;
+            Settings.Default.AgShareServer = textBoxServer.Text;
+            Settings.Default.AgShareApiKey = textBoxApiKey.Text;
             Settings.Default.Save();
         }
     }

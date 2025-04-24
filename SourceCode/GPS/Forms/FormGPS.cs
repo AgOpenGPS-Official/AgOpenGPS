@@ -518,6 +518,7 @@ namespace AgOpenGPS
                 }
             }
 
+            _agShareClient.Server = Settings.Default.AgShareServer;
             _agShareClient.ApiKey = Settings.Default.AgShareApiKey;
         }
 
