@@ -2,12 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using NetTopologySuite.Features;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using AgOpenGPS;
 using AgOpenGPS.Core.Models;
 
