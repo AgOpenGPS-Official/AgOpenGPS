@@ -1,6 +1,6 @@
 ﻿namespace AgOpenGPS
 {
-    partial class AgShareSettingsForm
+    partial class FormAgShareSettings
     {
         /// <summary>
         /// Required designer variable.
