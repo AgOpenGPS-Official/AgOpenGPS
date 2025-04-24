@@ -23,10 +23,10 @@ public static class AgShareUploader
     }
 
     public static object BuildFieldUploadJsonWithConversion(
-    string fieldName,
-    List<vec2> localBoundary,
-    List<CTrk> tracks,
-    LocalPlane converter)
+        string fieldName,
+        List<vec2> localBoundary,
+        List<CTrk> tracks,
+        LocalPlane converter)
     {
         var boundary = new List<List<double>>();
         foreach (var p in localBoundary)

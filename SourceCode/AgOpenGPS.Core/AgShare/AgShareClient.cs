@@ -40,7 +40,6 @@ namespace AgOpenGPS.Core.AgShare
         {
             if (string.IsNullOrWhiteSpace(ApiKey)) return false;
 
-            // ✅ gebruik gedeelde client
             _client.DefaultRequestHeaders.Remove("Authorization");
             _client.DefaultRequestHeaders.Add("Authorization", $"ApiKey {ApiKey}");
 
