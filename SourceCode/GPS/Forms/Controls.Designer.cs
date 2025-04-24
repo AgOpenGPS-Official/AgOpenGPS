@@ -1345,14 +1345,15 @@ namespace AgOpenGPS
                 form.ShowDialog(this);
             }
         }
+
         private void AgShareApiMenuItem_Click(object sender, EventArgs e)
         {
             using (var form = new AgShareSettingsForm(_agShareClient))
             {
                 form.ShowDialog(this);
             }
-
         }
+
         private void hotKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var form = new Form_Keys(this))
