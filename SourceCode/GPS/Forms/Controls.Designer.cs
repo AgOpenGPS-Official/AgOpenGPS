@@ -1348,7 +1348,7 @@ namespace AgOpenGPS
 
         private void AgShareApiMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new AgShareSettingsForm(_agShareClient))
+            using (var form = new FormAgShareSettings(_agShareClient))
             {
                 form.ShowDialog(this);
             }
