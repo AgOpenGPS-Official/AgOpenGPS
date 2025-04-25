@@ -2,6 +2,7 @@
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms.Field;
 using AgOpenGPS.Helpers;
 using System;
 using System.Drawing;
@@ -241,6 +242,12 @@ namespace AgOpenGPS
         private void btnDeleteAB_Click(object sender, EventArgs e)
         {
             mf.isCancelJobMenu = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var form = new FormFieldBrowser();
+            form.ShowDialog(); // of .Show() als je het modeless wilt
         }
     }
 }
