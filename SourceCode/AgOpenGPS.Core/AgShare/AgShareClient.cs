@@ -11,9 +11,26 @@ namespace AgOpenGPS.Core.AgShare
     public class AgShareClient
     {
         private readonly HttpClient _client = new HttpClient();
+        private bool _configured;
 
-        public string Server { get; set; }
-        public string ApiKey { get; set; }
+        public void SetServer(string server)
+        {
+            _client.BaseAddress = new Uri(server, UriKind.Absolute);
+        }
+
+        public void SetApiKey(string apiKey)
+        {
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                _client.DefaultRequestHeaders.Authorization = null;
+                _configured = false;
+            }
+            else
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
+                _configured = true;
+            }
+        }
 
         public async Task<(bool Success, string Message)> TestConnectionAsync(string server, string apiKey)
         {
@@ -40,10 +57,8 @@ namespace AgOpenGPS.Core.AgShare
 
         public async Task<bool> UploadIsoXmlFieldAsync(string fieldId, object jsonPayload)
         {
-            if (string.IsNullOrWhiteSpace(ApiKey)) return false;
-
-            _client.BaseAddress = new Uri(Server, UriKind.Absolute);
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", ApiKey);
+            if (!_configured)
+                return false;
 
             var content = new StringContent(JsonSerializer.Serialize(jsonPayload), Encoding.UTF8, "application/json");
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");

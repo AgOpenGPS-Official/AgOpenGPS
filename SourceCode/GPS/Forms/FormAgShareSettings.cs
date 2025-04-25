@@ -45,8 +45,8 @@ namespace AgOpenGPS
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            _agShareClient.Server = textBoxServer.Text;
-            _agShareClient.ApiKey = textBoxApiKey.Text;
+            _agShareClient.SetServer(textBoxServer.Text);
+            _agShareClient.SetApiKey(textBoxApiKey.Text);
 
             Settings.Default.AgShareServer = textBoxServer.Text;
             Settings.Default.AgShareApiKey = textBoxApiKey.Text;
