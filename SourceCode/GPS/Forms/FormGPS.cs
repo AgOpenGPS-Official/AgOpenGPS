@@ -526,8 +526,8 @@ namespace AgOpenGPS
                 }
             }
 
-            _agShareClient.Server = Settings.Default.AgShareServer;
-            _agShareClient.ApiKey = Settings.Default.AgShareApiKey;
+            _agShareClient.SetServer(Settings.Default.AgShareServer);
+            _agShareClient.SetApiKey(Settings.Default.AgShareApiKey);
         }
 
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
