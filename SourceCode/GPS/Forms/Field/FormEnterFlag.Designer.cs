@@ -37,8 +37,8 @@
             this.btnYellow = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
             this.btnGreen = new System.Windows.Forms.Button();
-            this.btnLoadFlags = new System.Windows.Forms.Button();
-            this.btnSaveFlags = new System.Windows.Forms.Button();
+            this.btnImportFlags = new System.Windows.Forms.Button();
+            this.btnExportFlags = new System.Windows.Forms.Button();
             this.nudLatitude = new AgOpenGPS.NudlessNumericUpDown();
             this.nudLongitude = new AgOpenGPS.NudlessNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).BeginInit();
@@ -110,7 +110,7 @@
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
             this.btnCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnCancel.Location = new System.Drawing.Point(348, 192);
+            this.btnCancel.Location = new System.Drawing.Point(413, 188);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(87, 58);
             this.btnCancel.TabIndex = 430;
@@ -126,7 +126,7 @@
             this.btnYellow.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnYellow.Image = global::AgOpenGPS.Properties.Resources.FlagYel;
             this.btnYellow.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnYellow.Location = new System.Drawing.Point(441, 193);
+            this.btnYellow.Location = new System.Drawing.Point(515, 192);
             this.btnYellow.Name = "btnYellow";
             this.btnYellow.Size = new System.Drawing.Size(87, 58);
             this.btnYellow.TabIndex = 431;
@@ -160,7 +160,7 @@
             this.btnGreen.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGreen.Image = global::AgOpenGPS.Properties.Resources.FlagGrn;
             this.btnGreen.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnGreen.Location = new System.Drawing.Point(556, 193);
+            this.btnGreen.Location = new System.Drawing.Point(597, 192);
             this.btnGreen.Name = "btnGreen";
             this.btnGreen.Size = new System.Drawing.Size(87, 58);
             this.btnGreen.TabIndex = 433;
@@ -168,27 +168,29 @@
             this.btnGreen.UseVisualStyleBackColor = false;
             this.btnGreen.Click += new System.EventHandler(this.btnRed_Click);
             // 
-            // btnLoadFlags
+            // btnImportFlags
             // 
-            this.btnLoadFlags.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnLoadFlags.Location = new System.Drawing.Point(16, 183);
-            this.btnLoadFlags.Name = "btnLoadFlags";
-            this.btnLoadFlags.Size = new System.Drawing.Size(150, 73);
-            this.btnLoadFlags.TabIndex = 434;
-            this.btnLoadFlags.Text = "Load Flags";
-            this.btnLoadFlags.UseVisualStyleBackColor = true;
-            this.btnLoadFlags.Click += new System.EventHandler(this.btnLoadFlags_Click);
+            this.btnImportFlags.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnImportFlags.Location = new System.Drawing.Point(13, 179);
+            this.btnImportFlags.Margin = new System.Windows.Forms.Padding(4);
+            this.btnImportFlags.Name = "btnImportFlags";
+            this.btnImportFlags.Size = new System.Drawing.Size(177, 71);
+            this.btnImportFlags.TabIndex = 434;
+            this.btnImportFlags.Text = "Import Flags";
+            this.btnImportFlags.UseVisualStyleBackColor = true;
+            this.btnImportFlags.Click += new System.EventHandler(this.btnLoadFlags_Click);
             // 
-            // btnSaveFlags
+            // btnExportFlags
             // 
-            this.btnSaveFlags.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnSaveFlags.Location = new System.Drawing.Point(184, 184);
-            this.btnSaveFlags.Name = "btnSaveFlags";
-            this.btnSaveFlags.Size = new System.Drawing.Size(150, 73);
-            this.btnSaveFlags.TabIndex = 435;
-            this.btnSaveFlags.Text = "Save Flags";
-            this.btnSaveFlags.UseVisualStyleBackColor = true;
-            this.btnSaveFlags.Click += new System.EventHandler(this.btnSaveFlags_Click);
+            this.btnExportFlags.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnExportFlags.Location = new System.Drawing.Point(211, 180);
+            this.btnExportFlags.Margin = new System.Windows.Forms.Padding(4);
+            this.btnExportFlags.Name = "btnExportFlags";
+            this.btnExportFlags.Size = new System.Drawing.Size(171, 71);
+            this.btnExportFlags.TabIndex = 435;
+            this.btnExportFlags.Text = "Export Flags";
+            this.btnExportFlags.UseVisualStyleBackColor = true;
+            this.btnExportFlags.Click += new System.EventHandler(this.btnSaveFlags_Click);
             // 
             // nudLatitude
             // 
@@ -251,8 +253,8 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(771, 266);
             this.ControlBox = false;
-            this.Controls.Add(this.btnSaveFlags);
-            this.Controls.Add(this.btnLoadFlags);
+            this.Controls.Add(this.btnExportFlags);
+            this.Controls.Add(this.btnImportFlags);
             this.Controls.Add(this.btnGreen);
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnYellow);
@@ -289,7 +291,7 @@
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Button btnRed;
         private System.Windows.Forms.Button btnGreen;
-        private System.Windows.Forms.Button btnLoadFlags;
-        private System.Windows.Forms.Button btnSaveFlags;
+        private System.Windows.Forms.Button btnImportFlags;
+        private System.Windows.Forms.Button btnExportFlags;
     }
 }
