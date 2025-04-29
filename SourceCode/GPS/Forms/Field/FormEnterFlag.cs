@@ -4,7 +4,6 @@ using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -98,12 +97,11 @@ namespace AgOpenGPS
                 Form form = new FormFlags(mf);
                 form.Show(mf);
             }
-
             Close();
-
         }
+
         // load flags from a text file with latitude,longitude,color, notes
-        private void btnLoadFlags_Click(object sender, EventArgs e)
+        private void btnImportFlags_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
 
@@ -121,13 +119,11 @@ namespace AgOpenGPS
                    
                     foreach (string line in lines.Skip(1))
                     {
-                        double latitude, longitude;
-                        int flagColor;
                         string[] parts = line.Split(',');
-                         if( 
-                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out latitude) &&
-                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out longitude) &&
-                            int.TryParse(parts[2], out flagColor))
+                        if ( 
+                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double latitude) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double longitude) &&
+                            int.TryParse(parts[2], out int flagColor))
                         {
                             string flagName = (!string.IsNullOrWhiteSpace(parts[3])) ? parts[3].Trim() : $"{mf.flagPts.Count + 1}";  
                             GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84(latitude, longitude));
@@ -155,14 +151,15 @@ namespace AgOpenGPS
                 }
             }
         }
-        // save a text file using flags info with latitude,longitude,color, notes
-        private void btnSaveFlags_Click(object sender, EventArgs e)
+
+        // Export flags to a CSV file, with latitude, longitude, color, notes
+        private void btnExportFlags_Click(object sender, EventArgs e)
         {
             SaveFileDialog fileDialog = new SaveFileDialog();
 
             fileDialog.DefaultExt = "txt";
             fileDialog.Filter = "Text Document | *.txt| CSV Document | *.csv| All files| *.*";
-            fileDialog.Title = "Save flags information";
+            fileDialog.Title = "Export flags information";
             fileDialog.CheckFileExists = false;
             fileDialog.RestoreDirectory = true;
 

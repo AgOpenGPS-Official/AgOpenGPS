@@ -178,7 +178,7 @@
             this.btnImportFlags.TabIndex = 434;
             this.btnImportFlags.Text = "Import Flags";
             this.btnImportFlags.UseVisualStyleBackColor = true;
-            this.btnImportFlags.Click += new System.EventHandler(this.btnLoadFlags_Click);
+            this.btnImportFlags.Click += new System.EventHandler(this.btnImportFlags_Click);
             // 
             // btnExportFlags
             // 
@@ -190,7 +190,7 @@
             this.btnExportFlags.TabIndex = 435;
             this.btnExportFlags.Text = "Export Flags";
             this.btnExportFlags.UseVisualStyleBackColor = true;
-            this.btnExportFlags.Click += new System.EventHandler(this.btnSaveFlags_Click);
+            this.btnExportFlags.Click += new System.EventHandler(this.btnExportFlags_Click);
             // 
             // nudLatitude
             // 
