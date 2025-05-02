@@ -87,7 +87,7 @@ namespace AgOpenGPS
 
             var fieldName = AppModel.Fields.CurrentFieldName;
             var fieldId = AgShareUploader.GetOrGenerateFieldId(Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory));
-            var json = AgShareUploader.BuildFieldUploadJsonWithConversion(
+            var json = AgShareUploader.UploadField(
                 fieldName,
                 bnd.bndList[0].fenceLineEar,
                 trk.gArr,
@@ -97,7 +97,7 @@ namespace AgOpenGPS
             // This is currently a blocking operation using .GetAwaiter().GetResult()
             // That is far from ideal, but using async void would be even worse.
             // In the future, we need to make the entire "close field" operation asynchronous.
-            _agShareClient.UploadIsoXmlFieldAsync(fieldId.ToString(), json).GetAwaiter().GetResult();
+            _agShareClient.UploadAsync(fieldId.ToString(), json).GetAwaiter().GetResult();
         }
 
         public void FileSaveHeadLines()

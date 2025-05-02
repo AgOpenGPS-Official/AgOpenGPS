@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using AgOpenGPS.Core.AgShare;
@@ -25,6 +26,7 @@ namespace AgOpenGPS
 
         private async void buttonTestConnection_Click(object sender, EventArgs e)
         {
+            
             labelStatus.Text = "Connecting...";
             labelStatus.ForeColor = Color.Gray;
 
@@ -45,8 +47,8 @@ namespace AgOpenGPS
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            _agShareClient.SetServer(textBoxServer.Text);
-            _agShareClient.SetApiKey(textBoxApiKey.Text);
+            //_agShareClient.SetServer(textBoxServer.Text);
+            //_agShareClient.SetApiKey(textBoxApiKey.Text);
 
             Settings.Default.AgShareServer = textBoxServer.Text;
             Settings.Default.AgShareApiKey = textBoxApiKey.Text;

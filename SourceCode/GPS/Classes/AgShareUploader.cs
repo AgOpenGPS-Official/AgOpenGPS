@@ -22,12 +22,13 @@ public static class AgShareUploader
         return newId;
     }
 
-    public static object BuildFieldUploadJsonWithConversion(
-        string fieldName,
-        List<vec2> localBoundary,
-        List<CTrk> tracks,
-        LocalPlane converter)
+    public static object UploadField(
+    string fieldName,
+    List<vec2> localBoundary,
+    List<CTrk> tracks,
+    LocalPlane converter)
     {
+        // Maak een lijst van boundary coördinaten
         var boundary = new List<List<double>>();
         foreach (var p in localBoundary)
         {
@@ -36,6 +37,7 @@ public static class AgShareUploader
             boundary.Add(new List<double> { wgs.Latitude, wgs.Longitude });
         }
 
+        // Maak een lijst van AB lijnen
         var abLines = new List<object>();
 
         foreach (var t in tracks)
@@ -61,14 +63,16 @@ public static class AgShareUploader
             });
         }
 
+        // Return een object dat de juiste JSON structuur heeft
         return new
         {
             name = fieldName,
-            isPublic = false,
+            isPublic = false,  // Pas dit aan naar je eigen logica (bijv. based on user preferences)
             originLat = boundary.Average(p => p[0]),
             originLon = boundary.Average(p => p[1]),
             boundary = boundary,
             abLines = abLines
         };
     }
+
 }
