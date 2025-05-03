@@ -4,21 +4,24 @@ using AgOpenGPS.Core.Models;
 using System.Globalization;
 using System;
 using System.Windows.Input;
+using AgOpenGPS.Core.Streamers;
 
 namespace AgOpenGPS.Core.ViewModels
 {
     public class CreateFromExistingFieldViewModel : FieldTableViewModel
     {
-        private readonly ISelectFieldPanelPresenter _newFieldPanelPresenter;
+        private readonly ISelectFieldPanelPresenter _selectFieldPanelPresenter;
         private string _newFieldName = "";
 
         public CreateFromExistingFieldViewModel(
             ApplicationModel appModel,
-            ISelectFieldPanelPresenter newFieldPanelPresenter
+            FieldDescriptionStreamer fieldDescriptionStreamer,
+            FieldStreamer fieldStreamer,
+            ISelectFieldPanelPresenter selectFieldPanelPresenter
         )
-            : base(appModel)
+            : base(appModel, fieldDescriptionStreamer, fieldStreamer)
         {
-            _newFieldPanelPresenter = newFieldPanelPresenter;
+            _selectFieldPanelPresenter = selectFieldPanelPresenter;
             AddVehicleCommand = new RelayCommand(AddVehicle);
             AddDateCommand = new RelayCommand(AddDate);
             AddTimeCommand = new RelayCommand(AddTime);
@@ -84,7 +87,7 @@ namespace AgOpenGPS.Core.ViewModels
 
         protected override void SelectField()
         {
-            _newFieldPanelPresenter.CloseCreateFromExistingFieldDialog();
+            _selectFieldPanelPresenter.CloseCreateFromExistingFieldDialog();
             // TODO finish streamers, finish Copy method in Fields, finish this.
             base.SelectField();
         }

@@ -6,8 +6,6 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class FieldStreamer
     {
-        private readonly Field _field;
-
         private readonly BoundaryStreamer _boundaryStreamer;
         private readonly ContourStreamer _contourStreamer;
         private readonly FlagListStreamer _flagsStreamer;
@@ -15,100 +13,84 @@ namespace AgOpenGPS.Core.Streamers
         private readonly TramLinesStreamer _tramLinesStreamer;
         private readonly WorkedAreaStreamer _workedAreaStreamer;
 
-        private IFieldStreamerPresenter _presenter;
-
-        public FieldStreamer(Field field)
+        public FieldStreamer(IFieldStreamerPresenter fieldStreamerPresenter)
         {
-            _field = field;
-            _boundaryStreamer = new BoundaryStreamer();
-            _contourStreamer = new ContourStreamer();
-            _flagsStreamer = new FlagListStreamer();
-            _recordedPathStreamer = new RecordedPathStreamer();
-            _tramLinesStreamer = new TramLinesStreamer();
-            _workedAreaStreamer = new WorkedAreaStreamer();
+            _boundaryStreamer = new BoundaryStreamer(fieldStreamerPresenter);
+            _contourStreamer = new ContourStreamer(fieldStreamerPresenter);
+            _flagsStreamer = new FlagListStreamer(fieldStreamerPresenter);
+            _recordedPathStreamer = new RecordedPathStreamer(fieldStreamerPresenter);
+            _tramLinesStreamer = new TramLinesStreamer(fieldStreamerPresenter);
+            _workedAreaStreamer = new WorkedAreaStreamer(fieldStreamerPresenter);
         }
-
-        public void SetPresenter(IFieldStreamerPresenter presenter)
-        {
-            _presenter = presenter;
-            _boundaryStreamer.SetPresenter(presenter);
-            _contourStreamer.SetPresenter(presenter);
-            _flagsStreamer.SetPresenter(presenter);
-            _recordedPathStreamer.SetPresenter(presenter);
-            _tramLinesStreamer.SetPresenter(presenter);
-            _workedAreaStreamer.SetPresenter(presenter);
-        }
-
-        public DirectoryInfo CurrentFieldDirectory { get; set; }
 
         public Boundary ReadBoundary(DirectoryInfo fieldDirectory)
         {
             return _boundaryStreamer.Read(fieldDirectory);
         }
 
-        public void ReadBoundary()
+        public void ReadBoundary(Field field)
         {
-            _field.Boundary = _boundaryStreamer.Read(CurrentFieldDirectory);
+            field.Boundary = _boundaryStreamer.Read(field.FieldDirectory);
         }
 
-        public void WriteBoundary()
+        public void WriteBoundary(Field field)
         {
-            _boundaryStreamer.Write(_field.Boundary, CurrentFieldDirectory);
+            _boundaryStreamer.Write(field.Boundary, field.FieldDirectory);
         }
 
-        public void ReadFlagList()
+        public void ReadFlagList(Field field)
         {
-            _field.Flags = _flagsStreamer.TryRead(CurrentFieldDirectory);
+            field.Flags = _flagsStreamer.TryRead(field.FieldDirectory);
         }
 
-        public void WriteFlagList()
+        public void WriteFlagList(Field field)
         {
-            _flagsStreamer.TryWrite(_field.Flags, CurrentFieldDirectory);
+            _flagsStreamer.TryWrite(field.Flags, field.FieldDirectory);
         }
 
-        public void ReadContour()
+        public void ReadContour(Field field)
         {
-            _field.Contour = _contourStreamer.TryRead(CurrentFieldDirectory);
+            field.Contour = _contourStreamer.TryRead(field.FieldDirectory);
         }
 
-        public void ContourAppendUnsavedWork()
+        public void ContourAppendUnsavedWork(Field field)
         {
-            _contourStreamer.AppendUnsavedWork(_field.Contour, CurrentFieldDirectory);
+            _contourStreamer.AppendUnsavedWork(field.Contour, field.FieldDirectory);
         }
 
-        public void ReadRecordedPath(string fileName = null)
+        public void ReadRecordedPath(Field field, string fileName = null)
         {
-            _field.RecordedPath = _recordedPathStreamer.TryRead(CurrentFieldDirectory, fileName);
+            field.RecordedPath = _recordedPathStreamer.TryRead(field.FieldDirectory, fileName);
         }
 
-        public void WriteRecordedPath(string fileName = null)
+        public void WriteRecordedPath(Field field, string fileName = null)
         {
-            _recordedPathStreamer.Write(_field.RecordedPath, CurrentFieldDirectory, fileName);
+            _recordedPathStreamer.Write(field.RecordedPath, field.FieldDirectory, fileName);
         }
 
-        public void CreateRecordedPathFile()
+        public void CreateRecordedPathFile(Field field)
         {
-            _recordedPathStreamer.CreateFile(CurrentFieldDirectory);
+            _recordedPathStreamer.CreateFile(field.FieldDirectory);
         }
 
-        public void ReadTramLines()
+        public void ReadTramLines(Field field)
         {
-            _field.TramLines = _tramLinesStreamer.TryRead(CurrentFieldDirectory);
+            field.TramLines = _tramLinesStreamer.TryRead(field.FieldDirectory);
         }
 
-        public void WriteTramLines()
+        public void WriteTramLines(Field field)
         {
-            _tramLinesStreamer.Write(_field.TramLines, CurrentFieldDirectory);
+            _tramLinesStreamer.Write(field.TramLines, field.FieldDirectory);
         }
 
-        public void ReadWorkedAera()
+        public void ReadWorkedAera(Field field)
         {
-            _field.WorkedArea = _workedAreaStreamer.Read(CurrentFieldDirectory);
+            field.WorkedArea = _workedAreaStreamer.Read(field.FieldDirectory);
         }
 
-        public void WorkedAreaAppendUnsaveWork()
+        public void WorkedAreaAppendUnsaveWork(Field field)
         {
-            _workedAreaStreamer.AppendUnsavedWork(_field.WorkedArea, CurrentFieldDirectory);
+            _workedAreaStreamer.AppendUnsavedWork(field.WorkedArea, field.FieldDirectory);
         }
     }
 }

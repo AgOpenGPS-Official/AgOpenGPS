@@ -1,20 +1,29 @@
-﻿﻿using AgLibrary.ViewModels;
+﻿using AgLibrary.ViewModels;
 using AgOpenGPS.Core.Interfaces;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Presenters;
+using AgOpenGPS.Core.Streamers;
 using System.Windows.Input;
 
 namespace AgOpenGPS.Core.ViewModels
 {
     public class ApplicationViewModel : DayNightAndUnitsViewModel
     {
-        private readonly ApplicationModel _appModel;
+        private readonly ApplicationModel _applicationModel;
+        private readonly FieldDescriptionStreamer _fieldDescriptionStreamer;
+        private readonly FieldStreamer _fieldStreamer;
         private ApplicationPresenter _applicationPresenter;
         private ConfigMenuViewModel _configMenuViewModel;
         private SelectFieldMenuViewModel _selectFieldMenuViewModel;
 
-        public ApplicationViewModel(ApplicationModel appModel)
+        public ApplicationViewModel(
+            ApplicationModel applicationModel,
+            FieldDescriptionStreamer fieldDescriptionStreamer,
+            FieldStreamer fieldStreamer)
         {
-            _appModel = appModel;
+            _applicationModel = applicationModel;
+            _fieldDescriptionStreamer = fieldDescriptionStreamer;
+            _fieldStreamer = fieldStreamer;
             ShowConfigMenuCommand = new RelayCommand(ShowConfigMenu);
             ShowSelectFieldMenuCommand = new RelayCommand(ShowSelectFieldMenu);
         }
@@ -37,7 +46,7 @@ namespace AgOpenGPS.Core.ViewModels
                 {
                     _configMenuViewModel =
                         new ConfigMenuViewModel(
-                            _appModel,
+                            _applicationModel,
                             _applicationPresenter.PanelPresenter.ConfigMenuPanelPresenter);
                     AddChild(_configMenuViewModel);
                 }
@@ -53,7 +62,9 @@ namespace AgOpenGPS.Core.ViewModels
                 {
                     _selectFieldMenuViewModel =
                         new SelectFieldMenuViewModel(
-                            _appModel,
+                            _applicationModel,
+                            _fieldDescriptionStreamer,
+                            _fieldStreamer,
                             _applicationPresenter.PanelPresenter.SelectFieldPanelPresenter);
                     AddChild(_selectFieldMenuViewModel);
                 }

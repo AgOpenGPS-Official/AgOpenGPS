@@ -6,16 +6,13 @@ namespace AgOpenGPS.Core.Streamers
     public abstract class FieldAspectStreamer
     {
         protected readonly string _defaultFileName;
-
         protected IFieldStreamerPresenter _presenter;
 
-        public FieldAspectStreamer(string defaultFileName)
+        public FieldAspectStreamer(
+            string defaultFileName,
+            IFieldStreamerPresenter presenter)
         {
             _defaultFileName = defaultFileName;
-        }
-
-        public void SetPresenter(IFieldStreamerPresenter presenter)
-        {
             _presenter = presenter;
         }
 

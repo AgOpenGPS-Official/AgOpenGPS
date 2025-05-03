@@ -1,13 +1,17 @@
 ﻿using System;
 using System.IO;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Interfaces;
 using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.Core.Streamers
 {
     public class TramLinesStreamer : FieldAspectStreamer
     {
-        public TramLinesStreamer() : base("Tram.txt")
+        public TramLinesStreamer(
+            IFieldStreamerPresenter presenter
+        ) :
+            base("Tram.txt", presenter)
         {
         }
 

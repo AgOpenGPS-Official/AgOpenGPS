@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Interfaces;
 using AgOpenGPS.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,10 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class FlagListStreamer : FieldAspectStreamer
     {
-        public FlagListStreamer() : base("Flags.txt")
+        public FlagListStreamer(
+            IFieldStreamerPresenter presenter
+        ) :
+            base("Flags.txt", presenter)
         {
         }
 

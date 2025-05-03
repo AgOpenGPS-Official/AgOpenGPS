@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Interfaces;
 using AgOpenGPS.Core.Models;
 using System.IO;
 
@@ -6,7 +7,10 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class ContourStreamer : FieldAspectStreamer
     {
-        public ContourStreamer() : base("Contour.txt")
+        public ContourStreamer(
+            IFieldStreamerPresenter presenter
+        ) :
+            base("Contour.txt", presenter)
         {
         }
 

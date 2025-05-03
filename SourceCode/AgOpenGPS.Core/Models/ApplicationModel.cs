@@ -30,8 +30,6 @@ namespace AgOpenGPS.Core
         public SharedFieldProperties SharedFieldProperties { get; }
         public Fields Fields { get; }
 
-        public FieldStreamer FieldStreamer => Fields.FieldStreamer;
-
         public Wgs84 CurrentLatLon { get; set; }
         public GeoDir FixHeading { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Core.Interfaces;
+using AgOpenGPS.Core.Streamers;
 
 namespace AgOpenGPS.Core.ViewModels
 {
@@ -8,9 +9,11 @@ namespace AgOpenGPS.Core.ViewModels
 
         public SelectNearFieldViewModel(
             ApplicationModel appModel,
+            FieldDescriptionStreamer fieldDescriptionStreamer,
+            FieldStreamer fieldStreamer,
             ISelectFieldPanelPresenter newFieldPanelPresenter
         )
-            : base(appModel)
+            : base(appModel, fieldDescriptionStreamer, fieldStreamer)
         {
             _newFieldPanelPresenter = newFieldPanelPresenter;
         }

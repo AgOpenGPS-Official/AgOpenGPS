@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Interfaces;
 using AgOpenGPS.Core.Models;
 using System;
 using System.IO;
@@ -7,7 +8,10 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class BoundaryStreamer : FieldAspectStreamer
     {
-        public BoundaryStreamer() : base("Boundary.txt")
+        public BoundaryStreamer(
+            IFieldStreamerPresenter presenter
+        ) :
+            base("Boundary.txt", presenter)
         {
         }
 

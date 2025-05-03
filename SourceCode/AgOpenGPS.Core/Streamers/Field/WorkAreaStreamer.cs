@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Interfaces;
 using AgOpenGPS.Core.Models;
 using System.IO;
 
@@ -6,7 +7,10 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class WorkedAreaStreamer : FieldAspectStreamer
     {
-        public WorkedAreaStreamer() : base("Sections.txt")
+        public WorkedAreaStreamer(
+            IFieldStreamerPresenter presenter
+        ) :
+            base("Sections.txt", presenter)
         {
         }
 
