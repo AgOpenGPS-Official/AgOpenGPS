@@ -13,7 +13,7 @@ namespace AgOpenGPS.Core.ViewModels
         private readonly ApplicationModel _appModel;
         private readonly FieldDescriptionStreamer _fieldDescriptionStreamer;
         private readonly FieldStreamer _fieldStreamer;
-        private readonly ISelectFieldPanelPresenter _newFieldPanelPresenter;
+        private readonly ISelectFieldPanelPresenter _selectFieldPanelPresenter;
         private SelectNearFieldViewModel _selectNearFieldViewModel;
         private CreateFromExistingFieldViewModel _createFromExistingFieldViewModel;
         private SelectFieldViewModel _selectFieldViewModel;
@@ -22,12 +22,12 @@ namespace AgOpenGPS.Core.ViewModels
             ApplicationModel appModel,
             FieldDescriptionStreamer fieldDescriptionStreamer,
             FieldStreamer fieldStreamer,
-            ISelectFieldPanelPresenter newFieldPanelPresenter)
+            ISelectFieldPanelPresenter selectFieldPanelPresenter)
         {
             _appModel = appModel;
             _fieldDescriptionStreamer = fieldDescriptionStreamer;
             _fieldStreamer = fieldStreamer;
-            _newFieldPanelPresenter = newFieldPanelPresenter;
+            _selectFieldPanelPresenter = selectFieldPanelPresenter;
             StartSelectNearFieldCommand = new RelayCommand(StartSelectNearField);
             StartCreateFieldFromExistingCommand = new RelayCommand(StartCreateFieldFromExisting);
             StartSelectFieldCommand = new RelayCommand(StartSelectField);
@@ -45,7 +45,7 @@ namespace AgOpenGPS.Core.ViewModels
                             _appModel,
                             _fieldDescriptionStreamer,
                             _fieldStreamer,
-                            _newFieldPanelPresenter);
+                            _selectFieldPanelPresenter);
                     AddChild(_selectNearFieldViewModel);
                 }
                 return _selectNearFieldViewModel;
@@ -63,7 +63,7 @@ namespace AgOpenGPS.Core.ViewModels
                             _appModel,
                             _fieldDescriptionStreamer,
                             _fieldStreamer,
-                            _newFieldPanelPresenter);
+                            _selectFieldPanelPresenter);
                     AddChild(_createFromExistingFieldViewModel);
                 }
                 return _createFromExistingFieldViewModel;
@@ -81,7 +81,7 @@ namespace AgOpenGPS.Core.ViewModels
                             _appModel,
                             _fieldDescriptionStreamer,
                             _fieldStreamer,
-                            _newFieldPanelPresenter);
+                            _selectFieldPanelPresenter);
                     AddChild(_selectFieldViewModel);
                 }
                 return _selectFieldViewModel;
@@ -98,30 +98,30 @@ namespace AgOpenGPS.Core.ViewModels
         private void StartSelectNearField()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _newFieldPanelPresenter.CloseSelectFieldMenuDialog();
+            _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
             SelectNearFieldViewModel.UpdateFields();
-            _newFieldPanelPresenter.ShowSelectNearFieldDialog(SelectNearFieldViewModel);
+            _selectFieldPanelPresenter.ShowSelectNearFieldDialog(SelectNearFieldViewModel);
         }
 
         private void StartCreateFieldFromExisting()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _newFieldPanelPresenter.CloseSelectFieldMenuDialog();
+            _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
             CreateFromExistingFieldViewModel.UpdateFields();
-            _newFieldPanelPresenter.ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel);
+            _selectFieldPanelPresenter.ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel);
         }
 
         private void StartSelectField()
         {
             // TODO implement different behaviour if number of fields is 0 or 1
-            _newFieldPanelPresenter.CloseSelectFieldMenuDialog();
+            _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
             SelectFieldViewModel.UpdateFields();
-            _newFieldPanelPresenter.ShowSelectFieldDialog(SelectFieldViewModel);
+            _selectFieldPanelPresenter.ShowSelectFieldDialog(SelectFieldViewModel);
         }
 
         private void Cancel()
         {
-            _newFieldPanelPresenter.CloseSelectFieldMenuDialog();
+            _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
         }
 
     }

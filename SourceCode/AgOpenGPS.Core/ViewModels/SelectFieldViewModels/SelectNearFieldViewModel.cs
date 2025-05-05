@@ -5,22 +5,22 @@ namespace AgOpenGPS.Core.ViewModels
 {
     public class SelectNearFieldViewModel : NearFieldTableViewModel
     {
-        private readonly ISelectFieldPanelPresenter _newFieldPanelPresenter;
+        private readonly ISelectFieldPanelPresenter _selectFieldPanelPresenter;
 
         public SelectNearFieldViewModel(
             ApplicationModel appModel,
             FieldDescriptionStreamer fieldDescriptionStreamer,
             FieldStreamer fieldStreamer,
-            ISelectFieldPanelPresenter newFieldPanelPresenter
+            ISelectFieldPanelPresenter selectFieldPanelPresenter
         )
             : base(appModel, fieldDescriptionStreamer, fieldStreamer)
         {
-            _newFieldPanelPresenter = newFieldPanelPresenter;
+            _selectFieldPanelPresenter = selectFieldPanelPresenter;
         }
 
         protected override void SelectField()
         {
-            _newFieldPanelPresenter.CloseSelectNearFieldDialog();
+            _selectFieldPanelPresenter.CloseSelectNearFieldDialog();
             base.SelectField();
         }
     }
