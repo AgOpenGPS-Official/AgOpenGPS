@@ -43,6 +43,7 @@
             this.btnJobNew = new System.Windows.Forms.Button();
             this.lblResumeField = new System.Windows.Forms.Label();
             this.btnDeleteAB = new System.Windows.Forms.Button();
+            this.btnAgShare = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -335,6 +336,18 @@
             this.btnDeleteAB.UseVisualStyleBackColor = false;
             this.btnDeleteAB.Click += new System.EventHandler(this.btnDeleteAB_Click);
             // 
+            // btnAgShare
+            // 
+            this.btnAgShare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgShare.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgShare.Location = new System.Drawing.Point(14, 434);
+            this.btnAgShare.Name = "btnAgShare";
+            this.btnAgShare.Size = new System.Drawing.Size(287, 72);
+            this.btnAgShare.TabIndex = 107;
+            this.btnAgShare.Text = "From AgShare";
+            this.btnAgShare.UseVisualStyleBackColor = true;
+            this.btnAgShare.Click += new System.EventHandler(this.btnAgShare_Click);
+            // 
             // FormJob
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -342,6 +355,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(624, 514);
             this.ControlBox = false;
+            this.Controls.Add(this.btnAgShare);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnDeleteAB);
             this.Controls.Add(this.lblResumeField);
@@ -381,5 +395,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnAgShare;
     }
 }

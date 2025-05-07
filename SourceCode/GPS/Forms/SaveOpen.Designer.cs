@@ -16,6 +16,7 @@ using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Properties;
 using System.Threading.Tasks;
+using AgOpenGPS.Core.AgShare;
 
 namespace AgOpenGPS
 {
@@ -80,25 +81,36 @@ namespace AgOpenGPS
             }
         }
 
-        public void UploadFieldToAgShare()
+        public async Task UploadFieldToAgShare()
         {
-            if (string.IsNullOrEmpty(Settings.Default.AgShareApiKey))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.AgShareApiKey))
                 return;
 
-            var fieldName = AppModel.Fields.CurrentFieldName;
-            var fieldId = AgShareUploader.GetOrGenerateFieldId(Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory));
-            var json = AgShareUploader.UploadField(
+            string fieldName = AppModel.Fields.CurrentFieldName;
+            string fieldDirectory = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
+
+            var uploader = new CAgShareUpload(this);
+            var identity = await uploader.GetOrCreateFieldIdentityAsync(fieldDirectory);
+
+            if (bnd?.bndList == null || bnd.bndList.Count == 0 || bnd.bndList[0]?.fenceLineEar == null)
+            {
+                TimedMessageBox(2000, "AgShare", "No boundary found.");
+                return;
+            }
+
+            await uploader.UploadAsync(
+                identity,
+                fieldDirectory,
                 fieldName,
                 bnd.bndList[0].fenceLineEar,
-                trk.gArr,
                 AppModel.LocalPlane
             );
-
-            // This is currently a blocking operation using .GetAwaiter().GetResult()
-            // That is far from ideal, but using async void would be even worse.
-            // In the future, we need to make the entire "close field" operation asynchronous.
-            _agShareClient.UploadAsync(fieldId.ToString(), json).GetAwaiter().GetResult();
         }
+
+
+
+
+
 
         public void FileSaveHeadLines()
         {

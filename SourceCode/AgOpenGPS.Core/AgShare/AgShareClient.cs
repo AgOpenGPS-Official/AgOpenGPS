@@ -47,19 +47,15 @@ namespace AgOpenGPS.Core.AgShare
             try
             {
                 var response = await _client.SendAsync(request).ConfigureAwait(false);
-
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (!response.IsSuccessStatusCode)
-                {
-                    string errorContent = await response.Content.ReadAsStringAsync();
-                    return (false, $"API Key error: {response.StatusCode}, {errorContent}");
-                }
-                return (response.IsSuccessStatusCode, content);
+                    return (false, $"API Key error: {response.StatusCode}, {content}");
+
+                return (true, content);
             }
             catch (HttpRequestException ex)
             {
-                // Log de fout indien de request faalt
                 return (false, $"Failed to connect to server: {ex.Message}");
             }
         }
@@ -69,63 +65,60 @@ namespace AgOpenGPS.Core.AgShare
             if (!_configured)
                 return false;
 
-            // Serialiseer het jsonPayload object naar JSON
             var content = new StringContent(JsonSerializer.Serialize(jsonPayload), Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             try
             {
-                // Verstuur de PUT request naar de server
                 var response = await _client.PutAsync($"/api/fields/{fieldId}", content).ConfigureAwait(false);
-
-                // Log de response statuscode voor debugging
-                Debug.WriteLine("Response Status Code: " + response.StatusCode);
-
-                // Lees de response body als tekst voor debugging
-                string responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                Debug.WriteLine("Response Body: " + responseBody);
-
-                // Als de response succesvol is, return true, anders false
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Upload successful!");
-                    return true;
-                }
-                else
-                {
-                    Debug.WriteLine("Upload failed: " + response.StatusCode);
-                    return false;
-                }
+                return response.IsSuccessStatusCode;
             }
-            catch (Exception ex)
+            catch
             {
-                // Log de uitzondering als er een fout optreedt
-                Debug.WriteLine("Upload exception: " + ex.Message);
                 return false;
             }
         }
 
-
         public async Task<List<FieldItem>> GetFieldsAsync()
         {
             if (!_configured)
+            {
+                Debug.WriteLine("AgShareClient is not configured.");
                 return null;
+            }
 
             try
             {
                 var response = await _client.GetAsync("/api/fields").ConfigureAwait(false);
-                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync();
+
+                Debug.WriteLine("HTTP GET /api/fields status: " + response.StatusCode);
+                Debug.WriteLine("Response content: " + content);
 
                 if (!response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("API error: " + content);
                     return null;
+                }
 
-                var fields = JsonSerializer.Deserialize<List<FieldItem>>(content);
+                var fields = JsonSerializer.Deserialize<List<FieldItem>>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (fields == null)
+                {
+                    Debug.WriteLine("Deserialization returned null.");
+                }
+                else
+                {
+                    Debug.WriteLine($"Deserialized {fields.Count} fields.");
+                }
 
                 return fields;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("GetFieldsAsync exception: " + ex.Message);
+                Debug.WriteLine("Exception in GetFieldsAsync: " + ex.Message);
                 return null;
             }
         }
@@ -137,23 +130,19 @@ namespace AgOpenGPS.Core.AgShare
 
             try
             {
-                var response = await _client.GetAsync($"/api/fields/" + fieldId).ConfigureAwait(false);
+                var response = await _client.GetAsync($"/api/fields/{fieldId}").ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (!response.IsSuccessStatusCode)
                     return (false, $"Error downloading field: {content}", null);
 
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var fieldDto = JsonSerializer.Deserialize<FieldDownloadDto>(content, options);
 
                 if (fieldDto == null)
                     return (false, "Failed to parse field data.", null);
 
-                // Parse the boundary and AB lines after downloading
+                // Parse raw boundary + ABLines from JSON objects
                 fieldDto.ParsedBoundary = AgShareFieldParser.ParseBoundary(fieldDto.Boundary);
                 fieldDto.ParsedTracks = AgShareFieldParser.ParseAbLines(fieldDto.AbLines);
 
@@ -161,13 +150,35 @@ namespace AgOpenGPS.Core.AgShare
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("DownloadFieldPreviewAsync exception: " + ex.Message);
-                return (false, "Exception occurred during field preview download.", null);
+                return (false, "Exception occurred during field preview download: " + ex.Message, null);
             }
         }
 
+        public async Task<FieldInfoDto> GetFieldByIdAsync(string fieldId)
+        {
+            if (!_configured)
+                return null;
 
+            try
+            {
+                var response = await _client.GetAsync($"/api/fields/{fieldId}").ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                    return null;
 
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonSerializer.Deserialize<FieldInfoDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 
+    public class FieldInfoDto
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public bool IsPublic { get; set; }
+    }
 }
