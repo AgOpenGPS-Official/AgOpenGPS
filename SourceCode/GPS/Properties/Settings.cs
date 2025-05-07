@@ -250,6 +250,7 @@ namespace AgOpenGPS.Properties
         public string AgShareServer = "https://agshare.agopengps.com";
         public string AgShareApiKey = "";
         public bool PublicField = false;
+        public bool AgShareEnabled = false;
 
         public LoadResult Load()
         {

@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
@@ -241,6 +242,26 @@ namespace AgOpenGPS
         private void btnDeleteAB_Click(object sender, EventArgs e)
         {
             mf.isCancelJobMenu = true;
+        }
+
+        private void btnAgShare_Click(object sender, EventArgs e)
+        {
+            if (mf.isJobStarted)
+            {
+                mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            var client = new AgShareClient();
+            client.SetServer(Properties.Settings.Default.AgShareServer);
+            client.SetApiKey(Properties.Settings.Default.AgShareApiKey);
+
+            using (var form = new Forms.Field.FormAgShareFields(client))
+            {
+                form.ShowDialog(this);
+            }
+
+            DialogResult = DialogResult.Ignore;
+            Close();
         }
     }
 }

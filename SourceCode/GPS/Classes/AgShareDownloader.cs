@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
+using NetTopologySuite.Geometries;
+
 
 namespace AgOpenGPS
 {
@@ -14,26 +18,47 @@ namespace AgOpenGPS
         {
             try
             {
-                // Verkrijg het pad naar de "Fields" map uit de registry of gebruik de standaardlocatie
+                // Determine the full field directory path
                 string baseFieldPath = Path.Combine(RegistrySettings.fieldsDirectory, field.Name);
 
-                // Maak de map aan als die nog niet bestaat
-                if (!Directory.Exists(baseFieldPath))
-                    Directory.CreateDirectory(baseFieldPath);
+                // If the directory already exists, ask for overwrite confirmation
+                if (Directory.Exists(baseFieldPath))
+                {
+                    var result = MessageBox.Show(
+                        $"Field '{field.Name}' already exists. Do you want to overwrite it?",
+                        "Field Exists",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
 
-                // Sla agshare.txt op (Field ID)
+                    if (result != DialogResult.Yes)
+                        return false;
+
+                    // Delete only ABLines.txt and Curvelines.txt if they exist
+                    string abLinesPath = Path.Combine(baseFieldPath, "ABLines.txt");
+                    if (File.Exists(abLinesPath)) File.Delete(abLinesPath);
+
+                    string curveLinesPath = Path.Combine(baseFieldPath, "Curvelines.txt");
+                    if (File.Exists(curveLinesPath)) File.Delete(curveLinesPath);
+
+                }
+                else
+                {
+                    Directory.CreateDirectory(baseFieldPath);
+                }
+
+                // Save agshare.txt
                 string agsharePath = Path.Combine(baseFieldPath, "agshare.txt");
                 await WriteTextAsync(agsharePath, field.Id.ToString());
 
-                // Sla Field.txt op (basis veldmetadata)
+                // Save Field.txt
                 string fieldTxtPath = Path.Combine(baseFieldPath, "Field.txt");
                 await SaveFieldTxtAsync(fieldTxtPath, field);
 
-                // Sla Boundary.txt op (veld boundary) met LocalPlane coördinaten
+                // Save Boundary.txt
                 string boundaryTxtPath = Path.Combine(baseFieldPath, "Boundary.txt");
                 await SaveBoundaryTxtAsync(boundaryTxtPath, field.ParsedBoundary, field.OriginLat, field.OriginLon, localPlane);
 
-                // Sla TrackLines.txt op (AB lijnen en curves) met LocalPlane coördinaten
+                // Save TrackLines.txt
                 string tracklinesTxtPath = Path.Combine(baseFieldPath, "TrackLines.txt");
                 await SaveTrackLinesTxtAsync(tracklinesTxtPath, field.ParsedTracks, localPlane);
 
@@ -60,17 +85,18 @@ namespace AgOpenGPS
         {
             using (StreamWriter writer = new StreamWriter(path, false))
             {
-                await writer.WriteLineAsync(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                await writer.WriteLineAsync("$FieldName");
+                await writer.WriteLineAsync(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                await writer.WriteLineAsync("$FieldDir");
                 await writer.WriteLineAsync(field.Name);
-                await writer.WriteLineAsync("$Origin");
-                await writer.WriteLineAsync($"{field.OriginLat},{field.OriginLon}");
                 await writer.WriteLineAsync("$Offsets");
-                await writer.WriteLineAsync("0,0"); // Default offset
+                await writer.WriteLineAsync("0,0");
+                await writer.WriteLineAsync("Convergence");
+                await writer.WriteLineAsync("0");
                 await writer.WriteLineAsync("StartFix");
-                await writer.WriteLineAsync($"{field.OriginLat},{field.OriginLon}"); // Start point
+                await writer.WriteLineAsync($"{field.OriginLat.ToString(CultureInfo.InvariantCulture)},{field.OriginLon.ToString(CultureInfo.InvariantCulture)}");
             }
         }
+
 
         // Save Boundary.txt (field boundary) using LocalPlane coordinates
         private static async Task SaveBoundaryTxtAsync(string path, List<ParsedLatLon> parsedBoundary, double originLat, double originLon, LocalPlane localPlane)

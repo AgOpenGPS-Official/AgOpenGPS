@@ -6,58 +6,50 @@ namespace AgOpenGPS.Core.AgShare
 {
     public static class AgShareFieldParser
     {
-        public static List<ParsedLatLon> ParseBoundary(Geometry geometry)
+        public static List<ParsedLatLon> ParseBoundary(object boundaryJson)
         {
-            var boundaryPoints = new List<ParsedLatLon>();
+            var result = new List<ParsedLatLon>();
 
-            if (geometry == null || geometry.Coordinates == null)
-                return boundaryPoints;
+            if (boundaryJson == null)
+                return result;
 
-            if (geometry.Type == "Polygon")
+            try
             {
-                // Deserialize to List<List<List<double>>>
-                var polygon = JsonSerializer.Deserialize<List<List<List<double>>>>(JsonSerializer.Serialize(geometry.Coordinates));
-                if (polygon == null || polygon.Count == 0)
-                    return boundaryPoints;
+                var jsonString = JsonSerializer.Serialize(boundaryJson);
 
-                var ring = polygon[0]; // First ring
-
-                foreach (var coordPair in ring)
+                using (var doc = JsonDocument.Parse(jsonString))
                 {
-                    if (coordPair.Count < 2) continue;
+                    var root = doc.RootElement;
 
-                    boundaryPoints.Add(new ParsedLatLon
+                    if (root.TryGetProperty("coordinates", out JsonElement coordsElement) &&
+                        coordsElement.ValueKind == JsonValueKind.Array)
                     {
-                        Longitude = coordPair[0],
-                        Latitude = coordPair[1]
-                    });
+                        // GeoJSON Polygon → coordinates[0] = outer ring
+                        var outerRing = coordsElement[0];
+                        foreach (var point in outerRing.EnumerateArray())
+                        {
+                            if (point.ValueKind == JsonValueKind.Array && point.GetArrayLength() >= 2)
+                            {
+                                var lon = point[0].GetDouble();
+                                var lat = point[1].GetDouble();
+
+                                result.Add(new ParsedLatLon
+                                {
+                                    Longitude = lon,
+                                    Latitude = lat
+                                });
+                            }
+                        }
+                    }
                 }
             }
-            else if (geometry.Type == "MultiPolygon")
+            catch (Exception ex)
             {
-                // Deserialize to List<List<List<List<double>>>>
-                var multiPolygon = JsonSerializer.Deserialize<List<List<List<List<double>>>>>(JsonSerializer.Serialize(geometry.Coordinates));
-                if (multiPolygon == null || multiPolygon.Count == 0)
-                    return boundaryPoints;
-
-                var polygon = multiPolygon[0]; // First polygon
-                var ring = polygon[0]; // First ring
-
-                foreach (var coordPair in ring)
-                {
-                    if (coordPair.Count < 2) continue;
-
-                    boundaryPoints.Add(new ParsedLatLon
-                    {
-                        Longitude = coordPair[0],
-                        Latitude = coordPair[1]
-                    });
-                }
+                Console.WriteLine("Error parsing boundary: " + ex.Message);
             }
 
-            return boundaryPoints;
+            return result;
         }
-
 
         public static List<ParsedTrackLatLon> ParseAbLines(object abLinesJson)
         {
@@ -93,17 +85,11 @@ namespace AgOpenGPS.Core.AgShare
                         {
                             Name = name,
                             Type = "AB",
-                            PtA = new ParsedLatLon
+                            Coords = new List<ParsedLatLon>
                             {
-                                Longitude = pointA[0],
-                                Latitude = pointA[1]
-                            },
-                            PtB = new ParsedLatLon
-                            {
-                                Longitude = pointB[0],
-                                Latitude = pointB[1]
-                            },
-                            CurvePoints = null
+                                new ParsedLatLon { Longitude = pointA[0], Latitude = pointA[1] },
+                                new ParsedLatLon { Longitude = pointB[0], Latitude = pointB[1] }
+                            }
                         };
 
                         tracks.Add(parsedTrack);
@@ -127,9 +113,7 @@ namespace AgOpenGPS.Core.AgShare
                         {
                             Name = name.StartsWith("Cu") ? name : "Cu " + name,
                             Type = "Curve",
-                            PtA = null,
-                            PtB = null,
-                            CurvePoints = curvePoints
+                            Coords = curvePoints
                         };
 
                         tracks.Add(parsedTrack);
@@ -143,21 +127,6 @@ namespace AgOpenGPS.Core.AgShare
 
             return tracks;
         }
-    }
-
-    public class ParsedLatLon
-    {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-    }
-
-    public class ParsedTrackLatLon
-    {
-        public string Name { get; set; }
-        public string Type { get; set; } // "AB" or "Curve"
-        public ParsedLatLon PtA { get; set; }
-        public ParsedLatLon PtB { get; set; }
-        public List<ParsedLatLon> CurvePoints { get; set; }
     }
 
     public class GeoJsonFeatureCollection
