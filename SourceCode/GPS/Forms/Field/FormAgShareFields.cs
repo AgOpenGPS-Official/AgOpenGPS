@@ -29,19 +29,23 @@ namespace AgOpenGPS.Forms.Field
 
         private async void FormAgShareFields_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Form loaded, trying to get fields...");
+
+            lblLoading.Visible = true;
+            listViewFields.Enabled = false;
 
             _fields = await _agShareClient.GetFieldsAsync();
 
+            listViewFields.Enabled = true;
+
             if (_fields == null)
             {
-                MessageBox.Show("No fields returned (null). Check API key or server config.");
+                lblLoading.Text = "Failed to load fields. Check API Key";
                 return;
             }
 
             if (_fields.Count == 0)
             {
-                MessageBox.Show("Connected, but no fields available.");
+                lblLoading.Text = "Connected, but no fields available.";
                 return;
             }
 
@@ -49,6 +53,7 @@ namespace AgOpenGPS.Forms.Field
             if (_fields != null)
             {
                 listViewFields.Items.Clear();
+                lblLoading.Visible = false;
 
                 foreach (var field in _fields)
                 {
@@ -63,7 +68,7 @@ namespace AgOpenGPS.Forms.Field
             }
         }
 
-        private void listViewFields_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listViewFields_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listViewFields.SelectedItems.Count > 0)
             {
@@ -71,37 +76,27 @@ namespace AgOpenGPS.Forms.Field
                 if (selectedItem.Tag is FieldItem field)
                 {
                     labelSelectedField.Text = $"Selected Field: {field.Name} ({field.Id})";
+
+                    await PreviewSelectedFieldAsync(field);
                 }
             }
         }
 
-        private async void buttonPreview_Click(object sender, EventArgs e)
+        private async Task PreviewSelectedFieldAsync(FieldItem selectedField)
         {
-            if (listViewFields.SelectedItems.Count > 0)
+            var (success, message, field) = await _agShareClient.DownloadFieldPreviewAsync(selectedField.Id.ToString());
+
+            if (success)
             {
-                var selectedItem = listViewFields.SelectedItems[0];
-                if (selectedItem.Tag is FieldItem selectedField)
-                {
-                    var (success, message, field) = await _agShareClient.DownloadFieldPreviewAsync(selectedField.Id.ToString());
-
-                    if (success)
-                    {
-                        _currentField = field;
-                        Debug.WriteLine($"Field: {_currentField.Name}, ParsedBoundary count: {_currentField.ParsedBoundary?.Count ?? -1}");
-
-                        glControlPreview.Invalidate();
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Failed to preview field: {message}");
-                    }
-                }
+                _currentField = field;
+                glControlPreview.Invalidate();
             }
             else
             {
-                MessageBox.Show("Please select a field first.");
+                MessageBox.Show($"Failed to preview field: {message}");
             }
         }
+
 
         private async void buttonSaveAndUse_Click(object sender, EventArgs e)
         {
@@ -113,7 +108,7 @@ namespace AgOpenGPS.Forms.Field
 
                 LocalPlane localPlane = new LocalPlane(origin, sharedFieldProperties);
 
-                bool success = await AgShareDownloader.SaveDownloadedFieldToDiskAsync(_currentField, localPlane);
+                bool success = await AgShareDownloader.SaveDownloadedFieldToDiskAsync(_currentField);
 
                 if (success)
                 {
@@ -134,13 +129,24 @@ namespace AgOpenGPS.Forms.Field
         private void GlControlPreview_Load(object sender, EventArgs e)
         {
             glControlPreview.MakeCurrent();
-            GL.ClearColor(System.Drawing.Color.Black);
+            GL.ClearColor(System.Drawing.Color.WhiteSmoke);
+            GL.Viewport(0, 0, glControlPreview.Width, glControlPreview.Height);
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, glControlPreview.Width, glControlPreview.Height, 0, -1, 1);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
         }
+
 
         private void GlControlPreview_Paint(object sender, PaintEventArgs e)
         {
+
             glControlPreview.MakeCurrent();
             GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Viewport(0, 0, glControlPreview.Width, glControlPreview.Height);
 
             if (_currentField == null || _currentField.ParsedBoundary == null || !_currentField.ParsedBoundary.Any())
             {
@@ -161,18 +167,23 @@ namespace AgOpenGPS.Forms.Field
                 glControlPreview.Height / (maxY - minY + 0.0001)
             ) * 0.9;
 
-            GL.Color3(System.Drawing.Color.LimeGreen);
+            GL.Color3(System.Drawing.Color.Red);
             GL.Begin(PrimitiveType.LineLoop);
 
             foreach (var point in _currentField.ParsedBoundary)
             {
                 float x = (float)((point.Longitude - centerX) * scale + glControlPreview.Width / 2.0);
                 float y = (float)((point.Latitude - centerY) * -scale + glControlPreview.Height / 2.0);
+
                 GL.Vertex2(x, y);
             }
 
             GL.End();
             glControlPreview.SwapBuffers();
+            var err = GL.GetError();
+            if (err != ErrorCode.NoError)
+                Debug.WriteLine("GL ERROR: " + err);
+
         }
     }
 }

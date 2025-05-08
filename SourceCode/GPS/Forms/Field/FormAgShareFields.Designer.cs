@@ -28,47 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonPreview = new System.Windows.Forms.Button();
             this.labelSelectedField = new System.Windows.Forms.Label();
             this.buttonSaveAndUse = new System.Windows.Forms.Button();
             this.glControlPreview = new OpenTK.GLControl();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listViewFields = new System.Windows.Forms.ListView();
+            this.lblLoading = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // buttonPreview
-            // 
-            this.buttonPreview.Location = new System.Drawing.Point(12, 413);
-            this.buttonPreview.Name = "buttonPreview";
-            this.buttonPreview.Size = new System.Drawing.Size(122, 37);
-            this.buttonPreview.TabIndex = 0;
-            this.buttonPreview.Text = "Preview";
-            this.buttonPreview.UseVisualStyleBackColor = true;
-            this.buttonPreview.Click += new System.EventHandler(this.buttonPreview_Click);
             // 
             // labelSelectedField
             // 
             this.labelSelectedField.AutoSize = true;
+            this.labelSelectedField.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSelectedField.Location = new System.Drawing.Point(12, 9);
             this.labelSelectedField.Name = "labelSelectedField";
-            this.labelSelectedField.Size = new System.Drawing.Size(93, 13);
+            this.labelSelectedField.Size = new System.Drawing.Size(133, 23);
             this.labelSelectedField.TabIndex = 1;
-            this.labelSelectedField.Text = "labelSelectedField";
+            this.labelSelectedField.Text = "Selected Field:";
             // 
             // buttonSaveAndUse
             // 
-            this.buttonSaveAndUse.Location = new System.Drawing.Point(397, 413);
+            this.buttonSaveAndUse.Location = new System.Drawing.Point(871, 533);
             this.buttonSaveAndUse.Name = "buttonSaveAndUse";
             this.buttonSaveAndUse.Size = new System.Drawing.Size(122, 37);
             this.buttonSaveAndUse.TabIndex = 276;
-            this.buttonSaveAndUse.Text = "Save and Use";
+            this.buttonSaveAndUse.Text = "Download and Use";
             this.buttonSaveAndUse.UseVisualStyleBackColor = true;
             this.buttonSaveAndUse.Click += new System.EventHandler(this.buttonSaveAndUse_Click);
             // 
             // glControlPreview
             // 
             this.glControlPreview.BackColor = System.Drawing.Color.Black;
-            this.glControlPreview.Location = new System.Drawing.Point(526, 9);
+            this.glControlPreview.Location = new System.Drawing.Point(525, 42);
             this.glControlPreview.Name = "glControlPreview";
             this.glControlPreview.Size = new System.Drawing.Size(479, 441);
             this.glControlPreview.TabIndex = 277;
@@ -89,26 +80,38 @@
             this.listViewFields.GridLines = true;
             this.listViewFields.HideSelection = false;
             this.listViewFields.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.listViewFields.Location = new System.Drawing.Point(12, 25);
+            this.listViewFields.Location = new System.Drawing.Point(12, 42);
             this.listViewFields.MultiSelect = false;
             this.listViewFields.Name = "listViewFields";
-            this.listViewFields.Size = new System.Drawing.Size(507, 384);
+            this.listViewFields.Size = new System.Drawing.Size(507, 528);
             this.listViewFields.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewFields.TabIndex = 275;
             this.listViewFields.UseCompatibleStateImageBehavior = false;
             this.listViewFields.View = System.Windows.Forms.View.Details;
             this.listViewFields.SelectedIndexChanged += new System.EventHandler(this.listViewFields_SelectedIndexChanged);
             // 
+            // lblLoading
+            // 
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.BackColor = System.Drawing.Color.Transparent;
+            this.lblLoading.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblLoading.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoading.Location = new System.Drawing.Point(140, 260);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(250, 39);
+            this.lblLoading.TabIndex = 278;
+            this.lblLoading.Text = "Getting Fields....";
+            // 
             // FormAgShareFields
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1005, 450);
+            this.ClientSize = new System.Drawing.Size(1005, 582);
+            this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.glControlPreview);
             this.Controls.Add(this.buttonSaveAndUse);
             this.Controls.Add(this.listViewFields);
             this.Controls.Add(this.labelSelectedField);
-            this.Controls.Add(this.buttonPreview);
             this.Name = "FormAgShareFields";
             this.Text = "FormAgShareFields";
             this.ResumeLayout(false);
@@ -117,12 +120,11 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button buttonPreview;
         private System.Windows.Forms.Label labelSelectedField;
         private System.Windows.Forms.Button buttonSaveAndUse;
         private OpenTK.GLControl glControlPreview;
         private System.Windows.Forms.ColumnHeader chName;
         private System.Windows.Forms.ListView listViewFields;
+        private System.Windows.Forms.Label lblLoading;
     }
 }
