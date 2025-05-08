@@ -15,7 +15,7 @@ namespace AgOpenGPS.Core.AgShare
 
             try
             {
-                var jsonString = JsonSerializer.Serialize(boundaryJson);
+                var jsonString = boundaryJson.ToString();
 
                 using (var doc = JsonDocument.Parse(jsonString))
                 {

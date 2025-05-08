@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Text.Json;
 using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS
 {
@@ -22,7 +20,6 @@ namespace AgOpenGPS
             trk = gps.trk;
         }
 
-        // Holds both the field ID and its public visibility status
         public class FieldIdentity
         {
             public Guid Id { get; set; }
@@ -35,8 +32,6 @@ namespace AgOpenGPS
             }
         }
 
-        // Determines the field ID based on agshare.txt, or generates a new one
-        // Then checks whether the field already exists in the cloud and if it's public
         public async Task<FieldIdentity> GetOrCreateFieldIdentityAsync(string fieldDirectory)
         {
             string agshareFile = Path.Combine(fieldDirectory, "agshare.txt");
@@ -67,37 +62,26 @@ namespace AgOpenGPS
             return new FieldIdentity(id, isPublic);
         }
 
-        // Uploads the field to AgShare, with proper structure and public status
-        public async Task UploadAsync(
-    FieldIdentity identity,
-    string fieldDirectory,
-    string fieldName,
-    List<vec2> boundary,
-    LocalPlane plane)
+        public async Task UploadAsync(FieldIdentity identity, string fieldDirectory, string fieldName, List<vec2> boundary, LocalPlane plane)
         {
             if (boundary == null || boundary.Count < 3)
             {
-                gps.TimedMessageBox(2000, "AgShare - No Boundary", "Upload Failed");
+                gps.TimedMessageBox(2000, "AgShare", "Upload failed: No boundary defined.");
+                Log.EventWriter("AgShare - Upload failed: no boundary found.");
                 return;
             }
 
-            // Calculate origin based on average of boundary points
-            double avgLat = 0;
-            double avgLon = 0;
+            var originLat = plane.Origin.Latitude;
+            var originLon = plane.Origin.Longitude;
+
             var latlonPoints = new List<(double Lat, double Lon)>();
 
             foreach (var p in boundary)
             {
                 var wgs = plane.ConvertGeoCoordToWgs84(new GeoCoord(p.northing, p.easting));
-                avgLat += wgs.Latitude;
-                avgLon += wgs.Longitude;
                 latlonPoints.Add((wgs.Latitude, wgs.Longitude));
             }
 
-            avgLat /= boundary.Count;
-            avgLon /= boundary.Count;
-
-            // Ensure the polygon is closed
             if (latlonPoints.Count > 0 && (latlonPoints[0] != latlonPoints[latlonPoints.Count - 1]))
             {
                 latlonPoints.Add(latlonPoints[0]);
@@ -109,7 +93,6 @@ namespace AgOpenGPS
                 longitude = pt.Lon
             }).ToList();
 
-            // Convert AB lines and curves to cloud-friendly format
             var abLines = new List<object>();
             foreach (var track in trk.gArr)
             {
@@ -137,7 +120,6 @@ namespace AgOpenGPS
                 });
             }
 
-            // Prepare JSON payload for upload
             var client = new AgShareClient();
             client.SetServer(Properties.Settings.Default.AgShareServer);
             client.SetApiKey(Properties.Settings.Default.AgShareApiKey);
@@ -147,7 +129,7 @@ namespace AgOpenGPS
                 id = identity.Id,
                 name = fieldName,
                 isPublic = identity.IsPublic,
-                origin = new { latitude = avgLat, longitude = avgLon },
+                origin = new { latitude = originLat, longitude = originLon },
                 convergence = 0,
                 sourceId = (string)null,
                 boundary = boundaryList,
@@ -159,10 +141,12 @@ namespace AgOpenGPS
             if (success)
             {
                 File.WriteAllText(Path.Combine(fieldDirectory, "agshare.txt"), identity.Id.ToString());
+                Log.EventWriter("AgShare - Upload succeeded for field: " + fieldName);
                 gps.TimedMessageBox(2000, "AgShare", "Uploaded successfully.");
             }
             else
             {
+                Log.EventWriter("AgShare - Upload failed for field: " + fieldName);
                 gps.TimedMessageBox(2000, "AgShare", "Upload failed.");
             }
         }

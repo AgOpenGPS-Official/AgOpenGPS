@@ -17,6 +17,7 @@ namespace AgOpenGPS.Core.AgShare
 
         [JsonPropertyName("x")]
         public double OriginLon { get; set; }
+        public double Convergence { get; set; }
 
         public object Boundary { get; set; }
         public object AbLines { get; set; }

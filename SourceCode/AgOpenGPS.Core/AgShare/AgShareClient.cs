@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS.Core.AgShare
 {
@@ -33,6 +33,7 @@ namespace AgOpenGPS.Core.AgShare
             }
         }
 
+        // Test connection to AgShare server with provided API key
         public async Task<(bool Success, string Message)> TestConnectionAsync(string server, string apiKey)
         {
             if (!Uri.TryCreate(server, UriKind.Absolute, out Uri baseAddress))
@@ -56,10 +57,12 @@ namespace AgOpenGPS.Core.AgShare
             }
             catch (HttpRequestException ex)
             {
+                Log.EventWriter("AgShare connection failed: " + ex.Message);
                 return (false, $"Failed to connect to server: {ex.Message}");
             }
         }
 
+        // Upload field JSON to the AgShare backend
         public async Task<bool> UploadAsync(string fieldId, object jsonPayload)
         {
             if (!_configured)
@@ -72,57 +75,42 @@ namespace AgOpenGPS.Core.AgShare
                 var response = await _client.PutAsync($"/api/fields/{fieldId}", content).ConfigureAwait(false);
                 return response.IsSuccessStatusCode;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.EventWriter("AgShare upload failed: " + ex.Message);
                 return false;
             }
         }
 
+        // Retrieve list of user fields
         public async Task<List<FieldItem>> GetFieldsAsync()
         {
             if (!_configured)
-            {
-                Debug.WriteLine("AgShareClient is not configured.");
                 return null;
-            }
 
             try
             {
                 var response = await _client.GetAsync("/api/fields").ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync();
 
-                Debug.WriteLine("HTTP GET /api/fields status: " + response.StatusCode);
-                Debug.WriteLine("Response content: " + content);
-
                 if (!response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("API error: " + content);
                     return null;
-                }
 
                 var fields = JsonSerializer.Deserialize<List<FieldItem>>(content, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
 
-                if (fields == null)
-                {
-                    Debug.WriteLine("Deserialization returned null.");
-                }
-                else
-                {
-                    Debug.WriteLine($"Deserialized {fields.Count} fields.");
-                }
-
                 return fields;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception in GetFieldsAsync: " + ex.Message);
+                Log.EventWriter("AgShare field list download failed: " + ex.Message);
                 return null;
             }
         }
 
+        // Download a field for preview including boundary and track data
         public async Task<(bool Success, string Message, FieldDownloadDto Field)> DownloadFieldPreviewAsync(string fieldId)
         {
             if (!_configured)
@@ -142,7 +130,6 @@ namespace AgOpenGPS.Core.AgShare
                 if (fieldDto == null)
                     return (false, "Failed to parse field data.", null);
 
-                // Parse raw boundary + ABLines from JSON objects
                 fieldDto.ParsedBoundary = AgShareFieldParser.ParseBoundary(fieldDto.Boundary);
                 fieldDto.ParsedTracks = AgShareFieldParser.ParseAbLines(fieldDto.AbLines);
 
@@ -150,10 +137,12 @@ namespace AgOpenGPS.Core.AgShare
             }
             catch (Exception ex)
             {
+                Log.EventWriter("AgShare preview download failed: " + ex.Message);
                 return (false, "Exception occurred during field preview download: " + ex.Message, null);
             }
         }
 
+        // Download field info by ID
         public async Task<FieldInfoDto> GetFieldByIdAsync(string fieldId)
         {
             if (!_configured)
@@ -168,8 +157,9 @@ namespace AgOpenGPS.Core.AgShare
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return JsonSerializer.Deserialize<FieldInfoDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
-            catch
+            catch (Exception ex)
             {
+                Log.EventWriter("AgShare field info retrieval failed: " + ex.Message);
                 return null;
             }
         }
