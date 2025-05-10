@@ -31,7 +31,8 @@ namespace AgOpenGPS
             label4.Text = Properties.Settings.Default.setVehicle_maxSteerAngle.ToString();
             label6.Text = Properties.Settings.Default.setAS_countsPerDegree.ToString();
             label8.Text = Properties.Settings.Default.setAS_ackerman.ToString();
-            label10.Text = Properties.Settings.Default.setAS_wasOffset.ToString();
+            label10.Text = (Properties.Settings.Default.setAS_wasOffset / (double)(Properties.Settings.Default.setAS_countsPerDegree)).ToString("N2");
+
             label12.Text = Properties.Settings.Default.setAS_highSteerPWM.ToString();
             label14.Text = Properties.Settings.Default.setAS_lowSteerPWM.ToString();
             label16.Text = Properties.Settings.Default.setAS_minSteerPWM.ToString();

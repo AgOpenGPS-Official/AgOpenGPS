@@ -228,10 +228,12 @@ namespace AgOpenGPS
             }
             else
             {
+                //insufficient points recorded - close the form
                 mf.curve.desList?.Clear();
                 panelCurve.Visible = false;
                 panelName.Visible = false;
                 panelChoose.Visible = false;
+                Close();
             }
             mf.Activate();
         }

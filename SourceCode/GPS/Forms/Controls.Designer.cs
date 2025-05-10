@@ -75,7 +75,12 @@ namespace AgOpenGPS
             {
                 if (trk.idx == -1)
                 {
-                    trk.idx = 0;
+                    //find index of first visible track
+                    trk.idx = trk.gArr.FindIndex(track => track.isVisible);
+
+                    //otherwise default to index 0
+                    if (trk.idx == -1) trk.idx = 0;
+
                     EnableYouTurnButtons();
                     PanelUpdateRightAndBottom();
                     twoSecondCounter = 100;

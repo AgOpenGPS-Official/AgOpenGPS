@@ -54,6 +54,7 @@ namespace AgOpenGPS
                         //reset AOG
                         mf.LoadSettings();
 
+                        lblVehicleToolWidth.Text = Convert.ToString((int)(mf.tool.width * 100 * mf.cm2CmOrIn));
                         SectionFeetInchesTotalWidthLabelUpdate();
 
                         SendSettings();

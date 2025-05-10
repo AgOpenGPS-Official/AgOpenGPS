@@ -9264,6 +9264,7 @@ namespace AgOpenGPS
             // 
             // labelFieldTextureOnOff
             // 
+            this.labelFieldTextureOnOff.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.labelFieldTextureOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelFieldTextureOnOff.ForeColor = System.Drawing.Color.Black;
             this.labelFieldTextureOnOff.Location = new System.Drawing.Point(37, 354);
