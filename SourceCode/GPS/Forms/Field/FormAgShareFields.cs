@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using AgOpenGPS.Core.AgShare;
 using System.Linq;
 using AgOpenGPS.Core.Models;
+using System.Drawing;
+using AgLibrary.Logging;
 using System.IO;
-using System.Diagnostics;
 
 namespace AgOpenGPS.Forms.Field
 {
@@ -17,6 +17,7 @@ namespace AgOpenGPS.Forms.Field
         private readonly AgShareClient _agShareClient;
         private FieldDownloadDto _currentField;
         private List<FieldItem> _fields = new List<FieldItem>();
+        private readonly FormGPS _gps;
 
         public FormAgShareFields(AgShareClient agShareClient)
         {
@@ -93,38 +94,35 @@ namespace AgOpenGPS.Forms.Field
             }
             else
             {
-                MessageBox.Show($"Failed to preview field: {message}");
+                Log.EventWriter($"Failed to preview field: {message}");
             }
         }
 
 
-        private async void buttonSaveAndUse_Click(object sender, EventArgs e)
-        {
-            if (_currentField != null)
+            private async void buttonSaveAndUse_Click(object sender, EventArgs e)
             {
-                Wgs84 origin = new Wgs84(_currentField.OriginLat, _currentField.OriginLon);
-
-                SharedFieldProperties sharedFieldProperties = new SharedFieldProperties();
-
-                LocalPlane localPlane = new LocalPlane(origin, sharedFieldProperties);
-
-                bool success = await AgShareDownloader.SaveDownloadedFieldToDiskAsync(_currentField);
-
-                if (success)
+                if (_currentField != null)
                 {
-                    MessageBox.Show($"Field '{_currentField.Name}' saved and ready to use.");
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Failed to save the field.");
+                    Wgs84 origin = new Wgs84(_currentField.OriginLat, _currentField.OriginLon);
+
+                    SharedFieldProperties sharedFieldProperties = new SharedFieldProperties();
+
+                    LocalPlane localPlane = new LocalPlane(origin, sharedFieldProperties);
+
+                    bool success = await AgShareDownloader.SaveDownloadedFieldToDiskAsync(_currentField);
+
+                    if (success)
+                    {
+                        Log.EventWriter("AgShare - Field saved and ready to use.");
+
+                        this.Close();
+                    }
+                    else
+                    {
+                        _gps.TimedMessageBox(2000,"Agshare","Failed to save the field.");
+                    }
                 }
             }
-            else
-            {
-                MessageBox.Show("Please preview a field first.");
-            }
-        }
 
         private void GlControlPreview_Load(object sender, EventArgs e)
         {
@@ -168,6 +166,7 @@ namespace AgOpenGPS.Forms.Field
             ) * 0.9;
 
             GL.Color3(System.Drawing.Color.Red);
+            GL.LineWidth(5.0f);
             GL.Begin(PrimitiveType.LineLoop);
 
             foreach (var point in _currentField.ParsedBoundary)
@@ -179,10 +178,48 @@ namespace AgOpenGPS.Forms.Field
             }
 
             GL.End();
+            if (_currentField.ParsedTracks != null)
+            {
+                foreach (var track in _currentField.ParsedTracks)
+                {
+                    if (track.Type == "AB" && track.PtA != null && track.PtB != null)
+                    {
+                        GL.Color3(Color.Green);
+                        GL.LineWidth(3.0f);
+                        GL.Begin(PrimitiveType.Lines);
+
+                        float x1 = (float)((track.PtA.Longitude - centerX) * scale + glControlPreview.Width / 2.0);
+                        float y1 = (float)((track.PtA.Latitude - centerY) * -scale + glControlPreview.Height / 2.0);
+                        float x2 = (float)((track.PtB.Longitude - centerX) * scale + glControlPreview.Width / 2.0);
+                        float y2 = (float)((track.PtB.Latitude - centerY) * -scale + glControlPreview.Height / 2.0);
+
+                        GL.Vertex2(x1, y1);
+                        GL.Vertex2(x2, y2);
+                        GL.End();
+                    }
+
+                    if (track.Type == "Curve" && track.CurvePoints != null && track.CurvePoints.Count > 1)
+                    {
+                        GL.Color3(Color.Blue);
+                        GL.LineWidth(3.0f);
+                        GL.Begin(PrimitiveType.LineStrip);
+
+                        foreach (var pt in track.CurvePoints)
+                        {
+                            float x = (float)((pt.Longitude - centerX) * scale + glControlPreview.Width / 2.0);
+                            float y = (float)((pt.Latitude - centerY) * -scale + glControlPreview.Height / 2.0);
+                            GL.Vertex2(x, y);
+                        }
+
+                        GL.End();
+                    }
+                }
+            }
+
             glControlPreview.SwapBuffers();
             var err = GL.GetError();
             if (err != ErrorCode.NoError)
-                Debug.WriteLine("GL ERROR: " + err);
+                Log.EventWriter("GL ERROR: " + err);
 
         }
     }
