@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS.Core.AgShare
 {
@@ -45,7 +48,7 @@ namespace AgOpenGPS.Core.AgShare
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error parsing boundary: " + ex.Message);
+               Log.EventWriter($"[ERROR] Failed to parse boundary: {ex.Message}");
             }
 
             return result;
@@ -54,6 +57,7 @@ namespace AgOpenGPS.Core.AgShare
         public static List<ParsedTrackLatLon> ParseAbLines(object abLinesJson)
         {
             var tracks = new List<ParsedTrackLatLon>();
+            Debug.WriteLine("AbLinesParserActivated");
 
             if (abLinesJson == null)
                 return tracks;
@@ -61,68 +65,58 @@ namespace AgOpenGPS.Core.AgShare
             try
             {
                 var jsonString = JsonSerializer.Serialize(abLinesJson);
-                var featureCollection = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(jsonString);
+                var doc = JsonDocument.Parse(jsonString);
 
-                if (featureCollection?.Features == null)
-                    return tracks;
-
-                foreach (var feature in featureCollection.Features)
+                if (doc.RootElement.TryGetProperty("features", out var features))
                 {
-                    if (feature.Geometry == null || feature.Properties == null)
-                        continue;
+                    Debug.WriteLine($"[DEBUG] features count: {features.GetArrayLength()}");
 
-                    string type = feature.Properties.ContainsKey("type") ? feature.Properties["type"].ToString() : "";
-                    string name = feature.Properties.ContainsKey("name") ? feature.Properties["name"].ToString() : "Unnamed";
-
-                    var coords = feature.Geometry.Coordinates;
-
-                    if (type == "AB" && coords != null && coords.Count >= 2)
+                    foreach (var feature in features.EnumerateArray())
                     {
-                        var pointA = coords[0];
-                        var pointB = coords[1];
+                        if (!feature.TryGetProperty("geometry", out var geometry)) continue;
+                        if (!feature.TryGetProperty("properties", out var properties)) continue;
 
-                        var parsedTrack = new ParsedTrackLatLon
-                        {
-                            Name = name,
-                            Type = "AB",
-                            Coords = new List<ParsedLatLon>
+                        string type = properties.TryGetProperty("type", out var typeEl) ? typeEl.GetString() : "Unknown";
+                        string name = properties.TryGetProperty("name", out var nameEl) ? nameEl.GetString() : "Unnamed";
+
+                        if (!geometry.TryGetProperty("coordinates", out var coordsElement)) continue;
+                        if (geometry.TryGetProperty("type", out var geomType) && geomType.GetString() != "LineString") continue;
+
+                        var coords = coordsElement.EnumerateArray()
+                            .Select(coord => new ParsedLatLon
                             {
-                                new ParsedLatLon { Longitude = pointA[0], Latitude = pointA[1] },
-                                new ParsedLatLon { Longitude = pointB[0], Latitude = pointB[1] }
-                            }
-                        };
+                                Longitude = coord[0].GetDouble(),
+                                Latitude = coord[1].GetDouble()
+                            }).ToList();
 
-                        tracks.Add(parsedTrack);
-                    }
-                    else if (type == "Curve" && coords != null && coords.Count > 1)
-                    {
-                        var curvePoints = new List<ParsedLatLon>();
-
-                        foreach (var coordPair in coords)
+                        if (type == "AB" && coords.Count >= 2)
                         {
-                            if (coordPair.Count < 2) continue;
-
-                            curvePoints.Add(new ParsedLatLon
+                            tracks.Add(new ParsedTrackLatLon
                             {
-                                Longitude = coordPair[0],
-                                Latitude = coordPair[1]
+                                Name = name,
+                                Type = "AB",
+                                Coords = new List<ParsedLatLon> { coords[0], coords[1] }
                             });
                         }
-
-                        var parsedTrack = new ParsedTrackLatLon
+                        else if (type == "Curve" && coords.Count > 1)
                         {
-                            Name = name.StartsWith("Cu") ? name : "Cu " + name,
-                            Type = "Curve",
-                            Coords = curvePoints
-                        };
-
-                        tracks.Add(parsedTrack);
+                            tracks.Add(new ParsedTrackLatLon
+                            {
+                                Name = name,
+                                Type = "Curve",
+                                Coords = coords
+                            });
+                        }
                     }
+                }
+                else
+                {
+                    Debug.WriteLine("[DEBUG] 'features' property not found in GeoJSON.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error parsing AB Lines: " + ex.Message);
+                Debug.WriteLine("[ERROR] Failed to parse AB Lines: " + ex.Message);
             }
 
             return tracks;
@@ -144,6 +138,8 @@ namespace AgOpenGPS.Core.AgShare
     public class GeoJsonGeometry
     {
         public string Type { get; set; }
-        public List<List<double>> Coordinates { get; set; }
+        public JsonElement Coordinates { get; set; }
     }
+
+
 }
