@@ -167,8 +167,6 @@ namespace AgOpenGPS.Core.AgShare
 
     public class FieldInfoDto
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
         public bool IsPublic { get; set; }
     }
 }
