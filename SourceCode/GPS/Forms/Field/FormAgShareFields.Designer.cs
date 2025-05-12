@@ -59,6 +59,7 @@
             // glControlPreview
             // 
             this.glControlPreview.BackColor = System.Drawing.Color.Black;
+            this.glControlPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.glControlPreview.Location = new System.Drawing.Point(525, 42);
             this.glControlPreview.Name = "glControlPreview";
             this.glControlPreview.Size = new System.Drawing.Size(479, 441);
@@ -75,7 +76,7 @@
             this.listViewFields.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.listViewFields.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chName});
-            this.listViewFields.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewFields.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewFields.FullRowSelect = true;
             this.listViewFields.GridLines = true;
             this.listViewFields.HideSelection = false;

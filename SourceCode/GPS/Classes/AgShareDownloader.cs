@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
 using AgLibrary.Logging;
+using System.Linq;
 
 namespace AgOpenGPS
 {
@@ -139,25 +140,65 @@ namespace AgOpenGPS
 
                 foreach (var track in parsedTracks)
                 {
-                    await writer.WriteLineAsync(track.Name);
+                    await writer.WriteLineAsync(track.Name ?? "Unnamed");
 
                     if (track.Type == "AB" && track.PtA != null && track.PtB != null)
                     {
-                        var localPtA = localPlane.ConvertWgs84ToGeoCoord(new Wgs84(track.PtA.Latitude, track.PtA.Longitude));
-                        var localPtB = localPlane.ConvertWgs84ToGeoCoord(new Wgs84(track.PtB.Latitude, track.PtB.Longitude));
+                        var ptALocal = localPlane.ConvertWgs84ToGeoCoord(new Wgs84(track.PtA.Latitude, track.PtA.Longitude));
+                        var ptBLocal = localPlane.ConvertWgs84ToGeoCoord(new Wgs84(track.PtB.Latitude, track.PtB.Longitude));
 
-                        await writer.WriteLineAsync($"AB line: {track.Name}");
-                        await writer.WriteLineAsync($"Start: {localPtA.Northing},{localPtA.Easting}");
-                        await writer.WriteLineAsync($"End: {localPtB.Northing},{localPtB.Easting}");
+                        double dx = ptBLocal.Easting - ptALocal.Easting;
+                        double dy = ptBLocal.Northing - ptALocal.Northing;
+
+                        double headingRad = Math.Atan2(dx, dy);
+                        if (headingRad < 0) headingRad += 2 * Math.PI;
+
+                        await writer.WriteLineAsync(headingRad.ToString(CultureInfo.InvariantCulture));
+                        await writer.WriteLineAsync($"{ptALocal.Easting:0.###},{ptALocal.Northing:0.###}");
+                        await writer.WriteLineAsync($"{ptBLocal.Easting:0.###},{ptBLocal.Northing:0.###}");
+                        await writer.WriteLineAsync("0");     // Nudge
+                        await writer.WriteLineAsync("2");     // Mode AB
+                        await writer.WriteLineAsync("True");  // Visible
+                        await writer.WriteLineAsync("0");     // Curve count
                     }
-
-                    if (track.Type == "Curve" && track.CurvePoints != null)
+                    else if (track.Type == "Curve" && track.CurvePoints != null && track.CurvePoints.Count > 1)
                     {
-                        await writer.WriteLineAsync("Curve:");
-                        foreach (var point in track.CurvePoints)
+                        var localPoints = track.CurvePoints
+                            .Select(p => localPlane.ConvertWgs84ToGeoCoord(new Wgs84(p.Latitude, p.Longitude)))
+                            .ToList();
+
+                        var first = localPoints.First();
+                        var last = localPoints.Last();
+
+                        // Bereken gemiddelde heading uit opeenvolgende segmenten
+                        double sumX = 0, sumY = 0;
+                        for (int i = 1; i < localPoints.Count; i++)
                         {
-                            var localPoint = localPlane.ConvertWgs84ToGeoCoord(new Wgs84(point.Latitude, point.Longitude));
-                            await writer.WriteLineAsync($"{localPoint.Northing},{localPoint.Easting}");
+                            var dx = localPoints[i].Easting - localPoints[i - 1].Easting;
+                            var dy = localPoints[i].Northing - localPoints[i - 1].Northing;
+
+                            if (dx == 0 && dy == 0) continue; // skip identieke punten
+
+                            double angle = Math.Atan2(dx, dy);
+                            sumX += Math.Cos(angle);
+                            sumY += Math.Sin(angle);
+                        }
+
+                        double avgHeading = Math.Atan2(sumY, sumX);
+                        if (avgHeading < 0) avgHeading += 2 * Math.PI;
+
+                        await writer.WriteLineAsync(avgHeading.ToString(CultureInfo.InvariantCulture));
+                        await writer.WriteLineAsync($"{first.Easting:0.###},{first.Northing:0.###}");
+                        await writer.WriteLineAsync($"{last.Easting:0.###},{last.Northing:0.###}");
+                        await writer.WriteLineAsync("0");     // Nudge
+                        await writer.WriteLineAsync("4");     // Mode Curve
+                        await writer.WriteLineAsync("True");  // Visible
+
+                        await writer.WriteLineAsync(localPoints.Count.ToString(CultureInfo.InvariantCulture));
+
+                        foreach (var p in localPoints)
+                        {
+                            await writer.WriteLineAsync($"{p.Easting:0.###},{p.Northing:0.###},0");
                         }
                     }
                 }
@@ -165,3 +206,6 @@ namespace AgOpenGPS
         }
     }
 }
+
+
+    
