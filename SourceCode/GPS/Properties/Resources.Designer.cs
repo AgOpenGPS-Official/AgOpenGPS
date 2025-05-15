@@ -1642,6 +1642,16 @@ namespace AgOpenGPS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DownloadAndUse {
+            get {
+                object obj = ResourceManager.GetObject("DownloadAndUse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FieldStats {
             get {
                 object obj = ResourceManager.GetObject("FieldStats", resourceCulture);

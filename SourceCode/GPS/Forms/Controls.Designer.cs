@@ -627,7 +627,7 @@ namespace AgOpenGPS
             PanelUpdateRightAndBottom();
         }
 
-        public void FileSaveEverythingBeforeClosingField()
+        public async void FileSaveEverythingBeforeClosingField()
         {
             //turn off contour line if on
             if (ct.isContourOn) ct.StopContourLine();
@@ -660,6 +660,8 @@ namespace AgOpenGPS
             ExportFieldAs_KML();
             ExportFieldAs_ISOXMLv3();
             ExportFieldAs_ISOXMLv4();
+
+            await UploadFieldToAgShare();
 
             Log.EventWriter("** Closed **   " + currentFieldDirectory + "   "
                 + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
@@ -1342,7 +1344,16 @@ namespace AgOpenGPS
             {
                 form.ShowDialog(this);
             }
-        }                
+        }
+
+        private void AgShareApiMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormAgShareSettings(_agShareClient))
+            {
+                form.ShowDialog(this);
+            }
+        }
+
         private void hotKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var form = new Form_Keys(this))

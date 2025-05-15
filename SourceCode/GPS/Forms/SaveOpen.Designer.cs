@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +14,9 @@ using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Properties;
+using System.Threading.Tasks;
+using AgOpenGPS.Core.AgShare;
 
 namespace AgOpenGPS
 {
@@ -77,6 +80,37 @@ namespace AgOpenGPS
                 Log.EventWriter("Export Field as ISOXML: " + e.Message);
             }
         }
+
+        public async Task UploadFieldToAgShare()
+        {
+            if (string.IsNullOrEmpty(Properties.Settings.Default.AgShareApiKey))
+                return;
+
+            string fieldName = AppModel.Fields.CurrentFieldName;
+            string fieldDirectory = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
+
+            var uploader = new CAgShareUpload(this);
+            var identity = await uploader.GetOrCreateFieldIdentityAsync(fieldDirectory);
+
+            if (bnd?.bndList == null || bnd.bndList.Count == 0 || bnd.bndList[0]?.fenceLineEar == null)
+            {
+                TimedMessageBox(2000, "AgShare", "No boundary found.");
+                return;
+            }
+
+            await uploader.UploadAsync(
+                identity,
+                fieldDirectory,
+                fieldName,
+                bnd.bndList[0].fenceLineEar,
+                AppModel.LocalPlane
+            );
+        }
+
+
+
+
+
 
         public void FileSaveHeadLines()
         {
