@@ -3,8 +3,6 @@
 using AgOpenGPS.Core.Models;
 using System;
 
-namespace AgOpenGPS
-{
     public struct vec3
     {
         public double easting;
@@ -130,4 +128,4 @@ namespace AgOpenGPS
         }
     }
 
-}
+

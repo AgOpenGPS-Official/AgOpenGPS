@@ -660,8 +660,13 @@ namespace AgOpenGPS
             ExportFieldAs_KML();
             ExportFieldAs_ISOXMLv3();
             ExportFieldAs_ISOXMLv4();
+            if (Settings.Default.AgShareEnabled)
+            {
+                agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+                await agShareUploadTask;
+            }
 
-            await UploadFieldToAgShare();
+
 
             Log.EventWriter("** Closed **   " + currentFieldDirectory + "   "
                 + DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
@@ -671,8 +676,36 @@ namespace AgOpenGPS
             FieldMenuButtonEnableDisable(false);
             JobClose();
 
+            //Trigger Upload to AgShare
+            AgShareUpload();
+
             Text = "AgOpenGPS";
         }
+        #region AgShare Upload
+
+        private bool isAgShareUploadStarted = false;
+        private FieldSnapshot snapshot;
+
+        //this method is called to create a snapshot of the field for AgShare so we can close the field to speed up close and re-open
+        public void AgShareSnapshot()
+        {
+            if (!isJobStarted) return;
+
+            snapshot = CAgShareUploader.CreateSnapshot(this);
+        }
+
+
+        public void AgShareUpload()
+        {
+            //check if we're already uploading by closing a field or are we shutting down
+            if (!isJobStarted || snapshot == null || isAgShareUploadStarted || isShuttingDown)
+                return;
+
+            //set bool to true so we don't start another upload by double clicking or something.
+            isAgShareUploadStarted = true;
+            agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+        }
+        #endregion
         private void tramLinesMenuField_Click(object sender, EventArgs e)
         {
             if (ct.isContourBtnOn) btnContour.PerformClick();
@@ -1348,11 +1381,14 @@ namespace AgOpenGPS
 
         private void AgShareApiMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new FormAgShareSettings(_agShareClient))
-            {
-                form.ShowDialog(this);
-            }
+            var server = Properties.Settings.Default.AgShareServer;
+            var apiKey = Properties.Settings.Default.AgShareApiKey;
+            var client = new AgShareClient(server, apiKey);
+
+            var form = new FormAgShareSettings();
+            form.ShowDialog(this);
         }
+
 
         private void hotKeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1484,7 +1520,9 @@ namespace AgOpenGPS
             }
         }
 
-        //Languages
+        #endregion
+
+        #region Languages
         private void menuLanguageEnglish_Click(object sender, EventArgs e)
         {
             SetLanguage("en");

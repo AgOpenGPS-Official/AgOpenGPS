@@ -1,12 +1,10 @@
 ﻿using AgLibrary.Logging;
-using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms.Field;
 using AgOpenGPS.Helpers;
 using System;
-using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -31,6 +29,7 @@ namespace AgOpenGPS
             btnFromKML.Text = gStr.gsFromKml;
             btnFromExisting.Text = gStr.gsFromExisting;
             btnJobClose.Text = gStr.gsClose;
+            btnAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
 
             this.Text = gStr.gsStartNewField;
         }
@@ -42,6 +41,10 @@ namespace AgOpenGPS
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
 
             string fileAndDirectory = Path.Combine(directoryName, "Field.txt");
+
+            //Trigger a snapshot to create a temp data file for the AgShare Upload
+            if (mf.isJobStarted && Properties.Settings.Default.AgShareEnabled) mf.AgShareSnapshot();
+
 
             if (!File.Exists(fileAndDirectory))
             {
@@ -251,11 +254,11 @@ namespace AgOpenGPS
                 mf.FileSaveEverythingBeforeClosingField();
             }
 
-            var client = new AgShareClient();
-            client.SetServer(Properties.Settings.Default.AgShareServer);
-            client.SetApiKey(Properties.Settings.Default.AgShareApiKey);
+            var server = Properties.Settings.Default.AgShareServer;
+            var apiKey = Properties.Settings.Default.AgShareApiKey;
+            var client = new AgShareClient(server, apiKey);
 
-            using (var form = new Forms.Field.FormAgShareFields(client))
+            using (var form = new FormAgShareDownloader(mf))
             {
                 form.ShowDialog(this);
             }
@@ -263,5 +266,6 @@ namespace AgOpenGPS
             DialogResult = DialogResult.Ignore;
             Close();
         }
+
     }
 }

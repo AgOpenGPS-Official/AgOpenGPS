@@ -9,6 +9,7 @@ using AgOpenGPS.Core.ViewModels;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
+using AgOpenGPS.Classes.AgShare.Helpers;
 using Microsoft.Win32;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -27,15 +28,13 @@ using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using AgOpenGPS.Core.AgShare;
+using System.Threading.Tasks;
 
 namespace AgOpenGPS
 {
     //the main form object
     public partial class FormGPS : Form
     {
-        private readonly AgShareClient _agShareClient = new AgShareClient();
-
         public ApplicationCore AppCore { get; }
 
         public ApplicationModel AppModel => AppCore.AppModel;
@@ -88,6 +87,9 @@ namespace AgOpenGPS
 
         [System.Runtime.InteropServices.DllImport("User32.dll")]
         private static extern bool ShowWindow(IntPtr hWind, int nCmdShow);
+
+        private Task agShareUploadTask = null;
+
 
         #region // Class Props and instances
 
@@ -258,6 +260,12 @@ namespace AgOpenGPS
         /// The new brightness code
         /// </summary>
         public CWindowsSettingsBrightnessController displayBrightness;
+
+        /// <summary>
+        /// AgShare client for uploading fields
+        /// </summary>
+        private AgShareClient agShareClient;
+
 
         #endregion // Class Props and instances
 
@@ -525,63 +533,53 @@ namespace AgOpenGPS
                     form.ShowDialog(this);
                 }
             }
-
-            _agShareClient.SetServer(Settings.Default.AgShareServer);
-            _agShareClient.SetApiKey(Settings.Default.AgShareApiKey);
+            //Init AgShareClient
+            agShareClient = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
         }
 
-        private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
+        #region Shutdown Handling
+
+        // Centralized shutdown coordinator
+        private bool isShuttingDown = false;
+
+        private async void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Form f = Application.OpenForms["FormGPSData"];
-
-            if (f != null)
+            if (isShuttingDown)
             {
-                f.Focus();
-                f.Close();
+                return;
+            }
+            //set the shutdown flag to true to prevent re-entrance
+            isShuttingDown = true;
+
+            // Attempt to close subforms cleanly
+            string[] formNames = { "FormGPSData", "FormFieldData", "FormPan", "FormTimedMessage" };
+            foreach (string name in formNames)
+            {
+                Form f = Application.OpenForms[name];
+                if (f != null && !f.IsDisposed)
+                {
+                    try { f.Close(); } catch { }
+                }
             }
 
-            f = Application.OpenForms["FormFieldData"];
-
-            if (f != null)
-            {
-                f.Focus();
-                f.Close();
-            }
-
-            f = Application.OpenForms["FormPan"];
-
-            if (f != null)
-            {
-                isPanFormVisible = false;
-                f.Focus();
-                f.Close();
-            }
-
-            f = Application.OpenForms["FormTimedMessage"];
-
-            if (f != null)
-            {
-                f.Focus();
-                f.Close();
-            }
-
+            // Cancel shutdown if owned forms are still open
             if (this.OwnedForms.Any())
             {
                 TimedMessageBox(2000, gStr.gsWindowsStillOpen, gStr.gsCloseAllWindowsFirst);
+                isShuttingDown = false;
                 e.Cancel = true;
                 return;
             }
 
-            bool closing = true;
-            int choice = SaveOrNot(closing);
-
-            //simple cancel return to AOG
+            // Get user choice for shutdown behavior
+            int choice = SaveOrNot();
             if (choice == 1)
             {
+                isShuttingDown = false;
                 e.Cancel = true;
                 return;
             }
-
+            // Save and upload field data if applicable
             if (isJobStarted)
             {
                 if (autoBtnState == btnStates.Auto)
@@ -590,42 +588,77 @@ namespace AgOpenGPS
                 if (manualBtnState == btnStates.On)
                     btnSectionMasterManual.PerformClick();
 
+                if (Settings.Default.AgShareEnabled)
+                {
+                    TimedMessageBox(5000, "AgShare", "Uploading field to AgShare...\nPlease wait and get a beer.");
+                    isAgShareUploadStarted = true;
+                    agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+
+                    e.Cancel = true;
+                    await DelayedShutdownAfterUpload(choice);
+                    return;
+                }
                 FileSaveEverythingBeforeClosingField();
             }
+            // No upload required, skip DelayedShutDown and finalize shutdown
+            FinishShutdown(choice);
+        }
 
+        private async Task DelayedShutdownAfterUpload(int choice)
+        {
+            try
+            {
+                await agShareUploadTask;
+                agShareUploadTask = null;
+            }
+            catch (Exception) { }
+            if (!this.IsDisposed && !this.Disposing)
+            {
+                FinishShutdown(choice);
+            }
+        }
+
+        private void FinishShutdown(int choice)
+        {
             SaveFormGPSWindowSettings();
 
             double minutesSinceStart = ((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds) / 60;
-            if (minutesSinceStart < 1)
-            {
-                minutesSinceStart = 1;
-            }
+            if (minutesSinceStart < 1) minutesSinceStart = 1;
 
             Log.EventWriter("Missed Sentence Counter Total: " + missedSentenceCount.ToString()
                 + "   Missed Per Minute: " + ((double)missedSentenceCount / minutesSinceStart).ToString("N4"));
 
-            Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.InvariantCulture) + "\r");
+            Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(RegistrySettings.culture)) + "\r");
 
-            //save current vehicle
+            // Save settings
             Settings.Default.Save();
 
-            //write the log file
-            Log.FileSaveSystemEvents();
 
+            // Restore display brightness
             if (displayBrightness.isWmiMonitor)
-                displayBrightness.SetBrightness(Settings.Default.setDisplay_brightnessSystem);
-
-            if (choice == 2)
             {
-                Process[] processName = Process.GetProcessesByName("AgIO");
-                if (processName.Length != 0)
-                {
-                    processName[0].CloseMainWindow();
-                }
-
-                Process.Start("shutdown", "/s /t 0");
+                try { displayBrightness.SetBrightness(Settings.Default.setDisplay_brightnessSystem); }
+                catch { }
             }
 
+            // Perform Windows shutdown if user selected it
+            if (choice == 2)
+            {
+                try
+                {
+                    Process[] agio = Process.GetProcessesByName("AgIO");
+                    if (agio.Length > 0) agio[0].CloseMainWindow();
+                }
+                catch { }
+
+                try
+                {
+                    Process.Start("shutdown", "/s /t 0");
+                }
+                catch { }
+            }
+
+            // Close loopback socket if active
             if (loopBackSocket != null)
             {
                 try
@@ -634,24 +667,30 @@ namespace AgOpenGPS
                     loopBackSocket.Close();
                 }
                 catch { }
-                finally { }
             }
 
-            if (Properties.Settings.Default.setDisplay_isAutoOffAgIO)
+            // Auto close AgIO process if enabled
+            if (Settings.Default.setDisplay_isAutoOffAgIO)
             {
-                Process[] processName = Process.GetProcessesByName("AgIO");
-                if (processName.Length != 0)
+                try
                 {
-                    processName[0].CloseMainWindow();
+                    Process[] agio = Process.GetProcessesByName("AgIO");
+                    if (agio.Length > 0) agio[0].CloseMainWindow();
                 }
+                catch { }
             }
-        }
 
-        public int SaveOrNot(bool closing)
+            // Close the main application form
+            try { Close(); }
+            catch (ObjectDisposedException) { }
+        }
+        #endregion
+
+        public int SaveOrNot()
         {
             CloseTopMosts();
 
-            using (FormSaveOrNot form = new FormSaveOrNot(closing))
+            using (FormSaveOrNot form = new FormSaveOrNot(this))
             {
                 DialogResult result = form.ShowDialog(this);
 
@@ -869,6 +908,7 @@ namespace AgOpenGPS
             menustripLanguage.Enabled = true;
 
             AppModel.Fields.CloseField();
+
 
             //fix ManualOffOnAuto buttons
             manualBtnState = btnStates.Off;
