@@ -66,7 +66,7 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                             // Correct volgorde: Northing, Easting
                             var localCoord = new GeoCoord(local.Northing, local.Easting);
                             var nextCoord = new GeoCoord(nextLocal.Northing, nextLocal.Easting);
-                            localHeading = new GeoDir(new GeoDelta(localCoord, nextCoord)).Angle;
+                            localHeading = new GeoDir(new GeoDelta(localCoord, nextCoord)).AngleInRadians;
                         }
 
                         abLine.CurvePoints.Add(new LocalPoint(local.Easting, local.Northing, localHeading));
