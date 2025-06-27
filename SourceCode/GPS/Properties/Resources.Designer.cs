@@ -251,6 +251,16 @@ namespace AgOpenGPS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AgShare {
+            get {
+                object obj = ResourceManager.GetObject("AgShare", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Alarm10 {
@@ -475,6 +485,26 @@ namespace AgOpenGPS.Properties {
         internal static System.Drawing.Bitmap AutoTrackOff {
             get {
                 object obj = ResourceManager.GetObject("AutoTrackOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AutoUploadOff {
+            get {
+                object obj = ResourceManager.GetObject("AutoUploadOff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AutoUploadOn {
+            get {
+                object obj = ResourceManager.GetObject("AutoUploadOn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -34,13 +34,14 @@
             this.labelApiKey = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxServer = new System.Windows.Forms.TextBox();
-            this.btnToggleUpload = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.btnPaste = new System.Windows.Forms.Button();
             this.linkRegister = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.btnDevelop = new System.Windows.Forms.Button();
+            this.btnAutoUpload = new System.Windows.Forms.Button();
+            this.btnToggleUpload = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxApiKey
@@ -110,6 +111,64 @@
             this.textBoxServer.TabIndex = 7;
             this.textBoxServer.Click += new System.EventHandler(this.textBoxServer_Click);
             // 
+            // btnPaste
+            // 
+            this.btnPaste.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPaste.Location = new System.Drawing.Point(122, 96);
+            this.btnPaste.Name = "btnPaste";
+            this.btnPaste.Size = new System.Drawing.Size(192, 35);
+            this.btnPaste.TabIndex = 9;
+            this.btnPaste.Text = "Paste from Clipboard";
+            this.btnPaste.UseVisualStyleBackColor = true;
+            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
+            // 
+            // linkRegister
+            // 
+            this.linkRegister.AutoSize = true;
+            this.linkRegister.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.linkRegister.Location = new System.Drawing.Point(147, 341);
+            this.linkRegister.Name = "linkRegister";
+            this.linkRegister.Size = new System.Drawing.Size(280, 23);
+            this.linkRegister.TabIndex = 10;
+            this.linkRegister.TabStop = true;
+            this.linkRegister.Text = "https://agshare.agopengps.com";
+            this.linkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRegister_LinkClicked);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(158, 318);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(256, 23);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Register here to use AgShare";
+            // 
+            // btnDevelop
+            // 
+            this.btnDevelop.BackColor = System.Drawing.Color.Transparent;
+            this.btnDevelop.FlatAppearance.BorderSize = 0;
+            this.btnDevelop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDevelop.Location = new System.Drawing.Point(12, 338);
+            this.btnDevelop.Name = "btnDevelop";
+            this.btnDevelop.Size = new System.Drawing.Size(22, 23);
+            this.btnDevelop.TabIndex = 12;
+            this.btnDevelop.UseVisualStyleBackColor = false;
+            this.btnDevelop.Click += new System.EventHandler(this.btnDevelop_Click);
+            // 
+            // btnAutoUpload
+            // 
+            this.btnAutoUpload.FlatAppearance.BorderSize = 0;
+            this.btnAutoUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAutoUpload.Image = global::AgOpenGPS.Properties.Resources.AutoUploadOn;
+            this.btnAutoUpload.Location = new System.Drawing.Point(12, 173);
+            this.btnAutoUpload.Name = "btnAutoUpload";
+            this.btnAutoUpload.Size = new System.Drawing.Size(128, 128);
+            this.btnAutoUpload.TabIndex = 13;
+            this.btnAutoUpload.Text = "Auto-Upload";
+            this.btnAutoUpload.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnAutoUpload.UseVisualStyleBackColor = true;
+            this.btnAutoUpload.Click += new System.EventHandler(this.btnAutoUpload_Click);
+            // 
             // btnToggleUpload
             // 
             this.btnToggleUpload.FlatAppearance.BorderSize = 0;
@@ -160,50 +219,6 @@
             this.buttonSave.UseVisualStyleBackColor = false;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // btnPaste
-            // 
-            this.btnPaste.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPaste.Location = new System.Drawing.Point(122, 96);
-            this.btnPaste.Name = "btnPaste";
-            this.btnPaste.Size = new System.Drawing.Size(192, 35);
-            this.btnPaste.TabIndex = 9;
-            this.btnPaste.Text = "Paste from Clipboard";
-            this.btnPaste.UseVisualStyleBackColor = true;
-            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-            // 
-            // linkRegister
-            // 
-            this.linkRegister.AutoSize = true;
-            this.linkRegister.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.linkRegister.Location = new System.Drawing.Point(147, 341);
-            this.linkRegister.Name = "linkRegister";
-            this.linkRegister.Size = new System.Drawing.Size(280, 23);
-            this.linkRegister.TabIndex = 10;
-            this.linkRegister.TabStop = true;
-            this.linkRegister.Text = "https://agshare.agopengps.com";
-            this.linkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRegister_LinkClicked);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(158, 318);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(256, 23);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Register here to use AgShare";
-            // 
-            // btnDevelop
-            // 
-            this.btnDevelop.BackColor = System.Drawing.Color.Transparent;
-            this.btnDevelop.FlatAppearance.BorderSize = 0;
-            this.btnDevelop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDevelop.Location = new System.Drawing.Point(12, 338);
-            this.btnDevelop.Name = "btnDevelop";
-            this.btnDevelop.Size = new System.Drawing.Size(22, 23);
-            this.btnDevelop.TabIndex = 12;
-            this.btnDevelop.UseVisualStyleBackColor = false;
-            this.btnDevelop.Click += new System.EventHandler(this.btnDevelop_Click);
-            // 
             // FormAgShareSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -211,6 +226,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(584, 373);
             this.ControlBox = false;
+            this.Controls.Add(this.btnAutoUpload);
             this.Controls.Add(this.btnDevelop);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.linkRegister);
@@ -251,5 +267,6 @@
         private System.Windows.Forms.LinkLabel linkRegister;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnDevelop;
+        private System.Windows.Forms.Button btnAutoUpload;
     }
 }

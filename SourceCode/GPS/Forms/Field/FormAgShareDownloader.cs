@@ -68,7 +68,7 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0) return;
 
-            var dto = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;
+            var dto = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;   
             if (dto == null) return;
 
             lblSelectedField.Text = "Selected Field: " + dto.Name;
@@ -112,9 +112,10 @@ namespace AgOpenGPS.Forms.Field
                 if (System.IO.File.Exists(fieldFile))
                 {
                     gps.FileOpenField(fieldFile);
+                    Close(); // Close the downloader form after opening the field
                 }
                 else
-                {
+                {   
                     gps.TimedMessageBox(2000, "AgShare", "Field saved but could not be opened (missing Field.txt).");
                 }
             }

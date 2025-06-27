@@ -28,6 +28,7 @@ namespace AgOpenGPS
             textBoxApiKey.Text = Settings.Default.AgShareApiKey;
 
             UpdateAgShareToggleButton();
+            UpdateAgShareUploadButton();
 
             btnPaste.Enabled = Clipboard.ContainsText();
             clipboardCheckTimer = new Timer();
@@ -169,6 +170,26 @@ namespace AgOpenGPS
         private void btnDevelop_Click(object sender, EventArgs e)
         {
             textBoxServer.Enabled = true;
+        }
+
+        private void btnAutoUpload_Click(object sender, EventArgs e)
+        {
+            Settings.Default.AgShareUploadActive = !Settings.Default.AgShareUploadActive;
+            UpdateAgShareUploadButton();
+        }
+        private void UpdateAgShareUploadButton()
+        {
+            if (Settings.Default.AgShareUploadActive)
+            {
+                btnAutoUpload.Text = "Upload On";
+                btnAutoUpload.Image = Resources.AutoUploadOn;
+            }
+            else
+            {
+                btnAutoUpload.Text = "Upload Off";
+                btnAutoUpload.Image = Resources.AutoUploadOff;
+                buttonSave.Enabled = true;
+            }
         }
     }
 }

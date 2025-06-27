@@ -29,7 +29,7 @@ namespace AgOpenGPS
             btnFromKML.Text = gStr.gsFromKml;
             btnFromExisting.Text = gStr.gsFromExisting;
             btnJobClose.Text = gStr.gsClose;
-            btnAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
+            btnJobAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
 
             this.Text = gStr.gsStartNewField;
         }
@@ -247,7 +247,7 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
         }
 
-        private void btnAgShare_Click(object sender, EventArgs e)
+        private void btnJobAgShare_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
@@ -266,6 +266,5 @@ namespace AgOpenGPS
             DialogResult = DialogResult.Ignore;
             Close();
         }
-
     }
 }

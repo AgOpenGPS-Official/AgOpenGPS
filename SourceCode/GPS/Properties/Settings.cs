@@ -251,6 +251,7 @@ namespace AgOpenGPS.Properties
         public string AgShareApiKey = "";
         public bool PublicField = false;
         public bool AgShareEnabled = false;
+        public bool AgShareUploadActive = true;
 
         public LoadResult Load()
         {

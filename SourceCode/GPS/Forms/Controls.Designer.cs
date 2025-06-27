@@ -660,7 +660,7 @@ namespace AgOpenGPS
             ExportFieldAs_KML();
             ExportFieldAs_ISOXMLv3();
             ExportFieldAs_ISOXMLv4();
-            if (Settings.Default.AgShareEnabled)
+            if (Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive)
             {
                 agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
                 await agShareUploadTask;
