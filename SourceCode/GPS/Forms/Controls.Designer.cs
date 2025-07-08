@@ -1993,13 +1993,13 @@ namespace AgOpenGPS
             {
                 if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
                 {
-
-                    DialogResult result3 = MessageBox.Show(gStr.gsDeleteAllContoursAndSections,
+                    DialogResult result3 = FormDialog.Show(
+                        gStr.gsDeleteAllContoursAndSections,
                         gStr.gsDeleteForSure,
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question,
-                        MessageBoxDefaultButton.Button2);
-                    if (result3 == DialogResult.Yes)
+                        MessageBoxButtons.YesNo
+                    );
+
+                    if (result3 == DialogResult.OK) 
                     {
                         //FileCreateElevation();
 
