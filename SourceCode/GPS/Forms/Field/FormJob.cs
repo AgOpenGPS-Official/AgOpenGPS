@@ -11,12 +11,12 @@ using System.Windows.Forms;
 
 namespace AgOpenGPS
 {
-    public partial class FormJob : Form
+    public partial class FormJob : System.Windows.Forms.Form
     {
         //class variables
         private readonly FormGPS mf = null;
 
-        public FormJob(Form callingForm)
+        public FormJob(System.Windows.Forms.Form callingForm)
         {
             //get ref of the calling main form
             mf = callingForm as FormGPS;

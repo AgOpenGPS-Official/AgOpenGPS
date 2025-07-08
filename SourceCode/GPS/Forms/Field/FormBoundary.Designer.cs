@@ -32,22 +32,23 @@
             this.Thru = new System.Windows.Forms.Label();
             this.Area = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.btnBuildBoundaryFromTracks = new System.Windows.Forms.Button();
             this.flp1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelChoose = new System.Windows.Forms.Panel();
+            this.panelKML = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnCancelChoose = new System.Windows.Forms.Button();
+            this.btnGetKML = new System.Windows.Forms.Button();
+            this.btnDriveOrExt = new System.Windows.Forms.Button();
+            this.btnCancelKML = new System.Windows.Forms.Button();
+            this.btnLoadBoundaryFromGE = new System.Windows.Forms.Button();
+            this.btnLoadMultiBoundaryFromGE = new System.Windows.Forms.Button();
             this.btnBingMaps = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOpenGoogleEarth = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.panelChoose = new System.Windows.Forms.Panel();
-            this.btnCancelChoose = new System.Windows.Forms.Button();
-            this.btnGetKML = new System.Windows.Forms.Button();
-            this.btnDriveOrExt = new System.Windows.Forms.Button();
-            this.panelKML = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnCancelKML = new System.Windows.Forms.Button();
-            this.btnLoadBoundaryFromGE = new System.Windows.Forms.Button();
-            this.btnLoadMultiBoundaryFromGE = new System.Windows.Forms.Button();
             this.panelMain.SuspendLayout();
             this.panelChoose.SuspendLayout();
             this.panelKML.SuspendLayout();
@@ -95,6 +96,7 @@
             this.panelMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panelMain.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panelMain.Controls.Add(this.btnBuildBoundaryFromTracks);
             this.panelMain.Controls.Add(this.flp1);
             this.panelMain.Controls.Add(this.btnBingMaps);
             this.panelMain.Controls.Add(this.btnAdd);
@@ -109,6 +111,18 @@
             this.panelMain.Size = new System.Drawing.Size(608, 299);
             this.panelMain.TabIndex = 417;
             // 
+            // btnBuildBoundaryFromTracks
+            // 
+            this.btnBuildBoundaryFromTracks.FlatAppearance.BorderSize = 0;
+            this.btnBuildBoundaryFromTracks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuildBoundaryFromTracks.Image = global::AgOpenGPS.Properties.Resources.BoundaryFromTracks;
+            this.btnBuildBoundaryFromTracks.Location = new System.Drawing.Point(286, 10);
+            this.btnBuildBoundaryFromTracks.Name = "btnBuildBoundaryFromTracks";
+            this.btnBuildBoundaryFromTracks.Size = new System.Drawing.Size(64, 64);
+            this.btnBuildBoundaryFromTracks.TabIndex = 219;
+            this.btnBuildBoundaryFromTracks.UseVisualStyleBackColor = true;
+            this.btnBuildBoundaryFromTracks.Click += new System.EventHandler(this.btnBuildBoundaryFromTracks_Click);
+            // 
             // flp1
             // 
             this.flp1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -118,79 +132,6 @@
             this.flp1.Name = "flp1";
             this.flp1.Size = new System.Drawing.Size(586, 166);
             this.flp1.TabIndex = 218;
-            // 
-            // btnBingMaps
-            // 
-            this.btnBingMaps.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.btnBingMaps.FlatAppearance.BorderSize = 0;
-            this.btnBingMaps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBingMaps.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBingMaps.Image = global::AgOpenGPS.Properties.Resources.bing1;
-            this.btnBingMaps.Location = new System.Drawing.Point(255, 10);
-            this.btnBingMaps.Name = "btnBingMaps";
-            this.btnBingMaps.Size = new System.Drawing.Size(62, 63);
-            this.btnBingMaps.TabIndex = 217;
-            this.btnBingMaps.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnBingMaps.UseVisualStyleBackColor = true;
-            this.btnBingMaps.Click += new System.EventHandler(this.btnBingMaps_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.FlatAppearance.BorderSize = 0;
-            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdd.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.Image = global::AgOpenGPS.Properties.Resources.AddNew;
-            this.btnAdd.Location = new System.Drawing.Point(377, 10);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(62, 63);
-            this.btnAdd.TabIndex = 214;
-            this.btnAdd.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnCancel.Location = new System.Drawing.Point(499, 10);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(62, 63);
-            this.btnCancel.TabIndex = 206;
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnReturn_Click);
-            // 
-            // btnOpenGoogleEarth
-            // 
-            this.btnOpenGoogleEarth.FlatAppearance.BorderSize = 0;
-            this.btnOpenGoogleEarth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpenGoogleEarth.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenGoogleEarth.Image = global::AgOpenGPS.Properties.Resources.GoogleEarth;
-            this.btnOpenGoogleEarth.Location = new System.Drawing.Point(133, 10);
-            this.btnOpenGoogleEarth.Name = "btnOpenGoogleEarth";
-            this.btnOpenGoogleEarth.Size = new System.Drawing.Size(62, 63);
-            this.btnOpenGoogleEarth.TabIndex = 213;
-            this.btnOpenGoogleEarth.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnOpenGoogleEarth.UseVisualStyleBackColor = true;
-            this.btnOpenGoogleEarth.Click += new System.EventHandler(this.btnOpenGoogleEarth_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Image = global::AgOpenGPS.Properties.Resources.Trash;
-            this.btnDelete.Location = new System.Drawing.Point(11, 10);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(62, 63);
-            this.btnDelete.TabIndex = 65;
-            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // panelChoose
             // 
@@ -202,6 +143,45 @@
             this.panelChoose.Name = "panelChoose";
             this.panelChoose.Size = new System.Drawing.Size(217, 298);
             this.panelChoose.TabIndex = 419;
+            // 
+            // panelKML
+            // 
+            this.panelKML.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panelKML.Controls.Add(this.label5);
+            this.panelKML.Controls.Add(this.label3);
+            this.panelKML.Controls.Add(this.btnCancelKML);
+            this.panelKML.Controls.Add(this.btnLoadBoundaryFromGE);
+            this.panelKML.Controls.Add(this.btnLoadMultiBoundaryFromGE);
+            this.panelKML.Location = new System.Drawing.Point(848, 6);
+            this.panelKML.Name = "panelKML";
+            this.panelKML.Size = new System.Drawing.Size(229, 298);
+            this.panelKML.TabIndex = 419;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(149, 34);
+            this.label5.Name = "label5";
+            this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label5.Size = new System.Drawing.Size(31, 27);
+            this.label5.TabIndex = 428;
+            this.label5.Text = "+";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(136, 166);
+            this.label3.Name = "label3";
+            this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label3.Size = new System.Drawing.Size(52, 27);
+            this.label3.TabIndex = 427;
+            this.label3.Text = "+++";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnCancelChoose
             // 
@@ -250,45 +230,6 @@
             this.btnDriveOrExt.UseVisualStyleBackColor = true;
             this.btnDriveOrExt.Click += new System.EventHandler(this.btnDriveOrExt_Click);
             // 
-            // panelKML
-            // 
-            this.panelKML.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panelKML.Controls.Add(this.label5);
-            this.panelKML.Controls.Add(this.label3);
-            this.panelKML.Controls.Add(this.btnCancelKML);
-            this.panelKML.Controls.Add(this.btnLoadBoundaryFromGE);
-            this.panelKML.Controls.Add(this.btnLoadMultiBoundaryFromGE);
-            this.panelKML.Location = new System.Drawing.Point(848, 6);
-            this.panelKML.Name = "panelKML";
-            this.panelKML.Size = new System.Drawing.Size(229, 298);
-            this.panelKML.TabIndex = 419;
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(149, 34);
-            this.label5.Name = "label5";
-            this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(31, 27);
-            this.label5.TabIndex = 428;
-            this.label5.Text = "+";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(136, 166);
-            this.label3.Name = "label3";
-            this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(52, 27);
-            this.label3.TabIndex = 427;
-            this.label3.Text = "+++";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnCancelKML
             // 
             this.btnCancelKML.BackColor = System.Drawing.Color.Transparent;
@@ -336,6 +277,79 @@
             this.btnLoadMultiBoundaryFromGE.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnLoadMultiBoundaryFromGE.UseVisualStyleBackColor = true;
             this.btnLoadMultiBoundaryFromGE.Click += new System.EventHandler(this.btnLoadBoundaryFromGE_Click);
+            // 
+            // btnBingMaps
+            // 
+            this.btnBingMaps.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            this.btnBingMaps.FlatAppearance.BorderSize = 0;
+            this.btnBingMaps.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBingMaps.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBingMaps.Image = global::AgOpenGPS.Properties.Resources.bing1;
+            this.btnBingMaps.Location = new System.Drawing.Point(190, 10);
+            this.btnBingMaps.Name = "btnBingMaps";
+            this.btnBingMaps.Size = new System.Drawing.Size(62, 63);
+            this.btnBingMaps.TabIndex = 217;
+            this.btnBingMaps.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnBingMaps.UseVisualStyleBackColor = true;
+            this.btnBingMaps.Click += new System.EventHandler(this.btnBingMaps_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.FlatAppearance.BorderSize = 0;
+            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdd.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.Image = global::AgOpenGPS.Properties.Resources.AddNew;
+            this.btnAdd.Location = new System.Drawing.Point(396, 10);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(62, 63);
+            this.btnAdd.TabIndex = 214;
+            this.btnAdd.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.btnCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnCancel.Location = new System.Drawing.Point(512, 10);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(62, 63);
+            this.btnCancel.TabIndex = 206;
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnReturn_Click);
+            // 
+            // btnOpenGoogleEarth
+            // 
+            this.btnOpenGoogleEarth.FlatAppearance.BorderSize = 0;
+            this.btnOpenGoogleEarth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenGoogleEarth.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenGoogleEarth.Image = global::AgOpenGPS.Properties.Resources.GoogleEarth;
+            this.btnOpenGoogleEarth.Location = new System.Drawing.Point(96, 10);
+            this.btnOpenGoogleEarth.Name = "btnOpenGoogleEarth";
+            this.btnOpenGoogleEarth.Size = new System.Drawing.Size(62, 63);
+            this.btnOpenGoogleEarth.TabIndex = 213;
+            this.btnOpenGoogleEarth.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnOpenGoogleEarth.UseVisualStyleBackColor = true;
+            this.btnOpenGoogleEarth.Click += new System.EventHandler(this.btnOpenGoogleEarth_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Image = global::AgOpenGPS.Properties.Resources.Trash;
+            this.btnDelete.Location = new System.Drawing.Point(11, 10);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(62, 63);
+            this.btnDelete.TabIndex = 65;
+            this.btnDelete.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // FormBoundary
             // 
@@ -388,5 +402,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnBingMaps;
         private System.Windows.Forms.FlowLayoutPanel flp1;
+        private System.Windows.Forms.Button btnBuildBoundaryFromTracks;
     }
 }

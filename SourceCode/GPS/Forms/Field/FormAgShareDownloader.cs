@@ -13,7 +13,7 @@ namespace AgOpenGPS.Forms.Field
     /// Form that allows the user to preview and download their own AgShare fields,
     /// with OpenGL rendering of boundaries and AB lines.
     /// </summary>
-    public partial class FormAgShareDownloader : Form
+    public partial class FormAgShareDownloader : System.Windows.Forms.Form
     {
         private readonly FormGPS gps;
         private readonly CAgShareDownloader downloader;

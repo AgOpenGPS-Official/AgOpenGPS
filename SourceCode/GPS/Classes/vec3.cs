@@ -2,6 +2,7 @@
 
 using AgOpenGPS.Core.Models;
 using System;
+using System.Globalization;
 
     public struct vec3
     {
@@ -56,8 +57,12 @@ using System;
     {
         public double easting;
         public double northing;
+        public override string ToString()
+        {
+            return $"E={easting:F2}, N={northing:F2}";
+        }
 
-        public vec2(double easting, double northing)
+    public vec2(double easting, double northing)
         {
             this.easting = easting;
             this.northing = northing;
@@ -126,6 +131,25 @@ using System;
         {
             return new vec2(lhs.easting + rhs.easting, lhs.northing + rhs.northing);
         }
-    }
+
+        public static bool TryParse(string input, out vec2 result)
+        {
+            result = new vec2();
+
+            var parts = input.Split(',');
+            if (parts.Length < 2) return false;
+
+            if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double e) &&
+                double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double n))
+            {
+                result = new vec2(e, n);
+                return true;
+            }
+
+            return false;
+        }
+
+
+}
 
 
