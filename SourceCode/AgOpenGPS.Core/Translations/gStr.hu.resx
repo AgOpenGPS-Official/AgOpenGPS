@@ -918,8 +918,44 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
   <data name="gsS_West" xml:space="preserve">
     <value>Délnyugat</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Minden kész. Leállítás...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Mentés és visszatérés</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Itt az ideje egy sörnek! Viszlát!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Tábla mentése..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Tábla paramétereinek mentése...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Tábla paraméterei elmentve.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Tábla helyben elmentve.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Leállítás befejezése folyamatban..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Beállítások mentése...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Beállítások elmentve.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Feltöltés befejezve.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>A feltöltés sikertelen.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Feltöltés az AgShare-re...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Kijelző gombok</value>

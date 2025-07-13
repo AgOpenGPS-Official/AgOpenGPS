@@ -926,8 +926,44 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsS_West" xml:space="preserve">
     <value>SW</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>All done. Closing now..</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Save and Return</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Time for a Beer! Goodbye!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Saving field..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Saving field parameters...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Field parameters saved.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Field saved locally.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Finalizing shutdown..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Saving settings...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Settings saved.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Upload complete.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Upload failed.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Uploading field to AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Screen Buttons</value>

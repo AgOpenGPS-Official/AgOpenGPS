@@ -728,8 +728,44 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
   <data name="gsS_West" xml:space="preserve">
     <value>SydVest</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Alt er klart. Lukker nu...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Gem Og Vend Tilbage</value>
+    <value>Gem og vend tilbage</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Tid til en øl! Farvel!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Gemmer felt..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Gemmer feltparametre...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Feltparametre gemt.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Felt gemt lokalt.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Afslutning af lukning..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Gemmer indstillinger...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Indstillinger gemt.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Upload fuldført.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Upload mislykkedes.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Upload til AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Skærm knapper</value>

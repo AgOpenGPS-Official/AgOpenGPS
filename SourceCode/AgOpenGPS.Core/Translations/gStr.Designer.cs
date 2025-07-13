@@ -2484,11 +2484,119 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All done. Closing now...
+        /// </summary>
+        public static string gsSaveAllDone {
+            get {
+                return ResourceManager.GetString("gsSaveAllDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save and Return.
         /// </summary>
         public static string gsSaveAndReturn {
             get {
                 return ResourceManager.GetString("gsSaveAndReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time for a Beer! Goodbye!.
+        /// </summary>
+        public static string gsSaveBeerTime {
+            get {
+                return ResourceManager.GetString("gsSaveBeerTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving field...
+        /// </summary>
+        public static string gsSaveField {
+            get {
+                return ResourceManager.GetString("gsSaveField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving field parameters....
+        /// </summary>
+        public static string gsSaveFieldParam {
+            get {
+                return ResourceManager.GetString("gsSaveFieldParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field parameters saved..
+        /// </summary>
+        public static string gsSaveFieldParamSaved {
+            get {
+                return ResourceManager.GetString("gsSaveFieldParamSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field saved locally..
+        /// </summary>
+        public static string gsSaveFieldSavedLocal {
+            get {
+                return ResourceManager.GetString("gsSaveFieldSavedLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finalizing shutdown...
+        /// </summary>
+        public static string gsSaveFinalizeShutdown {
+            get {
+                return ResourceManager.GetString("gsSaveFinalizeShutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving settings....
+        /// </summary>
+        public static string gsSaveSettings {
+            get {
+                return ResourceManager.GetString("gsSaveSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings saved..
+        /// </summary>
+        public static string gsSaveSettingsSaved {
+            get {
+                return ResourceManager.GetString("gsSaveSettingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload complete..
+        /// </summary>
+        public static string gsSaveUploadCompleted {
+            get {
+                return ResourceManager.GetString("gsSaveUploadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload failed..
+        /// </summary>
+        public static string gsSaveUploadFailed {
+            get {
+                return ResourceManager.GetString("gsSaveUploadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading field to AgShare....
+        /// </summary>
+        public static string gsSaveUploadToAgshare {
+            get {
+                return ResourceManager.GetString("gsSaveUploadToAgshare", resourceCulture);
             }
         }
         

@@ -906,8 +906,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>Sørvest</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Alt ferdig. Lukker nå...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Lagre og returner</value>
+    <value>Lagre og gå tilbake</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Tid for en øl! Ha det!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Lagrer felt..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Lagrer feltparametere...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Feltparametere lagret.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Felt lagret lokalt.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Fullfører avslutning..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Lagrer innstillinger...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Innstillinger lagret.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Opplasting fullført.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Opplasting mislyktes.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Opplasting til AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Skjermknapper</value>

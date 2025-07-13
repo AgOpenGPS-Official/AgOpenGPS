@@ -402,9 +402,6 @@
   <data name="gsS_West" xml:space="preserve">
     <value>西</value>
   </data>
-  <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>保存并返回</value>
-  </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>发送到机器</value>
   </data>

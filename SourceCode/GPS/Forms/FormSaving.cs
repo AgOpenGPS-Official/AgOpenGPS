@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgOpenGPS.Core.Translations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -56,18 +57,19 @@ namespace AgOpenGPS
 }
 public static class ShutdownSteps
 {
-    public const string SaveParams = "• Saving field parameters...";
-    public const string SaveField = "• Saving field...";
-    public const string SaveSettings = "• Saving settings...";
-    public const string Finalizing = "• Finalizing shutdown...";
+    public static string SaveParams => "• " + gStr.gsSaveFieldParam;
+    public static string SaveField => "• " + gStr.gsSaveField;
+    public static string SaveSettings => "• " + gStr.gsSaveSettings;
+    public static string Finalizing => "• " + gStr.gsSaveFinalizeShutdown;
 
-    public const string UploadAgShare = "• Uploading field to AgShare...";
-    public const string UploadDone = "✓ Upload complete.";
-    public const string UploadFailed = "✗ Upload failed.";
+    public static string UploadAgShare => "• " + gStr.gsSaveUploadToAgshare;
+    public static string UploadDone => "✓ " + gStr.gsSaveUploadCompleted;
+    public static string UploadFailed => "✗ " + gStr.gsSaveUploadFailed;
 
-    public const string ParamsDone = "✓ Field parameters saved.";
-    public const string FieldSaved = "✓ Field saved locally.";
-    public const string SettingsSaved = "✓ Settings saved.";
-    public const string AllDone = "✔ All done. Closing now...";
-    public const string Beer = "🍺 Time for a Beer! Goodbye!";
+    public static string ParamsDone => "✓ " + gStr.gsSaveFieldParamSaved;
+    public static string FieldSaved => "✓ " + gStr.gsSaveFieldSavedLocal;
+    public static string SettingsSaved => "✓ " + gStr.gsSaveSettingsSaved;
+    public static string AllDone => "✔ " + gStr.gsSaveAllDone;
+    public static string Beer => "🍺 " + gStr.gsSaveBeerTime;
 }
+

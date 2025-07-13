@@ -441,8 +441,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>Південний Захід</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Все готово. Закриваємо...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Зберег. і повернутись</value>
+    <value>Зберегти і повернутися</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Час на пиво! Бувай!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Збереження поля..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Збереження параметрів поля...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Параметри поля збережено.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Поле збережено локально.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Завершення завершення..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Збереження налаштувань...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Налаштування збережено.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Завантаження завершено.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Не вдалося завантажити.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Завантаження в AgShare...</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Відправлено в Машинний модуль</value>

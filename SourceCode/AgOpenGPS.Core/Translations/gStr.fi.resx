@@ -912,8 +912,44 @@ Haluatko jatkaa?</value>
   <data name="gsS_West" xml:space="preserve">
     <value>Lounas</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Kaikki valmista. Suljetaan nyt...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Tallenna ja palaa</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Olut aika! Näkemiin!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Tallennetaan peltoa..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Tallennetaan peltoasetuksia...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Peltoasetukset tallennettu.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Pelto tallennettu paikallisesti.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Sammutus viimeistellään..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Tallennetaan asetuksia...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Asetukset tallennettu.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Lataus valmis.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Lataus epäonnistui.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Ladataan AgShareen...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Näytön Napit</value>

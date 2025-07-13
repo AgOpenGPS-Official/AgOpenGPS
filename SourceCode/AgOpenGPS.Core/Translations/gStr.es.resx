@@ -551,8 +551,44 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsS_West" xml:space="preserve">
     <value>SudOeste</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Todo listo. Cerrando...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Guardar y Volver</value>
+    <value>Guardar y volver</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>¡Hora de una cerveza! ¡Adiós!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Guardando campo..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Guardando parámetros del campo...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Parámetros del campo guardados.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Campo guardado localmente.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Finalizando apagado..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Guardando configuración...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Configuración guardada.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Carga completa.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Error al cargar.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Cargando en AgShare...</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Enviar al módulo PCB</value>

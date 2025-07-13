@@ -835,8 +835,44 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsS_West" xml:space="preserve">
     <value>Pd-Zach</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Wszystko gotowe. Zamykam...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Zapisz i powróć</value>
+    <value>Zapisz i wróć</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Czas na piwo! Do widzenia!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Zapisywanie pola..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Zapisywanie parametrów pola...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Parametry pola zapisane.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Pole zapisane lokalnie.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Zamykanie końcowe..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Zapisywanie ustawień...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Ustawienia zapisane.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Przesyłanie zakończone.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Przesyłanie nie powiodło się.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Przesyłanie do AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Przyciski ekranowe</value>

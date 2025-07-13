@@ -866,8 +866,44 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsS_West" xml:space="preserve">
     <value>ZuidWest</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Alles klaar. Sluiten maar...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Opslaan en terug</value>
+    <value>Opslaan en terugkeren</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Tijd voor een biertje! Tot ziens!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Veld opslaan..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Veldparameters opslaan...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Veldparameters opgeslagen.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Veld lokaal opgeslagen.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Afsluiten wordt voltooid..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Instellingen opslaan...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Instellingen opgeslagen.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Upload voltooid.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Upload mislukt.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Uploaden naar AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Scherm Knoppen</value>

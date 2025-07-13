@@ -753,8 +753,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>Юго-Запад</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Всё готово. Закрытие...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Сохранить и вернуться</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Время для пива! Пока!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Сохранение поля..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Сохранение параметров поля...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Параметры поля сохранены.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Поле сохранено локально.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Завершение завершения..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Сохранение настроек...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Настройки сохранены.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Загрузка завершена.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Ошибка загрузки.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Загрузка на AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Кнопки на экране</value>

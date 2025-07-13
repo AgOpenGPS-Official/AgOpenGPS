@@ -912,8 +912,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>Sud Ovest</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Tutto fatto. Chiusura...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Salva E Ritorna</value>
+    <value>Salva e torna indietro</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>È ora di una birra! Addio!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Salvataggio campo..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Salvataggio parametri campo...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Parametri del campo salvati.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Campo salvato localmente.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Completamento arresto..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Salvataggio impostazioni...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Impostazioni salvate.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Caricamento completato.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Caricamento fallito.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Caricamento su AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Pulsanti a Schermo</value>

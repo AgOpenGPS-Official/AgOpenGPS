@@ -816,8 +816,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>Südwesten</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Alles erledigt. Jetzt wird geschlossen...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Speichern und zurück</value>
+    <value>Speichern und zurückkehren</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Zeit für ein Bier! Auf Wiedersehen!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Feld wird gespeichert..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Feldparameter werden gespeichert...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Feldparameter gespeichert.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Feld lokal gespeichert.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Herunterfahren wird abgeschlossen..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Einstellungen werden gespeichert...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Einstellungen gespeichert.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Hochladen abgeschlossen.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Hochladen fehlgeschlagen.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Hochladen zu AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Bildschirmtasten</value>

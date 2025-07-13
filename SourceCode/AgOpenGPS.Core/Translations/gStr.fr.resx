@@ -896,8 +896,44 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   <data name="gsS_West" xml:space="preserve">
     <value>Sud Ouest</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Tout est prêt. Fermeture en cours...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
-    <value>Sauver et retour</value>
+    <value>Enregistrer et revenir</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>C'est l'heure de la bière ! Au revoir !</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Sauvegarde du champ..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Sauvegarde des paramètres du champ...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Paramètres du champ enregistrés.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Champ enregistré localement.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Finalisation de l'arrêt..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Sauvegarde des paramètres...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Paramètres enregistrés.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Téléversement terminé.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Échec du téléversement.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Téléversement sur AgShare...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Ecran bouttons</value>

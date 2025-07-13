@@ -450,8 +450,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>SO</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Tudo pronto. Encerrando...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Salvar e retornar</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Hora de uma cerveja! Tchau!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Salvando campo..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Salvando parâmetros do campo...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Parâmetros do campo salvos.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Campo salvo localmente.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Finalizando desligamento..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Salvando configurações...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Configurações salvas.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Upload concluído.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Falha no upload.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Enviando para AgShare...</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Enviado para o módulo da máquina</value>
