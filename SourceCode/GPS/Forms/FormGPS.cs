@@ -636,6 +636,7 @@ namespace AgOpenGPS
 
                     // STEP 3: Settings
                     int settingsIndex = agShareInserted ? 3 : 2;
+                    Settings.Default.Save();
                     await Task.Delay(300);
                     savingForm.UpdateStep(settingsIndex, ShutdownSteps.SettingsSaved);
 
@@ -649,6 +650,7 @@ namespace AgOpenGPS
                 else
                 {
                     // Only saving settings and finalizing
+                    Settings.Default.Save();
                     await Task.Delay(300);
                     savingForm.UpdateStep(0, ShutdownSteps.SettingsSaved);
                     await Task.Delay(300);
@@ -676,10 +678,6 @@ namespace AgOpenGPS
                 + "   Missed Per Minute: " + ((double)missedSentenceCount / minutesSinceStart).ToString("N4"));
 
             Log.EventWriter("Program Exit: " + DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture(RegistrySettings.culture)) + "\r");
-
-            // Save settings
-            Settings.Default.Save();
-
 
             // Restore display brightness
             if (displayBrightness.isWmiMonitor)

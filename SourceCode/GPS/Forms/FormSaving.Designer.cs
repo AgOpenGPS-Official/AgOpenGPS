@@ -50,12 +50,13 @@
             this.lstSteps.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.lstSteps.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstSteps.Font = new System.Drawing.Font("Atlanta", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstSteps.ForeColor = System.Drawing.SystemColors.Menu;
             this.lstSteps.FormattingEnabled = true;
             this.lstSteps.ItemHeight = 43;
-            this.lstSteps.Location = new System.Drawing.Point(182, 22);
+            this.lstSteps.Location = new System.Drawing.Point(67, 22);
             this.lstSteps.Name = "lstSteps";
             this.lstSteps.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lstSteps.Size = new System.Drawing.Size(566, 344);
+            this.lstSteps.Size = new System.Drawing.Size(771, 344);
             this.lstSteps.TabIndex = 2;
             // 
             // progressBar
