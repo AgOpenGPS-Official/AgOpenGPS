@@ -77,8 +77,6 @@ namespace AgOpenGPS
                 return;
             }
 
-            if (mf.isJobStarted) _ = mf.FileSaveEverythingBeforeClosingField();
-
             //append date time to name
 
             mf.currentFieldDirectory = tboxFieldName.Text.Trim();

@@ -211,7 +211,7 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnBuildFields_Click(object sender, EventArgs e)
+        private async void btnBuildFields_Click(object sender, EventArgs e)
         {
             mf.currentFieldDirectory = tboxFieldName.Text.Trim();
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
@@ -303,80 +303,56 @@ namespace AgOpenGPS
 
             mf.menustripLanguage.Enabled = false;
 
+            //Save current field if open
+            if (mf.isJobStarted)
+            {
+                await mf.FileSaveEverythingBeforeClosingField();
+            }
+
             //create new field files.
 
             try
             {
-                //start a new job
+                // Start nieuwe job (zorgt o.a. voor UI en flags)
                 mf.JobNew();
-                mf.menustripLanguage.Enabled = false;
 
-                //double check
-                if ((!string.IsNullOrEmpty(directoryName)) && (Directory.Exists(directoryName)))
+                mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
+
+                // Map aanmaken (mag nooit bestaan op dit punt)
+                Directory.CreateDirectory(directoryName);
+
+                // Basis fieldbestand aanmaken
+                string myFileName = Path.Combine(directoryName, "Field.txt");
+                using (StreamWriter writer = new StreamWriter(myFileName))
                 {
-                    MessageBox.Show(gStr.gsChooseADifferentName, gStr.gsDirectoryExists, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
+                    writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                    writer.WriteLine("$FieldDir");
+                    writer.WriteLine("XML Derived");
+                    writer.WriteLine("$Offsets");
+                    writer.WriteLine("0,0");
+                    writer.WriteLine("Convergence");
+                    writer.WriteLine("0");
+                    writer.WriteLine("StartFix");
+                    writer.WriteLine(
+                        mf.AppModel.LocalPlane.Origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                        mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
                 }
-                else
-                {
-                    mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
 
-                    //make sure directory exists, or create it
-                    if ((!string.IsNullOrEmpty(directoryName)) && (!Directory.Exists(directoryName)))
-                    { Directory.CreateDirectory(directoryName); }
-
-                    //create the field file header info
-
-                    if (!mf.isJobStarted)
-                    {
-                        mf.TimedMessageBox(3000, gStr.gsFieldNotOpen, gStr.gsCreateNewField);
-                        return;
-                    }
-                    string myFileName;
-
-                    //get the directory and make sure it exists, create if not
-                    directoryName = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
-
-                    if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-                    { Directory.CreateDirectory(directoryName); }
-
-                    myFileName = "Field.txt";
-
-                    using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, myFileName)))
-                    {
-                        //Write out the date
-                        writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-
-                        writer.WriteLine("$FieldDir");
-                        writer.WriteLine("XML Derived");
-
-                        //write out the easting and northing Offsets
-                        writer.WriteLine("$Offsets");
-                        writer.WriteLine("0,0");
-
-                        writer.WriteLine("Convergence");
-                        writer.WriteLine("0");
-
-                        writer.WriteLine("StartFix");
-                        writer.WriteLine(
-                            mf.AppModel.LocalPlane.Origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
-                            mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
-                    }
-
-                    mf.FileCreateSections();
-                    mf.FileCreateRecPath();
-                    mf.FileCreateContour();
-                    mf.FileCreateElevation();
-                    mf.FileSaveFlags();
-                }
+                // Init standaardbestanden
+                mf.FileCreateSections();
+                mf.FileCreateRecPath();
+                mf.FileCreateContour();
+                mf.FileCreateElevation();
+                mf.FileSaveFlags();
             }
             catch (Exception ex)
             {
-                Log.EventWriter("Creating new iso field " + ex.ToString());
-
+                Log.EventWriter("Creating new iso field " + ex);
                 MessageBox.Show(gStr.gsError, ex.ToString());
                 mf.currentFieldDirectory = "";
+                return;
             }
+
 
             //Load the outer boundary first
             /*

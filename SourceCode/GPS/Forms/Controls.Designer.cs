@@ -488,23 +488,8 @@ namespace AgOpenGPS
 
         public bool isCancelJobMenu;
 
-        private async void btnJobMenu_Click(object sender, EventArgs e)
+        private void btnJobMenu_Click(object sender, EventArgs e)
         {
-            if (!isFirstFixPositionSet || sentenceCounter > 299)
-            {
-                if (isJobStarted)
-                {
-                    await FileSaveEverythingBeforeClosingField();
-                    TimedMessageBox(2500, gStr.gsField, "Field is now closed");
-                }
-                else
-                {
-                    TimedMessageBox(2500, "No GPS", "No GPS Position Found");
-
-                }
-                Log.EventWriter("No GPS Position, Field Closed");
-                return;
-            }
 
             Form f = Application.OpenForms["FormGPSData"];
 
@@ -630,7 +615,7 @@ namespace AgOpenGPS
 
         public async Task FileSaveEverythingBeforeClosingField()
         {
-            // Stop contour mapping and active sections (safe on UI thread)
+            // Save the current field data before closing
             if (ct.isContourOn) ct.StopContourLine();
 
             if (autoBtnState == btnStates.Auto)
@@ -650,20 +635,8 @@ namespace AgOpenGPS
                 if (triStrip[j].isDrawing) triStrip[j].TurnMappingOff();
             }
 
-            // Heavy lifting happens in background thread
-            await Task.Run(() =>
-            {
-                FileSaveBoundary();
-                FileSaveSections();
-                FileSaveContour();
-                FileSaveTracks();
-
-                ExportFieldAs_KML();
-                ExportFieldAs_ISOXMLv3();
-                ExportFieldAs_ISOXMLv4();
-            });
-
-            // Upload to AgShare (must stay on UI thread because of 'this')
+            // Start AgShare upload (if enabled)
+            Task agShareUploadTask = Task.CompletedTask;
             if (!isAgShareUploadStarted &&
                 Settings.Default.AgShareEnabled &&
                 Settings.Default.AgShareUploadActive)
@@ -672,6 +645,29 @@ namespace AgOpenGPS
                 {
                     isAgShareUploadStarted = true;
                     agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+                }
+                catch (Exception ex)
+                {
+                    Log.EventWriter("AgShare upload start error: " + ex.Message);
+                    TimedMessageBox(4000, "AgShare upload failed", "An error occurred while starting upload to AgShare.");
+                }
+            }
+
+            await Task.Run(() =>
+            {
+                FileSaveBoundary();
+                FileSaveSections();
+                FileSaveContour();
+                FileSaveTracks();
+                ExportFieldAs_KML();
+                ExportFieldAs_ISOXMLv3();
+                ExportFieldAs_ISOXMLv4();
+            });
+
+            if (Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive)
+            {
+                try
+                {
                     await agShareUploadTask;
                 }
                 catch (Exception ex)
@@ -684,14 +680,14 @@ namespace AgOpenGPS
             Log.EventWriter("** Field closed **   " + currentFieldDirectory + "   " +
                 DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
 
-            // Back to UI updates
-            panelRight.Enabled = false;
-            FieldMenuButtonEnableDisable(false);
-            JobClose();
-
-            Text = "AgOpenGPS";
+            this.Invoke((MethodInvoker)(() =>
+            {
+                panelRight.Enabled = false;
+                FieldMenuButtonEnableDisable(false);
+                JobClose();
+                Text = "AgOpenGPS";
+            }));
         }
-
 
         #region AgShare Snapshot
 
@@ -705,6 +701,7 @@ namespace AgOpenGPS
 
             snapshot = CAgShareUploader.CreateSnapshot(this);
         }
+
 
 
         public void AgShareUpload()

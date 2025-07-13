@@ -265,7 +265,7 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             //fill something in
             if (String.IsNullOrEmpty(tboxFieldName.Text.Trim()))
@@ -281,7 +281,8 @@ namespace AgOpenGPS
                 return;
             }
 
-            if (mf.isJobStarted) _ = mf.FileSaveEverythingBeforeClosingField();
+            if (mf.isJobStarted) 
+                await mf.FileSaveEverythingBeforeClosingField();
 
             //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, tboxFieldName.Text.Trim());

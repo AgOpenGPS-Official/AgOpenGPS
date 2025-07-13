@@ -64,8 +64,10 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
+            if (mf.isJobStarted)
+                await mf.FileSaveEverythingBeforeClosingField();
 
             //reset sim and world to kml position
             CreateNewField();
