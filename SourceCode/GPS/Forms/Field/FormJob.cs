@@ -88,7 +88,7 @@ namespace AgOpenGPS
         {
             if (mf.isJobStarted)
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                _ = mf.FileSaveEverythingBeforeClosingField();
             }
             //back to FormGPS
             DialogResult = DialogResult.Yes;

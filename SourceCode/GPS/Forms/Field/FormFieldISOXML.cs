@@ -313,15 +313,15 @@ namespace AgOpenGPS
 
             try
             {
-                // Start nieuwe job (zorgt o.a. voor UI en flags)
+                // Start new Job
                 mf.JobNew();
 
                 mf.pn.DefineLocalPlane(new Wgs84(latK, lonK), true);
 
-                // Map aanmaken (mag nooit bestaan op dit punt)
+                // Create folder
                 Directory.CreateDirectory(directoryName);
 
-                // Basis fieldbestand aanmaken
+                // Create Field.txt
                 string myFileName = Path.Combine(directoryName, "Field.txt");
                 using (StreamWriter writer = new StreamWriter(myFileName))
                 {
@@ -338,7 +338,7 @@ namespace AgOpenGPS
                         mf.AppModel.LocalPlane.Origin.Longitude.ToString(CultureInfo.InvariantCulture));
                 }
 
-                // Init standaardbestanden
+                
                 mf.FileCreateSections();
                 mf.FileCreateRecPath();
                 mf.FileCreateContour();
@@ -347,7 +347,7 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                Log.EventWriter("Creating new iso field " + ex);
+                Log.EventWriter("Creating new iso field " + ex.ToString());
                 MessageBox.Show(gStr.gsError, ex.ToString());
                 mf.currentFieldDirectory = "";
                 return;
