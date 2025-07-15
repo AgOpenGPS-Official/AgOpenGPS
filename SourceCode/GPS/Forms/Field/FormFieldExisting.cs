@@ -3,6 +3,7 @@ using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using System;
 using System.Collections.Generic;
@@ -59,32 +60,35 @@ namespace AgOpenGPS
                 string fieldDirectory = Path.GetFileName(dir);
                 string filename = Path.Combine(dir, "Field.txt");
 
-                //make sure directory has a field.txt in it
+                // Make sure directory has a field.txt in it
                 if (File.Exists(filename))
                 {
                     using (GeoStreamReader reader = new GeoStreamReader(filename))
                     {
                         try
                         {
-                            // Skip 8 lines
+                            // Skip first 8 lines of the file
                             for (int i = 0; i < 8; i++)
                             {
                                 reader.ReadLine();
                             }
 
-                            //start positions
+                            // Try reading a WGS84 start position
                             if (!reader.EndOfStream)
                             {
                                 Wgs84 startLatLon = reader.ReadWgs84();
                                 double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
 
+                                // Add field path and calculated distance to the list
                                 fileList.Add(fieldDirectory);
                                 fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
                             }
                             else
                             {
-                                MessageBox.Show(fieldDirectory + " is Damaged, Please Delete This Field", gStr.gsFileError,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // Show error for incomplete file
+                                FormDialog.Show(gStr.gsFileError,
+                                    fieldDirectory + " is Damaged, Please Delete This Field",
+                                    MessageBoxButtons.OK);
 
                                 fileList.Add(fieldDirectory);
                                 fileList.Add("Error");
@@ -92,15 +96,21 @@ namespace AgOpenGPS
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken", gStr.gsFileError,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Log.EventWriter(fieldDirectory + " is Damaged, Please Delete,Field.txt is Broken" + ex.ToString());
+                            // Show error for invalid file content
+                            FormDialog.Show(gStr.gsFileError,
+                                fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken",
+                                MessageBoxButtons.OK);
+
+                            // Log the exception for diagnostics
+                            Log.EventWriter(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken\n" + ex.ToString());
+
                             fileList.Add(fieldDirectory);
                             fileList.Add("Error");
                         }
                     }
                 }
                 else continue;
+
 
                 //grab the boundary area
                 filename = Path.Combine(dir, "Boundary.txt");
@@ -189,11 +199,16 @@ namespace AgOpenGPS
                 else
                 {
                     fileList.Add("Error");
-                    MessageBox.Show(fieldDirectory + " is Damaged, Missing Boundary.Txt " +
-                        "               \r\n Delete Field or Fix ", gStr.gsFileError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Log.EventWriter(fieldDirectory + " is Damaged, Missing Boundary.Txt ");
+
+                    // Show error about missing Boundary.txt
+                    FormDialog.Show(gStr.gsFileError,
+                        fieldDirectory + " is Damaged, Missing Boundary.Txt \r\n Delete Field or Fix",
+                        MessageBoxButtons.OK);
+
+                    // Log the missing boundary file
+                    Log.EventWriter(fieldDirectory + " is Damaged, Missing Boundary.Txt");
                 }
+
 
                 filename = Path.Combine(dir, "Field.txt");
             }
@@ -290,9 +305,14 @@ namespace AgOpenGPS
             // create from template
             if (Directory.Exists(directoryName))
             {
-                MessageBox.Show(gStr.gsChooseADifferentName, gStr.gsDirectoryExists, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                // Show message that the directory already exists
+                FormDialog.Show(gStr.gsDirectoryExists,
+                    gStr.gsChooseADifferentName,
+                    MessageBoxButtons.OK);
+
                 return;
             }
+
             else
             {
                 //create the new directory
@@ -580,8 +600,10 @@ namespace AgOpenGPS
                     lvLines.SelectedItems[0].SubItems[1].Text == "Error" ||
                     lvLines.SelectedItems[0].SubItems[2].Text == "Error")
                 {
-                    MessageBox.Show("This Field is Damaged, Please Delete \r\n ALREADY TOLD YOU THAT :)", gStr.gsFileError,
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Show a custom dialog for damaged field warning
+                    FormDialog.Show(gStr.gsFileError,
+                        "This Field is Damaged, Please Delete \r\n ALREADY TOLD YOU THAT :)",
+                        MessageBoxButtons.OK);
                 }
                 else
                 {
@@ -595,15 +617,12 @@ namespace AgOpenGPS
                         lblTemplateChosen.Text = lvLines.SelectedItems[0].SubItems[1].Text;
                         tboxFieldName.Text = lvLines.SelectedItems[0].SubItems[1].Text.Trim();
                     }
-                    //else 
-                    //{
-                    //    lblTemplateChosen.Text = lvLines.SelectedItems[0].SubItems[2].Text;
-                    //    tboxFieldName.Text = lvLines.SelectedItems[0].SubItems[2].Text.Trim();
-                    //}
+
                     btnSave.Enabled = true;
                 }
             }
         }
+
 
         private void btnBackSpace_MouseDown(object sender, MouseEventArgs e)
         {

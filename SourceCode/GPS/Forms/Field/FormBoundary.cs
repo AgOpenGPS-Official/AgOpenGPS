@@ -1,6 +1,7 @@
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using System;
 using System.Drawing;
@@ -202,11 +203,11 @@ namespace AgOpenGPS
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = MessageBox.Show(gStr.gsCompletelyDeleteBoundary,
+            // Show custom confirmation dialog for full boundary deletion
+            DialogResult result3 = FormDialog.Show(
+                gStr.gsCompletelyDeleteBoundary,
                 gStr.gsDeleteForSure,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
+                MessageBoxButtons.YesNo);
 
             if (result3 == DialogResult.Yes)
             {
@@ -214,11 +215,14 @@ namespace AgOpenGPS
 
                 if (mf.bnd.bndList.Count > fenceSelected)
                 {
+                    // Clear and remove selected boundary
                     mf.bnd.bndList[fenceSelected].hdLine?.Clear();
                     mf.bnd.bndList.RemoveAt(fenceSelected);
                 }
+
                 fenceSelected = -1;
 
+                // Save updated boundary data and refresh UI
                 mf.FileSaveBoundary();
                 mf.fd.UpdateFieldBoundaryGUIAreas();
                 mf.bnd.BuildTurnLines();
@@ -226,9 +230,11 @@ namespace AgOpenGPS
             }
             else
             {
+                // Show brief message if action was cancelled
                 mf.TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
             }
         }
+
 
         private void ResetAllBoundary()
         {

@@ -1,8 +1,10 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -62,6 +64,8 @@ namespace AgOpenGPS
 
         private void FormBoundaryPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Debug.WriteLine($"[BoundaryPlayer] FormClosing called — isClosing = {isClosing}");
+
             if (!isClosing)
             {
                 e.Cancel = true;
@@ -114,14 +118,17 @@ namespace AgOpenGPS
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = MessageBox.Show("Done?", gStr.gsBoundary,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
-            if (result3 == DialogResult.Yes)
+            // Ask user if they are done with the boundary
+            DialogResult result3 = FormDialog.Show(
+                gStr.gsBoundary,         // Title
+                "Done?",                 // Message
+                MessageBoxButtons.OKCancel);
+
+            if (result3 == DialogResult.OK)
             {
                 if (mf.bnd.bndBeingMadePts.Count > 2)
                 {
+                    // Create new boundary from drawn points
                     CBoundaryList New = new CBoundaryList();
 
                     for (int i = 0; i < mf.bnd.bndBeingMadePts.Count; i++)
@@ -131,29 +138,36 @@ namespace AgOpenGPS
 
                     New.CalculateFenceArea(mf.bnd.bndList.Count);
                     New.FixFenceLine(mf.bnd.bndList.Count);
-
                     mf.bnd.bndList.Add(New);
-                    mf.fd.UpdateFieldBoundaryGUIAreas();
 
-                    //turn lines made from boundaries
+                    // Update field GUI and boundaries
+                    mf.fd.UpdateFieldBoundaryGUIAreas();
                     mf.CalculateMinMax();
                     mf.FileSaveBoundary();
                     mf.bnd.BuildTurnLines();
+
                     mf.btnABDraw.Visible = true;
 
                     Log.EventWriter("Driven Boundary Created, Area: " + lblArea.Text);
                 }
+                else
+                {
+                    // Show quick message that nothing was saved
+                    mf.TimedMessageBox(2000, gStr.gsNoBoundary, gStr.gsExit);
+                }
 
-                //stop it all for adding
+                // Stop adding points and reset state
                 mf.bnd.isOkToAddPoints = false;
                 mf.bnd.isBndBeingMade = false;
                 mf.bnd.bndBeingMadePts.Clear();
 
-                //close window
                 isClosing = true;
                 Close();
             }
         }
+
+
+
 
         //actually the record button
         private void btnPausePlay_Click(object sender, EventArgs e)
@@ -192,12 +206,12 @@ namespace AgOpenGPS
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = MessageBox.Show(gStr.gsCompletelyDeleteBoundary,
-                                    gStr.gsDeleteForSure,
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Question,
-                                    MessageBoxDefaultButton.Button2);
-            if (result3 == DialogResult.Yes)
+            DialogResult result3 = FormDialog.Show(
+                gStr.gsDeleteForSure,
+                gStr.gsCompletelyDeleteBoundary,
+                MessageBoxButtons.OKCancel);
+
+            if (result3 == DialogResult.OK)
             {
                 mf.bnd.bndBeingMadePts?.Clear();
             }

@@ -1360,26 +1360,37 @@ namespace AgOpenGPS
         {
             if (isJobStarted)
             {
+                // Show timed message if a job is still open
                 TimedMessageBox(2000, gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
                 return;
             }
 
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.ShowNewFolderButton = true;
-            fbd.Description = "Currently: " + RegistrySettings.workingDirectory;
+            FolderBrowserDialog fbd = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = true,
+                Description = "Currently: " + RegistrySettings.workingDirectory
+            };
 
-            if (RegistrySettings.workingDirectory == RegistrySettings.defaultString) fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            else fbd.SelectedPath = RegistrySettings.workingDirectory;
+            if (RegistrySettings.workingDirectory == RegistrySettings.defaultString)
+                fbd.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                fbd.SelectedPath = RegistrySettings.workingDirectory;
 
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
+                // Save new working directory to registry
                 RegistrySettings.Save(RegKeys.workingDirectory, fbd.SelectedPath);
 
-                //restart program
-                MessageBox.Show(gStr.gsProgramWillExitPleaseRestart);
+                // Inform user that app needs to restart
+                FormDialog.Show("Restart Required",
+                    gStr.gsProgramWillExitPleaseRestart,
+                    MessageBoxButtons.OK);
+
+                // Close the app
                 Close();
             }
         }
+
         private void enterSimCoordsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var form = new FormSimCoords(this))
@@ -1440,21 +1451,26 @@ namespace AgOpenGPS
         {
             if (isJobStarted)
             {
-                MessageBox.Show(gStr.gsCloseFieldFirst);
+                // Show message if field is still open
+                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
             }
             else
             {
-                DialogResult result2 = MessageBox.Show(gStr.gsReallyResetEverything, gStr.gsResetAll,
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                // Ask user for confirmation before resetting everything
+                DialogResult result2 = FormDialog.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
 
                 if (result2 == DialogResult.Yes)
                 {
+                    // Reset registry settings
                     RegistrySettings.Reset();
-                    MessageBox.Show(gStr.gsProgramWillExitPleaseRestart);
+
+                    // Notify user and close app
+                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, MessageBoxButtons.OK);
                     Close();
                 }
             }
         }
+
         private void helpMenuItem_Click(object sender, EventArgs e)
         {
              using (var form = new Form_Help(this))

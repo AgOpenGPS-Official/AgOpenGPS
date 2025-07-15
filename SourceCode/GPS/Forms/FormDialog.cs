@@ -24,7 +24,7 @@ namespace AgOpenGPS.Forms
 
         public static DialogResult Show(string title, string message, MessageBoxButtons buttons = MessageBoxButtons.OKCancel)
         {
-            bool showCancel = (buttons == MessageBoxButtons.OKCancel || buttons == MessageBoxButtons.YesNo);
+            bool showCancel = (buttons == MessageBoxButtons.OKCancel || buttons == MessageBoxButtons.YesNo || buttons == MessageBoxButtons.YesNoCancel);
             return new FormDialog(message, title, showCancel).ShowDialog();
         }
 
