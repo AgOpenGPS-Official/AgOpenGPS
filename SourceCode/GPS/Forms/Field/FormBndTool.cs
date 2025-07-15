@@ -431,7 +431,7 @@ namespace AgOpenGPS
                     gStr.gsDeleteBoundaryMapping,
                     MessageBoxButtons.YesNo);
 
-                if (result3 != DialogResult.Yes)
+                if (result3 != DialogResult.OK)
                 {
                     return;
                 }

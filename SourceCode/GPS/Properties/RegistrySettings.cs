@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Forms;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -117,10 +118,12 @@ namespace AgOpenGPS
 
                 Log.FileSaveSystemEvents();
 
-                MessageBox.Show("Can't delete the Registery SubKeyTree",
-                "Critical Registry Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+                // Show critical registry error
+                FormDialog.Show(
+                    "Critical Registry Error",
+                    "Can't delete the Registry SubKeyTree",
+                    MessageBoxButtons.OK);
+
 
                 Environment.Exit(0);
             }

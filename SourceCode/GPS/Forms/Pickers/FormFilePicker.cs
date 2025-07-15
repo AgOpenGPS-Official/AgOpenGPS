@@ -36,19 +36,6 @@ namespace AgOpenGPS
             timer1.Enabled = true;
 
             LoadFieldList();
-
-            // Gedetailleerde controle op corrupte velden
-            for (int i = 0; i < fileList.Count; i += 3)
-            {
-                if (fileList[i] == "Error" || fileList[i + 1] == "Error" || fileList[i + 2] == "Error")
-                {
-                    FormDialog.Show(
-                        gStr.gsFileError,
-                        $"The field '{fileList[i]}' is corrupted. Please delete or fix it.",
-                        MessageBoxButtons.OK);
-                }
-            }
-
             UpdateListView();
         }
 

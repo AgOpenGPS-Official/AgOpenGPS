@@ -1,6 +1,7 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -249,13 +250,13 @@ namespace AgOpenGPS
                 return;
             }
 
-            DialogResult result3 = MessageBox.Show("Delete Last Field Boundary Made?",
+            DialogResult result3 = FormDialog.Show(
                 gStr.gsDeleteForSure,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
+                "Delete Last Field Boundary Made?",
+                MessageBoxButtons.YesNo);
 
-            if (result3 == DialogResult.Yes)
+
+            if (result3 == DialogResult.OK)
             {
                 int cnt = mf.bnd.bndList.Count;
                 mf.bnd.bndList[cnt-1].hdLine?.Clear();

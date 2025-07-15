@@ -51,14 +51,12 @@ namespace AgOpenGPS.Forms.Profiles
             string profileName = listViewProfiles.SelectedItems[0].Text;
             if (RegistrySettings.vehicleFileName != profileName)
             {
-                DialogResult result = MessageBox.Show(
-                    $"Delete {profileName}.xml ?",
+                DialogResult result = FormDialog.Show(
                     gStr.gsSaveAndReturn,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button2);
+                    $"Delete {profileName}.xml ?",
+                    MessageBoxButtons.YesNo);
 
-                if (result == DialogResult.Yes)
+                if (result == DialogResult.OK)
                 {
                     File.Delete(Path.Combine(RegistrySettings.vehiclesDirectory, profileName + ".XML"));
                 }
@@ -80,14 +78,12 @@ namespace AgOpenGPS.Forms.Profiles
                 if (listViewProfiles.SelectedItems.Count <= 0) return;
 
                 string profileName = listViewProfiles.SelectedItems[0].Text;
-                DialogResult result = MessageBox.Show(
-                    $"Load {profileName}.xml ?",
+                DialogResult result = FormDialog.Show(
                     gStr.gsSaveAndReturn,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2);
+                    $"Load {profileName}.xml ?",
+                    MessageBoxButtons.YesNo);
 
-                if (result == DialogResult.Yes)
+                if (result == DialogResult.OK)
                 {
                     LoadProfile(profileName);
                 }
@@ -107,7 +103,10 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 Log.EventWriter($"Error loading profile {profileName}.xml ({result})");
 
-                MessageBox.Show($"Error loading profile {profileName}.xml\n\nResult: {result}");
+                FormDialog.Show(
+                    gStr.gsError,
+                    $"Error loading profile {profileName}.xml\n\nResult: {result}",
+                    MessageBoxButtons.OK);
             }
 
             Log.EventWriter($"Profile loaded: {profileName}.xml");

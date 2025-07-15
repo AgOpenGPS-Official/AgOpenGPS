@@ -1,6 +1,7 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
@@ -1183,12 +1184,12 @@ namespace AgOpenGPS
 
         private void btnVehicleReset_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = MessageBox.Show("Reset This Page to Defaults",
+            DialogResult result3 = FormDialog.Show(
+                "Reset This Page to Defaults",
                 "Are you Sure",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
-            if (result3 == DialogResult.Yes)
+                MessageBoxButtons.YesNo);
+
+            if (result3 == DialogResult.OK)
             {
                 Log.EventWriter("Steer Form - Steer Settings Set to Default");
 

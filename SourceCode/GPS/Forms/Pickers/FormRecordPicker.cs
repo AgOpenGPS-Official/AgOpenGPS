@@ -59,8 +59,11 @@ namespace AgOpenGPS.Forms.Pickers
 
             if (lvLines.Items.Count == 0)
             {
-                MessageBox.Show("No Recorded Paths", "Create A Path First",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormDialog.Show(
+                    "No Recorded Paths",
+                    "Create A Path First",
+                    MessageBoxButtons.OK);
+
                 Close();
             }
         }
@@ -127,17 +130,18 @@ namespace AgOpenGPS.Forms.Pickers
                 string selectedRecord = lvLines.SelectedItems[0].SubItems[0].Text;
                 dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, selectedRecord + ".rec");
 
-                DialogResult result3 = MessageBox.Show(
-                    dir2Delete,
+                // Ask confirmation before deleting the file
+                DialogResult result3 = FormDialog.Show(
                     gStr.gsDeleteForSure,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2);
-                if (result3 == DialogResult.Yes)
+                    dir2Delete,
+                    MessageBoxButtons.YesNo);
+
+                if (result3 == DialogResult.OK)
                 {
                     System.IO.File.Delete(dir2Delete);
                 }
                 else return;
+
             }
             else return;
 

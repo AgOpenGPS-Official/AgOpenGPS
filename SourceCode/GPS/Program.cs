@@ -1,3 +1,4 @@
+using AgOpenGPS.Forms;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -32,7 +33,10 @@ namespace AgOpenGPS
             }
             else
             {
-                MessageBox.Show("AgOpenGPS is Already Running");
+                FormDialog.Show(
+                    "Warning",
+                    "AgOpenGPS is Already Running",
+                    MessageBoxButtons.OK);
             }
         }
     }

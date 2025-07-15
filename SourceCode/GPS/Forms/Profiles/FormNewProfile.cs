@@ -83,6 +83,21 @@ namespace AgOpenGPS.Forms.Profiles
             string newProfileName = SanitizeFileName(textBoxName.Text.Trim()).Trim();
             if (!string.IsNullOrEmpty(newProfileName))
             {
+                string newProfilePath = Path.Combine(RegistrySettings.vehiclesDirectory, newProfileName + ".xml");
+
+                if (File.Exists(newProfilePath))
+                {
+                    DialogResult result = FormDialog.Show(
+                        gStr.gsSaveAndReturn,
+                        $"Profile '{newProfileName}' already exists. Overwrite?",
+                        MessageBoxButtons.YesNo);
+
+                    if (result != DialogResult.OK)
+                    {
+                        return;
+                    }
+                }
+
                 if (listViewProfiles.SelectedItems.Count <= 0) return;
 
                 string existingProfileName = listViewProfiles.SelectedItems[0].Name;
@@ -138,7 +153,10 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 Log.EventWriter($"Error loading profile {existingProfileName}.xml ({result})");
 
-                MessageBox.Show($"Error loading profile {existingProfileName}.xml\n\nResult: {result}");
+                FormDialog.Show(
+                    gStr.gsError,
+                    "Error loading profile " + existingProfileName + ".xml\n\nResult: " + result,
+                    MessageBoxButtons.OK);
             }
 
             Log.EventWriter($"Profile loaded: {existingProfileName}.xml");

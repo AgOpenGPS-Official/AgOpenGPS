@@ -1459,7 +1459,7 @@ namespace AgOpenGPS
                 // Ask user for confirmation before resetting everything
                 DialogResult result2 = FormDialog.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
 
-                if (result2 == DialogResult.Yes)
+                if (result2 == DialogResult.OK)
                 {
                     // Reset registry settings
                     RegistrySettings.Reset();

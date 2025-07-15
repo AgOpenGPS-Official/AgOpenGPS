@@ -209,7 +209,7 @@ namespace AgOpenGPS
                 gStr.gsDeleteForSure,
                 MessageBoxButtons.YesNo);
 
-            if (result3 == DialogResult.Yes)
+            if (result3 == DialogResult.OK)
             {
                 btnDelete.Enabled = false;
 

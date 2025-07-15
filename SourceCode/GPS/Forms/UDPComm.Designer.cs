@@ -1,6 +1,7 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -323,7 +324,10 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Load Error: " + ex.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormDialog.Show(
+                    "UDP Server",
+                    "Load Error: " + ex.Message,
+                    MessageBoxButtons.OK);
                 Log.EventWriter("Catch -> Load UDP Loopback Error: " + ex.ToString());
             }
         }
