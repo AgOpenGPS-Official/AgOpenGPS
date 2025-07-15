@@ -2,6 +2,7 @@
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,18 +14,15 @@ namespace AgOpenGPS
     public partial class FormFilePicker : Form
     {
         private readonly FormGPS mf = null;
-
         private int order;
-
         private readonly List<string> fileList = new List<string>();
 
         public FormFilePicker(Form callingForm)
         {
-            //get copy of the calling main form
             mf = callingForm as FormGPS;
-
             InitializeComponent();
-            //translate all the controls
+
+            // Translate all the controls
             this.Text = gStr.gsFieldPicker;
             btnByDistance.Text = gStr.gsSort;
             btnOpenExistingLv.Text = gStr.gsUseSelected;
@@ -36,281 +34,271 @@ namespace AgOpenGPS
         {
             order = 0;
             timer1.Enabled = true;
-            ListViewItem itm;
 
+            LoadFieldList();
+
+            // Gedetailleerde controle op corrupte velden
+            for (int i = 0; i < fileList.Count; i += 3)
+            {
+                if (fileList[i] == "Error" || fileList[i + 1] == "Error" || fileList[i + 2] == "Error")
+                {
+                    FormDialog.Show(
+                        gStr.gsFileError,
+                        $"The field '{fileList[i]}' is corrupted. Please delete or fix it.",
+                        MessageBoxButtons.OK);
+                }
+            }
+
+            UpdateListView();
+        }
+
+        private void LoadFieldList()
+        {
+            fileList.Clear();
             string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
-
-            //fileList?.Clear();
 
             if (dirs == null || dirs.Length < 1)
             {
-                mf.TimedMessageBox(2000, gStr.gsCreateNewField, gStr.gsFileError);
-                Log.EventWriter("File Picker, No Fields");
-                Close();
+                ShowNoFieldsMessage();
                 return;
             }
 
             foreach (string dir in dirs)
             {
                 string fieldDirectory = Path.GetFileName(dir);
-                string filename = Path.Combine(dir, "Field.txt");
+                string fieldFile = Path.Combine(dir, "Field.txt");
 
-                //make sure directory has a field.txt in it
-                if (File.Exists(filename))
-                {
-                    using (GeoStreamReader reader = new GeoStreamReader(filename))
-                    {
-                        try
-                        {
-                            // Skip 8 lines
-                            for (int i = 0; i < 8; i++)
-                            {
-                                reader.ReadLine();
-                            }
-                            if (!reader.EndOfStream)
-                            {
-                                Wgs84 startLatLon = reader.ReadWgs84();
-                                double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
+                if (!File.Exists(fieldFile))
+                    continue;
 
-                                fileList.Add(fieldDirectory);
-                                fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
-                            }
-                            else
-                            {
-                                MessageBox.Show(fieldDirectory + " is Damaged, Please Delete This Field", gStr.gsFileError,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                                fileList.Add(fieldDirectory);
-                                fileList.Add("Error");
-                            }
-                        }
-                        catch (Exception eg)
-                        {
-                            MessageBox.Show(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken", gStr.gsFileError,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Log.EventWriter("Field.txt is Broken" + eg.ToString());
-                            fileList.Add(fieldDirectory);
-                            fileList.Add("Error");
-                        }
-                    }
-                }
-                else continue;
-
-                //grab the boundary area
-                filename = Path.Combine(dir, "Boundary.txt");
-                if (File.Exists(filename))
-                {
-                    List<vec3> pointList = new List<vec3>();
-                    string line;
-                    double area = 0;
-
-                    using (StreamReader reader = new StreamReader(filename))
-                    {
-                        try
-                        {
-                            //read header
-                            line = reader.ReadLine();//Boundary
-
-                            if (!reader.EndOfStream)
-                            {
-                                //True or False OR points from older boundary files
-                                line = reader.ReadLine();
-
-                                //Check for older boundary files, then above line string is num of points
-                                if (line == "True" || line == "False")
-                                {
-                                    line = reader.ReadLine(); //number of points
-                                }
-
-                                //Check for latest boundary files, then above line string is num of points
-                                if (line == "True" || line == "False")
-                                {
-                                    line = reader.ReadLine(); //number of points
-                                }
-
-                                int numPoints = int.Parse(line);
-
-                                if (numPoints > 0)
-                                {
-                                    //load the line
-                                    for (int i = 0; i < numPoints; i++)
-                                    {
-                                        line = reader.ReadLine();
-                                        string[] words = line.Split(',');
-                                        vec3 vecPt = new vec3(
-                                        double.Parse(words[0], CultureInfo.InvariantCulture),
-                                        double.Parse(words[1], CultureInfo.InvariantCulture),
-                                        double.Parse(words[2], CultureInfo.InvariantCulture));
-
-                                        pointList.Add(vecPt);
-                                    }
-
-                                    int ptCount = pointList.Count;
-                                    if (ptCount > 5)
-                                    {
-                                        area = 0;         // Accumulates area in the loop
-                                        int j = ptCount - 1;  // The last vertex is the 'previous' one to the first
-
-                                        for (int i = 0; i < ptCount; j = i++)
-                                        {
-                                            area += (pointList[j].easting + pointList[i].easting) * (pointList[j].northing - pointList[i].northing);
-                                        }
-                                        if (mf.isMetric)
-                                        {
-                                            area = (Math.Abs(area / 2)) * 0.0001;
-                                        }
-                                        else
-                                        {
-                                            area = (Math.Abs(area / 2)) * 0.00024711;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            area = 0;
-                            Log.EventWriter("Field.txt is Broken" + e.ToString());
-                        }
-                    }
-                    if (area == 0) fileList.Add("No Bndry");
-                    else fileList.Add(Math.Round(area, 1).ToString("N1").PadLeft(10));
-                }
-                else
-                {
-                    fileList.Add("Error");
-                    MessageBox.Show(fieldDirectory + " is Damaged, Missing Boundary.Txt " +
-                        "               \r\n Delete Field or Fix ", gStr.gsFileError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                filename = Path.Combine(dir, "Field.txt");
+                ProcessFieldFile(fieldDirectory, fieldFile);
+                ProcessBoundaryFile(dir, fieldDirectory);
             }
 
-            if (fileList == null || fileList.Count < 1)
+            if (fileList.Count < 1)
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
-                Log.EventWriter("File Picker, No fields Sorted");
-                Close();
+                ShowNoFieldsMessage();
+            }
+        }
+
+        private void ProcessFieldFile(string fieldDirectory, string filename)
+        {
+            try
+            {
+                using (GeoStreamReader reader = new GeoStreamReader(filename))
+                {
+                    // Skip 8 lines
+                    for (int i = 0; i < 8; i++)
+                    {
+                        reader.ReadLine();
+                    }
+
+                    if (!reader.EndOfStream)
+                    {
+                        Wgs84 startLatLon = reader.ReadWgs84();
+                        double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
+                        fileList.Add(fieldDirectory);
+                        fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
+                    }
+                    else
+                    {
+                        HandleDamagedField(fieldDirectory);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleDamagedField(fieldDirectory);
+                Log.EventWriter("Field.txt is Broken" + ex.ToString());
+            }
+        }
+
+        private void ProcessBoundaryFile(string dir, string fieldDirectory)
+        {
+            string filename = Path.Combine(dir, "Boundary.txt");
+            if (!File.Exists(filename))
+            {
+                fileList.Add("Error");
+                FormDialog.Show(
+                    gStr.gsFileError,
+                    $"{fieldDirectory} is Damaged, Missing Boundary.Txt \r\nDelete Field or Fix",
+                    MessageBoxButtons.OK);
                 return;
             }
-            for (int i = 0; i < fileList.Count; i += 3)
+
+            try
             {
-                string[] fieldNames = { fileList[i], fileList[i + 1], fileList[i + 2] };
-                itm = new ListViewItem(fieldNames);
-                lvLines.Items.Add(itm);
+                double area = CalculateBoundaryArea(filename);
+                fileList.Add(area == 0 ? "No Bndry" : Math.Round(area, 1).ToString("N1").PadLeft(10));
+            }
+            catch (Exception ex)
+            {
+                fileList.Add("Error");
+                Log.EventWriter("Boundary.txt is Broken" + ex.ToString());
+            }
+        }
+
+        private double CalculateBoundaryArea(string filename)
+        {
+            List<vec3> pointList = new List<vec3>();
+            double area = 0;
+
+            using (StreamReader reader = new StreamReader(filename))
+            {
+                // Read header
+                string line = reader.ReadLine(); // Boundary
+
+                if (reader.EndOfStream)
+                    return 0;
+
+                // True or False OR points from older boundary files
+                line = reader.ReadLine();
+
+                // Check for older boundary files
+                if (line == "True" || line == "False")
+                {
+                    line = reader.ReadLine(); // number of points
+                }
+
+                // Check for latest boundary files
+                if (line == "True" || line == "False")
+                {
+                    line = reader.ReadLine(); // number of points
+                }
+
+                int numPoints = int.Parse(line);
+                if (numPoints <= 0)
+                    return 0;
+
+                // Load the points
+                for (int i = 0; i < numPoints; i++)
+                {
+                    line = reader.ReadLine();
+                    string[] words = line.Split(',');
+                    pointList.Add(new vec3(
+                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                        double.Parse(words[2], CultureInfo.InvariantCulture)));
+                }
+
+                // Calculate area if we have enough points
+                int ptCount = pointList.Count;
+                if (ptCount > 5)
+                {
+                    area = 0;
+                    int j = ptCount - 1;
+
+                    for (int i = 0; i < ptCount; j = i++)
+                    {
+                        area += (pointList[j].easting + pointList[i].easting) *
+                               (pointList[j].northing - pointList[i].northing);
+                    }
+
+                    area = Math.Abs(area / 2) * (mf.isMetric ? 0.0001 : 0.00024711);
+                }
             }
 
-            //string fieldName = Path.GetDirectoryName(dir).ToString(CultureInfo.InvariantCulture);
+            return area;
+        }
+
+        private void UpdateListView()
+        {
+            lvLines.Items.Clear();
+
+            for (int i = 0; i < fileList.Count; i += 3)
+            {
+                string[] fieldNames = GetFieldNames(i);
+                lvLines.Items.Add(new ListViewItem(fieldNames));
+            }
 
             if (lvLines.Items.Count > 0)
             {
-                this.chName.Text = gStr.gsField;
-                this.chName.Width = 680;
-
-                this.chDistance.Text = gStr.gsDistance;
-                this.chDistance.Width = 140;
-
-                this.chArea.Text = gStr.gsArea;
-                this.chArea.Width = 140;
+                UpdateColumnHeaders();
             }
             else
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
-                Log.EventWriter("File Picker, No Line items");
-                Close();
-                return;
+                ShowNoFieldsMessage();
             }
+        }
+
+        private string[] GetFieldNames(int index)
+        {
+            if (order == 0)
+                return new[] { fileList[index], fileList[index + 1], fileList[index + 2] };
+            else if (order == 1)
+                return new[] { fileList[index + 1], fileList[index], fileList[index + 2] };
+            else
+                return new[] { fileList[index + 2], fileList[index], fileList[index + 1] };
+        }
+
+        private void UpdateColumnHeaders()
+        {
+            if (order == 0)
+            {
+                SetColumnProperties(chName, gStr.gsField, 680);
+                SetColumnProperties(chDistance, gStr.gsDistance, 140);
+                SetColumnProperties(chArea, gStr.gsArea, 140);
+            }
+            else if (order == 1)
+            {
+                SetColumnProperties(chName, gStr.gsDistance, 140);
+                SetColumnProperties(chDistance, gStr.gsField, 680);
+                SetColumnProperties(chArea, gStr.gsArea, 140);
+            }
+            else
+            {
+                SetColumnProperties(chName, gStr.gsArea, 140);
+                SetColumnProperties(chDistance, gStr.gsField, 680);
+                SetColumnProperties(chArea, gStr.gsDistance, 140);
+            }
+        }
+
+        private void SetColumnProperties(ColumnHeader column, string text, int width)
+        {
+            column.Text = text;
+            column.Width = width;
+        }
+
+        private void ShowNoFieldsMessage()
+        {
+            mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
+            Log.EventWriter("File Picker, No Fields");
+            Close();
+        }
+
+        private void HandleDamagedField(string fieldDirectory)
+        {
+            FormDialog.Show(gStr.gsFileError, $"{fieldDirectory} is Damaged, Please Delete This Field", MessageBoxButtons.OK);
+            fileList.Add(fieldDirectory);
+            fileList.Add("Error");
         }
 
         private void btnByDistance_Click(object sender, EventArgs e)
         {
-            ListViewItem itm;
-
-            lvLines.Items.Clear();
-            order += 1;
-            if (order == 3) order = 0;
-
-            for (int i = 0; i < fileList.Count; i += 3)
-            {
-                if (order == 0)
-                {
-                    string[] fieldNames = { fileList[i], fileList[i + 1], fileList[i + 2] };
-                    itm = new ListViewItem(fieldNames);
-                }
-                else if (order == 1)
-                {
-                    string[] fieldNames = { fileList[i + 1], fileList[i], fileList[i + 2] };
-                    itm = new ListViewItem(fieldNames);
-                }
-                else
-                {
-                    string[] fieldNames = { fileList[i + 2], fileList[i], fileList[i + 1] };
-                    itm = new ListViewItem(fieldNames);
-                }
-
-                lvLines.Items.Add(itm);
-            }
-
-            if (lvLines.Items.Count > 0)
-            {
-                if (order == 0)
-                {
-                    this.chName.Text = gStr.gsField;
-                    this.chName.Width = 680;
-
-                    this.chDistance.Text = gStr.gsDistance;
-                    this.chDistance.Width = 140;
-
-                    this.chArea.Text = gStr.gsArea;
-                    this.chArea.Width = 140;
-                }
-                else if (order == 1)
-                {
-                    this.chName.Text = gStr.gsDistance;
-                    this.chName.Width = 140;
-
-                    this.chDistance.Text = gStr.gsField;
-                    this.chDistance.Width = 680;
-
-                    this.chArea.Text = gStr.gsArea;
-                    this.chArea.Width = 140;
-                }
-                else
-                {
-                    this.chName.Text = gStr.gsArea;
-                    this.chName.Width = 140;
-
-                    this.chDistance.Text = gStr.gsField;
-                    this.chDistance.Width = 680;
-
-                    this.chArea.Text = gStr.gsDistance;
-                    this.chArea.Width = 140;
-                }
-            }
+            order = (order + 1) % 3;
+            UpdateListView();
         }
 
         private void btnOpenExistingLv_Click(object sender, EventArgs e)
         {
-            int count = lvLines.SelectedItems.Count;
-            if (count > 0)
+            if (lvLines.SelectedItems.Count == 0)
+                return;
+
+            var selectedItem = lvLines.SelectedItems[0];
+            if (selectedItem.SubItems[0].Text == "Error" ||
+                selectedItem.SubItems[1].Text == "Error" ||
+                selectedItem.SubItems[2].Text == "Error")
             {
-                if (lvLines.SelectedItems[0].SubItems[0].Text == "Error" ||
-                    lvLines.SelectedItems[0].SubItems[1].Text == "Error" ||
-                    lvLines.SelectedItems[0].SubItems[2].Text == "Error")
-                {
-                    MessageBox.Show("This Field is Damaged, Please Delete \r\n ALREADY TOLD YOU THAT :)", gStr.gsFileError,
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    if (order == 0) mf.filePickerFileAndDirectory =
-                            Path.Combine(RegistrySettings.fieldsDirectory, lvLines.SelectedItems[0].SubItems[0].Text, "Field.txt");
-                    else mf.filePickerFileAndDirectory =
-                            Path.Combine(RegistrySettings.fieldsDirectory, lvLines.SelectedItems[0].SubItems[1].Text, "Field.txt");
-                    Close();
-                }
+                FormDialog.Show(
+                    gStr.gsFileError,
+                    "This Field is Damaged, Please Delete \r\nALREADY TOLD YOU THAT :)",
+                    MessageBoxButtons.OK);
+                return;
             }
+
+            string fieldName = order == 0 ? selectedItem.SubItems[0].Text : selectedItem.SubItems[1].Text;
+            mf.filePickerFileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, fieldName, "Field.txt");
+            Close();
         }
 
         private void btnDeleteAB_Click(object sender, EventArgs e)
@@ -320,195 +308,21 @@ namespace AgOpenGPS
 
         private void btnDeleteField_Click(object sender, EventArgs e)
         {
-            int count = lvLines.SelectedItems.Count;
-            string dir2Delete;
-            if (count > 0)
-            {
-                if (order == 0)
-                    dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, lvLines.SelectedItems[0].SubItems[0].Text);
-                else
-                    dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, lvLines.SelectedItems[0].SubItems[1].Text);
+            if (lvLines.SelectedItems.Count == 0)
+                return;
 
-                DialogResult result3 = MessageBox.Show(
-                    dir2Delete,
-                    gStr.gsDeleteForSure,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question,
-                    MessageBoxDefaultButton.Button2);
-                if (result3 == DialogResult.Yes)
-                {
-                    System.IO.Directory.Delete(dir2Delete, true);
-                }
-                else return;
-            }
-            else return;
+            string fieldName = order == 0 ?
+                lvLines.SelectedItems[0].SubItems[0].Text :
+                lvLines.SelectedItems[0].SubItems[1].Text;
 
-            ListViewItem itm;
+            string dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, fieldName);
 
-            string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
+            if (FormDialog.Show(dir2Delete, gStr.gsDeleteForSure, MessageBoxButtons.YesNo) != DialogResult.OK)
+                return;
 
-            fileList?.Clear();
-
-            foreach (string dir in dirs)
-            {
-                string fieldDirectory = Path.GetFileName(dir);
-                string filename = Path.Combine(dir, "Field.txt");
-
-                //make sure directory has a field.txt in it
-                if (File.Exists(filename))
-                {
-                    using (GeoStreamReader reader = new GeoStreamReader(filename))
-                    {
-                        try
-                        {
-                            // Skip 8 lines
-                            for (int i = 0; i < 8; i++)
-                            {
-                                reader.ReadLine();
-                            }
-                            if (!reader.EndOfStream)
-                            {
-                                Wgs84 startLatlon = reader.ReadWgs84();
-                                double distance = mf.AppModel.CurrentLatLon.DistanceInKiloMeters(startLatlon);
-
-                                fileList.Add(fieldDirectory);
-                                fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
-                            }
-                            else
-                            {
-                                MessageBox.Show(fieldDirectory + " is Damaged, Please Delete This Field", gStr.gsFileError,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                                fileList.Add(fieldDirectory);
-                                fileList.Add("Error");
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken", gStr.gsFileError,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Log.EventWriter("Field.txt is Broken" + e.ToString());
-                            fileList.Add(fieldDirectory);
-                            fileList.Add("Error");
-                        }
-                    }
-
-                    //grab the boundary area
-                    filename = Path.Combine(dir, "Boundary.txt");
-                    if (File.Exists(filename))
-                    {
-                        List<vec3> pointList = new List<vec3>();
-                        double area = 0;
-
-                        using (StreamReader reader = new StreamReader(filename))
-                        {
-                            try
-                            {
-                                //read header
-                                string line = reader.ReadLine();//Boundary
-
-                                if (!reader.EndOfStream)
-                                {
-                                    //True or False OR points from older boundary files
-                                    line = reader.ReadLine();
-
-                                    //Check for older boundary files, then above line string is num of points
-                                    if (line == "True" || line == "False")
-                                    {
-                                        line = reader.ReadLine(); //number of points
-                                    }
-
-                                    //Check for latest boundary files, then above line string is num of points
-                                    if (line == "True" || line == "False")
-                                    {
-                                        line = reader.ReadLine(); //number of points
-                                    }
-
-                                    int numPoints = int.Parse(line);
-
-                                    if (numPoints > 0)
-                                    {
-                                        //load the line
-                                        for (int i = 0; i < numPoints; i++)
-                                        {
-                                            line = reader.ReadLine();
-                                            string[] words = line.Split(',');
-                                            vec3 vecPt = new vec3(
-                                            double.Parse(words[0], CultureInfo.InvariantCulture),
-                                            double.Parse(words[1], CultureInfo.InvariantCulture),
-                                            double.Parse(words[2], CultureInfo.InvariantCulture));
-
-                                            pointList.Add(vecPt);
-                                        }
-
-                                        int ptCount = pointList.Count;
-                                        if (ptCount > 5)
-                                        {
-                                            area = 0;         // Accumulates area in the loop
-                                            int j = ptCount - 1;  // The last vertex is the 'previous' one to the first
-
-                                            for (int i = 0; i < ptCount; j = i++)
-                                            {
-                                                area += (pointList[j].easting + pointList[i].easting) * (pointList[j].northing - pointList[i].northing);
-                                            }
-                                            if (mf.isMetric)
-                                            {
-                                                area = (Math.Abs(area / 2)) * 0.0001;
-                                            }
-                                            else
-                                            {
-                                                area = (Math.Abs(area / 2)) * 0.00024711;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                area = 0;
-                                Log.EventWriter("Field.txt is Broken" + e.ToString());
-                            }
-                        }
-                        if (area == 0) fileList.Add("No Bndry");
-                        else fileList.Add(Math.Round(area, 1).ToString("N1").PadLeft(10));
-                    }
-                    else
-                    {
-                        fileList.Add("Error");
-                        MessageBox.Show(fieldDirectory + " is Damaged, Missing Boundary.Txt " +
-                            "               \r\n Delete Field or Fix ", gStr.gsFileError,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-
-            lvLines.Items.Clear();
-
-            for (int i = 0; i < fileList.Count; i += 3)
-            {
-                string[] fieldNames = { fileList[i], fileList[i + 1], fileList[i + 2] };
-                itm = new ListViewItem(fieldNames);
-                lvLines.Items.Add(itm);
-            }
-
-            //string fieldName = Path.GetDirectoryName(dir).ToString(CultureInfo.InvariantCulture);
-
-            if (lvLines.Items.Count > 0)
-            {
-                this.chName.Text = gStr.gsField;
-                this.chName.Width = 680;
-
-                this.chDistance.Text = gStr.gsDistance;
-                this.chDistance.Width = 140;
-
-                this.chArea.Text = gStr.gsArea;
-                this.chArea.Width = 140;
-            }
-            else
-            {
-                //var form2 = new FormTimedMessage(2000, gStr.gsNoFieldsCreated, gStr.gsCreateNewFieldFirst);
-                //form2.Show(this);
-            }
+            Directory.Delete(dir2Delete, true);
+            LoadFieldList();
+            UpdateListView();
         }
     }
 }
