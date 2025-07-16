@@ -13,14 +13,13 @@ namespace AgOpenGPS.Forms
 {
     public partial class FormDialog : Form
     {
-        public FormDialog(string message, string title = "Title", bool showCancel = true)
+        private FormDialog(string message, string title, bool showCancel)
         {
             InitializeComponent();
             lblMessage.Text = message;
             lblTitle.Text = title;
             btnCancel.Visible = showCancel;
         }
-
 
         public static DialogResult Show(string title, string message, MessageBoxButtons buttons = MessageBoxButtons.OKCancel)
         {
@@ -31,14 +30,12 @@ namespace AgOpenGPS.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            // Not used, but here for future compatibility
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            // Not used, but here for future compatibility
         }
     }
 }
