@@ -1128,6 +1128,7 @@ namespace AgOpenGPS
             deleteContourPathsToolStripMenuItem.Enabled = isOn;
             boundaryToolToolStripMenu.Enabled = isOn;
             offsetFixToolStrip.Enabled = isOn;
+            toolStripBtnFieldTools.Enabled = isOn;
 
             boundariesToolStripMenuItem.Enabled = isOn;
             headlandToolStripMenuItem.Enabled = isOn;
