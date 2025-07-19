@@ -853,26 +853,16 @@ namespace AgIO
                 headingTrueDualData = headingTrueDual;
             }
 
-            if (!string.IsNullOrEmpty(words[5])) //Pitch Dual GPS; 0 if no RTK or "heading offset" > 45 && < 135
+            /*if (!string.IsNullOrEmpty(words[5])) //Pitch Dual GPS; 0 if no RTK or "heading offset" > 45 && < 135
             {
-                //float.TryParse(words[5], NumberStyles.Float, CultureInfo.InvariantCulture, out _PITCH_);
-                //NOT USED atm                
-            }
+                //float.TryParse(words[5], NumberStyles.Float, CultureInfo.InvariantCulture, out XXX_PITCH_XXX);
+                //NOT USED atm
+                //and not needed/possible to use when using heading
+            }*/
 
             if (!string.IsNullOrEmpty(words[6])) //Roll Dual GPS; 0 if no RTK or “heading offset” <= 45 or >= 135
             {
-                float.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);
-
-                //Kalman filter
-                /*Pc = P + varProcess;
-                G = Pc / (Pc + varRoll);
-                P = (1 - G) * Pc;
-                Xp = XeRoll;
-                Zp = Xp;
-                XeRoll = (G * (rollK - Zp)) + Xp;
-                rollData = XeRoll;
-
-                roll = (float)(XeRoll);*/
+                float.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);               
 
                 if (words[7] == "R") //MovingBase Mode Indicator
                 {
