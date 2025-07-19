@@ -209,9 +209,9 @@ namespace AgIO
                     ParseTRA();
                 }
 
-                else if (words[0] == "$PSTI" && (words[1] == "032" || words[1] == "035") )
+                else if (words[0] == "$PSTI" && words[1] == "036") //Heading, Pitch and Roll Messages from SkyTraq PX1172RH modules... only available if RTK
                 {
-                    ParseSTI032(); //there is also an $PSTI,030,... wich contains different data!
+                    ParseSTI036(); //there are also different $PSTI,0XX,... sentences which contain compete different data!
                 }
             }// while still data
 
@@ -811,44 +811,60 @@ namespace AgIO
             }
         }
 
-        private void ParseSTI032() //heading and roll from SkyTraQ receiver
+        private void ParseSTI036()
         {
-            #region STI0 Message
-            //$PSTI,032,033010.000,111219,A,R,‐4.968,‐10.817,‐1.849,12.046,204.67,,,,,*39
+            #region STI036 Message
+            //$PSTI,036,hhmmss.sss,ddmmyy,x.xx,x.xx,x.xx,R*hh<CR><LF>
+            //$PSTI,036,054314.000,030521,191.69,-16.35,0.00,R*4D
 
-            //(1) 032 Baseline Data indicator
+            //(1) 036 heading, pitch and roll message indicator
             //(2) UTC time hhmmss.sss
             //(3) UTC date ddmmyy
-            //(4) Status:
-            //    V = Void
-            //    A = Active
-            //(5) Mode Indicator:
-            //    F = Float RTK
-            //    R = fixed RTK
-            //(6) East-projection of baseline, meters
-            //(7) North-projection of baseline, meters
-            //(8) Up-projection of baseline, meters
-            //(9) Baseline length, meters
-            //(10) Baseline course: angle between baseline vector and north direction, degrees
-            //(11) - (15) Reserved
-            //(16) * Checksum
-            #endregion STI0 Message
+            //(4) Heading, 0~359.99 when mode indicator is ‘R’
+            //(5) Pitch:
+            //    -90~90 degree when mode indicator is ‘R’, else null
+            //    0: when absolute value of “heading offset” > 45 && < 135; i.e.
+            //    antenna baseline toward perpendicular to vehicle centerline.
+            //    Heading offset is the angle between the baseline course from north
+            //    and vehicle centerline.
+            //(6) Roll:
+            //    -90~90 degree when mode indicator is ‘R’, else null
+            //    0: when absolute value of “heading offset” <= 45 or >= 135; i.e.
+            //    antenna baseline toward parallel to vehicle centerline.
+            //    Heading offset is the angle between the baseline course from north
+            //    and vehicle centerline.
+            //(7) Mode indicator
+            //    ‘N’ = Data not valid
+            //    ‘A’ = Autonomous mode
+            //    ‘D’ = Differential mode
+            //    ‘E’ = Estimated(dead reckoning) mode
+            //    ‘M’ = Manual input mode
+            //    ‘S’ = Simulator mode
+            //    ‘F’ = Float RTK.Satellite system used in RTK mode, floating integers
+            //    ‘R’ = Real Time Kinematic. System used in RTK mode with fixed
+            //    integers
+            //(8) * Checksum
+            #endregion STI036 Message
 
-            if (!string.IsNullOrEmpty(words[10]))
+            if (!string.IsNullOrEmpty(words[4])) //Heading Dual GPS; 0 if no RTK
             {
-                //baselineCourse: angle between baseline vector (from kinematic base to rover) and north direction, degrees
-                float.TryParse(words[10], NumberStyles.Float, CultureInfo.InvariantCulture, out float baselineCourse);
-                headingTrueDual = ((baselineCourse < 270.0f) ? (baselineCourse + 90.0f) : (baselineCourse - 270.0f)); //Rover Antenna on the left, kinematic base on the right!!!
+                //True heading
+                float.TryParse(words[4], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrueDual);
+                headingTrueDualData = headingTrueDual;
             }
 
-            if (!string.IsNullOrEmpty(words[8]) && !string.IsNullOrEmpty(words[9]))
+            if (!string.IsNullOrEmpty(words[5])) //Pitch Dual GPS; 0 if no RTK or "heading offset" > 45 && < 135
             {
-                double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out double upProjection); //difference in hight of both antennas (rover - kinematic base)
-                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out double baselineLength); //distance between kinematic base and rover
-                rollK = (float)glm.toDegrees(Math.Atan(upProjection / baselineLength)); //roll to the right is positiv (rover left, kinematic base right!)
+                //float.TryParse(words[5], NumberStyles.Float, CultureInfo.InvariantCulture, out _PITCH_);
+                //NOT USED atm                
+            }
+
+            if (!string.IsNullOrEmpty(words[6])) //Roll Dual GPS; 0 if no RTK or “heading offset” <= 45 or >= 135
+            {
+                float.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);
 
                 //Kalman filter
-                Pc = P + varProcess;
+                /*Pc = P + varProcess;
                 G = Pc / (Pc + varRoll);
                 P = (1 - G) * Pc;
                 Xp = XeRoll;
@@ -856,7 +872,18 @@ namespace AgIO
                 XeRoll = (G * (rollK - Zp)) + Xp;
                 rollData = XeRoll;
 
-                roll = (float)(XeRoll);
+                roll = (float)(XeRoll);*/
+
+                if (words[7] == "R") //MovingBase Mode Indicator
+                {
+                    roll = (float)(rollK);
+                    rollData = roll;
+                }
+                else
+                {
+                    roll = float.MinValue;
+                    rollData = 0;
+                }
             }
         }
 
