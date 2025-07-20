@@ -12,6 +12,9 @@ namespace AgIO
 
         private bool isNMEAToSend = false;
 
+        private bool isSti035Available = false;
+        private bool isSti036Available = false;
+
         public string ggaSentence, vtgSentence, hdtSentence, avrSentence, paogiSentence, 
             hpdSentence, rmcSentence, pandaSentence, ksxtSentence;
 
@@ -209,8 +212,20 @@ namespace AgIO
                     ParseTRA();
                 }
 
+                else if (words[0] == "$PSTI" && words[1] == "032" && !isSti035Available && !isSti036Available) //PSTI,032 and 035 messages are kind of outdated, but stay here for supporting older SkyTraq setups with two receivers.
+                {
+                    ParseSTI032STI035();
+                }
+
+                else if (words[0] == "$PSTI" && words[1] == "035" && !isSti036Available)
+                {
+                    isSti035Available = true; //set to true to avoid using PSTI,032 message
+                    ParseSTI032STI035();
+                }
+
                 else if (words[0] == "$PSTI" && words[1] == "036") //Heading, Pitch and Roll Messages from SkyTraq PX1172RH modules... only available if RTK
                 {
+                    isSti036Available = true; //set to true to avoid using PSTI,032 or PSTI,035 messages
                     ParseSTI036(); //there are also different $PSTI,0XX,... sentences which contain compete different data!
                 }
             }// while still data
@@ -808,6 +823,55 @@ namespace AgIO
                 //True heading
                 float.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrueDual);
                 headingTrueDualData = headingTrueDual;
+            }
+        }
+
+        private void ParseSTI032STI035() //baseline data from SkyTraQ receiver
+        {
+            #region STI032 Message //STI035 is almost the same so both messages could be parsed with same code
+            //$PSTI,032,033010.000,111219,A,R,‐4.968,‐10.817,‐1.849,12.046,204.67,,,,,*39
+
+            //(1) 032 Baseline Data indicator || 035 Baseline Data indicator of Rover Moving Base Receiver
+            //(2) UTC time hhmmss.sss
+            //(3) UTC date ddmmyy
+            //(4) Status:
+            //    V = Void
+            //    A = Active
+            //(5) Mode Indicator:
+            //    F = Float RTK
+            //    R = fixed RTK
+            //(6) East-projection of baseline, meters
+            //(7) North-projection of baseline, meters
+            //(8) Up-projection of baseline, meters
+            //(9) Baseline length, meters
+            //(10) Baseline course: angle between baseline vector and north direction, degrees
+            //(11) - (15) Reserved
+            //(16) * Checksum
+            #endregion STI032 Message
+
+            if (!string.IsNullOrEmpty(words[10]))
+            {
+                //baselineCourse: angle between baseline vector (from kinematic base to rover) and north direction, degrees
+                float.TryParse(words[10], NumberStyles.Float, CultureInfo.InvariantCulture, out float baselineCourse);
+                headingTrueDual = ((baselineCourse < 270.0f) ? (baselineCourse + 90.0f) : (baselineCourse - 270.0f)); //Rover Antenna on the left, kinematic base on the right!!!
+            }
+
+            if (!string.IsNullOrEmpty(words[8]) && !string.IsNullOrEmpty(words[9]))
+            {
+                double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out double upProjection); //difference in hight of both antennas (rover - kinematic base)
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out double baselineLength); //distance between kinematic base and rover
+                rollK = (float)glm.toDegrees(Math.Atan(upProjection / baselineLength)); //roll to the right is positiv (rover left, kinematic base right!)
+
+                //Kalman filter
+                Pc = P + varProcess;
+                G = Pc / (Pc + varRoll);
+                P = (1 - G) * Pc;
+                Xp = XeRoll;
+                Zp = Xp;
+                XeRoll = (G * (rollK - Zp)) + Xp;
+                rollData = XeRoll;
+
+                roll = (float)(XeRoll);
             }
         }
 
