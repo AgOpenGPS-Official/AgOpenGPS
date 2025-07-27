@@ -417,6 +417,11 @@ namespace AgOpenGPS
                 if (File.Exists(fileToCopy))
                     File.Copy(fileToCopy, destinationDirectory);
 
+                fileToCopy = Path.Combine(templateDirectoryName, "Elevation.txt");
+                destinationDirectory = Path.Combine(directoryName, "Elevation.txt");
+                if (File.Exists(fileToCopy))
+                    File.Copy(fileToCopy, destinationDirectory);
+
 
                 fileToCopy = Path.Combine(templateDirectoryName, "Headlines.txt");
                 destinationDirectory = Path.Combine(directoryName, "Headlines.txt");
