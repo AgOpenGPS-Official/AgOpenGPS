@@ -229,8 +229,8 @@ namespace AgOpenGPS.Classes
             vec2 s = p4 - p3;
             vec2 pq = p3 - p1;
 
-            float rxs = Cross(r, s);
-            float pqxr = Cross(pq, r);
+            float rxs = vec2.Cross(r, s);
+            float pqxr = vec2.Cross(pq, r);
 
             // Handle parallel/collinear cases first
             if (Math.Abs(rxs) < float.Epsilon)
@@ -239,8 +239,8 @@ namespace AgOpenGPS.Classes
                 if (Math.Abs(pqxr) < float.Epsilon)
                 {
                     // Collinear - check segment overlap
-                    float t0 = (float)(Dot(pq, r) / Dot(r, r));
-                    float t1 = t0 + (float)(Dot(s, r) / Dot(r, r));
+                    float t0 = (float)(vec2.Dot(pq, r) / vec2.Dot(r, r));
+                    float t1 = t0 + (float)(vec2.Dot(s, r) / vec2.Dot(r, r));
                     if (t0 > t1) (t0, t1) = (t1, t0);
 
                     if (t0 <= 1 && t1 >= 0)
@@ -252,7 +252,7 @@ namespace AgOpenGPS.Classes
                 return (false, default); // Parallel but not collinear
             }
 
-            float t = Cross(pq, s) / rxs;
+            float t = vec2.Cross(pq, s) / rxs;
             float u = pqxr / rxs;
 
             if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
@@ -340,7 +340,7 @@ namespace AgOpenGPS.Classes
                 for (int s = 1; s < steps; s++)
                 {
                     double t = (double)s / steps;
-                    result.Add(Lerp(prev, current, t));
+                    result.Add(vec2.Lerp(prev, current, t));
                 }
 
                 result.Add(current);
@@ -364,9 +364,9 @@ namespace AgOpenGPS.Classes
             {
                 for (int i = 0; i < points.Count - 1; i++)
                 {
-                    if (IsPointOnSegment(points[i], points[i + 1], pt))
+                    if (vec2.IsPointOnSegment(points[i], points[i + 1], pt))
                     {
-                        ProjectOnSegment(points[i], points[i + 1], pt, out double t);
+                        vec2.ProjectOnSegment(points[i], points[i + 1], pt, out double t);
                         intersectionDistances.Add(distances[i] + glm.Distance(points[i], pt));
                         break;
                     }
@@ -400,8 +400,8 @@ namespace AgOpenGPS.Classes
                 double t1 = Math.Max(0, (startDist - segmentStart) / segmentLength);
                 double t2 = Math.Min(1, (endDist - segmentStart) / segmentLength);
 
-                vec2 p1 = Lerp(a, b, t1);
-                vec2 p2 = Lerp(a, b, t2);
+                vec2 p1 = vec2.Lerp(a, b, t1);
+                vec2 p2 = vec2.Lerp(a, b, t2);
 
                 if (!trimmed.Any() || glm.Distance(trimmed.Last(), p1) > INTERSECTION_TOLERANCE)
                 {
@@ -436,8 +436,8 @@ namespace AgOpenGPS.Classes
                     double t2 = (double)(j + 1) / steps;
 
                     segments.Add(new Segment(
-                        Lerp(start, end, t1),
-                        Lerp(start, end, t2),
+                        vec2.Lerp(start, end, t1),
+                        vec2.Lerp(start, end, t2),
                         parentTrack));
                 }
             }
@@ -481,37 +481,7 @@ namespace AgOpenGPS.Classes
         #endregion
 
         #region Static Helpers
-        private static vec2 Lerp(vec2 a, vec2 b, double t) =>
-            new vec2(a.easting + (b.easting - a.easting) * t,
-                     a.northing + (b.northing - a.northing) * t);
 
-        private static float Cross(vec2 a, vec2 b) =>
-            (float)(a.easting * b.northing - a.northing * b.easting);
-
-        private static double Dot(vec2 a, vec2 b) =>
-            a.easting * b.easting + a.northing * b.northing;
-
-        private static bool IsPointOnSegment(vec2 a, vec2 b, vec2 p)
-        {
-            double lenSq = (b - a).GetLengthSquared();
-            double proj = Dot(p - a, b - a) / lenSq;
-            return proj >= 0 && proj <= 1;
-        }
-
-        private static vec2 ProjectOnSegment(vec2 a, vec2 b, vec2 p, out double t)
-        {
-            vec2 ab = b - a;
-            double abLenSq = ab.GetLengthSquared();
-            if (abLenSq < 1e-6)
-            {
-                t = 0;
-                return a;
-            }
-
-            vec2 ap = p - a;
-            t = Math.Max(0, Math.Min(1, Dot(ap, ab) / abLenSq));
-            return a + ab * t;
-        }
         #endregion
 
         #region Helper Classes

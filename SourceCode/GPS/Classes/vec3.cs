@@ -58,7 +58,7 @@ using System.Globalization;
         public double easting;
         public double northing;
 
-    public vec2(double easting, double northing)
+        public vec2(double easting, double northing)
         {
             this.easting = easting;
             this.northing = northing;
@@ -86,13 +86,11 @@ using System.Globalization;
             return new vec2(lhs.easting - rhs.easting, lhs.northing - rhs.northing);
         }
 
-        //calculate the heading of dirction pointx to pointz
         public double HeadingXZ()
         {
             return Math.Atan2(easting, northing);
         }
 
-        //normalize to 1
         public vec2 Normalize()
         {
             double length = GetLength();
@@ -101,51 +99,68 @@ using System.Globalization;
                 throw new DivideByZeroException("Trying to normalize a vector with length of zero.");
             }
 
-            return new vec2(easting /= length, northing /= length);
+            return new vec2(easting / length, northing / length);
         }
 
-        //Returns the length of the vector
         public double GetLength()
         {
             return Math.Sqrt((easting * easting) + (northing * northing));
         }
 
-        // Calculates the squared length of the vector.
         public double GetLengthSquared()
         {
             return (easting * easting) + (northing * northing);
         }
 
-        //scalar double
         public static vec2 operator *(vec2 self, double s)
         {
             return new vec2(self.easting * s, self.northing * s);
         }
 
-        //add 2 vectors
         public static vec2 operator +(vec2 lhs, vec2 rhs)
         {
             return new vec2(lhs.easting + rhs.easting, lhs.northing + rhs.northing);
         }
 
-        public static bool TryParse(string input, out vec2 result)
+        public static vec2 Lerp(vec2 a, vec2 b, double t)
         {
-            result = new vec2();
-
-            var parts = input.Split(',');
-            if (parts.Length < 2) return false;
-
-            if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double e) &&
-                double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double n))
-            {
-                result = new vec2(e, n);
-                return true;
-            }
-
-            return false;
+            return new vec2(
+                a.easting + (b.easting - a.easting) * t,
+                a.northing + (b.northing - a.northing) * t
+            );
         }
 
+        public static float Cross(vec2 a, vec2 b)
+        {
+            return (float)(a.easting * b.northing - a.northing * b.easting);
+        }
 
+        public static double Dot(vec2 a, vec2 b)
+        {
+            return a.easting * b.easting + a.northing * b.northing;
+        }
+
+        public static bool IsPointOnSegment(vec2 a, vec2 b, vec2 p)
+        {
+            double lenSq = (b - a).GetLengthSquared();
+            double proj = Dot(p - a, b - a) / lenSq;
+            return proj >= 0 && proj <= 1;
+        }
+
+        public static vec2 ProjectOnSegment(vec2 a, vec2 b, vec2 p, out double t)
+        {
+            vec2 ab = b - a;
+            double abLenSq = ab.GetLengthSquared();
+            if (abLenSq < 1e-6)
+            {
+                t = 0;
+                return a;
+            }
+
+            vec2 ap = p - a;
+            t = Math.Max(0, Math.Min(1, Dot(ap, ab) / abLenSq));
+            return a + ab * t;
+        }
 }
 
 
