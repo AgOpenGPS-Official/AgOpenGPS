@@ -30,16 +30,8 @@ namespace AgOpenGPS.Classes
         #region Public API
         public void SetTracks(List<CTrk> tracks)
         {
-            try
-            {
-                InputTracks = tracks?.ToList() ?? new List<CTrk>();
-                Log.EventWriter("Tracks set successfully");
-            }
-            catch (Exception ex)
-            {
-                Log.EventWriter($"Error setting tracks: {ex.Message}");
-                InputTracks = new List<CTrk>();
-            }
+            InputTracks = tracks?.ToList() ?? new List<CTrk>();
+            Log.EventWriter("Tracks set successfully");
         }
 
         public List<vec3> BuildTrimmedBoundary()
@@ -133,8 +125,9 @@ namespace AgOpenGPS.Classes
         {
             try
             {
-                IntersectionPoints = new List<vec2>();
-                int foundIntersections = 0;
+                var uniqueIntersections = new HashSet<vec2>(new Vec2EqualityComparer());
+                int totalChecks = 0;
+                int potentialIntersections = 0;
 
                 for (int i = 0; i < Segments.Count; i++)
                 {
@@ -143,28 +136,32 @@ namespace AgOpenGPS.Classes
                     for (int j = i + 1; j < Segments.Count; j++)
                     {
                         var seg2 = Segments[j];
+                        totalChecks++;
 
-                        if (seg1.ParentTrack == seg2.ParentTrack ||
-                            !BoundingBoxesIntersect(seg1, seg2, INTERSECTION_SEARCH_RADIUS))
+                        // Early exit conditions
+                        if (seg1.ParentTrack == seg2.ParentTrack)
                             continue;
 
-                        if (LineSegmentsIntersect(seg1.Start, seg1.End, seg2.Start, seg2.End, out vec2 pt))
+                        if (!BoundingBoxesIntersect(seg1, seg2, INTERSECTION_SEARCH_RADIUS))
+                            continue;
+
+                        potentialIntersections++;
+                        var (intersects, intersection) = LineSegmentsIntersect(seg1.Start, seg1.End, seg2.Start, seg2.End);
+
+                        if (intersects)
                         {
-                            seg1.AddIntersection(pt);
-                            seg2.AddIntersection(pt);
-                            IntersectionPoints.Add(pt);
-                            foundIntersections++;
+                            seg1.AddIntersection(intersection);
+                            seg2.AddIntersection(intersection);
+                            uniqueIntersections.Add(intersection);
                         }
                     }
                 }
 
-                IntersectionPoints = IntersectionPoints.Distinct(new Vec2EqualityComparer()).ToList();
-                Log.EventWriter($"Found {IntersectionPoints.Count} unique intersections");
+                IntersectionPoints = uniqueIntersections.ToList();
             }
             catch (Exception ex)
             {
-                Log.EventWriter($"Error finding intersections: {ex.Message}");
-                IntersectionPoints = new List<vec2>();
+                Log.EventWriter($"FindIntersections error: {ex.Message}");
             }
         }
 
@@ -226,9 +223,8 @@ namespace AgOpenGPS.Classes
 
                     return !(maxX1 < minX2 || maxX2 < minX1 || maxY1 < minY2 || maxY2 < minY1);
                 }
-        private bool LineSegmentsIntersect(vec2 p1, vec2 p2, vec2 p3, vec2 p4, out vec2 intersection)
+        private (bool intersects, vec2 intersection) LineSegmentsIntersect(vec2 p1, vec2 p2, vec2 p3, vec2 p4)
         {
-            intersection = default;
             vec2 r = p2 - p1;
             vec2 s = p4 - p3;
             vec2 pq = p3 - p1;
@@ -249,24 +245,22 @@ namespace AgOpenGPS.Classes
 
                     if (t0 <= 1 && t1 >= 0)
                     {
-                        float intersectionT = Math.Max(0, Math.Min(t0, 1)); // Naam gewijzigd van t naar intersectionT
-                        intersection = p1 + r * intersectionT;
-                        return true;
+                        float intersectionT = Math.Max(0, Math.Min(t0, 1));
+                        return (true, p1 + r * intersectionT);
                     }
                 }
-                return false; // Parallel but not collinear
+                return (false, default); // Parallel but not collinear
             }
 
-            float t = Cross(pq, s) / rxs; // Dit is de originele t declaratie
+            float t = Cross(pq, s) / rxs;
             float u = pqxr / rxs;
 
             if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
             {
-                intersection = p1 + r * t;
-                return true;
+                return (true, p1 + r * t);
             }
 
-            return false;
+            return (false, default);
         }
         #endregion
 
