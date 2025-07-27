@@ -8016,7 +8016,7 @@ namespace AgOpenGPS
             this.nudTramWidth.InterceptArrowKeys = false;
             this.nudTramWidth.Location = new System.Drawing.Point(291, 105);
             this.nudTramWidth.Maximum = new decimal(new int[] {
-            5000,
+            10000,
             0,
             0,
             0});
