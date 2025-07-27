@@ -54,7 +54,7 @@ namespace AgOpenGPS.Forms.Field
             this.btnSelectPrevious = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnBuildBoundary = new System.Windows.Forms.Button();
-            this.btnRefreshPreview = new System.Windows.Forms.Button();
+            this.btnResetPreview = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // glControlPreview
@@ -71,7 +71,6 @@ namespace AgOpenGPS.Forms.Field
             this.glControlPreview.Load += new System.EventHandler(this.glControlPreview_Load);
             this.glControlPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.glControlPreview_Paint);
             this.glControlPreview.Resize += new System.EventHandler(this.glControlPreview_Resize);
-            
             // 
             // flpTrackList
             // 
@@ -245,22 +244,22 @@ namespace AgOpenGPS.Forms.Field
             this.btnBuildBoundary.UseVisualStyleBackColor = false;
             this.btnBuildBoundary.Click += new System.EventHandler(this.btnBuildBoundary_Click);
             // 
-            // btnRefreshPreview
+            // btnResetPreview
             // 
-            this.btnRefreshPreview.BackColor = System.Drawing.Color.Transparent;
-            this.btnRefreshPreview.FlatAppearance.BorderSize = 0;
-            this.btnRefreshPreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefreshPreview.Image = global::AgOpenGPS.Properties.Resources.AutoTrack;
-            this.btnRefreshPreview.Location = new System.Drawing.Point(578, 623);
-            this.btnRefreshPreview.Name = "btnRefreshPreview";
-            this.btnRefreshPreview.Size = new System.Drawing.Size(95, 95);
-            this.btnRefreshPreview.TabIndex = 2;
-            this.btnRefreshPreview.Text = "Refresh";
-            this.btnRefreshPreview.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnRefreshPreview.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnRefreshPreview.UseVisualStyleBackColor = false;
-            this.btnRefreshPreview.Click += new System.EventHandler(this.btnRefreshPreview_Click);
+            this.btnResetPreview.BackColor = System.Drawing.Color.Transparent;
+            this.btnResetPreview.FlatAppearance.BorderSize = 0;
+            this.btnResetPreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetPreview.Image = global::AgOpenGPS.Properties.Resources.Reset_Default;
+            this.btnResetPreview.Location = new System.Drawing.Point(578, 623);
+            this.btnResetPreview.Name = "btnResetPreview";
+            this.btnResetPreview.Size = new System.Drawing.Size(95, 95);
+            this.btnResetPreview.TabIndex = 2;
+            this.btnResetPreview.Text = "Reset";
+            this.btnResetPreview.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnResetPreview.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnResetPreview.UseVisualStyleBackColor = false;
+            this.btnResetPreview.Click += new System.EventHandler(this.btnResetPreview_Click);
             // 
             // FormBuildBoundaryFromTracks
             // 
@@ -280,7 +279,7 @@ namespace AgOpenGPS.Forms.Field
             this.Controls.Add(this.btnSelectPrevious);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnBuildBoundary);
-            this.Controls.Add(this.btnRefreshPreview);
+            this.Controls.Add(this.btnResetPreview);
             this.Controls.Add(this.glControlPreview);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -300,7 +299,7 @@ namespace AgOpenGPS.Forms.Field
         #endregion
 
         private OpenTK.GLControl glControlPreview;
-        private System.Windows.Forms.Button btnRefreshPreview;
+        private System.Windows.Forms.Button btnResetPreview;
         private System.Windows.Forms.Button btnBuildBoundary;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSelectPrevious;

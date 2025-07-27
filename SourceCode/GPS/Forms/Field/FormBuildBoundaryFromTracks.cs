@@ -584,7 +584,7 @@ namespace AgOpenGPS.Forms.Field
         #endregion
 
         #region Event Handlers
-        private void btnRefreshPreview_Click(object sender, EventArgs e)
+        private void btnResetPreview_Click(object sender, EventArgs e)
         {
             InitializeForm();
             _trackList.Clear();
