@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -19,17 +19,18 @@ namespace AgOpenGPS.Forms.Field
         private const float NORMAL_TRACK_WIDTH = 1.0f;
         private const float BOUNDARY_LINE_WIDTH = 3.0f;
         private const float INTERSECTION_POINT_SIZE = 4.0f;
+        private const int CIRCLE_SEGMENTS = 16;
         #endregion
 
         #region Fields
         private readonly FormGPS _mf;
         private readonly List<CTrk> _trackList;
         private readonly List<CTrk> _selectedTracks;
-        private CBoundaryFromTracks _builder;
+        private BoundaryBuilder _builder;
         private CTrk _activeTrack;
         private double _viewLeft, _viewRight, _viewTop, _viewBottom;
         private bool _showTrimmedOnly;
-        private bool _redrawPending;
+        private Form _parentForm;
         private readonly Form _parentForm;
 
         #endregion
@@ -51,9 +52,6 @@ namespace AgOpenGPS.Forms.Field
 
         private void InitializeOpenGL()
         {
-            glControlPreview.Load += glControlPreview_Load;
-            glControlPreview.Paint += glControlPreview_Paint;
-            glControlPreview.Resize += glControlPreview_Resize;
 
             SetStyle(ControlStyles.DoubleBuffer |
                     ControlStyles.UserPaint |
@@ -64,7 +62,14 @@ namespace AgOpenGPS.Forms.Field
         {
             _trackList.Clear();
 
-            var tracks = CTrackLineReader.LoadTrackLines(_mf.currentFieldDirectory, out _);
+            var tracks = CTrackLineReader.LoadTrackLines(_mf.currentFieldDirectory, out string error);
+
+            if (!string.IsNullOrEmpty(error) || tracks.Count == 0)
+            {
+                _mf.TimedMessageBox(3000, "Track Load Error", string.IsNullOrEmpty(error) ? "No tracks found." : error);
+                return;
+            }
+
             _trackList.AddRange(tracks);
         }
 
@@ -89,16 +94,6 @@ namespace AgOpenGPS.Forms.Field
             _selectedTracks.AddRange(_trackList);
             btnBuildBoundary.Enabled = false;
             btnSave.Enabled = false;
-        }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            using (var pen = new Pen(Color.DarkGray,15))
-            {
-                var rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
-                e.Graphics.DrawRectangle(pen, rect);
-            }
         }
 
 
@@ -193,7 +188,7 @@ namespace AgOpenGPS.Forms.Field
         #region Boundary Building
         private void InitializeBuilder()
         {
-            _builder = new CBoundaryFromTracks();
+            _builder = new BoundaryBuilder();
             _builder.SetTracks(_selectedTracks);
         }
 
@@ -545,9 +540,9 @@ namespace AgOpenGPS.Forms.Field
             GL.Color3(color);
             GL.Begin(PrimitiveType.LineLoop);
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < CIRCLE_SEGMENTS; i++)
             {
-                double angle = i * Math.PI * 2.0 / 16;
+                double angle = i * Math.PI * 2.0 / CIRCLE_SEGMENTS;
                 GL.Vertex2(
                     center.easting + Math.Cos(angle) * radius,
                     center.northing + Math.Sin(angle) * radius);
@@ -677,7 +672,7 @@ namespace AgOpenGPS.Forms.Field
             _mf.bnd.bndList.Clear();
             _mf.bnd.bndList.Add(boundary);
             _mf.bnd.BuildTurnLines();
-            _mf.oglMain.Invalidate();
+_mf.InvalidateOpenGL();
         }
 
         private void btnSave_Click(object sender, EventArgs e)

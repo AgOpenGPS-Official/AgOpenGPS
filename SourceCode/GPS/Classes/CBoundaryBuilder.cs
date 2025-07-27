@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
@@ -7,7 +7,7 @@ using AgLibrary.Logging;
 
 namespace AgOpenGPS.Classes
 {
-    public class CBoundaryFromTracks
+    public class BoundaryBuilder
     {
         #region Constants
         private const double INTERSECTION_TOLERANCE = 0.01;

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
+using System.Runtime.CompilerServices;
 
 namespace AgOpenGPS
 {
@@ -449,16 +450,12 @@ namespace AgOpenGPS
                 mf.bnd.bndList.Clear();
             }
 
-            var tracks = CTrackLineReader.LoadTrackLines(mf.currentFieldDirectory, out string error);
-            if (!string.IsNullOrEmpty(error))
-            {
-                mf.TimedMessageBox(3000, "Track Load Error", error);
-                return;
-            }
+            var form = new FormBuildBoundaryFromTracks(mf, this);
+            form.ShowDialog();
 
-            var builderForm = new FormBuildBoundaryFromTracks(mf, this);
-            builderForm.ShowDialog(this);
-        }
+
+        }   
+
 
 
         private void FormBoundary_ResizeEnd(object sender, EventArgs e)

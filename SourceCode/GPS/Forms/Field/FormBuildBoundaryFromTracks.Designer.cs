@@ -1,4 +1,8 @@
-﻿namespace AgOpenGPS.Forms.Field
+﻿using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+
+namespace AgOpenGPS.Forms.Field
 {
     partial class FormBuildBoundaryFromTracks
     {
@@ -18,6 +22,16 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            using (var pen = new Pen(Color.DarkGray, 15))
+            {
+                var rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+                e.Graphics.DrawRectangle(pen, rect);
+            }
         }
 
         #region Windows Form Designer generated code
@@ -57,6 +71,7 @@
             this.glControlPreview.Load += new System.EventHandler(this.glControlPreview_Load);
             this.glControlPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.glControlPreview_Paint);
             this.glControlPreview.Resize += new System.EventHandler(this.glControlPreview_Resize);
+            
             // 
             // flpTrackList
             // 
@@ -77,9 +92,9 @@
             this.lblList.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblList.Location = new System.Drawing.Point(583, 10);
             this.lblList.Name = "lblList";
-            this.lblList.Size = new System.Drawing.Size(294, 25);
+            this.lblList.Size = new System.Drawing.Size(273, 25);
             this.lblList.TabIndex = 13;
-            this.lblList.Text = "Select Tracks to build from";
+            this.lblList.Text = "(De)Select Tracks to use";
             // 
             // btnSave
             // 
@@ -109,6 +124,7 @@
             this.btnShrinkB.Name = "btnShrinkB";
             this.btnShrinkB.Size = new System.Drawing.Size(95, 95);
             this.btnShrinkB.TabIndex = 10;
+            this.btnShrinkB.Text = "Shrink B";
             this.btnShrinkB.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnShrinkB.UseVisualStyleBackColor = false;
             this.btnShrinkB.Click += new System.EventHandler(this.btnShrinkB_Click);
@@ -124,6 +140,7 @@
             this.btnShrinkA.Name = "btnShrinkA";
             this.btnShrinkA.Size = new System.Drawing.Size(95, 95);
             this.btnShrinkA.TabIndex = 9;
+            this.btnShrinkA.Text = "Shrink A";
             this.btnShrinkA.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnShrinkA.UseVisualStyleBackColor = false;
             this.btnShrinkA.Click += new System.EventHandler(this.btnShrinkA_Click);
@@ -139,6 +156,7 @@
             this.btnExtendForward.Name = "btnExtendForward";
             this.btnExtendForward.Size = new System.Drawing.Size(95, 95);
             this.btnExtendForward.TabIndex = 8;
+            this.btnExtendForward.Text = "Extend B";
             this.btnExtendForward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnExtendForward.UseVisualStyleBackColor = false;
             this.btnExtendForward.Click += new System.EventHandler(this.btnExtendForward_Click);
@@ -154,6 +172,7 @@
             this.btnExtendBackward.Name = "btnExtendBackward";
             this.btnExtendBackward.Size = new System.Drawing.Size(95, 95);
             this.btnExtendBackward.TabIndex = 7;
+            this.btnExtendBackward.Text = "Extend A";
             this.btnExtendBackward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnExtendBackward.UseVisualStyleBackColor = false;
             this.btnExtendBackward.Click += new System.EventHandler(this.btnExtendBackward_Click);
@@ -163,11 +182,15 @@
             this.btnSelectNext.BackColor = System.Drawing.Color.Transparent;
             this.btnSelectNext.FlatAppearance.BorderSize = 0;
             this.btnSelectNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSelectNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectNext.Image = global::AgOpenGPS.Properties.Resources.ArrowRight;
-            this.btnSelectNext.Location = new System.Drawing.Point(809, 409);
+            this.btnSelectNext.Location = new System.Drawing.Point(798, 409);
             this.btnSelectNext.Name = "btnSelectNext";
             this.btnSelectNext.Size = new System.Drawing.Size(95, 95);
             this.btnSelectNext.TabIndex = 6;
+            this.btnSelectNext.Text = "Next";
+            this.btnSelectNext.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSelectNext.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSelectNext.UseVisualStyleBackColor = false;
             this.btnSelectNext.Click += new System.EventHandler(this.btnSelectNext_Click);
             // 
@@ -176,11 +199,15 @@
             this.btnSelectPrevious.BackColor = System.Drawing.Color.Transparent;
             this.btnSelectPrevious.FlatAppearance.BorderSize = 0;
             this.btnSelectPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSelectPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectPrevious.Image = global::AgOpenGPS.Properties.Resources.ArrowLeft;
-            this.btnSelectPrevious.Location = new System.Drawing.Point(697, 409);
+            this.btnSelectPrevious.Location = new System.Drawing.Point(686, 409);
             this.btnSelectPrevious.Name = "btnSelectPrevious";
             this.btnSelectPrevious.Size = new System.Drawing.Size(95, 95);
             this.btnSelectPrevious.TabIndex = 5;
+            this.btnSelectPrevious.Text = "Previous";
+            this.btnSelectPrevious.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSelectPrevious.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSelectPrevious.UseVisualStyleBackColor = false;
             this.btnSelectPrevious.Click += new System.EventHandler(this.btnSelectPrevious_Click);
             // 
@@ -264,7 +291,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Build Boundary From Tracks";
-            this.TopMost = false;
             this.Load += new System.EventHandler(this.FormBuildBoundaryFromTracks_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

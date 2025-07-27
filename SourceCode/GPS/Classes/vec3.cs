@@ -57,10 +57,6 @@ using System.Globalization;
     {
         public double easting;
         public double northing;
-        public override string ToString()
-        {
-            return $"E={easting:F2}, N={northing:F2}";
-        }
 
     public vec2(double easting, double northing)
         {

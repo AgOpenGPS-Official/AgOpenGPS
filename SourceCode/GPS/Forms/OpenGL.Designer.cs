@@ -678,6 +678,11 @@ namespace AgOpenGPS
 
             }
         }
+        public void InvalidateOpenGL()
+        {
+            oglMain.Invalidate();
+        }
+
 
         private int bbCounter = 0;
 
