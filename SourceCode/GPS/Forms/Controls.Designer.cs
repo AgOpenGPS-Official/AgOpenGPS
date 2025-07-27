@@ -796,23 +796,22 @@ namespace AgOpenGPS
         }
         private void boundariesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isJobStarted)
-            {
-                DialogResult diaRes = DialogResult.None;
+            if (!isJobStarted) return;
 
-                using (var form = new FormBoundary(this))
+            using (var boundaryForm = new FormBoundary(this))
+            {
+                var result = boundaryForm.ShowDialog(this);
+
+                if (result == DialogResult.OK)
                 {
-                    if (form.ShowDialog(this) == DialogResult.OK)
-                    {
-                        Form form2 = new FormBoundaryPlayer(this);
-                        form2.Show(this);
-                    }
-                    diaRes = form.DialogResult;
+                    var boundaryPlayer = new FormBoundaryPlayer(this);
+                    boundaryPlayer.FormClosed += (s, args) => toolStripBtnFieldTools.Enabled = true;
+                    toolStripBtnFieldTools.Enabled = false;
+                    boundaryPlayer.Show(this);
                 }
-                if (diaRes == DialogResult.Yes)
+                else if (result == DialogResult.Yes)
                 {
-                    var form3 = new FormMap(this);
-                    form3.Show(this);
+                    new FormMap(this).Show(this);
                 }
             }
 
