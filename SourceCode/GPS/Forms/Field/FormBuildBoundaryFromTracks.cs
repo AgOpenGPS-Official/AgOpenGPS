@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AgOpenGPS.Classes;
@@ -34,6 +33,7 @@ namespace AgOpenGPS.Forms.Field
         private bool _redrawPending;
 
 
+
         #endregion
 
         #region Constructor
@@ -62,22 +62,29 @@ namespace AgOpenGPS.Forms.Field
         private void LoadTracks()
         {
             _trackList.Clear();
+            var tempTrackList = new List<CTrk>();
+            var originalTrackList = _mf.trk.gArr;
 
-            var (tracks, error) = CTrackLineReader.LoadTrackLines(_mf.currentFieldDirectory);
-
-            if (error != null)
+            try
             {
-                _mf.TimedMessageBox(3000, "Track Load Error", error);
-                return;
-            }
+                _mf.trk.gArr = tempTrackList;
+                _mf.FileLoadTracks();
 
-            if (tracks.Count == 0)
+                if (tempTrackList.Count == 0)
+                {
+                    _mf.TimedMessageBox(3000, "Track Info", "No tracks found.");
+                    return;
+                }
+                _trackList.AddRange(tempTrackList);
+            }
+            catch (Exception ex)
             {
-                _mf.TimedMessageBox(3000, "Track Info", "No tracks found.");
-                return;
+                _mf.TimedMessageBox(3000, "Track Load Error", ex.Message);
             }
-
-            _trackList.AddRange(tracks);
+            finally
+            {
+                _mf.trk.gArr = originalTrackList;
+            }
         }
         #endregion
 
