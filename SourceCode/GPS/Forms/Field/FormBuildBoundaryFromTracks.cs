@@ -105,7 +105,6 @@ namespace AgOpenGPS.Forms.Field
             _showTrimmedOnly = false;
             _selectedTracks.Clear();
             _selectedTracks.AddRange(_trackList);
-            btnBuildBoundary.Enabled = false;
             btnSave.Enabled = false;
         }
 
@@ -222,7 +221,6 @@ namespace AgOpenGPS.Forms.Field
             var trk = _activeTrack;
             if (trk == null) return;
 
-            btnBuildBoundary.Enabled = true;
             _showTrimmedOnly = false;
 
             try
@@ -326,21 +324,17 @@ namespace AgOpenGPS.Forms.Field
         #region View Management
         private void UpdateViewBounds()
         {
-            ResetViewBounds();
             CalculateViewBounds();
             ApplyViewMargins();
         }
 
-        private void ResetViewBounds()
+        private void CalculateViewBounds()
         {
             _viewLeft = double.PositiveInfinity;
             _viewRight = double.NegativeInfinity;
             _viewTop = double.NegativeInfinity;
             _viewBottom = double.PositiveInfinity;
-        }
 
-        private void CalculateViewBounds()
-        {
             foreach (var trk in _selectedTracks)
             {
                 if (trk.mode == TrackMode.AB)
@@ -355,7 +349,8 @@ namespace AgOpenGPS.Forms.Field
                 }
             }
 
-            if (double.IsInfinity(_viewLeft))
+            if (double.IsInfinity(_viewLeft) || double.IsInfinity(_viewRight) ||
+                double.IsInfinity(_viewTop) || double.IsInfinity(_viewBottom))
             {
                 SetDefaultViewBounds();
             }
