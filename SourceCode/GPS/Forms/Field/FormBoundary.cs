@@ -452,6 +452,8 @@ namespace AgOpenGPS
 
             var form = new FormBuildBoundaryFromTracks(mf, this);
             form.ShowDialog();
+            isClosing = true;
+            Close();
 
 
         }   

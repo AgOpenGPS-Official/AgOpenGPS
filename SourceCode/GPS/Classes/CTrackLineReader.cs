@@ -1,5 +1,4 @@
-﻿using AgOpenGPS;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,17 +7,16 @@ namespace AgOpenGPS.Classes
 {
     internal static class CTrackLineReader
     {
-        public static List<CTrk> LoadTrackLines(string fieldDirectory, out string error)
+        public static (List<CTrk> tracks, string error) LoadTrackLines(string fieldDirectory)
         {
             var result = new List<CTrk>();
-            error = null;
+            string error = null;
 
             string trackFilePath = Path.Combine(RegistrySettings.fieldsDirectory, fieldDirectory, "TrackLines.txt");
 
             if (!File.Exists(trackFilePath))
             {
-                error = "TrackLines.txt not found.";
-                return result;
+                return (result, "TrackLines.txt not found.");
             }
 
             try
@@ -28,8 +26,7 @@ namespace AgOpenGPS.Classes
 
                 if (lines.Length == 0 || !lines[0].StartsWith("$TrackLines"))
                 {
-                    error = "Invalid or missing header in TrackLines.txt.";
-                    return result;
+                    return (result, "Invalid or missing header in TrackLines.txt.");
                 }
 
                 index++; // Skip $TrackLines
@@ -79,7 +76,7 @@ namespace AgOpenGPS.Classes
                 error = $"Error reading TrackLines.txt: {ex.Message}";
             }
 
-            return result;
+            return (result, error);
         }
 
         private static vec2 ParseVec2(string line)

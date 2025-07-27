@@ -31,7 +31,8 @@ namespace AgOpenGPS.Forms.Field
         private double _viewLeft, _viewRight, _viewTop, _viewBottom;
         private bool _showTrimmedOnly;
         private Form _parentForm;
-        private readonly Form _parentForm;
+        private bool _redrawPending;
+
 
         #endregion
 
@@ -62,17 +63,22 @@ namespace AgOpenGPS.Forms.Field
         {
             _trackList.Clear();
 
-            var tracks = CTrackLineReader.LoadTrackLines(_mf.currentFieldDirectory, out string error);
+            var (tracks, error) = CTrackLineReader.LoadTrackLines(_mf.currentFieldDirectory);
 
-            if (!string.IsNullOrEmpty(error) || tracks.Count == 0)
+            if (error != null)
             {
-                _mf.TimedMessageBox(3000, "Track Load Error", string.IsNullOrEmpty(error) ? "No tracks found." : error);
+                _mf.TimedMessageBox(3000, "Track Load Error", error);
+                return;
+            }
+
+            if (tracks.Count == 0)
+            {
+                _mf.TimedMessageBox(3000, "Track Info", "No tracks found.");
                 return;
             }
 
             _trackList.AddRange(tracks);
         }
-
         #endregion
 
         #region Form Events
@@ -395,6 +401,7 @@ namespace AgOpenGPS.Forms.Field
 
         private void InitializeGL()
         {
+            glControlPreview.MakeCurrent(); // Ensure the GL context is active
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -405,13 +412,13 @@ namespace AgOpenGPS.Forms.Field
 
         private void glControlPreview_Resize(object sender, EventArgs e)
         {
+            glControlPreview.MakeCurrent();
             SetupViewport();
             RequestRedraw();
         }
 
         private void SetupViewport()
         {
-            glControlPreview.MakeCurrent();
             GL.Viewport(0, 0, glControlPreview.Width, glControlPreview.Height);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
@@ -672,24 +679,12 @@ namespace AgOpenGPS.Forms.Field
             _mf.bnd.bndList.Clear();
             _mf.bnd.bndList.Add(boundary);
             _mf.bnd.BuildTurnLines();
-_mf.InvalidateOpenGL();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             SaveBoundary();
-            BeginInvoke(new Action(() =>
-            {
-                if (_parentForm is FormBoundary boundaryForm)
-                {
-                    boundaryForm.GetType().GetField("isClosing", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.SetValue(boundaryForm, true);
-
-                    boundaryForm.Close();
-                }
-
-                Close();
-            }));
+            Close();
 
 
         }
@@ -729,18 +724,7 @@ _mf.InvalidateOpenGL();
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(() =>
-            {
-                if (_parentForm is FormBoundary boundaryForm)
-                {
-                    boundaryForm.GetType().GetField("isClosing", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                        ?.SetValue(boundaryForm, true);
-
-                    boundaryForm.Close();
-                }
-
-                Close();
-            }));
+            Close();
         }
 
         #endregion
