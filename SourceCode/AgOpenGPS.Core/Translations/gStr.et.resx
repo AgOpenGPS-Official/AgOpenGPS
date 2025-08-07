@@ -1,0 +1,1197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Joonesta AB - Alustamiseks klõpsa piiril kahel punktil</value>
+  </data>
+  <data name="gsABline" xml:space="preserve">
+    <value>AB-joon</value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>AD-muundur</value>
+  </data>
+  <data name="gsAOGMenu" xml:space="preserve">
+    <value>AOG menüü</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
+  </data>
+  <data name="gsAbout" xml:space="preserve">
+    <value>Tarkvara kohta...</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
+  <data name="gsActionHasBeenCancelled" xml:space="preserve">
+    <value>Toiming on tühistatud</value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>Aktiveeri</value>
+  </data>
+  <data name="gsActual" xml:space="preserve">
+    <value>Tegelik</value>
+  </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>Loo täiustatud tehnorajad</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Ma nõustun tingimustega</value>
+  </data>
+  <data name="gsAgressiveness" xml:space="preserve">
+    <value>Agresiivsus</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Kuva kõiki sätteid</value>
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>Alfa</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antenni kõrgus</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Antenni nihe
+</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>Töödeldud</value>
+  </data>
+  <data name="gsArea" xml:space="preserve">
+    <value>Pindala</value>
+  </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>Puudutage vasakul pool nuppe, mida soovite menüüs kuvada (paremal pool).
+
+Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Agregaadi tüüp</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Automaatne</value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value>Auto lülita välja AgIO</value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value>Auto käivita AgIO</value>
+  </data>
+  <data name="gsAutoSteer" xml:space="preserve">
+    <value>Automaatne roolimine</value>
+  </data>
+  <data name="gsAutoSteerConfiguration" xml:space="preserve">
+    <value>Automaatse roolimise konfiguratsioon</value>
+  </data>
+  <data name="gsAutoSteerPort" xml:space="preserve">
+    <value>Automaatse roolimise port</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto topelt &lt;&gt; parandus</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Lülita kiirus (km/h)</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>Taust</value>
+  </data>
+  <data name="gsBasedOnField" xml:space="preserve">
+    <value>Põllu põhjal</value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Alumine menüü</value>
+  </data>
+  <data name="gsBoundary" xml:space="preserve">
+    <value>Põllupiir</value>
+  </data>
+  <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
+    <value>Põllu piirijoontefail on vigane</value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Heledus</value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>Ehita</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Ehita ümber</value>
+  </data>
+  <data name="gsButFieldIsLoaded" xml:space="preserve">
+    <value>Aga põld on avatud</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Nupuvalija</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>Kaamera käitumine</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Tühista</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Keskel</value>
+  </data>
+  <data name="gsCentimeters" xml:space="preserve">
+    <value>Sentimeeter</value>
+  </data>
+  <data name="gsCharts" xml:space="preserve">
+    <value>Graafikud</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Kontrollige uuendusi aadressil:
+</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Vali</value>
+  </data>
+  <data name="gsChooseADifferentField" xml:space="preserve">
+    <value>Vali mõni muu põld</value>
+  </data>
+  <data name="gsChooseADifferentName" xml:space="preserve">
+    <value>Vali mõni muu nimi</value>
+  </data>
+  <data name="gsChooseBuildDifferentone" xml:space="preserve">
+    <value>Vali või ehita muu</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Lõika joont</value>
+  </data>
+  <data name="gsClose" xml:space="preserve">
+    <value>Sulge</value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value>Kõigepealt sulge kõik aknad</value>
+  </data>
+  <data name="gsCloseFieldFirst" xml:space="preserve">
+    <value>Kõigepealt sulge põld</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Piksel</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Värvivalija</value>
+  </data>
+  <data name="gsColors" xml:space="preserve">
+    <value>Värvid</value>
+  </data>
+  <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
+    <value>Kustuta põllupiir täielikult</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>Konfiguratsioon</value>
+  </data>
+  <data name="gsContourFileIsCorrupt" xml:space="preserve">
+    <value>Kontuurfail on vigane</value>
+  </data>
+  <data name="gsContourOn" xml:space="preserve">
+    <value>Kontuur sees</value>
+  </data>
+  <data name="gsCouldntGenerateValidPath" xml:space="preserve">
+    <value>Kehtiv töökäik on puudu</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% Töödeldud</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Loo</value>
+  </data>
+  <data name="gsCreateABoundaryFirst" xml:space="preserve">
+    <value>Kõigepealt loo põllupiir</value>
+  </data>
+  <data name="gsCreateNewField" xml:space="preserve">
+    <value>Loo uus põld</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>Loo uus põld ISO-XML-ist</value>
+  </data>
+  <data name="gsCurrent" xml:space="preserve">
+    <value>Praegune</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Praegune pöördeandur</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Kurv</value>
+  </data>
+  <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
+    <value>Kurvifail on vigane</value>
+  </data>
+  <data name="gsCurveNotOn" xml:space="preserve">
+    <value>Kurv pole sees</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>Päev</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>---Surnud tsoon---</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>Vaikimisi</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Kustuta</value>
+  </data>
+  <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
+    <value>Kustuta kõik sektsioonid ja kontuurid</value>
+  </data>
+  <data name="gsDeleteAppliedArea" xml:space="preserve">
+    <value>Kustuta töödeldud pindala</value>
+  </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>See toiming kustutab kõik põllupiirid. Kas te soovite jätkata?</value>
+  </data>
+  <data name="gsDeleteContourPaths" xml:space="preserve">
+    <value>Kustuta kontuuri rajad</value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>Kustuta põld</value>
+  </data>
+  <data name="gsDeleteForSure" xml:space="preserve">
+    <value>Kustuta kindlasti?</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Läbimõõt</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Otsene</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Suunamärgid</value>
+  </data>
+  <data name="gsDirectories" xml:space="preserve">
+    <value>Kataloogid</value>
+  </data>
+  <data name="gsDirectoryExists" xml:space="preserve">
+    <value>Kataloog on olemas</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Ma ei nõustu tingimustega</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Arutelud aadressil:</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Näita</value>
+  </data>
+  <data name="gsDistance" xml:space="preserve">
+    <value>Distants:</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Distants lippuni</value>
+  </data>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>Sõida sisse</value>
+  </data>
+  <data name="gsDriveThru" xml:space="preserve">
+    <value>Sõida läbi</value>
+  </data>
+  <data name="gsDriving" xml:space="preserve">
+    <value>Sõitma</value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>Topelt antenni sätted</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Topelt positsiooni antenn on paremal pool</value>
+  </data>
+  <data name="gsEast" xml:space="preserve">
+    <value>Ida</value>
+  </data>
+  <data name="gsEditABLine" xml:space="preserve">
+    <value>Muuda AB-joont</value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Muuda värvi</value>
+  </data>
+  <data name="gsEditFieldName" xml:space="preserve">
+    <value>Muuda põllu nime</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Kõrguslogi</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Lülita sisse</value>
+  </data>
+  <data name="gsEncoderCounts" xml:space="preserve">
+    <value>Pulss</value>
+  </data>
+  <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
+    <value>Sisesta kordinaadi simulaatori jaoks</value>
+  </data>
+  <data name="gsEnterFieldName" xml:space="preserve">
+    <value>Sisesta põllu nimi</value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Sisesta nimi</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Sisesta rekordi nimi</value>
+  </data>
+  <data name="gsEnterSimCoords" xml:space="preserve">
+    <value>Sisesta simulaatori kordinaadid</value>
+  </data>
+  <data name="gsError" xml:space="preserve">
+    <value>Viga</value>
+  </data>
+  <data name="gsErrorreadingKML" xml:space="preserve">
+    <value>KML-i lugemisel tekkis viga</value>
+  </data>
+  <data name="gsExit" xml:space="preserve">
+    <value>Sulge</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>Windowsi väljumine:</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Lisa töökäike</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Kiire</value>
+  </data>
+  <data name="gsField" xml:space="preserve">
+    <value>Põld</value>
+  </data>
+  <data name="gsFieldFileIsCorrupt" xml:space="preserve">
+    <value>Põllufail on vigane</value>
+  </data>
+  <data name="gsFieldIsOpen" xml:space="preserve">
+    <value>Põld on avatud</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Põllumenüü</value>
+  </data>
+  <data name="gsFieldNotOpen" xml:space="preserve">
+    <value>Põld pole avatud</value>
+  </data>
+  <data name="gsFieldPicker" xml:space="preserve">
+    <value>Ava fail</value>
+  </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Põllu tekstuur</value>
+  </data>
+  <data name="gsFileError" xml:space="preserve">
+    <value>Faili viga</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Parandusest paranduseni distants</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>RTK paranduse alarm</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarm peatab automaatse roolimise</value>
+  </data>
+  <data name="gsFlagByLatLon" xml:space="preserve">
+    <value>Lipp laius- ja pikkuskraadi järgi</value>
+  </data>
+  <data name="gsFlagFileIsCorrupt" xml:space="preserve">
+    <value>Lipufail on vigane</value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>Loo lippe</value>
+  </data>
+  <data name="gsForNow" xml:space="preserve">
+    <value>Praeguseks</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>Lippud</value>
+  </data>
+  <data name="gsFromExisting" xml:space="preserve">
+    <value>Olemasolevast</value>
+  </data>
+  <data name="gsFromKml" xml:space="preserve">
+    <value>KML-ist</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Vahe</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Miinimum GPS aste</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Ruudustik</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Automaatne roolimine peatatud</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>Riistvara sõnumid</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>Suund</value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value>Suuna graafik</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Suuna nihe (kraad)</value>
+  </data>
+  <data name="gsHeadland" xml:space="preserve">
+    <value>Põllu ots</value>
+  </data>
+  <data name="gsHeadlandForm" xml:space="preserve">
+    <value>Loo ja muuda põllu otsa</value>
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value>Abi</value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Haakekonksu pikkus</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Hoia</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>Hüdrauliline tõste</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>Hüdraulilise tõste konfiguratsioon</value>
+  </data>
+  <data name="gsIMUAxis" xml:space="preserve">
+    <value>IMU telje vahetus</value>
+  </data>
+  <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
+    <value>Kui vale suund siis vajuta sõidukit</value>
+  </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Pilt on puudu:</value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>Fusioon</value>
+  </data>
+  <data name="gsInches" xml:space="preserve">
+    <value>Toll</value>
+  </data>
+  <data name="gsInner" xml:space="preserve">
+    <value>Sisemine</value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>Integraal</value>
+  </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>See suurendab aeglaselt roolinurka, et vähendada ristsuunalist viga.</value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>Pööra relee ümber</value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value>Pööra mootori suund ümber</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>Pööra releed ümber</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Pööra kallak ümber</value>
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value>Pööra WAS ümber</value>
+  </data>
+  <data name="gsKMH" xml:space="preserve">
+    <value>kmh</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Klaviatuur</value>
+  </data>
+  <data name="gsLanguage" xml:space="preserve">
+    <value>Keel</value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>Laius+Pikkus</value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>Külgmine</value>
+  </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value>Laiuskraad</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Vasakule</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>Vähem</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Valgusriba</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Sile joon</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>Joone laius</value>
+  </data>
+  <data name="gsLongtitude" xml:space="preserve">
+    <value>Pikkuskraad</value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value>Vaata ette:</value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value>Langetamisaeg</value>
+  </data>
+  <data name="gsMPH" xml:space="preserve">
+    <value>mph</value>
+  </data>
+  <data name="gsMachinePort" xml:space="preserve">
+    <value>Masina port</value>
+  </data>
+  <data name="gsManual" xml:space="preserve">
+    <value>Manuaal </value>
+  </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>Manuaalsed pöörded</value>
+  </data>
+  <data name="gsMapForBackground" xml:space="preserve">
+    <value>Lisa Bingi kaart taustana</value>
+  </data>
+  <data name="gsMaxLimit" xml:space="preserve">
+    <value>Max limiit</value>
+  </data>
+  <data name="gsMaxSpeed" xml:space="preserve">
+    <value>Max kiirus</value>
+  </data>
+  <data name="gsMaxSteerAngle" xml:space="preserve">
+    <value>Max roolinurk</value>
+  </data>
+  <data name="gsMeters" xml:space="preserve">
+    <value>Meetrid</value>
+  </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value>Miinimum kiirus</value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value>Miinimum, et liikuda</value>
+  </data>
+  <data name="gsMissingABLinesFile" xml:space="preserve">
+    <value>AB-joonte fail on puudu</value>
+  </data>
+  <data name="gsMissingBoundaryFile" xml:space="preserve">
+    <value>Põllupiiri fail on puudu</value>
+  </data>
+  <data name="gsMissingContourFile" xml:space="preserve">
+    <value>Kontuurifail on puudu</value>
+  </data>
+  <data name="gsMissingFlagsFile" xml:space="preserve">
+    <value>Lipufail on puudu</value>
+  </data>
+  <data name="gsMissingSectionFile" xml:space="preserve">
+    <value>Sektsioonifail on puudu</value>
+  </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>Režiim</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>Rohkem</value>
+  </data>
+  <data name="gsMotorDriver" xml:space="preserve">
+    <value>Mootorijuhi tüüp</value>
+  </data>
+  <data name="gsMultiColorSections" xml:space="preserve">
+    <value>Mitmevärviline</value>
+  </data>
+  <data name="gsN_East" xml:space="preserve">
+    <value>Kirre</value>
+  </data>
+  <data name="gsN_West" xml:space="preserve">
+    <value>Loe</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Uus vaikimisist</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Järgmine töökäik</value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value>Öö</value>
+  </data>
+  <data name="gsNoABLineActive" xml:space="preserve">
+    <value>Pole aktiivset AB-joont</value>
+  </data>
+  <data name="gsNoBoundary" xml:space="preserve">
+    <value>Pole ühtegi põllupiirt</value>
+  </data>
+  <data name="gsNoFieldsFound" xml:space="preserve">
+    <value>Pole ühtegi põldu</value>
+  </data>
+  <data name="gsNoGuidanceLines" xml:space="preserve">
+    <value>Pole ühtegi töökäiku</value>
+  </data>
+  <data name="gsNone" xml:space="preserve">
+    <value>Mitte ühtegi</value>
+  </data>
+  <data name="gsNorth" xml:space="preserve">
+    <value>Põhi</value>
+  </data>
+  <data name="gsNothingDeleted" xml:space="preserve">
+    <value>Mitte midagi ei kustutatud</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Nihe:</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Nihutamise distants</value>
+  </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>Liiguta viiterada</value>
+  </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>Väljas</value>
+  </data>
+  <data name="gsOffset" xml:space="preserve">
+    <value>Nihe</value>
+  </data>
+  <data name="gsOffsetFix" xml:space="preserve">
+    <value>Nihke parandus</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>Sees</value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>Sisselülitusviivitus</value>
+  </data>
+  <data name="gsOnOff" xml:space="preserve">
+    <value>Sees/väljas</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Läbipaistvus:</value>
+  </data>
+  <data name="gsOpen" xml:space="preserve">
+    <value>Ava</value>
+  </data>
+  <data name="gsOuter" xml:space="preserve">
+    <value>Välimine</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Ülekatte:</value>
+  </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>Ülekatte / vahe</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>Ülevõtt</value>
+  </data>
+  <data name="gsOvershootReduction" xml:space="preserve">
+    <value>Ületamise vähendamine</value>
+  </data>
+  <data name="gsPasses" xml:space="preserve">
+    <value>Käigud</value>
+  </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Kurvi endine lõpp</value>
+  </data>
+  <data name="gsPause" xml:space="preserve">
+    <value>Paus</value>
+  </data>
+  <data name="gsPivot" xml:space="preserve">
+    <value>Pöördepunkt</value>
+  </data>
+  <data name="gsPivotDistance" xml:space="preserve">
+    <value>Pöördekaugus</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Taimepop</value>
+  </data>
+  <data name="gsPleaseEnterABLine" xml:space="preserve">
+    <value>Palun sisestage AB-joon</value>
+  </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value>Palun oodake...</value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
+    <value>Punkt</value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value>Punktid</value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value>Punkte töödelda</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Hulknurgad</value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value>Voolukatkestuse väljalülitamine</value>
+  </data>
+  <data name="gsPresetColor" xml:space="preserve">
+    <value>Vali eelseadistatud värv</value>
+  </data>
+  <data name="gsPressureTurnSensor" xml:space="preserve">
+    <value>Rõhu-pöördeandur</value>
+  </data>
+  <data name="gsPreview" xml:space="preserve">
+    <value>Eelvaade</value>
+  </data>
+  <data name="gsProblemMakingPath" xml:space="preserve">
+    <value>Probleem raja tegemisel</value>
+  </data>
+  <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
+    <value>Programm sulgeb. Palun tehke restart</value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value>Proportsionaalne võimendus</value>
+  </data>
+  <data name="gsQuickAB" xml:space="preserve">
+    <value>Kiire AB-joone looja</value>
+  </data>
+  <data name="gsRaiseTime" xml:space="preserve">
+    <value>Tõste aeg</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Kesm. tööaeg</value>
+  </data>
+  <data name="gsReallyResetEverything" xml:space="preserve">
+    <value>Lähtesta kõik kindlasti</value>
+  </data>
+  <data name="gsRecord" xml:space="preserve">
+    <value>Salvesta</value>
+  </data>
+  <data name="gsRecordedPathFileIsCorrupt" xml:space="preserve">
+    <value>Salvestatud rajafail on vigane</value>
+  </data>
+  <data name="gsRecordedPathMenu" xml:space="preserve">
+    <value>Salvestatud töökäik</value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value>Vähendatud punktid</value>
+  </data>
+  <data name="gsRemain" xml:space="preserve">
+    <value>Jäänud</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Eemalada nihe</value>
+  </data>
+  <data name="gsReset" xml:space="preserve">
+    <value>Lähtesta</value>
+  </data>
+  <data name="gsResetAll" xml:space="preserve">
+    <value>Lähtesta kõik</value>
+  </data>
+  <data name="gsResetAllForSure" xml:space="preserve">
+    <value>Lähtesta kõik kindlasti?</value>
+  </data>
+  <data name="gsResume" xml:space="preserve">
+    <value>Jätka</value>
+  </data>
+  <data name="gsReverseDistance" xml:space="preserve">
+    <value>Tagurduskaugus</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Paremale</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Parem menüü</value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value>Kallakufilter</value>
+  </data>
+  <data name="gsS_East" xml:space="preserve">
+    <value>Kagu</value>
+  </data>
+  <data name="gsS_West" xml:space="preserve">
+    <value>Edel</value>
+  </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Kõik valmis. Sulgemine toimub nüüd..</value>
+  </data>
+  <data name="gsSaveAndReturn" xml:space="preserve">
+    <value>Salvesta ja mine tagasi</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Aeg õlleks! Headaega!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Põllu salvestamine..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Põllu parameetrite salvestamine...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Põllu parameetrid salvestatud.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Põld salvestatud kohalikult.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Sulgemise lõpetamine..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Sätete salvestamine...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Sätted salvestatud.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Üleslaadimine õnnestus.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Üleslaadimine ebaõnnestus.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Põllu üleslaadimine AgShare'i</value>
+  </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Ekraani nupud</value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value>Määra sektsiooni värvid</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Sektsiooni jooned</value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Sektsioone:</value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value>Vali nupud</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Vali eelseadistatud värv</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Saata + salvesta</value>
+  </data>
+  <data name="gsSentToMachineModule" xml:space="preserve">
+    <value>Saadetud masina moodulile</value>
+  </data>
+  <data name="gsSetPoint" xml:space="preserve">
+    <value>Seadepunkt</value>
+  </data>
+  <data name="gsShiftGPSPosition" xml:space="preserve">
+    <value>Nihuta GPS-positsiooni (cm)</value>
+  </data>
+  <data name="gsShutdown" xml:space="preserve">
+    <value>Lülita välja</value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value>Väljalülitamine:</value>
+  </data>
+  <data name="gsSideHillComp" xml:space="preserve">
+    <value>Külgkalde kompenseerimine / kraad</value>
+  </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Lihtsate tehnoradade looja</value>
+  </data>
+  <data name="gsSimulatorOn" xml:space="preserve">
+    <value>Simulaator sees</value>
+  </data>
+  <data name="gsSingleAntennaSetting" xml:space="preserve">
+    <value>Üksik antenni sätted</value>
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value>Aeglane</value>
+  </data>
+  <data name="gsSlowDownBelow" xml:space="preserve">
+    <value>Aeglustage alla</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Sile</value>
+  </data>
+  <data name="gsSmoothABCurve" xml:space="preserve">
+    <value>Sile AB-kurv</value>
+  </data>
+  <data name="gsSort" xml:space="preserve">
+    <value>Sorteeri</value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Helid</value>
+  </data>
+  <data name="gsSouth" xml:space="preserve">
+    <value>Lõuna</value>
+  </data>
+  <data name="gsSpacing" xml:space="preserve">
+    <value>Vahe (cm)</value>
+  </data>
+  <data name="gsSpeedFactor" xml:space="preserve">
+    <value>Kiirustegur</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Spidomeeter</value>
+  </data>
+  <data name="gsStart" xml:space="preserve">
+    <value>Alusta</value>
+  </data>
+  <data name="gsStartDeleteABoundary" xml:space="preserve">
+    <value>Alusta või kustuta põllupiir</value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Alusta täisekraanil</value>
+  </data>
+  <data name="gsStartNewField" xml:space="preserve">
+    <value>Alusta uus põld</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Staatus</value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Rooli kraad</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Roolimisriba</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Rooli graafik</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Nupp - Vajuta sisse. Vajuta välja
+Lüliti - Vajuta sisse, vabasta välja</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>Väline lülitus</value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value>Rooli kui tagurdad</value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value>Roolireaktsioon</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Roolilüliti</value>
+  </data>
+  <data name="gsSteerWizard" xml:space="preserve">
+    <value>Rooli viisard</value>
+  </data>
+  <data name="gsStopRecordPauseBoundary" xml:space="preserve">
+    <value>Lõpeta salvesta pausi põllupiir</value>
+  </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Svenni nool</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Versiooni tingimused: </value>
+  </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value>AgOpenGPS on rangelt hariduslik tarkvara, mille abil saab õppida juhtimissüsteeme, GPS-lauseid ja masina juhtimise teoreetilisi rakendusi.
+
+Seda ei tohi mingil juhul kasutada päris sõidukitel. Simulaator võimaldab õpilasel masina juhtimist ohutult proovida.
+
+Tarkvaras puuduvad ohutussüsteemid.
+
+KASUTA OMAL RISKIL.</value>
+  </data>
+  <data name="gsToFile" xml:space="preserve">
+    <value>Failile</value>
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>Liiga kiire</value>
+  </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Agregaat vasakul</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Agregaadi nihke suund</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Agregaat paremal</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Tööriistade menüü</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Kokku</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Töökäik</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Rajad</value>
+  </data>
+  <data name="gsTramLines" xml:space="preserve">
+    <value>Tehnorajad</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Tehnoraja laius:</value>
+  </data>
+  <data name="gsTurnABCurveOn" xml:space="preserve">
+    <value>Lülita AB-kurv sisse</value>
+  </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Lülita välja relee</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Lülita välja salvestatud töökäik</value>
+  </data>
+  <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
+    <value>Lülita sisse AB-joone kontuur</value>
+  </data>
+  <data name="gsTurnSensor" xml:space="preserve">
+    <value>Pöördeandur</value>
+  </data>
+  <data name="gsUnit" xml:space="preserve">
+    <value>Ühikud:</value>
+  </data>
+  <data name="gsUnits" xml:space="preserve">
+    <value>Ühikud</value>
+  </data>
+  <data name="gsUseSelected" xml:space="preserve">
+    <value>Kasuta valitud</value>
+  </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value>Kasutaja 1</value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value>Kasutaja 2</value>
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value>Kasutaja 3</value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value>Kasutaja 4</value>
+  </data>
+  <data name="gsUturn" xml:space="preserve">
+    <value>U-pööre</value>
+  </data>
+  <data name="gsUturnCompensation" xml:space="preserve">
+    <value>U-pöörde kompensatsioon</value>
+  </data>
+  <data name="gsUturnExtension" xml:space="preserve">
+    <value>Määra pikenduse pikkuseks 2x või 3x raadius</value>
+  </data>
+  <data name="gsUturnSmooth" xml:space="preserve">
+    <value>Määra silumine 3-4x raadiusega</value>
+  </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value>Sõiduki tüüp:</value>
+  </data>
+  <data name="gsWasZero" xml:space="preserve">
+    <value>WAS null</value>
+  </data>
+  <data name="gsWebCam" xml:space="preserve">
+    <value>Veebikaamera</value>
+  </data>
+  <data name="gsWest" xml:space="preserve">
+    <value>Lääs</value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Teljevahe:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Laius:</value>
+  </data>
+  <data name="gsWindowsStillOpen" xml:space="preserve">
+    <value>Aknad on veel avatud</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Viisard</value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value>Viisardid</value>
+  </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Töölüliti</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Laius</value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value>Töödeldud</value>
+  </data>
+  <data name="gsXTEChart" xml:space="preserve">
+    <value>XTE graafik</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Null külgkalle</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Tsoon</value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Tsoonid</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Suumi sisse</value>
+  </data>
+</root>

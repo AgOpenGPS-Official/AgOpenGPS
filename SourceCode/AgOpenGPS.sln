@@ -91,11 +91,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_ResXSortingComparison = Ordinal
 		SolutionGuid = {31C86FEF-A77A-49A7-9088-8E0D8AD2ACA5}
-		RESX_ShowErrorsInErrorList = False
-		RESX_SortFileContentOnSave = True
-		RESX_NeutralResourcesLanguage = en-US
-		RESX_ConfirmAddLanguageFile = True
 	EndGlobalSection
 EndGlobal

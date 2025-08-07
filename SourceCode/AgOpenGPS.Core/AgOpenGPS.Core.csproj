@@ -143,6 +143,9 @@
       <LastGenOutput>gStr.es.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Translations\gStr.et.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Translations\gStr.fi.resx">
       <LastGenOutput>gStr.fi.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
