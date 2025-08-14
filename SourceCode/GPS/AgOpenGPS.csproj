@@ -18,10 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\ColorPicker.dll</HintPath>
-    </Reference>
     <Reference Include="RepeatButtonControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\RepeatButtonControl.dll</HintPath>
@@ -46,6 +42,7 @@
   <ItemGroup>
     <PackageReference Include="Control.Draggable" Version="1.0.5049.269" />
     <PackageReference Include="Dev4Agriculture.ISO11783.ISOXML" Version="0.23.1.1" />
+    <PackageReference Include="MechanikaDesign.WinForms.UI.ColorPicker" Version="2.0.0" />
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
     <PackageReference Include="NetTopologySuite.Features" Version="2.2.0" />
     <PackageReference Include="NetTopologySuite.IO" Version="1.14.0.1" />
