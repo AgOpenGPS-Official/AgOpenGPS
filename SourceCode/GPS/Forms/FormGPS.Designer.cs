@@ -122,8 +122,8 @@ namespace AgOpenGPS
             this.webcamToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.offsetFixToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.panelSim = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSpeedDn = new ProXoft.WinForms.RepeatButton();
-            this.btnSimSpeedUp = new ProXoft.WinForms.RepeatButton();
+            this.btnSpeedDn = new AgLibrary.Controls.RepeatButton();
+            this.btnSimSpeedUp = new AgLibrary.Controls.RepeatButton();
             this.btnSimSetSpeedToZero = new System.Windows.Forms.Button();
             this.btnSimReverseDirection = new System.Windows.Forms.Button();
             this.btnSection16Man = new System.Windows.Forms.Button();
@@ -3267,8 +3267,8 @@ namespace AgOpenGPS
         private System.Windows.Forms.ToolStripMenuItem rollCheckToolStripMenuItem;
         public System.Windows.Forms.Button btnCycleLinesBk;
         private System.Windows.Forms.TableLayoutPanel panelLeft;
-        private ProXoft.WinForms.RepeatButton btnSimSpeedUp;
-        private ProXoft.WinForms.RepeatButton btnSpeedDn;
+        private AgLibrary.Controls.RepeatButton btnSimSpeedUp;
+        private AgLibrary.Controls.RepeatButton btnSpeedDn;
         private System.Windows.Forms.Label lblCurrentField;
         private System.Windows.Forms.Button btnFieldStats;
         public System.Windows.Forms.Button btnJobMenu;

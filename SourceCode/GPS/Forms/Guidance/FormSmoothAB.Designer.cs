@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSouth = new ProXoft.WinForms.RepeatButton();
-            this.btnNorth = new ProXoft.WinForms.RepeatButton();
+            this.btnSouth = new AgLibrary.Controls.RepeatButton();
+            this.btnNorth = new AgLibrary.Controls.RepeatButton();
             this.bntOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -159,8 +159,8 @@
 
         #endregion
 
-        private ProXoft.WinForms.RepeatButton btnSouth;
-        private ProXoft.WinForms.RepeatButton btnNorth;
+        private AgLibrary.Controls.RepeatButton btnSouth;
+        private AgLibrary.Controls.RepeatButton btnNorth;
         private System.Windows.Forms.Button bntOK;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;

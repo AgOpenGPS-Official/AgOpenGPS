@@ -53,7 +53,7 @@
             this.chArea = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddVehicleName = new System.Windows.Forms.Button();
-            this.btnBackSpace = new ProXoft.WinForms.RepeatButton();
+            this.btnBackSpace = new AgLibrary.Controls.RepeatButton();
             this.lblTemplateChosen = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -491,7 +491,7 @@
         private System.Windows.Forms.ColumnHeader chArea;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnAddVehicleName;
-        private ProXoft.WinForms.RepeatButton btnBackSpace;
+        private AgLibrary.Controls.RepeatButton btnBackSpace;
         private System.Windows.Forms.Label lblTemplateChosen;
     }
 }

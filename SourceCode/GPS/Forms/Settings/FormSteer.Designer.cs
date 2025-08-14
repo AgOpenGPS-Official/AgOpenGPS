@@ -161,13 +161,13 @@
             this.label55 = new System.Windows.Forms.Label();
             this.labelInvertWas = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btnExpand = new ProXoft.WinForms.RepeatButton();
+            this.btnExpand = new AgLibrary.Controls.RepeatButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnStartSA = new System.Windows.Forms.Button();
             this.btnFreeDriveZero = new System.Windows.Forms.Button();
-            this.btnSteerAngleUp = new ProXoft.WinForms.RepeatButton();
+            this.btnSteerAngleUp = new AgLibrary.Controls.RepeatButton();
             this.btnFreeDrive = new System.Windows.Forms.Button();
-            this.btnSteerAngleDown = new ProXoft.WinForms.RepeatButton();
+            this.btnSteerAngleDown = new AgLibrary.Controls.RepeatButton();
             this.hsbarSensor = new System.Windows.Forms.HScrollBar();
             this.lblhsbarSensor = new System.Windows.Forms.Label();
             this.labelReset = new System.Windows.Forms.Label();
@@ -3343,8 +3343,8 @@
         private System.Windows.Forms.Label lblSteerAngleActual;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnFreeDriveZero;
-        private ProXoft.WinForms.RepeatButton btnSteerAngleDown;
-        private ProXoft.WinForms.RepeatButton btnSteerAngleUp;
+        private AgLibrary.Controls.RepeatButton btnSteerAngleDown;
+        private AgLibrary.Controls.RepeatButton btnSteerAngleUp;
         private System.Windows.Forms.Label lblPWMDisplay;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
@@ -3435,7 +3435,7 @@
         private System.Windows.Forms.Label lblAV_Act;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label38;
-        private ProXoft.WinForms.RepeatButton btnExpand;
+        private AgLibrary.Controls.RepeatButton btnExpand;
         private System.Windows.Forms.TabControl tabSteerSettings;
         private System.Windows.Forms.TabPage tabSensors;
         private System.Windows.Forms.TabPage tabConfig;
