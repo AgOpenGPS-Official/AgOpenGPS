@@ -1,34 +1,26 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgLibrary.Logging;
-using AgOpenGPS;
-using AgOpenGPS.Classes;
-using AgOpenGPS.Core;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.ViewModels;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Forms.Profiles;
-using AgOpenGPS.Properties;
-using AgOpenGPS.Classes.AgShare.Helpers;
-using Microsoft.Win32;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Net.Sockets;
-using System.Reflection;
-using System.Resources;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Classes;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Core.ViewModels;
+using AgOpenGPS.Forms.Profiles;
+using AgOpenGPS.Properties;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS
 {
@@ -518,7 +510,7 @@ namespace AgOpenGPS
             //nmea limiter
             udpWatch.Start();
 
-            ControlExtension.Draggable(panelDrag, true);
+            panelDrag.Draggable(true);
 
             hotkeys = new char[19];
 

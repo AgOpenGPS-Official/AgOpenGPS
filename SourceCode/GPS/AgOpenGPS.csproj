@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Control.Draggable" Version="1.0.5049.269" />
     <PackageReference Include="Dev4Agriculture.ISO11783.ISOXML" Version="0.23.1.1" />
     <PackageReference Include="MechanikaDesign.WinForms.UI.ColorPicker" Version="2.0.0" />
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
