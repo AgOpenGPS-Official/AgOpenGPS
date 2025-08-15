@@ -7,19 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetTopologySuite" Version="2.6.0" />
-    <PackageReference Include="NetTopologySuite.Features" Version="2.2.0" />
-    <PackageReference Include="NetTopologySuite.IO" Version="1.14.0.1" />
-    <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="4.0.0" />
     <PackageReference Include="OpenTK" Version="3.3.3" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.4" />
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="PresentationCore" />
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <ItemGroup>
