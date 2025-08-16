@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="3.3.3" />
-    <PackageReference Include="System.Memory" Version="4.6.0" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
     <ProjectReference Include="..\AgLibrary\AgLibrary.csproj" />
   </ItemGroup>
 
