@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.cmbTileServers = new System.Windows.Forms.ComboBox();
-            this.mapControl = new System.Windows.Forms.MapControl();
             this.lblPoints = new System.Windows.Forms.Label();
             this.lblBnds = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -47,6 +45,7 @@
             this.btnDeletePoint = new System.Windows.Forms.Button();
             this.labelBoundary = new System.Windows.Forms.Label();
             this.cboxDrawMap = new System.Windows.Forms.CheckBox();
+            this.gMapControl = new GMap.NET.WindowsForms.GMapControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,46 +54,6 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // cmbTileServers
-            // 
-            this.cmbTileServers.AllowDrop = true;
-            this.cmbTileServers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cmbTileServers.DisplayMember = "Name";
-            this.cmbTileServers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTileServers.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbTileServers.FormattingEnabled = true;
-            this.cmbTileServers.Location = new System.Drawing.Point(12, 617);
-            this.cmbTileServers.Name = "cmbTileServers";
-            this.cmbTileServers.Size = new System.Drawing.Size(273, 31);
-            this.cmbTileServers.TabIndex = 462;
-            this.cmbTileServers.Tag = "";
-            this.cmbTileServers.Visible = false;
-            this.cmbTileServers.SelectedIndexChanged += new System.EventHandler(this.cmbTileServers_SelectedIndexChanged);
-            // 
-            // mapControl
-            // 
-            this.mapControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.mapControl.BackColor = System.Drawing.Color.White;
-            this.mapControl.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.mapControl.ErrorColor = System.Drawing.Color.Red;
-            this.mapControl.FitToBounds = true;
-            this.mapControl.ForeColor = System.Drawing.Color.Black;
-            this.mapControl.Location = new System.Drawing.Point(3, 3);
-            this.mapControl.Name = "mapControl";
-            this.mapControl.ShowThumbnails = true;
-            this.mapControl.Size = new System.Drawing.Size(880, 776);
-            this.mapControl.TabIndex = 464;
-            this.mapControl.ThumbnailBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.mapControl.ThumbnailForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(176)))), ((int)(((byte)(176)))));
-            this.mapControl.ThumbnailText = "Downloading...";
-            this.mapControl.TileImageAttributes = null;
-            this.mapControl.ZoomLevel = 2;
-            this.mapControl.Click += new System.EventHandler(this.mapControl_Click);
-            this.mapControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapControl_MouseMove);
-            this.mapControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.mapControl_MouseWheel);
             // 
             // lblPoints
             // 
@@ -347,6 +306,41 @@
             this.cboxDrawMap.UseVisualStyleBackColor = false;
             this.cboxDrawMap.Click += new System.EventHandler(this.cboxDrawMap_Click);
             // 
+            // gMapControl
+            // 
+            this.gMapControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gMapControl.BackColor = System.Drawing.Color.White;
+            this.gMapControl.Bearing = 0F;
+            this.gMapControl.CanDragMap = true;
+            this.gMapControl.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.gMapControl.EmptyTileColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.gMapControl.ForeColor = System.Drawing.Color.Black;
+            this.gMapControl.GrayScaleMode = false;
+            this.gMapControl.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.gMapControl.LevelsKeepInMemory = 5;
+            this.gMapControl.Location = new System.Drawing.Point(3, 3);
+            this.gMapControl.MarkersEnabled = true;
+            this.gMapControl.MaxZoom = 19;
+            this.gMapControl.MinZoom = 1;
+            this.gMapControl.MouseWheelZoomEnabled = true;
+            this.gMapControl.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            this.gMapControl.Name = "gMapControl";
+            this.gMapControl.NegativeMode = false;
+            this.gMapControl.PolygonsEnabled = true;
+            this.gMapControl.RetryLoadTile = 0;
+            this.gMapControl.RoutesEnabled = true;
+            this.gMapControl.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.gMapControl.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.gMapControl.ShowTileGridLines = false;
+            this.gMapControl.Size = new System.Drawing.Size(880, 776);
+            this.gMapControl.TabIndex = 492;
+            this.gMapControl.Zoom = 2D;
+            this.gMapControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseClick);
+            this.gMapControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseMove);
+            this.gMapControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseWheel);
+            // 
             // FormMap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,9 +349,8 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1130, 780);
             this.ControlBox = false;
+            this.Controls.Add(this.gMapControl);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.mapControl);
-            this.Controls.Add(this.cmbTileServers);
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -375,8 +368,6 @@
         #endregion
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.ComboBox cmbTileServers;
-        private System.Windows.Forms.MapControl mapControl;
         private System.Windows.Forms.Button btnGo;
         private System.Windows.Forms.Button btnDeletePoint;
         private System.Windows.Forms.Button btnAddFence;
@@ -391,5 +382,6 @@
         private System.Windows.Forms.Label labelBackground;
         private System.Windows.Forms.Label labelNewBoundary;
         private System.Windows.Forms.Label labelBoundary;
+        private GMap.NET.WindowsForms.GMapControl gMapControl;
     }
 }
