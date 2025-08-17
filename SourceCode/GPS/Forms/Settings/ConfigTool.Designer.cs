@@ -582,7 +582,7 @@ namespace AgOpenGPS
             }
 
             nudNumberOfSections.Maximum = FormGPS.MAXSECTIONS;
-            
+
             //fix ManualOffOnAuto buttons
             mf.manualBtnState = btnStates.Off;
             mf.btnSectionMasterManual.Image = Properties.Resources.ManualOff;
@@ -646,7 +646,7 @@ namespace AgOpenGPS
                 nudNumberOfSections.Value = numberOfSections;
 
                 defaultSectionWidth = Properties.Settings.Default.setTool_sectionWidthMulti;
-                nudDefaultSectionWidth.Value = (decimal)(Math.Round((defaultSectionWidth * mf.m2InchOrCm),1));
+                nudDefaultSectionWidth.Value = (decimal)(Math.Round((defaultSectionWidth * mf.m2InchOrCm), 1));
 
                 SetNudZoneMinMax();
 
@@ -701,7 +701,7 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setSection_position15 = sectionPositionArr[14];
                 Properties.Settings.Default.setSection_position16 = sectionPositionArr[15];
                 Properties.Settings.Default.setSection_position17 = sectionPositionArr[16];
-                                                                    
+
                 mf.tool.numOfSections = numberOfSections;
 
                 Properties.Settings.Default.setVehicle_numSections = mf.tool.numOfSections;
@@ -800,7 +800,7 @@ namespace AgOpenGPS
                 }
 
                 String str = "";
-                str = String.Join(",",mf.tool.zoneRanges);
+                str = String.Join(",", mf.tool.zoneRanges);
                 Properties.Settings.Default.setTool_zones = str;
 
                 mf.LineUpAllZoneButtons();
@@ -818,7 +818,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 mf.tool.zoneRanges[1] = (int)nudZone1To.Value;
-                SetNudZoneVisibility(); 
+                SetNudZoneVisibility();
             }
         }
 
@@ -887,7 +887,7 @@ namespace AgOpenGPS
 
         private void cboxNumberOfZones_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((cboxNumberOfZones.SelectedIndex+2) > (int)nudNumberOfSections.Value)
+            if ((cboxNumberOfZones.SelectedIndex + 2) > (int)nudNumberOfSections.Value)
             {
                 mf.YesMessageBox("You can't have more zones then sections");
                 cboxNumberOfZones.SelectedIndex = mf.tool.zones - 2;
@@ -1110,7 +1110,7 @@ namespace AgOpenGPS
                     mf.YesMessageBox("You can't have more zones then sections");
                     nudNumberOfSections.Value = numberOfSections;
                     return;
-                }    
+                }
                 numberOfSections = (int)nudNumberOfSections.Value;
                 SetNudZoneMinMax();
 
@@ -1120,7 +1120,7 @@ namespace AgOpenGPS
                 lblVehicleToolWidth.Text = Convert.ToString((int)(numberOfSections * defaultSectionWidth * 100 * mf.cm2CmOrIn));
                 SectionFeetInchesTotalWidthLabelUpdate();
                 FillZoneNudsWithDefaultValues();
-                SetNudZoneVisibility(); 
+                SetNudZoneVisibility();
             }
         }
 
@@ -1255,22 +1255,22 @@ namespace AgOpenGPS
                                     mf.TimedMessageBox(3000, "Too Wide", "Set to 99, Max 50 Meters");
                                     Log.EventWriter("Sections, Tool Set Too Wide");
                                     toolWidth = 0;
-                                    nudSection01.Value =  99;
-                                    nudSection02.Value =  99;
-                                    nudSection03.Value =  99;
-                                    nudSection04.Value =  99;
-                                    nudSection05.Value =  99;
-                                    nudSection06.Value =  99;
-                                    nudSection07.Value =  99;
-                                    nudSection08.Value =  99;
-                                    nudSection09.Value =  99;
-                                    nudSection10.Value =  99;
-                                    nudSection11.Value =  99;
-                                    nudSection12.Value =  99;
-                                    nudSection13.Value =  99;
-                                    nudSection14.Value =  99;
-                                    nudSection15.Value =  99;
-                                    nudSection16.Value =  99;
+                                    nudSection01.Value = 99;
+                                    nudSection02.Value = 99;
+                                    nudSection03.Value = 99;
+                                    nudSection04.Value = 99;
+                                    nudSection05.Value = 99;
+                                    nudSection06.Value = 99;
+                                    nudSection07.Value = 99;
+                                    nudSection08.Value = 99;
+                                    nudSection09.Value = 99;
+                                    nudSection10.Value = 99;
+                                    nudSection11.Value = 99;
+                                    nudSection12.Value = 99;
+                                    nudSection13.Value = 99;
+                                    nudSection14.Value = 99;
+                                    nudSection15.Value = 99;
+                                    nudSection16.Value = 99;
                                 }
                             }
                             else
@@ -1306,7 +1306,7 @@ namespace AgOpenGPS
                             item2.Visible = false;
                         }
                     }
-                }                
+                }
             }
 
             lblVehicleToolWidth.Text = Convert.ToString((int)toolWidth);
@@ -1387,8 +1387,8 @@ namespace AgOpenGPS
 
             for (int j = 1; j < 17; j++)
             {
-                if (j <= i) sectionPositionArr[j] = sectionPositionArr[j - 1] + sectionWidthArr[j-1];
-                else sectionPositionArr[j] = 0;                
+                if (j <= i) sectionPositionArr[j] = sectionPositionArr[j - 1] + sectionWidthArr[j - 1];
+                else sectionPositionArr[j] = 0;
             }
         }
 
@@ -1460,7 +1460,7 @@ namespace AgOpenGPS
 
         private void chkSelectWorkSwitch_Click(object sender, EventArgs e)
         {
-            chkSetManualSections.Enabled = chkSetAutoSections.Enabled= chkWorkSwActiveLow.Enabled = chkSelectWorkSwitch.Checked;
+            chkSetManualSections.Enabled = chkSetAutoSections.Enabled = chkWorkSwActiveLow.Enabled = chkSelectWorkSwitch.Checked;
         }
 
         private void chkSelectSteerSwitch_Click(object sender, EventArgs e)

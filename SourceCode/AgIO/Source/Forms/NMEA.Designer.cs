@@ -15,7 +15,7 @@ namespace AgIO
         private bool isSti035Available = false;
         private bool isSti036Available = false;
 
-        public string ggaSentence, vtgSentence, hdtSentence, avrSentence, paogiSentence, 
+        public string ggaSentence, vtgSentence, hdtSentence, avrSentence, paogiSentence,
             hpdSentence, rmcSentence, pandaSentence, ksxtSentence;
 
         public float hdopData, altitude = float.MaxValue, headingTrue = float.MaxValue,
@@ -24,12 +24,12 @@ namespace AgIO
 
         public double latitudeSend = double.MaxValue, longitudeSend = double.MaxValue, latitude, longitude;
 
-        public ushort satellitesData, satellitesTracked = ushort.MaxValue, hdopX100 = ushort.MaxValue, 
+        public ushort satellitesData, satellitesTracked = ushort.MaxValue, hdopX100 = ushort.MaxValue,
             ageX100 = ushort.MaxValue;
 
         //imu data
         public ushort imuHeadingData, imuHeading = ushort.MaxValue;
-        public short imuRollData, imuRoll = short.MaxValue, imuPitchData, imuPitch = short.MaxValue, 
+        public short imuRollData, imuRoll = short.MaxValue, imuPitchData, imuPitch = short.MaxValue,
             imuYawRateData, imuYawRate = short.MaxValue;
 
         public byte fixQualityData, fixQuality = byte.MaxValue;
@@ -131,7 +131,7 @@ namespace AgIO
             if (isLogMonitorOn)
             {
                 logMonitorSentence.Append(DateTime.UtcNow
-                    .ToString("mm:ss.fff ", CultureInfo.InvariantCulture)+rawBuffer);
+                    .ToString("mm:ss.fff ", CultureInfo.InvariantCulture) + rawBuffer);
             }
 
 
@@ -420,7 +420,7 @@ namespace AgIO
 
                 //age
                 float.TryParse(words[13], NumberStyles.Float, CultureInfo.InvariantCulture, out ageData);
-                ageX100 = (ushort)(ageData*100.0);
+                ageX100 = (ushort)(ageData * 100.0);
 
                 //LastUpdateUTC = UTC;
 
@@ -457,7 +457,7 @@ namespace AgIO
                 { if (words[5] == "W") longitude *= -1; }
                 longitudeSend = longitude;
 
-                isNMEAToSend = true;                
+                isNMEAToSend = true;
             }
         }
 
@@ -487,7 +487,7 @@ namespace AgIO
             }
 
             if (!string.IsNullOrEmpty(words[1]))
-            { 
+            {
                 //True heading
                 float.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrue);
                 headingTrueData = headingTrue;
@@ -731,9 +731,9 @@ namespace AgIO
                 }
 
                 decim -= 2;
-                double.TryParse(words[2].Substring(0, decim), 
+                double.TryParse(words[2].Substring(0, decim),
                     NumberStyles.Float, CultureInfo.InvariantCulture, out latitude);
-                double.TryParse(words[2].Substring(decim), 
+                double.TryParse(words[2].Substring(decim),
                     NumberStyles.Float, CultureInfo.InvariantCulture, out double temp);
                 temp *= 0.01666666666666666666666666666667;
                 latitude += temp;
@@ -751,9 +751,9 @@ namespace AgIO
                 }
 
                 decim -= 2;
-                double.TryParse(words[4].Substring(0, decim), 
+                double.TryParse(words[4].Substring(0, decim),
                     NumberStyles.Float, CultureInfo.InvariantCulture, out longitude);
-                double.TryParse(words[4].Substring(decim), 
+                double.TryParse(words[4].Substring(decim),
                     NumberStyles.Float, CultureInfo.InvariantCulture, out temp);
                 longitude += temp * 0.01666666666666666666666666666667;
 
@@ -926,7 +926,7 @@ namespace AgIO
 
             if (!string.IsNullOrEmpty(words[6])) //Roll Dual GPS; 0 if no RTK or “heading offset” <= 45 or >= 135
             {
-                float.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);               
+                float.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);
 
                 if (words[7] == "R") //MovingBase Mode Indicator
                 {
@@ -1063,8 +1063,8 @@ namespace AgIO
                 else
                 {
                     //CRC code goes here - return true for now if $KS
-                    if(sentenceChars[0] == 36 && sentenceChars[1] == 75 && sentenceChars[2] == 83) return true;
-                    else return false;  
+                    if (sentenceChars[0] == 36 && sentenceChars[1] == 75 && sentenceChars[2] == 83) return true;
+                    else return false;
                 }
             }
             catch (Exception ex)

@@ -15,22 +15,22 @@ namespace AgIO
         private int totalHeaderByteCount = 5;
 
         public static string portNameGPS = "***";
-        public  static int baudRateGPS = 4800;
+        public static int baudRateGPS = 4800;
 
-        public  static string portNameGPS2 = "***";
-        public  static int baudRateGPS2 = 4800;
+        public static string portNameGPS2 = "***";
+        public static int baudRateGPS2 = 4800;
 
-        public  static string portNameRtcm = "***";
-        public  static int baudRateRtcm = 4800;
+        public static string portNameRtcm = "***";
+        public static int baudRateRtcm = 4800;
 
-        public  static string portNameIMU = "***";
-        public  static int baudRateIMU = 38400;
+        public static string portNameIMU = "***";
+        public static int baudRateIMU = 38400;
 
-        public  static string portNameSteerModule = "***";
-        public  static int baudRateSteerModule = 38400;
+        public static string portNameSteerModule = "***";
+        public static int baudRateSteerModule = 38400;
 
-        public  static string portNameMachineModule = "***";
-        public  static int baudRateMachineModule = 38400;
+        public static string portNameMachineModule = "***";
+        public static int baudRateMachineModule = 38400;
 
         //public  static string portNameModule3 = "***";
         //public  static int baudRateModule3 = 38400;
@@ -76,7 +76,7 @@ namespace AgIO
 
         //serial port Ardiuno is connected to
         //public SerialPort spModule3 = new SerialPort(portNameModule3, baudRateModule3, Parity.None, 8, StopBits.One);
-        
+
         //lists for parsing incoming bytes
         private byte[] pgnSteerModule = new byte[22];
         private byte[] pgnMachineModule = new byte[22];

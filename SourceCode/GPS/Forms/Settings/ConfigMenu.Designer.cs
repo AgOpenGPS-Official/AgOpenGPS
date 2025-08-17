@@ -72,7 +72,7 @@ namespace AgOpenGPS
             lblNudgeDistance.Text = snapDist + mf.unitsInCm.ToString();
             lblUnits.Text = mf.isMetric ? "Metric" : "Imperial";
 
-            labelCurrentVehicle.Text = gStr.gsCurrent + ": "+ RegistrySettings.vehicleFileName;
+            labelCurrentVehicle.Text = gStr.gsCurrent + ": " + RegistrySettings.vehicleFileName;
             lblSummaryVehicleName.Text = labelCurrentVehicle.Text;
 
             lblTramWidth.Text = mf.isMetric ?
@@ -221,7 +221,7 @@ namespace AgOpenGPS
         private void btnTool_Click(object sender, EventArgs e)
         {
             ShowSubMenu(panelToolSubMenu, btnTool);
-            btnSubToolType.BackColor=SystemColors.GradientActiveCaption;
+            btnSubToolType.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void ClearToolSubBackgrounds()
@@ -246,7 +246,7 @@ namespace AgOpenGPS
         {
             ClearToolSubBackgrounds();
             tab1.SelectedTab = tabTHitch;
-            btnSubHitch.BackColor= SystemColors.GradientActiveCaption;
+            btnSubHitch.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void btnSubToolOffset_Click
@@ -268,14 +268,14 @@ namespace AgOpenGPS
         {
             ClearToolSubBackgrounds();
             tab1.SelectedTab = tabTSections;
-            btnSubSections.BackColor= SystemColors.GradientActiveCaption;
+            btnSubSections.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void btnSubSwitches_Click(object sender, EventArgs e)
         {
             ClearToolSubBackgrounds();
             tab1.SelectedTab = tabTSwitches;
-            btnSubSwitches .BackColor = SystemColors.GradientActiveCaption;
+            btnSubSwitches.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void btnSubToolSettings_Click(object sender, EventArgs e)
@@ -296,21 +296,21 @@ namespace AgOpenGPS
         private void btnDataSources_Click(object sender, EventArgs e)
         {
             ShowSubMenu(panelDataSourcesSubMenu, btnDataSources);
-            btnSubHeading.BackColor=SystemColors.GradientActiveCaption;
+            btnSubHeading.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void btnSubHeading_Click(object sender, EventArgs e)
         {
             ClearDataSubBackgrounds();
             tab1.SelectedTab = tabDHeading;
-            btnSubHeading.BackColor=SystemColors.GradientActiveCaption;
+            btnSubHeading.BackColor = SystemColors.GradientActiveCaption;
         }
 
         private void btnSubRoll_Click(object sender, EventArgs e)
         {
             ClearDataSubBackgrounds();
             tab1.SelectedTab = tabDRoll;
-            btnSubRoll.BackColor=SystemColors.GradientActiveCaption;
+            btnSubRoll.BackColor = SystemColors.GradientActiveCaption;
         }
 
         #endregion
@@ -339,7 +339,7 @@ namespace AgOpenGPS
         {
             ClearMachineSubBackgrounds();
             tab1.SelectedTab = tabRelay;
-            btnMachineRelay.BackColor= SystemColors.GradientActiveCaption;
+            btnMachineRelay.BackColor = SystemColors.GradientActiveCaption;
         }
         #endregion
     }

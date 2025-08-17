@@ -287,7 +287,7 @@ namespace AgOpenGPS
                                     if (isDay) GL.Color4(tool.secColors[j].R, tool.secColors[j].G, tool.secColors[j].B, (byte)152);
                                     else GL.Color4(tool.secColors[j].R, tool.secColors[j].G, tool.secColors[j].B, (byte)(76));
                                 }
-                                patchCount = triStrip[j].patchList.Count-1;
+                                patchCount = triStrip[j].patchList.Count - 1;
 
                                 if (patchCount > -1)
                                 {
@@ -441,7 +441,7 @@ namespace AgOpenGPS
                         {
                             PointStyle backgroundPointStyle = new PointStyle(12.0f, Colors.Black);
                             PointStyle foregroundPointStyle = new PointStyle(6.0f, Colors.GoalPointColor);
-                            PointStyle[] pointStyles = { backgroundPointStyle, foregroundPointStyle};
+                            PointStyle[] pointStyles = { backgroundPointStyle, foregroundPointStyle };
                             vec2 goalPoint = trk.gArr[trk.idx].mode == TrackMode.AB ? ABLine.goalPointAB : curve.goalPointCu;
                             GLW.DrawPointLayered(pointStyles, goalPoint.easting, goalPoint.northing, 0.0);
                         }
@@ -634,7 +634,7 @@ namespace AgOpenGPS
                 deadCam += 5;
 
                 GL.Color4(1.25f, 1.25f, 1.275f, 0.75);
-                ScreenTextures.NoGps.DrawCenteredAroundOrigin(new XyDelta(2.5, - 2.5));
+                ScreenTextures.NoGps.DrawCenteredAroundOrigin(new XyDelta(2.5, -2.5));
 
                 // 2D Ortho ---------------------------------------////////-------------------------------------------------
 
@@ -2308,7 +2308,7 @@ namespace AgOpenGPS
 
                 //hide show bottom menu
                 int hite = oglMain.Height - 30;
-                XyCoord menuShowHideCoord = new XyCoord(center, hite -32);
+                XyCoord menuShowHideCoord = new XyCoord(center, hite - 32);
                 ScreenTextures.MenuShowHide.Draw(menuShowHideCoord, menuShowHideCoord + sizeDelta);
 
                 center += 50;
@@ -2453,7 +2453,7 @@ namespace AgOpenGPS
             else GL.Color3(0.952f, 0.0f, 0.0f);
 
             GL.Rotate(angle, 0, 0, 1);
-            ScreenTextures.SpeedoNeedle.DrawCenteredAroundOrigin(new XyDelta(48 ,48));
+            ScreenTextures.SpeedoNeedle.DrawCenteredAroundOrigin(new XyDelta(48, 48));
 
             GL.PopMatrix();
         }

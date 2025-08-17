@@ -78,7 +78,7 @@ namespace AgIO
                     isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
                     lblWatch.Text = "Waiting";
                     lblNTRIP_IP.Text = "--";
-                    lblMount.Text= "--";
+                    lblMount.Text = "--";
                 }
             }
             else
@@ -313,11 +313,11 @@ namespace AgIO
                 if (form.DialogResult == DialogResult.Yes)
                 {
                     Log.EventWriter("Program Reset: Saving or Selecting Profile");
-                    
+
                     Program.Restart();
                 }
             }
-            this.Text = "AgIO  v" + Program.Version + "   Using Profile: " 
+            this.Text = "AgIO  v" + Program.Version + "   Using Profile: "
                 + RegistrySettings.profileName;
         }
 
@@ -459,9 +459,10 @@ namespace AgIO
 
             using (var form = new FormRadio(this))
             {
-                if (form.ShowDialog(this) == DialogResult.OK) {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
                     Settings.Default.Save();
-               }
+                }
             }
         }
 

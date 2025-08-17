@@ -359,7 +359,7 @@ namespace AgIO
             ntripCounter++;
 
             //Thinks is connected but not receiving anything
-            if (NTRIP_Watchdog++ > 30 && isNTRIP_Connected) 
+            if (NTRIP_Watchdog++ > 30 && isNTRIP_Connected)
                 ReconnectRequest();
 
             //Once all connected set the timer GGA to NTRIP Settings
@@ -423,8 +423,8 @@ namespace AgIO
         {
             //update gui with stats
             tripBytes += (uint)data.Length;
-            
-            if (isViewAdvanced && isNTRIP_RequiredOn )
+
+            if (isViewAdvanced && isNTRIP_RequiredOn)
             {
                 int mess = 0;
                 //lblPacketSize.Text = data.Length.ToString();
@@ -442,7 +442,7 @@ namespace AgIO
                             if (mess > 1000 && mess < 1231)
                             {
                                 rList.Add(mess);
-                                i += (data[i + 1] << 6) + (data[i + 2])+5;
+                                i += (data[i + 1] << 6) + (data[i + 2]) + 5;
                                 if (data[i + 1] != 211)
                                 {
                                     //rList.Clear();
@@ -628,7 +628,7 @@ namespace AgIO
             try
             {
                 SerialPort comport = (SerialPort)sender;
-                if (comport.BytesToRead < 32) 
+                if (comport.BytesToRead < 32)
                     return;
 
                 int nBytesRec = comport.BytesToRead;
@@ -675,7 +675,7 @@ namespace AgIO
                 //Also stop the requests now
                 isNTRIP_RequiredOn = false;
             }
-            else if(spRadio != null)
+            else if (spRadio != null)
             {
                 spRadio.Close();
                 spRadio.Dispose();

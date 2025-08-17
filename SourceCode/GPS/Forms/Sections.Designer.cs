@@ -311,7 +311,7 @@ namespace AgOpenGPS
 
             //if (tool.zones == 0) return;
             int oglButtonWidth = oglMain.Width * 3 / 4;
-            int buttonWidth = Math.Min(oglButtonWidth / tool.zones,buttonMaxWidth);
+            int buttonWidth = Math.Min(oglButtonWidth / tool.zones, buttonMaxWidth);
             Size size = new System.Drawing.Size(buttonWidth, buttonHeight);
 
             for (int i = 1; i <= 8; i++)
@@ -323,7 +323,8 @@ namespace AgOpenGPS
                 if (isJobStarted)
                 {
                     btn.BackColor = Color.Red;
-                } else
+                }
+                else
                 {
                     btn.BackColor = Color.Silver;
                 }

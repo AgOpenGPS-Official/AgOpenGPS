@@ -204,7 +204,7 @@ namespace AgOpenGPS
                             break;
                     }
 
-                    if (tram.displayMode == 0) 
+                    if (tram.displayMode == 0)
                         tram.isRightManualOn = tram.isLeftManualOn = false;
                 }
                 else
@@ -292,7 +292,7 @@ namespace AgOpenGPS
                         break;
                     case 2:
                         btnGPSData.BackColor = Color.Yellow;
-                        break;                               
+                        break;
                     default:
                         btnGPSData.BackColor = Color.Red;
                         break;
@@ -332,7 +332,7 @@ namespace AgOpenGPS
                 //the main formgps windows
 
                 //Make sure it is off when it should
-                if (!ct.isContourBtnOn && trk.idx == -1 && isBtnAutoSteerOn) 
+                if (!ct.isContourBtnOn && trk.idx == -1 && isBtnAutoSteerOn)
                 {
                     btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
@@ -827,7 +827,7 @@ namespace AgOpenGPS
                 if (trk.idx > -1 && trk.gArr.Count > 0 && !ct.isContourBtnOn)
                 {
                     lblNumCu.Visible = true;
-                    lblNumCu.Text = (trk.idx+1).ToString() + "/" + trk.gArr.Count.ToString();
+                    lblNumCu.Text = (trk.idx + 1).ToString() + "/" + trk.gArr.Count.ToString();
                 }
                 else
                 {
@@ -1133,35 +1133,35 @@ namespace AgOpenGPS
 
             if (heading > 337.5 || heading < 22.5)
             {
-                return (" " +  gStr.gsNorth + " ");
+                return (" " + gStr.gsNorth + " ");
             }
             if (heading > 22.5 && heading < 67.5)
             {
-                return (" " +  gStr.gsN_East + " ");
+                return (" " + gStr.gsN_East + " ");
             }
             if (heading > 67.5 && heading < 111.5)
             {
-                return (" " +  gStr.gsEast + " ");
+                return (" " + gStr.gsEast + " ");
             }
             if (heading > 111.5 && heading < 157.5)
             {
-                return (" " +  gStr.gsS_East + " ");
+                return (" " + gStr.gsS_East + " ");
             }
             if (heading > 157.5 && heading < 202.5)
             {
-                return (" " +  gStr.gsSouth + " ");
+                return (" " + gStr.gsSouth + " ");
             }
             if (heading > 202.5 && heading < 247.5)
             {
-                return (" " +  gStr.gsS_West + " ");
+                return (" " + gStr.gsS_West + " ");
             }
             if (heading > 247.5 && heading < 292.5)
             {
-                return (" " +  gStr.gsWest + " ");
+                return (" " + gStr.gsWest + " ");
             }
             if (heading > 292.5 && heading < 337.5)
             {
-                return (" " +  gStr.gsN_West + " ");
+                return (" " + gStr.gsN_West + " ");
             }
             return (" ?? ");
         }
@@ -1311,8 +1311,8 @@ namespace AgOpenGPS
                             Form form = new FormPan(this);
                             form.Show(this);
 
-                            form.Top = this.Height/3 + this.Top;
-                            form.Left = this.Width -400 + this.Left;
+                            form.Top = this.Height / 3 + this.Top;
+                            form.Left = this.Width - 400 + this.Left;
                         }
 
                         if (isJobStarted)
@@ -1329,7 +1329,7 @@ namespace AgOpenGPS
                     //tram override
                     int bottomSide = oglMain.Height / 5 + 25;
 
-                    if (tool.isDisplayTramControl && (point.Y > (bottomSide-50) && point.Y < bottomSide))
+                    if (tool.isDisplayTramControl && (point.Y > (bottomSide - 50) && point.Y < bottomSide))
                     {
                         if (point.X > centerX - 100 && point.X < centerX - 20)
                         {
@@ -1501,7 +1501,7 @@ namespace AgOpenGPS
             }
         }
         public string SetSteerAngle { get { return ((double)(guidanceLineSteerAngle) * 0.01).ToString("N1"); } }
-        public string ActualSteerAngle { get { return ((mc.actualSteerAngleDegrees) ).ToString("N1") ; } }
+        public string ActualSteerAngle { get { return (mc.actualSteerAngleDegrees).ToString("N1"); } }
 
         //Metric and Imperial Properties
         public string SpeedMPH
@@ -1511,7 +1511,7 @@ namespace AgOpenGPS
                 if (avgSpeed > 2)
                     return (avgSpeed * 0.62137).ToString("N1");
                 else
-                    return(avgSpeed * 0.62137).ToString("N2");
+                    return (avgSpeed * 0.62137).ToString("N2");
             }
         }
         public string SpeedKPH
@@ -1525,13 +1525,13 @@ namespace AgOpenGPS
             }
         }
 
-        public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude,2)); } }
-        public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084),1))); } }
+        public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude, 2)); } }
+        public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084), 1))); } }
         public string DistPivotM
         {
             get
             {
-                if (distancePivotToTurnLine > 0 )
+                if (distancePivotToTurnLine > 0)
                     return ((int)(distancePivotToTurnLine)) + " m";
                 else return "--";
             }
@@ -1540,7 +1540,7 @@ namespace AgOpenGPS
         {
             get
             {
-                if (distancePivotToTurnLine > 0 ) return (((int)(glm.m2ft * (distancePivotToTurnLine))) + " ft");
+                if (distancePivotToTurnLine > 0) return (((int)(glm.m2ft * (distancePivotToTurnLine))) + " ft");
                 else return "--";
             }
         }

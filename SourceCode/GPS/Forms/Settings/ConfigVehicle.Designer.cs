@@ -195,7 +195,7 @@ namespace AgOpenGPS
             nudTractorHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
             label94.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
             labelHitchLength.Visible = rbtnTBT.Checked || rbtnTrailing.Checked;
-            HitchLengthBlindBox.Visible = rbtnFixedRear.Checked || rbtnFront.Checked; 
+            HitchLengthBlindBox.Visible = rbtnFixedRear.Checked || rbtnFront.Checked;
 
             label94.Text = mf.unitsInCm;
             label95.Text = mf.unitsInCm;
@@ -273,7 +273,7 @@ namespace AgOpenGPS
                 mf.vehicle.VehicleConfig.Type = VehicleType.Harvester;
                 Properties.Settings.Default.setVehicle_vehicleType = 1;
 
-                if ( mf.tool.hitchLength < 0) mf.tool.hitchLength *= -1;
+                if (mf.tool.hitchLength < 0) mf.tool.hitchLength *= -1;
 
                 Properties.Settings.Default.setTool_isToolFront = true;
                 Properties.Settings.Default.setTool_isToolTBT = false;

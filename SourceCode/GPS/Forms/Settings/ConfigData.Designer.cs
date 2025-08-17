@@ -15,7 +15,7 @@ namespace AgOpenGPS
             if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Fix") rbtnHeadingFix.Checked = true;
             //else if (Properties.Settings.Default.setGPS_headingFromWhichSource == "VTG") rbtnHeadingGPS.Checked = true;
             else if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Dual") rbtnHeadingHDT.Checked = true;
-            
+
             if (rbtnHeadingHDT.Checked)
             {
                 if (Properties.Settings.Default.setAutoSwitchDualFixOn)
@@ -23,7 +23,8 @@ namespace AgOpenGPS
                     rbtnHeadingFix.Enabled = false;
                     labelGboxSingle.Enabled = true;
                     labelGboxDual.Enabled = true;
-                } else
+                }
+                else
                 {
                     labelGboxSingle.Enabled = false;
                     labelGboxDual.Enabled = true;
@@ -80,7 +81,8 @@ namespace AgOpenGPS
                 hsbarFusion.Enabled = false;
             }
 
-            if (cboxIsAutoSwitchDualFixOn.Checked) { 
+            if (cboxIsAutoSwitchDualFixOn.Checked)
+            {
                 hsbarFusion.Enabled = true;
             }
 
@@ -130,7 +132,7 @@ namespace AgOpenGPS
             {
                 rbtnHeadingFix.Enabled = true;
                 labelGboxSingle.Enabled = true;
-                labelGboxDual.Enabled= false;
+                labelGboxDual.Enabled = false;
             }
         }
 
@@ -152,7 +154,7 @@ namespace AgOpenGPS
             }
         }
 
-         private void nudDualReverseDistance_Click(object sender, EventArgs e)
+        private void nudDualReverseDistance_Click(object sender, EventArgs e)
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
@@ -191,8 +193,8 @@ namespace AgOpenGPS
 
         private void hsbarFusion_ValueChanged(object sender, EventArgs e)
         {
-            lblFusion.Text = (hsbarFusion.Value).ToString()+"%";
-            lblFusionIMU.Text = (100 - hsbarFusion.Value).ToString()+"%";
+            lblFusion.Text = (hsbarFusion.Value).ToString() + "%";
+            lblFusionIMU.Text = (100 - hsbarFusion.Value).ToString() + "%";
 
             mf.ahrs.fusionWeight = (double)hsbarFusion.Value * 0.002;
         }
