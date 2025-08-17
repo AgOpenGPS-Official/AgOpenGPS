@@ -43,6 +43,8 @@ namespace AgOpenGPS
             labelBackground.Text = gStr.gsBackground;
 
             gMapControl.MapProvider = GMapProviders.BingHybridMap;
+            gMapControl.ShowCenter = false;
+            gMapControl.DragButton = MouseButtons.Left;
 
             polygon = new GMapPolygon(new List<PointLatLng>(), "bingLine")
             {
@@ -134,23 +136,19 @@ namespace AgOpenGPS
             UpdateWindowTitle();
         }
 
-        private void gMapControl_MouseClick(object sender, MouseEventArgs e)
+        private void gMapControl_OnMapClick(PointLatLng pointClick, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-                return;
-
             if (!cboxEnableLineDraw.Checked)
                 return;
 
             if (polygon.Points.Count == 0)
                 overlay.Markers.Clear();
 
-            var coord = gMapControl.FromLocalToLatLng(e.Location.X, e.Location.Y);
-            polygon.Points.Add(coord);
+            polygon.Points.Add(pointClick);
             gMapControl.UpdatePolygonLocalPosition(polygon);
 
             // Create marker instance: specify location on the map, radius and label
-            var marker = new GMapMarkerCircle(coord, 4f, polygon.Points.Count.ToString());
+            var marker = new GMapMarkerCircle(pointClick, 4f, polygon.Points.Count.ToString());
 
             // Add marker to the map
             overlay.Markers.Add(marker);

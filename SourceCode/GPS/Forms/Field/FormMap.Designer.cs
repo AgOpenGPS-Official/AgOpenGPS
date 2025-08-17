@@ -337,7 +337,7 @@
             this.gMapControl.Size = new System.Drawing.Size(880, 776);
             this.gMapControl.TabIndex = 492;
             this.gMapControl.Zoom = 2D;
-            this.gMapControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseClick);
+            this.gMapControl.OnMapClick += new GMap.NET.WindowsForms.MapClick(this.gMapControl_OnMapClick);
             this.gMapControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseMove);
             this.gMapControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.gMapControl_MouseWheel);
             // 
