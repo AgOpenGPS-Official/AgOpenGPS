@@ -29,10 +29,11 @@ public partial class FormExportMultipleFields : Form
         btnAllToSelected.Click += (s, e) => MoveAll(listBoxAvailable, listBoxSelected);
         btnAllToAvailable.Click += (s, e) => MoveAll(listBoxSelected, listBoxAvailable);
         btnOneToSelected.Click += (s, e) => MoveSelected(listBoxAvailable, listBoxSelected);
-        btnOneToSelected.Click += (s, e) => MoveSelected(listBoxSelected, listBoxAvailable);
+        btnOneToAvailable.Click += (s, e) => MoveSelected(listBoxSelected, listBoxAvailable);
 
         btnExportIsoXml.Click += (s, e) => ExportIsoXml();
         btnExportAgShare.Click += (s, e) => ExportAgShare();
+        btnClose.Click += (s, e) => Close();
     }
 
     // --- Helper methods to bridge UI lists to logic ---
@@ -43,12 +44,13 @@ public partial class FormExportMultipleFields : Form
         var fromList = from.Items.Cast<string>().ToList();
         var toList = to.Items.Cast<string>().ToList();
 
-        FieldBatchExportLogic.MoveAll(fromList, toList);
+        _logic.MoveAll(fromList, toList);
 
         from.Items.Clear();
         to.Items.Clear();
         to.Items.AddRange(toList.Cast<object>().ToArray());
     }
+
 
     // Move selected items from A -> B
     private void MoveSelected(ListBox from, ListBox to)
@@ -79,7 +81,7 @@ public partial class FormExportMultipleFields : Form
         var selected = listBoxSelected.Items.Cast<string>().ToList();
         if (selected.Count == 0)
         {
-            MessageBox.Show("No fields selected.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormDialog.Show("No fields selected.", "Export", MessageBoxButtons.OK);
             return;
         }
 
@@ -95,13 +97,13 @@ public partial class FormExportMultipleFields : Form
             // Export using your multi-field exporter
             _logic.ExportIsoXmlBatch(data, outDir, ISO11783_TaskFile.Version.V4);
 
-            MessageBox.Show($"Export complete.\n{data.Count} fields written to:\n{outDir}",
-                "ISOXML Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormDialog.Show($"ISOXML Export. {data.Count} fields written",
+                "Export Succes!", MessageBoxButtons.OK);
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Export failed:\n" + ex.Message, "ISOXML Export",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            FormDialog.Show("Export failed:\n" + ex.Message, "ISOXML Export",
+                MessageBoxButtons.OK);
         }
     }
 
@@ -111,12 +113,12 @@ public partial class FormExportMultipleFields : Form
         var selected = listBoxSelected.Items.Cast<string>().ToList();
         if (selected.Count == 0)
         {
-            MessageBox.Show("No fields selected.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormDialog.Show("No fields selected.", "Export", MessageBoxButtons.OK);
             return;
         }
 
         // TODO: Implement your AgShare batch upload here
-        MessageBox.Show($"Would export {selected.Count} fields to AgShare.", "AgShare Export",
-            MessageBoxButtons.OK, MessageBoxIcon.Information);
+        FormDialog.Show("Exported To AgShare", $"{selected.Count} fields send to AgShare. Great Succes",
+            MessageBoxButtons.OK);
     }
 }

@@ -262,9 +262,20 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
         }
 
-        private void btnJobAgShare_Click(object sender, EventArgs e)
+        private void BtnJobAgShare_Click(object sender, EventArgs e)
         {
             using (var form = new FormAgShareDownloader(mf))
+            {
+                form.ShowDialog(this);
+            }
+
+            DialogResult = DialogResult.Ignore;
+            Close();
+        }
+
+        private void BtnExport_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormExportMultipleFields())
             {
                 form.ShowDialog(this);
             }

@@ -52,7 +52,7 @@ namespace AgOpenGPS.Forms
         /// <summary>
         /// Moves all items from source to target (no duplicates).
         /// </summary>
-        public static void MoveAll(IList<string> source, IList<string> target)
+        public void MoveAll(IList<string> source, IList<string> target)
         {
             foreach (var it in source)
                 if (!target.Contains(it)) target.Add(it);
@@ -118,10 +118,102 @@ namespace AgOpenGPS.Forms
         public bool IsAgShareEnabled()
         {
             // Example check; replace with your actual flag/toggle
-            return !string.IsNullOrWhiteSpace(RegistrySettings.agShareApiKey);
+            return !Properties.Settings.Default.AgShareEnabled;
         }
     }
 
     /// <summary>
     /// Small DTO used by multi-field exporter (matches your single-field exporter inputs).
-    /// </summa
+    /// </summary>
+    public sealed class FieldExportData
+    {
+        // Field display name / designator in ISOXML
+        public string Designator { get; set; }
+
+        // Area in square meters (cast to ulong inside exporter)
+        public int Area { get; set; }
+
+        // Boundary + headland structures expected by your exporter
+        public List<CBoundaryList> BoundaryList { get; set; }
+
+        // Local plane (origin) for WGS84 conversions
+        public LocalPlane LocalPlane { get; set; }
+
+        // Tracks (AB + Curve) for the field
+        public List<CTrk> Tracks { get; set; }
+    }
+
+    /// <summary>
+    /// Loader placeholder that gathers the per-field models needed by the exporter.
+    /// Replace the bodies with your real file readers (Boundary, Headland, Tracks, Origin, Area).
+    /// </summary>
+    internal static class FieldDataLoader
+    {
+        /// <summary>
+        /// Loads all data needed for exporting a single field.
+        /// </summary>
+        public static FieldExportData LoadForField(string fieldDirectory, string designator)
+        {
+            var localPlane = TryLoadLocalPlane(fieldDirectory);
+            var boundaries = TryLoadBoundaries(fieldDirectory) ?? new List<CBoundaryList>();
+            var tracks = TryLoadTracks(fieldDirectory) ?? new List<CTrk>();
+
+            var area = TryComputeArea(boundaries);
+
+            return new FieldExportData
+            {
+                Designator = designator,
+                Area = area,
+                BoundaryList = boundaries,
+                LocalPlane = localPlane,
+                Tracks = tracks
+            };
+        }
+
+
+        // --- Stubs to be replaced with your existing readers. ---
+
+        /// <summary>
+        /// Reads the field origin / local plane from the field folder.
+        /// </summary>
+        private static LocalPlane TryLoadLocalPlane(string fieldDirectory)
+        {
+            // TODO: Implement: read stored origin (e.g., Origin.txt / Field.txt / JSON)
+            return null;
+        }
+
+        /// <summary>
+        /// Reads boundaries/headlands into List&lt;CBoundaryList&gt;.
+        /// </summary>
+        private static List<CBoundaryList> TryLoadBoundaries(string fieldDirectory)
+        {
+            // TODO: Implement: parse Boundary.txt / bnd files → CBoundaryList
+            return null;
+        }
+
+        /// <summary>
+        /// Reads AB and Curve tracks into CTrack (gArr filled with CTrk).
+        /// </summary>
+        private static List<CTrk> TryLoadTracks(string fieldDirectory)
+        {
+            // TODO: lees hier TrackLines.txt of vergelijkbare opslag
+            // en geef een lijst van CTrk terug
+            return null;
+        }
+
+
+        /// <summary>
+        /// Computes area from the outer boundary if available, else 0.
+        /// </summary>
+        private static int TryComputeArea(List<CBoundaryList> bndList)
+        {
+            if (bndList == null || bndList.Count == 0) return 0;
+            try
+            {
+                // TODO: Implement with your existing area logic.
+                return 0;
+            }
+            catch { return 0; }
+        }
+    }
+}

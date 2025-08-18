@@ -35,27 +35,29 @@
             this.btnOneToSelected = new System.Windows.Forms.Button();
             this.lblAvailable = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnExportIsoXml = new System.Windows.Forms.Button();
+            this.btnExportAgShare = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxAvailable
             // 
-            this.listBoxAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxAvailable.FormattingEnabled = true;
-            this.listBoxAvailable.ItemHeight = 20;
+            this.listBoxAvailable.ItemHeight = 29;
             this.listBoxAvailable.Location = new System.Drawing.Point(12, 45);
             this.listBoxAvailable.Name = "listBoxAvailable";
-            this.listBoxAvailable.Size = new System.Drawing.Size(891, 264);
+            this.listBoxAvailable.Size = new System.Drawing.Size(848, 236);
             this.listBoxAvailable.TabIndex = 0;
             // 
             // listBoxSelected
             // 
-            this.listBoxSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxSelected.FormattingEnabled = true;
-            this.listBoxSelected.ItemHeight = 20;
+            this.listBoxSelected.ItemHeight = 29;
             this.listBoxSelected.Location = new System.Drawing.Point(12, 420);
             this.listBoxSelected.Name = "listBoxSelected";
-            this.listBoxSelected.Size = new System.Drawing.Size(891, 264);
+            this.listBoxSelected.Size = new System.Drawing.Size(848, 236);
             this.listBoxSelected.TabIndex = 1;
             // 
             // btnAllToAvailable
@@ -122,24 +124,50 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Selected Fields";
             // 
-            // button5
+            // btnClose
             // 
-            this.button5.BackColor = System.Drawing.Color.Transparent;
-            this.button5.FlatAppearance.BorderSize = 0;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.button5.Location = new System.Drawing.Point(924, 620);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(64, 64);
-            this.button5.TabIndex = 8;
-            this.button5.UseVisualStyleBackColor = false;
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.btnClose.Location = new System.Drawing.Point(908, 620);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(64, 64);
+            this.btnClose.TabIndex = 8;
+            this.btnClose.UseVisualStyleBackColor = false;
+            // 
+            // btnExportIsoXml
+            // 
+            this.btnExportIsoXml.BackColor = System.Drawing.Color.Transparent;
+            this.btnExportIsoXml.FlatAppearance.BorderSize = 0;
+            this.btnExportIsoXml.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportIsoXml.Image = global::AgOpenGPS.Properties.Resources.ISOXML;
+            this.btnExportIsoXml.Location = new System.Drawing.Point(908, 494);
+            this.btnExportIsoXml.Name = "btnExportIsoXml";
+            this.btnExportIsoXml.Size = new System.Drawing.Size(64, 64);
+            this.btnExportIsoXml.TabIndex = 9;
+            this.btnExportIsoXml.UseVisualStyleBackColor = false;
+            // 
+            // btnExportAgShare
+            // 
+            this.btnExportAgShare.BackColor = System.Drawing.Color.Transparent;
+            this.btnExportAgShare.FlatAppearance.BorderSize = 0;
+            this.btnExportAgShare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportAgShare.Image = global::AgOpenGPS.Properties.Resources.AgShare;
+            this.btnExportAgShare.Location = new System.Drawing.Point(908, 370);
+            this.btnExportAgShare.Name = "btnExportAgShare";
+            this.btnExportAgShare.Size = new System.Drawing.Size(64, 64);
+            this.btnExportAgShare.TabIndex = 10;
+            this.btnExportAgShare.UseVisualStyleBackColor = false;
             // 
             // FormExportMultipleFields
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.btnExportAgShare);
+            this.Controls.Add(this.btnExportIsoXml);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblAvailable);
             this.Controls.Add(this.btnOneToAvailable);
@@ -148,6 +176,7 @@
             this.Controls.Add(this.btnOneToSelected);
             this.Controls.Add(this.listBoxSelected);
             this.Controls.Add(this.listBoxAvailable);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormExportMultipleFields";
             this.Text = "FormFieldExporter";
             this.ResumeLayout(false);
@@ -165,5 +194,7 @@
         private System.Windows.Forms.Button btnAllToAvailable;
         private System.Windows.Forms.Label lblAvailable;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button5;
-    }
+        private System.Windows.Forms.Button btnClose;
+    private System.Windows.Forms.Button btnExportIsoXml;
+    private System.Windows.Forms.Button btnExportAgShare;
+}

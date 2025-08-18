@@ -42,6 +42,7 @@
             this.btnJobResume = new System.Windows.Forms.Button();
             this.btnFromExisting = new System.Windows.Forms.Button();
             this.btnJobNew = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.lblResumeField = new System.Windows.Forms.Label();
             this.btnDeleteAB = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
@@ -70,6 +71,7 @@
             this.tableLayoutPanel1.Controls.Add(this.btnJobResume, 2, 3);
             this.tableLayoutPanel1.Controls.Add(this.btnFromExisting, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnJobNew, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.btnExport, 2, 4);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 7);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
@@ -102,7 +104,7 @@
             this.btnJobAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnJobAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnJobAgShare.UseVisualStyleBackColor = false;
-            this.btnJobAgShare.Click += new System.EventHandler(this.btnJobAgShare_Click);
+            this.btnJobAgShare.Click += new System.EventHandler(this.BtnJobAgShare_Click);
             // 
             // label4
             // 
@@ -329,6 +331,18 @@
             this.btnJobNew.UseVisualStyleBackColor = false;
             this.btnJobNew.Click += new System.EventHandler(this.btnJobNew_Click);
             // 
+            // btnExport
+            // 
+            this.btnExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExport.Location = new System.Drawing.Point(317, 375);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(285, 91);
+            this.btnExport.TabIndex = 113;
+            this.btnExport.Text = "Export...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.BtnExport_Click);
+            // 
             // lblResumeField
             // 
             this.lblResumeField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -408,5 +422,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnJobAgShare;
+        private System.Windows.Forms.Button btnExport;
     }
 }
