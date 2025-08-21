@@ -1,6 +1,4 @@
-﻿// File: FieldExportData.cs
-// All comments in English (C# 7.3 compatible)
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.Classes.Exporters

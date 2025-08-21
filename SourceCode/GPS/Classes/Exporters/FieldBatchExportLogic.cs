@@ -1,6 +1,4 @@
-﻿// File: FieldBatchExportLogic.cs
-// All comments in English (C# 7.3 compatible)
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;

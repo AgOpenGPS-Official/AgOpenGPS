@@ -1,6 +1,4 @@
-﻿// File: FormExportMultipleFields.cs
-// All comments in English (C# 7.3 compatible)
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -85,7 +83,7 @@ public partial class FormExportMultipleFields : Form
         var selected = GetItems(listBoxSelected);
         if (selected.Count == 0)
         {
-            FormDialog.Show("No fields selected.", "Export", MessageBoxButtons.OK);
+            FormDialog.Show("No fields selected.", "Try again!", MessageBoxButtons.OK);
             return;
         }
 
