@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AgOpenGPS.Classes.Exporters;
 using AgOpenGPS.Core.Models;
 using Dev4Agriculture.ISO11783.ISOXML;
 using Dev4Agriculture.ISO11783.ISOXML.TaskFile;
@@ -48,7 +49,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
         public static void ExportMultiple(
             string directoryName,
             Version version,
-            IEnumerable<AgOpenGPS.Forms.FieldExportData> fields)
+            IEnumerable<FieldExportData> fields)
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
 
