@@ -983,5 +983,64 @@ namespace AgOpenGPS
                 return false;
             }
         }
+
+        public void ClearAppliedArea()
+        {
+            if (!isJobStarted) return;
+
+            // Only clear if sections are actually off
+            if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
+            {
+                if (tool.isSectionsNotZones)
+                {
+                    AllSectionsAndButtonsToState(btnStates.Off);
+                    LineUpIndividualSectionBtns();
+                }
+                else
+                {
+                    AllZonesAndButtonsToState(btnStates.Off);
+                    LineUpAllZoneButtons();
+                }
+
+                // Turn manual off
+                manualBtnState = btnStates.Off;
+                btnSectionMasterManual.Image = Properties.Resources.ManualOff;
+
+                // Turn auto off
+                autoBtnState = btnStates.Off;
+                btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
+
+                // Reset contours
+                ct.StopContourLine();
+                ct.ResetContour();
+                fd.workedAreaTotal = 0;
+                fd.workedAreaTotalUser = 0;
+                fd.distanceUser = 0;
+
+                // Clear triangle/patch lists
+                for (int j = 0; j < triStrip.Count; j++)
+                {
+                    triStrip[j].patchList?.Clear();
+                    triStrip[j].triangleList?.Clear();
+                }
+                patchSaveList?.Clear();
+
+                // Delete all worked tracks
+                foreach (CTrk trackItem in trk.gArr)
+                {
+                    trackItem.workedTracks.Clear();
+                }
+
+                // Recreate files
+                FileCreateContour();
+                FileCreateSections();
+
+                Log.EventWriter("All Section Mapping Deleted");
+            }
+            else
+            {
+                TimedMessageBox(1500, "Sections are on", "Turn Auto or Manual Off First");
+            }
+        }
     }
 }
