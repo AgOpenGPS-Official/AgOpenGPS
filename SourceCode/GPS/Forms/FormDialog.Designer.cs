@@ -33,7 +33,11 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panelOptions = new System.Windows.Forms.Panel();
+            this.chkCleanAppliedArea = new System.Windows.Forms.CheckBox();
+            this.chkSaveNudge = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
+            this.panelOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblMessage
@@ -45,7 +49,7 @@
             this.lblMessage.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.Location = new System.Drawing.Point(0, 53);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(776, 88);
+            this.lblMessage.Size = new System.Drawing.Size(776, 65);
             this.lblMessage.TabIndex = 2;
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -61,7 +65,7 @@
             this.btnOK.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOK.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnOK.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnOK.Location = new System.Drawing.Point(668, 137);
+            this.btnOK.Location = new System.Drawing.Point(668, 220);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(105, 64);
             this.btnOK.TabIndex = 97;
@@ -80,7 +84,7 @@
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.btnCancel.Location = new System.Drawing.Point(560, 137);
+            this.btnCancel.Location = new System.Drawing.Point(560, 220);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 64);
             this.btnCancel.TabIndex = 98;
@@ -97,7 +101,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(776, 53);
+            this.lblTitle.Size = new System.Drawing.Size(776, 69);
             this.lblTitle.TabIndex = 99;
             this.lblTitle.Text = "Title";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -105,21 +109,77 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.panel1.Controls.Add(this.panelOptions);
             this.panel1.Controls.Add(this.btnOK);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Controls.Add(this.lblMessage);
             this.panel1.Location = new System.Drawing.Point(12, 9);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(776, 208);
+            this.panel1.Size = new System.Drawing.Size(776, 291);
             this.panel1.TabIndex = 101;
+            // 
+            // panelOptions
+            // 
+            this.panelOptions.Controls.Add(this.chkSaveNudge);
+            this.panelOptions.Controls.Add(this.chkCleanAppliedArea);
+            this.panelOptions.Location = new System.Drawing.Point(6, 121);
+            this.panelOptions.Name = "panelOptions";
+            this.panelOptions.Size = new System.Drawing.Size(370, 163);
+            this.panelOptions.TabIndex = 100;
+            this.panelOptions.Visible = false;
+            // 
+            // chkCleanAppliedArea
+            // 
+            this.chkCleanAppliedArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkCleanAppliedArea.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkCleanAppliedArea.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chkCleanAppliedArea.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.chkCleanAppliedArea.FlatAppearance.BorderSize = 2;
+            this.chkCleanAppliedArea.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
+            this.chkCleanAppliedArea.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkCleanAppliedArea.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkCleanAppliedArea.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkCleanAppliedArea.Image = global::AgOpenGPS.Properties.Resources.SectionMapping;
+            this.chkCleanAppliedArea.Location = new System.Drawing.Point(208, 8);
+            this.chkCleanAppliedArea.Name = "chkCleanAppliedArea";
+            this.chkCleanAppliedArea.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkCleanAppliedArea.Size = new System.Drawing.Size(116, 145);
+            this.chkCleanAppliedArea.TabIndex = 511;
+            this.chkCleanAppliedArea.Text = "Clear Mapping";
+            this.chkCleanAppliedArea.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkCleanAppliedArea.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.chkCleanAppliedArea.UseVisualStyleBackColor = false;
+            // 
+            // chkSaveNudge
+            // 
+            this.chkSaveNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkSaveNudge.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkSaveNudge.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chkSaveNudge.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkSaveNudge.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.chkSaveNudge.FlatAppearance.BorderSize = 2;
+            this.chkSaveNudge.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
+            this.chkSaveNudge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkSaveNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkSaveNudge.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkSaveNudge.Image = global::AgOpenGPS.Properties.Resources.ABSnapNudgeMenu;
+            this.chkSaveNudge.Location = new System.Drawing.Point(25, 8);
+            this.chkSaveNudge.Name = "chkSaveNudge";
+            this.chkSaveNudge.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkSaveNudge.Size = new System.Drawing.Size(116, 145);
+            this.chkSaveNudge.TabIndex = 512;
+            this.chkSaveNudge.Text = "Reset Nudge";
+            this.chkSaveNudge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkSaveNudge.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.chkSaveNudge.UseVisualStyleBackColor = false;
             // 
             // FormDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Red;
-            this.ClientSize = new System.Drawing.Size(800, 229);
+            this.ClientSize = new System.Drawing.Size(800, 312);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -130,6 +190,7 @@
             this.Text = "FormDialog";
             this.TopMost = true;
             this.panel1.ResumeLayout(false);
+            this.panelOptions.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -141,5 +202,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelOptions;
+        private System.Windows.Forms.CheckBox chkSaveNudge;
+        private System.Windows.Forms.CheckBox chkCleanAppliedArea;
     }
 }

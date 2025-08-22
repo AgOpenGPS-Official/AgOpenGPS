@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AgOpenGPS
 {
-    public partial class FormJob : System.Windows.Forms.Form
+    public partial class FormJob : Form
     {
         //class variables
         private readonly FormGPS mf = null;
@@ -46,7 +46,6 @@ namespace AgOpenGPS
             //Trigger a snapshot to create a temp data file for the AgShare Upload
             if (mf.isJobStarted && Properties.Settings.Default.AgShareEnabled) mf.AgShareSnapshot();
 
-
             if (!File.Exists(fileAndDirectory))
             {
                 lblResumeField.Text = "";
@@ -61,7 +60,6 @@ namespace AgOpenGPS
 
                 if (mf.isJobStarted)
                 {
-
                     btnJobResume.Enabled = false;
                     lblResumeField.Text = gStr.gsOpen + ": " + mf.currentFieldDirectory;
                 }
@@ -83,142 +81,175 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnJobNew_Click(object sender, EventArgs e)
+        // Unified save helper with dialog prompt
+        private async Task<bool> SaveIfJobStartedAsync()
         {
-            if (mf.isJobStarted)
-            {
-                _ = mf.FileSaveEverythingBeforeClosingField();
-            }
-            //back to FormGPS
-            DialogResult = DialogResult.Yes;
-            Close();
+            if (!mf.isJobStarted) return true;
+            return await mf.PromptAndSaveBeforeClosingFieldAsync(this);
         }
 
-        private void btnJobResume_Click(object sender, EventArgs e)
+        private async void btnJobNew_Click(object sender, EventArgs e)
         {
-            //open the Resume.txt and continue from last exit
-            mf.FileOpenField("Resume");
-
-            Log.EventWriter("Job Form, Field Resume");
-
-            //back to FormGPS
-            DialogResult = DialogResult.OK;
-            Close();
+            btnJobNew.Enabled = false;
+            UseWaitCursor = true;
+            try
+            {
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+                DialogResult = DialogResult.Yes; // back to FormGPS
+                Close();
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnJobNew.Enabled = true;
+            }
         }
 
-        private void btnJobOpen_Click(object sender, EventArgs e)
+        private async void btnJobResume_Click(object sender, EventArgs e)
         {
-            if (mf.isJobStarted)
+            btnJobResume.Enabled = false;
+            UseWaitCursor = true;
+            try
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+
+                mf.FileOpenField("Resume");
+                Log.EventWriter("Job Form, Field Resume");
+
+                DialogResult = DialogResult.OK;
+                Close();
             }
-
-            mf.filePickerFileAndDirectory = "";
-
-            using (FormFilePicker form = new FormFilePicker(mf))
+            finally
             {
-                if (form.ShowDialog(this) == DialogResult.Yes)
+                UseWaitCursor = false;
+                btnJobResume.Enabled = true;
+            }
+        }
+
+        private async void btnJobOpen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btnJobOpen.Enabled = false;
+                UseWaitCursor = true;
+
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+
+                mf.filePickerFileAndDirectory = "";
+
+                using (var form = new FormFilePicker(mf))
                 {
-                    mf.FileOpenField(mf.filePickerFileAndDirectory);
-                    Close();
+                    if (form.ShowDialog(this) == DialogResult.Yes)
+                    {
+                        mf.FileOpenField(mf.filePickerFileAndDirectory);
+                        Close();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.EventWriter("Open job failed: " + ex);
+                mf.TimedMessageBox(2000, "Open Job", "Saving/opening failed.");
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnJobOpen.Enabled = true;
+            }
         }
 
-
-
-        private void btnInField_Click(object sender, EventArgs e)
+        private async void btnInField_Click(object sender, EventArgs e)
         {
-            if (mf.isJobStarted)
+            btnInField.Enabled = false;
+            UseWaitCursor = true;
+            try
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
-            }
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
 
-            string infieldList = "";
-            int numFields = 0;
+                string infieldList = "";
+                int numFields = 0;
 
-            string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
-
-            foreach (string dir in dirs)
-            {
-                string fieldDirectory = Path.GetFileName(dir);
-                string filename = Path.Combine(dir, "Field.txt");
-
-                //make sure directory has a field.txt in it
-                if (File.Exists(filename))
+                string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
+                foreach (string dir in dirs)
                 {
+                    string filename = Path.Combine(dir, "Field.txt");
+                    if (!File.Exists(filename)) continue;
+
                     using (GeoStreamReader reader = new GeoStreamReader(filename))
                     {
                         try
                         {
                             // Skip 8 lines
-                            for (int i = 0; i < 8; i++)
-                            {
-                                reader.ReadLine();
-                            }
-                            //start positions
+                            for (int i = 0; i < 8; i++) reader.ReadLine();
+
                             if (!reader.EndOfStream)
                             {
                                 Wgs84 startLatLon = reader.ReadWgs84();
                                 double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
-
                                 if (distance < 0.5)
                                 {
                                     numFields++;
-                                    if (!string.IsNullOrEmpty(infieldList))
-                                    {
-                                        infieldList += ",";
-                                    }
+                                    if (!string.IsNullOrEmpty(infieldList)) infieldList += ",";
                                     infieldList += Path.GetFileName(dir);
                                 }
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                             mf.TimedMessageBox(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
                         }
                     }
                 }
-            }
 
-            if (!string.IsNullOrEmpty(infieldList))
-            {
-                mf.filePickerFileAndDirectory = "";
-
-                if (numFields > 1)
+                if (!string.IsNullOrEmpty(infieldList))
                 {
-                    using (FormDrivePicker form = new FormDrivePicker(mf, infieldList))
+                    mf.filePickerFileAndDirectory = "";
+
+                    if (numFields > 1)
                     {
-                        //returns full field.txt file dir name
-                        if (form.ShowDialog(this) == DialogResult.Yes)
+                        using (FormDrivePicker form = new FormDrivePicker(mf, infieldList))
                         {
-                            mf.FileOpenField(mf.filePickerFileAndDirectory);
-                            Close();
-                        }
-                        else
-                        {
-                            return;
+                            if (form.ShowDialog(this) == DialogResult.Yes)
+                            {
+                                mf.FileOpenField(mf.filePickerFileAndDirectory);
+                                Close();
+                            }
                         }
                     }
+                    else
+                    {
+                        mf.filePickerFileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, infieldList, "Field.txt");
+                        mf.FileOpenField(mf.filePickerFileAndDirectory);
+                        Close();
+                    }
                 }
-                else // 1 field found
+                else
                 {
-                    mf.filePickerFileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, infieldList, "Field.txt");
-                    mf.FileOpenField(mf.filePickerFileAndDirectory);
-                    Close();
+                    mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
                 }
             }
-            else //no fields found
+            finally
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
+                UseWaitCursor = false;
+                btnInField.Enabled = true;
             }
         }
 
-        private void btnFromKML_Click(object sender, EventArgs e)
+        private async void btnFromKML_Click(object sender, EventArgs e)
         {
-            //back to FormGPS
-            DialogResult = DialogResult.No;
-            Close();
+            btnFromKML.Enabled = false;
+            UseWaitCursor = true;
+            try
+            {
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+                DialogResult = DialogResult.No;   // back to FormGPS
+                Close();
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnFromKML.Enabled = true;
+            }
         }
 
         private void btnFromExisting_Click(object sender, EventArgs e)
@@ -228,15 +259,26 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnJobClose_Click(object sender, EventArgs e)
+        private async void btnJobClose_Click(object sender, EventArgs e)
         {
-            if (mf.isJobStarted)
+            btnJobClose.Enabled = false;
+            UseWaitCursor = true;
+            try
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+                DialogResult = DialogResult.OK;
+                Close();
             }
-            //back to FormGPS
-            DialogResult = DialogResult.OK;
-            Close();
+            catch (Exception ex)
+            {
+                Log.EventWriter("Close job failed: " + ex);
+                mf.TimedMessageBox(2000, "Close Job", "Saving/cleanup failed.");
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnJobClose.Enabled = true;
+            }
         }
 
         private void FormJob_FormClosing(object sender, FormClosingEventArgs e)
@@ -246,15 +288,21 @@ namespace AgOpenGPS
             Properties.Settings.Default.Save();
         }
 
-        private void btnFromISOXML_Click(object sender, EventArgs e)
+        private async void btnFromISOXML_Click(object sender, EventArgs e)
         {
-            if (mf.isJobStarted)
+            btnFromISOXML.Enabled = false;
+            UseWaitCursor = true;
+            try
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
+                DialogResult = DialogResult.Abort; // back to FormGPS
+                Close();
             }
-            //back to FormGPS
-            DialogResult = DialogResult.Abort;
-            Close();
+            finally
+            {
+                UseWaitCursor = false;
+                btnFromISOXML.Enabled = true;
+            }
         }
 
         private void btnDeleteAB_Click(object sender, EventArgs e)
@@ -262,15 +310,27 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
         }
 
-        private void btnJobAgShare_Click(object sender, EventArgs e)
+        private async void btnJobAgShare_Click(object sender, EventArgs e)
         {
-            using (var form = new FormAgShareDownloader(mf))
+            btnJobAgShare.Enabled = false;
+            UseWaitCursor = true;
+            try
             {
-                form.ShowDialog(this);
-            }
+                if (!await SaveIfJobStartedAsync()) return; // user canceled
 
-            DialogResult = DialogResult.Ignore;
-            Close();
+                using (var form = new FormAgShareDownloader(mf))
+                {
+                    form.ShowDialog(this);
+                }
+
+                DialogResult = DialogResult.Ignore; // custom result for AgShare
+                Close();
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnJobAgShare.Enabled = true;
+            }
         }
     }
 }

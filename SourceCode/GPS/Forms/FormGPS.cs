@@ -1,4 +1,4 @@
-﻿//Please, if you use this, share the improvements
+//Please, if you use this, share the improvements
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ using AgOpenGPS.Core;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Core.ViewModels;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
 using OpenTK;
@@ -71,6 +72,7 @@ namespace AgOpenGPS
         }
 
         public bool isJobStarted => AppModel.Fields.ActiveField != null;
+
 
         public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
@@ -260,7 +262,72 @@ namespace AgOpenGPS
         /// </summary>
         private AgShareClient agShareClient;
 
+        // Small data carrier for the close options
+        public struct CloseFieldDialogResult
+        {
+            // True if user chose Yes/Continue
+            public bool Confirmed;
+            // Option to save current nudge offsets
+            public bool SaveNudge;
+            // Option to clean applied area mapping
+            public bool CleanAppliedArea;
+        }
 
+        // Show the dialog and return user's choices
+        public CloseFieldDialogResult PromptCloseFieldOptions(IWin32Window owner)
+        {
+            var result = new CloseFieldDialogResult { Confirmed = false, SaveNudge = false, CleanAppliedArea = false };
+
+            using (var dlg = new FormDialog())
+            {
+                // Title/message can be localized via gStr if desired
+                dlg.Configure("Closing Field", "Choose what to do before closing:", MessageBoxButtons.YesNo, true, false, false);
+
+                var dr = (owner != null) ? dlg.ShowDialog(owner) : dlg.ShowDialog();
+                if (dr != DialogResult.Yes) return result;
+
+                result.Confirmed = true;
+                result.SaveNudge = dlg.SaveNudgeChecked;
+                result.CleanAppliedArea = dlg.CleanAppliedAreaChecked;
+                return result;
+            }
+        }
+
+        // Apply selected pre-actions (placeholder hooks)
+        private void ApplyPreCloseActions(bool saveNudge, bool cleanApplied)
+        {
+            // Save nudge offsets if requested
+            if (saveNudge)
+            {
+                // TODO: call your actual nudge-save routine
+                // NudgeManager.SaveCurrent();
+            }
+
+            // Clean applied area mapping if requested
+            if (cleanApplied)
+            {
+                ClearAppliedArea();
+            }
+        }
+
+        // Ask, optionally apply pre-actions, then save everything
+        public async Task<bool> PromptAndSaveBeforeClosingFieldAsync(IWin32Window owner)
+        {
+            // Quick return when no job is active
+            if (!isJobStarted)
+                return true;
+
+            var options = PromptCloseFieldOptions(owner);
+            if (!options.Confirmed)
+                return false; // user canceled
+
+            // Apply pre-actions based on checkboxes
+            ApplyPreCloseActions(options.SaveNudge, options.CleanAppliedArea);
+
+            // Perform the actual save
+            await FileSaveEverythingBeforeClosingField();
+            return true;
+        }
         #endregion // Class Props and instances
 
         //The method assigned to the PowerModeChanged event call

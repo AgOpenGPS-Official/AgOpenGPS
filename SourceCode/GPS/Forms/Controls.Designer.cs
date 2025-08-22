@@ -1837,81 +1837,24 @@ namespace AgOpenGPS
         }
         private void toolStripAreYouSure_Click(object sender, EventArgs e)
         {
-            if (isJobStarted)
+            if (!isJobStarted) return;
+
+            DialogResult result3 = FormDialog.Show(
+                gStr.gsDeleteAllContoursAndSections,
+                gStr.gsDeleteForSure,
+                MessageBoxButtons.YesNo
+            );
+
+            if (result3 == DialogResult.Yes)
             {
-                if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
-                {
-                    DialogResult result3 = FormDialog.Show(
-                        gStr.gsDeleteAllContoursAndSections,
-                        gStr.gsDeleteForSure,
-                        MessageBoxButtons.YesNo
-                    );
-
-                    if (result3 == DialogResult.OK)
-                    {
-                        //FileCreateElevation();
-
-                        if (tool.isSectionsNotZones)
-                        {
-                            //Update the button colors and text
-                            AllSectionsAndButtonsToState(btnStates.Off);
-
-                            //enable disable manual buttons
-                            LineUpIndividualSectionBtns();
-                        }
-                        else
-                        {
-                            AllZonesAndButtonsToState(btnStates.Off);
-                            LineUpAllZoneButtons();
-                        }
-
-                        //turn manual button off
-                        manualBtnState = btnStates.Off;
-                        btnSectionMasterManual.Image = Properties.Resources.ManualOff;
-
-                        //turn auto button off
-                        autoBtnState = btnStates.Off;
-                        btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
-
-
-                        //clear out the contour Lists
-                        ct.StopContourLine();
-                        ct.ResetContour();
-                        fd.workedAreaTotal = 0;
-                        fd.workedAreaTotalUser = 0;
-                        fd.distanceUser = 0;
-
-                        //clear the section lists
-                        for (int j = 0; j < triStrip.Count; j++)
-                        {
-                            //clean out the lists
-                            triStrip[j].patchList?.Clear();
-                            triStrip[j].triangleList?.Clear();
-                        }
-                        patchSaveList?.Clear();
-
-                        //delete all worked Lanes too
-                        foreach (CTrk TrackItem in trk.gArr)
-                        {
-                            TrackItem.workedTracks.Clear();
-                        }
-
-                        FileCreateContour();
-                        FileCreateSections();
-
-                        Log.EventWriter("All Section Mapping Deleted");
-                    }
-                    else
-                    {
-                        TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
-                    }
-                }
-                else
-                {
-                    TimedMessageBox(1500, "Sections are on", "Turn Auto or Manual Off First");
-                }
+                ClearAppliedArea();
+            }
+            else
+            {
+                TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
             }
         }
+
         private void headingChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //check if window already exists
