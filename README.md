@@ -1,6 +1,7 @@
 # AgOpenGPS - Guidance software
 
 [![GitHub Release](https://img.shields.io/github/v/release/agopengps-official/AgOpenGPS)](https://github.com/agopengps-official/AgOpenGPS/releases/latest)
+[![Translation status](https://hosted.weblate.org/widget/agopengps/svg-badge.svg)](https://hosted.weblate.org/engage/agopengps/)
 
 Ag Precision Mapping and Section Control Software
 
@@ -46,6 +47,17 @@ In order to contribute to AgOpenGPS, follow these steps:
 2. Create a new branch named after your feature
 3. Make your changes and commit to this branch
 4. Create a PR targeting the `develop` branch
+
+## Translation
+
+We use [Weblate](https://weblate.org) to manage translations for this project.
+
+If you want to help translate AgOpenGPS, follow these steps:
+
+1. Create (or log in to) your free account on [Weblate](https://hosted.weblate.org)
+2. Go to the [AgOpenGPS Project on Weblate](https://hosted.weblate.org/engage/agopengps)
+3. Select your language (or add a new one if it's missing)
+4. Translate strings directly in the web interface
 
 ## Links
 
