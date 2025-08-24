@@ -1146,42 +1146,72 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value />
   </data>
   <data name="gsPastEndOfCurve" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSpeedo" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsRollFilter" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsRate" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerResponse" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerBar" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsProportionalGain" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTurnOffDelay" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPowerLoss" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
     <value></value>
   </data>
 </root>
