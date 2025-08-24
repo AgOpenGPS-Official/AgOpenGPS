@@ -1228,18 +1228,18 @@ UTILISER À VOS PROPRES RISQUES.</value>
     <value />
   </data>
   <data name="gsAquireDescription" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsGpsStep" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsHold" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSvennArrow" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
