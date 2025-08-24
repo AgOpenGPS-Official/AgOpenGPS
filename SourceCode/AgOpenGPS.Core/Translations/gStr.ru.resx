@@ -1225,12 +1225,18 @@
     <value />
   </data>
   <data name="gsAquireDescription" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsLightbar" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
     <value></value>
   </data>
 </root>
