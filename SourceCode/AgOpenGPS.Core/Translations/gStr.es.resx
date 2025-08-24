@@ -968,4 +968,7 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsPoint" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
