@@ -1209,4 +1209,7 @@
   <data name="v_AboutIntro" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
