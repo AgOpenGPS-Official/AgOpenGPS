@@ -571,57 +571,201 @@
     <value />
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCenter" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsBrightness" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsGuidanceStopped" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsChoose" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerChart" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWorkSwitch" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsColorPicker" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCreate" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWorkWidth" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCancel" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCheckForUpdates" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWheelbase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
     <value></value>
   </data>
 </root>
