@@ -1219,6 +1219,6 @@ BRUK PÅ EGEN RISIKO.</value>
     <value>Zoom inn</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
