@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Narysuj AB - Kliknij 2 punkty na granicy, aby rozpocząć.</value>
+    <value>Narysuj AB - Kliknij 2 punkty na granicy, aby rozpocząć</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Prosta AB</value>
@@ -145,10 +145,10 @@
     <value>Aktualny</value>
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
-    <value>Utwórz zaawansowane linie tramwajowe.</value>
+    <value>Utwórz zaawansowane linie tramwajowe</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
-    <value>Zgadzam się na warunki i zasady.</value>
+    <value>Zgadzam się na warunki i zasady</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresywność</value>
@@ -170,6 +170,7 @@
   </data>
   <data name="gsArrangeText" xml:space="preserve">
     <value>Dotknij przycisków po lewej stronie, które chcesz, aby pojawiły się w Menu (po prawej stronie).
+
 Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią się w menu od dołu do góry.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
@@ -284,7 +285,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Całkowicie usuń granicę</value>
   </data>
   <data name="gsConfiguration" xml:space="preserve">
-    <value>Konfiguracja </value>
+    <value>Konfiguracja</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Uszkodzony plik konturów</value>
@@ -536,7 +537,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Zamiana osi IMU</value>
   </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
-    <value>Zły kierunek? Stuknij Pojazd!</value>
+    <value>Zły kierunek? Stuknij Pojazd</value>
   </data>
   <data name="gsImage" xml:space="preserve">
     <value>Brak obrazu:</value>
@@ -785,7 +786,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Czas podnoszenia</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Musisz wszystko ponownie zrestartować</value>
+    <value>Musisz wszystko ponownie zrestartować?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Rejestruj</value>
@@ -965,15 +966,18 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Zatrzymaj nagrywanie, wstrzymaj granicę</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Warunki i zasady dla wersji:</value>
+    <value>Warunki i zasady dla wersji: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Jeśli rozpowszechniasz kopie tego BEZPŁATNEGO programu, niezależnie od tego, czy za darmo, czy za opłatą, ulepszone, zmienione, musisz przekazać odbiorcom te same wolności, które otrzymałeś, zgodnie z licencją GPLv3.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
     <value>AgOpenGPS to wyłącznie edukacyjne oprogramowanie do nauki o systemach nawigacyjnych, zdaniach GPS i teoretycznym zastosowaniu sterowania maszynami.
+
 W żadnym wypadku nie należy go używać na prawdziwym sprzęcie. Dostarczony jest symulator, aby umożliwić uczniowi bezpieczne doświadczenie prowadzenia maszyny.
+
 W oprogramowaniu nie ma systemów bezpieczeństwa i żadne nie są sugerowane.
+
 UŻYWAJ NA WŁASNE RYZYKO.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
@@ -998,10 +1002,10 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value>Ścieżki technologiczne</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
-    <value>Włącz krzywą AB </value>
+    <value>Włącz krzywą AB</value>
   </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
-    <value>Włącz kontur linii AB </value>
+    <value>Włącz kontur linii AB</value>
   </data>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Czujnik skrętu</value>
