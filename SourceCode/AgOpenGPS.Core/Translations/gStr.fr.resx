@@ -1242,4 +1242,7 @@ UTILISER À VOS PROPRES RISQUES.</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value />
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
