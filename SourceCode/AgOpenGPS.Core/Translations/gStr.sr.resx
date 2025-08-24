@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -124,7 +124,7 @@
     <value>AB linija</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>O programu</value>
+    <value>O programu...</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Akcija je prekinuta</value>
@@ -475,7 +475,7 @@
     <value>Pomoć</value>
   </data>
   <data name="gsHitchLength" xml:space="preserve">
-    <value>Dužina  kuke</value>
+    <value>Dužina kuke</value>
   </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Klikni na vozilo za obrtanje smera</value>
@@ -613,7 +613,7 @@
     <value>Ništa nije obrisano</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Pomeraj</value>
+    <value>Pomeraj:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Udaljenost</value>
@@ -637,7 +637,7 @@
     <value>ON/OFF</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Transparetnost</value>
+    <value>Transparetnost:</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Otvori</value>
@@ -670,7 +670,7 @@
     <value>Unesite AB Liniju</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Molim sačekajte</value>
+    <value>Molim sačekajte...</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Tačka</value>
@@ -712,7 +712,7 @@
     <value>Upisane putanje</value>
   </data>
   <data name="gsRemain" xml:space="preserve">
-    <value>Preost.</value>
+    <value>Preost</value>
   </data>
   <data name="gsRemoveOffset" xml:space="preserve">
     <value>Ukini pomeraj</value>
@@ -751,7 +751,7 @@
     <value>Linije sekcija</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekcije: </value>
+    <value>Sekcije:</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Izaberi dugme</value>
@@ -775,7 +775,7 @@
     <value>Gašenje</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Gašenje za</value>
+    <value>Gašenje za:</value>
   </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulator aktivan</value>
@@ -926,7 +926,7 @@ Prekidač - Uključi/isključi</value>
     <value>Radna širina</value>
   </data>
   <data name="gsWorked" xml:space="preserve">
-    <value>Obrađ.</value>
+    <value>Obrađ</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Nuliranje nagiba</value>
