@@ -1233,4 +1233,10 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsShutdownIn" xml:space="preserve">
     <value />
   </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="v_AboutIntro" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
