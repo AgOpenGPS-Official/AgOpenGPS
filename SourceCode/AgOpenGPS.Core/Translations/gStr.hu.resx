@@ -1244,6 +1244,9 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
     <value />
   </data>
   <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
     <value></value>
   </data>
 </root>
