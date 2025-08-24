@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -348,7 +348,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Törlés</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
-    <value>Összes festést és kontúrvonalat törüljük?</value>
+    <value>Összes festést és kontúrvonalat törüljük</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Megművelt terület (festés) törlése</value>
@@ -494,7 +494,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Fix to Fix távolság</value>
   </data>
   <data name="gsFixAlarm" xml:space="preserve">
-    <value>RTK Fix  riasztás</value>
+    <value>RTK Fix riasztás</value>
   </data>
   <data name="gsFixAlarmStop" xml:space="preserve">
     <value>Riasztás kikapcsolja a kormányzást</value>
@@ -751,7 +751,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Törlés megszakítva</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nyomvonalelhúzás</value>
+    <value>Nyomvonalelhúzás:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nyonvonal elhúzás távolsága</value>
@@ -775,7 +775,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Be/Ki</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Átlátszóság</value>
+    <value>Átlátszóság:</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Megnyit</value>
@@ -784,7 +784,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Külső</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Átfedés</value>
+    <value>Átfedés:</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Átfedés / Kihagyás</value>
@@ -862,7 +862,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Ráta</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Tényleg mindent töröl</value>
+    <value>Tényleg mindent töröl?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Rögzít</value>
@@ -967,7 +967,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Szakasz határvonalak</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Szakaszok</value>
+    <value>Szakaszok:</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Gombok választása</value>
@@ -1085,7 +1085,7 @@ Kapcsoló - Benyom be, Elenged ki</value>
     <value>Svenn nyíl</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Felhasználási feltételk a verzióhoz:</value>
+    <value>Felhasználási feltételk a verzióhoz: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Ha ennek az INGYENES programnak a továbbfejlesztett vagy módosított példányait terjeszti, akár ingyenesen, akár térítés ellenében, akkor át kell adnia a címzetteknek ugyanazokat a szabadságjogokat, amelyeket a GPLv3 licencben leírtak szerint kapott.</value>
@@ -1196,10 +1196,10 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
     <value>Nyugat</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Tengelytáv</value>
+    <value>Tengelytáv:</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Szélesség</value>
+    <value>Szélesség:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>A Windows továbbra is nyitva van</value>
