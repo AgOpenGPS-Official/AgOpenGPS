@@ -1210,4 +1210,7 @@ Prekidač - Uključi/isključi</value>
   <data name="gsReducedPoints" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
