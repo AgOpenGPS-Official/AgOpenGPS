@@ -555,4 +555,19 @@
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsABDraw" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
