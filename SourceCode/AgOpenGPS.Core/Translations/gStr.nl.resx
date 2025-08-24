@@ -1212,27 +1212,30 @@ GEBRUIK OP EIGEN RISICO.</value>
     <value />
   </data>
   <data name="gsUser3" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsStatus" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUser2" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsLightbar" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUser1" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUser4" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsLatLon" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
     <value></value>
   </data>
 </root>
