@@ -478,24 +478,42 @@
     <value />
   </data>
   <data name="gsFromKml" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsField" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsEditFieldName" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsFromExisting" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsRecordedPathMenu" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDriveIn" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerWizard" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWindowsStillOpen" xml:space="preserve">
     <value></value>
   </data>
 </root>
