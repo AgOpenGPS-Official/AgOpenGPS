@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Линия АВ - Поставьте 2 точки на границе поля </value>
+    <value>Линия АВ - Поставьте 2 точки на границе поля</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Линия АВ</value>
@@ -127,7 +127,7 @@
     <value>Меню</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>О программе</value>
+    <value>О программе...</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Действие было отменено</value>
@@ -157,7 +157,7 @@
     <value>Тип прицепного оборудования</value>
   </data>
   <data name="gsAuto" xml:space="preserve">
-    <value>Авто </value>
+    <value>Авто</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
     <value>Автопилот</value>
@@ -172,7 +172,7 @@
     <value>Фон</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Основа поля</value>
+    <value>Основа поля:</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Нижнее меню</value>
@@ -403,7 +403,7 @@
     <value>Дополнительные линии</value>
   </data>
   <data name="gsField" xml:space="preserve">
-    <value> Поле</value>
+    <value>Поле</value>
   </data>
   <data name="gsFieldFileIsCorrupt" xml:space="preserve">
     <value>Файл поля поврежден</value>
@@ -478,7 +478,7 @@
     <value>Создание и редактирование отступа</value>
   </data>
   <data name="gsHelp" xml:space="preserve">
-    <value> Помощь</value>
+    <value>Помощь</value>
   </data>
   <data name="gsHitchLength" xml:space="preserve">
     <value>Длина сцепки</value>
@@ -496,7 +496,7 @@
     <value>Если направление неправильное, коснитесь транспорта</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Без изображения</value>
+    <value>Без изображения:</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Выравнивание</value>
@@ -556,7 +556,7 @@
     <value>Порт управления орудием</value>
   </data>
   <data name="gsManual" xml:space="preserve">
-    <value>Вручную </value>
+    <value>Вручную</value>
   </data>
   <data name="gsMapForBackground" xml:space="preserve">
     <value>Добавить фон из спутникового снимка</value>
@@ -709,7 +709,7 @@
     <value>Время подъема</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Сбросить настройки</value>
+    <value>Сбросить настройки?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Запись</value>
@@ -892,13 +892,19 @@
     <value>Стрелка</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Условия и положения для версии:</value>
+    <value>Условия и положения для версии: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
-    <value>Если вы распространяете копии этой БЕСПЛАТНОЙ программы бесплатно, за плату, улучшенные, измененные, вы должны передать получателям те же свободы, которые вы получили, как указано в Лицензии GPLv3</value>
+    <value>Если вы распространяете копии этой БЕСПЛАТНОЙ программы бесплатно, за плату, улучшенные, измененные, вы должны передать получателям те же свободы, которые вы получили, как указано в Лицензии GPLv3.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
-    <value>AgOpenGPS - это исключительно образовательное программное обеспечение, предназначенное для изучения систем наведения, данных GPS и теоретического применения управления машиной. Оно ни в коем случае не предназначено для использования на реальном оборудовании, ни при каких обстоятельствах. Для того, чтобы студент мог безопасно управлять машиной, предусмотрен симулятор. В программном обеспечении нет систем безопасности, и они не подразумеваются. ИСПОЛЬЗУЙТЕ НА СВОЙ СТРАХ И РИСК.</value>
+    <value>AgOpenGPS - это исключительно образовательное программное обеспечение, предназначенное для изучения систем наведения, данных GPS и теоретического применения управления машиной.
+
+Оно ни в коем случае не предназначено для использования на реальном оборудовании, ни при каких обстоятельствах. Для того, чтобы студент мог безопасно управлять машиной, предусмотрен симулятор.
+
+В программном обеспечении нет систем безопасности, и они не подразумеваются.
+
+ИСПОЛЬЗУЙТЕ НА СВОЙ СТРАХ И РИСК.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Вы должны убедиться, что они смогут получить исходный код. И вы должны показать им эти условия, чтобы они знали свои права. Не воруйте чужую работу и не называйте ее своей.</value>
@@ -925,7 +931,7 @@
     <value>Технологическая колея</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Ширина тех.колеи</value>
+    <value>Ширина тех.колеи:</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Включите кривую AB</value>
@@ -961,7 +967,7 @@
     <value>Запад</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Колесная база</value>
+    <value>Колесная база:</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
     <value>Ширина:</value>
@@ -994,6 +1000,6 @@
     <value>Увеличить</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
-    <value> https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+    <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
 </root>
