@@ -1072,78 +1072,120 @@
     <value />
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSlow" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTracks" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsReverseDistance" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWizard" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPivot" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPressureTurnSensor" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAckermann" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsFast" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsMaxLimit" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCurrentTurnSensor" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsMotorDriver" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCountsPerDegree" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsIMUAxis" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUnit" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsMaxSteerAngle" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsRemain" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsMaxSpeed" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUnits" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerEnable" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsOnOff" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTurnSensor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsReverseSteer" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSpeedFactor" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSideHillComp" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsUturnCompensation" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
     <value></value>
   </data>
 </root>
