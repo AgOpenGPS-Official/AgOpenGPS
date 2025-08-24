@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -154,7 +154,7 @@
     <value>Antenne offset</value>
   </data>
   <data name="gsApplied" xml:space="preserve">
-    <value>Bearbejdet </value>
+    <value>Bearbejdet</value>
   </data>
   <data name="gsAquire" xml:space="preserve">
     <value>Erhverve</value>
@@ -169,9 +169,9 @@
     <value>Areal</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
-    <value>Klik på de knapper til venstre, som du ønsker skal være i Menu (den højre side)
+    <value>Klik på de knapper til venstre, som du ønsker skal være i Menu (den højre side).
 
-Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
+Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Påhæng type</value>
@@ -192,7 +192,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Baggrund</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Baseret På Mark</value>
+    <value>Baseret På Mark:</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Bund Menu</value>
@@ -333,7 +333,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Dette vil slette alle markgrænser. Vil du fortsætte?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
-    <value>Slet  kontur spor</value>
+    <value>Slet kontur spor</value>
   </data>
   <data name="gsDeleteField" xml:space="preserve">
     <value>Slet mark</value>
@@ -444,7 +444,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Mark Ikke åbnet</value>
   </data>
   <data name="gsFileError" xml:space="preserve">
-    <value>Fejl I  Fil</value>
+    <value>Fejl I Fil</value>
   </data>
   <data name="gsFix2Fix" xml:space="preserve">
     <value>Fix til Fix afstand</value>
@@ -510,7 +510,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Forkert retning? Tryk på Køretøj</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Intet billede</value>
+    <value>Intet billede:</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Tommer</value>
@@ -633,7 +633,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Intet Slettet</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nudge</value>
+    <value>Nudge:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nudge afstand</value>
@@ -645,7 +645,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Offset Fix</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Gennemsigtighed</value>
+    <value>Gennemsigtighed:</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Åben</value>
@@ -666,7 +666,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Vælg AB Linie</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Vent venligst</value>
+    <value>Vent venligst...</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -690,13 +690,13 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Dosering</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Helt Sikker, Nulstille alt</value>
+    <value>Helt Sikker, Nulstille alt?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Record</value>
   </data>
   <data name="gsRecordedPathFileIsCorrupt" xml:space="preserve">
-    <value> Fejl I Optaget Fil/Sti</value>
+    <value>Fejl I Optaget Fil/Sti</value>
   </data>
   <data name="gsRecordedPathMenu" xml:space="preserve">
     <value>Optaget sti</value>
@@ -777,7 +777,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Sektion linjer</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sektioner</value>
+    <value>Sektioner:</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Vælg knapper</value>
@@ -798,7 +798,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Skift GPS Position cm</value>
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
-    <value>Dan Simpel kørespor </value>
+    <value>Dan Simpel kørespor</value>
   </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulator Tændt</value>
@@ -807,7 +807,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Langsom</value>
   </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
-    <value>Kør langsommere end!</value>
+    <value>Kør langsommere end</value>
   </data>
   <data name="gsSmooth" xml:space="preserve">
     <value>Udglat</value>
@@ -855,22 +855,22 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op</value>
     <value>Stop Record Pause Af Kant</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
-    <value>Hvis du omdeler kopier af dette FRIE program, uanset om det er gratis eller mod betaling, forbedret, ændret, skal du give modtageren samme friheder som du modtog som det står i GPLv3 licensen</value>
+    <value>Hvis du omdeler kopier af dette FRIE program, uanset om det er gratis eller mod betaling, forbedret, ændret, skal du give modtageren samme friheder som du modtog som det står i GPLv3 licensen.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
     <value>AgOpenGPS er udelukkende undervisnings software, til at lære om autostyrings systemer, GPS meddelelser, og teoretisk tildeling af maskin kontrol.
 
-Det må på ingen måde bruges på rigtige maskiner.                                      En simulator er inkluderet for at tilbyde eleven, sikkert at opleve maskin styring.
+Det må på ingen måde bruges på rigtige maskiner. En simulator er inkluderet for at tilbyde eleven, sikkert at opleve maskin styring.
 
-Der er ingen sikkerhedssystemer i softwaren, og ingen er underforstået. 
+Der er ingen sikkerhedssystemer i softwaren, og ingen er underforstået.
 
-ANVENDELSE PÅ EGET RISIKO</value>
+ANVENDELSE PÅ EGET RISIKO.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Du skal sikre dig, at de modtager eller kan få kildekoden.  Og du skal vise dem disse vilkår, så de kender deres rettigheder. Stjæl ikke andres arbejde og kald det dit eget.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
-    <value>Gem  fil</value>
+    <value>Gem fil</value>
   </data>
   <data name="gsTooFast" xml:space="preserve">
     <value>For hurtigt</value>
@@ -897,7 +897,7 @@ ANVENDELSE PÅ EGET RISIKO</value>
     <value>Plejespor</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Plejespor bredde</value>
+    <value>Plejespor bredde:</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Tænd AB Kurve</value>
@@ -909,10 +909,10 @@ ANVENDELSE PÅ EGET RISIKO</value>
     <value>Brug Valgte</value>
   </data>
   <data name="gsUturnExtension" xml:space="preserve">
-    <value>Sæt forlængelseslinjer til 2 eller 3 *  radius</value>
+    <value>Sæt forlængelseslinjer til 2 eller 3 * radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Køretøj Type</value>
+    <value>Køretøj Type:</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Kamera</value>
@@ -921,10 +921,10 @@ ANVENDELSE PÅ EGET RISIKO</value>
     <value>Vest</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akselafstand</value>
+    <value>Akselafstand:</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Bredde</value>
+    <value>Bredde:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows stadig åben</value>
