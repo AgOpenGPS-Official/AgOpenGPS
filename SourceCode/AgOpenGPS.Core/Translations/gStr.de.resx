@@ -1095,13 +1095,13 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
     <value>Vergrößern</value>
   </data>
   <data name="gsAOGMenu" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
   </data>
   <data name="gsAllSettings" xml:space="preserve">
-    <value>View All Settings</value>
+    <value></value>
   </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alpha</value>
