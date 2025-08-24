@@ -526,24 +526,78 @@
     <value />
   </data>
   <data name="gsTooFast" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerWizard" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWizards" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsHeadingChart" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCloseAllWindowsFirst" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDistance" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsXTEChart" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
     <value></value>
   </data>
 </root>
