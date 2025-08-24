@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -58,27 +58,27 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -146,8 +146,7 @@
     <value>Antenni kõrgus</value>
   </data>
   <data name="gsAntennaOffset" xml:space="preserve">
-    <value>Antenni nihe
-</value>
+    <value>Antenni nihe</value>
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Töödeldud</value>
@@ -191,7 +190,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Taust</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Põllu põhjal</value>
+    <value>Põllu põhjal:</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Alumine menüü</value>
@@ -233,8 +232,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Graafikud</value>
   </data>
   <data name="gsCheckForUpdates" xml:space="preserve">
-    <value>Kontrollige uuendusi aadressil:
-</value>
+    <value>Kontrollige uuendusi aadressil</value>
   </data>
   <data name="gsChoose" xml:space="preserve">
     <value>Vali</value>
@@ -369,7 +367,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Näita</value>
   </data>
   <data name="gsDistance" xml:space="preserve">
-    <value>Distants:</value>
+    <value>Distants</value>
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Distants lippuni</value>
@@ -564,7 +562,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Integraal</value>
   </data>
   <data name="gsIntegralInfo" xml:space="preserve">
-    <value>See suurendab aeglaselt roolinurka, et vähendada ristsuunalist viga.</value>
+    <value>See suurendab aeglaselt roolinurka, et vähendada ristsuunalist viga</value>
   </data>
   <data name="gsInvertHydraulicRelays" xml:space="preserve">
     <value>Pööra relee ümber</value>
@@ -630,7 +628,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Masina port</value>
   </data>
   <data name="gsManual" xml:space="preserve">
-    <value>Manuaal </value>
+    <value>Manuaal</value>
   </data>
   <data name="gsManualTurns" xml:space="preserve">
     <value>Manuaalsed pöörded</value>
@@ -834,7 +832,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Kesm. tööaeg</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Lähtesta kõik kindlasti</value>
+    <value>Lähtesta kõik kindlasti?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Salvesta</value>
@@ -921,7 +919,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Üleslaadimine ebaõnnestus.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Põllu üleslaadimine AgShare'i</value>
+    <value>Põllu üleslaadimine AgShare'i...</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Ekraani nupud</value>
