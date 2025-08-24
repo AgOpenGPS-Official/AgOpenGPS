@@ -1260,4 +1260,7 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   <data name="gsIntegral" xml:space="preserve">
     <value />
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
