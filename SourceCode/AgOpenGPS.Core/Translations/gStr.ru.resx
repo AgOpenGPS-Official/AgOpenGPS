@@ -1008,4 +1008,7 @@
   <data name="gsEncoderCounts" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsDistance" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
