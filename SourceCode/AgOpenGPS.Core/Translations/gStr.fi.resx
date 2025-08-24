@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -174,7 +174,7 @@
   <data name="gsArrangeText" xml:space="preserve">
     <value>Kosketa vasemmalla puolella olevia kuvakkeita, joiden haluat näkyvän valikossa (oikea puoli).
 
- Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat valittu.</value>
+Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat valittu.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Laitteen tyyppi</value>
@@ -189,7 +189,7 @@
     <value>Käynnistä AgIO Automaattisesti</value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
-    <value>Automaattiohjauksen </value>
+    <value>Automaattiohjauksen</value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
     <value>Automaattiohjauksen asetukset</value>
@@ -351,8 +351,7 @@
     <value>Poista käsitelty alue</value>
   </data>
   <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Tämä toiminto poistaa kaikki rajat. 
-Haluatko jatkaa?</value>
+    <value>Tämä toiminto poistaa kaikki rajat. Haluatko jatkaa?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Poista ääriviivat</value>
@@ -742,7 +741,7 @@ Haluatko jatkaa?</value>
     <value>Mitään ei poistettu</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Linjan Korjaus</value>
+    <value>Linjan Korjaus:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Linjan korjauksen etäisyys</value>
@@ -856,7 +855,7 @@ Haluatko jatkaa?</value>
     <value>Määrä</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Haluatko todella nollata kaikki</value>
+    <value>Haluatko todella nollata kaikki?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Tallenna</value>
@@ -1079,19 +1078,17 @@ Kytkin = Lukkiutuva</value>
     <value>Svenn nuoli</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Version ehdot:</value>
+    <value>Version ehdot: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Jos jaat tämän ILMAISEN ohjelman kopioita, joko ilmaiseksi tai maksua vastaan, parannettuna, muutettuna, sinun on siirrettävä vastaanottajille samat vapaudet, jotka olet saanut GPLv3-lisenssissä kuvatulla tavalla.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
-    <value>AgOpenGPS on tiukasti koulutusohjelmisto, jonka avulla voi oppia ohjausjärjestelmistä, 
-GPS-lauseista ja koneenhallinnan teoreettisesta soveltamisesta. 
+    <value>AgOpenGPS on tiukasti koulutusohjelmisto, jonka avulla voi oppia ohjausjärjestelmistä, GPS-lauseista ja koneenhallinnan teoreettisesta soveltamisesta.
 
-Sitä ei saa missään tapauksessa käyttää todellisissa laitteissa.
-Mukana on simulaattori, jonka avulla opiskelija voi kokea koneen ohjauksen turvallisesti. 
+Sitä ei saa missään tapauksessa käyttää todellisissa laitteissa. Mukana on simulaattori, jonka avulla opiskelija voi kokea koneen ohjauksen turvallisesti.
 
-Ohjelmistossa ei ole turvajärjestelmiä. 
+Ohjelmistossa ei ole turvajärjestelmiä.
 
 KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
