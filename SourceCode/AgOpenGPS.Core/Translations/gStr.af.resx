@@ -118,61 +118,61 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABline" xml:space="preserve">
-    <value>zAB Line</value>
+    <value></value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>zAbout...</value>
+    <value></value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
-    <value>zAction Has Been Cancelled</value>
+    <value></value>
   </data>
   <data name="gsActual" xml:space="preserve">
-    <value>zActual</value>
+    <value></value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
-    <value>zAgressiveness</value>
+    <value></value>
   </data>
   <data name="gsArea" xml:space="preserve">
-    <value>zArea</value>
+    <value></value>
   </data>
   <data name="gsAutoSteer" xml:space="preserve">
-    <value>zAuto Steer</value>
+    <value></value>
   </data>
   <data name="gsAutoSteerConfiguration" xml:space="preserve">
-    <value>zAuto Steer Configuration</value>
+    <value></value>
   </data>
   <data name="gsAutoSteerPort" xml:space="preserve">
-    <value>zAutoSteer Port</value>
+    <value></value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>zBased on Field:</value>
+    <value></value>
   </data>
   <data name="gsBoundary" xml:space="preserve">
-    <value>zBoundary</value>
+    <value></value>
   </data>
   <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
-    <value>zBoundary Lines File Corrupt</value>
+    <value></value>
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
-    <value>zBut Field Is Loaded</value>
+    <value></value>
   </data>
   <data name="gsCentimeters" xml:space="preserve">
-    <value>zCentimeter</value>
+    <value></value>
   </data>
   <data name="gsCharts" xml:space="preserve">
-    <value>zCharts</value>
+    <value></value>
   </data>
   <data name="gsChooseADifferentField" xml:space="preserve">
-    <value>zChoose a different field</value>
+    <value></value>
   </data>
   <data name="gsChooseADifferentName" xml:space="preserve">
-    <value>zChoose a different name</value>
+    <value></value>
   </data>
   <data name="gsChooseBuildDifferentone" xml:space="preserve">
-    <value>zChoose or Build a Different one</value>
+    <value></value>
   </data>
   <data name="gsClose" xml:space="preserve">
-    <value>ZClose</value>
+    <value></value>
   </data>
   <data name="gsCloseAllWindowsFirst" xml:space="preserve">
     <value>zClose All Windows First</value>
