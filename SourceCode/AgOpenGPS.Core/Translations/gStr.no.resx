@@ -1242,4 +1242,7 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsPlantPop" xml:space="preserve">
     <value />
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
