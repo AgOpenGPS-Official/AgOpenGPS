@@ -1599,10 +1599,6 @@ namespace AgOpenGPS
         {
             SetLanguage("pt");
         }
-        private void menuLanguageTest_Click(object sender, EventArgs e)
-        {
-            SetLanguage("af");
-        }
         private void menuLanguageTurkish_Click(object sender, EventArgs e)
         {
             SetLanguage("tr");
@@ -1660,8 +1656,6 @@ namespace AgOpenGPS
             menuLanguageNorsk.Checked = false;
             menuLanguageEstonian.Checked = false;
 
-            menuLanguageTest.Checked = false;
-
             switch (lang)
             {
                 case "en":
@@ -1710,10 +1704,6 @@ namespace AgOpenGPS
 
                 case "pt":
                     menuLanguagePortugese.Checked = true;
-                    break;
-
-                case "af":
-                    menuLanguageTest.Checked = true;
                     break;
 
                 case "tr":
