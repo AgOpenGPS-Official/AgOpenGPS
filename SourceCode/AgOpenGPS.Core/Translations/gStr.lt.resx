@@ -1210,39 +1210,45 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveUploadFailed" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveUploadCompleted" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveAllDone" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
     <value></value>
   </data>
 </root>
