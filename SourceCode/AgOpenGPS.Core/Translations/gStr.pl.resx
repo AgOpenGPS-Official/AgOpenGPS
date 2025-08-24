@@ -1185,33 +1185,39 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value />
   </data>
   <data name="gsTurnOffRecordedPath" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAquire" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsLateral" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTotal" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCurve" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsOnDelay" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerDescription" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAquireFactor" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsReducedPoints" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPolygons" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
     <value></value>
   </data>
 </root>
