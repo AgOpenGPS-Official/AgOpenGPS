@@ -1139,4 +1139,110 @@ GEBRUIK OP EIGEN RISICO.</value>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Calibreer Gyroscoop</value>
   </data>
+  <data name="gsAOGMenu" xml:space="preserve">
+    <value>AOG Menu</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Acquire = Factor * Hold</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Dual &lt;&gt; Fix</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Pixel</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Curve</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>---Deadzone---</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Direct</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>RTK Fix Alarm</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Hold</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Keyboard</value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>Lat+Long</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Polygons</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Steering Bar</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Button - Push On. Push Off
+Switch - Pushed On, Release Off</value>
+  </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value>User 1</value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value>User 2</value>
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value>User 3</value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value>User 4</value>
+  </data>
+  <data name="gsWebCam" xml:space="preserve">
+    <value>WebCam</value>
+  </data>
+  <data name="gsWest" xml:space="preserve">
+    <value>West</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Wizard</value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value>Wizards</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Zones</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="v_AboutIntro" xml:space="preserve">
+    <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
 </root>

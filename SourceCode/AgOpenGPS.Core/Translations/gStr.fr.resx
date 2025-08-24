@@ -1200,4 +1200,49 @@ UTILISER À VOS PROPRES RISQUES.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>View All Settings</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Acquire = Factor * Hold</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Dual &lt;&gt; Fix</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Switch speed (km/h)</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Extra Guidelines</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Minimum GPS Step</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Hold</value>
+  </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Past End Of Curve</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Plant Pop</value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value>Reduced Points</value>
+  </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Simple Trams Creator</value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Sounds</value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Start Fullscreen</value>
+  </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Svenn Arrow</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Turn Off Rec-Path</value>
+  </data>
 </root>

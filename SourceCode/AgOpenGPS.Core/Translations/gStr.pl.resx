@@ -1097,4 +1097,152 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>View All Settings</value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>Acquire</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Acquire = Factor * Hold</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>Aquire Factor</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Curve</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Disagree</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Elevation Log</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Fast</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Field Menu</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Gap</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Minimum GPS Step</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Hold</value>
+  </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value>Look Ahead</value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>Integral</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Invert Roll</value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>Lateral</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Next Guidance Line</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Nudge:</value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>On-Delay</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Opacity:</value>
+  </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Past End Of Curve</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Plant Pop</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Polygons</value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value>Power Loss Shutdown</value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value>Proportional Gain</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value>Reduced Points</value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value>Roll Filter</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Select Preset Color</value>
+  </data>
+  <data name="gsSideHillComp" xml:space="preserve">
+    <value>Side Hill per Degree Compensation</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Smooth</value>
+  </data>
+  <data name="gsSpeedFactor" xml:space="preserve">
+    <value>Speed Factor</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Speedo</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Steering Bar</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Button - Push On. Push Off
+Switch - Pushed On, Release Off</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>External Enable</value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value>Steer Response</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Steer Switch</value>
+  </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Svenn Arrow</value>
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>Too Fast</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Track</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Tracks</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Tram Width:</value>
+  </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Turn Off Delay</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Turn Off Rec-Path</value>
+  </data>
 </root>

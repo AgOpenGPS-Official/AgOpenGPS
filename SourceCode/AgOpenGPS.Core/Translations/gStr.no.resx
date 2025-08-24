@@ -1218,4 +1218,31 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsZoomIn" xml:space="preserve">
     <value>Zoom inn</value>
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>View All Settings</value>
+  </data>
+  <data name="gsBasedOnField" xml:space="preserve">
+    <value>Based on Field:</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Discussions at:</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>Exit to Windows in:</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Lightbar</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Plant Pop</value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value>Shutdown in:</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Terms and Conditions for version: </value>
+  </data>
+  <data name="v_AboutIntro" xml:space="preserve">
+    <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
 </root>
