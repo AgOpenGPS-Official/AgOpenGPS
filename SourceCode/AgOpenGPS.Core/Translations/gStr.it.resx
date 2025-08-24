@@ -1231,6 +1231,15 @@ UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
   <data name="gsPlantPop" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSvennArrow" xml:space="preserve">
     <value></value>
   </data>
 </root>
