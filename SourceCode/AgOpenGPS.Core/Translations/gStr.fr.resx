@@ -1201,15 +1201,30 @@ UTILISER À VOS PROPRES RISQUES.</value>
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
   <data name="gsPastEndOfCurve" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSound" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
     <value></value>
   </data>
 </root>
