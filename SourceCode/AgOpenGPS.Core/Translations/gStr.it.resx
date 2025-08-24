@@ -1234,12 +1234,12 @@ UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
     <value />
   </data>
   <data name="gsGpsStep" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsHold" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSvennArrow" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
