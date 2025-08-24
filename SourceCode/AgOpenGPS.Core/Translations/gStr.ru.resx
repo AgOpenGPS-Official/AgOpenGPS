@@ -1012,12 +1012,63 @@
     <value />
   </data>
   <data name="gsWorked" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsApplied" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsArrangeText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWasZero" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
     <value></value>
   </data>
 </root>
