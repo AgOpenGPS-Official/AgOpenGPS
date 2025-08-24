@@ -1220,4 +1220,7 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
   <data name="gsIntegral" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
