@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -181,7 +181,9 @@
     <value>Area</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
-    <value>Seleziona i pulsanti nel box a sinistra secondo l'ordine con cui vuoi che appaiano in AOG Menu. L'ordina sarà dal basso verso l'alto.</value>
+    <value>Seleziona i pulsanti nel box a sinistra secondo l'ordine con cui vuoi che appaiano in AOG Menu.
+
+L'ordina sarà dal basso verso l'alto.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Tipologia di Attrezzo</value>
@@ -214,7 +216,7 @@
     <value>Sfondo</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Basato Sul Campo</value>
+    <value>Basato Sul Campo:</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Menu Inferiore</value>
@@ -280,7 +282,7 @@
     <value>Chiudi prima tutte le finestre</value>
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
-    <value>Prima Chiudere Il Campo!</value>
+    <value>Prima Chiudere Il Campo</value>
   </data>
   <data name="gsCmPix" xml:space="preserve">
     <value>Cm -&gt; Pixel</value>
@@ -295,7 +297,7 @@
     <value>Cancellare Completamente Il Confine</value>
   </data>
   <data name="gsConfiguration" xml:space="preserve">
-    <value>Configurazione </value>
+    <value>Configurazione</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>File Perimetri Corrotto</value>
@@ -463,7 +465,7 @@
     <value>Ritorno a Windows in:</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
-    <value>Ulteriori Linee </value>
+    <value>Ulteriori Linee</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>Veloce</value>
@@ -562,7 +564,7 @@
     <value>Configurazione Sollevatore</value>
   </data>
   <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
-    <value>Look Ahead </value>
+    <value>Look Ahead</value>
   </data>
   <data name="gsIMUAxis" xml:space="preserve">
     <value>Cambio Asse IMU</value>
@@ -643,7 +645,7 @@
     <value>Look Ahead:</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
-    <value>Configurazione tempo Look Ahead:</value>
+    <value>Configurazione tempo Look Ahead</value>
   </data>
   <data name="gsLowerTime" xml:space="preserve">
     <value>Tempo di Discesa</value>
@@ -736,10 +738,10 @@
     <value>Nessuna Linea Guida</value>
   </data>
   <data name="gsNone" xml:space="preserve">
-    <value>Nessuna  </value>
+    <value>Nessuna</value>
   </data>
   <data name="gsNorth" xml:space="preserve">
-    <value>Nord   </value>
+    <value>Nord</value>
   </data>
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Nulla E' Stato Cancellato</value>
@@ -856,7 +858,7 @@
     <value>Rateo</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Resettare Tutto Per Davvero</value>
+    <value>Resettare Tutto Per Davvero?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Registrazione</value>
@@ -1006,7 +1008,7 @@
     <value>Guida sotto i</value>
   </data>
   <data name="gsSmooth" xml:space="preserve">
-    <value>Smussare </value>
+    <value>Smussare</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
     <value>Smussare Curva AB</value>
@@ -1054,7 +1056,8 @@
     <value>Grafico dello Sterzo</value>
   </data>
   <data name="gsSteerDescription" xml:space="preserve">
-    <value>Pulsante - Premere per attivare,  Premere per disattivare           Interruttore - Spingere per attivare, Rilasciare per disattivare</value>
+    <value>Pulsante - Premere per attivare, Premere per disattivare
+Interruttore - Spingere per attivare, Rilasciare per disattivare</value>
   </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Attivazione esterna</value>
@@ -1075,13 +1078,19 @@
     <value>Stop Registrazione Pausa Confine</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Termini e Condizioni per la versione:</value>
+    <value>Termini e Condizioni per la versione: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Se distribusci copie di questo PROGRAMMA GRATUITO, che tu lo faccia gratis o dietro pagamento, migliorato o modificato, devi trasmettere ai destinatari le stesse libertà a te concesse dalla Licenza GPLv3.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
-    <value>AgOpenGPS è un software educativo sviluppato per conoscere i sistemi di guida, i messaggi GPS, e l'applicazione teorica del controllo macchine.                                                                                                                                                                          Non deve essere mai utilizzato su veicoli e attrezzature reali. Nel software è presente un simulatore che permette di sperimentare in sicurezza la guida autonoma di un veicolo.                                                                                                             Non ci sono sistemi di sicurezza all'interno del software nè espliciti nè impliciti.                                                            UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
+    <value>AgOpenGPS è un software educativo sviluppato per conoscere i sistemi di guida, i messaggi GPS, e l'applicazione teorica del controllo macchine.
+
+Non deve essere mai utilizzato su veicoli e attrezzature reali. Nel software è presente un simulatore che permette di sperimentare in sicurezza la guida autonoma di un veicolo.
+
+Non ci sono sistemi di sicurezza all'interno del software nè espliciti nè impliciti.
+
+UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Devi garantire che loro ricevano o possano ottenere il codice sorgente. E devi mostrargli questi terminidi utilizzo in modo che possano sapere i loro diritti. Non rubare il lavoro degli altri e non dire che è tuo.</value>
@@ -1117,7 +1126,7 @@
     <value>Corsie di Passaggio</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Larghezza Corsie di Passaggio</value>
+    <value>Larghezza Corsie di Passaggio:</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Curva AB ON</value>
@@ -1138,7 +1147,7 @@
     <value>Unità:</value>
   </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Unità:</value>
+    <value>Unità</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Utilizzare Quello Selezionato</value>
@@ -1180,16 +1189,16 @@
     <value>Ovest</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Passo</value>
+    <value>Passo:</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Larghezza</value>
+    <value>Larghezza:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows ancora aperto</value>
   </data>
   <data name="gsWizard" xml:space="preserve">
-    <value>Assistente </value>
+    <value>Assistente</value>
   </data>
   <data name="gsWizards" xml:space="preserve">
     <value>Assistenti</value>
