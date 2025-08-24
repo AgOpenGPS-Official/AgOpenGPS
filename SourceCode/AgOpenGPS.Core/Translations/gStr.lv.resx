@@ -1237,4 +1237,7 @@ IZMANTOJIET UZ SAVU RISKU.</value>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value />
   </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
