@@ -1028,54 +1028,120 @@ Prekidač - Uključi/isključi</value>
     <value />
   </data>
   <data name="gsRecordedPathPicker" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsElevationlog" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDirect" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAutoOffAgIO" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPivotDistance" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsUturnSmooth" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAutoStartAgIO" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsADConverter" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAuto" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsIntegralInfo" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTrack" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPresetColor" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTermsOne" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsReverseDistance" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsUturn" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPivot" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLookAheadTiming" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPressureTurnSensor" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLongtitude" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsMotorDriver" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsIMUAxis" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAOGMenu" xml:space="preserve">
     <value></value>
   </data>
 </root>
