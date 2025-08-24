@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -181,7 +181,9 @@
     <value>Areal</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
-    <value>Trykk på knappene på venstre side som du vil skal vises i menyen (høyre side). Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bunnen opp.</value>
+    <value>Trykk på knappene på venstre side som du vil skal vises i menyen (høyre side).
+
+Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bunnen opp.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Festestil</value>
@@ -388,7 +390,7 @@
     <value>Vis</value>
   </data>
   <data name="gsDistance" xml:space="preserve">
-    <value>Avstand:</value>
+    <value>Avstand</value>
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Avstand til flagg</value>
@@ -568,7 +570,7 @@
     <value>Hvis feil retning, trykk på kjøretøyet</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Ikke noe bilde</value>
+    <value>Ikke noe bilde:</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fusjon</value>
@@ -739,7 +741,7 @@
     <value>Ingenting slettet</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Flytt</value>
+    <value>Flytt:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Flytt avstand</value>
@@ -1045,7 +1047,8 @@
     <value>Styringsdiagram</value>
   </data>
   <data name="gsSteerDescription" xml:space="preserve">
-    <value>Knapp - Trykk på. Trykk av bryter - Trykket på, slipp av</value>
+    <value>Knapp - Trykk på.
+Trykk av bryter - Trykket på, slipp av</value>
   </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Ekstern aktivering</value>
@@ -1072,7 +1075,13 @@
     <value>Hvis du distribuerer kopier av dette GRATIS programmet, enten gratis eller mot betaling, forbedret, endret, må du gi mottakerne de samme frihetene som du mottok i henhold til GPLv3-lisensen.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
-    <value>AgOpenGPS er strengt pedagogisk programvare for å lære om styringssystemer, GPS-setninger og teoretisk bruk av maskinstyring. Det skal på ingen måte brukes på ekte utstyr under noen omstendigheter. En simulator tilbys for å la studenten trygt oppleve maskinstyring. Det er ingen sikkerhetssystemer i programvaren, og ingen er implisert. BRUK PÅ EGEN RISIKO.</value>
+    <value>AgOpenGPS er strengt pedagogisk programvare for å lære om styringssystemer, GPS-setninger og teoretisk bruk av maskinstyring.
+
+Det skal på ingen måte brukes på ekte utstyr under noen omstendigheter. En simulator tilbys for å la studenten trygt oppleve maskinstyring.
+
+Det er ingen sikkerhetssystemer i programvaren, og ingen er implisert.
+
+BRUK PÅ EGEN RISIKO.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Du må sørge for at de mottar eller kan få tilgang til kildekoden. Og du må vise dem disse vilkårene slik at de kjenner sine rettigheter. Stjel ikke andres arbeid og kall det ditt eget.</value>
@@ -1174,7 +1183,7 @@
     <value>Akselavstand:</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Bredde</value>
+    <value>Bredde:</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Vinduer er fortsatt åpne</value>
