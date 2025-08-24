@@ -1200,4 +1200,16 @@ UTILISER À VOS PROPRES RISQUES.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
