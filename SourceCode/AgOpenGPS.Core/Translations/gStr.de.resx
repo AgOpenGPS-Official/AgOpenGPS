@@ -1100,92 +1100,17 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alpha</value>
   </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="gsAuto" xml:space="preserve">
     <value>Auto</value>
-  </data>
-  <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value></value>
   </data>
   <data name="gsCmPix" xml:space="preserve">
     <value>Cm -&gt; Pixel</value>
   </data>
-  <data name="gsCountsPerDegree" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsCurrentTurnSensor" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsDisplay" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsGpsStep" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsGrid" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsGuidanceStopped" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="gsHardwareMessages" xml:space="preserve">
     <value>Hardware Messages</value>
   </data>
-  <data name="gsHeadingChart" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsHold" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsImuFusion" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsIntegral" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsLatLon" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsLateral" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="gsLatitude" xml:space="preserve">
     <value>Latitude</value>
-  </data>
-  <data name="gsLightbar" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsLongtitude" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsLookAhead" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsLowerTime" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsMachinePort" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsMinToMove" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsNudge" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsNudgeDistance" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsOpacity" xml:space="preserve">
-    <value></value>
   </data>
   <data name="gsRate" xml:space="preserve">
     <value>Rate</value>
@@ -1198,9 +1123,6 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   </data>
   <data name="gsStatus" xml:space="preserve">
     <value>Status</value>
-  </data>
-  <data name="gsSvennArrow" xml:space="preserve">
-    <value></value>
   </data>
   <data name="gsTotal" xml:space="preserve">
     <value>Total</value>
@@ -1217,20 +1139,8 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   <data name="gsUser4" xml:space="preserve">
     <value>User 4</value>
   </data>
-  <data name="gsUturn" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsUturnCompensation" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="gsWebCam" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="gsZone" xml:space="preserve">
     <value>Zone</value>
-  </data>
-  <data name="gsZones" xml:space="preserve">
-    <value></value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
