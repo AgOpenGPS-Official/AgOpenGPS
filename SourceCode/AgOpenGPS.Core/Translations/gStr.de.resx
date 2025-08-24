@@ -1241,4 +1241,7 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   <data name="gsZone" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
