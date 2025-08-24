@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -224,9 +224,6 @@
   </data>
   <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
     <value>Ribinių linijų failas sugadintas</value>
-  </data>
-  <data name="gsBoundaryMenu" xml:space="preserve">
-    <value>Ribinis kontūras</value>
   </data>
   <data name="gsBrightness" xml:space="preserve">
     <value>Švesumas</value>
@@ -618,9 +615,6 @@
   <data name="gsLatLon" xml:space="preserve">
     <value>Platuma + Ilguma</value>
   </data>
-  <data name="gsLatLonPlus" xml:space="preserve">
-    <value>Platuma + Ilguma + Kryptis</value>
-  </data>
   <data name="gsLateral" xml:space="preserve">
     <value>Šoninis</value>
   </data>
@@ -657,14 +651,8 @@
   <data name="gsMPH" xml:space="preserve">
     <value>Mph</value>
   </data>
-  <data name="gsMachineModule" xml:space="preserve">
-    <value>Padargų modulis</value>
-  </data>
   <data name="gsMachinePort" xml:space="preserve">
     <value>Mašinos prievadas</value>
-  </data>
-  <data name="gsMakeBoundaryContours" xml:space="preserve">
-    <value>Padarykite ribos kontūrus</value>
   </data>
   <data name="gsManual" xml:space="preserve">
     <value>Rankinis</value>
@@ -747,14 +735,8 @@
   <data name="gsNoGuidanceLines" xml:space="preserve">
     <value>Nėra navigacinės linijos</value>
   </data>
-  <data name="gsNoSettingsWithIMU" xml:space="preserve">
-    <value>Nėra nustatymų su IMU</value>
-  </data>
   <data name="gsNone" xml:space="preserve">
     <value>Joks</value>
-  </data>
-  <data name="gsNoneUsed" xml:space="preserve">
-    <value>Nenaudota</value>
   </data>
   <data name="gsNorth" xml:space="preserve">
     <value>Šiaurė</value>
