@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -721,7 +721,7 @@
     <value>Z Rietumi</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value>Jauns Nu nūklusājuma .</value>
+    <value>Jauns Nu nūklusājuma</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Nākamā navigācijas līnija</value>
@@ -862,7 +862,7 @@
     <value>Ātrums</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Tiešām atiestatīt visu</value>
+    <value>Tiešām atiestatīt visu?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Ieraksts</value>
@@ -1049,19 +1049,19 @@
     <value>Svena bulta</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Versijas noteikumi un nosacījumi:</value>
+    <value>Versijas noteikumi un nosacījumi: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Ja izplatāt šīs BEZMAKSAS programmas kopijas, neatkarīgi no tā, vai tā ir bez maksas vai par maksu, uzlabotas, mainītas, jums ir jānodod saņēmējiem tās pašas brīvības, kuras saņēmāt saskaņā ar GPLv3 licenci.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
     <value>AgOpenGPS ir tikai izglītojoša programmatūra, lai uzzinātu par vadības sistēmām, GPS frāzēm un mašīnu vadības teorētisko pielietojumu.
- 
- To nekādā gadījumā nedrīkst izmantot reālām iekārtām. Ir pieejams simulators, lai students varētu droši apgūt mašīnas vadību.
- 
- Programmatūrā nav drošības sistēmu, un neviena no tām nav ietverta.
- 
- IZMANTOJIET UZ SAVU RISKU."</value>
+
+To nekādā gadījumā nedrīkst izmantot reālām iekārtām. Ir pieejams simulators, lai students varētu droši apgūt mašīnas vadību.
+
+Programmatūrā nav drošības sistēmu, un neviena no tām nav ietverta.
+
+IZMANTOJIET UZ SAVU RISKU.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Jums ir jānodrošina, ka viņi saņem vai var iegūt avota kodu. Un jums ir jāparāda viņiem šie nosacījumi, lai viņi zinātu savas tiesības. Nezodziet citu darbu un nepiesaviniet to sev.</value>
@@ -1097,7 +1097,7 @@
     <value>Tehnoloģiskās sliedes</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Attālums starp tehnoloģiskajām sliedēm</value>
+    <value>Attālums starp tehnoloģiskajām sliedēm:</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Ieslēdziet AB līkni</value>
