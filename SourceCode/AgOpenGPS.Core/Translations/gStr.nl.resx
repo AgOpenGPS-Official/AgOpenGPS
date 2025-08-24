@@ -1143,15 +1143,36 @@ GEBRUIK OP EIGEN RISICO.</value>
     <value />
   </data>
   <data name="gsHelp" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAckermann" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWizards" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsWebCam" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
     <value></value>
   </data>
 </root>
