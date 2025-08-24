@@ -1021,4 +1021,10 @@ Prekidač - Uključi/isključi</value>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
