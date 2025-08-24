@@ -1252,6 +1252,12 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value />
   </data>
   <data name="gsOff" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsReset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
     <value></value>
   </data>
 </root>
