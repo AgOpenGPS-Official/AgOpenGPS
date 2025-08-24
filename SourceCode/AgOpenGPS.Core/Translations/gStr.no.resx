@@ -1222,15 +1222,15 @@ BRUK PÅ EGEN RISIKO.</value>
     <value />
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
