@@ -1239,9 +1239,9 @@ GEBRUIK OP EIGEN RISICO.</value>
     <value />
   </data>
   <data name="gsHold" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
