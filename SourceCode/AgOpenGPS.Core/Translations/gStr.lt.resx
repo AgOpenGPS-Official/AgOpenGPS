@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -181,7 +181,9 @@
     <value>Plotas</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
-    <value>Paspauskite mygtuką kairėje, kad jis atsirastų menu dešinėje.                            Kokia tvarka juos paspausite, tokia tvarka atsiras Menu</value>
+    <value>Paspauskite mygtuką kairėje, kad jis atsirastų menu dešinėje.
+
+Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Padargo tipas</value>
@@ -403,7 +405,7 @@
     <value>Įvažiuokite</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
-    <value> Važiuoti pro</value>
+    <value>Važiuoti pro</value>
   </data>
   <data name="gsDriving" xml:space="preserve">
     <value>Vairavimas</value>
@@ -577,7 +579,7 @@
     <value>Jei neteisinga kryptis, palieskite transporto priemonę</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nėra paveikslėlio</value>
+    <value>Nėra paveikslėlio:</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Suderinimas</value>
@@ -637,7 +639,7 @@
     <value>Navigacijos juosta</value>
   </data>
   <data name="gsLineSmooth" xml:space="preserve">
-    <value>Linijos palyginimas </value>
+    <value>Linijos palyginimas</value>
   </data>
   <data name="gsLineWidth" xml:space="preserve">
     <value>Linijos storis</value>
@@ -763,7 +765,7 @@
     <value>Niekas neištrinta</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Stumtelti</value>
+    <value>Stumtelti:</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Stumtelėjimo atstumas</value>
@@ -796,7 +798,7 @@
     <value>Išorinis</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Persidengimas</value>
+    <value>Persidengimas:</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Persidengimas/Tarpas</value>
@@ -874,7 +876,7 @@
     <value>Sparta</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
-    <value>Nustatyti iš naujo</value>
+    <value>Nustatyti iš naujo?</value>
   </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Įrašas</value>
@@ -979,7 +981,7 @@
     <value>Vienos antenos sist. nustatymai</value>
   </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
-    <value>Sulėtinkite tempą </value>
+    <value>Sulėtinkite tempą</value>
   </data>
   <data name="gsSmooth" xml:space="preserve">
     <value>Gludinimas</value>
@@ -1030,7 +1032,8 @@
     <value>Vairavimo diagrama</value>
   </data>
   <data name="gsSteerDescription" xml:space="preserve">
-    <value>Nefiksuojantis mygtukas: įjungta/išjungta.         Fiksuojantis mygtukas: įjungta/išjungta</value>
+    <value>Nefiksuojantis mygtukas: įjungta/išjungta.
+Fiksuojantis mygtukas: įjungta/išjungta</value>
   </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Vairavimo paleidimas nuotoliu</value>
@@ -1054,19 +1057,19 @@
     <value>Svenn rodyklė</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terminai ir sąlygos esamai versijai:</value>
+    <value>Terminai ir sąlygos esamai versijai: </value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Jei platinate šios NEMOKAMOS programos kopijas, nesvarbu, ar tai būtų nemokama, ar už tam tikrą mokestį, patobulintas, pakeistas, turite perduoti gavėjams tas pačias laisves, kurias gavote kaip nurodyta GPLv3 licencijoje.</value>
   </data>
   <data name="gsTermsThree" xml:space="preserve">
-    <value>"AgOpenGPS yra griežtai mokomoji programinė įranga, skirta sužinoti apie valdymo sistemas, GPS sakinius ir teorinį mašinos valdymo taikymą.
+    <value>AgOpenGPS yra griežtai mokomoji programinė įranga, skirta sužinoti apie valdymo sistemas, GPS sakinius ir teorinį mašinos valdymo taikymą.
 
 Jokiu būdu jokiu būdu negalima naudoti tikroje įrangoje. Suteikiamas treniruoklis, kad mokinys galėtų saugiai patirti mašinos valdymą.
 
 Programinėje įrangoje nėra saugos sistemų ir jos nėra numanomos.
 
-NAUDOJIMAS SAVO RIZIKA."</value>
+NAUDOJIMAS SAVO RIZIKA.</value>
   </data>
   <data name="gsTermsTwo" xml:space="preserve">
     <value>Turite įsitikinti, kad jie gauna arba gali gauti šaltinio kodą. Ir jūs turite parodyti jiems šias sąlygas, kad jie žinotų savo teises. Nevokite kitų darbų ir vadinkite jį savo.</value>
