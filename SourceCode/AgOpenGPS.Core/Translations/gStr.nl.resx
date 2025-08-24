@@ -1140,6 +1140,18 @@ GEBRUIK OP EIGEN RISICO.</value>
     <value>Calibreer Gyroscoop</value>
   </data>
   <data name="gsWest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsWebCam" xml:space="preserve">
     <value></value>
   </data>
 </root>
