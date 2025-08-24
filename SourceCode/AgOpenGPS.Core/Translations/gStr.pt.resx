@@ -645,4 +645,7 @@
   <data name="gsWheelbase" xml:space="preserve">
     <value></value>
   </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
