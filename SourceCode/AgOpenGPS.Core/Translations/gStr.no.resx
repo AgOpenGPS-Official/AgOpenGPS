@@ -1221,4 +1221,16 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsBasedOnField" xml:space="preserve">
     <value />
   </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
