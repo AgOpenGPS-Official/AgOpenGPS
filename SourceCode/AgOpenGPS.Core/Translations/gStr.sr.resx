@@ -1229,9 +1229,12 @@ Prekidač - Uključi/isključi</value>
     <value />
   </data>
   <data name="gsHold" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPlantPop" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
     <value></value>
   </data>
 </root>
