@@ -1176,39 +1176,63 @@ GEBRUIK OP EIGEN RISICO.</value>
     <value />
   </data>
   <data name="gsAlpha" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsZones" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAPlus" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsGrid" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCurve" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsSteerDescription" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsFixAlarm" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsDiameter" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsPolygons" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsAOGMenu" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsCmPix" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="gsZone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="v_AboutIntro" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
     <value></value>
   </data>
 </root>
