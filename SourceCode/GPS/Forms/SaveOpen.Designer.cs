@@ -16,6 +16,7 @@ using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Properties;
 using System.Threading.Tasks;
+using AgOpenGPS.Classes.IO;
 
 namespace AgOpenGPS
 {
@@ -27,15 +28,19 @@ namespace AgOpenGPS
         //list of the list of patch data individual triangles for contour tracking
         public List<List<vec3>> contourSaveList = new List<List<vec3>>();
 
+        // NOTE: Add this using at the top of your Form file:
+        // using AgOpenGPS.Classes.IO;
+
+        #region File IO (per filetype) — updated to AgOpenGPS.Classes.IO helpers
+
+        // --- Keep this helper as-is ---
         private string GetFieldDir()
         {
             return Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
         }
 
         /// <summary>
-        /// Open a field from Field.txt using the stateless loaders only (no legacy helpers).
-        /// Reads: LocalPlane, Tracks, Sections, Contour, Flags, Boundaries+Headlands, Tram, RecPath, BackPic.
-        /// Updates runtime containers and UI elements accordingly.
+        /// Open a field from Field.txt using per-filetype loaders and refresh the UI.
         /// </summary>
         public void FileOpenField(string openType)
         {
@@ -77,9 +82,9 @@ namespace AgOpenGPS
             // --- Local plane from Field.txt (or fallback to current GNSS)
             try
             {
-                var localPlane = AgOpenGPS.Classes.FieldFilesLoader.LoadLocalPlaneOrDefault(dir, AppModel.CurrentLatLon);
+                var localPlane = FieldPlaneFiles.LoadLocalPlaneOrDefault(dir, AppModel.CurrentLatLon);
                 pn.DefineLocalPlane(localPlane.Origin, true);   // keep existing side effects
-                AppModel.LocalPlane = localPlane;               // store if you keep it in AppModel
+                AppModel.LocalPlane = localPlane;               // keep current model in sync
             }
             catch (Exception e)
             {
@@ -93,13 +98,13 @@ namespace AgOpenGPS
 
             // ---------------- Tracks ----------------
             trk.gArr?.Clear();
-            var tracks = AgOpenGPS.Classes.FieldFilesLoader.LoadTracks(dir);
+            var tracks = TrackFiles.Load(dir);
             trk.gArr.AddRange(tracks);
             trk.idx = -1;
 
             // ---------------- Sections ----------------
             // Parse patches + total area, then map into triStrip like legacy
-            var sections = AgOpenGPS.Classes.FieldFilesLoader.LoadSections(dir);
+            var sections = SectionsFiles.Load(dir);
             fd.workedAreaTotal = 0;
             if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
             {
@@ -113,7 +118,7 @@ namespace AgOpenGPS
             }
 
             // ---------------- Contour ----------------
-            var contourPatches = AgOpenGPS.Classes.FieldFilesLoader.LoadContour(dir);
+            var contourPatches = ContourFiles.Load(dir);
             ct.stripList?.Clear();
             foreach (var patch in contourPatches)
             {
@@ -123,7 +128,7 @@ namespace AgOpenGPS
 
             // ---------------- Flags ----------------
             flagPts?.Clear();
-            var flags = AgOpenGPS.Classes.FieldFilesLoader.LoadFlags(dir);
+            var flags = FlagsFiles.Load(dir);
             flagPts.AddRange(flags);
 
             // ---------------- Boundaries + Headlands ----------------
@@ -135,7 +140,10 @@ namespace AgOpenGPS
                 CalculateMinMax();
                 bnd.BuildTurnLines();
             }
-            catch { /* keep soft-fail like legacy */ }
+            catch
+            {
+                // keep soft-fail like legacy
+            }
 
             btnABDraw.Visible = bnd.bndList.Count > 0;
 
@@ -162,7 +170,7 @@ namespace AgOpenGPS
             tram.displayMode = 0;
             btnTramDisplayMode.Visible = false;
 
-            var tramData = AgOpenGPS.Classes.FieldFilesLoader.LoadTram(dir);
+            var tramData = TramFiles.Load(dir);
             tram.tramBndOuterArr.AddRange(tramData.Outer);
             tram.tramBndInnerArr.AddRange(tramData.Inner);
             tram.tramList.AddRange(tramData.Lines);
@@ -171,13 +179,13 @@ namespace AgOpenGPS
 
             // ---------------- RecPath ----------------
             recPath.recList.Clear();
-            var rec = AgOpenGPS.Classes.FieldFilesLoader.LoadRecPath(dir, "RecPath.txt");
+            var rec = RecPathFiles.Load(dir, "RecPath.txt");
             recPath.recList.AddRange(rec);
             panelDrag.Visible = recPath.recList.Count > 0;
 
             // ---------------- Background image ----------------
             worldGrid.isGeoMap = false;
-            var back = AgOpenGPS.Classes.FieldFilesLoader.LoadBackPicSettings(dir);
+            var back = BackPicFiles.Load(dir);
             worldGrid.isGeoMap = back.IsGeoMap;
             if (worldGrid.isGeoMap)
             {
@@ -211,19 +219,23 @@ namespace AgOpenGPS
             SetZoom();
             oglZoom.Refresh();
         }
+
+        /// <summary>
+        /// Load boundaries and optionally attach headlands; update UI toggles.
+        /// </summary>
         private void LoadBoundariesAndHeadlands()
         {
             var dir = GetFieldDir();
 
             // Boundaries
-            var boundaries = AgOpenGPS.Classes.FieldFilesLoader.LoadBoundaries(dir);
+            var boundaries = BoundaryFiles.Load(dir);
             bnd.bndList?.Clear();
             bnd.bndList.AddRange(boundaries);
 
             // Headlands attached if present
-            AgOpenGPS.Classes.FieldFilesLoader.AttachHeadlands(dir, bnd.bndList);
+            HeadlandFiles.AttachLoad(dir, bnd.bndList);
 
-            // Preserve your post-processing (turn lines, min-max, UI)
+            // Preserve post-processing (turn lines, min-max, UI)
             CalculateMinMax();
             bnd.BuildTurnLines();
             btnABDraw.Visible = bnd.bndList.Count > 0;
@@ -247,78 +259,71 @@ namespace AgOpenGPS
             btnHydLift.Visible = (((sett & 2) == 2) && bnd.isHeadlandOn);
         }
 
+        /// <summary>
+        /// Save HeadLines (CHeadPath).
+        /// </summary>
         public void FileSaveHeadLines()
         {
             var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveHeadLines(dir, hdl.tracksArr);
+            HeadlinesFiles.Save(dir, hdl.tracksArr);
         }
+
+        /// <summary>
+        /// Load HeadLines (CHeadPath).
+        /// </summary>
         public void FileLoadHeadLines()
         {
             hdl.tracksArr?.Clear();
-            var list = AgOpenGPS.Classes.FieldFilesLoader.LoadHeadLines(GetFieldDir());
+            var list = HeadlinesFiles.Load(GetFieldDir());
             hdl.tracksArr.AddRange(list);
             hdl.idx = -1;
         }
 
-
+        /// <summary>
+        /// Save tracks (AB + Curve).
+        /// </summary>
         public void FileSaveTracks()
         {
             var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveTracks(dir, trk.gArr);
+            TrackFiles.Save(dir, trk.gArr);
         }
 
+        /// <summary>
+        /// Load tracks (AB + Curve).
+        /// </summary>
         public void FileLoadTracks()
         {
-            // Load tracks via stateless loader
             var dir = GetFieldDir();
-            var tracks = AgOpenGPS.Classes.FieldFilesLoader.LoadTracks(dir);
+            var tracks = TrackFiles.Load(dir);
 
             trk.gArr?.Clear();
             trk.gArr.AddRange(tracks);
-
-            // Keep UI state consistent
             trk.idx = -1;
         }
 
-        //creates the field file when starting new field
+        /// <summary>
+        /// Create Field.txt for a new field session.
+        /// </summary>
         public void FileCreateField()
         {
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //$FieldDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12 - offset easting, northing, zone
-
             if (!isJobStarted)
             {
                 TimedMessageBox(3000, gStr.gsFieldNotOpen, gStr.gsCreateNewField);
                 return;
             }
-            string myFileName;
 
-            //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName))) Directory.CreateDirectory(directoryName);
 
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-            { Directory.CreateDirectory(directoryName); }
-
-            myFileName = "Field.txt";
-
-            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, myFileName)))
+            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, "Field.txt")))
             {
-                //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-
                 writer.WriteLine("$FieldDir");
                 writer.WriteLine("FieldNew");
-
-                //write out the easting and northing Offsets
                 writer.WriteLine("$Offsets");
                 writer.WriteLine("0,0");
-
                 writer.WriteLine("Convergence");
                 writer.WriteLine("0");
-
                 writer.WriteLine("StartFix");
                 writer.WriteLine(
                     AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
@@ -326,175 +331,173 @@ namespace AgOpenGPS
             }
         }
 
+        /// <summary>
+        /// Create Elevation.txt header.
+        /// </summary>
         public void FileCreateElevation()
         {
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //$FieldDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12 - offset easting, northing, zone
-
-            //if (!isJobStarted)
-            //{
-            //    using (TimedMessageBox(3000, "Ooops, Job Not Started", "Start a Job First"))
-            //    {  }
-            //    return;
-            //}
-
-            string myFileName;
-
-            //get the directory and make sure it exists, create if not
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName))) Directory.CreateDirectory(directoryName);
 
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-            { Directory.CreateDirectory(directoryName); }
-
-            myFileName = "Elevation.txt";
-
-            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, myFileName)))
+            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, "Elevation.txt")))
             {
-                //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-
                 writer.WriteLine("$FieldDir");
                 writer.WriteLine("Elevation");
-
-                //write out the easting and northing Offsets
                 writer.WriteLine("$Offsets");
                 writer.WriteLine("0,0");
-
                 writer.WriteLine("Convergence");
                 writer.WriteLine("0");
-
                 writer.WriteLine("StartFix");
                 writer.WriteLine(
                     AppModel.CurrentLatLon.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
                     AppModel.CurrentLatLon.Longitude.ToString(CultureInfo.InvariantCulture));
-
                 writer.WriteLine("Latitude,Longitude,Elevation,Quality,Easting,Northing,Heading,Roll");
             }
         }
 
-        //save field Patches
+        /// <summary>
+        /// Append Section triangle-strips if pending.
+        /// </summary>
         public void FileSaveSections()
         {
-            // Only append when there is data to persist
             if (patchSaveList.Count > 0)
             {
-                AgOpenGPS.Classes.FieldFilesSaver.AppendSections(GetFieldDir(), patchSaveList);
+                SectionsFiles.Append(GetFieldDir(), patchSaveList);
                 patchSaveList.Clear();
             }
         }
 
+        /// <summary>
+        /// Create/overwrite empty Sections.txt.
+        /// </summary>
         public void FileCreateSections()
         {
-            AgOpenGPS.Classes.FieldFilesSaver.CreateEmptySections(GetFieldDir());
+            SectionsFiles.CreateEmpty(GetFieldDir());
         }
 
+        /// <summary>
+        /// Create/overwrite Boundary.txt header (legacy-compatible).
+        /// </summary>
         public void FileCreateBoundary()
         {
-            // Create/overwrite Boundary.txt with "$Boundary" header
-            AgOpenGPS.Classes.FieldFilesSaver.CreateBoundaryFile(GetFieldDir());
+            // No dedicated "create" helper needed; write legacy header directly.
+            var path = Path.Combine(GetFieldDir(), "Boundary.txt");
+            Directory.CreateDirectory(GetFieldDir());
+            File.WriteAllText(path, "$Boundary" + Environment.NewLine);
         }
 
-        //Create Flag file
+        /// <summary>
+        /// Create Flags.txt header and zero count.
+        /// </summary>
         public void FileCreateFlags()
         {
-            AgOpenGPS.Classes.FieldFilesSaver.CreateFlagsFile(GetFieldDir());
+            // Use saver to ensure consistent header/format
+            FlagsFiles.Save(GetFieldDir(), new List<CFlag>(0));
         }
 
-        //Create contour file
+        /// <summary>
+        /// Create/overwrite Contour.txt with header.
+        /// </summary>
         public void FileCreateContour()
         {
-            AgOpenGPS.Classes.FieldFilesSaver.CreateContourFile(GetFieldDir());
+            ContourFiles.CreateFile(GetFieldDir());
         }
 
-        //save the contour points
+        /// <summary>
+        /// Append contour patches if pending.
+        /// </summary>
         public void FileSaveContour()
         {
             if (contourSaveList.Count > 0)
             {
-                AgOpenGPS.Classes.FieldFilesSaver.AppendContour(GetFieldDir(), contourSaveList);
+                ContourFiles.Append(GetFieldDir(), contourSaveList);
                 contourSaveList.Clear();
             }
         }
 
-        //save the boundary
+        /// <summary>
+        /// Save boundaries.
+        /// </summary>
         public void FileSaveBoundary()
         {
-            var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveBoundary(dir, bnd.bndList);
+            BoundaryFiles.Save(GetFieldDir(), bnd.bndList);
         }
 
-        //save tram
+        /// <summary>
+        /// Save tram data.
+        /// </summary>
         public void FileSaveTram()
         {
-            var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveTram(
-                dir,
+            TramFiles.Save(
+                GetFieldDir(),
                 tram.tramBndOuterArr,
                 tram.tramBndInnerArr,
                 tram.tramList);
         }
 
-        //save the headland
+        /// <summary>
+        /// Save headland(s) attached to boundaries.
+        /// </summary>
         public void FileSaveHeadland()
         {
-            var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveHeadland(dir, bnd.bndList);
+            HeadlandFiles.Save(GetFieldDir(), bnd.bndList);
         }
 
-        //Create contour file
+        /// <summary>
+        /// Create RecPath with header + zero count (legacy-compatible).
+        /// </summary>
         public void FileCreateRecPath()
         {
-            //get the directory and make sure it exists, create if not
-            string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
-
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-            { Directory.CreateDirectory(directoryName); }
-
-            string myFileName = "RecPath.txt";
-
-            //write out the file
-            using (StreamWriter writer = new StreamWriter(Path.Combine(directoryName, myFileName)))
+            var dir = GetFieldDir();
+            Directory.CreateDirectory(dir);
+            using (var writer = new StreamWriter(Path.Combine(dir, "RecPath.txt")))
             {
-                //write paths # of sections
                 writer.WriteLine("$RecPath");
                 writer.WriteLine("0");
             }
         }
 
-        //save the recorded path
+        /// <summary>
+        /// Save the recorded path.
+        /// </summary>
         public void FileSaveRecPath(string name = "RecPath.Txt")
         {
-            AgOpenGPS.Classes.FieldFilesSaver.SaveRecPath(GetFieldDir(), recPath.recList, name);
+            RecPathFiles.Save(GetFieldDir(), recPath.recList, name);
         }
 
-        //load Recpath.txt
+        /// <summary>
+        /// Load RecPath.txt.
+        /// </summary>
         public void FileLoadRecPath()
         {
             recPath.recList.Clear();
-            var list = AgOpenGPS.Classes.FieldFilesLoader.LoadRecPath(GetFieldDir(), "RecPath.txt");
+            var list = RecPathFiles.Load(GetFieldDir(), "RecPath.txt");
             recPath.recList.AddRange(list);
             panelDrag.Visible = recPath.recList.Count > 0;
         }
 
-        //save all the flag markers
+        /// <summary>
+        /// Save flags.
+        /// </summary>
         public void FileSaveFlags()
         {
-            var dir = GetFieldDir();
-            AgOpenGPS.Classes.FieldFilesSaver.SaveFlags(dir, flagPts);
+            FlagsFiles.Save(GetFieldDir(), flagPts);
         }
 
+        /// <summary>
+        /// Load flags into flagPts.
+        /// </summary>
         private void LoadFlags()
         {
-            var dir = GetFieldDir();
-            var flags = AgOpenGPS.Classes.FieldFilesLoader.LoadFlags(dir);
-
+            var flags = FlagsFiles.Load(GetFieldDir());
             flagPts?.Clear();
             flagPts.AddRange(flags);
         }
 
+        /// <summary>
+        /// Append elevation grid lines to Elevation.txt.
+        /// </summary>
         public void FileSaveElevation()
         {
             using (StreamWriter writer = new StreamWriter(Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Elevation.txt"), true))
@@ -503,6 +506,9 @@ namespace AgOpenGPS
             }
             sbGrid.Clear();
         }
+
+        #endregion
+
 
         //generate KML file from flag
         public void FileSaveSingleFlagKML2(int flagNumber)

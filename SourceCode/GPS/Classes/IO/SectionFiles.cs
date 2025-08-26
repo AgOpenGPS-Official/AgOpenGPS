@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using AgOpenGPS.Core.Models;
+
+namespace AgOpenGPS.Classes.IO
+{
+    public static class SectionsFiles
+    {
+        public sealed class SectionsData
+        {
+            public List<List<vec3>> Patches { get; } = new List<List<vec3>>();
+            public double TotalArea { get; set; }
+        }
+
+        public static SectionsData Load(string fieldDirectory)
+        {
+            var result = new SectionsData();
+            var path = Path.Combine(fieldDirectory ?? "", "Sections.txt");
+            if (!File.Exists(path)) return result;
+
+            using (var reader = new StreamReader(path))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    int verts;
+                    if (!int.TryParse(line.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out verts))
+                        continue;
+
+                    var patch = FileIoUtils.ReadVec3Block(reader, verts);
+                    if (patch.Count > 0)
+                    {
+                        result.Patches.Add(patch);
+                        if (patch.Count >= 3)
+                        {
+                            int vertsForArea = patch.Count - 2;
+                            for (int j = 1; j < vertsForArea; j++)
+                            {
+                                var a = patch[j];
+                                var b = patch[j + 1];
+                                var c = patch[j + 2];
+
+                                double twiceArea =
+                                    a.easting * (b.northing - c.northing) +
+                                    b.easting * (c.northing - a.northing) +
+                                    c.easting * (a.northing - b.northing);
+
+                                result.TotalArea += Math.Abs(0.5 * twiceArea);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static void Append(string fieldDirectory, IEnumerable<IReadOnlyList<vec3>> patches)
+        {
+            FileIoUtils.EnsureDir(fieldDirectory);
+            var filename = Path.Combine(fieldDirectory, "Sections.txt");
+            if (patches == null) return;
+
+            using (var writer = new StreamWriter(filename, true))
+            {
+                foreach (var triList in patches)
+                {
+                    if (triList == null) continue;
+                    writer.WriteLine(triList.Count.ToString(CultureInfo.InvariantCulture));
+                    for (int i = 0; i < triList.Count; i++)
+                    {
+                        var p = triList[i];
+                        writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F3(p.heading)}");
+                    }
+                }
+            }
+        }
+
+        public static void CreateEmpty(string fieldDirectory)
+        {
+            FileIoUtils.EnsureDir(fieldDirectory);
+            using (var writer = new StreamWriter(Path.Combine(fieldDirectory, "Sections.txt"), false))
+            {
+                // Intentionally empty
+            }
+        }
+    }
+}
