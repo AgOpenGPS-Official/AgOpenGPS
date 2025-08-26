@@ -1,8 +1,6 @@
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
@@ -12,10 +10,7 @@ using System.Text;
 using AgLibrary.Logging;
 using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Properties;
-using System.Threading.Tasks;
 using AgOpenGPS.Classes.IO;
 
 namespace AgOpenGPS
