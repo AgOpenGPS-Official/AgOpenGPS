@@ -17,7 +17,7 @@ namespace AgOpenGPS.Core.Streamers
         public Contour TryRead(DirectoryInfo fieldDirectory)
         {
             Contour contour = null;
-            if (!File.Exists(FullPath(fieldDirectory)))
+            if (!GetFileInfo(fieldDirectory).Exists)
             {
                 _presenter.PresentSectionFileMissing();
             }
@@ -36,7 +36,7 @@ namespace AgOpenGPS.Core.Streamers
         public Contour Read(DirectoryInfo fieldDirectory)
         {
             Contour contour = new Contour();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
+            using (GeoStreamReader reader = new GeoStreamReader(GetFileInfo(fieldDirectory)))
             {
                 //read header
                 while (!reader.EndOfStream)
@@ -50,7 +50,7 @@ namespace AgOpenGPS.Core.Streamers
 
         public void AppendUnsavedWork(Contour contour, DirectoryInfo fieldDirectory)
         {
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory), true))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory), true))
             {
                 foreach (var path in contour.UnsavedStrips)
                 {

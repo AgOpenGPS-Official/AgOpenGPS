@@ -17,7 +17,7 @@ namespace AgOpenGPS.Core.Streamers
         public WorkedArea TryRead(DirectoryInfo fieldDirectory)
         {
             WorkedArea workedArea = null;
-            if (!File.Exists(FullPath(fieldDirectory)))
+            if (!GetFileInfo(fieldDirectory).Exists)
             {
                 _presenter.PresentSectionFileMissing();
             }
@@ -36,7 +36,7 @@ namespace AgOpenGPS.Core.Streamers
         public WorkedArea Read(DirectoryInfo fieldDirectory)
         {
             WorkedArea workedArea = new WorkedArea();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
+            using (GeoStreamReader reader = new GeoStreamReader(GetFileInfo(fieldDirectory)))
             {
                 //read header
                 while (!reader.EndOfStream)
@@ -59,7 +59,7 @@ namespace AgOpenGPS.Core.Streamers
 
         public void AppendUnsavedWork(WorkedArea workedArea, DirectoryInfo fieldDirectory)
         {
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory), true))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory), true))
             {
                 //for each patch, write out the list of triangles to the file
                 foreach (var quadStrip in workedArea.UnsavedWork)

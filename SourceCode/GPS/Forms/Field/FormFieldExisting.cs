@@ -59,11 +59,12 @@ namespace AgOpenGPS
             {
                 string fieldDirectory = Path.GetFileName(dir);
                 string filename = Path.Combine(dir, "Field.txt");
+                FileInfo fieldFileInfo = new FileInfo(filename);
 
                 // Make sure directory has a field.txt in it
                 if (File.Exists(filename))
                 {
-                    using (GeoStreamReader reader = new GeoStreamReader(filename))
+                    using (GeoStreamReader reader = new GeoStreamReader(fieldFileInfo))
                     {
                         try
                         {

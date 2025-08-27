@@ -19,8 +19,7 @@ namespace AgOpenGPS.Core.Streamers
         public List<Flag> TryRead(DirectoryInfo fieldDirectory)
         {
             List<Flag> flagList = null;
-            string fullPath = FullPath(fieldDirectory);
-            if (!File.Exists(fullPath))
+            if (!GetFileInfo(fieldDirectory).Exists)
             {
                 _presenter.PresentFlagsFileMissing();
             }
@@ -68,7 +67,7 @@ namespace AgOpenGPS.Core.Streamers
         private List<Flag> Read(DirectoryInfo fieldDirectory)
         {
             List<Flag> flagList = new List<Flag>();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
+            using (GeoStreamReader reader = new GeoStreamReader(GetFileInfo(fieldDirectory)))
             {
                 string line = reader.ReadLine(); // skip header
 
@@ -109,7 +108,7 @@ namespace AgOpenGPS.Core.Streamers
         private void Write(List<Flag> flags, DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory)))
             {
                 writer.WriteLine("$Flags");
 
@@ -131,9 +130,7 @@ namespace AgOpenGPS.Core.Streamers
         public void CreateFile(DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            using (StreamWriter writer = new StreamWriter(FullPath(fieldDirectory)))
-            {
-            }
+            GetFileInfo(fieldDirectory).Create();
         }
     }
 }

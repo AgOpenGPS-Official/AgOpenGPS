@@ -18,8 +18,8 @@ namespace AgOpenGPS.Core.Streamers
         public Boundary TryRead(DirectoryInfo fieldDirectory)
         {
             Boundary boundary = new Boundary();
-            string fullPath = FullPath(fieldDirectory);
-            if (!File.Exists(fullPath))
+            FileInfo fileInfo = GetFileInfo(fieldDirectory);
+            if (!fileInfo.Exists)
             {
                 _presenter.PresentBoundaryFileMissing();
             }
@@ -42,7 +42,7 @@ namespace AgOpenGPS.Core.Streamers
         public Boundary Read(DirectoryInfo fieldDirectory)
         {
             Boundary boundary = new Boundary();
-            using (GeoStreamReader reader = new GeoStreamReader(FullPath(fieldDirectory)))
+            using (GeoStreamReader reader = new GeoStreamReader(GetFileInfo(fieldDirectory)))
             {
                 reader.ReadLine(); // skip header Boundary
                 boundary.OuterBoundary = ReadBoundaryPolygon(reader);
@@ -79,7 +79,7 @@ namespace AgOpenGPS.Core.Streamers
         public void Write(Boundary boundary, DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory)))
             {
                 writer.WriteLine("$Boundary");
                 if (boundary.OuterBoundary != null)
@@ -96,7 +96,7 @@ namespace AgOpenGPS.Core.Streamers
         public void CreateFile(DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            File.Create(FullPath(fieldDirectory));
+            GetFileInfo(fieldDirectory).Create();
         }
     }
 }

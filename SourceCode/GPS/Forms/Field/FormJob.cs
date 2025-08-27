@@ -142,12 +142,12 @@ namespace AgOpenGPS
             foreach (string dir in dirs)
             {
                 string fieldDirectory = Path.GetFileName(dir);
-                string filename = Path.Combine(dir, "Field.txt");
+                FileInfo fileInfo = new FileInfo(Path.Combine(dir, "Field.txt"));
 
                 //make sure directory has a field.txt in it
-                if (File.Exists(filename))
+                if (fileInfo.Exists)
                 {
-                    using (GeoStreamReader reader = new GeoStreamReader(filename))
+                    using (GeoStreamReader reader = new GeoStreamReader(fileInfo))
                     {
                         try
                         {

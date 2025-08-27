@@ -32,13 +32,13 @@ namespace AgOpenGPS.Core.Streamers
 
         private RecordedPath Read(DirectoryInfo fieldDirectory, string fileName)
         {
-            string fileAndDirectory = FullPath(fieldDirectory, fileName);
-            if (!File.Exists(fileAndDirectory))
+            FileInfo fileInfo = GetFileInfo(fieldDirectory, fileName);
+            if (!fileInfo.Exists)
             {
                 return null;
             }
             RecordedPath recordedPath = new RecordedPath();
-            using (GeoStreamReader reader = new GeoStreamReader(fileAndDirectory))
+            using (GeoStreamReader reader = new GeoStreamReader(fileInfo))
             {
                 reader.ReadLine(); // skip header
                 int numPoints = reader.ReadInt();
@@ -63,7 +63,7 @@ namespace AgOpenGPS.Core.Streamers
         public void Write(RecordedPath path, DirectoryInfo fieldDirectory, string fileName)
         {
             fieldDirectory.Create();
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory, fileName)))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory, fileName)))
             {
                 writer.WriteLine("$RecPath");
                 writer.WriteInt(path.Count);
@@ -80,7 +80,7 @@ namespace AgOpenGPS.Core.Streamers
         public void CreateFile(DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            using (StreamWriter writer = new StreamWriter(FullPath(fieldDirectory)))
+            using (StreamWriter writer = new StreamWriter(GetFileInfo(fieldDirectory).FullName))
             {
                 //write paths # of sections
                 writer.WriteLine("$RecPath");

@@ -7,7 +7,7 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class GeoStreamReader : StreamReader
     {
-        public GeoStreamReader(string fullPath) : base(fullPath)
+        public GeoStreamReader(FileInfo fileInfo) : base(fileInfo.FullName)
         {
         }
 

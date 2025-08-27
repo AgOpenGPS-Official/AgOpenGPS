@@ -16,9 +16,9 @@ namespace AgOpenGPS.Core.Streamers
             _presenter = presenter;
         }
 
-        public string FullPath(DirectoryInfo fieldDirectory, string fileName = null)
+        public FileInfo GetFileInfo(DirectoryInfo fieldDirectory, string fileName = null)
         {
-            return Path.Combine(fieldDirectory.FullName, fileName ?? _defaultFileName);
+            return new FileInfo(Path.Combine(fieldDirectory.FullName, fileName ?? _defaultFileName));
         }
 
     }

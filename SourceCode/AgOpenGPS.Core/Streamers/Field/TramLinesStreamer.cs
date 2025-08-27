@@ -32,13 +32,13 @@ namespace AgOpenGPS.Core.Streamers
 
         public TramLines Read(DirectoryInfo fieldDirectory)
         {
-            string fullPath = FullPath(fieldDirectory);
-            if (!File.Exists(fullPath))
+            FileInfo fileInfo = GetFileInfo(fieldDirectory);
+            if (!fileInfo.Exists)
             {
                 return null;
             }
             TramLines tramLines = new TramLines();
-            using (GeoStreamReader reader = new GeoStreamReader(fullPath))
+            using (GeoStreamReader reader = new GeoStreamReader(fileInfo))
             {
                 reader.ReadLine(); // skip header: $Tram
                 if (reader.Peek() != -1)
@@ -63,7 +63,7 @@ namespace AgOpenGPS.Core.Streamers
         public void Write(TramLines tramLines, DirectoryInfo fieldDirectory)
         {
             fieldDirectory.Create();
-            using (GeoStreamWriter writer = new GeoStreamWriter(FullPath(fieldDirectory)))
+            using (GeoStreamWriter writer = new GeoStreamWriter(GetFileInfo(fieldDirectory)))
             {
                 writer.WriteLine("$Tram");
                 if (null != tramLines)

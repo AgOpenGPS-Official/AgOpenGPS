@@ -53,12 +53,12 @@ namespace AgOpenGPS
             foreach (string dir in dirs)
             {
                 string fieldDirectory = Path.GetFileName(dir);
-                string fieldFile = Path.Combine(dir, "Field.txt");
+                FileInfo fieldFileInfo = new FileInfo(Path.Combine(dir, "Field.txt"));
 
-                if (!File.Exists(fieldFile))
+                if (!fieldFileInfo.Exists)
                     continue;
 
-                ProcessFieldFile(fieldDirectory, fieldFile);
+                ProcessFieldFile(fieldDirectory, fieldFileInfo);
                 ProcessBoundaryFile(dir, fieldDirectory);
             }
 
@@ -68,11 +68,11 @@ namespace AgOpenGPS
             }
         }
 
-        private void ProcessFieldFile(string fieldDirectory, string filename)
+        private void ProcessFieldFile(string fieldDirectory, FileInfo fieldFileInfo)
         {
             try
             {
-                using (GeoStreamReader reader = new GeoStreamReader(filename))
+                using (GeoStreamReader reader = new GeoStreamReader(fieldFileInfo))
                 {
                     // Skip 8 lines
                     for (int i = 0; i < 8; i++)

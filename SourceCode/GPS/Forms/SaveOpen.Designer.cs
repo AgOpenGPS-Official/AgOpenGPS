@@ -756,7 +756,8 @@ namespace AgOpenGPS
 
             //start to read the file
             string line;
-            using (GeoStreamReader reader = new GeoStreamReader(fileAndDirectory))
+            FileInfo fileInfo = new FileInfo(fileAndDirectory);
+            using (GeoStreamReader reader = new GeoStreamReader(fileInfo))
             {
                 try
                 {

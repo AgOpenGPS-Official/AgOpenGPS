@@ -7,7 +7,7 @@ namespace AgOpenGPS.Core.Streamers
 {
     public class GeoStreamWriter : StreamWriter
     {
-        public GeoStreamWriter(string fullPath, bool append = false) : base(fullPath, append)
+        public GeoStreamWriter(FileInfo fileInfo, bool append = false) : base(fileInfo.FullName, append)
         {
         }
 
