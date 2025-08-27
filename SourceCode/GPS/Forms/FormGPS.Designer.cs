@@ -61,6 +61,7 @@ namespace AgOpenGPS
             this.menuLanguageTurkish = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLanguageUkranian = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLanguageChinese = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuLanguageKorean = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.simulatorOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enterSimCoordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -350,7 +351,8 @@ namespace AgOpenGPS
             this.menuLanguageSerbie,
             this.menuLanguageTurkish,
             this.menuLanguageUkranian,
-            this.menuLanguageChinese});
+            this.menuLanguageChinese,
+            this.menuLanguageKorean});
             this.menustripLanguage.Name = "menustripLanguage";
             this.menustripLanguage.Size = new System.Drawing.Size(382, 50);
             this.menustripLanguage.Text = "Language";
@@ -507,6 +509,13 @@ namespace AgOpenGPS
             this.menuLanguageChinese.Size = new System.Drawing.Size(485, 50);
             this.menuLanguageChinese.Text = "中国人 (Chinese)";
             this.menuLanguageChinese.Click += new System.EventHandler(this.menuLanguageChinese_Click);
+            // 
+            // menuLanguageKorean
+            // 
+            this.menuLanguageKorean.Name = "menuLanguageKorean";
+            this.menuLanguageKorean.Size = new System.Drawing.Size(485, 50);
+            this.menuLanguageKorean.Text = "한국인 (Korean)";
+            this.menuLanguageKorean.Click += new System.EventHandler(this.menuLanguageKorean_Click);
             // 
             // toolStripSeparator11
             // 
@@ -1312,7 +1321,7 @@ namespace AgOpenGPS
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.panelSim.Controls.Add(this.btnSpeedDn, 5, 0);
             this.panelSim.Controls.Add(this.btnSimSpeedUp, 7, 0);
             this.panelSim.Controls.Add(this.btnResetSim, 0, 0);
@@ -1337,7 +1346,7 @@ namespace AgOpenGPS
             this.btnSpeedDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpeedDn.Location = new System.Drawing.Point(333, 4);
             this.btnSpeedDn.Name = "btnSpeedDn";
-            this.btnSpeedDn.Size = new System.Drawing.Size(77, 34);
+            this.btnSpeedDn.Size = new System.Drawing.Size(75, 34);
             this.btnSpeedDn.TabIndex = 533;
             this.btnSpeedDn.UseVisualStyleBackColor = false;
             this.btnSpeedDn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSpeedDn_MouseDown);
@@ -1350,9 +1359,9 @@ namespace AgOpenGPS
             this.btnSimSpeedUp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSimSpeedUp.FlatAppearance.BorderSize = 0;
             this.btnSimSpeedUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSimSpeedUp.Location = new System.Drawing.Point(474, 4);
+            this.btnSimSpeedUp.Location = new System.Drawing.Point(472, 4);
             this.btnSimSpeedUp.Name = "btnSimSpeedUp";
-            this.btnSimSpeedUp.Size = new System.Drawing.Size(77, 34);
+            this.btnSimSpeedUp.Size = new System.Drawing.Size(75, 34);
             this.btnSimSpeedUp.TabIndex = 532;
             this.btnSimSpeedUp.UseVisualStyleBackColor = false;
             this.btnSimSpeedUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSimSpeedUp_MouseDown);
@@ -1366,7 +1375,7 @@ namespace AgOpenGPS
             this.btnSimSetSpeedToZero.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimSetSpeedToZero.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.btnSimSetSpeedToZero.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSimSetSpeedToZero.Location = new System.Drawing.Point(417, 4);
+            this.btnSimSetSpeedToZero.Location = new System.Drawing.Point(415, 4);
             this.btnSimSetSpeedToZero.Name = "btnSimSetSpeedToZero";
             this.btnSimSetSpeedToZero.Size = new System.Drawing.Size(50, 34);
             this.btnSimSetSpeedToZero.TabIndex = 453;
@@ -1383,7 +1392,7 @@ namespace AgOpenGPS
             this.btnSimReverseDirection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimReverseDirection.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.btnSimReverseDirection.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSimReverseDirection.Location = new System.Drawing.Point(567, 4);
+            this.btnSimReverseDirection.Location = new System.Drawing.Point(565, 4);
             this.btnSimReverseDirection.Name = "btnSimReverseDirection";
             this.btnSimReverseDirection.Size = new System.Drawing.Size(35, 34);
             this.btnSimReverseDirection.TabIndex = 537;
@@ -3331,6 +3340,7 @@ namespace AgOpenGPS
         private System.Windows.Forms.ToolStripMenuItem newProfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadProfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuLanguageEstonian;
+        private System.Windows.Forms.ToolStripMenuItem menuLanguageKorean;
     }
 }
 

@@ -1631,6 +1631,10 @@ namespace AgOpenGPS
         {
             SetLanguage("et");
         }
+        private void menuLanguageKorean_Click(object sender, EventArgs e)
+        {
+            SetLanguage("ko");
+        }
         private void SetLanguage(string lang)
         {
             //reset them all to false
@@ -1655,6 +1659,7 @@ namespace AgOpenGPS
             menuLanguageSerbie.Checked = false;
             menuLanguageNorsk.Checked = false;
             menuLanguageEstonian.Checked = false;
+            menuLanguageKorean.Checked = false;
 
             switch (lang)
             {
@@ -1740,6 +1745,10 @@ namespace AgOpenGPS
 
                 case "et":
                     menuLanguageEstonian.Checked = true;
+                    break;
+
+                case "ko":
+                    menuLanguageKorean.Checked = true;
                     break;
 
                 default:
