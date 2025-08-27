@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class TramFiles
     {
@@ -23,7 +23,7 @@ namespace AgOpenGPS.Classes.IO
         public static TramData Load(string fieldDirectory)
         {
             var data = new TramData();
-            var path = Path.Combine(fieldDirectory ?? "", "Tram.txt");
+            var path = Path.Combine(fieldDirectory, "Tram.txt");
             if (!File.Exists(path)) return data;
 
             using (var reader = new StreamReader(path))
@@ -43,12 +43,12 @@ namespace AgOpenGPS.Classes.IO
                     var parts = (reader.ReadLine() ?? string.Empty).Split(',');
                     if (parts.Length < 2) continue;
 
-                    double e, n;
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n))
+                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing))
                     {
-                        data.Outer.Add(new vec2(e, n));
+                        data.Outer.Add(new vec2(easting, northing));
                     }
+
                 }
 
                 // --- Inner ring ---
@@ -58,12 +58,12 @@ namespace AgOpenGPS.Classes.IO
                     var parts = (reader.ReadLine() ?? string.Empty).Split(',');
                     if (parts.Length < 2) continue;
 
-                    double e, n;
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n))
+                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing))
                     {
-                        data.Inner.Add(new vec2(e, n));
+                        data.Inner.Add(new vec2(easting, northing));
                     }
+
                 }
 
                 // --- Optional lines ---
@@ -78,12 +78,12 @@ namespace AgOpenGPS.Classes.IO
                         var parts = (reader.ReadLine() ?? string.Empty).Split(',');
                         if (parts.Length < 2) continue;
 
-                        double e, n;
-                        if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n))
+                        if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing))
                         {
-                            ln.Add(new vec2(e, n));
+                            ln.Add(new vec2(easting, northing));
                         }
+
                     }
                     data.Lines.Add(ln);
                 }
@@ -101,7 +101,6 @@ namespace AgOpenGPS.Classes.IO
             IReadOnlyList<vec2> tramInner,
             IReadOnlyList<IReadOnlyList<vec2>> tramLines)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, "Tram.txt");
 
             using (var writer = new StreamWriter(filename, false))
@@ -114,12 +113,12 @@ namespace AgOpenGPS.Classes.IO
                 // Outer
                 writer.WriteLine(outer.Count.ToString(CultureInfo.InvariantCulture));
                 for (int i = 0; i < outer.Count; i++)
-                    writer.WriteLine($"{FileIoUtils.F3(outer[i].easting)},{FileIoUtils.F3(outer[i].northing)}");
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(outer[i].easting, 3)},{FileIoUtils.FormatDouble(outer[i].northing, 3)}");
 
                 // Inner
                 writer.WriteLine(inner.Count.ToString(CultureInfo.InvariantCulture));
                 for (int i = 0; i < inner.Count; i++)
-                    writer.WriteLine($"{FileIoUtils.F3(inner[i].easting)},{FileIoUtils.F3(inner[i].northing)}");
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(inner[i].easting, 3)} , {FileIoUtils.FormatDouble(inner[i].northing, 3)}");
 
                 // Lines (optional)
                 if (tramLines != null && tramLines.Count > 0)
@@ -127,10 +126,10 @@ namespace AgOpenGPS.Classes.IO
                     writer.WriteLine(tramLines.Count.ToString(CultureInfo.InvariantCulture));
                     for (int k = 0; k < tramLines.Count; k++)
                     {
-                        var line = tramLines[k] ?? (IReadOnlyList<vec2>)new List<vec2>();
+                        var line = tramLines[k] ?? new List<vec2>();
                         writer.WriteLine(line.Count.ToString(CultureInfo.InvariantCulture));
                         for (int i = 0; i < line.Count; i++)
-                            writer.WriteLine($"{FileIoUtils.F3(line[i].easting)},{FileIoUtils.F3(line[i].northing)}");
+                            writer.WriteLine($"{FileIoUtils.FormatDouble(line[i].easting, 3)} , {FileIoUtils.FormatDouble(line[i].northing, 3)}");
                     }
                 }
             }

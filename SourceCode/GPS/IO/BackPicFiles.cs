@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Globalization;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class BackPicFiles
     {
@@ -18,8 +18,8 @@ namespace AgOpenGPS.Classes.IO
         public static BackPicInfo Load(string fieldDirectory)
         {
             var info = new BackPicInfo();
-            var txt = Path.Combine(fieldDirectory ?? "", "BackPic.txt");
-            var png = Path.Combine(fieldDirectory ?? "", "BackPic.png");
+            var txt = Path.Combine(fieldDirectory, "BackPic.txt");
+            var png = Path.Combine(fieldDirectory, "BackPic.png");
 
             if (!File.Exists(txt)) return info;
 
@@ -27,16 +27,16 @@ namespace AgOpenGPS.Classes.IO
             {
                 try
                 {
-                    reader.ReadLine(); // optional header
+                    reader.ReadLine(); //header
 
                     string line = reader.ReadLine();
                     bool v;
                     info.IsGeoMap = bool.TryParse(line == null ? string.Empty : line.Trim(), out v) && v;
-
                     info.EastingMax = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.EastingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMax = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
+
 
                     info.ImagePathPng = File.Exists(png) ? png : null;
                 }

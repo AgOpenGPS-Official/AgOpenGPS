@@ -4,14 +4,15 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class FileIoUtils
     {
-        // ---- Formatting helpers ----
-        public static string F3(double v) { return Math.Round(v, 3).ToString(CultureInfo.InvariantCulture); }
-        public static string F5(double v) { return Math.Round(v, 5).ToString(CultureInfo.InvariantCulture); }
-        public static string F1(double v) { return Math.Round(v, 1).ToString(CultureInfo.InvariantCulture); }
+        // ---- Formatting helper ----
+        public static string FormatDouble(double value, int decimals)
+        {
+            return Math.Round(value, decimals).ToString(CultureInfo.InvariantCulture);
+        }
 
         // ---- IO helpers ----
         public static void EnsureDir(string fieldDirectory)

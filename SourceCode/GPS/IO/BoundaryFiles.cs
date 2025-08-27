@@ -4,14 +4,14 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class BoundaryFiles
     {
         public static List<CBoundaryList> Load(string fieldDirectory)
         {
             var result = new List<CBoundaryList>();
-            var path = Path.Combine(fieldDirectory ?? "", "Boundary.txt");
+            var path = Path.Combine(fieldDirectory, "Boundary.txt");
             if (!File.Exists(path)) return result;
 
             var lines = File.ReadAllLines(path);
@@ -43,13 +43,13 @@ namespace AgOpenGPS.Classes.IO
                     var parts = (lines[idx] ?? string.Empty).Split(',');
                     if (parts.Length < 3) continue;
 
-                    double e, n, h;
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n) &&
-                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out h))
+                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
+                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
                     {
-                        b.fenceLine.Add(new vec3(e, n, h));
+                        b.fenceLine.Add(new vec3(easting, northing, heading));
                     }
+
                 }
 
                 b.CalculateFenceArea(ringIndex);
@@ -63,7 +63,7 @@ namespace AgOpenGPS.Classes.IO
                         b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
                         continue;
                     }
-                    delta += (b.fenceLine[i - 1].heading - b.fenceLine[i].heading);
+                    delta += b.fenceLine[i - 1].heading - b.fenceLine[i].heading;
                     if (Math.Abs(delta) > 0.005)
                     {
                         b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
@@ -80,7 +80,6 @@ namespace AgOpenGPS.Classes.IO
 
         public static void Save(string fieldDirectory, IReadOnlyList<CBoundaryList> boundaries)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, "Boundary.txt");
 
             using (var writer = new StreamWriter(filename, false))
@@ -100,7 +99,7 @@ namespace AgOpenGPS.Classes.IO
                     for (int j = 0; j < fence.Count; j++)
                     {
                         var p = fence[j];
-                        writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F5(p.heading)}");
+                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)},{FileIoUtils.FormatDouble(p.northing, 3)},{FileIoUtils.FormatDouble(p.heading, 5)}");
                     }
                 }
             }

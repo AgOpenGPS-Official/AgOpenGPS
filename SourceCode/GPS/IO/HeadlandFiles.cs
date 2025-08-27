@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class HeadlandFiles
     {
@@ -11,7 +11,7 @@ namespace AgOpenGPS.Classes.IO
         {
             if (boundaries == null || boundaries.Count == 0) return;
 
-            var path = Path.Combine(fieldDirectory ?? "", "Headland.txt");
+            var path = Path.Combine(fieldDirectory, "Headland.txt");
             if (!File.Exists(path)) return;
 
             var lines = File.ReadAllLines(path);
@@ -33,20 +33,19 @@ namespace AgOpenGPS.Classes.IO
                     var parts = (lines[idx] ?? string.Empty).Split(',');
                     if (parts.Length < 3) continue;
 
-                    double e, n, h;
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n) &&
-                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out h))
+                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
+                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
                     {
-                        boundaries[k].hdLine.Add(new vec3(e, n, h));
+                        boundaries[k].hdLine.Add(new vec3(easting, northing, heading));
                     }
+
                 }
             }
         }
 
         public static void Save(string fieldDirectory, IReadOnlyList<CBoundaryList> boundaries)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, "Headland.txt");
 
             using (var writer = new StreamWriter(filename, false))
@@ -64,7 +63,7 @@ namespace AgOpenGPS.Classes.IO
                     for (int j = 0; j < hd.Count; j++)
                     {
                         var p = hd[j];
-                        writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F3(p.heading)}");
+                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)} , {FileIoUtils.FormatDouble(p.northing, 3)} , {FileIoUtils.FormatDouble(p.heading, 5)}");
                     }
                 }
             }

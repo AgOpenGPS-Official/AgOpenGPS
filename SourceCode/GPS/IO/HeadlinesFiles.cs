@@ -3,14 +3,14 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class HeadlinesFiles
     {
         public static List<CHeadPath> Load(string fieldDirectory)
         {
             var result = new List<CHeadPath>();
-            var path = Path.Combine(fieldDirectory ?? "", "Headlines.txt");
+            var path = Path.Combine(fieldDirectory, "TrackLines.txt");
             if (!File.Exists(path)) return result;
 
             using (var reader = new StreamReader(path))
@@ -41,12 +41,11 @@ namespace AgOpenGPS.Classes.IO
                             var words = (reader.ReadLine() ?? string.Empty).Split(',');
                             if (words.Length < 3) continue;
 
-                            double e, n, h;
-                            if (double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e) &&
-                                double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n) &&
-                                double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out h))
+                            if (double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                                double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
+                                double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
                             {
-                                hp.trackPts.Add(new vec3(e, n, h));
+                                hp.trackPts.Add(new vec3(easting, northing, heading));
                             }
                         }
 
@@ -64,7 +63,6 @@ namespace AgOpenGPS.Classes.IO
 
         public static void Save(string fieldDirectory, IReadOnlyList<CHeadPath> headPaths)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, "Headlines.txt");
 
             using (var writer = new StreamWriter(filename, false))
@@ -86,7 +84,7 @@ namespace AgOpenGPS.Classes.IO
                     for (int j = 0; j < pts.Count; j++)
                     {
                         var p = pts[j];
-                        writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F5(p.heading)}");
+                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)} , {FileIoUtils.FormatDouble(p.northing, 3)} , {FileIoUtils.FormatDouble(p.heading, 5)}");
                     }
                 }
             }

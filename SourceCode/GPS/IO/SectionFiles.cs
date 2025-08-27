@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class SectionsFiles
     {
@@ -17,7 +17,7 @@ namespace AgOpenGPS.Classes.IO
         public static SectionsData Load(string fieldDirectory)
         {
             var result = new SectionsData();
-            var path = Path.Combine(fieldDirectory ?? "", "Sections.txt");
+            var path = Path.Combine(fieldDirectory, "Sections.txt");
             if (!File.Exists(path)) return result;
 
             using (var reader = new StreamReader(path))
@@ -61,7 +61,6 @@ namespace AgOpenGPS.Classes.IO
 
         public static void Append(string fieldDirectory, IEnumerable<IReadOnlyList<vec3>> patches)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, "Sections.txt");
             if (patches == null) return;
 
@@ -74,7 +73,7 @@ namespace AgOpenGPS.Classes.IO
                     for (int i = 0; i < triList.Count; i++)
                     {
                         var p = triList[i];
-                        writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F3(p.heading)}");
+                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)}  ,  {FileIoUtils.FormatDouble(p.northing, 3)}  ,  {FileIoUtils.FormatDouble(p.heading, 5)}");
                     }
                 }
             }
@@ -82,7 +81,6 @@ namespace AgOpenGPS.Classes.IO
 
         public static void CreateEmpty(string fieldDirectory)
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             using (var writer = new StreamWriter(Path.Combine(fieldDirectory, "Sections.txt"), false))
             {
                 // Intentionally empty

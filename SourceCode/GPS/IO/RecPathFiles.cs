@@ -3,14 +3,14 @@ using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
 
-namespace AgOpenGPS.Classes.IO
+namespace AgOpenGPS.IO
 {
     public static class RecPathFiles
     {
         public static List<CRecPathPt> Load(string fieldDirectory, string fileName = "RecPath.txt")
         {
             var list = new List<CRecPathPt>();
-            var path = Path.Combine(fieldDirectory ?? "", fileName);
+            var path = Path.Combine(fieldDirectory, fileName);
             if (!File.Exists(path)) return list;
 
             using (var reader = new StreamReader(path))
@@ -37,10 +37,10 @@ namespace AgOpenGPS.Classes.IO
                         if (words.Length < 5) continue;
 
                         var pt = new CRecPathPt(
-                            double.Parse(words[0], CultureInfo.InvariantCulture),
-                            double.Parse(words[1], CultureInfo.InvariantCulture),
-                            double.Parse(words[2], CultureInfo.InvariantCulture),
-                            double.Parse(words[3], CultureInfo.InvariantCulture),
+                            double.Parse(words[0], CultureInfo.InvariantCulture), // easting
+                            double.Parse(words[1], CultureInfo.InvariantCulture), // northing
+                            double.Parse(words[2], CultureInfo.InvariantCulture), // heading
+                            double.Parse(words[3], CultureInfo.InvariantCulture), // speed
                             bool.Parse(words[4]));
                         list.Add(pt);
                     }
@@ -56,7 +56,6 @@ namespace AgOpenGPS.Classes.IO
 
         public static void Save(string fieldDirectory, IReadOnlyList<CRecPathPt> recList, string fileName = "RecPath.Txt")
         {
-            FileIoUtils.EnsureDir(fieldDirectory);
             var filename = Path.Combine(fieldDirectory, fileName ?? "RecPath.Txt");
 
             using (var writer = new StreamWriter(filename, false))
@@ -68,7 +67,7 @@ namespace AgOpenGPS.Classes.IO
                 for (int i = 0; i < list.Count; i++)
                 {
                     var p = list[i];
-                    writer.WriteLine($"{FileIoUtils.F3(p.easting)},{FileIoUtils.F3(p.northing)},{FileIoUtils.F3(p.heading)},{FileIoUtils.F1(p.speed)},{p.autoBtnState}");
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)},{FileIoUtils.FormatDouble(p.northing, 3)},{FileIoUtils.FormatDouble(p.heading, 3)},{FileIoUtils.FormatDouble(p.speed, 1)},{p.autoBtnState}");
                 }
             }
         }
