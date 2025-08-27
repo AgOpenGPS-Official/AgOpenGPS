@@ -8,142 +8,141 @@ namespace AgOpenGPS.IO
 {
     public static class TrackFiles
     {
+        /// <summary>
+        /// Load tracks from TrackLines.txt. Throws on malformed content or missing header.
+        /// </summary>
         public static List<CTrk> Load(string fieldDirectory)
         {
+            if (string.IsNullOrWhiteSpace(fieldDirectory))
+                throw new ArgumentNullException(nameof(fieldDirectory));
+
             var result = new List<CTrk>();
             var path = Path.Combine(fieldDirectory, "TrackLines.txt");
             if (!File.Exists(path)) return result;
 
             using (var reader = new StreamReader(path))
             {
-                // Skip optional header
-                var firstLine = reader.ReadLine();
-                if (firstLine == null) return result;
-                if (!firstLine.TrimStart().StartsWith("$", StringComparison.Ordinal))
-                {
-                    // rewind logic: treat this line as first "name"
-                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                    reader.DiscardBufferedData();
-                }
+                // Require header
+                var header = reader.ReadLine();
+                if (header == null || !header.TrimStart().StartsWith("$", StringComparison.Ordinal))
+                    throw new InvalidDataException("TrackLines.txt missing $ header.");
 
-                while (!reader.EndOfStream)
+                while (true)
                 {
                     // --- Name ---
-                    var name = (reader.ReadLine() ?? string.Empty).Trim();
-                    if (string.IsNullOrEmpty(name)) continue;
+                    var name = reader.ReadLine();
+                    if (name == null) break;
+                    name = name.Trim();
+                    if (name.Length == 0) continue;
 
-                    // --- Average heading ---
-                    if (reader.EndOfStream) break;
-                    var headingLine = reader.ReadLine() ?? string.Empty;
-                    double avgHeading;
-                    if (!double.TryParse(headingLine.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out avgHeading))
-                        avgHeading = 0.0;
+                    // --- Heading
+                    var headingLine = reader.ReadLine();
+                    if (headingLine == null) throw new InvalidDataException("Unexpected EOF after track name.");
+                    var heading = double.Parse(headingLine.Trim(), CultureInfo.InvariantCulture);
 
-                    // --- A point ---
-                    if (reader.EndOfStream) break;
+
+                    // --- A point (easting,northing) ---
                     var aLine = reader.ReadLine();
-                    double aE, aN;
-                    if (!FileIoUtils.TryParseEN(aLine, out aE, out aN)) continue;
+                    if (aLine == null) throw new InvalidDataException("Unexpected EOF reading point A.");
+                    var aParts = aLine.Split(',');
+                    var aE = double.Parse(aParts[0], CultureInfo.InvariantCulture);
+                    var aN = double.Parse(aParts[1], CultureInfo.InvariantCulture);
 
-                    // --- B point ---
-                    if (reader.EndOfStream) break;
+                    // --- B point (easting,northing) ---
                     var bLine = reader.ReadLine();
-                    double bE, bN;
-                    if (!FileIoUtils.TryParseEN(bLine, out bE, out bN)) continue;
+                    if (bLine == null) throw new InvalidDataException("Unexpected EOF reading point B.");
+                    var bParts = bLine.Split(',');
+                    var bE = double.Parse(bParts[0], CultureInfo.InvariantCulture);
+                    var bN = double.Parse(bParts[1], CultureInfo.InvariantCulture);
 
-                    // --- Nudge (skip) ---
-                    if (reader.EndOfStream) break;
-                    reader.ReadLine();
+                    // --- Nudge ---
+                    var nudgeLine = reader.ReadLine();
+                    if (nudgeLine == null) throw new InvalidDataException("Unexpected EOF reading nudge.");
+                    var nudgeDistance = double.Parse(nudgeLine.Trim(), CultureInfo.InvariantCulture);
 
                     // --- Mode ---
-                    int mode = 0;
-                    if (!reader.EndOfStream)
-                    {
-                        var modeLine = reader.ReadLine() ?? string.Empty;
-                        int.TryParse(modeLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out mode);
-                    }
+                    var modeLine = reader.ReadLine();
+                    if (modeLine == null) throw new InvalidDataException("Unexpected EOF reading mode.");
+                    var modeInt = int.Parse(modeLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture);
+                    var modeEnum = (TrackMode)modeInt;
 
-                    // --- Visibility (skip) ---
-                    if (!reader.EndOfStream) reader.ReadLine();
+                    // --- Visibility ---
+                    var visLine = reader.ReadLine();
+                    if (visLine == null) throw new InvalidDataException("Unexpected EOF reading visibility.");
+                    var isVisible = bool.Parse(visLine.Trim());
 
                     // --- Curve count ---
-                    int curveCount = 0;
-                    if (!reader.EndOfStream)
-                    {
-                        var countLine = reader.ReadLine() ?? string.Empty;
-                        int.TryParse(countLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out curveCount);
-                    }
+                    var countLine = reader.ReadLine();
+                    if (countLine == null) throw new InvalidDataException("Unexpected EOF reading curve count.");
+                    var curveCount = int.Parse(countLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture);
 
                     // --- Curve points ---
                     var curvePts = new List<vec3>();
-                    for (int i = 0; i < curveCount && !reader.EndOfStream; i++)
+                    for (int i = 0; i < curveCount; i++)
                     {
-                        var parts = (reader.ReadLine() ?? string.Empty).Split(',');
-                        if (parts.Length >= 3 &&
-                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
-                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
-                            double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
-                        {
-                            curvePts.Add(new vec3(easting, northing, heading));
-                        }
+                        var line = reader.ReadLine();
+                        if (line == null) throw new InvalidDataException("Unexpected EOF in curve points.");
+                        var parts = line.Split(',');
+                        var easting = double.Parse(parts[0], CultureInfo.InvariantCulture);
+                        var northing = double.Parse(parts[1], CultureInfo.InvariantCulture);
+                        var pointheading = double.Parse(parts[2], CultureInfo.InvariantCulture);
+                        curvePts.Add(new vec3(easting, northing, pointheading));
                     }
 
-                    // --- Build track object ---
-                    if (mode == (int)TrackMode.AB)
+                    // Build CTrk
+                    var tr = new CTrk
                     {
-                        var abHeading = Math.Atan2(bE - aE, bN - aN);
-                        var tr = new CTrk
-                        {
-                            name = name,
-                            mode = TrackMode.AB,
-                            ptA = new vec2(aE, aN),
-                            ptB = new vec2(bE, bN),
-                            heading = abHeading
-                        };
-                        result.Add(tr);
-                    }
-                    else if (mode == (int)TrackMode.Curve && curvePts.Count > 1)
-                    {
-                        var tr = new CTrk
-                        {
-                            name = name,
-                            mode = TrackMode.Curve,
-                            curvePts = curvePts,
-                            heading = avgHeading
-                        };
-                        result.Add(tr);
-                    }
+                        name = name,
+                        mode = modeEnum,
+                        ptA = new vec2(aE, aN),
+                        ptB = new vec2(bE, bN),
+                        nudgeDistance = nudgeDistance,
+                        isVisible = isVisible,
+                        heading = heading,
+                        curvePts = curvePts
+                    };
+
+                    result.Add(tr);
+
                 }
-            }
 
-            return result;
+                return result;
+            }
         }
 
-
+        /// <summary>
+        /// Save tracks to TrackLines.txt. Overwrites the file.
+        /// </summary>
         public static void Save(string fieldDirectory, IReadOnlyList<CTrk> tracks)
         {
+            if (string.IsNullOrWhiteSpace(fieldDirectory))
+                throw new ArgumentNullException(nameof(fieldDirectory));
+
             var filename = Path.Combine(fieldDirectory, "TrackLines.txt");
 
             using (var writer = new StreamWriter(filename, false))
             {
                 writer.WriteLine("$TrackLines");
-
                 if (tracks == null || tracks.Count == 0) return;
 
                 for (int i = 0; i < tracks.Count; i++)
                 {
-                    var t = tracks[i];
+                    var t = tracks[i] ?? new CTrk();
 
+                    // Name + heading (avg for curve or AB heading as stored on the model)
                     writer.WriteLine(t.name ?? string.Empty);
                     writer.WriteLine(t.heading.ToString(CultureInfo.InvariantCulture));
 
+                    // A, B
                     writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptA.easting, 3)},{FileIoUtils.FormatDouble(t.ptA.northing, 3)}");
                     writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptB.easting, 3)},{FileIoUtils.FormatDouble(t.ptB.northing, 3)}");
 
+                    // Nudge, Mode, Visibility
                     writer.WriteLine(t.nudgeDistance.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine(((int)t.mode).ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine(t.isVisible.ToString());
 
+                    // Curve points
                     var pts = t.curvePts ?? new List<vec3>();
                     writer.WriteLine(pts.Count.ToString(CultureInfo.InvariantCulture));
                     for (int j = 0; j < pts.Count; j++)
