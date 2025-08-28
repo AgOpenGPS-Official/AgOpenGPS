@@ -14,30 +14,7 @@ namespace AgOpenGPS.IO
             return Math.Round(value, decimals).ToString(CultureInfo.InvariantCulture);
         }
 
-        // ---- IO helpers ----
-        public static void EnsureDir(string fieldDirectory)
-        {
-            if (string.IsNullOrWhiteSpace(fieldDirectory))
-                throw new ArgumentNullException(nameof(fieldDirectory));
-            Directory.CreateDirectory(fieldDirectory);
-        }
-
-        public static void SkipBlanks(string[] lines, ref int idx)
-        {
-            while (idx < lines.Length && string.IsNullOrWhiteSpace(lines[idx])) idx++;
-        }
-
         // ---- Parsing helpers ----
-        public static bool TryParseEN(string line, out double e, out double n)
-        {
-            e = 0; n = 0;
-            if (string.IsNullOrWhiteSpace(line)) return false;
-            var parts = line.Split(',');
-            if (parts.Length < 2) return false;
-
-            return double.TryParse(parts[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out e)
-                && double.TryParse(parts[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out n);
-        }
 
         public static int ParseIntSafe(string line)
         {
