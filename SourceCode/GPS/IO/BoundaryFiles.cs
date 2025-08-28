@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.IO
@@ -119,6 +120,21 @@ namespace AgOpenGPS.IO
                     }
                 }
             }
+        }
+        public static void CreateEmpty(string fieldDirectory)
+        {
+            if (string.IsNullOrEmpty(fieldDirectory))
+            {
+                throw new ArgumentNullException(nameof(fieldDirectory));
+            }
+
+            if (!Directory.Exists(fieldDirectory))
+            {
+                Directory.CreateDirectory(fieldDirectory);
+            }
+
+            var path = Path.Combine(fieldDirectory, "Boundary.txt");
+            File.WriteAllText(path, "$Boundary" + Environment.NewLine, Encoding.UTF8);
         }
     }
 }
