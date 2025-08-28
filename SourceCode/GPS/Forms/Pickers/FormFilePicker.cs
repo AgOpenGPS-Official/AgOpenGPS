@@ -13,8 +13,13 @@ namespace AgOpenGPS
 {
     public partial class FormFilePicker : Form
     {
+        // Reference to main form (FormGPS)
         private readonly FormGPS mf = null;
+
+        // 0 = Name|Distance|Area, 1 = Distance|Name|Area, 2 = Area|Name|Distance
         private int order;
+
+        // Triplets: [name, distance, area]
         private readonly List<string> fileList = new List<string>();
 
         public FormFilePicker(Form callingForm)
@@ -22,7 +27,7 @@ namespace AgOpenGPS
             mf = callingForm as FormGPS;
             InitializeComponent();
 
-            // Translate all the controls
+            // Translate UI
             this.Text = gStr.gsFieldPicker;
             btnByDistance.Text = gStr.gsSort;
             btnOpenExistingLv.Text = gStr.gsUseSelected;
@@ -39,10 +44,23 @@ namespace AgOpenGPS
             UpdateListView();
         }
 
+        /// <summary>
+        /// Populate the list from folders that contain Field.txt only.
+        /// This form does not show error dialogs; it remains neutral.
+        /// </summary>
         private void LoadFieldList()
         {
             fileList.Clear();
-            string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
+
+            string[] dirs;
+            try
+            {
+                dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
+            }
+            catch
+            {
+                dirs = Array.Empty<string>();
+            }
 
             if (dirs == null || dirs.Length < 1)
             {
@@ -55,11 +73,15 @@ namespace AgOpenGPS
                 string fieldDirectory = Path.GetFileName(dir);
                 string fieldFile = Path.Combine(dir, "Field.txt");
 
+                // Only show folders that actually have Field.txt
                 if (!File.Exists(fieldFile))
                     continue;
 
-                ProcessFieldFile(fieldDirectory, fieldFile);
-                ProcessBoundaryFile(dir, fieldDirectory);
+                // Append name and distance (or neutral placeholder on failure)
+                AppendFieldNameAndDistance(fieldDirectory, fieldFile);
+
+                // Append area (or neutral placeholder on failure)
+                AppendBoundaryArea(dir);
             }
 
             if (fileList.Count < 1)
@@ -68,124 +90,137 @@ namespace AgOpenGPS
             }
         }
 
-        private void ProcessFieldFile(string fieldDirectory, string filename)
+        /// <summary>
+        /// Adds [name, distance] pair to fileList, using a neutral placeholder if distance cannot be computed.
+        /// </summary>
+        private void AppendFieldNameAndDistance(string fieldDirectory, string filename)
         {
             try
             {
-                using (GeoStreamReader reader = new GeoStreamReader(filename))
+                using (var reader = new GeoStreamReader(filename))
                 {
-                    // Skip 8 lines
-                    for (int i = 0; i < 8; i++)
-                    {
-                        reader.ReadLine();
-                    }
+                    // Legacy format: skip 8 lines, then expect a WGS84 position.
+                    for (int i = 0; i < 8; i++) reader.ReadLine();
 
+                    string distanceStr;
                     if (!reader.EndOfStream)
                     {
-                        Wgs84 startLatLon = reader.ReadWgs84();
-                        double distance = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
-                        fileList.Add(fieldDirectory);
-                        fileList.Add(Math.Round(distance, 2).ToString("N2").PadLeft(10));
+                        var startLatLon = reader.ReadWgs84();
+                        double km = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
+                        distanceStr = Math.Round(km, 2).ToString("N2").PadLeft(10);
                     }
                     else
                     {
-                        HandleDamagedField(fieldDirectory);
+                        // Incomplete file → neutral placeholder
+                        distanceStr = "---".PadLeft(10);
                     }
+
+                    fileList.Add(fieldDirectory);
+                    fileList.Add(distanceStr);
                 }
             }
             catch (Exception ex)
             {
-                HandleDamagedField(fieldDirectory);
-                Log.EventWriter("Field.txt is Broken" + ex.ToString());
+                // Neutral placeholder; no popup here. Central loader will validate again.
+                Log.EventWriter("Field.txt read failed (picker): " + ex);
+                fileList.Add(fieldDirectory);
+                fileList.Add("---".PadLeft(10));
             }
         }
 
-        private void ProcessBoundaryFile(string dir, string fieldDirectory)
+        /// <summary>
+        /// Adds [area] to fileList: computed from Boundary.txt if present; neutral placeholder otherwise.
+        /// </summary>
+        private void AppendBoundaryArea(string dir)
         {
             string filename = Path.Combine(dir, "Boundary.txt");
+
             if (!File.Exists(filename))
             {
-                fileList.Add("Error");
-                FormDialog.Show(
-                    gStr.gsFileError,
-                    $"{fieldDirectory} is Damaged, Missing Boundary.Txt \r\nDelete Field or Fix",
-                    MessageBoxButtons.OK);
+                fileList.Add("---".PadLeft(10));
                 return;
             }
 
             try
             {
                 double area = CalculateBoundaryArea(filename);
+                // Show "No Bndry" if area = 0 (legacy behavior), otherwise display the numeric value.
                 fileList.Add(area == 0 ? "No Bndry" : Math.Round(area, 1).ToString("N1").PadLeft(10));
             }
             catch (Exception ex)
             {
-                fileList.Add("Error");
-                Log.EventWriter("Boundary.txt is Broken" + ex.ToString());
+                Log.EventWriter("Boundary.txt read failed (picker): " + ex);
+                fileList.Add("---".PadLeft(10));
             }
         }
 
+        /// <summary>
+        /// Computes boundary area in hectares (metric) or acres (imperial).
+        /// Returns 0 on insufficient points or degenerate polygon.
+        /// </summary>
         private double CalculateBoundaryArea(string filename)
         {
-            List<vec3> pointList = new List<vec3>();
-            double area = 0;
-
-            using (StreamReader reader = new StreamReader(filename))
+            var pointList = new List<vec3>();
+            using (var reader = new StreamReader(filename))
             {
-                // Read header
-                string line = reader.ReadLine(); // Boundary
+                string line;
 
-                if (reader.EndOfStream)
-                    return 0;
-
-                // True or False OR points from older boundary files
+                // Header
                 line = reader.ReadLine();
+                if (line == null) return 0;
 
-                // Check for older boundary files
+                // Next line(s): may contain True/False flags and a count; handle legacy variations safely
+                line = reader.ReadLine();
+                if (line == null) return 0;
+
                 if (line == "True" || line == "False")
                 {
-                    line = reader.ReadLine(); // number of points
+                    line = reader.ReadLine();
+                    if (line == null) return 0;
                 }
-
-                // Check for latest boundary files
                 if (line == "True" || line == "False")
                 {
-                    line = reader.ReadLine(); // number of points
+                    line = reader.ReadLine();
+                    if (line == null) return 0;
                 }
 
-                int numPoints = int.Parse(line);
-                if (numPoints <= 0)
+                int numPoints;
+                if (!int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out numPoints))
                     return 0;
 
-                // Load the points
+                if (numPoints <= 0) return 0;
+
                 for (int i = 0; i < numPoints; i++)
                 {
                     line = reader.ReadLine();
-                    string[] words = line.Split(',');
-                    pointList.Add(new vec3(
-                        double.Parse(words[0], CultureInfo.InvariantCulture),
-                        double.Parse(words[1], CultureInfo.InvariantCulture),
-                        double.Parse(words[2], CultureInfo.InvariantCulture)));
-                }
+                    if (string.IsNullOrWhiteSpace(line)) return 0;
 
-                // Calculate area if we have enough points
-                int ptCount = pointList.Count;
-                if (ptCount > 5)
-                {
-                    area = 0;
-                    int j = ptCount - 1;
+                    var words = line.Split(',');
+                    if (words.Length < 3) return 0;
 
-                    for (int i = 0; i < ptCount; j = i++)
-                    {
-                        area += (pointList[j].easting + pointList[i].easting) *
-                               (pointList[j].northing - pointList[i].northing);
-                    }
+                    double e, n, h;
+                    if (!double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out e)) return 0;
+                    if (!double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out n)) return 0;
+                    if (!double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out h)) return 0;
 
-                    area = Math.Abs(area / 2) * (mf.isMetric ? 0.0001 : 0.00024711);
+                    pointList.Add(new vec3(e, n, h));
                 }
             }
 
-            return area;
+            int ptCount = pointList.Count;
+            if (ptCount <= 5) return 0;
+
+            // Shoelace algorithm
+            double acc = 0;
+            int j = ptCount - 1;
+            for (int i = 0; i < ptCount; j = i++)
+            {
+                acc += (pointList[j].easting + pointList[i].easting) *
+                       (pointList[j].northing - pointList[i].northing);
+            }
+
+            double areaM2 = Math.Abs(acc / 2.0);
+            return mf.isMetric ? (areaM2 * 0.0001) : (areaM2 * 0.00024711);
         }
 
         private void UpdateListView()
@@ -253,13 +288,6 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void HandleDamagedField(string fieldDirectory)
-        {
-            FormDialog.Show(gStr.gsFileError, $"{fieldDirectory} is Damaged, Please Delete This Field", MessageBoxButtons.OK);
-            fileList.Add(fieldDirectory);
-            fileList.Add("Error");
-        }
-
         private void btnByDistance_Click(object sender, EventArgs e)
         {
             order = (order + 1) % 3;
@@ -268,24 +296,24 @@ namespace AgOpenGPS
 
         private void btnOpenExistingLv_Click(object sender, EventArgs e)
         {
-            if (lvLines.SelectedItems.Count == 0)
-                return;
+            if (lvLines.SelectedItems.Count == 0) return;
 
             var selectedItem = lvLines.SelectedItems[0];
-            if (selectedItem.SubItems[0].Text == "Error" ||
-                selectedItem.SubItems[1].Text == "Error" ||
-                selectedItem.SubItems[2].Text == "Error")
-            {
-                FormDialog.Show(
-                    gStr.gsFileError,
-                    "This Field is Damaged, Please Delete \r\nALREADY TOLD YOU THAT :)",
-                    MessageBoxButtons.OK);
-                return;
-            }
 
-            string fieldName = order == 0 ? selectedItem.SubItems[0].Text : selectedItem.SubItems[1].Text;
+            // Determine the field name depending on the current ordering
+            string fieldName = order == 0
+                ? selectedItem.SubItems[0].Text
+                : selectedItem.SubItems[1].Text;
+
+            if (string.IsNullOrWhiteSpace(fieldName) || fieldName == "---")
+                return;
+
+            // Return the selected Field.txt back to FormJob
             mf.filePickerFileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, fieldName, "Field.txt");
-            Close();
+
+            // Explicitly set DialogResult; safe even if the designer sets it already
+            this.DialogResult = DialogResult.Yes;
+            this.Close();
         }
 
         private void btnDeleteAB_Click(object sender, EventArgs e)
@@ -295,19 +323,30 @@ namespace AgOpenGPS
 
         private void btnDeleteField_Click(object sender, EventArgs e)
         {
-            if (lvLines.SelectedItems.Count == 0)
-                return;
+            if (lvLines.SelectedItems.Count == 0) return;
 
-            string fieldName = order == 0 ?
-                lvLines.SelectedItems[0].SubItems[0].Text :
-                lvLines.SelectedItems[0].SubItems[1].Text;
+            string fieldName = order == 0
+                ? lvLines.SelectedItems[0].SubItems[0].Text
+                : lvLines.SelectedItems[0].SubItems[1].Text;
+
+            if (string.IsNullOrWhiteSpace(fieldName) || fieldName == "---")
+                return;
 
             string dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, fieldName);
 
+            // Keep this dialog here; it is a user action (delete confirmation), not loader validation.
             if (FormDialog.Show(dir2Delete, gStr.gsDeleteForSure, MessageBoxButtons.YesNo) != DialogResult.OK)
                 return;
 
-            Directory.Delete(dir2Delete, true);
+            try
+            {
+                Directory.Delete(dir2Delete, true);
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter("Field delete failed: " + ex);
+            }
+
             LoadFieldList();
             UpdateListView();
         }

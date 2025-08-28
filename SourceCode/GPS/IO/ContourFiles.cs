@@ -55,7 +55,7 @@ namespace AgOpenGPS.IO
                     for (int i = 0; i < triList.Count; i++)
                     {
                         var p = triList[i];
-                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)} , {FileIoUtils.FormatDouble(p.northing, 3)} , {FileIoUtils.FormatDouble(p.heading, 5)}");
+                        writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)},{FileIoUtils.FormatDouble(p.northing, 3)},{FileIoUtils.FormatDouble(p.heading, 5)}");
                     }
                 }
             }

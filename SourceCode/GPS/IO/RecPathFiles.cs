@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.IO
@@ -52,11 +54,11 @@ namespace AgOpenGPS.IO
             }
 
             return list;
-        }
 
-        public static void Save(string fieldDirectory, IReadOnlyList<CRecPathPt> recList, string fileName = "RecPath.Txt")
+        }
+        public static void Save(string fieldDirectory, IReadOnlyList<CRecPathPt> recList, string fileName = "RecPath.txt")
         {
-            var filename = Path.Combine(fieldDirectory, fileName ?? "RecPath.Txt");
+            var filename = Path.Combine(fieldDirectory, fileName ?? "RecPath.txt");
 
             using (var writer = new StreamWriter(filename, false))
             {
@@ -69,6 +71,29 @@ namespace AgOpenGPS.IO
                     var p = list[i];
                     writer.WriteLine($"{FileIoUtils.FormatDouble(p.easting, 3)},{FileIoUtils.FormatDouble(p.northing, 3)},{FileIoUtils.FormatDouble(p.heading, 3)},{FileIoUtils.FormatDouble(p.speed, 1)},{p.autoBtnState}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Create or overwrite an empty RecPath.txt with legacy-compatible header.
+        /// </summary>
+        public static void CreateEmpty(string fieldDirectory)
+        {
+            if (string.IsNullOrEmpty(fieldDirectory))
+            {
+                throw new ArgumentNullException(nameof(fieldDirectory));
+            }
+
+            if (!Directory.Exists(fieldDirectory))
+            {
+                Directory.CreateDirectory(fieldDirectory);
+            }
+
+            var path = Path.Combine(fieldDirectory, "RecPath.txt");
+            using (var writer = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                writer.WriteLine("$RecPath");
+                writer.WriteLine("0");
             }
         }
     }

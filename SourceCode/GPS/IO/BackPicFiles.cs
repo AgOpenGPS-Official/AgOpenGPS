@@ -27,18 +27,27 @@ namespace AgOpenGPS.IO
             {
                 try
                 {
-                    reader.ReadLine(); //header
+                    reader.ReadLine(); // header
 
                     string line = reader.ReadLine();
                     bool v;
                     info.IsGeoMap = bool.TryParse(line == null ? string.Empty : line.Trim(), out v) && v;
+
                     info.EastingMax = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.EastingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMax = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
 
-
-                    info.ImagePathPng = File.Exists(png) ? png : null;
+                    // Legacy parity: if PNG is missing, turn IsGeoMap off.
+                    if (File.Exists(png))
+                    {
+                        info.ImagePathPng = png;
+                    }
+                    else
+                    {
+                        info.ImagePathPng = null;
+                        info.IsGeoMap = false;
+                    }
                 }
                 catch
                 {

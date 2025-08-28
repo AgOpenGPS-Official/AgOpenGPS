@@ -1,4 +1,6 @@
-﻿using System;
+﻿// AgOpenGPS.IO/FieldPlaneFiles.cs
+// Purpose: Read/write helpers for Field.txt (StartFix origin + creation).
+using System;
 using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
@@ -15,7 +17,9 @@ namespace AgOpenGPS.IO
         {
             var path = Path.Combine(fieldDirectory, "Field.txt");
             if (!File.Exists(path))
+            {
                 throw new FileNotFoundException("Field.txt not found", path);
+            }
 
             using (var reader = new StreamReader(path))
             {
@@ -26,12 +30,15 @@ namespace AgOpenGPS.IO
                     {
                         var next = reader.ReadLine();
                         if (string.IsNullOrWhiteSpace(next))
+                        {
                             throw new InvalidDataException("StartFix line missing or empty in Field.txt");
+                        }
 
                         var parts = next.Split(',');
+                        double lat, lon;
                         if (parts.Length >= 2 &&
-                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var lat) &&
-                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
+                            double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lat) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out lon))
                         {
                             return new Wgs84(lat, lon);
                         }
@@ -43,6 +50,52 @@ namespace AgOpenGPS.IO
 
             throw new InvalidDataException("StartFix not found in Field.txt");
         }
-    }
 
+        /// <summary>
+        /// Create or overwrite Field.txt with a StartFix origin and standard header.
+        /// Returns true on success; false on failure (error contains a short description).
+        /// Stateless: no UI, no globals, only file IO.
+        /// </summary>
+        public static bool TryCreateFieldTxt(string fieldDirectory, DateTime timestamp, Wgs84 startFix, out string error)
+        {
+            error = null;
+
+            try
+            {
+                if (string.IsNullOrEmpty(fieldDirectory))
+                {
+                    error = "Field directory is empty.";
+                    return false;
+                }
+
+                if (!Directory.Exists(fieldDirectory))
+                {
+                    Directory.CreateDirectory(fieldDirectory);
+                }
+
+                var path = Path.Combine(fieldDirectory, "Field.txt");
+                using (var writer = new StreamWriter(path, false))
+                {
+                    writer.WriteLine(timestamp.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                    writer.WriteLine("$FieldDir");
+                    writer.WriteLine("FieldNew");
+                    writer.WriteLine("$Offsets");
+                    writer.WriteLine("0,0");
+                    writer.WriteLine("Convergence");
+                    writer.WriteLine("0");
+                    writer.WriteLine("StartFix");
+                    writer.WriteLine(
+                        startFix.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                        startFix.Longitude.ToString(CultureInfo.InvariantCulture));
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                return false;
+            }
+        }
+    }
 }

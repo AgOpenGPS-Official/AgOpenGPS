@@ -94,12 +94,8 @@ namespace AgOpenGPS.IO
 
         /// <summary>
         /// Save Tram.txt (outer, inner, and optional lines). Creates/overwrites the file.
-        /// </summary>
-        public static void Save(
-            string fieldDirectory,
-            IReadOnlyList<vec2> tramOuter,
-            IReadOnlyList<vec2> tramInner,
-            IReadOnlyList<IReadOnlyList<vec2>> tramLines)
+        /// </summary>        
+        public static void Save(string fieldDirectory, IReadOnlyList<vec2> tramOuter, IReadOnlyList<vec2> tramInner, IReadOnlyList<IReadOnlyList<vec2>> tramLines)
         {
             var filename = Path.Combine(fieldDirectory, "Tram.txt");
 
@@ -110,17 +106,14 @@ namespace AgOpenGPS.IO
                 var outer = tramOuter ?? new List<vec2>();
                 var inner = tramInner ?? new List<vec2>();
 
-                // Outer
                 writer.WriteLine(outer.Count.ToString(CultureInfo.InvariantCulture));
                 for (int i = 0; i < outer.Count; i++)
                     writer.WriteLine($"{FileIoUtils.FormatDouble(outer[i].easting, 3)},{FileIoUtils.FormatDouble(outer[i].northing, 3)}");
 
-                // Inner
                 writer.WriteLine(inner.Count.ToString(CultureInfo.InvariantCulture));
                 for (int i = 0; i < inner.Count; i++)
-                    writer.WriteLine($"{FileIoUtils.FormatDouble(inner[i].easting, 3)} , {FileIoUtils.FormatDouble(inner[i].northing, 3)}");
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(inner[i].easting, 3)},{FileIoUtils.FormatDouble(inner[i].northing, 3)}");
 
-                // Lines (optional)
                 if (tramLines != null && tramLines.Count > 0)
                 {
                     writer.WriteLine(tramLines.Count.ToString(CultureInfo.InvariantCulture));
@@ -129,7 +122,7 @@ namespace AgOpenGPS.IO
                         var line = tramLines[k] ?? new List<vec2>();
                         writer.WriteLine(line.Count.ToString(CultureInfo.InvariantCulture));
                         for (int i = 0; i < line.Count; i++)
-                            writer.WriteLine($"{FileIoUtils.FormatDouble(line[i].easting, 3)} , {FileIoUtils.FormatDouble(line[i].northing, 3)}");
+                            writer.WriteLine($"{FileIoUtils.FormatDouble(line[i].easting, 3)},{FileIoUtils.FormatDouble(line[i].northing, 3)}");
                     }
                 }
             }

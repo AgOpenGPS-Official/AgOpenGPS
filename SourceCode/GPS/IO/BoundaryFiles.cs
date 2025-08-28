@@ -1,4 +1,6 @@
-﻿using System;
+﻿// BoundaryFiles.cs - Load tolerant to duplicate True/False lines and extra whitespace.
+// Purpose: Some legacy files wrote the drive-through flag twice; we accept that pattern.
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -17,44 +19,60 @@ namespace AgOpenGPS.IO
             var lines = File.ReadAllLines(path);
             int idx = 0;
 
-            if (idx < lines.Length && lines[idx].Trim().StartsWith("$", StringComparison.Ordinal)) idx++;
+            // Skip optional header
+            if (idx < lines.Length && (lines[idx] ?? string.Empty).TrimStart().StartsWith("$", StringComparison.OrdinalIgnoreCase)) idx++;
 
-            for (int ringIndex = 0; idx < lines.Length; ringIndex++)
+            while (idx < lines.Length)
             {
+                // Skip blank lines between rings
+                while (idx < lines.Length && string.IsNullOrWhiteSpace(lines[idx])) idx++;
                 if (idx >= lines.Length) break;
-                var line = (lines[idx++] ?? string.Empty).Trim();
 
                 var b = new CBoundaryList();
 
-                bool isFlag;
-                if (bool.TryParse(line, out isFlag))
+                // Some legacy wrote "True/False" twice; accept and consume up to two flags.
+                for (int pass = 0; pass < 2 && idx < lines.Length; pass++)
                 {
-                    b.isDriveThru = isFlag;
-                    if (idx >= lines.Length) break;
-                    line = (lines[idx++] ?? string.Empty).Trim();
+                    var peek = (lines[idx] ?? string.Empty).Trim();
+                    bool flag;
+                    if (bool.TryParse(peek, out flag))
+                    {
+                        b.isDriveThru = flag;
+                        idx++;
+                        continue; // Try to see if there's a duplicate flag again
+                    }
+                    break;
                 }
 
+                // Now we should have the count line
+                if (idx >= lines.Length) break;
+                var countLine = (lines[idx++] ?? string.Empty).Trim();
                 int count;
-                if (!int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
+                if (!int.TryParse(countLine, NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
+                {
+                    // If the count line is malformed, stop parsing further rings.
                     break;
+                }
 
+                // Points
                 for (int i = 0; i < count && idx < lines.Length; i++, idx++)
                 {
                     var parts = (lines[idx] ?? string.Empty).Split(',');
                     if (parts.Length < 3) continue;
 
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
-                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
+                    double easting, northing, heading;
+                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out easting) &&
+                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out northing) &&
+                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out heading))
                     {
                         b.fenceLine.Add(new vec3(easting, northing, heading));
                     }
-
                 }
 
-                b.CalculateFenceArea(ringIndex);
-
+                // Compute area and ear
+                b.CalculateFenceArea(result.Count);
                 if (b.fenceLineEar != null) b.fenceLineEar.Clear();
+
                 double delta = 0;
                 for (int i = 0; i < b.fenceLine.Count; i++)
                 {
@@ -72,7 +90,6 @@ namespace AgOpenGPS.IO
                 }
 
                 result.Add(b);
-                while (idx < lines.Length && string.IsNullOrWhiteSpace(lines[idx])) idx++;
             }
 
             return result;
@@ -85,7 +102,6 @@ namespace AgOpenGPS.IO
             using (var writer = new StreamWriter(filename, false))
             {
                 writer.WriteLine("$Boundary");
-
                 if (boundaries == null || boundaries.Count == 0) return;
 
                 for (int i = 0; i < boundaries.Count; i++)

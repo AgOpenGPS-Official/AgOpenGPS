@@ -128,21 +128,14 @@ namespace AgOpenGPS.IO
                 for (int i = 0; i < tracks.Count; i++)
                 {
                     var t = tracks[i] ?? new CTrk();
-
-                    // Name + heading (avg for curve or AB heading as stored on the model)
                     writer.WriteLine(t.name ?? string.Empty);
                     writer.WriteLine(t.heading.ToString(CultureInfo.InvariantCulture));
-
-                    // A, B
                     writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptA.easting, 3)},{FileIoUtils.FormatDouble(t.ptA.northing, 3)}");
                     writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptB.easting, 3)},{FileIoUtils.FormatDouble(t.ptB.northing, 3)}");
-
-                    // Nudge, Mode, Visibility
                     writer.WriteLine(t.nudgeDistance.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine(((int)t.mode).ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine(t.isVisible.ToString());
 
-                    // Curve points
                     var pts = t.curvePts ?? new List<vec3>();
                     writer.WriteLine(pts.Count.ToString(CultureInfo.InvariantCulture));
                     for (int j = 0; j < pts.Count; j++)

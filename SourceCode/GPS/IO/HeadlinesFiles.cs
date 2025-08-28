@@ -10,7 +10,7 @@ namespace AgOpenGPS.IO
         public static List<CHeadPath> Load(string fieldDirectory)
         {
             var result = new List<CHeadPath>();
-            var path = Path.Combine(fieldDirectory, "TrackLines.txt");
+            var path = Path.Combine(fieldDirectory, "Headlines.txt");
             if (!File.Exists(path)) return result;
 
             using (var reader = new StreamReader(path))
