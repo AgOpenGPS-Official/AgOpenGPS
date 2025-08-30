@@ -15,46 +15,38 @@ namespace AgOpenGPS.IO
 
             using (var reader = new StreamReader(path))
             {
-                try
+                reader.ReadLine(); // optional header
+                while (!reader.EndOfStream)
                 {
-                    reader.ReadLine(); // optional header
-                    while (!reader.EndOfStream)
+                    var hp = new CHeadPath();
+                    hp.name = reader.ReadLine() ?? string.Empty;
+
+                    var line = reader.ReadLine(); if (line == null) break;
+                    hp.moveDistance = double.Parse(line, CultureInfo.InvariantCulture);
+
+                    line = reader.ReadLine(); if (line == null) break;
+                    hp.mode = int.Parse(line, CultureInfo.InvariantCulture);
+
+                    line = reader.ReadLine(); if (line == null) break;
+                    hp.a_point = int.Parse(line, CultureInfo.InvariantCulture);
+
+                    line = reader.ReadLine(); if (line == null) break;
+                    int numPoints = int.Parse(line, CultureInfo.InvariantCulture);
+
+                    for (int i = 0; i < numPoints && !reader.EndOfStream; i++)
                     {
-                        var hp = new CHeadPath();
-                        hp.name = reader.ReadLine() ?? string.Empty;
+                        var words = (reader.ReadLine() ?? string.Empty).Split(',');
+                        if (words.Length < 3) continue;
 
-                        var line = reader.ReadLine(); if (line == null) break;
-                        hp.moveDistance = double.Parse(line, CultureInfo.InvariantCulture);
-
-                        line = reader.ReadLine(); if (line == null) break;
-                        hp.mode = int.Parse(line, CultureInfo.InvariantCulture);
-
-                        line = reader.ReadLine(); if (line == null) break;
-                        hp.a_point = int.Parse(line, CultureInfo.InvariantCulture);
-
-                        line = reader.ReadLine(); if (line == null) break;
-                        int numPoints = int.Parse(line, CultureInfo.InvariantCulture);
-
-                        hp.trackPts = new List<vec3>();
-                        for (int i = 0; i < numPoints && !reader.EndOfStream; i++)
+                        if (double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                            double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
+                            double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
                         {
-                            var words = (reader.ReadLine() ?? string.Empty).Split(',');
-                            if (words.Length < 3) continue;
-
-                            if (double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
-                                double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
-                                double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
-                            {
-                                hp.trackPts.Add(new vec3(easting, northing, heading));
-                            }
+                            hp.trackPts.Add(new vec3(easting, northing, heading));
                         }
-
-                        if (hp.trackPts.Count > 3) result.Add(hp);
                     }
-                }
-                catch
-                {
-                    result.Clear();
+
+                    if (hp.trackPts.Count > 3) result.Add(hp);
                 }
             }
 

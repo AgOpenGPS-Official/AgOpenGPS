@@ -27,7 +27,7 @@ namespace AgOpenGPS.IO
                 if (header == null || !header.TrimStart().StartsWith("$", StringComparison.Ordinal))
                     throw new InvalidDataException("TrackLines.txt missing $ header.");
 
-                while (true)
+                while (!reader.EndOfStream)
                 {
                     // --- Name ---
                     var name = reader.ReadLine();
@@ -45,15 +45,17 @@ namespace AgOpenGPS.IO
                     var aLine = reader.ReadLine();
                     if (aLine == null) throw new InvalidDataException("Unexpected EOF reading point A.");
                     var aParts = aLine.Split(',');
-                    var aE = double.Parse(aParts[0], CultureInfo.InvariantCulture);
-                    var aN = double.Parse(aParts[1], CultureInfo.InvariantCulture);
+                    var aEasting = double.Parse(aParts[0], CultureInfo.InvariantCulture);
+                    var aNorthing = double.Parse(aParts[1], CultureInfo.InvariantCulture);
+                    var ptA = new vec2(aEasting, aNorthing);
 
                     // --- B point (easting,northing) ---
                     var bLine = reader.ReadLine();
                     if (bLine == null) throw new InvalidDataException("Unexpected EOF reading point B.");
                     var bParts = bLine.Split(',');
-                    var bE = double.Parse(bParts[0], CultureInfo.InvariantCulture);
-                    var bN = double.Parse(bParts[1], CultureInfo.InvariantCulture);
+                    var bEasting = double.Parse(bParts[0], CultureInfo.InvariantCulture);
+                    var bNorthing = double.Parse(bParts[1], CultureInfo.InvariantCulture);
+                    var ptB = new vec2(bEasting, bNorthing);
 
                     // --- Nudge ---
                     var nudgeLine = reader.ReadLine();
@@ -94,8 +96,8 @@ namespace AgOpenGPS.IO
                     {
                         name = name,
                         mode = modeEnum,
-                        ptA = new vec2(aE, aN),
-                        ptB = new vec2(bE, bN),
+                        ptA = ptA,
+                        ptB = ptB,
                         nudgeDistance = nudgeDistance,
                         isVisible = isVisible,
                         heading = heading,
@@ -125,18 +127,17 @@ namespace AgOpenGPS.IO
                 writer.WriteLine("$TrackLines");
                 if (tracks == null || tracks.Count == 0) return;
 
-                for (int i = 0; i < tracks.Count; i++)
+                foreach (CTrk track in tracks)
                 {
-                    var t = tracks[i] ?? new CTrk();
-                    writer.WriteLine(t.name ?? string.Empty);
-                    writer.WriteLine(t.heading.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptA.easting, 3)},{FileIoUtils.FormatDouble(t.ptA.northing, 3)}");
-                    writer.WriteLine($"{FileIoUtils.FormatDouble(t.ptB.easting, 3)},{FileIoUtils.FormatDouble(t.ptB.northing, 3)}");
-                    writer.WriteLine(t.nudgeDistance.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(((int)t.mode).ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(t.isVisible.ToString());
+                    writer.WriteLine(track.name ?? string.Empty);
+                    writer.WriteLine(track.heading.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(track.ptA.easting, 3)},{FileIoUtils.FormatDouble(track.ptA.northing, 3)}");
+                    writer.WriteLine($"{FileIoUtils.FormatDouble(track.ptB.easting, 3)},{FileIoUtils.FormatDouble(track.ptB.northing, 3)}");
+                    writer.WriteLine(track.nudgeDistance.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine(((int)track.mode).ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine(track.isVisible.ToString());
 
-                    var pts = t.curvePts ?? new List<vec3>();
+                    var pts = track.curvePts ?? new List<vec3>();
                     writer.WriteLine(pts.Count.ToString(CultureInfo.InvariantCulture));
                     for (int j = 0; j < pts.Count; j++)
                     {
