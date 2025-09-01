@@ -1,5 +1,6 @@
 ﻿// AgOpenGPS.IO/ElevationFiles.cs
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
@@ -65,5 +66,30 @@ namespace AgOpenGPS.IO
                 writer.Write(gridText);
             }
         }
+        public sealed class ElevationData
+        {
+            public DateTime Created { get; set; }
+            public Wgs84 StartFix { get; set; }
+            public List<string> RawLines { get; set; } = new List<string>();
+        }
+
+        public static ElevationData Load(string fieldDirectory)
+        {
+            var path = Path.Combine(fieldDirectory, "Elevation.txt");
+            if (!File.Exists(path)) return new ElevationData();
+
+            var data = new ElevationData();
+            using (var reader = new StreamReader(path))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    data.RawLines.Add(line);
+                }
+            }
+            return data;
+        }
+
     }
 }

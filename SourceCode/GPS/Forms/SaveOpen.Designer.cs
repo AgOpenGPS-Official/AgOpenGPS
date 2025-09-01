@@ -12,6 +12,7 @@ using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.IO;
+using AgOpenGPS.Classes.IO;
 
 namespace AgOpenGPS
 {
@@ -42,9 +43,8 @@ namespace AgOpenGPS
                 _ = FileSaveEverythingBeforeClosingField();
             }
 
-            // Resolve Field.txt path from openType
+            // Resolve Field.txt path
             string fileAndDirectory = "Cancel";
-
             if (!string.IsNullOrEmpty(openType) && openType.Contains("Field.txt"))
             {
                 fileAndDirectory = openType;
@@ -54,80 +54,98 @@ namespace AgOpenGPS
             switch (openType)
             {
                 case "Resume":
-                    {
-                        fileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Field.txt");
-                        if (!File.Exists(fileAndDirectory))
-                        {
-                            fileAndDirectory = "Cancel";
-                        }
-                        break;
-                    }
+                    fileAndDirectory = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Field.txt");
+                    if (!File.Exists(fileAndDirectory)) fileAndDirectory = "Cancel";
+                    break;
 
                 case "Open":
+                    using (var ofd = new OpenFileDialog())
                     {
-                        using (var ofd = new OpenFileDialog())
-                        {
-                            ofd.InitialDirectory = RegistrySettings.fieldsDirectory;
-                            ofd.RestoreDirectory = true;
-                            ofd.Filter = "Field files (Field.txt)|Field.txt";
-                            fileAndDirectory = (ofd.ShowDialog(this) == DialogResult.Cancel) ? "Cancel" : ofd.FileName;
-                        }
-                        break;
+                        ofd.InitialDirectory = RegistrySettings.fieldsDirectory;
+                        ofd.RestoreDirectory = true;
+                        ofd.Filter = "Field files (Field.txt)|Field.txt";
+                        fileAndDirectory = (ofd.ShowDialog(this) == DialogResult.Cancel) ? "Cancel" : ofd.FileName;
                     }
+                    break;
             }
 
-            if (fileAndDirectory == "Cancel")
-            {
-                return;
-            }
+            if (fileAndDirectory == "Cancel") return;
 
-            // Precheck: both required files must exist (no state change yet)
-            var dirCandidate = Path.GetDirectoryName(fileAndDirectory);
-            if (!EnsureFileExists(dirCandidate, "Field.txt", LoadCriticality.Required, "Field.txt (exists)"))
-            {
-                return;
-            }
-            if (!EnsureFileExists(dirCandidate, "Boundary.txt", LoadCriticality.Required, "Boundary.txt (exists)"))
-            {
-                return;
-            }
-
-            // Commit: now we can change state
-            currentFieldDirectory = new DirectoryInfo(dirCandidate).Name;
+            // Set current field directory
+            currentFieldDirectory = new DirectoryInfo(Path.GetDirectoryName(fileAndDirectory)).Name;
             var dir = GetFieldDir(false);
 
-            // REQUIRED: Field.txt (StartFix)
-            Wgs84 origin;
-            if (!TryLoad("Field.txt (StartFix)", LoadCriticality.Required, () => FieldPlaneFiles.LoadOrigin(dir), out origin))
+            // --- Load all field data ---
+            FieldData data;
+            try
             {
+                data = FieldFiles.LoadAll(dir);
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter("While Opening Field " + ex);
+                TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
                 return;
             }
 
-            pn.DefineLocalPlane(origin, true);
-            AppModel.LocalPlane = new LocalPlane(origin, new SharedFieldProperties());
-
-            // New job after validation
+            // --- Apply to model ---
+            pn.DefineLocalPlane(data.Origin, true);
+            AppModel.LocalPlane = new LocalPlane(data.Origin, new SharedFieldProperties());
             JobNew();
 
-            // REQUIRED: Boundary.txt
-            List<CBoundaryList> boundaries;
-            if (!TryLoad("Boundary.txt", LoadCriticality.Required, () => BoundaryFiles.Load(dir), out boundaries))
+            // --- Tracks ---
+            trk.gArr.Clear();
+            trk.gArr.AddRange(data.Tracks);
+            trk.idx = -1;
+
+            // --- Headlines ---
+            hdl.tracksArr.Clear();
+            hdl.tracksArr.AddRange(data.Headlines ?? new List<CHeadPath>());
+            hdl.idx = -1;
+
+            // --- Sections into triStrip + area ---
+            fd.workedAreaTotal = 0;
+            if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
             {
-                return;
+                triStrip[0].patchList = new List<List<vec3>>();
+                foreach (var patch in data.Sections.Patches)
+                {
+                    triStrip[0].triangleList = new List<vec3>(patch);
+                    triStrip[0].patchList.Add(triStrip[0].triangleList);
+
+                    int verts = patch.Count - 2;
+                    if (verts >= 2)
+                    {
+                        for (int j = 1; j < verts; j++)
+                        {
+                            double temp = patch[j].easting * (patch[j + 1].northing - patch[j + 2].northing)
+                                        + patch[j + 1].easting * (patch[j + 2].northing - patch[j].northing)
+                                        + patch[j + 2].easting * (patch[j].northing - patch[j + 1].northing);
+                            fd.workedAreaTotal += Math.Abs(temp * 0.5);
+                        }
+                    }
+                }
             }
 
-            // OPTIONAL (no message): Headland.txt
-            TryRun("Headland.txt (attach)", LoadCriticality.Optional, () => HeadlandFiles.AttachLoad(dir, boundaries));
+            // --- Contour ---
+            ct.stripList.Clear();
+            foreach (var patch in data.Contours)
+            {
+                ct.ptList = new List<vec3>(patch);
+                ct.stripList.Add(ct.ptList);
+            }
 
-            // Apply boundaries
-            bnd.bndList?.Clear();
-            bnd.bndList.AddRange(boundaries);
+            // --- Flags ---
+            flagPts.Clear();
+            flagPts.AddRange(data.Flags);
+
+            // --- Boundaries + Headlands ---
+            bnd.bndList.Clear();
+            bnd.bndList.AddRange(data.Boundaries);
             CalculateMinMax();
             bnd.BuildTurnLines();
 
             btnABDraw.Visible = bnd.bndList.Count > 0;
-
-            // Headland UI toggles
             if (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0)
             {
                 bnd.isHeadlandOn = true;
@@ -141,159 +159,38 @@ namespace AgOpenGPS
                 btnHeadlandOnOff.Image = Properties.Resources.HeadlandOff;
                 btnHeadlandOnOff.Visible = false;
             }
-
             int sett = Properties.Settings.Default.setArdMac_setting0;
             btnHydLift.Visible = (((sett & 2) == 2) && bnd.isHeadlandOn);
 
-            // OPTIONAL (no message): Headlines.txt
-            List<CHeadPath> headlines;
-            if (!TryLoad("Headlines.txt", LoadCriticality.Optional, () => HeadlinesFiles.Load(dir), out headlines))
-            {
-                headlines = new List<CHeadPath>();
-            }
-            hdl.tracksArr?.Clear();
-            hdl.tracksArr.AddRange(headlines);
-            hdl.idx = -1;
+            // --- Tram ---
+            tram.tramBndOuterArr.Clear();
+            tram.tramBndOuterArr.AddRange(data.Tram.Outer);
+            tram.tramBndInnerArr.Clear();
+            tram.tramBndInnerArr.AddRange(data.Tram.Inner);
+            tram.tramList.Clear();
+            tram.tramList.AddRange(data.Tram.Lines);
+            tram.displayMode = tram.tramBndOuterArr.Count > 0 ? 1 : 0;
+            try { FixTramModeButton(); } catch { }
 
-            // OPTIONAL (with message): TrackLines.txt
-            List<CTrk> tracks;
-            if (!EnsureFileExists(dir, "TrackLines.txt", LoadCriticality.Optional, "TrackLines.txt") ||
-                !TryLoad("TrackLines.txt", LoadCriticality.Optional, () => TrackFiles.Load(dir), out tracks))
-            {
-                tracks = new List<CTrk>();
-            }
-            trk.gArr?.Clear();
-            trk.gArr.AddRange(tracks);
-            trk.idx = -1;
-
-            // OPTIONAL (with message): Sections.txt
-            SectionsFiles.SectionsData sectionsData;
-            if (!EnsureFileExists(dir, "Sections.txt", LoadCriticality.Optional, "Sections.txt") ||
-                !TryLoad("Sections.txt", LoadCriticality.Optional, () => SectionsFiles.Load(dir), out sectionsData))
-            {
-                sectionsData = new SectionsFiles.SectionsData();
-            }
-            var sectionsPatches = sectionsData?.Patches ?? new List<List<vec3>>();
-
-            // Push sections into triStrip + area calc
-            fd.workedAreaTotal = 0;
-            if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
-            {
-                if (triStrip[0].patchList == null)
-                {
-                    triStrip[0].patchList = new List<List<vec3>>();
-                }
-                triStrip[0].patchList.Clear();
-
-                foreach (var patch in sectionsPatches)
-                {
-                    triStrip[0].triangleList = new List<vec3>(patch);
-                    triStrip[0].patchList.Add(triStrip[0].triangleList);
-
-                    int verts = patch.Count - 2;
-                    if (verts >= 2)
-                    {
-                        for (int j = 1; j < verts; j++)
-                        {
-                            double temp = 0;
-                            temp = patch[j].easting * (patch[j + 1].northing - patch[j + 2].northing)
-                                 + patch[j + 1].easting * (patch[j + 2].northing - patch[j].northing)
-                                 + patch[j + 2].easting * (patch[j].northing - patch[j + 1].northing);
-                            fd.workedAreaTotal += Math.Abs(temp * 0.5);
-                        }
-                    }
-                }
-            }
-
-            // OPTIONAL (with message): Contour.txt
-            List<List<vec3>> contourPatches;
-            if (!EnsureFileExists(dir, "Contour.txt", LoadCriticality.Optional, "Contour.txt") ||
-                !TryLoad("Contour.txt", LoadCriticality.Optional, () => ContourFiles.Load(dir), out contourPatches))
-            {
-                contourPatches = new List<List<vec3>>();
-            }
-
-            ct.stripList?.Clear();
-            foreach (var patch in contourPatches)
-            {
-                ct.ptList = new List<vec3>(patch);
-                ct.stripList.Add(ct.ptList);
-            }
-
-            // OPTIONAL (with message): Flags.txt
-            List<CFlag> flags;
-            if (!EnsureFileExists(dir, "Flags.txt", LoadCriticality.Optional, "Flags.txt") ||
-                !TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(dir), out flags))
-            {
-                flags = new List<CFlag>();
-            }
-            flagPts?.Clear();
-            flagPts.AddRange(flags);
-
-            // OPTIONAL (unchanged policy): Tram.txt
-            TramFiles.TramData tramData;
-            if (!TryLoad("Tram.txt", LoadCriticality.Optional, () => TramFiles.Load(dir), out tramData))
-            {
-                tramData = new TramFiles.TramData();
-            }
-
-            tram.tramBndOuterArr?.Clear();
-            tram.tramBndInnerArr?.Clear();
-            tram.tramList?.Clear();
-            tram.displayMode = 0;
-            btnTramDisplayMode.Visible = false;
-
-            if (tramData.Outer != null)
-            {
-                tram.tramBndOuterArr.AddRange(tramData.Outer);
-            }
-            if (tramData.Inner != null)
-            {
-                tram.tramBndInnerArr.AddRange(tramData.Inner);
-            }
-            if (tramData.Lines != null)
-            {
-                tram.tramList.AddRange(tramData.Lines);
-            }
-            if (tram.tramBndOuterArr.Count > 0)
-            {
-                tram.displayMode = 1;
-            }
-
-            FixTramModeButton();
-
-            // OPTIONAL (with message): RecPath.txt
-            List<CRecPathPt> rec;
-            if (!EnsureFileExists(dir, "RecPath.txt", LoadCriticality.Optional, "RecPath.txt") ||
-                !TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir, "RecPath.txt"), out rec))
-            {
-                rec = new List<CRecPathPt>();
-            }
+            // --- RecPath ---
             recPath.recList.Clear();
-            recPath.recList.AddRange(rec);
+            recPath.recList.AddRange(data.RecPath);
             panelDrag.Visible = recPath.recList.Count > 0;
 
-            // OPTIONAL (no message): BackPic.txt + BackPic.png
-            BackPicFiles.BackPicInfo back;
-            if (!TryLoad("BackPic.txt", LoadCriticality.Optional, () => BackPicFiles.Load(dir), out back))
-            {
-                back = new BackPicFiles.BackPicInfo();
-            }
-
-            worldGrid.isGeoMap = false;
-            worldGrid.isGeoMap = back.IsGeoMap;
+            // --- BackPic ---
+            worldGrid.isGeoMap = data.BackPic.IsGeoMap;
             if (worldGrid.isGeoMap)
             {
-                worldGrid.eastingMaxGeo = back.EastingMax;
-                worldGrid.eastingMinGeo = back.EastingMin;
-                worldGrid.northingMaxGeo = back.NorthingMax;
-                worldGrid.northingMinGeo = back.NorthingMin;
+                worldGrid.eastingMaxGeo = data.BackPic.EastingMax;
+                worldGrid.eastingMinGeo = data.BackPic.EastingMin;
+                worldGrid.northingMaxGeo = data.BackPic.NorthingMax;
+                worldGrid.northingMinGeo = data.BackPic.NorthingMin;
 
-                if (!string.IsNullOrEmpty(back.ImagePathPng) && File.Exists(back.ImagePathPng))
+                if (!string.IsNullOrEmpty(data.BackPic.ImagePathPng) && File.Exists(data.BackPic.ImagePathPng))
                 {
                     try
                     {
-                        using (var img = Image.FromFile(back.ImagePathPng))
+                        using (var img = Image.FromFile(data.BackPic.ImagePathPng))
                         {
                             worldGrid.BingBitmap = new Bitmap(img);
                         }
@@ -309,17 +206,7 @@ namespace AgOpenGPS
                 }
             }
 
-            // OPTIONAL (no message): Elevation.txt
-            TryRun("Elevation.txt (optional)", LoadCriticality.Optional, () =>
-            {
-                var elevPath = Path.Combine(dir, "Elevation.txt");
-                if (!File.Exists(elevPath))
-                {
-                    // No action required.
-                }
-            });
-
-            // Final UI refresh
+            // --- Final UI refresh ---
             PanelsAndOGLSize();
             SetZoom();
             oglZoom.Refresh();
@@ -395,8 +282,7 @@ namespace AgOpenGPS
             var dir = GetFieldDir();
 
             List<CTrk> tracks;
-            if (!EnsureFileExists(dir, "TrackLines.txt", LoadCriticality.Optional, "TrackLines.txt") ||
-                !TryLoad("TrackLines.txt", LoadCriticality.Optional, () => TrackFiles.Load(dir), out tracks))
+            if (!TryLoad("TrackLines.txt", LoadCriticality.Optional, () => TrackFiles.Load(dir), out tracks))
             {
                 tracks = new List<CTrk>();
             }
@@ -526,8 +412,7 @@ namespace AgOpenGPS
             var dir = GetFieldDir();
 
             List<CRecPathPt> rec;
-            if (!EnsureFileExists(dir, "RecPath.txt", LoadCriticality.Optional, "RecPath.txt") ||
-                !TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir, "RecPath.txt"), out rec))
+            if (!TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir, "RecPath.txt"), out rec))
             {
                 rec = new List<CRecPathPt>();
             }
@@ -549,8 +434,7 @@ namespace AgOpenGPS
             var dir = GetFieldDir();
 
             List<CFlag> flags;
-            if (!EnsureFileExists(dir, "Flags.txt", LoadCriticality.Optional, "Flags.txt") ||
-                !TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(dir), out flags))
+            if (!TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(dir), out flags))
             {
                 flags = new List<CFlag>();
             }
@@ -1121,16 +1005,16 @@ namespace AgOpenGPS
                 result = loader();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Log.EventWriter($"[Load:{fileLabel}] failed: {ex}");
+                Log.EventWriter($"[Load:{fileLabel}] failed");
                 if (criticality == LoadCriticality.Required)
                 {
                     TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be loaded.");
                 }
                 else
                 {
-                    TimedMessageBox(2000, "Optional file problem", $"{fileLabel} is missing or corrupt; it will be recreated on save.");
+                    TimedMessageBox(2000, "Optional file problem", $"{fileLabel} is missing or corrupt but Field is Loaded");
                 }
                 result = default(T);
                 return false;
@@ -1158,21 +1042,6 @@ namespace AgOpenGPS
                 }
                 return false;
             }
-        }
-
-        // Ensures a file exists; triggers TryLoad-based message when missing.
-        private bool EnsureFileExists(string dir, string fileName, LoadCriticality criticality, string label)
-        {
-            bool ok;
-            return TryLoad(label, criticality, () =>
-            {
-                var p = Path.Combine(dir, fileName);
-                if (!File.Exists(p))
-                {
-                    throw new FileNotFoundException($"{fileName} is missing", p);
-                }
-                return true;
-            }, out ok);
         }
     }
 }

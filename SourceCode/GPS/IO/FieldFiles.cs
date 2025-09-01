@@ -9,7 +9,7 @@ namespace AgOpenGPS.Classes.IO
     /// </summary>
     public static class FieldFiles
     {
-        public static FieldData Load(string fieldDirectory)
+        public static FieldData LoadAll(string fieldDirectory)
         {
             var data = new FieldData
             {
@@ -19,11 +19,14 @@ namespace AgOpenGPS.Classes.IO
                 Contours = ContourFiles.Load(fieldDirectory),
                 Flags = FlagsFiles.Load(fieldDirectory),
                 Boundaries = BoundaryFiles.Load(fieldDirectory),
+                Headlines = HeadlinesFiles.Load(fieldDirectory),
                 Tram = TramFiles.Load(fieldDirectory),
                 RecPath = RecPathFiles.Load(fieldDirectory, "RecPath.txt"),
-                BackPic = BackPicFiles.Load(fieldDirectory)
+                BackPic = BackPicFiles.Load(fieldDirectory),
+                Elevation = ElevationFiles.Load(fieldDirectory) // optional
             };
 
+            // Attach headlands to the loaded boundaries if present
             HeadlandFiles.AttachLoad(fieldDirectory, data.Boundaries);
 
             return data;
@@ -48,10 +51,15 @@ namespace AgOpenGPS.Classes.IO
 
         public List<CBoundaryList> Boundaries { get; set; } = new List<CBoundaryList>();
 
+        public List<CHeadPath> Headlines { get; set; } = new List<CHeadPath>();
+
         public TramFiles.TramData Tram { get; set; } = new TramFiles.TramData();
 
         public List<CRecPathPt> RecPath { get; set; } = new List<CRecPathPt>();
 
         public BackPicFiles.BackPicInfo BackPic { get; set; } = new BackPicFiles.BackPicInfo();
+
+        public ElevationFiles.ElevationData Elevation { get; set; } = new ElevationFiles.ElevationData();
     }
+
 }

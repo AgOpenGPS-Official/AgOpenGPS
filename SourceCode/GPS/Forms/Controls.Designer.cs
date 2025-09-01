@@ -495,13 +495,27 @@ namespace AgOpenGPS
             var prevFieldDir = currentFieldDirectory;
 
             Form f = Application.OpenForms["FormGPSData"];
-            if (f != null) { f.Focus(); f.Close(); }
+            if (f != null)
+
+            {
+                f.Focus();
+                f.Close();
+            }
 
             f = Application.OpenForms["FormFieldData"];
-            if (f != null) { f.Focus(); f.Close(); }
+            if (f != null)
+
+            {
+                f.Focus();
+                f.Close();
+            }
 
             f = Application.OpenForms["FormEventViewer"];
-            if (f != null) { f.Focus(); f.Close(); }
+            if (f != null)
+            {
+                f.Focus();
+                f.Close();
+            }
 
             f = Application.OpenForms["FormPan"];
             if (f != null)
