@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.IO
 {
@@ -14,9 +12,9 @@ namespace AgOpenGPS.IO
             public double TotalArea { get; set; }
         }
 
-        public static SectionsData Load(string fieldDirectory)
+        public static List<List<vec3>> Load(string fieldDirectory)
         {
-            var result = new SectionsData();
+            var result = new List<List<vec3>>();
             var path = Path.Combine(fieldDirectory, "Sections.txt");
             if (!File.Exists(path)) return result;
 
@@ -34,24 +32,7 @@ namespace AgOpenGPS.IO
                     var patch = FileIoUtils.ReadVec3Block(reader, verts);
                     if (patch.Count > 0)
                     {
-                        result.Patches.Add(patch);
-                        if (patch.Count >= 3)
-                        {
-                            int vertsForArea = patch.Count - 2;
-                            for (int j = 1; j < vertsForArea; j++)
-                            {
-                                var a = patch[j];
-                                var b = patch[j + 1];
-                                var c = patch[j + 2];
-
-                                double twiceArea =
-                                    a.easting * (b.northing - c.northing) +
-                                    b.easting * (c.northing - a.northing) +
-                                    c.easting * (a.northing - b.northing);
-
-                                result.TotalArea += Math.Abs(0.5 * twiceArea);
-                            }
-                        }
+                        result.Add(patch);
                     }
                 }
             }

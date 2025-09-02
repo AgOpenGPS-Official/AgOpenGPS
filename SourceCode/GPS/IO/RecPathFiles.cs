@@ -9,47 +9,40 @@ namespace AgOpenGPS.IO
 {
     public static class RecPathFiles
     {
-        public static List<CRecPathPt> Load(string fieldDirectory, string fileName = "RecPath.txt")
+        public static List<CRecPathPt> Load(string fieldDirectory)
         {
             var list = new List<CRecPathPt>();
-            var path = Path.Combine(fieldDirectory, fileName);
+            var path = Path.Combine(fieldDirectory, "RecPath.txt");
             if (!File.Exists(path)) return list;
 
             using (var reader = new StreamReader(path))
             {
-                try
+                string headerOrCount = reader.ReadLine();
+                string cntLine = reader.ReadLine();
+                int numPoints;
+
+                if (cntLine == null && headerOrCount != null && int.TryParse(headerOrCount.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out numPoints))
                 {
-                    string headerOrCount = reader.ReadLine();
-                    string cntLine = reader.ReadLine();
-                    int numPoints;
-
-                    if (cntLine == null && headerOrCount != null && int.TryParse(headerOrCount.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out numPoints))
-                    {
-                        // single-line count
-                    }
-                    else
-                    {
-                        if (cntLine == null || !int.TryParse(cntLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out numPoints))
-                            return list;
-                    }
-
-                    for (int i = 0; i < numPoints && !reader.EndOfStream; i++)
-                    {
-                        var words = (reader.ReadLine() ?? string.Empty).Split(',');
-                        if (words.Length < 5) continue;
-
-                        var pt = new CRecPathPt(
-                            double.Parse(words[0], CultureInfo.InvariantCulture), // easting
-                            double.Parse(words[1], CultureInfo.InvariantCulture), // northing
-                            double.Parse(words[2], CultureInfo.InvariantCulture), // heading
-                            double.Parse(words[3], CultureInfo.InvariantCulture), // speed
-                            bool.Parse(words[4]));
-                        list.Add(pt);
-                    }
+                    // single-line count
                 }
-                catch
+                else
                 {
-                    // Legacy behavior: soft fail
+                    if (cntLine == null || !int.TryParse(cntLine.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out numPoints))
+                        return list;
+                }
+
+                for (int i = 0; i < numPoints && !reader.EndOfStream; i++)
+                {
+                    var words = (reader.ReadLine() ?? string.Empty).Split(',');
+                    if (words.Length < 5) continue;
+
+                    var pt = new CRecPathPt(
+                        double.Parse(words[0], CultureInfo.InvariantCulture), // easting
+                        double.Parse(words[1], CultureInfo.InvariantCulture), // northing
+                        double.Parse(words[2], CultureInfo.InvariantCulture), // heading
+                        double.Parse(words[3], CultureInfo.InvariantCulture), // speed
+                        bool.Parse(words[4]));
+                    list.Add(pt);
                 }
             }
 

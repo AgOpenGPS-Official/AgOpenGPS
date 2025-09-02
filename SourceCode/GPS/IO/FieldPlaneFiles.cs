@@ -56,45 +56,22 @@ namespace AgOpenGPS.IO
         /// Returns true on success; false on failure (error contains a short description).
         /// Stateless: no UI, no globals, only file IO.
         /// </summary>
-        public static bool TryCreateFieldTxt(string fieldDirectory, DateTime timestamp, Wgs84 startFix, out string error)
+        public static void Save(string fieldDirectory, DateTime timestamp, Wgs84 startFix)
         {
-            error = null;
-
-            try
+            var path = Path.Combine(fieldDirectory, "Field.txt");
+            using (var writer = new StreamWriter(path, false))
             {
-                if (string.IsNullOrEmpty(fieldDirectory))
-                {
-                    error = "Field directory is empty.";
-                    return false;
-                }
-
-                if (!Directory.Exists(fieldDirectory))
-                {
-                    Directory.CreateDirectory(fieldDirectory);
-                }
-
-                var path = Path.Combine(fieldDirectory, "Field.txt");
-                using (var writer = new StreamWriter(path, false))
-                {
-                    writer.WriteLine(timestamp.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-                    writer.WriteLine("$FieldDir");
-                    writer.WriteLine("FieldNew");
-                    writer.WriteLine("$Offsets");
-                    writer.WriteLine("0,0");
-                    writer.WriteLine("Convergence");
-                    writer.WriteLine("0");
-                    writer.WriteLine("StartFix");
-                    writer.WriteLine(
-                        startFix.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
-                        startFix.Longitude.ToString(CultureInfo.InvariantCulture));
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                return false;
+                writer.WriteLine(timestamp.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                writer.WriteLine("$FieldDir");
+                writer.WriteLine("FieldNew");
+                writer.WriteLine("$Offsets");
+                writer.WriteLine("0,0");
+                writer.WriteLine("Convergence");
+                writer.WriteLine("0");
+                writer.WriteLine("StartFix");
+                writer.WriteLine(
+                    startFix.Latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                    startFix.Longitude.ToString(CultureInfo.InvariantCulture));
             }
         }
     }

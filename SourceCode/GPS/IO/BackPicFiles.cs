@@ -1,5 +1,6 @@
-﻿using System.IO;
+﻿using System.Drawing;
 using System.Globalization;
+using System.IO;
 
 namespace AgOpenGPS.IO
 {
@@ -12,14 +13,12 @@ namespace AgOpenGPS.IO
             public double EastingMin { get; set; }
             public double NorthingMax { get; set; }
             public double NorthingMin { get; set; }
-            public string ImagePathPng { get; set; }
         }
 
         public static BackPicInfo Load(string fieldDirectory)
         {
             var info = new BackPicInfo();
             var txt = Path.Combine(fieldDirectory, "BackPic.txt");
-            var png = Path.Combine(fieldDirectory, "BackPic.png");
 
             if (!File.Exists(txt)) return info;
 
@@ -37,17 +36,6 @@ namespace AgOpenGPS.IO
                     info.EastingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMax = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
                     info.NorthingMin = double.Parse(reader.ReadLine() ?? "0", CultureInfo.InvariantCulture);
-
-                    // Legacy parity: if PNG is missing, turn IsGeoMap off.
-                    if (File.Exists(png))
-                    {
-                        info.ImagePathPng = png;
-                    }
-                    else
-                    {
-                        info.ImagePathPng = null;
-                        info.IsGeoMap = false;
-                    }
                 }
                 catch
                 {
@@ -56,6 +44,18 @@ namespace AgOpenGPS.IO
             }
 
             return info;
+        }
+
+        public static Bitmap LoadImage(string fieldDirectory)
+        {
+            var png = Path.Combine(fieldDirectory, "BackPic.png");
+
+            if (!File.Exists(png)) return null;
+
+            using (var img = Image.FromFile(png))
+            {
+                return new Bitmap(img);
+            }
         }
     }
 }

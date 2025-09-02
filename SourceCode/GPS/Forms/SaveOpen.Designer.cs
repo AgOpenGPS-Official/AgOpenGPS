@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using System.IO;
 using System.Globalization;
-using System.Xml;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 using AgLibrary.Logging;
-using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.IO;
-using AgOpenGPS.Classes.IO;
+using AgOpenGPS.Protocols.ISOBUS;
 
 namespace AgOpenGPS
 {
@@ -76,129 +75,127 @@ namespace AgOpenGPS
             var dir = GetFieldDir(false);
 
             // --- Load all field data ---
-            FieldData data;
-            try
+            if (!TryLoad("Field.txt", LoadCriticality.Required, () => FieldPlaneFiles.LoadOrigin(dir), out Wgs84 origin))
             {
-                data = FieldFiles.LoadAll(dir);
-            }
-            catch (Exception ex)
-            {
-                Log.EventWriter("While Opening Field " + ex);
-                TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
                 return;
             }
+            pn.DefineLocalPlane(origin, true);
 
-            // --- Apply to model ---
-            pn.DefineLocalPlane(data.Origin, true);
-            AppModel.LocalPlane = new LocalPlane(data.Origin, new SharedFieldProperties());
             JobNew();
 
             // --- Tracks ---
-            trk.gArr.Clear();
-            trk.gArr.AddRange(data.Tracks);
-            trk.idx = -1;
-
-            // --- Headlines ---
-            hdl.tracksArr.Clear();
-            hdl.tracksArr.AddRange(data.Headlines ?? new List<CHeadPath>());
-            hdl.idx = -1;
+            FileLoadTracks();
 
             // --- Sections into triStrip + area ---
-            fd.workedAreaTotal = 0;
-            if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
+            if (TryLoad("Sections.txt", LoadCriticality.Optional, () => SectionsFiles.Load(dir), out var sections))
             {
-                triStrip[0].patchList = new List<List<vec3>>();
-                foreach (var patch in data.Sections.Patches)
+                fd.workedAreaTotal = 0;
+                fd.distanceUser = 0;
+                if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
                 {
-                    triStrip[0].triangleList = new List<vec3>(patch);
-                    triStrip[0].patchList.Add(triStrip[0].triangleList);
-
-                    int verts = patch.Count - 2;
-                    if (verts >= 2)
+                    triStrip[0].patchList = new List<List<vec3>>();
+                    foreach (var patch in sections)
                     {
-                        for (int j = 1; j < verts; j++)
+                        triStrip[0].triangleList = new List<vec3>(patch);
+                        triStrip[0].patchList.Add(triStrip[0].triangleList);
+
+                        int verts = patch.Count - 2;
+                        if (verts >= 2)
                         {
-                            double temp = patch[j].easting * (patch[j + 1].northing - patch[j + 2].northing)
-                                        + patch[j + 1].easting * (patch[j + 2].northing - patch[j].northing)
-                                        + patch[j + 2].easting * (patch[j].northing - patch[j + 1].northing);
-                            fd.workedAreaTotal += Math.Abs(temp * 0.5);
+                            for (int j = 1; j < verts; j++)
+                            {
+                                double temp = patch[j].easting * (patch[j + 1].northing - patch[j + 2].northing)
+                                            + patch[j + 1].easting * (patch[j + 2].northing - patch[j].northing)
+                                            + patch[j + 2].easting * (patch[j].northing - patch[j + 1].northing);
+                                fd.workedAreaTotal += Math.Abs(temp * 0.5);
+                            }
                         }
                     }
                 }
             }
 
             // --- Contour ---
-            ct.stripList.Clear();
-            foreach (var patch in data.Contours)
+            if (TryLoad("Contour.txt", LoadCriticality.Optional, () => ContourFiles.Load(dir), out var contours))
             {
-                ct.ptList = new List<vec3>(patch);
-                ct.stripList.Add(ct.ptList);
+                ct.stripList.Clear();
+                foreach (var patch in contours)
+                {
+                    ct.ptList = new List<vec3>(patch);
+                    ct.stripList.Add(ct.ptList);
+                }
             }
 
             // --- Flags ---
-            flagPts.Clear();
-            flagPts.AddRange(data.Flags);
-
-            // --- Boundaries + Headlands ---
-            bnd.bndList.Clear();
-            bnd.bndList.AddRange(data.Boundaries);
-            CalculateMinMax();
-            bnd.BuildTurnLines();
-
-            btnABDraw.Visible = bnd.bndList.Count > 0;
-            if (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0)
+            if (TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(dir), out var flags))
             {
-                bnd.isHeadlandOn = true;
-                btnHeadlandOnOff.Image = Properties.Resources.HeadlandOn;
-                btnHeadlandOnOff.Visible = true;
-                btnHydLift.Image = Properties.Resources.HydraulicLiftOff;
+                flagPts.Clear();
+                flagPts.AddRange(flags);
             }
-            else
+
+            // --- Boundaries ---
+            if (TryLoad("Boundary.txt", LoadCriticality.Optional, () => BoundaryFiles.Load(dir), out var boundaries))
             {
-                bnd.isHeadlandOn = false;
-                btnHeadlandOnOff.Image = Properties.Resources.HeadlandOff;
-                btnHeadlandOnOff.Visible = false;
+                bnd.bndList.Clear();
+                bnd.bndList.AddRange(boundaries);
+                CalculateMinMax();
+                bnd.BuildTurnLines();
+
+                btnABDraw.Visible = bnd.bndList.Count > 0;
+                if (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0)
+                {
+                    bnd.isHeadlandOn = true;
+                    btnHeadlandOnOff.Image = Properties.Resources.HeadlandOn;
+                    btnHeadlandOnOff.Visible = true;
+                    btnHydLift.Image = Properties.Resources.HydraulicLiftOff;
+                }
+                else
+                {
+                    bnd.isHeadlandOn = false;
+                    btnHeadlandOnOff.Image = Properties.Resources.HeadlandOff;
+                    btnHeadlandOnOff.Visible = false;
+                }
+                int sett = Properties.Settings.Default.setArdMac_setting0;
+                btnHydLift.Visible = (((sett & 2) == 2) && bnd.isHeadlandOn);
             }
-            int sett = Properties.Settings.Default.setArdMac_setting0;
-            btnHydLift.Visible = (((sett & 2) == 2) && bnd.isHeadlandOn);
+
+            // --- Headlands ---
+            TryRun("Headland.txt", LoadCriticality.Optional, () => HeadlandFiles.AttachLoad(dir, boundaries));
 
             // --- Tram ---
-            tram.tramBndOuterArr.Clear();
-            tram.tramBndOuterArr.AddRange(data.Tram.Outer);
-            tram.tramBndInnerArr.Clear();
-            tram.tramBndInnerArr.AddRange(data.Tram.Inner);
-            tram.tramList.Clear();
-            tram.tramList.AddRange(data.Tram.Lines);
-            tram.displayMode = tram.tramBndOuterArr.Count > 0 ? 1 : 0;
-            try { FixTramModeButton(); } catch { }
+            if (TryLoad("Tram.txt", LoadCriticality.Optional, () => TramFiles.Load(dir), out var tramData))
+            {
+                tram.tramBndOuterArr.Clear();
+                tram.tramBndOuterArr.AddRange(tramData.Outer);
+                tram.tramBndInnerArr.Clear();
+                tram.tramBndInnerArr.AddRange(tramData.Inner);
+                tram.tramList.Clear();
+                tram.tramList.AddRange(tramData.Lines);
+                tram.displayMode = tram.tramBndOuterArr.Count > 0 ? 1 : 0;
+                FixTramModeButton();
+            }
 
             // --- RecPath ---
-            recPath.recList.Clear();
-            recPath.recList.AddRange(data.RecPath);
-            panelDrag.Visible = recPath.recList.Count > 0;
+            if (TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir), out var recPathList))
+            {
+                recPath.recList.Clear();
+                recPath.recList.AddRange(recPathList);
+                panelDrag.Visible = recPath.recList.Count > 0;
+            }
 
             // --- BackPic ---
-            worldGrid.isGeoMap = data.BackPic.IsGeoMap;
+            var backPic = BackPicFiles.Load(dir);
+            worldGrid.isGeoMap = backPic.IsGeoMap;
             if (worldGrid.isGeoMap)
             {
-                worldGrid.eastingMaxGeo = data.BackPic.EastingMax;
-                worldGrid.eastingMinGeo = data.BackPic.EastingMin;
-                worldGrid.northingMaxGeo = data.BackPic.NorthingMax;
-                worldGrid.northingMinGeo = data.BackPic.NorthingMin;
+                worldGrid.eastingMaxGeo = backPic.EastingMax;
+                worldGrid.eastingMinGeo = backPic.EastingMin;
+                worldGrid.northingMaxGeo = backPic.NorthingMax;
+                worldGrid.northingMinGeo = backPic.NorthingMin;
 
-                if (!string.IsNullOrEmpty(data.BackPic.ImagePathPng) && File.Exists(data.BackPic.ImagePathPng))
+                var bitmap = BackPicFiles.LoadImage(dir);
+                if (bitmap != null)
                 {
-                    try
-                    {
-                        using (var img = Image.FromFile(data.BackPic.ImagePathPng))
-                        {
-                            worldGrid.BingBitmap = new Bitmap(img);
-                        }
-                    }
-                    catch
-                    {
-                        worldGrid.isGeoMap = false;
-                    }
+                    worldGrid.BingBitmap = bitmap;
                 }
                 else
                 {
@@ -206,47 +203,13 @@ namespace AgOpenGPS
                 }
             }
 
+            // optional
+            TryLoad("Elevation.txt", LoadCriticality.Optional, () => ElevationFiles.Load(dir), out var elevation);
+
             // --- Final UI refresh ---
             PanelsAndOGLSize();
             SetZoom();
             oglZoom.Refresh();
-        }
-
-        // Load boundaries and attach headlands, update toggles.
-        private void LoadBoundariesAndHeadlands()
-        {
-            var dir = GetFieldDir();
-            List<CBoundaryList> boundaries;
-            if (!TryLoad("Boundary.txt", LoadCriticality.Required, () => BoundaryFiles.Load(dir), out boundaries))
-            {
-                return;
-            }
-
-            bnd.bndList?.Clear();
-            bnd.bndList.AddRange(boundaries);
-
-            TryRun("Headland.txt (attach)", LoadCriticality.Optional, () => HeadlandFiles.AttachLoad(dir, boundaries));
-
-            CalculateMinMax();
-            bnd.BuildTurnLines();
-            btnABDraw.Visible = bnd.bndList.Count > 0;
-
-            if (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0)
-            {
-                bnd.isHeadlandOn = true;
-                btnHeadlandOnOff.Image = Properties.Resources.HeadlandOn;
-                btnHeadlandOnOff.Visible = true;
-                btnHydLift.Image = Properties.Resources.HydraulicLiftOff;
-            }
-            else
-            {
-                bnd.isHeadlandOn = false;
-                btnHeadlandOnOff.Image = Properties.Resources.HeadlandOff;
-                btnHeadlandOnOff.Visible = false;
-            }
-
-            int sett = Properties.Settings.Default.setArdMac_setting0;
-            btnHydLift.Visible = (((sett & 2) == 2) && bnd.isHeadlandOn);
         }
 
         // Save HeadLines.
@@ -303,14 +266,7 @@ namespace AgOpenGPS
 
             var dir = GetFieldDir(true);
             var startFix = new Wgs84(AppModel.CurrentLatLon.Latitude, AppModel.CurrentLatLon.Longitude);
-
-            string error;
-            if (!FieldPlaneFiles.TryCreateFieldTxt(dir, DateTime.Now, startFix, out error))
-            {
-                Log.EventWriter("FileCreateField failed: " + error);
-                TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, "Field.txt could not be created.");
-                return;
-            }
+            FieldPlaneFiles.Save(dir, DateTime.Now, startFix);
         }
 
         public void FileCreateElevation()
@@ -324,8 +280,7 @@ namespace AgOpenGPS
         {
             var dir = GetFieldDir(true);
             ElevationFiles.Append(dir, sbGrid.ToString());
-            sbGrid.Clear(); sbGrid.Clear();
-
+            sbGrid.Clear();
         }
 
         // Append pending sections.
@@ -412,7 +367,7 @@ namespace AgOpenGPS
             var dir = GetFieldDir();
 
             List<CRecPathPt> rec;
-            if (!TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir, "RecPath.txt"), out rec))
+            if (!TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir), out rec))
             {
                 rec = new List<CRecPathPt>();
             }
@@ -426,21 +381,6 @@ namespace AgOpenGPS
         public void FileSaveFlags()
         {
             FlagsFiles.Save(GetFieldDir(true), flagPts);
-        }
-
-        // Load flags (message if missing).
-        private void LoadFlags()
-        {
-            var dir = GetFieldDir();
-
-            List<CFlag> flags;
-            if (!TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(dir), out flags))
-            {
-                flags = new List<CFlag>();
-            }
-
-            flagPts?.Clear();
-            flagPts.AddRange(flags);
         }
 
         // Export one flag to KML using WGS84 from LocalPlane.
