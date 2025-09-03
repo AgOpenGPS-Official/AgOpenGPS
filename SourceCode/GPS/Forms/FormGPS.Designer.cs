@@ -40,28 +40,6 @@ namespace AgOpenGPS
             this.newProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menustripLanguage = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageDanish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageDeutsch = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageEnglish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageEstonian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageSpanish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageFrench = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageItalian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageLatvian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageLithuanian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageHungarian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageDutch = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageNorsk = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguagePolish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguagePortugese = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageRussian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageFinnish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageSlovak = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageSerbie = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageTurkish = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageUkranian = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageChinese = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuLanguageKorean = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.simulatorOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enterSimCoordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -330,192 +308,9 @@ namespace AgOpenGPS
             // 
             // menustripLanguage
             // 
-            this.menustripLanguage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuLanguageDanish,
-            this.menuLanguageDeutsch,
-            this.menuLanguageEnglish,
-            this.menuLanguageEstonian,
-            this.menuLanguageSpanish,
-            this.menuLanguageFrench,
-            this.menuLanguageItalian,
-            this.menuLanguageLatvian,
-            this.menuLanguageLithuanian,
-            this.menuLanguageHungarian,
-            this.menuLanguageDutch,
-            this.menuLanguageNorsk,
-            this.menuLanguagePolish,
-            this.menuLanguagePortugese,
-            this.menuLanguageRussian,
-            this.menuLanguageFinnish,
-            this.menuLanguageSlovak,
-            this.menuLanguageSerbie,
-            this.menuLanguageTurkish,
-            this.menuLanguageUkranian,
-            this.menuLanguageChinese,
-            this.menuLanguageKorean});
             this.menustripLanguage.Name = "menustripLanguage";
             this.menustripLanguage.Size = new System.Drawing.Size(382, 50);
             this.menustripLanguage.Text = "Language";
-            // 
-            // menuLanguageDanish
-            // 
-            this.menuLanguageDanish.Name = "menuLanguageDanish";
-            this.menuLanguageDanish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageDanish.Text = "Dansk (Denmark)";
-            this.menuLanguageDanish.Click += new System.EventHandler(this.menuLanguageDanish_Click);
-            // 
-            // menuLanguageDeutsch
-            // 
-            this.menuLanguageDeutsch.CheckOnClick = true;
-            this.menuLanguageDeutsch.Name = "menuLanguageDeutsch";
-            this.menuLanguageDeutsch.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageDeutsch.Text = "Deutsch (Germany)";
-            this.menuLanguageDeutsch.Click += new System.EventHandler(this.menuLanguageDeutsch_Click);
-            // 
-            // menuLanguageEnglish
-            // 
-            this.menuLanguageEnglish.CheckOnClick = true;
-            this.menuLanguageEnglish.Name = "menuLanguageEnglish";
-            this.menuLanguageEnglish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageEnglish.Text = "English (Canada)";
-            this.menuLanguageEnglish.Click += new System.EventHandler(this.menuLanguageEnglish_Click);
-            // 
-            // menuLanguageEstonian
-            // 
-            this.menuLanguageEstonian.Name = "menuLanguageEstonian";
-            this.menuLanguageEstonian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageEstonian.Text = "Eesti (Estonia)";
-            this.menuLanguageEstonian.Click += new System.EventHandler(this.menuLanguageEstonian_Click);
-            // 
-            // menuLanguageSpanish
-            // 
-            this.menuLanguageSpanish.CheckOnClick = true;
-            this.menuLanguageSpanish.Name = "menuLanguageSpanish";
-            this.menuLanguageSpanish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageSpanish.Text = "Español (Spanish)";
-            this.menuLanguageSpanish.Click += new System.EventHandler(this.menuLanguageSpanish_Click);
-            // 
-            // menuLanguageFrench
-            // 
-            this.menuLanguageFrench.CheckOnClick = true;
-            this.menuLanguageFrench.Name = "menuLanguageFrench";
-            this.menuLanguageFrench.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageFrench.Text = "Français (France)";
-            this.menuLanguageFrench.Click += new System.EventHandler(this.menuLanguageFrench_Click);
-            // 
-            // menuLanguageItalian
-            // 
-            this.menuLanguageItalian.Name = "menuLanguageItalian";
-            this.menuLanguageItalian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageItalian.Text = "Italiano (Italy)";
-            this.menuLanguageItalian.Click += new System.EventHandler(this.menuLanguageItalian_Click);
-            // 
-            // menuLanguageLatvian
-            // 
-            this.menuLanguageLatvian.Name = "menuLanguageLatvian";
-            this.menuLanguageLatvian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageLatvian.Text = "Latviski (Latvia)";
-            this.menuLanguageLatvian.Click += new System.EventHandler(this.menuLanguageLatvian_Click);
-            // 
-            // menuLanguageLithuanian
-            // 
-            this.menuLanguageLithuanian.Name = "menuLanguageLithuanian";
-            this.menuLanguageLithuanian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageLithuanian.Text = "Lietuvių (Lithuania)";
-            this.menuLanguageLithuanian.Click += new System.EventHandler(this.menuLanguageLithuanian_Click);
-            // 
-            // menuLanguageHungarian
-            // 
-            this.menuLanguageHungarian.Name = "menuLanguageHungarian";
-            this.menuLanguageHungarian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageHungarian.Text = "Magyar (Hungary)";
-            this.menuLanguageHungarian.Click += new System.EventHandler(this.menuLanguageHungarian_Click);
-            // 
-            // menuLanguageDutch
-            // 
-            this.menuLanguageDutch.CheckOnClick = true;
-            this.menuLanguageDutch.Name = "menuLanguageDutch";
-            this.menuLanguageDutch.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageDutch.Text = "Nederlands (Holland)";
-            this.menuLanguageDutch.Click += new System.EventHandler(this.menuLanguageDutch_Click);
-            // 
-            // menuLanguageNorsk
-            // 
-            this.menuLanguageNorsk.Name = "menuLanguageNorsk";
-            this.menuLanguageNorsk.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageNorsk.Text = "Norsk (Norway)";
-            this.menuLanguageNorsk.Click += new System.EventHandler(this.menuLanguageNorsk_Click);
-            // 
-            // menuLanguagePolish
-            // 
-            this.menuLanguagePolish.Name = "menuLanguagePolish";
-            this.menuLanguagePolish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguagePolish.Text = "Polski (Poland)";
-            this.menuLanguagePolish.Click += new System.EventHandler(this.menuLanguagesPolski_Click);
-            // 
-            // menuLanguagePortugese
-            // 
-            this.menuLanguagePortugese.Name = "menuLanguagePortugese";
-            this.menuLanguagePortugese.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguagePortugese.Text = "Português (Portuguese)";
-            this.menuLanguagePortugese.Click += new System.EventHandler(this.menuLanguagesPortugese_Click);
-            // 
-            // menuLanguageRussian
-            // 
-            this.menuLanguageRussian.CheckOnClick = true;
-            this.menuLanguageRussian.Name = "menuLanguageRussian";
-            this.menuLanguageRussian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageRussian.Text = "русский (Russia)";
-            this.menuLanguageRussian.Click += new System.EventHandler(this.menuLanguageRussian_Click);
-            // 
-            // menuLanguageFinnish
-            // 
-            this.menuLanguageFinnish.Name = "menuLanguageFinnish";
-            this.menuLanguageFinnish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageFinnish.Text = "Suomalainen (Finland)";
-            this.menuLanguageFinnish.Click += new System.EventHandler(this.menuLanguageFinnish_Click);
-            // 
-            // menuLanguageSlovak
-            // 
-            this.menuLanguageSlovak.Name = "menuLanguageSlovak";
-            this.menuLanguageSlovak.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageSlovak.Text = "Slovenčina (Slovakia)";
-            this.menuLanguageSlovak.Click += new System.EventHandler(this.menuLanguageSlovak_Click);
-            // 
-            // menuLanguageSerbie
-            // 
-            this.menuLanguageSerbie.Name = "menuLanguageSerbie";
-            this.menuLanguageSerbie.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageSerbie.Text = "Serbia (Servië)";
-            this.menuLanguageSerbie.Click += new System.EventHandler(this.menuLanguageSerbie_Click);
-            // 
-            // menuLanguageTurkish
-            // 
-            this.menuLanguageTurkish.Name = "menuLanguageTurkish";
-            this.menuLanguageTurkish.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageTurkish.Text = "Türkçe (Turkey)";
-            this.menuLanguageTurkish.Click += new System.EventHandler(this.menuLanguageTurkish_Click);
-            // 
-            // menuLanguageUkranian
-            // 
-            this.menuLanguageUkranian.Name = "menuLanguageUkranian";
-            this.menuLanguageUkranian.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageUkranian.Text = "Yкраїнська (Ukraine)";
-            this.menuLanguageUkranian.Click += new System.EventHandler(this.menuLanguageUkranian_Click);
-            // 
-            // menuLanguageChinese
-            // 
-            this.menuLanguageChinese.Name = "menuLanguageChinese";
-            this.menuLanguageChinese.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageChinese.Text = "中国人 (Chinese)";
-            this.menuLanguageChinese.Click += new System.EventHandler(this.menuLanguageChinese_Click);
-            // 
-            // menuLanguageKorean
-            // 
-            this.menuLanguageKorean.Name = "menuLanguageKorean";
-            this.menuLanguageKorean.Size = new System.Drawing.Size(485, 50);
-            this.menuLanguageKorean.Text = "한국인 (Korean)";
-            this.menuLanguageKorean.Click += new System.EventHandler(this.menuLanguageKorean_Click);
             // 
             // toolStripSeparator11
             // 
@@ -1321,7 +1116,7 @@ namespace AgOpenGPS
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.panelSim.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.panelSim.Controls.Add(this.btnSpeedDn, 5, 0);
             this.panelSim.Controls.Add(this.btnSimSpeedUp, 7, 0);
             this.panelSim.Controls.Add(this.btnResetSim, 0, 0);
@@ -1346,7 +1141,7 @@ namespace AgOpenGPS
             this.btnSpeedDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSpeedDn.Location = new System.Drawing.Point(333, 4);
             this.btnSpeedDn.Name = "btnSpeedDn";
-            this.btnSpeedDn.Size = new System.Drawing.Size(75, 34);
+            this.btnSpeedDn.Size = new System.Drawing.Size(74, 34);
             this.btnSpeedDn.TabIndex = 533;
             this.btnSpeedDn.UseVisualStyleBackColor = false;
             this.btnSpeedDn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSpeedDn_MouseDown);
@@ -1359,9 +1154,9 @@ namespace AgOpenGPS
             this.btnSimSpeedUp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSimSpeedUp.FlatAppearance.BorderSize = 0;
             this.btnSimSpeedUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSimSpeedUp.Location = new System.Drawing.Point(472, 4);
+            this.btnSimSpeedUp.Location = new System.Drawing.Point(471, 4);
             this.btnSimSpeedUp.Name = "btnSimSpeedUp";
-            this.btnSimSpeedUp.Size = new System.Drawing.Size(75, 34);
+            this.btnSimSpeedUp.Size = new System.Drawing.Size(74, 34);
             this.btnSimSpeedUp.TabIndex = 532;
             this.btnSimSpeedUp.UseVisualStyleBackColor = false;
             this.btnSimSpeedUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnSimSpeedUp_MouseDown);
@@ -1375,7 +1170,7 @@ namespace AgOpenGPS
             this.btnSimSetSpeedToZero.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimSetSpeedToZero.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.btnSimSetSpeedToZero.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSimSetSpeedToZero.Location = new System.Drawing.Point(415, 4);
+            this.btnSimSetSpeedToZero.Location = new System.Drawing.Point(414, 4);
             this.btnSimSetSpeedToZero.Name = "btnSimSetSpeedToZero";
             this.btnSimSetSpeedToZero.Size = new System.Drawing.Size(50, 34);
             this.btnSimSetSpeedToZero.TabIndex = 453;
@@ -1392,7 +1187,7 @@ namespace AgOpenGPS
             this.btnSimReverseDirection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSimReverseDirection.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.btnSimReverseDirection.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnSimReverseDirection.Location = new System.Drawing.Point(565, 4);
+            this.btnSimReverseDirection.Location = new System.Drawing.Point(564, 4);
             this.btnSimReverseDirection.Name = "btnSimReverseDirection";
             this.btnSimReverseDirection.Size = new System.Drawing.Size(35, 34);
             this.btnSimReverseDirection.TabIndex = 537;
@@ -3179,15 +2974,8 @@ namespace AgOpenGPS
         private System.Windows.Forms.Button btnResetSim;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         public System.Windows.Forms.Button btnSectionMasterAuto;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageEnglish;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageDeutsch;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageRussian;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageDutch;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageSpanish;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageFrench;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageItalian;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         public System.Windows.Forms.Button btnTrack;
         private System.Windows.Forms.Button btnSection9Man;
@@ -3219,12 +3007,9 @@ namespace AgOpenGPS
         private System.Windows.Forms.Button btnSection14Man;
         private System.Windows.Forms.Button btnSection13Man;
         private System.Windows.Forms.Button btnSimSetSpeedToZero;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageUkranian;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageSlovak;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuFlagForm;
         public System.Windows.Forms.Button btnHydLift;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguagePolish;
         public System.Windows.Forms.Button btnDayNightMode;
         public System.Windows.Forms.Button btnStartAgIO;
         public System.Windows.Forms.Button btnPickPath;
@@ -3250,12 +3035,10 @@ namespace AgOpenGPS
         public System.Windows.Forms.Button btnTramDisplayMode;
         public System.Windows.Forms.Button btnYouSkipEnable;
         private System.Windows.Forms.Label lblFix;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageDanish;
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
         private System.Windows.Forms.Button btnNudge;
         public System.Windows.Forms.Button btnResumePath;
         public System.Windows.Forms.Button btnResetToolHeading;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageTurkish;
         private System.Windows.Forms.ToolStripMenuItem wizardsMenu;
         private System.Windows.Forms.ToolStripMenuItem steerWizardMenuItem;
         public System.Windows.Forms.Button btnBrightnessDn;
@@ -3268,10 +3051,6 @@ namespace AgOpenGPS
         private System.Windows.Forms.Button btnZone6;
         private System.Windows.Forms.Button btnZone7;
         private System.Windows.Forms.Button btnZone8;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageHungarian;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageFinnish;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageLatvian;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageLithuanian;
         private System.Windows.Forms.ToolStripMenuItem rollCheckToolStripMenuItem;
         public System.Windows.Forms.Button btnCycleLinesBk;
         private System.Windows.Forms.TableLayoutPanel panelLeft;
@@ -3313,11 +3092,9 @@ namespace AgOpenGPS
         public System.Windows.Forms.Button btnSnapToPivot;
         private System.Windows.Forms.Button btnAdjLeft;
         private System.Windows.Forms.Button btnAdjRight;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageChinese;
         public System.Windows.Forms.Button btnGrid;
         public System.Windows.Forms.Button btnN2D;
         private System.Windows.Forms.ToolStripMenuItem kioskModeToolStrip;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguagePortugese;
         private System.Windows.Forms.StatusStrip statusStrip2;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem toolStripConfig;
@@ -3333,14 +3110,10 @@ namespace AgOpenGPS
         private System.Windows.Forms.ToolStripMenuItem eventViewerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guidelinesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tramsMultiMenuField;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageSerbie;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageNorsk;
         private System.Windows.Forms.ToolStripMenuItem AgShareApiMenuItem;
         private System.Windows.Forms.ToolStripMenuItem profileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newProfileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadProfileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageEstonian;
-        private System.Windows.Forms.ToolStripMenuItem menuLanguageKorean;
     }
 }
 

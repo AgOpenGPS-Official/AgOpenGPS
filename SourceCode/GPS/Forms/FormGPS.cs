@@ -303,6 +303,8 @@ namespace AgOpenGPS
             //winform initialization
             InitializeComponent();
 
+            InitializeLanguages();
+
             AppCore = new ApplicationCore(
                 new DirectoryInfo(RegistrySettings.baseDirectory),
                 null,

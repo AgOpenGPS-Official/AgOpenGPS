@@ -1547,219 +1547,62 @@ namespace AgOpenGPS
         #endregion
 
         #region Languages
-        private void menuLanguageEnglish_Click(object sender, EventArgs e)
+        private void InitializeLanguages()
         {
-            SetLanguage("en");
+            menustripLanguage.DropDownItems.Clear();
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Dansk (Denmark)", "da"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Deutsch (Germany)", "de"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("English (Canada)", "en"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Eesti (Estonia)", "et"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Español (Spanish)", "es"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Français (France)", "fr"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Italiano (Italy)", "it"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Latviski (Latvia)", "lv"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Lietuvių (Lithuania)", "lt"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Magyar (Hungary)", "hu"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Nederlands (Holland)", "nl"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Norsk (Norway)", "no"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Polski (Poland)", "pl"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Português (Portuguese)", "pt"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("русский (Russia)", "ru"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Suomalainen (Finland)", "fi"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Slovenčina (Slovakia)", "sk"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Serbia (Servië)", "sr"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Türkçe (Turkey)", "tr"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Yкраїнська (Ukraine)", "uk"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("中国人 (Chinese)", "zh-CHS"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("한국인 (Korean)", "ko"));
         }
-        private void menuLanguageDanish_Click(object sender, EventArgs e)
+
+        private ToolStripMenuItem CreateLanguageMenuItem(string text, string lang)
         {
-            SetLanguage("da");
+            var menuItem = new ToolStripMenuItem()
+            {
+                CheckOnClick = true,
+                Text = text,
+                Tag = lang
+            };
+            menuItem.Click += languageMenuItem_Click;
+            return menuItem;
         }
-        private void menuLanguageDeutsch_Click(object sender, EventArgs e)
+
+        private void languageMenuItem_Click(object sender, EventArgs e)
         {
-            SetLanguage("de");
+            var menuItem = (ToolStripMenuItem)sender;
+            SetLanguage((string)menuItem.Tag);
         }
-        private void menuLanguageRussian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("ru");
-        }
-        private void menuLanguageDutch_Click(object sender, EventArgs e)
-        {
-            SetLanguage("nl");
-        }
-        private void menuLanguageSpanish_Click(object sender, EventArgs e)
-        {
-            SetLanguage("es");
-        }
-        private void menuLanguageFrench_Click(object sender, EventArgs e)
-        {
-            SetLanguage("fr");
-        }
-        private void menuLanguageItalian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("it");
-        }
-        private void menuLanguageHungarian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("hu");
-        }
-        private void menuLanguageUkranian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("uk");
-        }
-        private void menuLanguageSlovak_Click(object sender, EventArgs e)
-        {
-            SetLanguage("sk");
-        }
-        private void menuLanguagesPolski_Click(object sender, EventArgs e)
-        {
-            SetLanguage("pl");
-        }
-        private void menuLanguagesPortugese_Click(object sender, EventArgs e)
-        {
-            SetLanguage("pt");
-        }
-        private void menuLanguageTurkish_Click(object sender, EventArgs e)
-        {
-            SetLanguage("tr");
-        }
-        private void menuLanguageFinnish_Click(object sender, EventArgs e)
-        {
-            SetLanguage("fi");
-        }
-        private void menuLanguageLatvian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("lv");
-        }
-        private void menuLanguageLithuanian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("lt");
-        }
-        private void menuLanguageChinese_Click(object sender, EventArgs e)
-        {
-            SetLanguage("zh-CHS");
-        }
-        private void menuLanguageSerbie_Click(object sender, EventArgs e)
-        {
-            SetLanguage("sr");
-        }
-        private void menuLanguageNorsk_Click(object sender, EventArgs e)
-        {
-            SetLanguage("no");
-        }
-        private void menuLanguageEstonian_Click(object sender, EventArgs e)
-        {
-            SetLanguage("et");
-        }
-        private void menuLanguageKorean_Click(object sender, EventArgs e)
-        {
-            SetLanguage("ko");
-        }
+
         private void SetLanguage(string lang)
         {
-            //reset them all to false
-            menuLanguageEnglish.Checked = false;
-            menuLanguageDeutsch.Checked = false;
-            menuLanguageRussian.Checked = false;
-            menuLanguageDutch.Checked = false;
-            menuLanguageSpanish.Checked = false;
-            menuLanguageFrench.Checked = false;
-            menuLanguageItalian.Checked = false;
-            menuLanguageUkranian.Checked = false;
-            menuLanguageSlovak.Checked = false;
-            menuLanguagePolish.Checked = false;
-            menuLanguageDanish.Checked = false;
-            menuLanguageTurkish.Checked = false;
-            menuLanguageHungarian.Checked = false;
-            menuLanguageLithuanian.Checked = false;
-            menuLanguageFinnish.Checked = false;
-            menuLanguageLatvian.Checked = false;
-            menuLanguageChinese.Checked = false;
-            menuLanguagePortugese.Checked = false;
-            menuLanguageSerbie.Checked = false;
-            menuLanguageNorsk.Checked = false;
-            menuLanguageEstonian.Checked = false;
-            menuLanguageKorean.Checked = false;
-
-            switch (lang)
+            foreach (var menuItem in menustripLanguage.DropDownItems.OfType<ToolStripMenuItem>())
             {
-                case "en":
-                    menuLanguageEnglish.Checked = true;
-                    break;
-
-                case "ru":
-                    menuLanguageRussian.Checked = true;
-                    break;
-
-                case "da":
-                    menuLanguageDanish.Checked = true;
-                    break;
-
-                case "de":
-                    menuLanguageDeutsch.Checked = true;
-                    break;
-
-                case "nl":
-                    menuLanguageDutch.Checked = true;
-                    break;
-
-                case "it":
-                    menuLanguageItalian.Checked = true;
-                    break;
-
-                case "es":
-                    menuLanguageSpanish.Checked = true;
-                    break;
-
-                case "fr":
-                    menuLanguageFrench.Checked = true;
-                    break;
-
-                case "uk":
-                    menuLanguageUkranian.Checked = true;
-                    break;
-
-                case "sk":
-                    menuLanguageSlovak.Checked = true;
-                    break;
-
-                case "pl":
-                    menuLanguagePolish.Checked = true;
-                    break;
-
-                case "pt":
-                    menuLanguagePortugese.Checked = true;
-                    break;
-
-                case "tr":
-                    menuLanguageTurkish.Checked = true;
-                    break;
-
-                case "hu":
-                    menuLanguageHungarian.Checked = true;
-                    break;
-
-                case "lt":
-                    menuLanguageLithuanian.Checked = true;
-                    break;
-
-                case "lv":
-                    menuLanguageLatvian.Checked = true;
-                    break;
-
-                case "fi":
-                    menuLanguageFinnish.Checked = true;
-                    break;
-
-                case "zh-CHS":
-                    menuLanguageChinese.Checked = true;
-                    break;
-
-                case "sr":
-                    menuLanguageSerbie.Checked = true;
-                    break;
-
-                case "no":
-                    menuLanguageNorsk.Checked = true;
-                    break;
-
-                case "et":
-                    menuLanguageEstonian.Checked = true;
-                    break;
-
-                case "ko":
-                    menuLanguageKorean.Checked = true;
-                    break;
-
-                default:
-                    menuLanguageEnglish.Checked = true;
-                    lang = "en";
-                    break;
+                menuItem.Checked = (string)menuItem.Tag == lang;
             }
+
             RegistrySettings.Save(RegKeys.language, lang);
 
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
 
             LoadText();
         }
