@@ -580,7 +580,21 @@ namespace AgOpenGPS
             {
                 if (autoBtnState == btnStates.Auto)
                     btnSectionMasterAuto.PerformClick();
+
+                // Ask for pre-close options (clear nudge / clean applied)
+                var opts = PromptCloseFieldOptions(this);
+                if (!opts.Confirmed)
+                {
+                    // User cancelled -> abort closing and reset shutdown flag
+                    isShuttingDown = false;
+                    e.Cancel = true;
+                    return;
+                }
+
+                // Apply chosen pre-actions BEFORE saving
+                ApplyPreCloseActions(opts.clearNudge, opts.CleanAppliedArea);
             }
+
 
             BeginInvoke(new Func<Task>(async () => await ShowSavingFormAndShutdown(choice)));
         }
