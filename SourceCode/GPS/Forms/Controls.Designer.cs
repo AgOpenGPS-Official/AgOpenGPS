@@ -642,7 +642,7 @@ namespace AgOpenGPS
                 FileSaveContour();
                 FileSaveTracks();
                 ExportFieldAs_KML();
-                ExportFieldAs_ISOXMLv3();
+                //ExportFieldAs_ISOXMLv3(); NOTE: This is very very slow, commented out until we have a field exporter
                 ExportFieldAs_ISOXMLv4();
             });
 
