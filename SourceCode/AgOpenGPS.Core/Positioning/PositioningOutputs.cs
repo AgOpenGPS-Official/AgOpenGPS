@@ -12,7 +12,7 @@ namespace AgOpenGPS.Core.Positioning
         /// Corrected local-plane position after antenna-offset and roll corrections.
         /// Until we add corrections, this will equal RawFixLocal.
         /// </summary>
-        public vec2 CorrectedFixLocal { get; set; }
+        public GeoCoord CorrectedFixLocal { get; set; }
 
         /// <summary>Body heading in radians, normalized to [0, 2π).</summary>
         public double FixHeadingRad { get; set; }

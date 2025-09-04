@@ -9,7 +9,7 @@ namespace AgOpenGPS.Core.Positioning
     public sealed class SensorInputs
     {
         /// <summary>Raw local-plane position before any antenna/roll correction (legacy pn.fix).</summary>
-        public vec2 RawFixLocal { get; set; }
+        public GeoCoord RawFixLocal { get; set; }
 
         /// <summary>Vehicle speed in km/h if known; null if not available.</summary>
         public double? SpeedKmh { get; set; }
