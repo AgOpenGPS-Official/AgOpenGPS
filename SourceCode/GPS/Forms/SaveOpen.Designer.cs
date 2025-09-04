@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.IO;
 using AgOpenGPS.Protocols.ISOBUS;
 
@@ -1041,6 +1043,74 @@ namespace AgOpenGPS
             {
                 TimedMessageBox(1500, "Sections are on", "Turn Auto or Manual Off First");
             }
+        }
+        // Small data carrier for the close options
+        public struct CloseFieldDialogResult
+        {
+            // True if user chose Yes/Continue
+            public bool Confirmed;
+            // Option to save current nudge offsets
+            public bool clearNudge;
+            // Option to clean applied area mapping
+            public bool CleanAppliedArea;
+        }
+
+        // Show the dialog and return user's choices
+        public static CloseFieldDialogResult PromptCloseFieldOptions(IWin32Window owner)
+        {
+            var result = new CloseFieldDialogResult { Confirmed = false, clearNudge = false, CleanAppliedArea = false };
+
+            using (var dlg = new FormDialog())
+            {
+                // Title/message can be localized via gStr if desired
+                dlg.Configure("Closing Field", "Choose what to do before closing:", MessageBoxButtons.YesNo, true, false, false);
+
+                var dr = (owner != null) ? dlg.ShowDialog(owner) : dlg.ShowDialog();
+                if (dr != DialogResult.Yes) return result;
+
+                result.Confirmed = true;
+                result.clearNudge = dlg.clearNudgeChecked;
+                result.CleanAppliedArea = dlg.CleanAppliedAreaChecked;
+                return result;
+            }
+        }
+
+        // Apply selected pre-actions (placeholder hooks)
+        private void ApplyPreCloseActions(bool clearNudge, bool cleanApplied)
+        {
+            // clear nudge offsets if requested
+            if (clearNudge && trk?.gArr != null)
+            {
+                foreach (var t in trk.gArr)
+                {
+                    t.nudgeDistance = 0;
+                }
+            }
+
+            // Clean applied area mapping if requested
+            if (cleanApplied)
+            {
+                ClearAppliedArea();
+            }
+        }
+
+        // Ask, optionally apply pre-actions, then save everything
+        public async Task<bool> PromptAndSaveBeforeClosingFieldAsync(IWin32Window owner)
+        {
+            // Quick return when no job is active
+            if (!isJobStarted)
+                return true;
+
+            var options = PromptCloseFieldOptions(owner);
+            if (!options.Confirmed)
+                return false; // user canceled
+
+            // Apply pre-actions based on checkboxes
+            ApplyPreCloseActions(options.clearNudge, options.CleanAppliedArea);
+
+            // Perform the actual save
+            await FileSaveEverythingBeforeClosingField();
+            return true;
         }
     }
 }

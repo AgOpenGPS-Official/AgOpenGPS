@@ -29,9 +29,9 @@ namespace AgOpenGPS.Forms
             ConfigureOptions(showOptions, saveNudgeDefault, cleanAppliedDefault);
         }
 
-        public bool SaveNudgeChecked
+        public bool clearNudgeChecked
         {
-            get { return chkSaveNudge.Checked; }
+            get { return chkClearNudge.Checked; }
         }
 
         public bool CleanAppliedAreaChecked
@@ -70,7 +70,7 @@ namespace AgOpenGPS.Forms
                     btnOK.DialogResult = DialogResult.OK;
 
                     btnCancel.Text = "Cancel";
-                    btnCancel.Visible = false; 
+                    btnCancel.Visible = false;
                     btnCancel.DialogResult = DialogResult.Cancel;
 
                     this.AcceptButton = btnOK;
@@ -98,7 +98,7 @@ namespace AgOpenGPS.Forms
             panelOptions.Visible = showOptions;
             if (showOptions)
             {
-                chkSaveNudge.Checked = saveNudgeDefault;
+                chkClearNudge.Checked = saveNudgeDefault;
                 chkCleanAppliedArea.Checked = cleanAppliedDefault;
             }
         }

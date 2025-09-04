@@ -35,7 +35,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelOptions = new System.Windows.Forms.Panel();
             this.chkCleanAppliedArea = new System.Windows.Forms.CheckBox();
-            this.chkSaveNudge = new System.Windows.Forms.CheckBox();
+            this.chkClearNudge = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panelOptions.SuspendLayout();
             this.SuspendLayout();
@@ -121,7 +121,7 @@
             // 
             // panelOptions
             // 
-            this.panelOptions.Controls.Add(this.chkSaveNudge);
+            this.panelOptions.Controls.Add(this.chkClearNudge);
             this.panelOptions.Controls.Add(this.chkCleanAppliedArea);
             this.panelOptions.Location = new System.Drawing.Point(6, 121);
             this.panelOptions.Name = "panelOptions";
@@ -153,26 +153,26 @@
             // 
             // chkSaveNudge
             // 
-            this.chkSaveNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkSaveNudge.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkSaveNudge.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.chkSaveNudge.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkSaveNudge.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.chkSaveNudge.FlatAppearance.BorderSize = 2;
-            this.chkSaveNudge.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
-            this.chkSaveNudge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkSaveNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkSaveNudge.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.chkSaveNudge.Image = global::AgOpenGPS.Properties.Resources.ABSnapNudgeMenu;
-            this.chkSaveNudge.Location = new System.Drawing.Point(25, 8);
-            this.chkSaveNudge.Name = "chkSaveNudge";
-            this.chkSaveNudge.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkSaveNudge.Size = new System.Drawing.Size(116, 145);
-            this.chkSaveNudge.TabIndex = 512;
-            this.chkSaveNudge.Text = "Reset Nudge";
-            this.chkSaveNudge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkSaveNudge.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            this.chkSaveNudge.UseVisualStyleBackColor = false;
+            this.chkClearNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkClearNudge.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkClearNudge.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chkClearNudge.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkClearNudge.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.chkClearNudge.FlatAppearance.BorderSize = 2;
+            this.chkClearNudge.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
+            this.chkClearNudge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkClearNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkClearNudge.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkClearNudge.Image = global::AgOpenGPS.Properties.Resources.ABSnapNudgeMenu;
+            this.chkClearNudge.Location = new System.Drawing.Point(25, 8);
+            this.chkClearNudge.Name = "chkSaveNudge";
+            this.chkClearNudge.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkClearNudge.Size = new System.Drawing.Size(116, 145);
+            this.chkClearNudge.TabIndex = 512;
+            this.chkClearNudge.Text = "Reset Nudge";
+            this.chkClearNudge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkClearNudge.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.chkClearNudge.UseVisualStyleBackColor = false;
             // 
             // FormDialog
             // 
@@ -203,7 +203,7 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panelOptions;
-        private System.Windows.Forms.CheckBox chkSaveNudge;
+        private System.Windows.Forms.CheckBox chkClearNudge;
         private System.Windows.Forms.CheckBox chkCleanAppliedArea;
     }
 }
