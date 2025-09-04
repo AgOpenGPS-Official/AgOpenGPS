@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using AgOpenGPS.Core.Models;
@@ -9,31 +10,31 @@ namespace AgOpenGPS.IO
     {
         public static List<List<vec3>> Load(string fieldDirectory)
         {
+            if (string.IsNullOrWhiteSpace(fieldDirectory))
+                throw new ArgumentNullException(nameof(fieldDirectory));
+
             var result = new List<List<vec3>>();
             var path = Path.Combine(fieldDirectory, "Contour.txt");
             if (!File.Exists(path)) return result;
 
             using (var reader = new StreamReader(path))
             {
-                string first = reader.ReadLine();
-                int verts0;
-                if (!string.IsNullOrEmpty(first) && !first.TrimStart().StartsWith("$") &&
-                    int.TryParse(first.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out verts0))
-                {
-                    var patch0 = FileIoUtils.ReadVec3Block(reader, verts0);
-                    if (patch0.Count > 0) result.Add(patch0);
-                }
+                var header = reader.ReadLine();
+                if (header == null || !header.TrimStart().StartsWith("$", StringComparison.Ordinal))
+                    throw new InvalidDataException("Contour.txt missing header.");
 
                 while (!reader.EndOfStream)
                 {
-                    var line = reader.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    var countLine = reader.ReadLine();
+                    if (countLine == null) break;
 
-                    int verts;
-                    if (!int.TryParse(line.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out verts))
-                        continue;
+                    countLine = countLine.Trim();
+                    if (countLine.Length == 0) continue; // skip blank lines
 
-                    var patch = FileIoUtils.ReadVec3Block(reader, verts);
+                    var count = int.Parse(countLine, NumberStyles.Integer, CultureInfo.InvariantCulture);
+                    if (count <= 0) continue;
+
+                    var patch = FileIoUtils.ReadVec3Block(reader, count);
                     if (patch.Count > 0) result.Add(patch);
                 }
             }

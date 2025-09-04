@@ -17,83 +17,86 @@ namespace AgOpenGPS.IO
             var path = Path.Combine(fieldDirectory, "Boundary.txt");
             if (!File.Exists(path)) return result;
 
-            var lines = File.ReadAllLines(path);
-            int idx = 0;
-
-            // Skip optional header
-            if (idx < lines.Length && (lines[idx] ?? string.Empty).TrimStart().StartsWith("$", StringComparison.OrdinalIgnoreCase)) idx++;
-
-            while (idx < lines.Length)
+            using (var reader = new StreamReader(path))
             {
-                // Skip blank lines between rings
-                while (idx < lines.Length && string.IsNullOrWhiteSpace(lines[idx])) idx++;
-                if (idx >= lines.Length) break;
-
-                var b = new CBoundaryList();
-
-                // Some legacy wrote "True/False" twice; accept and consume up to two flags.
-                for (int pass = 0; pass < 2 && idx < lines.Length; pass++)
+                // Skip optional header
+                string line = reader.ReadLine();
+                if (line != null && !line.TrimStart().StartsWith("$", StringComparison.OrdinalIgnoreCase))
                 {
-                    var peek = (lines[idx] ?? string.Empty).Trim();
-                    bool flag;
-                    if (bool.TryParse(peek, out flag))
-                    {
-                        b.isDriveThru = flag;
-                        idx++;
-                        continue; // Try to see if there's a duplicate flag again
-                    }
-                    break;
+                    // first line was not header -> treat as first data line
+                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                    reader.DiscardBufferedData();
                 }
 
-                // Now we should have the count line
-                if (idx >= lines.Length) break;
-                var countLine = (lines[idx++] ?? string.Empty).Trim();
-                int count;
-                if (!int.TryParse(countLine, NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
+                while ((line = reader.ReadLine()) != null)
                 {
-                    // If the count line is malformed, stop parsing further rings.
-                    break;
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    var b = new CBoundaryList();
+
+                    // Some legacy wrote "True/False" twice; accept and consume up to two flags.
+                    for (int pass = 0; pass < 2; pass++)
+                    {
+                        bool flag;
+                        if (bool.TryParse(line.Trim(), out flag))
+                        {
+                            b.isDriveThru = flag;
+                            line = reader.ReadLine();
+                            if (line == null) break;
+                            continue;
+                        }
+                        break;
+                    }
+
+                    if (line == null) break;
+                    var countLine = line.Trim();
+                    int count;
+                    if (!int.TryParse(countLine, NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
+                    {
+                        break; // malformed count -> stop parsing rings
+                    }
+
+                    // Points
+                    for (int i = 0; i < count; i++)
+                    {
+                        line = reader.ReadLine();
+                        if (line == null) break;
+                        var parts = line.Split(',');
+                        if (parts.Length < 3) continue;
+                        double easting, northing, heading;
+                        if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out easting) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out northing) &&
+                            double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out heading))
+                        {
+                            b.fenceLine.Add(new vec3(easting, northing, heading));
+                        }
+                    }
+
+                    // Compute area and ear
+                    b.CalculateFenceArea(result.Count);
+                    if (b.fenceLineEar != null) b.fenceLineEar.Clear();
+
+                    double delta = 0;
+                    for (int i = 0; i < b.fenceLine.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
+                            continue;
+                        }
+                        delta += b.fenceLine[i - 1].heading - b.fenceLine[i].heading;
+                        if (Math.Abs(delta) > 0.005)
+                        {
+                            b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
+                            delta = 0;
+                        }
+                    }
+
+                    result.Add(b);
                 }
 
-                // Points
-                for (int i = 0; i < count && idx < lines.Length; i++, idx++)
-                {
-                    var parts = (lines[idx] ?? string.Empty).Split(',');
-                    if (parts.Length < 3) continue;
-
-                    double easting, northing, heading;
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out easting) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out northing) &&
-                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out heading))
-                    {
-                        b.fenceLine.Add(new vec3(easting, northing, heading));
-                    }
-                }
-
-                // Compute area and ear
-                b.CalculateFenceArea(result.Count);
-                if (b.fenceLineEar != null) b.fenceLineEar.Clear();
-
-                double delta = 0;
-                for (int i = 0; i < b.fenceLine.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
-                        continue;
-                    }
-                    delta += b.fenceLine[i - 1].heading - b.fenceLine[i].heading;
-                    if (Math.Abs(delta) > 0.005)
-                    {
-                        b.fenceLineEar.Add(new vec2(b.fenceLine[i].easting, b.fenceLine[i].northing));
-                        delta = 0;
-                    }
-                }
-
-                result.Add(b);
+                return result;
             }
-
-            return result;
         }
 
         public static void Save(string fieldDirectory, IReadOnlyList<CBoundaryList> boundaries)

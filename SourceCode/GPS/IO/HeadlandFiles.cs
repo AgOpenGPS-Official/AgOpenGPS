@@ -14,32 +14,46 @@ namespace AgOpenGPS.IO
             var path = Path.Combine(fieldDirectory, "Headland.txt");
             if (!File.Exists(path)) return;
 
-            var lines = File.ReadAllLines(path);
-            int idx = 0;
-
-            if (idx < lines.Length && lines[idx].Trim().StartsWith("$")) idx++;
-
-            for (int k = 0; k < boundaries.Count && idx < lines.Length; k++)
+            using (var reader = new StreamReader(path))
             {
-                int count;
-                if (!int.TryParse((lines[idx++] ?? string.Empty).Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
-                    break;
-
-                var hd = boundaries[k].hdLine;
-                if (hd != null) hd.Clear();
-
-                for (int i = 0; i < count && idx < lines.Length; i++, idx++)
+                // Skip optional header
+                string line = reader.ReadLine();
+                if (line != null && line.Trim().StartsWith("$"))
                 {
-                    var parts = (lines[idx] ?? string.Empty).Split(',');
-                    if (parts.Length < 3) continue;
+                    line = null;
+                }
 
-                    if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
-                        double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
-                        double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
+                for (int k = 0; k < boundaries.Count; k++)
+                {
+                    // if we don't already have a line, read next
+                    if (line == null) line = reader.ReadLine();
+                    if (line == null) break;
+
+                    int count;
+                    if (!int.TryParse(line.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out count))
+                        break;
+
+                    var hd = boundaries[k].hdLine;
+                    if (hd != null) hd.Clear();
+
+                    for (int i = 0; i < count; i++)
                     {
-                        boundaries[k].hdLine.Add(new vec3(easting, northing, heading));
+                        line = reader.ReadLine();
+                        if (line == null) break;
+
+                        var parts = line.Split(',');
+                        if (parts.Length < 3) continue;
+
+                        if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double easting) &&
+                            double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double northing) &&
+                           double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double heading))
+                        {
+                            boundaries[k].hdLine.Add(new vec3(easting, northing, heading));
+                        }
                     }
 
+                    // prepare for next boundary
+                    line = null;
                 }
             }
         }
