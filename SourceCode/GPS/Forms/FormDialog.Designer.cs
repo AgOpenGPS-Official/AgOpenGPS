@@ -34,8 +34,8 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelOptions = new System.Windows.Forms.Panel();
-            this.chkCleanAppliedArea = new System.Windows.Forms.CheckBox();
             this.chkClearNudge = new System.Windows.Forms.CheckBox();
+            this.chkCleanAppliedArea = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panelOptions.SuspendLayout();
             this.SuspendLayout();
@@ -65,11 +65,13 @@
             this.btnOK.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOK.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnOK.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnOK.Location = new System.Drawing.Point(668, 220);
+            this.btnOK.Location = new System.Drawing.Point(668, 193);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(105, 64);
+            this.btnOK.Size = new System.Drawing.Size(105, 91);
             this.btnOK.TabIndex = 97;
-            this.btnOK.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnOK.Text = "OK";
+            this.btnOK.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnOK.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -84,11 +86,13 @@
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.btnCancel.Location = new System.Drawing.Point(560, 220);
+            this.btnCancel.Location = new System.Drawing.Point(560, 193);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(105, 64);
+            this.btnCancel.Size = new System.Drawing.Size(105, 91);
             this.btnCancel.TabIndex = 98;
-            this.btnCancel.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -129,6 +133,29 @@
             this.panelOptions.TabIndex = 100;
             this.panelOptions.Visible = false;
             // 
+            // chkClearNudge
+            // 
+            this.chkClearNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkClearNudge.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkClearNudge.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chkClearNudge.Cursor = System.Windows.Forms.Cursors.Default;
+            this.chkClearNudge.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.chkClearNudge.FlatAppearance.BorderSize = 2;
+            this.chkClearNudge.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
+            this.chkClearNudge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkClearNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkClearNudge.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkClearNudge.Image = global::AgOpenGPS.Properties.Resources.ABSnapNudgeMenu;
+            this.chkClearNudge.Location = new System.Drawing.Point(25, 8);
+            this.chkClearNudge.Name = "chkClearNudge";
+            this.chkClearNudge.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkClearNudge.Size = new System.Drawing.Size(116, 145);
+            this.chkClearNudge.TabIndex = 512;
+            this.chkClearNudge.Text = "Reset Nudge";
+            this.chkClearNudge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkClearNudge.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.chkClearNudge.UseVisualStyleBackColor = false;
+            // 
             // chkCleanAppliedArea
             // 
             this.chkCleanAppliedArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -150,29 +177,6 @@
             this.chkCleanAppliedArea.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkCleanAppliedArea.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.chkCleanAppliedArea.UseVisualStyleBackColor = false;
-            // 
-            // chkSaveNudge
-            // 
-            this.chkClearNudge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkClearNudge.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkClearNudge.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.chkClearNudge.Cursor = System.Windows.Forms.Cursors.Default;
-            this.chkClearNudge.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.chkClearNudge.FlatAppearance.BorderSize = 2;
-            this.chkClearNudge.FlatAppearance.CheckedBackColor = System.Drawing.Color.OrangeRed;
-            this.chkClearNudge.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkClearNudge.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkClearNudge.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.chkClearNudge.Image = global::AgOpenGPS.Properties.Resources.ABSnapNudgeMenu;
-            this.chkClearNudge.Location = new System.Drawing.Point(25, 8);
-            this.chkClearNudge.Name = "chkSaveNudge";
-            this.chkClearNudge.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkClearNudge.Size = new System.Drawing.Size(116, 145);
-            this.chkClearNudge.TabIndex = 512;
-            this.chkClearNudge.Text = "Reset Nudge";
-            this.chkClearNudge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkClearNudge.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            this.chkClearNudge.UseVisualStyleBackColor = false;
             // 
             // FormDialog
             // 

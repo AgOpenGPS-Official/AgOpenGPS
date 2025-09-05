@@ -4,6 +4,7 @@ using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms.Field;
 using AgOpenGPS.Helpers;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -252,11 +253,21 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnFromExisting_Click(object sender, EventArgs e)
+        private async void btnFromExisting_Click(object sender, EventArgs e)
         {
-            //back to FormGPS
-            DialogResult = DialogResult.Retry;
-            Close();
+            btnFromExisting.Enabled = false;
+            UseWaitCursor = true;
+            try
+            {
+                if (!await SaveIfJobStartedAsync()) return; //user canceled
+                DialogResult = DialogResult.Retry; //back to FormGPS
+                Close();
+            }
+            finally
+            {
+                UseWaitCursor = false;
+                btnFromExisting.Enabled = true;
+            }
         }
 
         private async void btnJobClose_Click(object sender, EventArgs e)

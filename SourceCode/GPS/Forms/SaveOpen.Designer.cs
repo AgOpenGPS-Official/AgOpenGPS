@@ -1063,10 +1063,10 @@ namespace AgOpenGPS
             using (var dlg = new FormDialog())
             {
                 // Title/message can be localized via gStr if desired
-                dlg.Configure("Closing Field", "Choose what to do before closing:", MessageBoxButtons.YesNo, true, false, false);
+                dlg.Configure("Closing Field", "Choose what to do before closing:", MessageBoxButtons.OKCancel, true, false, false);
 
                 var dr = (owner != null) ? dlg.ShowDialog(owner) : dlg.ShowDialog();
-                if (dr != DialogResult.Yes) return result;
+                if (dr != DialogResult.OK) return result;
 
                 result.Confirmed = true;
                 result.clearNudge = dlg.clearNudgeChecked;
