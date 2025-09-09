@@ -635,10 +635,10 @@ namespace AgOpenGPS.Forms.Field
 
 
 
-        private void btnExtendForward_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(false, -5);
-        private void btnExtendBackward_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(true, -5);
-        private void btnShrinkA_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(true, +5);
-        private void btnShrinkB_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(false, +5);
+        private void btnExtendForward_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(false, -10);
+        private void btnExtendBackward_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(true, -10);
+        private void btnShrinkA_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(true, +10);
+        private void btnShrinkB_Click(object sender, EventArgs e) => ShiftSelectedTrackPoint(false, +10);
 
         private void btnBuildBoundary_Click(object sender, EventArgs e)
         {
@@ -688,6 +688,15 @@ namespace AgOpenGPS.Forms.Field
         {
             SaveBoundary();
             Close();
+
+
+        }
+
+        private void btnAutofind_click(object sender, EventArgs e)
+        {
+            _builder.ExtendAllTracks(50.0);
+            InitializeBuilderAndRebuild();
+            _mf.TimedMessageBox(3000, "Finding Intersections...", $"All green? Press Build or manually correct!");
 
 
         }

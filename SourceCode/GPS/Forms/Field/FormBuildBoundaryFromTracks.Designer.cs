@@ -55,6 +55,7 @@ namespace AgOpenGPS.Forms.Field
             this.btnClose = new System.Windows.Forms.Button();
             this.btnBuildBoundary = new System.Windows.Forms.Button();
             this.btnResetPreview = new System.Windows.Forms.Button();
+            this.btnAutoFind = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // glControlPreview
@@ -183,7 +184,7 @@ namespace AgOpenGPS.Forms.Field
             this.btnSelectNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSelectNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectNext.Image = global::AgOpenGPS.Properties.Resources.ArrowRight;
-            this.btnSelectNext.Location = new System.Drawing.Point(798, 409);
+            this.btnSelectNext.Location = new System.Drawing.Point(899, 410);
             this.btnSelectNext.Name = "btnSelectNext";
             this.btnSelectNext.Size = new System.Drawing.Size(95, 95);
             this.btnSelectNext.TabIndex = 6;
@@ -200,7 +201,7 @@ namespace AgOpenGPS.Forms.Field
             this.btnSelectPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSelectPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectPrevious.Image = global::AgOpenGPS.Properties.Resources.ArrowLeft;
-            this.btnSelectPrevious.Location = new System.Drawing.Point(686, 409);
+            this.btnSelectPrevious.Location = new System.Drawing.Point(787, 410);
             this.btnSelectPrevious.Name = "btnSelectPrevious";
             this.btnSelectPrevious.Size = new System.Drawing.Size(95, 95);
             this.btnSelectPrevious.TabIndex = 5;
@@ -261,6 +262,22 @@ namespace AgOpenGPS.Forms.Field
             this.btnResetPreview.UseVisualStyleBackColor = false;
             this.btnResetPreview.Click += new System.EventHandler(this.btnResetPreview_Click);
             // 
+            // btnAutoFind
+            // 
+            this.btnAutoFind.BackColor = System.Drawing.Color.Transparent;
+            this.btnAutoFind.FlatAppearance.BorderSize = 0;
+            this.btnAutoFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAutoFind.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAutoFind.Image = global::AgOpenGPS.Properties.Resources.ABDraw;
+            this.btnAutoFind.Location = new System.Drawing.Point(633, 414);
+            this.btnAutoFind.Name = "btnAutoFind";
+            this.btnAutoFind.Size = new System.Drawing.Size(95, 95);
+            this.btnAutoFind.TabIndex = 14;
+            this.btnAutoFind.Text = "Auto Find";
+            this.btnAutoFind.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnAutoFind.UseVisualStyleBackColor = false;
+            this.btnAutoFind.Click += new System.EventHandler(this.btnAutofind_click);
+            // 
             // FormBuildBoundaryFromTracks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,6 +285,7 @@ namespace AgOpenGPS.Forms.Field
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.ControlBox = false;
+            this.Controls.Add(this.btnAutoFind);
             this.Controls.Add(this.lblList);
             this.Controls.Add(this.flpTrackList);
             this.Controls.Add(this.btnSave);
@@ -311,5 +329,6 @@ namespace AgOpenGPS.Forms.Field
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.FlowLayoutPanel flpTrackList;
         private System.Windows.Forms.Label lblList;
+        private Button btnAutoFind;
     }
 }

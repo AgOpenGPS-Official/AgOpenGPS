@@ -33,6 +33,34 @@ namespace AgOpenGPS.Classes
             InputTracks = tracks?.ToList() ?? new List<CTrk>();
             Log.EventWriter("Tracks set successfully");
         }
+        public void ExtendAllTracks(double extendMeters)
+        {
+            var extendedtracks = new List<CTrk>();
+
+            foreach (var trk in InputTracks)
+            {
+                var pts = trk.mode == TrackMode.AB
+                    ? new List<vec2> { trk.ptA, trk.ptB }
+                    : trk.curvePts.Select(p => new vec2(p.easting, p.northing)).ToList();
+
+                var extended = ExtendTrackEndpoints(pts, extendMeters);
+
+                if (trk.mode == TrackMode.AB && extended.Count >= 2)
+                {
+                    trk.ptA = extended[0];
+                    trk.ptB = extended[extended.Count - 1];
+                }
+                else if (trk.mode == TrackMode.Curve)
+                {
+                    trk.curvePts = extended.Select(p => p.ToVec3()).ToList();
+                }
+
+                extendedtracks.Add(trk);
+            }
+
+            InputTracks = extendedtracks;
+            Log.EventWriter($"All tracks extended by {extendMeters} m");
+        }
 
         public List<vec3> BuildTrimmedBoundary()
         {
@@ -93,6 +121,58 @@ namespace AgOpenGPS.Classes
         #endregion
 
         #region Core Processing
+
+        // Adds extra length to both ends of a track polyline (AB or Curve).
+        // This helps ensure intersections are found just beyond original endpoints.
+        private List<vec2> ExtendTrackEndpoints(List<vec2> pts, double extendMeters)
+        {
+            if (pts == null || pts.Count < 2) return pts;
+
+            var result = new List<vec2>(pts.Count + 2);
+
+            // First segment direction
+            var a0 = pts[0];
+            var a1 = pts[1];
+            var dirStart = new vec2(a0.easting - a1.easting, a0.northing - a1.northing);
+            double lenStart = Math.Sqrt(dirStart.easting * dirStart.easting + dirStart.northing * dirStart.northing);
+            if (lenStart > 1e-6)
+            {
+                dirStart = new vec2(dirStart.easting / lenStart, dirStart.northing / lenStart);
+                var extendedStart = new vec2(
+                    a0.easting + dirStart.easting * extendMeters,
+                    a0.northing + dirStart.northing * extendMeters
+                );
+                result.Add(extendedStart);
+            }
+            else
+            {
+                result.Add(a0);
+            }
+
+            // Add interior points
+            for (int i = 0; i < pts.Count; i++) result.Add(pts[i]);
+
+            // Last segment direction
+            var b0 = pts[pts.Count - 2];
+            var b1 = pts[pts.Count - 1];
+            var dirEnd = new vec2(b1.easting - b0.easting, b1.northing - b0.northing);
+            double lenEnd = Math.Sqrt(dirEnd.easting * dirEnd.easting + dirEnd.northing * dirEnd.northing);
+            if (lenEnd > 1e-6)
+            {
+                dirEnd = new vec2(dirEnd.easting / lenEnd, dirEnd.northing / lenEnd);
+                var extendedEnd = new vec2(
+                    b1.easting + dirEnd.easting * extendMeters,
+                    b1.northing + dirEnd.northing * extendMeters
+                );
+                result.Add(extendedEnd);
+            }
+            else
+            {
+                result.Add(b1);
+            }
+
+            return result;
+        }
         public void BuildSegments()
         {
             try
