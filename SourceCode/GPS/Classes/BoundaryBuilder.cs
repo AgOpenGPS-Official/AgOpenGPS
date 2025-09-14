@@ -4,6 +4,7 @@ using System.Linq;
 using System.Globalization;
 using System.IO;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 
 namespace AgOpenGPS.Classes
 {
@@ -33,34 +34,44 @@ namespace AgOpenGPS.Classes
             InputTracks = tracks?.ToList() ?? new List<CTrk>();
             Log.EventWriter("Tracks set successfully");
         }
+
         public void ExtendAllTracks(double extendMeters)
         {
-            var extendedtracks = new List<CTrk>();
+            var extendedTracks = new List<CTrk>();
 
             foreach (var trk in InputTracks)
             {
                 var pts = trk.mode == TrackMode.AB
-                    ? new List<vec2> { trk.ptA, trk.ptB }
-                    : trk.curvePts.Select(p => new vec2(p.easting, p.northing)).ToList();
+                    ? new List<GeoCoord>
+                      {
+                  new GeoCoord(trk.ptA.northing, trk.ptA.easting),
+                  new GeoCoord(trk.ptB.northing, trk.ptB.easting)
+                      }
+                    : trk.curvePts
+                        .Select(p => new GeoCoord(p.northing, p.easting))
+                        .ToList();
 
                 var extended = ExtendTrackEndpoints(pts, extendMeters);
 
                 if (trk.mode == TrackMode.AB && extended.Count >= 2)
                 {
-                    trk.ptA = extended[0];
-                    trk.ptB = extended[extended.Count - 1];
+                    trk.ptA = new vec2(extended[0].Easting, extended[0].Northing);
+                    trk.ptB = new vec2(extended[extended.Count - 1].Easting,
+                                       extended[extended.Count - 1].Northing);
                 }
                 else if (trk.mode == TrackMode.Curve)
                 {
-                    trk.curvePts = extended.Select(p => p.ToVec3()).ToList();
+                    trk.curvePts = extended
+                        .Select(p => new vec3(p.Easting, p.Northing, 0))
+                        .ToList();
                 }
 
-                extendedtracks.Add(trk);
+                extendedTracks.Add(trk);
             }
 
-            InputTracks = extendedtracks;
-            Log.EventWriter($"All tracks extended by {extendMeters} m");
+            InputTracks = extendedTracks;
         }
+
 
         public List<vec3> BuildTrimmedBoundary()
         {
@@ -124,55 +135,47 @@ namespace AgOpenGPS.Classes
 
         // Adds extra length to both ends of a track polyline (AB or Curve).
         // This helps ensure intersections are found just beyond original endpoints.
-        private List<vec2> ExtendTrackEndpoints(List<vec2> pts, double extendMeters)
+        private List<GeoCoord> ExtendTrackEndpoints(List<GeoCoord> pts, double extendMeters)
         {
             if (pts == null || pts.Count < 2) return pts;
 
-            var result = new List<vec2>(pts.Count + 2);
+            var result = new List<GeoCoord>(pts.Count + 2);
 
             // First segment direction
             var a0 = pts[0];
             var a1 = pts[1];
-            var dirStart = new vec2(a0.easting - a1.easting, a0.northing - a1.northing);
-            double lenStart = Math.Sqrt(dirStart.easting * dirStart.easting + dirStart.northing * dirStart.northing);
-            if (lenStart > 1e-6)
+            var dirstart = new GeoDelta(a1, a0);
+            var lengthStart = dirstart.Length;
+            if (lengthStart > 1e-6)
             {
-                dirStart = new vec2(dirStart.easting / lenStart, dirStart.northing / lenStart);
-                var extendedStart = new vec2(
-                    a0.easting + dirStart.easting * extendMeters,
-                    a0.northing + dirStart.northing * extendMeters
+                var extend = extendMeters / lengthStart;
+                var extStart = new GeoCoord(
+                    a0.Northing + dirstart.NorthingDelta * extend,
+                    a0.Easting + dirstart.EastingDelta * extend
                 );
-                result.Add(extendedStart);
-            }
-            else
-            {
-                result.Add(a0);
+                result.Add(extStart);
             }
 
-            // Add interior points
             for (int i = 0; i < pts.Count; i++) result.Add(pts[i]);
 
-            // Last segment direction
             var b0 = pts[pts.Count - 2];
             var b1 = pts[pts.Count - 1];
-            var dirEnd = new vec2(b1.easting - b0.easting, b1.northing - b0.northing);
-            double lenEnd = Math.Sqrt(dirEnd.easting * dirEnd.easting + dirEnd.northing * dirEnd.northing);
-            if (lenEnd > 1e-6)
+            var dirEnd = new GeoDelta(b0, b1);
+            var lengthEnd = dirEnd.Length;
+            if (lengthEnd > 1e-6)
             {
-                dirEnd = new vec2(dirEnd.easting / lenEnd, dirEnd.northing / lenEnd);
-                var extendedEnd = new vec2(
-                    b1.easting + dirEnd.easting * extendMeters,
-                    b1.northing + dirEnd.northing * extendMeters
+                var extend = extendMeters / lengthEnd;
+                var extEnd = new GeoCoord(
+                    b1.Northing + dirEnd.NorthingDelta * extend,
+                    b1.Easting + dirEnd.EastingDelta * extend
                 );
-                result.Add(extendedEnd);
-            }
-            else
-            {
-                result.Add(b1);
+                result.Add(extEnd);
             }
 
             return result;
         }
+
+
         public void BuildSegments()
         {
             try
