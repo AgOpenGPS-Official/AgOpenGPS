@@ -39,7 +39,6 @@ namespace AgOpenGPS
             snapAdj = Properties.Settings.Default.setAS_snapDistance * 0.01;
 
             Location = Properties.Settings.Default.setWindow_formNudgeLocation;
-            Size = Properties.Settings.Default.setWindow_formNudgeSize;
             UpdateMoveLabel();
 
             if (!ScreenHelper.IsOnScreen(Bounds))
@@ -55,8 +54,6 @@ namespace AgOpenGPS
         private void FormEditTrack_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.setWindow_formNudgeLocation = Location;
-            Properties.Settings.Default.setWindow_formNudgeSize = Size;
-
             Properties.Settings.Default.Save();
 
             //save entire list
@@ -143,61 +140,72 @@ namespace AgOpenGPS
             mf.Activate();
         }
 
-        protected override void WndProc(ref Message m)
-        {
-            const int RESIZE_HANDLE_SIZE = 10;
-
-            switch (m.Msg)
-            {
-                case 0x0084/*NCHITTEST*/ :
-                    base.WndProc(ref m);
-
-                    if ((int)m.Result == 0x01/*HTCLIENT*/)
-                    {
-                        Point screenPoint = new Point(m.LParam.ToInt32());
-                        Point clientPoint = this.PointToClient(screenPoint);
-                        if (clientPoint.Y <= RESIZE_HANDLE_SIZE)
-                        {
-                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)12/*HTTOP*/ ;
-                            else
-                                m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
-                        }
-                        else if (clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE))
-                        {
-                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                m.Result = (IntPtr)10/*HTLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)2/*HTCAPTION*/ ;
-                            else
-                                m.Result = (IntPtr)11/*HTRIGHT*/ ;
-                        }
-                        else
-                        {
-                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)15/*HTBOTTOM*/ ;
-                            else
-                                m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
-                        }
-                    }
-                    return;
-            }
-            base.WndProc(ref m);
-        }
         protected override CreateParams CreateParams
         {
             get
             {
-                //drop shadow
-                CreateParams cp = base.CreateParams;
-                cp.Style |= 0x20000; // <--- use 0x20000
+                // Enable drop shadow for a borderless form (CS_DROPSHADOW = 0x00020000)
+                const int CS_DROPSHADOW = 0x00020000;
+                var cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
             }
         }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCLBUTTONDBLCLK = 0x00A3;
+            const int WM_SYSCOMMAND = 0x0112;
+            const int WM_NCHITTEST = 0x0084;
+
+            const int SC_MAXIMIZE = 0xF030;
+            const int HTCLIENT = 0x0001;
+            const int HTCAPTION = 0x0002;
+
+            switch (m.Msg)
+            {
+                // Prevent double-click on caption area from maximizing the form
+                case WM_NCLBUTTONDBLCLK:
+                    m.Result = IntPtr.Zero;
+                    return;
+
+                // Block all system commands that try to maximize the form
+                case WM_SYSCOMMAND:
+                    if ((m.WParam.ToInt32() & 0xFFF0) == SC_MAXIMIZE)
+                    {
+                        m.Result = IntPtr.Zero;
+                        return;
+                    }
+                    break;
+
+                // Allow dragging the form when clicking on empty client area (no controls)
+                case WM_NCHITTEST:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == HTCLIENT)
+                    {
+                        // Convert cursor position to client coordinates
+                        Point screen = new Point(m.LParam.ToInt32());
+                        Point client = PointToClient(screen);
+
+                        // Check if there is a child control under the cursor
+                        var child = GetChildAtPoint(
+                            client,
+                            GetChildAtPointSkip.Invisible | GetChildAtPointSkip.Disabled
+                        );
+
+                        // If no control is under the cursor, treat the area as caption (draggable)
+                        if (child == null)
+                        {
+                            m.Result = (IntPtr)HTCAPTION;
+                            return;
+                        }
+                    }
+                    return;
+            }
+
+            base.WndProc(ref m);
+        }
+
 
     }
 }
