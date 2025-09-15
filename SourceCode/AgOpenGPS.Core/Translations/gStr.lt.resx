@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="gsABCurve" xml:space="preserve">
-    <value>AB kreivė</value>
-  </data>
   <data name="gsABDraw" xml:space="preserve">
     <value>Nubrėžti AB. Pažymėkite 2 taškus ant ribos, kad pradėti</value>
   </data>
@@ -179,9 +176,6 @@
   </data>
   <data name="gsAquireFactor" xml:space="preserve">
     <value>Pasiekimo faktorius</value>
-  </data>
-  <data name="gsAreYouSure" xml:space="preserve">
-    <value>Ar tikrai?</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Plotas</value>
@@ -421,9 +415,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsEast" xml:space="preserve">
     <value>Į rytus</value>
-  </data>
-  <data name="gsEditABCurve" xml:space="preserve">
-    <value>Redaguoti AB kreivę</value>
   </data>
   <data name="gsEditABLine" xml:space="preserve">
     <value>Redaguoti AB liniją</value>
@@ -729,7 +720,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Šiaurės vakarai</value>
   </data>
   <data name="gsNew" xml:space="preserve">
-    <value> Naujas</value>
+    <value>Naujas</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Sekanti navigavimo linija</value>
@@ -806,9 +797,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Vairo persukimo sumažinimas</value>
   </data>
-  <data name="gsPass" xml:space="preserve">
-    <value>Praleisti</value>
-  </data>
   <data name="gsPasses" xml:space="preserve">
     <value>Praleidimai</value>
   </data>
@@ -850,9 +838,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsPresetColor" xml:space="preserve">
     <value>Pasirinkite spalvą</value>
-  </data>
-  <data name="gsPressureSensorValueLabel" xml:space="preserve">
-    <value>Slėgis (barais)</value>
   </data>
   <data name="gsPressureTurnSensor" xml:space="preserve">
     <value>Slėginis</value>
@@ -937,9 +922,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Išsaugoti ir grįžti</value>
-  </data>
-  <data name="gsSaveAs" xml:space="preserve">
-    <value>Įrašyti kaip</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Ekrano mygtukai</value>
@@ -1104,9 +1086,6 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   <data name="gsToolsMenu" xml:space="preserve">
     <value>Padargų menu</value>
   </data>
-  <data name="gsTopFieldView" xml:space="preserve">
-    <value>Lauko apžvalga</value>
-  </data>
   <data name="gsTotal" xml:space="preserve">
     <value>Viso</value>
   </data>
@@ -1223,11 +1202,5 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="v_RecordedPathForm" xml:space="preserve">
-    <value>https://www.youtube.com/watch?v=fE3TPRIRSFg</value>
-  </data>
-  <data name="v_SteerSettingsForm" xml:space="preserve">
-    <value>https://www.youtube.com/watch?v=3SdvYgx8HHc</value>
   </data>
 </root>
