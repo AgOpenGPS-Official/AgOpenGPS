@@ -351,7 +351,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Ištrinti</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
-    <value>Ištrinti apdirbtą plotą ?</value>
+    <value>Ištrinkite visas sekcijas ir kontūrus</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Ištrinti apdirbtą plotą</value>
