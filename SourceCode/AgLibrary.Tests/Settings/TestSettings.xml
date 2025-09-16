@@ -28,7 +28,7 @@
             </setting>
             <setting name="ListSetting" serializeAs="Xml">
                 <value>
-                    <ArrayOfInt xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <ArrayOfInt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                         <int>1</int>
                         <int>2</int>
                         <int>3</int>
@@ -39,7 +39,7 @@
             </setting>
             <setting name="ClassSetting" serializeAs="Xml">
                 <value>
-                    <TestSubSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <TestSubSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                         <Id>10</Id>
                         <Name>My setting</Name>
                     </TestSubSettings>

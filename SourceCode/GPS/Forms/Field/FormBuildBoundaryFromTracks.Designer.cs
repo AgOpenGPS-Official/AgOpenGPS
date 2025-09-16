@@ -42,7 +42,7 @@ namespace AgOpenGPS.Forms.Field
         /// </summary>
         private void InitializeComponent()
         {
-            this.glControlPreview = new OpenTK.GLControl();
+            this.glControlPreview = new OpenTK.GLControl.GLControl();
             this.flpTrackList = new System.Windows.Forms.FlowLayoutPanel();
             this.lblList = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
@@ -62,12 +62,17 @@ namespace AgOpenGPS.Forms.Field
             this.glControlPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.glControlPreview.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.glControlPreview.APIVersion = new System.Version(3, 3, 0, 0);
             this.glControlPreview.BackColor = System.Drawing.Color.Black;
+            this.glControlPreview.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            this.glControlPreview.IsEventDriven = true;
             this.glControlPreview.Location = new System.Drawing.Point(8, 8);
             this.glControlPreview.Name = "glControlPreview";
+            this.glControlPreview.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.glControlPreview.SharedContext = null;
             this.glControlPreview.Size = new System.Drawing.Size(565, 715);
             this.glControlPreview.TabIndex = 0;
-            this.glControlPreview.VSync = false;
             this.glControlPreview.Load += new System.EventHandler(this.glControlPreview_Load);
             this.glControlPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.glControlPreview_Paint);
             this.glControlPreview.Resize += new System.EventHandler(this.glControlPreview_Resize);
@@ -298,7 +303,7 @@ namespace AgOpenGPS.Forms.Field
 
         #endregion
 
-        private OpenTK.GLControl glControlPreview;
+        private OpenTK.GLControl.GLControl glControlPreview;
         private System.Windows.Forms.Button btnResetPreview;
         private System.Windows.Forms.Button btnBuildBoundary;
         private System.Windows.Forms.Button btnClose;

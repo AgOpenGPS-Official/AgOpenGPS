@@ -31,7 +31,7 @@ namespace AgOpenGPS
         private void UpdateButtons()
         {
             startButton.Enabled = deviceComboBox.SelectedItem != null;
-            stopButton.Enabled = videoSourcePlayer.IsRunning;
+            //stopButton.Enabled = videoSourcePlayer.IsRunning;
         }
 
         private void deviceComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -43,16 +43,16 @@ namespace AgOpenGPS
         {
             var videoSource = new VideoCaptureDevice(_videoDevices[deviceComboBox.SelectedIndex].MonikerString);
 
-            videoSourcePlayer.VideoSource = videoSource;
-            videoSourcePlayer.Start();
+            //videoSourcePlayer.VideoSource = videoSource;
+            //videoSourcePlayer.Start();
 
             UpdateButtons();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            videoSourcePlayer.SignalToStop();
-            videoSourcePlayer.WaitForStop();
+            //videoSourcePlayer.SignalToStop();
+            //videoSourcePlayer.WaitForStop();
 
             UpdateButtons();
         }

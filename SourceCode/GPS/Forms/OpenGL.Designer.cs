@@ -3,10 +3,9 @@ using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Properties;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using System;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -51,7 +50,7 @@ namespace AgOpenGPS
             SetVehicleTextures();
             GL.ClearColor(0.14f, 0.14f, 0.37f, 1.0f);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            GL.CullFace(CullFaceMode.Back);
+            GL.CullFace(TriangleFace.Back);
             SetZoom();
             tmrWatchdog.Enabled = true;
         }
@@ -116,7 +115,7 @@ namespace AgOpenGPS
 
                     if (isGridOn) worldGrid.DrawWorldGrid(worldGridColor);
 
-                    if (isDrawPolygons) GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
+                    if (isDrawPolygons) GL.PolygonMode(TriangleFace.Front, PolygonMode.Line);
 
                     GL.Enable(EnableCap.Blend);
                     //draw patches of sections
@@ -325,7 +324,7 @@ namespace AgOpenGPS
 
                     if (tram.displayMode != 0) tram.DrawTram();
 
-                    GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
+                    GL.PolygonMode(TriangleFace.Front, PolygonMode.Fill);
                     //GL.Color3(1, 1, 1);
 
                     //if (bnd.shpList.Count > 0)
@@ -727,7 +726,7 @@ namespace AgOpenGPS
         {
             oglBack.MakeCurrent();
             GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
+            GL.CullFace(TriangleFace.Back);
             GL.PixelStore(PixelStoreParameter.PackAlignment, 1);
             oglBack.Width = 500;
             oglBack.Height = 300;
@@ -1439,7 +1438,7 @@ namespace AgOpenGPS
         {
             oglZoom.MakeCurrent();
             GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
+            GL.CullFace(TriangleFace.Back);
             GL.PixelStore(PixelStoreParameter.PackAlignment, 1);
 
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);

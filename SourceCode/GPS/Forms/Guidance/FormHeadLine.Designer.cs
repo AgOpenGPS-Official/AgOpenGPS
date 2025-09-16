@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.oglSelf = new OpenTK.GLControl();
+            this.oglSelf = new OpenTK.GLControl.GLControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.headingGroupBox = new System.Windows.Forms.GroupBox();
             this.lblToolWidth = new System.Windows.Forms.Label();
@@ -56,14 +56,19 @@
             // 
             // oglSelf
             // 
+            this.oglSelf.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.oglSelf.APIVersion = new System.Version(3, 3, 0, 0);
             this.oglSelf.BackColor = System.Drawing.Color.Black;
             this.oglSelf.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.oglSelf.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            this.oglSelf.IsEventDriven = true;
             this.oglSelf.Location = new System.Drawing.Point(1, 2);
             this.oglSelf.Margin = new System.Windows.Forms.Padding(0);
             this.oglSelf.Name = "oglSelf";
+            this.oglSelf.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.oglSelf.SharedContext = null;
             this.oglSelf.Size = new System.Drawing.Size(700, 700);
             this.oglSelf.TabIndex = 183;
-            this.oglSelf.VSync = false;
             this.oglSelf.Load += new System.EventHandler(this.oglSelf_Load);
             this.oglSelf.Paint += new System.Windows.Forms.PaintEventHandler(this.oglSelf_Paint);
             this.oglSelf.MouseDown += new System.Windows.Forms.MouseEventHandler(this.oglSelf_MouseDown);
@@ -497,7 +502,7 @@
 
         #endregion
 
-        private OpenTK.GLControl oglSelf;
+        private OpenTK.GLControl.GLControl oglSelf;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnBLength;

@@ -30,7 +30,7 @@
         {
             this.lbFields = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.glControl1 = new OpenTK.GLControl();
+            this.glControl1 = new OpenTK.GLControl.GLControl();
             this.lblSelectedField = new System.Windows.Forms.Label();
             this.progressBarDownloadAll = new System.Windows.Forms.ProgressBar();
             this.chkForceOverwrite = new System.Windows.Forms.CheckBox();
@@ -67,13 +67,17 @@
             // 
             // glControl1
             // 
+            this.glControl1.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.glControl1.APIVersion = new System.Version(3, 3, 0, 0);
             this.glControl1.BackColor = System.Drawing.Color.DarkGray;
-            this.glControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.glControl1.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            this.glControl1.IsEventDriven = true;
             this.glControl1.Location = new System.Drawing.Point(510, 12);
             this.glControl1.Name = "glControl1";
+            this.glControl1.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.glControl1.SharedContext = null;
             this.glControl1.Size = new System.Drawing.Size(654, 567);
             this.glControl1.TabIndex = 3;
-            this.glControl1.VSync = false;
             // 
             // lblSelectedField
             // 
@@ -196,7 +200,7 @@
         private System.Windows.Forms.ListView lbFields;
         private System.Windows.Forms.ColumnHeader chName;
         private System.Windows.Forms.Button btnSaveAll;
-        private OpenTK.GLControl glControl1;
+        private OpenTK.GLControl.GLControl glControl1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblSelectedField;
         private System.Windows.Forms.Button btnOpen;

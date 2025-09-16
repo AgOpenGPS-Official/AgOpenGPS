@@ -2,9 +2,14 @@
 
 # CS1690: Accessing a member on a field of a marshal-by-reference class may cause a runtime exception
 dotnet_diagnostic.CS1690.severity = silent
+# CS8981: The type name only contains lower-cased ascii characters
+dotnet_diagnostic.CS8981.severity = none
 
 # IDE0055: Fix formatting
 dotnet_diagnostic.IDE0055.severity = warning
+
+# WFO1000: Property does not configure the code serialization for its property content
+dotnet_diagnostic.WFO1000.severity = none
 
 # Enable code analysis for *.Designer files that are not actually designer generated
 [{ConfigData,ConfigHelp,ConfigMenu,ConfigModule,ConfigTool,ConfigVehicle,Controls,GUI,NMEA,NTRIPComm,OpenGL,PGN,Position,SaveOpen,Sections,SerialComm,UDP,UDPComm}.Designer.cs]

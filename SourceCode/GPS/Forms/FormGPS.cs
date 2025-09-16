@@ -19,8 +19,8 @@ using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Core.ViewModels;
 using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
 namespace AgOpenGPS
 {

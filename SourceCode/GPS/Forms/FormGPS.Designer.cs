@@ -58,7 +58,7 @@ namespace AgOpenGPS
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuFlagForm = new System.Windows.Forms.ToolStripMenuItem();
             this.cboxpRowWidth = new System.Windows.Forms.ComboBox();
-            this.oglZoom = new OpenTK.GLControl();
+            this.oglZoom = new OpenTK.GLControl.GLControl();
             this.panelDrag = new System.Windows.Forms.TableLayoutPanel();
             this.btnPathGoStop = new System.Windows.Forms.Button();
             this.btnPickPath = new System.Windows.Forms.Button();
@@ -82,8 +82,8 @@ namespace AgOpenGPS
             this.btnSection10Man = new System.Windows.Forms.Button();
             this.btnSection11Man = new System.Windows.Forms.Button();
             this.btnSection12Man = new System.Windows.Forms.Button();
-            this.oglMain = new OpenTK.GLControl();
-            this.oglBack = new OpenTK.GLControl();
+            this.oglMain = new OpenTK.GLControl.GLControl();
+            this.oglBack = new OpenTK.GLControl.GLControl();
             this.lblHz = new System.Windows.Forms.Label();
             this.statusStripLeft = new System.Windows.Forms.StatusStrip();
             this.toolStripDropDownButton4 = new System.Windows.Forms.ToolStripDropDownButton();
@@ -477,14 +477,18 @@ namespace AgOpenGPS
             // 
             // oglZoom
             // 
+            this.oglZoom.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.oglZoom.APIVersion = new System.Version(3, 3, 0, 0);
             this.oglZoom.BackColor = System.Drawing.Color.Black;
-            this.oglZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.oglZoom.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            this.oglZoom.IsEventDriven = true;
             this.oglZoom.Location = new System.Drawing.Point(122, 63);
             this.oglZoom.Margin = new System.Windows.Forms.Padding(0);
             this.oglZoom.Name = "oglZoom";
+            this.oglZoom.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.oglZoom.SharedContext = null;
             this.oglZoom.Size = new System.Drawing.Size(41, 44);
             this.oglZoom.TabIndex = 182;
-            this.oglZoom.VSync = false;
             this.oglZoom.Load += new System.EventHandler(this.oglZoom_Load);
             this.oglZoom.Paint += new System.Windows.Forms.PaintEventHandler(this.oglZoom_Paint);
             this.oglZoom.Resize += new System.EventHandler(this.oglZoom_Resize);
@@ -898,14 +902,19 @@ namespace AgOpenGPS
             this.oglMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.oglMain.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.oglMain.APIVersion = new System.Version(3, 3, 0, 0);
             this.oglMain.BackColor = System.Drawing.Color.Black;
             this.oglMain.ContextMenuStrip = this.contextMenuStripOpenGL;
+            this.oglMain.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
+            this.oglMain.IsEventDriven = true;
             this.oglMain.Location = new System.Drawing.Point(78, 50);
             this.oglMain.Margin = new System.Windows.Forms.Padding(0);
             this.oglMain.Name = "oglMain";
+            this.oglMain.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.oglMain.SharedContext = null;
             this.oglMain.Size = new System.Drawing.Size(848, 601);
             this.oglMain.TabIndex = 180;
-            this.oglMain.VSync = false;
             this.oglMain.Load += new System.EventHandler(this.oglMain_Load);
             this.oglMain.Paint += new System.Windows.Forms.PaintEventHandler(this.oglMain_Paint);
             this.oglMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.oglMain_MouseDown);
@@ -913,14 +922,19 @@ namespace AgOpenGPS
             // 
             // oglBack
             // 
+            this.oglBack.API = OpenTK.Windowing.Common.ContextAPI.OpenGL;
+            this.oglBack.APIVersion = new System.Version(3, 3, 0, 0);
             this.oglBack.BackColor = System.Drawing.Color.Black;
+            this.oglBack.Flags = OpenTK.Windowing.Common.ContextFlags.Default;
             this.oglBack.ForeColor = System.Drawing.Color.Transparent;
+            this.oglBack.IsEventDriven = true;
             this.oglBack.Location = new System.Drawing.Point(122, 70);
             this.oglBack.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.oglBack.Name = "oglBack";
+            this.oglBack.Profile = OpenTK.Windowing.Common.ContextProfile.Compatability;
+            this.oglBack.SharedContext = null;
             this.oglBack.Size = new System.Drawing.Size(500, 300);
             this.oglBack.TabIndex = 181;
-            this.oglBack.VSync = false;
             this.oglBack.Load += new System.EventHandler(this.oglBack_Load);
             this.oglBack.Paint += new System.Windows.Forms.PaintEventHandler(this.oglBack_Paint);
             this.oglBack.Resize += new System.EventHandler(this.oglBack_Resize);
@@ -2986,9 +3000,9 @@ namespace AgOpenGPS
         public System.Windows.Forms.Button btnAutoYouTurn;
         public System.Windows.Forms.Button btnAutoSteer;
         private System.Windows.Forms.HScrollBar hsbarSteerAngle;
-        private OpenTK.GLControl oglZoom;
-        private OpenTK.GLControl oglMain;
-        private OpenTK.GLControl oglBack;
+        private OpenTK.GLControl.GLControl oglZoom;
+        private OpenTK.GLControl.GLControl oglMain;
+        private OpenTK.GLControl.GLControl oglBack;
         private System.Windows.Forms.ComboBox cboxpRowWidth;
         private System.Windows.Forms.Label lblHz;
         public System.Windows.Forms.Button btnContour;
