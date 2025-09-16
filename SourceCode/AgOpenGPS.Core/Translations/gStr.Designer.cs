@@ -142,7 +142,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I Agree to the Terms &amp; Conditions.
+        ///   Looks up a localized string similar to I Agree to the Terms and Conditions.
         /// </summary>
         public static string gsAgree {
             get {
@@ -259,7 +259,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Touch the buttons on the left side you want to appear in the Menu (The right side). 
+        ///   Looks up a localized string similar to Touch the buttons on the left side you want to appear in the Menu (The right side).
         ///
         ///The order you push them will be the order they appear on the menu from bottom up..
         /// </summary>
@@ -900,7 +900,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance:.
+        ///   Looks up a localized string similar to Distance.
         /// </summary>
         public static string gsDistance {
             get {
@@ -1422,7 +1422,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Look Ahead .
+        ///   Looks up a localized string similar to Look Ahead.
         /// </summary>
         public static string gsHydraulicLiftLookAhead {
             get {
@@ -2313,7 +2313,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Really Reset Everything.
+        ///   Looks up a localized string similar to Really Reset Everything?.
         /// </summary>
         public static string gsReallyResetEverything {
             get {
@@ -3002,7 +3002,7 @@ namespace AgOpenGPS.Core.Translations {
         ///
         ///It is in no way to be used on real equipment in any circumstance. A simulator is provided to allow the student to safely experience machine guidance.
         ///
-        ///There are no safety systems in the software and none are implied. 
+        ///There are no safety systems in the software and none are implied.
         ///
         ///USE AT OWN RISK..
         /// </summary>
