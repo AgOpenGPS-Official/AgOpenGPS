@@ -487,10 +487,10 @@ namespace AgOpenGPS
             // register once
             if (_hotkeyFilter == null)
             {
-                _hotkeyFilter = new HotkeyMessageFilter(this)
-                    // Keep the filter disabled until FormGPS is fully shown,
-                    // to avoid calling ProcessCmdKey before controls are initialized.
-                    Enabled = false
+                _hotkeyFilter = new HotkeyMessageFilter(this);
+                // Keep the filter disabled until FormGPS is fully shown,
+                // to avoid calling ProcessCmdKey before controls are initialized.
+                Enabled = false;
                 Application.AddMessageFilter(_hotkeyFilter);
             }
         }
