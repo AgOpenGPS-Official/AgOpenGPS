@@ -11,9 +11,11 @@ namespace AgOpenGPS.Helpers
         private const int WM_SYSKEYDOWN = 0x0104;
 
         public HotkeyMessageFilter(FormGPS mf) => _mf = mf ?? throw new ArgumentNullException(nameof(mf));
+        public bool Enabled { get; set; } = true;
 
         public bool PreFilterMessage(ref Message m)
         {
+            if (!Enabled) return false;
             if (m.Msg != WM_KEYDOWN && m.Msg != WM_SYSKEYDOWN) return false;
 
             // if user in typing in textbox, ignore hotkey

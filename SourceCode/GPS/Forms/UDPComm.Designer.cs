@@ -1,4 +1,4 @@
-﻿using AgLibrary.Logging;
+using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
@@ -467,28 +467,42 @@ namespace AgOpenGPS
         #region keystrokes
 
         private HotkeyMessageFilter _hotkeyFilter;
+        private bool _uiReady = false; // becomes true once FormGPS UI is fully shown/ready
 
         // Will be used to handle app-wide hotkeys
         public bool HandleAppWideKey(Keys key, Keys mods)
         {
-            // build same data as in ProcessCmdKey
-            var keyData = key | mods;
-            // Create a dummy key
+            if (!_uiReady) return false; // ignore while Terms&Conditions or before FormGPS is ready
+
+            // Use only the key code (drop modifiers) so your mappings still match
+            var keyData = (key & Keys.KeyCode);
             var msg = Message.Create(IntPtr.Zero, 0, IntPtr.Zero, IntPtr.Zero);
             return ProcessCmdKey(ref msg, keyData);
         }
 
+        /// Register the message filter once when the handle exists. Keep it disabled until the UI is ready.
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
             // register once
             if (_hotkeyFilter == null)
             {
-                _hotkeyFilter = new HotkeyMessageFilter(this);
+                _hotkeyFilter = new HotkeyMessageFilter(this)
+                    // Keep the filter disabled until FormGPS is fully shown,
+                    // to avoid calling ProcessCmdKey before controls are initialized.
+                    Enabled = false
                 Application.AddMessageFilter(_hotkeyFilter);
             }
         }
 
+        /// Mark UI as ready and enable the filter once the form is shown (after Load/InitializeComponent).
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            _uiReady = true;
+            if (_hotkeyFilter != null) _hotkeyFilter.Enabled = true;
+        }
+        /// Clean up the message filter when closing the form.
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             if (_hotkeyFilter != null)
