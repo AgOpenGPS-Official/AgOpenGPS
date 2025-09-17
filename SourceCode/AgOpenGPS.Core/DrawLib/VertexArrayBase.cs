@@ -1,13 +1,12 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using AgOpenGPS.Core.Base;
+using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
-using System;
 
 namespace AgOpenGPS.Core.DrawLib
 {
-    public abstract class VertexArrayBase : IDisposable
+    public abstract class VertexArrayBase : DisposableObject
     {
         private int _bufId;
-        private bool isDisposed;
 
         public VertexArrayBase(int nDimensions)
         {
@@ -33,25 +32,11 @@ namespace AgOpenGPS.Core.DrawLib
             _bufId = 0;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void OnDispose()
         {
-            if (!isDisposed)
-            {
-                DeleteBuffer();
-                isDisposed = true;
-            }
+            DeleteBuffer();
         }
 
-        ~VertexArrayBase()
-        {
-            Dispose(disposing: false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
     }
 
 }
