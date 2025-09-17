@@ -1006,17 +1006,12 @@ namespace AgOpenGPS
         {
             if (e.Delta < 0)
             {
-                if (camera.ZoomValue <= 20) camera.ZoomValue += camera.ZoomValue * 0.06;
-                else camera.ZoomValue += camera.ZoomValue * 0.02;
-                if (camera.ZoomValue > 120) camera.ZoomValue = 120;
+                camera.ZoomOutSmallStep();
             }
             else
             {
-                if (camera.ZoomValue <= 20)
-                { if ((camera.ZoomValue -= camera.ZoomValue * 0.06) < 4.0) camera.ZoomValue = 4.0; }
-                else { if ((camera.ZoomValue -= camera.ZoomValue * 0.02) < 4.0) camera.ZoomValue = 4.0; }
+                camera.ZoomInSmallStep();
             }
-            camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
             SetZoom();
         }
 
@@ -1369,19 +1364,14 @@ namespace AgOpenGPS
                     // --
                     if (point.Y < 260 && point.Y > 170)
                     {
-                        double adjustFactor = (camera.ZoomValue <= 20) ? 1.2 : 1.1;
-                        camera.ZoomValue = System.Math.Min(adjustFactor * camera.ZoomValue, 180);
-                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
+                        camera.ZoomOut();
                         SetZoom();
                         return;
                     }
-
                     //++
                     if (point.Y < 120 && point.Y > 30)
                     {
-                        double adjustFactor = (camera.ZoomValue <= 20) ? 0.8 : 0.9;
-                        camera.ZoomValue = System.Math.Max(4.0, adjustFactor * camera.ZoomValue);
-                        camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
+                        camera.ZoomIn();
                         SetZoom();
                         return;
                     }
