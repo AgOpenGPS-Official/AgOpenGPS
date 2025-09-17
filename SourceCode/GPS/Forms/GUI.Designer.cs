@@ -1002,6 +1002,27 @@ namespace AgOpenGPS
             }
         }
 
+        private void ZoomByMouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                if (camera.zoomValue <= 20) camera.zoomValue += camera.zoomValue * 0.06;
+                else camera.zoomValue += camera.zoomValue * 0.02;
+                if (camera.zoomValue > 120) camera.zoomValue = 120;
+                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                SetZoom();
+            }
+            else
+            {
+                if (camera.zoomValue <= 20)
+                { if ((camera.zoomValue -= camera.zoomValue * 0.06) < 4.0) camera.zoomValue = 4.0; }
+                else { if ((camera.zoomValue -= camera.zoomValue * 0.02) < 4.0) camera.zoomValue = 4.0; }
+
+                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
+                SetZoom();
+            }
+        }
+
         public void SwapDayNightMode()
         {
             isDay = !isDay;

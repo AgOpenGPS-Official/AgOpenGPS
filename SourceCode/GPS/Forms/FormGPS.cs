@@ -416,6 +416,8 @@ namespace AgOpenGPS
             }
             else Log.EventWriter("Terms Already Accepted");
 
+            this.MouseWheel += ZoomByMouseWheel;
+
             //The way we subscribe to the System Event to check when Power Mode has changed.
             Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
 
