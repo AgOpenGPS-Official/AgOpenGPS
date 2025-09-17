@@ -1006,21 +1006,18 @@ namespace AgOpenGPS
         {
             if (e.Delta < 0)
             {
-                if (camera.zoomValue <= 20) camera.zoomValue += camera.zoomValue * 0.06;
-                else camera.zoomValue += camera.zoomValue * 0.02;
-                if (camera.zoomValue > 120) camera.zoomValue = 120;
-                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
-                SetZoom();
+                if (camera.ZoomValue <= 20) camera.ZoomValue += camera.ZoomValue * 0.06;
+                else camera.ZoomValue += camera.ZoomValue * 0.02;
+                if (camera.ZoomValue > 120) camera.ZoomValue = 120;
             }
             else
             {
-                if (camera.zoomValue <= 20)
-                { if ((camera.zoomValue -= camera.zoomValue * 0.06) < 4.0) camera.zoomValue = 4.0; }
-                else { if ((camera.zoomValue -= camera.zoomValue * 0.02) < 4.0) camera.zoomValue = 4.0; }
-
-                camera.camSetDistance = camera.zoomValue * camera.zoomValue * -1;
-                SetZoom();
+                if (camera.ZoomValue <= 20)
+                { if ((camera.ZoomValue -= camera.ZoomValue * 0.06) < 4.0) camera.ZoomValue = 4.0; }
+                else { if ((camera.ZoomValue -= camera.ZoomValue * 0.02) < 4.0) camera.ZoomValue = 4.0; }
             }
+            camera.DistanceToLookAt = 0.5 * camera.ZoomValue * camera.ZoomValue;
+            SetZoom();
         }
 
         public void SwapDayNightMode()
