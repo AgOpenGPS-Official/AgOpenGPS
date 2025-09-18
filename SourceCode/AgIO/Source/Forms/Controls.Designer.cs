@@ -145,7 +145,15 @@ namespace AgIO
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            using (var dlg = new FormYes("Are you sure you want to Close AgIO?!", true))
+            {
+                var result = dlg.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                {
+                    Close();
+                }
+            }
         }
 
         private void btnRadio_Click(object sender, EventArgs e)
