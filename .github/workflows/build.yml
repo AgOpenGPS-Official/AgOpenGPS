@@ -19,6 +19,9 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
 
+  # Runtime to publish for (Windows 64-bit)
+  PUBLISH_RUNTIME: win-x64
+
   # Path to the output folder
   PUBLISH_DIR: ./AgOpenGPS
 
@@ -55,7 +58,7 @@ jobs:
       run: dotnet test --no-restore --no-build ${{env.SOLUTION_FILE_PATH}}
 
     - name: Publish
-      run: dotnet publish --no-restore --configuration ${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet publish --no-restore --configuration ${{env.BUILD_CONFIGURATION}} --runtime ${{env.PUBLISH_RUNTIME}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
