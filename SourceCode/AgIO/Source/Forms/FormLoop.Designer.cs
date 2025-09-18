@@ -106,6 +106,7 @@ namespace AgIO
             this.btnRunAOG = new System.Windows.Forms.Button();
             this.btnUDP = new System.Windows.Forms.Button();
             this.btnGPSData = new System.Windows.Forms.Button();
+            this.cboxStartMinimized = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -442,7 +443,7 @@ namespace AgIO
             this.lblNTRIP_IP.BackColor = System.Drawing.Color.Transparent;
             this.lblNTRIP_IP.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNTRIP_IP.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblNTRIP_IP.Location = new System.Drawing.Point(480, 41);
+            this.lblNTRIP_IP.Location = new System.Drawing.Point(471, 45);
             this.lblNTRIP_IP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNTRIP_IP.Name = "lblNTRIP_IP";
             this.lblNTRIP_IP.Size = new System.Drawing.Size(133, 18);
@@ -469,7 +470,7 @@ namespace AgIO
             this.lblMount.BackColor = System.Drawing.Color.Transparent;
             this.lblMount.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMount.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblMount.Location = new System.Drawing.Point(480, 62);
+            this.lblMount.Location = new System.Drawing.Point(471, 66);
             this.lblMount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMount.Name = "lblMount";
             this.lblMount.Size = new System.Drawing.Size(133, 18);
@@ -729,7 +730,7 @@ namespace AgIO
             this.lblCount.BackColor = System.Drawing.Color.Transparent;
             this.lblCount.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCount.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblCount.Location = new System.Drawing.Point(513, 86);
+            this.lblCount.Location = new System.Drawing.Point(504, 90);
             this.lblCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(69, 18);
@@ -807,7 +808,6 @@ namespace AgIO
             // 
             // btnMinimizeMainForm
             // 
-            this.btnMinimizeMainForm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMinimizeMainForm.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimizeMainForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnMinimizeMainForm.FlatAppearance.BorderSize = 0;
@@ -818,7 +818,7 @@ namespace AgIO
             this.btnMinimizeMainForm.ForeColor = System.Drawing.Color.DimGray;
             this.btnMinimizeMainForm.Image = global::AgIO.Properties.Resources.WindowMinimize;
             this.btnMinimizeMainForm.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnMinimizeMainForm.Location = new System.Drawing.Point(582, 4);
+            this.btnMinimizeMainForm.Location = new System.Drawing.Point(333, 4);
             this.btnMinimizeMainForm.Name = "btnMinimizeMainForm";
             this.btnMinimizeMainForm.Size = new System.Drawing.Size(62, 38);
             this.btnMinimizeMainForm.TabIndex = 529;
@@ -872,7 +872,7 @@ namespace AgIO
             this.cboxIsSteerModule.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cboxIsSteerModule.FlatAppearance.BorderSize = 0;
             this.cboxIsSteerModule.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cboxIsSteerModule.Location = new System.Drawing.Point(411, 170);
+            this.cboxIsSteerModule.Location = new System.Drawing.Point(413, 170);
             this.cboxIsSteerModule.Name = "cboxIsSteerModule";
             this.cboxIsSteerModule.Size = new System.Drawing.Size(26, 27);
             this.cboxIsSteerModule.TabIndex = 498;
@@ -889,7 +889,7 @@ namespace AgIO
             this.cboxIsIMUModule.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cboxIsIMUModule.FlatAppearance.BorderSize = 0;
             this.cboxIsIMUModule.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cboxIsIMUModule.Location = new System.Drawing.Point(411, 88);
+            this.cboxIsIMUModule.Location = new System.Drawing.Point(413, 88);
             this.cboxIsIMUModule.Name = "cboxIsIMUModule";
             this.cboxIsIMUModule.Size = new System.Drawing.Size(26, 27);
             this.cboxIsIMUModule.TabIndex = 496;
@@ -906,7 +906,7 @@ namespace AgIO
             this.cboxIsMachineModule.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cboxIsMachineModule.FlatAppearance.BorderSize = 0;
             this.cboxIsMachineModule.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.cboxIsMachineModule.Location = new System.Drawing.Point(411, 343);
+            this.cboxIsMachineModule.Location = new System.Drawing.Point(413, 343);
             this.cboxIsMachineModule.Name = "cboxIsMachineModule";
             this.cboxIsMachineModule.Size = new System.Drawing.Size(26, 27);
             this.cboxIsMachineModule.TabIndex = 495;
@@ -1014,7 +1014,7 @@ namespace AgIO
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox1.Image = global::AgIO.Properties.Resources.AgIO_First;
-            this.pictureBox1.Location = new System.Drawing.Point(407, 387);
+            this.pictureBox1.Location = new System.Drawing.Point(409, 387);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(42, 35);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -1023,7 +1023,7 @@ namespace AgIO
             // 
             // btnExit
             // 
-            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
             this.btnExit.FlatAppearance.BorderSize = 0;
@@ -1097,6 +1097,28 @@ namespace AgIO
             this.btnGPSData.UseVisualStyleBackColor = false;
             this.btnGPSData.Click += new System.EventHandler(this.btnGPSData_Click);
             // 
+            // cboxStartMinimized
+            // 
+            this.cboxStartMinimized.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cboxStartMinimized.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxStartMinimized.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.cboxStartMinimized.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.cboxStartMinimized.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxStartMinimized.FlatAppearance.BorderSize = 2;
+            this.cboxStartMinimized.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxStartMinimized.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxStartMinimized.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxStartMinimized.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxStartMinimized.Location = new System.Drawing.Point(413, 3);
+            this.cboxStartMinimized.Name = "cboxStartMinimized";
+            this.cboxStartMinimized.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cboxStartMinimized.Size = new System.Drawing.Size(147, 39);
+            this.cboxStartMinimized.TabIndex = 530;
+            this.cboxStartMinimized.Text = "Start Minimized";
+            this.cboxStartMinimized.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxStartMinimized.UseVisualStyleBackColor = false;
+            this.cboxStartMinimized.CheckedChanged += new System.EventHandler(this.cboxStartMinimized_CheckedChanged);
+            // 
             // FormLoop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -1105,6 +1127,7 @@ namespace AgIO
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(734, 486);
             this.ControlBox = false;
+            this.Controls.Add(this.cboxStartMinimized);
             this.Controls.Add(this.btnMinimizeMainForm);
             this.Controls.Add(this.cboxAutoRunGPS_Out);
             this.Controls.Add(this.label11);
@@ -1253,6 +1276,7 @@ namespace AgIO
         private ToolStripMenuItem modSimToolStrip;
         private ToolStripMenuItem toolStripLogViewer;
         private ToolStripMenuItem toolStripAgDiag;
+        private CheckBox cboxStartMinimized;
     }
 }
 

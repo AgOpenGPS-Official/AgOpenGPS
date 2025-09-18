@@ -212,6 +212,11 @@ namespace AgIO
             isConnectedIMU = cboxIsIMUModule.Checked;
             SetModulesOnOff();
         }
+        private void cboxStartMinimized_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.setDisplay_StartMinimized = cboxStartMinimized.Checked;
+            Settings.Default.Save();
+        }
 
         #endregion
 
