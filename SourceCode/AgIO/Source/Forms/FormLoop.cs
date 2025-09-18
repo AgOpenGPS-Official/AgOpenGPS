@@ -79,6 +79,10 @@ namespace AgIO
         //First run
         private void FormLoop_Load(object sender, EventArgs e)
         {
+            if (Settings.Default.setDisplay_StartMinimized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
             if (Settings.Default.setUDP_isOn)
             {
                 LoadUDPNetwork();
@@ -106,7 +110,7 @@ namespace AgIO
             }
 
             //small view
-            this.Width = 428;
+            this.Width = 420;
 
             LoadLoopback();
 
@@ -116,6 +120,7 @@ namespace AgIO
 
             isSendToSerial = Settings.Default.setNTRIP_sendToSerial;
             isSendToUDP = Settings.Default.setNTRIP_sendToUDP;
+            cboxStartMinimized.Checked = Settings.Default.setDisplay_StartMinimized;
 
             //lblMount.Text = Properties.Settings.Default.setNTRIP_mount;
 
@@ -766,6 +771,5 @@ namespace AgIO
                 }
             }
         }
-
     }
 }
