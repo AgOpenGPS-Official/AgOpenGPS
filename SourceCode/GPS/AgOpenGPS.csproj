@@ -41,6 +41,8 @@
     <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
     <PackageReference Include="MechanikaDesign.WinForms.UI.ColorPicker" Version="2.0.0" />
     <PackageReference Include="OpenTK.GLControl" Version="3.3.3" />
+    <PackageReference Include="SourceGear.sqlite3" Version="3.50.3"/>
+    <PackageReference Include="System.Data.SQLite" Version="2.0.1" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
     <PackageReference Include="System.ValueTuple" Version="4.6.1" />
