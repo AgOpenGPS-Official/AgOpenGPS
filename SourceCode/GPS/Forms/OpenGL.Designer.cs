@@ -1802,7 +1802,7 @@ namespace AgOpenGPS
             int sizer = oglMain.Width / 15;
             int center = oglMain.Width / 2 - sizer;
             int bottomSide = oglMain.Height - sizer / 2;
-            XyDelta textureDelta = new XyDelta(0.5 * sizer, 0.5 * sizer);
+            XyDelta textureDelta = new XyDelta(sizer, sizer);
 
             //draw the clock
             GL.Color4(0.9752f, 0.80f, 0.3f, 0.98);
