@@ -81,41 +81,51 @@ namespace AgOpenGPS.Forms.Profiles
         private void buttonOK_Click(object sender, EventArgs e)
         {
             string newProfileName = SanitizeFileName(textBoxName.Text.Trim()).Trim();
-            if (!string.IsNullOrEmpty(newProfileName))
+            if (string.IsNullOrEmpty(newProfileName))
+                return;
+
+            string newProfilePath = Path.Combine(RegistrySettings.vehiclesDirectory, newProfileName + ".xml");
+
+            // Bestaat al? -> bevestigen om te overschrijven
+            if (File.Exists(newProfilePath))
             {
-                string newProfilePath = Path.Combine(RegistrySettings.vehiclesDirectory, newProfileName + ".xml");
+                var overwrite = FormDialog.Show(
+                    gStr.gsSaveAndReturn,
+                    $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?",
+                    MessageBoxButtons.YesNo);
 
-                if (File.Exists(newProfilePath))
-                {
-                    DialogResult result = FormDialog.Show(
-                        gStr.gsSaveAndReturn,
-                        $"Profile '{newProfileName}' already exists. Overwrite?",
-                        MessageBoxButtons.YesNo);
+                if (overwrite != DialogResult.Yes)
+                    return;
+            }
 
-                    if (result != DialogResult.OK)
-                    {
-                        return;
-                    }
-                }
+            if (listViewProfiles.SelectedItems.Count <= 0)
+                return;
 
-                if (listViewProfiles.SelectedItems.Count <= 0) return;
+            string existingProfileName = listViewProfiles.SelectedItems[0].Name;
 
-                string existingProfileName = listViewProfiles.SelectedItems[0].Name;
+            if (existingProfileName.Equals(EmptyProfile))
+            {
+                // EXTRA BEVESTIGING voor 'Empty Profile'
+                var confirmReset = FormDialog.Show(
+                    "!! WARNING !!",
+                    "This will reset all Tractor measurements and control, Are you Sure??",
+                    MessageBoxButtons.YesNo);
 
-                if (existingProfileName.Equals(EmptyProfile))
-                {
-                    CreateNewEmptyProfile(newProfileName);
-                }
-                else if (existingProfileName.Equals(RegistrySettings.vehicleFileName))
-                {
-                    CreateNewProfileFromCurrent(newProfileName);
-                }
-                else
-                {
-                    CreateNewProfileFromExisting(newProfileName, existingProfileName);
-                }
+                if (confirmReset != DialogResult.Yes)
+                    return;
+
+                CreateNewEmptyProfile(newProfileName);
+            }
+            else if (existingProfileName.Equals(RegistrySettings.vehicleFileName))
+            {
+                CreateNewProfileFromCurrent(newProfileName);
+            }
+            else
+            {
+                CreateNewProfileFromExisting(newProfileName, existingProfileName);
             }
         }
+
 
         private void CreateNewEmptyProfile(string profileName)
         {
