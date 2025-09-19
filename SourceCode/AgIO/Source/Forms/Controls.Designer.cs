@@ -1,4 +1,4 @@
-﻿using AgIO.Properties;
+using AgIO.Properties;
 using AgLibrary.Logging;
 using System;
 using System.Diagnostics;
@@ -145,7 +145,7 @@ namespace AgIO
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            using (var dlg = new FormYes("Are you sure you want to Close AgIO?!", true))
+            using (var dlg = new FormYes("!!! This will stop communicating with Hardware, Are you Sure? !!!", true))
             {
                 var result = dlg.ShowDialog(this);
 
