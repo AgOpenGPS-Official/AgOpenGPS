@@ -86,15 +86,14 @@ namespace AgOpenGPS.Forms.Profiles
 
             string newProfilePath = Path.Combine(RegistrySettings.vehiclesDirectory, newProfileName + ".xml");
 
-            // Bestaat al? -> bevestigen om te overschrijven
             if (File.Exists(newProfilePath))
             {
                 var overwrite = FormDialog.Show(
                     gStr.gsSaveAndReturn,
                     $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?",
-                    MessageBoxButtons.YesNo);
+                    MessageBoxButtons.OKCancel);
 
-                if (overwrite != DialogResult.Yes)
+                if (overwrite != DialogResult.OK)
                     return;
             }
 
@@ -105,13 +104,12 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (existingProfileName.Equals(EmptyProfile))
             {
-                // EXTRA BEVESTIGING voor 'Empty Profile'
                 var confirmReset = FormDialog.Show(
                     "!! WARNING !!",
                     "This will reset all Tractor measurements and control, Are you Sure??",
-                    MessageBoxButtons.YesNo);
+                    MessageBoxButtons.OKCancel);
 
-                if (confirmReset != DialogResult.Yes)
+                if (confirmReset != DialogResult.OK)
                     return;
 
                 CreateNewEmptyProfile(newProfileName);
