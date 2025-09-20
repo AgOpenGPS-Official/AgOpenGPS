@@ -31,7 +31,9 @@
             this.deviceComboBox = new System.Windows.Forms.ComboBox();
             this.stopButton = new System.Windows.Forms.Button();
             this.startButton = new System.Windows.Forms.Button();
-            this.videoSourcePlayer = new AgLibrary.Controls.VideoSourcePlayer();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // deviceComboBox
@@ -80,26 +82,33 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
             // 
-            // videoSourcePlayer
+            // pictureBox
             // 
-            this.videoSourcePlayer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.videoSourcePlayer.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.videoSourcePlayer.BorderColor = System.Drawing.Color.Transparent;
-            this.videoSourcePlayer.KeepAspectRatio = true;
-            this.videoSourcePlayer.Location = new System.Drawing.Point(0, 0);
-            this.videoSourcePlayer.Name = "videoSourcePlayer";
-            this.videoSourcePlayer.Size = new System.Drawing.Size(398, 229);
-            this.videoSourcePlayer.TabIndex = 15;
-            this.videoSourcePlayer.VideoSource = null;
+            this.pictureBox.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(398, 229);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox.TabIndex = 16;
+            this.pictureBox.TabStop = false;
+            // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
             // 
             // FormWebCam
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(398, 268);
-            this.Controls.Add(this.videoSourcePlayer);
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.deviceComboBox);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
@@ -109,6 +118,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "WebCam";
             this.Load += new System.EventHandler(this.FormWebCam_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -118,6 +128,7 @@
         private System.Windows.Forms.ComboBox deviceComboBox;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button startButton;
-        private AgLibrary.Controls.VideoSourcePlayer videoSourcePlayer;
+        private System.Windows.Forms.PictureBox pictureBox;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }

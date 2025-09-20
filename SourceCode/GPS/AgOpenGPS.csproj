@@ -36,8 +36,11 @@
 
   <ItemGroup>
     <PackageReference Include="Dev4Agriculture.ISO11783.ISOXML" Version="0.23.1.1" />
+    <PackageReference Include="DirectShowLib.Standard" Version="2.1.0" />
     <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
     <PackageReference Include="MechanikaDesign.WinForms.UI.ColorPicker" Version="2.0.0" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250506" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250506" />
     <PackageReference Include="OpenTK.GLControl" Version="3.3.3" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
