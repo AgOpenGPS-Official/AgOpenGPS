@@ -35,6 +35,10 @@ Even on your desktop
 1. Clone this repository (e.g. use Visual Studio to do so)
 2. Open the solution (`SourceCode/AgOpenGPS.sln`) in Visual Studio
 3. Add your code and (re)build
+4. Execute the following command in the root folder to get a single `AgOpenGPS` folder containing all the applications:
+   ```sh
+   dotnet publish SourceCode/AgOpenGPS.sln
+   ```
 
 ## Contributing
 
