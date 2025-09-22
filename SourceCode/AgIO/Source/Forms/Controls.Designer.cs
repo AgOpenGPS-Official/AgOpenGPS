@@ -365,24 +365,6 @@ namespace AgIO
             SettingsEthernet();
         }
 
-        private void toolStripGPSData_Click(object sender, EventArgs e)
-        {
-            Form f = Application.OpenForms["FormGPSData"];
-
-            if (f != null)
-            {
-                f.Focus();
-                f.Close();
-                isGPSSentencesOn = false;
-                return;
-            }
-
-            isGPSSentencesOn = true;
-
-            Form form = new FormGPSData(this);
-            form.Show(this);
-        }
-
         #endregion
 
         public void ShowUDPMonitor()
