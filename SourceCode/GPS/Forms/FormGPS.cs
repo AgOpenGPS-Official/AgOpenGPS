@@ -256,6 +256,11 @@ namespace AgOpenGPS
         public CWindowsSettingsBrightnessController displayBrightness;
 
         /// <summary>
+        /// Smart WAS calibration system
+        /// </summary>
+        public CSmartWASCalibration smartWASCalibration;
+
+        /// <summary>
         /// AgShare client for uploading fields
         /// </summary>
         private AgShareClient agShareClient;
@@ -390,6 +395,9 @@ namespace AgOpenGPS
 
             //brightness object class
             displayBrightness = new CWindowsSettingsBrightnessController(Properties.Settings.Default.setDisplay_isBrightnessOn);
+
+            //smart WAS calibration system
+            smartWASCalibration = new CSmartWASCalibration(this);
         }
 
         private void FormGPS_Load(object sender, EventArgs e)
