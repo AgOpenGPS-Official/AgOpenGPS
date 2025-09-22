@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgIO.Properties;
 
@@ -23,14 +16,14 @@ namespace AgIO.Forms
             InitializeComponent();
             cboxAutoRunGPS_Out.Checked = Settings.Default.setDisplay_isAutoRunGPS_Out;
             cboxStartMinimized.Checked = Settings.Default.setDisplay_StartMinimized;
-
-
         }
+
         private void cboxStartMinimized_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.setDisplay_StartMinimized = cboxStartMinimized.Checked;
             Settings.Default.Save();
         }
+
         private void cboxAutoRunGPS_Out_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.setDisplay_isAutoRunGPS_Out = cboxAutoRunGPS_Out.Checked;
