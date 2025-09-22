@@ -1,3 +1,4 @@
+using AgIO.Forms;
 using AgIO.Properties;
 using AgLibrary.Logging;
 using System;
@@ -197,12 +198,6 @@ namespace AgIO
         #endregion
 
         #region CheckBoxes
-        private void cboxAutoRunGPS_Out_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.setDisplay_isAutoRunGPS_Out = cboxAutoRunGPS_Out.Checked;
-            Properties.Settings.Default.Save();
-        }
-
         private void cboxIsSteerModule_Click(object sender, EventArgs e)
         {
             isConnectedSteer = cboxIsSteerModule.Checked;
@@ -219,11 +214,6 @@ namespace AgIO
         {
             isConnectedIMU = cboxIsIMUModule.Checked;
             SetModulesOnOff();
-        }
-        private void cboxStartMinimized_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.setDisplay_StartMinimized = cboxStartMinimized.Checked;
-            Settings.Default.Save();
         }
 
         #endregion
@@ -312,7 +302,13 @@ namespace AgIO
                 }
             }
         }
-
+        private void toolStripSettings_Click(object sender, EventArgs e)
+        {
+            using (FormAdvancedSettings form = new FormAdvancedSettings(this))
+            {
+                form.ShowDialog(this);
+            }
+        }
         private void toolStripMenuProfiles_Click(object sender, EventArgs e)
         {
             if (RegistrySettings.profileName == "")
