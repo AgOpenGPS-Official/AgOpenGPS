@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAdvancedSettings));
             this.cboxStartMinimized = new System.Windows.Forms.CheckBox();
             this.cboxAutoRunGPS_Out = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,7 +43,7 @@
             this.cboxStartMinimized.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
             this.cboxStartMinimized.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cboxStartMinimized.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboxStartMinimized.Image = ((System.Drawing.Image)(resources.GetObject("cboxStartMinimized.Image")));
+            this.cboxStartMinimized.Image = global::AgIO.Properties.Resources.MinimizeIcon;
             this.cboxStartMinimized.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.cboxStartMinimized.Location = new System.Drawing.Point(12, 12);
             this.cboxStartMinimized.Name = "cboxStartMinimized";
