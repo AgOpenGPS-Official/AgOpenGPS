@@ -1099,6 +1099,37 @@ namespace AgOpenGPS
             this.Activate();
 
         }
+        
+        private void toolStripAutoTuning_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //check if window already exists
+                Form fc = Application.OpenForms["FormAutoTuning"];
+
+                if (fc != null)
+                {
+                    fc.Focus();
+                    fc.Close();
+                    return;
+                }
+
+                // Initialize auto-tuner if needed
+                if (autoTuner == null)
+                {
+                    autoTuner = new CAutoTuner(this);
+                }
+
+                Form form = new FormAutoTuning(this);
+                form.Show(this);
+                this.Activate();
+            }
+            catch (Exception ex)
+            {
+                TimedMessageBox(5000, "Auto-Tuning Error", 
+                    "Error opening Auto-Tuning window: " + ex.Message);
+            }
+        }
         private void btnConfig_Click(object sender, EventArgs e)
         {
             using (FormConfig form = new FormConfig(this))

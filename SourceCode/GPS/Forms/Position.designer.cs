@@ -1058,6 +1058,13 @@ namespace AgOpenGPS
             //out serial to autosteer module  //indivdual classes load the distance and heading deltas 
             SendPgnToLoop(p_254.pgn);
 
+            // Smart WAS Calibration data collection
+            if (smartWASCalibration != null && Math.Abs(guidanceLineDistanceOff) < 500) // Within 50cm of guidance line
+            {
+                // Convert guidanceLineSteerAngle from centidegrees to degrees and collect data
+                smartWASCalibration.AddSteerAngleSample(guidanceLineSteerAngle * 0.01, Math.Abs(avgSpeed));
+            }
+
             //for average cross track error
             if (guidanceLineDistanceOff < 29000)
             {

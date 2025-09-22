@@ -1,4 +1,4 @@
-﻿using AgLibrary.Logging;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
@@ -107,6 +107,12 @@ namespace AgOpenGPS
 
         private void FormSteer_Load(object sender, EventArgs e)
         {
+            // Start smart WAS calibration data collection when FormSteer opens
+            if (mf.smartWASCalibration != null)
+            {
+                mf.smartWASCalibration.StartDataCollection();
+            }
+
             mf.vehicle.goalPointLookAheadHold = Properties.Settings.Default.setVehicle_goalPointLookAheadHold;
             cboxSteerInReverse.Checked = Properties.Settings.Default.setAS_isSteerInReverse;
 
@@ -200,8 +206,11 @@ namespace AgOpenGPS
             hsbarSideHillComp.Value = (int)(Properties.Settings.Default.setAS_sideHillComp * 100);
 
             mf.vehicle.goalPointLookAheadHold = Properties.Settings.Default.setVehicle_goalPointLookAheadHold;
-            hsbarHoldLookAhead.Value = (Int16)(mf.vehicle.goalPointLookAheadHold * 10);
-            lblHoldLookAhead.Text = mf.vehicle.goalPointLookAheadHold.ToString();
+            // Ensure the value is within valid bounds before setting the slider
+            int steerResponseValue = (int)(mf.vehicle.goalPointLookAheadHold * 10);
+            steerResponseValue = Math.Max(hsbarHoldLookAhead.Minimum, Math.Min(hsbarHoldLookAhead.Maximum, steerResponseValue));
+            hsbarHoldLookAhead.Value = steerResponseValue;
+            lblHoldLookAhead.Text = (steerResponseValue * 0.1).ToString("F1");
 
             hsbarLookAheadMult.Value = (Int16)(Properties.Settings.Default.setVehicle_goalPointLookAheadMult * 10);
             lblLookAheadMult.Text = mf.vehicle.goalPointLookAheadMult.ToString();
@@ -226,6 +235,23 @@ namespace AgOpenGPS
             nudDeadZoneDelay.Value = (decimal)(mf.vehicle.deadZoneDelay);
 
             toSend = false;
+            
+            // Initialize auto-tuning button state
+            if (mf.autoTuner == null)
+            {
+                mf.autoTuner = new CAutoTuner(mf);
+            }
+            
+            if (mf.autoTuner.IsAutoTuningEnabled)
+            {
+                btnAutoTuning.Text = "Auto";
+                btnAutoTuning.BackColor = System.Drawing.Color.LightBlue;
+            }
+            else
+            {
+                btnAutoTuning.Text = "Manual";
+                btnAutoTuning.BackColor = System.Drawing.Color.LightGreen;
+            }
 
             int sett = Properties.Settings.Default.setArdSteer_setting0;
 
@@ -328,10 +354,26 @@ namespace AgOpenGPS
 
             if (mf.isLightBarNotSteerBar) rbtnLightBar.Checked = true;
             else rbtnSteerBar.Checked = true;
+
+            // Add click event handlers for Smart WAS calibration labels to allow manual reset
+            lblSmartCalStatus.Click += SmartCalLabel_Click;
+            lblSmartCalSamples.Click += SmartCalLabel_Click;
+            lblSmartCalConfidence.Click += SmartCalLabel_Click;
+
+            // Set cursor to indicate clickable labels
+            lblSmartCalStatus.Cursor = Cursors.Hand;
+            lblSmartCalSamples.Cursor = Cursors.Hand;
+            lblSmartCalConfidence.Cursor = Cursors.Hand;
         }
 
         private void FormSteer_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Stop smart WAS calibration data collection and reset samples when FormSteer closes
+            if (mf.smartWASCalibration != null)
+            {
+                mf.smartWASCalibration.StopDataCollection();
+                mf.smartWASCalibration.ResetData();
+            }
             mf.vehicle.isInFreeDriveMode = false;
 
             Properties.Settings.Default.setVehicle_goalPointLookAheadHold = mf.vehicle.goalPointLookAheadHold;
@@ -477,6 +519,9 @@ namespace AgOpenGPS
                 else
                     lblPercentFS.Text = mf.mc.sensorData.ToString();
             }
+
+            // Update Smart WAS Calibration status
+            UpdateSmartCalibrationStatus();
         }
 
         #region Tab Sensors
@@ -883,13 +928,65 @@ namespace AgOpenGPS
             int offset = (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees + hsbarWasOffset.Value);
             if (Math.Abs(offset) > 3900)
             {
-                mf.TimedMessageBox(2000, "Exceeded Range", "Excessive Steer Angle - Cannot Zero");
+                mf.TimedMessageBox(2000, gStr.gsExceededRange, gStr.gsExceededRangeMsg);
                 Log.EventWriter("Excessive Steer Angle, No Zero " + offset);
             }
             else
             {
                 hsbarWasOffset.Value += (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees);
             }
+        }
+
+        private void btnSmartZeroWAS_Click(object sender, EventArgs e)
+        {
+            if (mf.smartWASCalibration == null)
+            {
+                mf.TimedMessageBox(2000, gStr.gsSmartCalibrationError, gStr.gsSmartWASNotAvailable);
+                return;
+            }
+
+            if (!mf.smartWASCalibration.HasValidRecommendation)
+            {
+                if (mf.smartWASCalibration.SampleCount < 200)
+                {
+                    mf.TimedMessageBox(3000, gStr.gsInsufficientData,
+                        string.Format(gStr.gsInsufficientDataMsg, mf.smartWASCalibration.SampleCount));
+                }
+                else
+                {
+                    mf.TimedMessageBox(3000, gStr.gsLowConfidence,
+                        string.Format(gStr.gsLowConfidenceMsg, mf.smartWASCalibration.ConfidenceLevel.ToString("F1")));
+                }
+                return;
+            }
+
+            // Get the recommended adjustment
+            int recommendedOffsetAdjustment = mf.smartWASCalibration.GetRecommendedWASOffsetAdjustment(hsbarCountsPerDegree.Value);
+            int newOffset = hsbarWasOffset.Value + recommendedOffsetAdjustment;
+
+            // Check if the new offset is within acceptable range
+            if (Math.Abs(newOffset) > 3900)
+            {
+                mf.TimedMessageBox(3000, gStr.gsExceededRange,
+                    string.Format(gStr.gsExceededRangeMsg, mf.smartWASCalibration.RecommendedWASZero.ToString("F2"))
+                    );
+                Log.EventWriter($"Smart Zero exceeded range: {newOffset}");
+                return;
+            }
+
+            // Apply the smart zero adjustment
+            hsbarWasOffset.Value = newOffset;
+
+            // Show success message with details
+            mf.TimedMessageBox(4000, gStr.gsSmartZeroApplied,
+                string.Format(gStr.gsSmartZeroAppliedMsg,
+                    mf.smartWASCalibration.SampleCount.ToString("F2"),
+                    mf.smartWASCalibration.ConfidenceLevel.ToString("F1"),
+                    mf.smartWASCalibration.RecommendedWASZero.ToString("F2"),
+                    recommendedOffsetAdjustment.ToString("F1")));
+            Log.EventWriter($"Smart WAS Zero Applied - Samples: {mf.smartWASCalibration.SampleCount}, " +
+                          $"Confidence: {mf.smartWASCalibration.ConfidenceLevel:F1}%, " +
+                          $"Adjustment: {mf.smartWASCalibration.RecommendedWASZero:F2}°");
         }
 
         private void btnStartSA_Click(object sender, EventArgs e)
@@ -1056,7 +1153,7 @@ namespace AgOpenGPS
             btnClose.Enabled = true;
             Log.EventWriter("Steer Form, Send and Save Pressed");
 
-            mf.TimedMessageBox(2000, gStr.gsAutoSteerPort, "Settings Sent To Steer Module");
+            mf.TimedMessageBox(2000, gStr.gsAutoSteerPort, gStr.gsSettingsSent);
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -1197,6 +1294,14 @@ namespace AgOpenGPS
                 Log.EventWriter("Steer Form - Steer Settings Set to Default");
 
                 mf.TimedMessageBox(2000, "Reset To Default", "Values Set to Inital Default");
+                
+                // Reset auto-tuner to manual defaults if enabled
+                if (mf.autoTuner != null && mf.autoTuner.IsAutoTuningEnabled)
+                {
+                    mf.autoTuner.ResetToManualDefaults();
+                }
+                
+                mf.TimedMessageBox(2000, gStr.gsReset, gStr.gsResetToDefault);
                 Properties.Settings.Default.setVehicle_maxSteerAngle = mf.vehicle.maxSteerAngle
                     = 45;
 
@@ -1264,6 +1369,196 @@ namespace AgOpenGPS
                 tabControl1.SelectTab(0);
                 tabSteerSettings.SelectTab(1);
                 tabSteerSettings.SelectTab(0);
+            }
+        }
+        
+        private void btnAutoTuning_Click(object sender, EventArgs e)
+        {
+            // Initialize auto-tuner if it doesn't exist
+            if (mf.autoTuner == null)
+            {
+                mf.autoTuner = new CAutoTuner(mf);
+            }
+            
+            // Toggle auto-tuning state
+            mf.autoTuner.IsAutoTuningEnabled = !mf.autoTuner.IsAutoTuningEnabled;
+            
+            if (mf.autoTuner.IsAutoTuningEnabled)
+            {
+                // Switch to automatic mode
+                btnAutoTuning.Text = "Auto";
+                btnAutoTuning.BackColor = System.Drawing.Color.LightBlue;
+                mf.autoTuner.StartLearning();
+                
+                // Show a message to the user
+                mf.TimedMessageBox(3000, "Auto-Tuning Activated", "System will now automatically adjust steering parameters based on performance.");
+            }
+            else
+            {
+                // Switch to manual mode
+                btnAutoTuning.Text = "Manual";
+                btnAutoTuning.BackColor = System.Drawing.Color.LightGreen;
+                mf.autoTuner.StopLearning();
+                
+                // Show a message to the user
+                mf.TimedMessageBox(3000, "Manual Mode Activated", "You can now manually adjust all steering parameters.");
+            }
+        }
+        
+        #region AutoTuner Integration
+        
+        /// <summary>
+        /// Updates the UI controls when the auto-tuner modifies parameters
+        /// This ensures the sliders and labels reflect the current auto-tuned values
+        /// </summary>
+        /// <param name="config">Auto-tune configuration with current values</param>
+        public void UpdateUIFromAutoTuner(AutoTuneConfig config)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action<AutoTuneConfig>(UpdateUIFromAutoTuner), config);
+                return;
+            }
+            
+            // Temporarily disable event handlers to prevent feedback loops
+            hsbarProportionalGain.ValueChanged -= hsbarProportionalGain_ValueChanged;
+            hsbarHighSteerPWM.ValueChanged -= hsbarHighSteerPWM_ValueChanged;
+            hsbarMinPWM.ValueChanged -= hsbarMinPWM_ValueChanged;
+            hsbarIntegralPurePursuit.ValueChanged -= hsbarIntegralPurePursuit_ValueChanged;
+            hsbarHoldLookAhead.ValueChanged -= hsbarHoldLookAhead_ValueChanged;
+            hsbarLookAheadMult.ValueChanged -= hsbarLookAheadMult_ValueChanged;
+            hsbarAcquireFactor.ValueChanged -= hsbarAcquireFactor_ValueChanged;
+            
+            try
+            {
+                // Update Proportional Gain
+                hsbarProportionalGain.Value = (int)Math.Round(config.ProportionalGain);
+                lblProportionalGain.Text = hsbarProportionalGain.Value.ToString();
+                
+                // Update Max Limit
+                hsbarHighSteerPWM.Value = (int)Math.Round(config.MaxLimit);
+                lblHighSteerPWM.Text = hsbarHighSteerPWM.Value.ToString();
+                
+                // Update Minimum to Move
+                hsbarMinPWM.Value = (int)Math.Round(config.MinimumToMove);
+                lblMinPWM.Text = hsbarMinPWM.Value.ToString();
+                
+                // Update Integral (Pure Pursuit)
+                hsbarIntegralPurePursuit.Value = (int)Math.Round(config.Integral);
+                lblPureIntegral.Text = hsbarIntegralPurePursuit.Value.ToString();
+                
+                // Update Speed Factor (converted back to slider scale)
+                int speedFactorSliderValue = (int)Math.Round(config.SpeedFactor * 10);
+                // Ensure value is within slider bounds
+                speedFactorSliderValue = Math.Max(hsbarLookAheadMult.Minimum, 
+                    Math.Min(hsbarLookAheadMult.Maximum, speedFactorSliderValue));
+                hsbarLookAheadMult.Value = speedFactorSliderValue;
+                lblLookAheadMult.Text = (speedFactorSliderValue * 0.1).ToString("F1");
+                
+                // Update Acquire Factor (converted back to slider scale)
+                int acquireFactorSliderValue = (int)Math.Round(config.AcquireFactor * 100);
+                // Ensure value is within slider bounds
+                acquireFactorSliderValue = Math.Max(hsbarAcquireFactor.Minimum, 
+                    Math.Min(hsbarAcquireFactor.Maximum, acquireFactorSliderValue));
+                hsbarAcquireFactor.Value = acquireFactorSliderValue;
+                lblAcquireFactor.Text = (acquireFactorSliderValue * 0.01).ToString("F2");
+                
+                // Update Steer Response (converted back to slider scale)
+                int steerResponseSliderValue = (int)Math.Round(config.SteerResponse * 10);
+                // Ensure value is within slider bounds (10-70)
+                steerResponseSliderValue = Math.Max(hsbarHoldLookAhead.Minimum, 
+                    Math.Min(hsbarHoldLookAhead.Maximum, steerResponseSliderValue));
+                hsbarHoldLookAhead.Value = steerResponseSliderValue;
+                lblHoldLookAhead.Text = (steerResponseSliderValue * 0.1).ToString("F1");
+                
+                // Update acquire display calculation
+                lblAcquirePP.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("F1");
+                
+                // Update distance calculation in advanced tab
+                if (tabControl1.SelectedTab == tabPPAdv)
+                {
+                    UpdateAdvancedDisplays();
+                }
+            }
+            finally
+            {
+                // Re-enable event handlers
+                hsbarProportionalGain.ValueChanged += hsbarProportionalGain_ValueChanged;
+                hsbarHighSteerPWM.ValueChanged += hsbarHighSteerPWM_ValueChanged;
+                hsbarMinPWM.ValueChanged += hsbarMinPWM_ValueChanged;
+                hsbarIntegralPurePursuit.ValueChanged += hsbarIntegralPurePursuit_ValueChanged;
+                hsbarHoldLookAhead.ValueChanged += hsbarHoldLookAhead_ValueChanged;
+                hsbarLookAheadMult.ValueChanged += hsbarLookAheadMult_ValueChanged;
+                hsbarAcquireFactor.ValueChanged += hsbarAcquireFactor_ValueChanged;
+            }
+        }
+        
+        private void UpdateAdvancedDisplays()
+        {
+            // Update the advanced tab displays
+            lblDistanceAdv.Text = mf.vehicle.goalDistance.ToString("F1");
+            lblHoldAdv.Text = mf.vehicle.goalPointLookAheadHold.ToString("F1");
+            lblAcqAdv.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("F1");
+        }
+        
+        #endregion
+
+        private void SmartCalLabel_Click(object sender, EventArgs e)
+        {
+            // Reset Smart WAS calibration when any of the status labels is clicked
+            if (mf.smartWASCalibration != null)
+            {
+                mf.smartWASCalibration.ResetData();
+                UpdateSmartCalibrationStatus();
+
+                // Show brief confirmation message
+                mf.TimedMessageBox(1500, gStr.gsSmartWASCalibration, gStr.gsCalibrationDataReset);
+            }
+        }
+
+        private void UpdateSmartCalibrationStatus()
+        {
+            if (mf.smartWASCalibration == null)
+            {
+                lblSmartCalStatus.Text = gStr.gsSmartWASNotAvailable;
+                lblSmartCalStatus.ForeColor = Color.Gray;
+                lblSmartCalSamples.Text = $"{gStr.gsSamples}: 0";
+                lblSmartCalConfidence.Text = $"{gStr.gsConfidence}: 0%";
+                btnSmartZeroWAS.Enabled = false;
+                btnSmartZeroWAS.Text = $"{gStr.gsSmartZero}\nN/A";
+                return;
+            }
+
+            // Update samples count
+            lblSmartCalSamples.Text = $"{gStr.gsSamples}: {mf.smartWASCalibration.SampleCount}";
+
+            // Update confidence
+            lblSmartCalConfidence.Text = $"{gStr.gsConfidence}: {mf.smartWASCalibration.ConfidenceLevel:F1}%";
+
+            // Update status text and button state based on calibration readiness
+            if (mf.smartWASCalibration.HasValidRecommendation)
+            {
+                lblSmartCalStatus.Text = gStr.gsReadyForCalibration;
+                lblSmartCalStatus.ForeColor = Color.Green;
+                lblSmartCalConfidence.ForeColor = Color.DarkGreen;
+                btnSmartZeroWAS.Enabled = true;
+                btnSmartZeroWAS.Text = $"{gStr.gsSmartZero}\n{mf.smartWASCalibration.RecommendedWASZero:F1}°";
+            }
+            else if (mf.smartWASCalibration.SampleCount >= 200)
+            {
+                lblSmartCalStatus.Text = gStr.gsLowConfidence;
+                lblSmartCalStatus.ForeColor = Color.Orange;
+                lblSmartCalConfidence.ForeColor = Color.Orange;
+                btnSmartZeroWAS.Enabled = false;
+                btnSmartZeroWAS.Text = $"{gStr.gsSmartZero}\n{gStr.gsLowConfidence}";
+            }
+            else
+            {
+                lblSmartCalStatus.Text = gStr.gsCollectingData;
+                lblSmartCalStatus.ForeColor = Color.Orange;
+                lblSmartCalConfidence.ForeColor = Color.Red;
+                btnSmartZeroWAS.Enabled = false;
+                btnSmartZeroWAS.Text = $"{gStr.gsSmartZero}\nNeed {200 - mf.smartWASCalibration.SampleCount}";
             }
         }
     }

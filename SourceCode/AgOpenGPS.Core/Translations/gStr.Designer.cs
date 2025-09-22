@@ -441,6 +441,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration data reset.
+        /// </summary>
+        public static string gsCalibrationDataReset {
+            get {
+                return ResourceManager.GetString("gsCalibrationDataReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Camera Behavior.
         /// </summary>
         public static string gsCameraBehavior {
@@ -576,6 +585,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collecting Data.
+        /// </summary>
+        public static string gsCollectingData {
+            get {
+                return ResourceManager.GetString("gsCollectingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color Picker.
         /// </summary>
         public static string gsColorPicker {
@@ -599,6 +617,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsCompletelyDeleteBoundary {
             get {
                 return ResourceManager.GetString("gsCompletelyDeleteBoundary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confidence.
+        /// </summary>
+        public static string gsConfidence {
+            get {
+                return ResourceManager.GetString("gsConfidence", resourceCulture);
             }
         }
         
@@ -1089,6 +1116,24 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exceeded Range.
+        /// </summary>
+        public static string gsExceededRange {
+            get {
+                return ResourceManager.GetString("gsExceededRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommended adjustment {0} exceeds safe range (±50). Please check WAS sensor alignment..
+        /// </summary>
+        public static string gsExceededRangeMsg {
+            get {
+                return ResourceManager.GetString("gsExceededRangeMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string gsExit {
@@ -1485,6 +1530,24 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insufficient Data.
+        /// </summary>
+        public static string gsInsufficientData {
+            get {
+                return ResourceManager.GetString("gsInsufficientData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need at least 200 samples for calibration. Current samples: {0}. Drive on guidance lines to collect more data..
+        /// </summary>
+        public static string gsInsufficientDataMsg {
+            get {
+                return ResourceManager.GetString("gsInsufficientDataMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Integral.
         /// </summary>
         public static string gsIntegral {
@@ -1670,6 +1733,24 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsLookAheadTiming {
             get {
                 return ResourceManager.GetString("gsLookAheadTiming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low Confidence.
+        /// </summary>
+        public static string gsLowConfidence {
+            get {
+                return ResourceManager.GetString("gsLowConfidence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration confidence is {0}%. Need at least 70% confidence. Drive more consistently on guidance lines..
+        /// </summary>
+        public static string gsLowConfidenceMsg {
+            get {
+                return ResourceManager.GetString("gsLowConfidenceMsg", resourceCulture);
             }
         }
         
@@ -2313,6 +2394,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ready for Calibration.
+        /// </summary>
+        public static string gsReadyForCalibration {
+            get {
+                return ResourceManager.GetString("gsReadyForCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Really Reset Everything.
         /// </summary>
         public static string gsReallyResetEverything {
@@ -2412,6 +2502,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Values set to initial default.
+        /// </summary>
+        public static string gsResetToDefault {
+            get {
+                return ResourceManager.GetString("gsResetToDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume.
         /// </summary>
         public static string gsResume {
@@ -2480,6 +2579,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsS_West {
             get {
                 return ResourceManager.GetString("gsS_West", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Samples.
+        /// </summary>
+        public static string gsSamples {
+            get {
+                return ResourceManager.GetString("gsSamples", resourceCulture);
             }
         }
         
@@ -2682,6 +2790,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings sent to steer module.
+        /// </summary>
+        public static string gsSettingsSent {
+            get {
+                return ResourceManager.GetString("gsSettingsSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift GPS Position (cm).
         /// </summary>
         public static string gsShiftGPSPosition {
@@ -2759,6 +2876,60 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsSlowDownBelow {
             get {
                 return ResourceManager.GetString("gsSlowDownBelow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart Calibration Error.
+        /// </summary>
+        public static string gsSmartCalibrationError {
+            get {
+                return ResourceManager.GetString("gsSmartCalibrationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart WAS Calibration.
+        /// </summary>
+        public static string gsSmartWASCalibration {
+            get {
+                return ResourceManager.GetString("gsSmartWASCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart WAS calibration not available.
+        /// </summary>
+        public static string gsSmartWASNotAvailable {
+            get {
+                return ResourceManager.GetString("gsSmartWASNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart Zero.
+        /// </summary>
+        public static string gsSmartZero {
+            get {
+                return ResourceManager.GetString("gsSmartZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart Zero Applied.
+        /// </summary>
+        public static string gsSmartZeroApplied {
+            get {
+                return ResourceManager.GetString("gsSmartZeroApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart WAS Zero applied successfully using {0} samples with {1}% confidence. Recommended zero: {2}°, Applied adjustment: {3}.
+        /// </summary>
+        public static string gsSmartZeroAppliedMsg {
+            get {
+                return ResourceManager.GetString("gsSmartZeroAppliedMsg", resourceCulture);
             }
         }
         
