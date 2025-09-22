@@ -6,7 +6,7 @@ namespace AgIO.Forms
 {
     public partial class FormAdvancedSettings : Form
     {
-        public FormAdvancedSettings(Form callingForm)
+        public FormAdvancedSettings()
         {
             InitializeComponent();
             cboxAutoRunGPS_Out.Checked = Settings.Default.setDisplay_isAutoRunGPS_Out;

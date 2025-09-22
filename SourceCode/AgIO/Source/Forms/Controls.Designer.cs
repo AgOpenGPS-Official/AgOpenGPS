@@ -304,7 +304,7 @@ namespace AgIO
         }
         private void toolStripSettings_Click(object sender, EventArgs e)
         {
-            using (FormAdvancedSettings form = new FormAdvancedSettings(this))
+            using (var form = new FormAdvancedSettings())
             {
                 form.ShowDialog(this);
             }
