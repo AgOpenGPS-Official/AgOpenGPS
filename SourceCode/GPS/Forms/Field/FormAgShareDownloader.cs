@@ -32,7 +32,6 @@ namespace AgOpenGPS.Forms.Field
         // Called when the form loads: initialize OpenGL and load the list of available fields
         private async void FormAgShareDownloader_Load(object sender, EventArgs e)
         {
-            // Initialize OpenGL with a clean dark background
             glControl1.MakeCurrent();
             GL.ClearColor(Color.DarkSlateGray);
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -54,15 +53,15 @@ namespace AgOpenGPS.Forms.Field
 
                 lbFields.EndUpdate();
 
-                // Automatically select the first field if any exist
                 if (lbFields.Items.Count > 0)
                     lbFields.Items[0].Selected = true;
             }
-            catch
+            catch (Exception ex)
             {
-                gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.");
+                gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.\n" + ex.Message);
             }
         }
+
 
         // Triggered when a user selects a field in the list; shows preview using OpenGL
         private async void lbFields_SelectedIndexChanged(object sender, EventArgs e)
