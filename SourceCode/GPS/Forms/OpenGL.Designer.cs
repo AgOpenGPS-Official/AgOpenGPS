@@ -2003,7 +2003,7 @@ namespace AgOpenGPS
         private void DrawLightBar(double width, double height, double offlineDistance)
         {
             const int spacing = 32;
-            const int dotsPerSide = 12;
+            const int dotsPerSide = 8;
             const double down = 25.0;
 
             const double arrowSizeFill = 10.0;
@@ -2156,10 +2156,10 @@ namespace AgOpenGPS
                     string small = (Math.Abs(longAvgPivDistance * (isMetric ? 0.1 : 0.03937))).ToString("N1");
                     GL.Color3(0.950f, 0.952f, 0.3f);
                     int centerSmall = -(int)((small.Length * 0.5) * 16);
-                    font.DrawText(centerSmall, (int)(45 * (1.0 + 0.2 * textSize)) + 10, small, 1.0);
+                    font.DrawText(centerSmall, (int)(30 * (1.0 + 0.2 * textSize)) + 10, small, 1.0);
                 }
 
-                // Optional: same top line indicator as SteerBar when in dead-zone
+                // top line indicator as SteerBar when in dead-zone
                 if (vehicle.isInDeadZone)
                 {
                     GL.Color4(0.512f, 0.9712770f, 0.5120f, 1);
@@ -2362,9 +2362,13 @@ namespace AgOpenGPS
                     dire = dire + (-curve.howManyPathsAway).ToString() + "L " + offs;
             }
 
-            int start = -(int)(((double)(dire.Length) * 0.45) * (20 * (1.0)));
-            int down = 68 + (int)((double)(oglMain.Height - 600) / 12);
-            double textSize = (100 + (double)(oglMain.Height - 600)) * 0.0012 + 1;
+            int start = -(int)(((double)(dire.Length) * 0.45) * (22 * (1.0)));
+            int down = 0;
+            int baseDown = isHeadlandDistanceOn ? 175 : 70;
+            int offset = (int)((oglMain.Height - 600) / 12.0);
+            down = baseDown + offset;
+
+            double textSize = (300 + (double)(oglMain.Height - 600)) * 0.0012 + 1;
 
             GL.Color4(0.9, 0.9, 0.9, 0.8);
 
@@ -2576,58 +2580,246 @@ namespace AgOpenGPS
                 }
             }
         }
-
-        // Draw the headland distance at a fixed screen position (not scaling with window size)
         private void DrawHeadlandDistance()
         {
-            // --- Fixed anchor (pixels) ---
-            const int anchorCenterX = -20;   // horizontal center of the icon+text block
-            const int anchorTopY = 160;    // top Y of the icon row
+            // --- Query GL viewport (pixels) ---
+            int[] vp = new int[4];
+            GL.GetInteger(GetPName.Viewport, vp);
+            int viewportWidth = vp[2];
+            int viewportHeight = vp[3];
 
-            // Text size (kept local here)
-            const double textSize = 1.2;
+            // ---- BEGIN: Local HUD overlay (pixel space) ----
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PushMatrix();
+            GL.LoadIdentity();
+            GL.Ortho(0.0, viewportWidth, viewportHeight, 0.0, -1.0, 1.0);
 
-            // Build the label text
-            string label = bnd.HeadlandDistance.HasValue
-                ? bnd.HeadlandDistance.Value.ToString("0.0") + " M"
-                : "--";
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+            GL.LoadIdentity();
 
-            // Rough text width estimate (scaled with text size for better centering)
-            const double charWidth = 6.5;
-            double textWidth = label.Length * charWidth * textSize;
+            bool depthWasEnabled = GL.IsEnabled(EnableCap.DepthTest);
+            if (depthWasEnabled) GL.Disable(EnableCap.DepthTest);
 
-            double iconWidth = 42.0;
-            double iconHeight = 42.0;
-            double spacing = 8.0;
-            double totalWidth = iconWidth + spacing + textWidth;
+            // === Scaling rules (match LightBar style) ===
+            // LightBar uses: textSize = (100 + (Height - 600)) * 0.0012 and then font scale = (1.0 + textSize)
+            double textSize = (100.0 + (oglMain.Height - 600.0)) * 0.0006;
+            double labelScale = 1.0 + textSize;
 
-            // Position: center the whole block around anchorCenterX; Y stays fixed
-            double xStart = anchorCenterX - totalWidth / 2.0;
-            double yTop = anchorTopY;
+            // General pixel scale against a 600 px baseline; clamp to keep sane extremes
+            double scale = oglMain.Height / 600.0;
+            if (scale < 0.6) scale = 0.6;
+            if (scale > 2.0) scale = 2.0;
 
-            // Decide light/dark icon by sampling the actual GL background under the icon
-            bool useLight = UseLightIconBySampling((int)xStart, (int)yTop, (int)iconWidth, (int)iconHeight);
+            // --- Positioning: centered horizontally, top offset scales with height ---
+            double anchorCenterX = viewportWidth / 2;
+            double anchorTopY = (int)(70 * scale);
+
+            // --- Metrics (all scale with s) ---
+            // Estimate per-char width using the text scale so centering stays accurate.
+            double charWidthBase = 6.5;
+            double charWidth = charWidthBase * labelScale;
+            double textLineHeightBase = 25.0;
+            double textLineHeight = textLineHeightBase * labelScale;
+
+            double iconWidth = 20.0 * scale;
+            double iconHeight = 20.0 * scale;
+            double spacing = 8.0 * scale;
+
+            double padH = 12.0 * scale;
+            double padV = 8.0 * scale;
+
+            // Build label in display units (metric = meters, imperial = inches)
+            // NOTE: bnd.HeadlandDistance is assumed to be meters internally.
+            string label;
+            if (bnd.HeadlandDistance.HasValue)
+            {
+                double meters = bnd.HeadlandDistance.Value;
+                bool imperial = !isMetric;
+
+                // m -> inch = 39.3700787
+                double displayValue = imperial ? (meters * 39.3700787) : meters;
+
+                // Formatting: keep one decimal for meters, no decimals for inches
+                string fmt = imperial ? "0" : "0.0";
+                string unit = imperial ? " IN" : " m";
+
+                label = displayValue.ToString(fmt) + unit;
+            }
+            else
+            {
+                label = "--";
+            }
+            // Measure content
+            double textWidth = label.Length * charWidth;
+            double contentWidth = iconWidth + spacing + textWidth;
+            double contentHeight = Math.Max(iconHeight, textLineHeight);
+
+            // Box rect (center horizontally)
+            double boxWidth = contentWidth + 7 * padH;
+            double boxHeight = contentHeight + 0.2 * padV;
+            double boxX = anchorCenterX - boxWidth / 2.0;
+            double boxY = anchorTopY;
+
+            // --- Background box: rounded fill + border ---
+            // Corner radius (scales with your 'scale'; if you don't have 'scale', replace '10.0 * scale' with e.g. 10.0)
+            double r = Math.Min(10.0 * scale, Math.Min(boxWidth, boxHeight) * 0.5 - 1.0);
+            if (r < 1.0) r = 1.0;
+
+            // Smoothness of the rounded corners
+            int seg = 12;
+            double step = (Math.PI * 0.5) / seg;
+
+            // --- Fill (warm yellow, translucent) ---
+            GL.Color4(1.00f, 0.95f, 0.25f, 0.55f);
+
+            // Center rectangle (between rounded corners)
+            GL.Begin(PrimitiveType.Quads);
+            GL.Vertex2(boxX + r, boxY);
+            GL.Vertex2(boxX + boxWidth - r, boxY);
+            GL.Vertex2(boxX + boxWidth - r, boxY + boxHeight);
+            GL.Vertex2(boxX + r, boxY + boxHeight);
+            GL.End();
+
+            // Left & right side rectangles
+            GL.Begin(PrimitiveType.Quads);
+            // Left
+            GL.Vertex2(boxX, boxY + r);
+            GL.Vertex2(boxX + r, boxY + r);
+            GL.Vertex2(boxX + r, boxY + boxHeight - r);
+            GL.Vertex2(boxX, boxY + boxHeight - r);
+            // Right
+            GL.Vertex2(boxX + boxWidth - r, boxY + r);
+            GL.Vertex2(boxX + boxWidth, boxY + r);
+            GL.Vertex2(boxX + boxWidth, boxY + boxHeight - r);
+            GL.Vertex2(boxX + boxWidth - r, boxY + boxHeight - r);
+            GL.End();
+
+            // Four corner fills (triangle fans)
+            double cx, cy;
+
+            // Top-left corner (π .. 3π/2)
+            cx = boxX + r; cy = boxY + r;
+            GL.Begin(PrimitiveType.TriangleFan);
+            GL.Vertex2(cx, cy);
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = Math.PI + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+            GL.End();
+
+            // Top-right corner (3π/2 .. 2π)
+            cx = boxX + boxWidth - r; cy = boxY + r;
+            GL.Begin(PrimitiveType.TriangleFan);
+            GL.Vertex2(cx, cy);
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = (1.5 * Math.PI) + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+            GL.End();
+
+            // Bottom-right corner (0 .. π/2)
+            cx = boxX + boxWidth - r; cy = boxY + boxHeight - r;
+            GL.Begin(PrimitiveType.TriangleFan);
+            GL.Vertex2(cx, cy);
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = 0.0 + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+            GL.End();
+
+            // Bottom-left corner (π/2 .. π)
+            cx = boxX + r; cy = boxY + boxHeight - r;
+            GL.Begin(PrimitiveType.TriangleFan);
+            GL.Vertex2(cx, cy);
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = (0.5 * Math.PI) + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+            GL.End();
+
+            // --- Border (amber, more opaque) ---
+            float borderThickness = (float)Math.Max(2.0, 1.0 * scale);
+            GL.LineWidth(borderThickness);
+            GL.Color4(0.0f, 0.0f, 0.0f, 0.5f);
+            GL.Begin(PrimitiveType.LineLoop);
+
+            // Top-left arc (π .. 3π/2)
+            cx = boxX + r; cy = boxY + r;
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = Math.PI + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+
+            // Top-right arc (3π/2 .. 2π)
+            cx = boxX + boxWidth - r; cy = boxY + r;
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = (1.5 * Math.PI) + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+
+            // Bottom-right arc (0 .. π/2)
+            cx = boxX + boxWidth - r; cy = boxY + boxHeight - r;
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = 0.0 + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+
+            // Bottom-left arc (π/2 .. π)
+            cx = boxX + r; cy = boxY + boxHeight - r;
+            for (int i = 0; i <= seg; i++)
+            {
+                double a = (0.5 * Math.PI) + i * step;
+                GL.Vertex2(cx + r * Math.Cos(a), cy + r * Math.Sin(a));
+            }
+
+            GL.End();
+            GL.LineWidth(1f);
+
+
+            // --- Icon placement inside the box ---
+            double iconX = boxX + padH;
+            double iconY = boxY + (boxHeight - iconHeight);
+
+            bool useLight = UseLightIconBySampling((int)iconX, (int)iconY, (int)iconWidth, (int)iconHeight);
             Texture2D iconTexture = useLight ? ScreenTextures.HeadlandLight : ScreenTextures.HeadlandDark;
 
-            // Draw icon (centered around its own rect)
+            // Draw icon
             GL.Color3(1.0f, 1.0f, 1.0f);
             GL.PushMatrix();
-            GL.Translate(xStart + iconWidth / 2.0, yTop + iconHeight / 2.0, 0);
+            GL.Translate(iconX + iconWidth / 2.0, iconY + iconHeight / 2.0, 0);
             iconTexture.DrawCenteredAroundOrigin(new XyDelta(iconWidth, iconHeight));
             GL.PopMatrix();
 
-            // Text position next to the icon
-            double textX = xStart + iconWidth + spacing + 10;
+            // --- Text next to icon, vertically centered in the box ---
+            double textX = iconX + iconWidth + spacing;
+            double textY = boxY + (boxHeight - textLineHeight) * 0.1;
 
-            // Color: green if > 20 m, otherwise orange
             if (bnd.HeadlandDistance.HasValue && bnd.HeadlandDistance.Value > 20.0)
                 GL.Color3(0.0f, 0.9f, 0.0f);
             else
                 GL.Color3(1.0f, 1.0f, 0.0f);
 
-            // Draw the text slightly below icon top for a nicer baseline
-            font.DrawText((int)textX, (int)(yTop), label, textSize);
+            font.DrawText((int)textX, (int)textY, label, labelScale);
+
+            // ---- END: Restore previous GL state ----
+            if (depthWasEnabled) GL.Enable(EnableCap.DepthTest);
+
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PopMatrix();
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PopMatrix();
         }
+
+
 
 
         /// <summary>
