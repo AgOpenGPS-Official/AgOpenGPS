@@ -34,6 +34,7 @@ namespace AgOpenGPS
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
+            client.Timeout = TimeSpan.FromSeconds(5);
         }
 
         // Updates the API key

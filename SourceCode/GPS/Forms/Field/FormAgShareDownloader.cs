@@ -39,15 +39,8 @@ namespace AgOpenGPS.Forms.Field
 
             try
             {
-                // Run GetOwnFieldsAsync with 4 sec timeout
-                var getFieldsTask = downloader.GetOwnFieldsAsync();
-                var timeoutTask = Task.Delay(4000);
-                var completed = await Task.WhenAny(getFieldsTask, timeoutTask);
-
-                if (completed != getFieldsTask)
-                    throw new TimeoutException("Timed out while fetching fields.");
-
-                var fields = await getFieldsTask; // safe: finished successfully
+                // Get user's own fields from the AgShare server
+                var fields = await downloader.GetOwnFieldsAsync();
 
                 lbFields.BeginUpdate();
                 lbFields.Items.Clear();
