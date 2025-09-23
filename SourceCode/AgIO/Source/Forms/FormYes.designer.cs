@@ -30,6 +30,7 @@
         {
             this.lblMessage2 = new System.Windows.Forms.Label();
             this.btnSerialOK = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblMessage2
@@ -52,20 +53,39 @@
             this.btnSerialOK.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSerialOK.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnSerialOK.Image = global::AgIO.Properties.Resources.OK64;
-            this.btnSerialOK.Location = new System.Drawing.Point(498, 292);
+            this.btnSerialOK.Location = new System.Drawing.Point(490, 266);
             this.btnSerialOK.Name = "btnSerialOK";
-            this.btnSerialOK.Size = new System.Drawing.Size(105, 64);
+            this.btnSerialOK.Size = new System.Drawing.Size(105, 90);
             this.btnSerialOK.TabIndex = 96;
-            this.btnSerialOK.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnSerialOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSerialOK.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnCancel.Image = global::AgIO.Properties.Resources.Cancel64;
+            this.btnCancel.Location = new System.Drawing.Point(363, 266);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(105, 90);
+            this.btnCancel.TabIndex = 97;
+            this.btnCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Visible = false;
             // 
             // FormYes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.ClientSize = new System.Drawing.Size(606, 360);
+            this.ClientSize = new System.Drawing.Size(598, 352);
             this.ControlBox = false;
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSerialOK);
             this.Controls.Add(this.lblMessage2);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
@@ -84,5 +104,6 @@
         #endregion
         private System.Windows.Forms.Label lblMessage2;
         private System.Windows.Forms.Button btnSerialOK;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

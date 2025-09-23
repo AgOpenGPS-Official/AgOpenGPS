@@ -1,4 +1,5 @@
-﻿using AgIO.Properties;
+using AgIO.Forms;
+using AgIO.Properties;
 using AgLibrary.Logging;
 using System;
 using System.Diagnostics;
@@ -145,7 +146,15 @@ namespace AgIO
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            using (var dlg = new FormYes("!!! This will stop communicating with Hardware, Are you Sure? !!!", true))
+            {
+                var result = dlg.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                {
+                    Close();
+                }
+            }
         }
 
         private void btnRadio_Click(object sender, EventArgs e)
@@ -189,12 +198,6 @@ namespace AgIO
         #endregion
 
         #region CheckBoxes
-        private void cboxAutoRunGPS_Out_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.setDisplay_isAutoRunGPS_Out = cboxAutoRunGPS_Out.Checked;
-            Properties.Settings.Default.Save();
-        }
-
         private void cboxIsSteerModule_Click(object sender, EventArgs e)
         {
             isConnectedSteer = cboxIsSteerModule.Checked;
@@ -299,7 +302,13 @@ namespace AgIO
                 }
             }
         }
-
+        private void toolStripSettings_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormAdvancedSettings())
+            {
+                form.ShowDialog(this);
+            }
+        }
         private void toolStripMenuProfiles_Click(object sender, EventArgs e)
         {
             if (RegistrySettings.profileName == "")
@@ -354,24 +363,6 @@ namespace AgIO
         private void toolStripEthernet_Click(object sender, EventArgs e)
         {
             SettingsEthernet();
-        }
-
-        private void toolStripGPSData_Click(object sender, EventArgs e)
-        {
-            Form f = Application.OpenForms["FormGPSData"];
-
-            if (f != null)
-            {
-                f.Focus();
-                f.Close();
-                isGPSSentencesOn = false;
-                return;
-            }
-
-            isGPSSentencesOn = true;
-
-            Form form = new FormGPSData(this);
-            form.Show(this);
         }
 
         #endregion

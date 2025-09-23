@@ -353,6 +353,16 @@ namespace AgIO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MinimizeIcon {
+            get {
+                object obj = ResourceManager.GetObject("MinimizeIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ModuleSim2 {
             get {
                 object obj = ResourceManager.GetObject("ModuleSim2", resourceCulture);

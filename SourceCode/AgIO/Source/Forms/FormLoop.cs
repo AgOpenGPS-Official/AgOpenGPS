@@ -79,6 +79,10 @@ namespace AgIO
         //First run
         private void FormLoop_Load(object sender, EventArgs e)
         {
+            if (Settings.Default.setDisplay_StartMinimized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
             if (Settings.Default.setUDP_isOn)
             {
                 LoadUDPNetwork();
@@ -106,7 +110,7 @@ namespace AgIO
             }
 
             //small view
-            this.Width = 428;
+            this.Width = 420;
 
             LoadLoopback();
 
@@ -253,9 +257,6 @@ namespace AgIO
                 }
             }
 
-            //run gps_out or not
-            cboxAutoRunGPS_Out.Checked = Properties.Settings.Default.setDisplay_isAutoRunGPS_Out;
-
             this.Text =
             "AgIO  v" + Program.Version + " Profile: " + RegistrySettings.profileName;
 
@@ -279,7 +280,7 @@ namespace AgIO
                     + RegistrySettings.profileName;
             }
 
-            if (Properties.Settings.Default.setDisplay_isAutoRunGPS_Out)
+            if (Settings.Default.setDisplay_isAutoRunGPS_Out)
             {
                 StartGPS_Out();
                 Log.EventWriter("Run GPS_Out");
@@ -766,6 +767,5 @@ namespace AgIO
                 }
             }
         }
-
     }
 }
