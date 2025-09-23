@@ -2364,7 +2364,7 @@ namespace AgOpenGPS
 
             int start = -(int)(((double)(dire.Length) * 0.45) * (22 * (1.0)));
             int down = 0;
-            int baseDown = isHeadlandDistanceOn ? 175 : 70;
+            int baseDown = (bnd.isHeadlandOn && isHeadlandDistanceOn) ? 175 : 70;
             int offset = (int)((oglMain.Height - 600) / 12.0);
             down = baseDown + offset;
 
@@ -2671,7 +2671,11 @@ namespace AgOpenGPS
             double step = (Math.PI * 0.5) / seg;
 
             // --- Fill (warm yellow, translucent) ---
-            GL.Color4(1.00f, 0.95f, 0.25f, 0.55f);
+            if (bnd.HeadlandDistance.HasValue && bnd.HeadlandDistance.Value > 20.0)
+                GL.Color4(1.00f, 0.95f, 0.25f, 0.55f);
+            else
+                GL.Color4(1.00f, 0.0f, 0.0f, 0.75f);
+
 
             // Center rectangle (between rounded corners)
             GL.Begin(PrimitiveType.Quads);
