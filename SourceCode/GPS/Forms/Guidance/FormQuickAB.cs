@@ -104,6 +104,7 @@ namespace AgOpenGPS
         {
             panelChoose.Visible = false;
             panelABLine.Visible = true;
+            btnEnter_AB.Enabled = false;
 
             btnALine.Enabled = true;
             btnBLine.Enabled = false;
@@ -273,6 +274,7 @@ namespace AgOpenGPS
         {
             mf.ABLine.isMakingABLine = true;
             btnALine.Enabled = false;
+            btnEnter_AB.Enabled = false;
 
             mf.ABLine.desPtA = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
@@ -289,8 +291,6 @@ namespace AgOpenGPS
 
             btnBLine.Enabled = true;
             btnALine.Enabled = false;
-
-            btnEnter_AB.Enabled = true;
             mf.Activate();
         }
 
@@ -299,6 +299,7 @@ namespace AgOpenGPS
             timer1.Enabled = false;
             mf.ABLine.desPtB = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
             btnBLine.BackColor = System.Drawing.Color.Teal;
+            btnEnter_AB.Enabled = true;
 
             mf.ABLine.desHeading = Math.Atan2(mf.ABLine.desPtB.easting - mf.ABLine.desPtA.easting,
                mf.ABLine.desPtB.northing - mf.ABLine.desPtA.northing);
