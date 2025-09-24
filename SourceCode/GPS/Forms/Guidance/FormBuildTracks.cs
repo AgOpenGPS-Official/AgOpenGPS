@@ -597,6 +597,7 @@ namespace AgOpenGPS
 
             btnALine.Enabled = true;
             btnBLine.Enabled = false;
+            btnEnter_AB.Enabled = false;
             mf.curve.desList?.Clear();
 
             this.Size = new System.Drawing.Size(270, 360);
@@ -840,6 +841,7 @@ namespace AgOpenGPS
         {
             mf.ABLine.isMakingABLine = true;
             btnALine.Enabled = false;
+            btnEnter_AB.Enabled = false;
 
             mf.ABLine.desPtA = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
@@ -853,8 +855,6 @@ namespace AgOpenGPS
             btnBLine.Enabled = true;
             btnALine.Enabled = false;
 
-            btnEnter_AB.Enabled = true;
-
             timer1.Enabled = true;
             mf.Activate();
         }
@@ -862,6 +862,7 @@ namespace AgOpenGPS
         private void btnBLine_Click(object sender, EventArgs e)
         {
             timer1.Enabled = false;
+            btnEnter_AB.Enabled = true;
 
             mf.ABLine.desPtB = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
