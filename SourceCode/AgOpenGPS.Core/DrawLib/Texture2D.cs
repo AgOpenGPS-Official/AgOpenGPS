@@ -1,16 +1,15 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
+using AgOpenGPS.Core.Base;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS.Core.DrawLib
 {
-    public class Texture2D : IDisposable
+    public class Texture2D : DisposableObject
     {
         private readonly Bitmap _bitmap;
         private int _textureId;
-        private bool isDisposed;
 
         public Texture2D(Bitmap bitmap)
         {
@@ -96,26 +95,10 @@ namespace AgOpenGPS.Core.DrawLib
             _textureId = 0;
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void OnDispose()
         {
-            if (!isDisposed)
-            {
-                DeleteTexture();
-                isDisposed = true;
-            }
+            DeleteTexture();
         }
 
-        ~Texture2D()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
     }
 }
