@@ -333,9 +333,19 @@ namespace AgOpenGPS
                 return;
 
             string dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, fieldName);
-
+            int maxLength = 45;
+            string multiLineDir = dir2Delete;
+            // Split directory name if it is too long for 1 line
+            if (maxLength < dir2Delete.Length)
+            {
+                int sep = dir2Delete.LastIndexOf('\\', maxLength);
+                if (sep != -1)
+                {
+                    multiLineDir = dir2Delete.Insert(sep + 1, "\n");
+                }
+            }
             // Keep this dialog here; it is a user action (delete confirmation), not loader validation.
-            if (FormDialog.Show(dir2Delete, gStr.gsDeleteForSure, MessageBoxButtons.YesNo) != DialogResult.OK)
+            if (FormDialog.Show(gStr.gsDeleteForSure, multiLineDir, MessageBoxButtons.YesNo) != DialogResult.OK)
                 return;
 
             try
