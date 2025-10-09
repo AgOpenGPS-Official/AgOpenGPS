@@ -1,4 +1,4 @@
-﻿namespace AgIO
+﻿namespace AgLibrary.Forms
 {
     partial class FormYes
     {
@@ -52,7 +52,8 @@
             this.btnSerialOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSerialOK.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSerialOK.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSerialOK.Image = global::AgIO.Properties.Resources.OK64;
+            // Image removed - forms library should not depend on project resources
+            // this.btnSerialOK.Image = global::AgIO.Properties.Resources.OK64;
             this.btnSerialOK.Location = new System.Drawing.Point(490, 266);
             this.btnSerialOK.Name = "btnSerialOK";
             this.btnSerialOK.Size = new System.Drawing.Size(105, 90);
@@ -69,7 +70,8 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnCancel.Image = global::AgIO.Properties.Resources.Cancel64;
+            // Image removed - forms library should not depend on project resources
+            // this.btnCancel.Image = global::AgIO.Properties.Resources.Cancel64;
             this.btnCancel.Location = new System.Drawing.Point(363, 266);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 90);

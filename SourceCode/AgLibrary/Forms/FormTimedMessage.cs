@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace AgIO
+namespace AgLibrary.Forms
 {
     public partial class FormTimedMessage : Form
     {

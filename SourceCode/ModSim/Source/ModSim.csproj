@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AgLibrary\AgLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Forms\Controls.Designer.cs">
       <DependentUpon>FormSim.cs</DependentUpon>
     </Compile>

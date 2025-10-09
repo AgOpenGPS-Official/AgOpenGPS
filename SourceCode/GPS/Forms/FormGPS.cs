@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgLibrary.Forms;
 using AgLibrary.Logging;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Controls;
