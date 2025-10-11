@@ -1,40 +1,71 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace AgOpenGPS.Core.Models
 {
     /// <summary>
     /// Pure geometry math helper functions and constants
     /// No UI dependencies - fully testable
+    /// Performance-optimized with AggressiveInlining for hot path methods
     /// </summary>
     public static class GeoMath
     {
         public const double twoPI = 6.28318530717958647692;
         public const double PIBy2 = 1.57079632679489661923;
 
+        /// <summary>
+        /// Calculate Euclidean distance between two vec3 points
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Distance(vec3 first, vec3 second)
         {
-            return Math.Sqrt(
-                Math.Pow(first.easting - second.easting, 2)
-                + Math.Pow(first.northing - second.northing, 2));
+            double dx = first.easting - second.easting;
+            double dy = first.northing - second.northing;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
+        /// <summary>
+        /// Calculate Euclidean distance between two vec2 points
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Distance(vec2 first, vec2 second)
         {
-            return Math.Sqrt(
-                Math.Pow(first.easting - second.easting, 2)
-                + Math.Pow(first.northing - second.northing, 2));
+            double dx = first.easting - second.easting;
+            double dy = first.northing - second.northing;
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
+        /// <summary>
+        /// Calculate squared distance (faster, no sqrt - use for comparisons)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double DistanceSquared(double northing1, double easting1, double northing2, double easting2)
         {
-            return Math.Pow(easting1 - easting2, 2) + Math.Pow(northing1 - northing2, 2);
+            double dx = easting1 - easting2;
+            double dy = northing1 - northing2;
+            return dx * dx + dy * dy;
         }
 
+        /// <summary>
+        /// Calculate squared distance between two vec3 points (faster, no sqrt - use for comparisons)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double DistanceSquared(vec3 first, vec3 second)
         {
-            return (
-            Math.Pow(first.easting - second.easting, 2)
-            + Math.Pow(first.northing - second.northing, 2));
+            double dx = first.easting - second.easting;
+            double dy = first.northing - second.northing;
+            return dx * dx + dy * dy;
+        }
+
+        /// <summary>
+        /// Calculate squared distance between two vec2 points (faster, no sqrt - use for comparisons)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double DistanceSquared(vec2 first, vec2 second)
+        {
+            double dx = first.easting - second.easting;
+            double dy = first.northing - second.northing;
+            return dx * dx + dy * dy;
         }
 
         // Catmull Rom interpoint spline calculation

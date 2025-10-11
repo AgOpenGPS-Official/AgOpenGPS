@@ -24,7 +24,8 @@ namespace AgOpenGPS.Core.Models
             // First calculate headings for the input points
             points.CalculateHeadings(loop);
 
-            var result = new List<vec3>();
+            // Pre-allocate capacity for better performance (avoid multiple internal array resizes)
+            var result = new List<vec3>(points.Count);
             int count = points.Count;
 
             double distSq = distance * distance - 0.0001;
