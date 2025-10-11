@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 *.swp
 
 .claude/settings.local.json
+
+Progress.md
