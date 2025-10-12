@@ -89,13 +89,13 @@
             this.Controls.Add(this.btnSerialOK);
             this.Controls.Add(this.lblMessage2);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FormYes";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AgIO Message";
+            this.Text = string.Empty;
             this.TopMost = true;
             this.ResumeLayout(false);
         }

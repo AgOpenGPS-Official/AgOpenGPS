@@ -71,13 +71,13 @@
             this.Controls.Add(this.lblMessage2);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FormTimedMessage";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 30, 30);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "AgIO Message";
+            this.Text = string.Empty;
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
