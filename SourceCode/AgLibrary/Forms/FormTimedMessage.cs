@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AgLibrary.Forms
@@ -8,14 +9,9 @@ namespace AgLibrary.Forms
         public FormTimedMessage(int timeInMsec, string titleStr, string messageStr)
         {
             InitializeComponent();
-
             lblTitle.Text = titleStr;
             lblMessage2.Text = messageStr;
-
             timer1.Interval = timeInMsec;
-
-            int messWidth = messageStr.Length;
-            Width = messWidth * 15 + 120;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

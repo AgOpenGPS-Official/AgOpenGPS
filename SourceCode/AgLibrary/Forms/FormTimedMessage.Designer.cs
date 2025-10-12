@@ -64,6 +64,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.LightSalmon;
             this.ClientSize = new System.Drawing.Size(268, 147);
             this.ControlBox = false;
@@ -73,13 +74,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FormTimedMessage";
+            this.Padding = new System.Windows.Forms.Padding(0, 0, 30, 30);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "AgIO Message";
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
