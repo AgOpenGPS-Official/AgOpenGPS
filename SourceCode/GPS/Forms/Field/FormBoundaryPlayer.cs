@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
@@ -119,7 +120,7 @@ namespace AgOpenGPS
         private void btnStop_Click(object sender, EventArgs e)
         {
             // Ask user if they are done with the boundary
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result3 = FormYes.Show(
                 gStr.gsBoundary,         // Title
                 "Done?",                 // Message
                 MessageBoxButtons.OKCancel);
@@ -206,7 +207,7 @@ namespace AgOpenGPS
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result3 = FormYes.Show(
                 gStr.gsDeleteForSure,
                 gStr.gsCompletelyDeleteBoundary,
                 MessageBoxButtons.OKCancel);

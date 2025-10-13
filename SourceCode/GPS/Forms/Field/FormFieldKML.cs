@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
@@ -344,7 +345,7 @@ namespace AgOpenGPS
                 //create it for first save
                 if ((!string.IsNullOrEmpty(directoryName)) && (Directory.Exists(directoryName)))
                 {
-                    FormDialog.Show(gStr.gsChooseADifferentName, gStr.gsDirectoryExists, MessageBoxButtons.OK);
+                    FormYes.Show(gStr.gsChooseADifferentName, gStr.gsDirectoryExists, MessageBoxButtons.OK);
                     return;
                 }
                 else
@@ -406,7 +407,7 @@ namespace AgOpenGPS
             {
                 Log.EventWriter("Creating new kml field " + ex.ToString());
 
-                FormDialog.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
+                FormYes.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
                 mf.currentFieldDirectory = "";
             }
         }

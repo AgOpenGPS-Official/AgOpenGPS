@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
@@ -335,7 +336,7 @@ namespace AgOpenGPS
             string dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, fieldName);
 
             // Keep this dialog here; it is a user action (delete confirmation), not loader validation.
-            if (FormDialog.Show(dir2Delete, gStr.gsDeleteForSure, MessageBoxButtons.YesNo) != DialogResult.OK)
+            if (FormYes.Show(dir2Delete, gStr.gsDeleteForSure, MessageBoxButtons.YesNo) != DialogResult.OK)
                 return;
 
             try

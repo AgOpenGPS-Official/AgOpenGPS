@@ -1,3 +1,4 @@
+using AgLibrary.Forms;
 using AgLibrary.Logging;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Core.Models;
@@ -208,7 +209,7 @@ namespace AgOpenGPS
         private void btnDelete_Click(object sender, EventArgs e)
         {
             // Show custom confirmation dialog for full boundary deletion
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result3 = FormYes.Show(
                 gStr.gsCompletelyDeleteBoundary,
                 gStr.gsDeleteForSure,
                 MessageBoxButtons.YesNo);
@@ -443,7 +444,7 @@ namespace AgOpenGPS
         {
             if (mf.bnd.bndList.Count > 0)
             {
-                var result = FormDialog.Show("Boundary Exists", "A boundary already exists. Do you want to remove it?", MessageBoxButtons.YesNo);
+                var result = FormYes.Show("Boundary Exists", "A boundary already exists. Do you want to remove it?", MessageBoxButtons.YesNo);
                 if (result != DialogResult.OK) return;
 
                 mf.bnd.bndList.Clear();

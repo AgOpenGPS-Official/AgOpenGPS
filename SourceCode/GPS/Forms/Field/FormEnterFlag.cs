@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
@@ -139,15 +140,15 @@ namespace AgOpenGPS
                         }
                         else
                         {
-                            FormDialog.Show("Error check format", $"Invalid line: {line}", MessageBoxButtons.OK);
+                            FormYes.Show("Error check format", $"Invalid line: {line}", MessageBoxButtons.OK);
                             return;
                         }
                     }
-                    FormDialog.Show("Success", "Flags successfully added!", MessageBoxButtons.OK);
+                    FormYes.Show("Success", "Flags successfully added!", MessageBoxButtons.OK);
                 }
                 catch (Exception ex)
                 {
-                    FormDialog.Show("Error", $"Error reading file: {ex.Message}", MessageBoxButtons.OK);
+                    FormYes.Show("Error", $"Error reading file: {ex.Message}", MessageBoxButtons.OK);
                     Log.EventWriter("Loading Flags by lat lon" + ex.ToString());
                     return;
                 }
@@ -182,11 +183,11 @@ namespace AgOpenGPS
                                 flag.color.ToString(CultureInfo.InvariantCulture) + "," +
                                 flag.notes);
                         }
-                        FormDialog.Show("Success", "Flags successfully saved!", MessageBoxButtons.OK);
+                        FormYes.Show("Success", "Flags successfully saved!", MessageBoxButtons.OK);
                     }
                     catch (Exception ex)
                     {
-                        FormDialog.Show("Error", ex.Message + "\nCannot write to file.", MessageBoxButtons.OK);
+                        FormYes.Show("Error", ex.Message + "\nCannot write to file.", MessageBoxButtons.OK);
                         Log.EventWriter("Saving Flags by lat lon" + ex.ToString());
                         return;
                     }

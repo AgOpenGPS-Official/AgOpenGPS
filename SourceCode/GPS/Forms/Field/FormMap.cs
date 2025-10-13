@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Core;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
@@ -223,7 +224,7 @@ namespace AgOpenGPS
                 return;
             }
 
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result3 = FormYes.Show(
                 gStr.gsDeleteForSure,
                 "Delete Last Field Boundary Made?",
                 MessageBoxButtons.YesNo);
