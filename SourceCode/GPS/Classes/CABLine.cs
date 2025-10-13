@@ -1,3 +1,5 @@
+using AgOpenGPS.Core.DrawLib;
+using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -344,7 +346,6 @@ namespace AgOpenGPS
             mf.font.DrawText3D(desPtA.easting, desPtA.northing, "&A", mf.camHeading);
             mf.font.DrawText3D(desPtB.easting, desPtB.northing, "&B", mf.camHeading);
         }
-
         public void DrawABLines()
         {
             //Draw AB Points
@@ -380,31 +381,36 @@ namespace AgOpenGPS
 
             double widthMinusOverlap = mf.tool.width - mf.tool.overlap;
             double shadowOffset = isHeadingSameWay ? mf.tool.offset : -mf.tool.offset;
-            double sinHR = Math.Sin(abHeading + glm.PIBy2) * (widthMinusOverlap * 0.5 + shadowOffset);
-            double cosHR = Math.Cos(abHeading + glm.PIBy2) * (widthMinusOverlap * 0.5 + shadowOffset);
-            double sinHL = Math.Sin(abHeading + glm.PIBy2) * (widthMinusOverlap * 0.5 - shadowOffset);
-            double cosHL = Math.Cos(abHeading + glm.PIBy2) * (widthMinusOverlap * 0.5 - shadowOffset);
 
             //shadow
+            GeoCoord ptA = currentLinePtA.ToGeoCoord();
+            GeoCoord ptB = currentLinePtB.ToGeoCoord();
+            GeoDir abDir = new GeoDir(abHeading);
+            GeoDir perpendicalurRightDir = abDir.PerpendicularRight;
+            GeoDelta rightOffset = (shadowOffset + 0.5 * widthMinusOverlap) * perpendicalurRightDir;
+            GeoDelta leftOffset = (shadowOffset - 0.5 * widthMinusOverlap) * perpendicalurRightDir;
+
+            GeoCoord[] shadowCoords = {
+                ptA + leftOffset,
+                ptA + rightOffset,
+                ptB + rightOffset,
+                ptB + leftOffset
+            };
+
             GL.Color4(0.5, 0.5, 0.5, 0.2);
             GL.Begin(PrimitiveType.TriangleFan);
+            for (int i = 0; i < shadowCoords.Length; i++)
             {
-                GL.Vertex3(currentLinePtA.easting - sinHL, currentLinePtA.northing - cosHL, 0);
-                GL.Vertex3(currentLinePtA.easting + sinHR, currentLinePtA.northing + cosHR, 0);
-                GL.Vertex3(currentLinePtB.easting + sinHR, currentLinePtB.northing + cosHR, 0);
-                GL.Vertex3(currentLinePtB.easting - sinHL, currentLinePtB.northing - cosHR, 0);
+                GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
             }
             GL.End();
-
             //shadow lines
             GL.Color4(0.55, 0.55, 0.55, 0.2);
             GL.LineWidth(1);
             GL.Begin(PrimitiveType.LineLoop);
+            for (int i = 0; i < shadowCoords.Length; i++)
             {
-                GL.Vertex3(currentLinePtA.easting - sinHL, currentLinePtA.northing - cosHL, 0);
-                GL.Vertex3(currentLinePtA.easting + sinHR, currentLinePtA.northing + cosHR, 0);
-                GL.Vertex3(currentLinePtB.easting + sinHR, currentLinePtB.northing + cosHR, 0);
-                GL.Vertex3(currentLinePtB.easting - sinHL, currentLinePtB.northing - cosHR, 0);
+                GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
             }
             GL.End();
 
