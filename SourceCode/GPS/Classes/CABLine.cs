@@ -379,16 +379,15 @@ namespace AgOpenGPS
             GL.End();
             GL.Disable(EnableCap.LineStipple);
 
-            double widthMinusOverlap = mf.tool.width - mf.tool.overlap;
-            double shadowOffset = isHeadingSameWay ? mf.tool.offset : -mf.tool.offset;
 
-            //shadow
+            // shadow
+            double shadowOffset = isHeadingSameWay ? mf.tool.offset : -mf.tool.offset;
             GeoCoord ptA = currentLinePtA.ToGeoCoord();
             GeoCoord ptB = currentLinePtB.ToGeoCoord();
             GeoDir abDir = new GeoDir(abHeading);
             GeoDir perpendicalurRightDir = abDir.PerpendicularRight;
-            GeoDelta rightOffset = (shadowOffset + 0.5 * widthMinusOverlap) * perpendicalurRightDir;
-            GeoDelta leftOffset = (shadowOffset - 0.5 * widthMinusOverlap) * perpendicalurRightDir;
+            GeoDelta rightOffset = (shadowOffset + 0.5 * mf.tool.width) * perpendicalurRightDir;
+            GeoDelta leftOffset = (shadowOffset - 0.5 * mf.tool.width) * perpendicalurRightDir;
 
             GeoCoord[] shadowCoords = {
                 ptA + leftOffset,
