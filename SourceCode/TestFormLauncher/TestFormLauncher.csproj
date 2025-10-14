@@ -5,6 +5,7 @@
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>9.0</LangVersion>
+    <AssemblyName>TestFormLauncher</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

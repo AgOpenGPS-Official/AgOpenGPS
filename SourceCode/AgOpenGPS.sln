@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgOpenGPS.WpfViews", "AgOpe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgDiag", "AgDiag\AgDiag.csproj", "{8AE86C22-D6EA-46D3-A053-C10B15EDEC8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormLauncher", "FormLauncher\FormLauncher.csproj", "{940D2AC5-F1B0-45AC-BCCC-5DEFDBAC7A57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFormLauncher", "TestFormLauncher\TestFormLauncher.csproj", "{940D2AC5-F1B0-45AC-BCCC-5DEFDBAC7A57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,10 +4,10 @@ namespace AgLibrary.Forms
 {
     public partial class FormYes : Form
     {
-        public FormYes(string messageStr, bool showCancel = false, string title = null)
+        public FormYes(string message, bool showCancel = false, string title = null)
         {
             InitializeComponent();
-            lblMessage2.Text = messageStr;
+            lblMessage.Text = message;
             btnCancel.Visible = showCancel;
 
             // Show/hide title label based on whether title is provided
@@ -28,9 +28,9 @@ namespace AgLibrary.Forms
         // Static Show method for compatibility with FormDialog usage
         public static DialogResult Show(string title, string message, MessageBoxButtons buttons = MessageBoxButtons.OKCancel)
         {
-            bool showCancel = (buttons == MessageBoxButtons.OKCancel ||
-                             buttons == MessageBoxButtons.YesNo ||
-                             buttons == MessageBoxButtons.YesNoCancel);
+            var showCancel = (buttons == MessageBoxButtons.OKCancel ||
+                              buttons == MessageBoxButtons.YesNo ||
+                              buttons == MessageBoxButtons.YesNoCancel);
 
             using (var form = new FormYes(message, showCancel, title))
             {

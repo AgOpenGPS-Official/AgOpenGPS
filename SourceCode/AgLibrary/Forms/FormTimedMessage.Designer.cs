@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.lblMessage2 = new System.Windows.Forms.Label();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -40,7 +40,7 @@
             //
             this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.OldLace;
-            this.panel1.Controls.Add(this.lblMessage2);
+            this.panel1.Controls.Add(this.lblMessage);
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(8, 8);
@@ -61,19 +61,19 @@
             //
             // lblMessage2
             //
-            this.lblMessage2.AutoSize = true;
-            this.lblMessage2.Font = new System.Drawing.Font("Tahoma", 18F);
-            this.lblMessage2.Location = new System.Drawing.Point(75, 71);
-            this.lblMessage2.Name = "lblMessage2";
-            this.lblMessage2.Size = new System.Drawing.Size(127, 29);
-            this.lblMessage2.TabIndex = 1;
-            this.lblMessage2.Text = "Message 2";
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("Tahoma", 18F);
+            this.lblMessage.Location = new System.Drawing.Point(75, 71);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(127, 29);
+            this.lblMessage.TabIndex = 1;
+            this.lblMessage.Text = "Message 2";
             //
             // timer1
             //
             this.timer1.Enabled = true;
             this.timer1.Interval = 3000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
             //
             // FormTimedMessage
             //
@@ -103,7 +103,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblMessage2;
+        private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Timer timer1;
     }
 }

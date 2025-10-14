@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace AgLibrary.Forms
 {
     public partial class FormTimedMessage : Form
     {
-        public FormTimedMessage(int timeInMsec, string titleStr, string messageStr)
+        public FormTimedMessage(TimeSpan duration, string title, string message)
         {
             InitializeComponent();
-            lblTitle.Text = titleStr;
-            lblMessage2.Text = messageStr;
-            timer1.Interval = timeInMsec;
+            lblTitle.Text = title;
+            lblMessage.Text = message;
+            timer1.Interval = (int)duration.TotalMilliseconds;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
             timer1.Dispose();

@@ -87,7 +87,7 @@ namespace ModSim
 
         public void TimedMessageBox(int timeout, string title, string message)
         {
-            var form = new FormTimedMessage(timeout, title, message);
+            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(timeout), title, message);
             form.Show();
         }
 

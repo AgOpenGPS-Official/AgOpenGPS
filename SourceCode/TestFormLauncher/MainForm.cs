@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AgLibrary.Forms;
 
-namespace FormLauncher
+namespace TestFormLauncher
 {
     /// <summary>
     /// Test launcher for consolidated forms from commit ec2541b0.
@@ -139,13 +139,13 @@ namespace FormLauncher
 
         private void BtnFormTimedMessage_Click(object sender, EventArgs e)
         {
-            var form = new FormTimedMessage(3000, "Notification", "This message will close in 3 seconds");
+            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(3000), "Notification", "This message will close in 3 seconds");
             form.Show();
         }
 
         private void BtnFormTimedMessageLong_Click(object sender, EventArgs e)
         {
-            var form = new FormTimedMessage(5000, "Important Notice",
+            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(5000), "Important Notice",
                 "This is a longer message that will close automatically in 5 seconds. " +
                 "The form width should adjust to fit this text.");
             form.Show();

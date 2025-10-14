@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblMessage2 = new System.Windows.Forms.Label();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnSerialOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -42,7 +42,7 @@
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnSerialOK);
             this.panel1.Controls.Add(this.lblTitle);
-            this.panel1.Controls.Add(this.lblMessage2);
+            this.panel1.Controls.Add(this.lblMessage);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(8, 8);
             this.panel1.Name = "panel1";
@@ -62,13 +62,13 @@
             //
             // lblMessage2
             //
-            this.lblMessage2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.lblMessage2.Location = new System.Drawing.Point(38, 52);
-            this.lblMessage2.Name = "lblMessage2";
-            this.lblMessage2.Size = new System.Drawing.Size(528, 200);
-            this.lblMessage2.TabIndex = 1;
-            this.lblMessage2.Text = "Message 2";
-            this.lblMessage2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMessage.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.lblMessage.Location = new System.Drawing.Point(38, 52);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(528, 200);
+            this.lblMessage.TabIndex = 1;
+            this.lblMessage.Text = "Message 2";
+            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
             // btnSerialOK
             //
@@ -130,7 +130,7 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblMessage2;
+        private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Button btnSerialOK;
         private System.Windows.Forms.Button btnCancel;
     }
