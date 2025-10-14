@@ -71,7 +71,7 @@
             this.Controls.Add(this.lblMessage2);
             this.Controls.Add(this.lblTitle);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FormTimedMessage";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 30, 30);

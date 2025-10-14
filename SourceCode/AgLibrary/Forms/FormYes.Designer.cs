@@ -89,7 +89,7 @@
             this.Controls.Add(this.btnSerialOK);
             this.Controls.Add(this.lblMessage2);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FormYes";
             this.ShowIcon = false;
