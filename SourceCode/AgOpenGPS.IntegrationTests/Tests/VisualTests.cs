@@ -84,13 +84,11 @@ namespace AgOpenGPS.IntegrationTests.Tests
             var fieldController = orchestrator.FieldController;
             fieldController.CreateNewField("VisualTestField", 39.0, -94.0);
             Console.WriteLine("Step 1: Field created");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 2: Add boundary
             var boundary = CreateRectangularBoundary(39.0, -94.0, 100, 200);
             fieldController.AddBoundary(boundary, isOuter: true);
             Console.WriteLine("Step 2: Boundary added (100m x 200m)");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 3: Create track
             var trackPointA = new TestPoint(-10, -80, 0);
@@ -98,7 +96,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
             fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 0);
             fieldController.SelectTrack(0);
             Console.WriteLine("Step 3: Track created at X=-10m");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
@@ -107,13 +104,11 @@ namespace AgOpenGPS.IntegrationTests.Tests
             simController.SetHeading(0.0); // Heading north
             simController.SetSpeed(8.0);
             Console.WriteLine("Step 4: Tractor positioned at E=-10m, N=-80m, heading north at 8 km/h");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 5: Enable autosteer
             var autosteerController = orchestrator.AutosteerController;
             autosteerController.Enable();
             Console.WriteLine("Step 5: Autosteer enabled\n");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 6: Run simulation
             Console.WriteLine("Step 6: Running simulation...");
@@ -141,8 +136,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
                         $"XTE: {autosteerState.CrossTrackError:F3}m | " +
                         $"Speed: {simState.SpeedKph:F1} km/h");
                 }
-
-                if (visualMode) Thread.Sleep(50);
             }
 
             // Verify results
@@ -213,13 +206,11 @@ namespace AgOpenGPS.IntegrationTests.Tests
             var fieldController = orchestrator.FieldController;
             fieldController.CreateNewField("UTurnTestField", 39.0, -94.0);
             Console.WriteLine("Step 1: Field created");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 2: Add boundary
             var boundary = CreateRectangularBoundary(39.0, -94.0, 50, 100);
             fieldController.AddBoundary(boundary, isOuter: true);
             Console.WriteLine("Step 2: Boundary added (50m x 100m)");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 3: Create track
             var trackPointA = new TestPoint(-10, -50, 0);
@@ -227,7 +218,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
             fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 0);
             fieldController.SelectTrack(0);
             Console.WriteLine("Step 3: Track created at X=-10m, running north-south");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
@@ -239,13 +229,11 @@ namespace AgOpenGPS.IntegrationTests.Tests
             // Verify position was set correctly
             var initialState = simController.GetState();
             Console.WriteLine($"Step 4: Tractor positioned at E={initialState.Easting:F2}m, N={initialState.Northing:F2}m, heading north at 8 km/h");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 5: Enable autosteer
             var autosteerController = orchestrator.AutosteerController;
             autosteerController.Enable();
             Console.WriteLine("Step 5: Autosteer enabled");
-            if (visualMode) Thread.Sleep(300);
 
             // Step 6: Enable U-turn
             var uturnController = orchestrator.UTurnController;
@@ -264,8 +252,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
                     Console.WriteLine($"  Point {i}: E={pt.easting:F2}m, N={pt.northing:F2}m");
                 }
             }
-
-            if (visualMode) Thread.Sleep(300);
 
             // Step 7: Start path logging
             var pathLogger = orchestrator.PathLogger;
@@ -349,8 +335,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
                         $"InTurnArea: {isInTurnArea} | InBoundary: {isInBoundary} | YTBtnOn: {isYouTurnBtnOn} | " +
                         $"Phase: {youTurnPhase} | YTListCnt: {ytListCount} | DistToPattern: {distToTurnPattern:F2}m | TurnLinePts: {turnLineCount}");
                 }
-
-                if (visualMode) Thread.Sleep(50);
             }
 
             // Stop logging
