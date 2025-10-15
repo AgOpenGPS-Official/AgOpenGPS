@@ -91,7 +91,7 @@
             this.Padding = new System.Windows.Forms.Padding(8);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = string.Empty;
+            this.Text = "";
             this.TopMost = true;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
