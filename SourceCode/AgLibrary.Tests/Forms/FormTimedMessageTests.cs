@@ -66,10 +66,10 @@ namespace AgLibrary.Tests.Forms
         [Category("ConsolidatedForms")]
         public void FormTimedMessage_TimerIsConfigured()
         {
-            using (var form = new FormTimedMessage(TimeSpan.FromMilliseconds(2500), "Timer Test", "Testing timer configuration"))
+            using (var form = new FormTimedMessage(TimeSpan.FromSeconds(2.5), "Timer Test", "Testing timer configuration"))
             {
                 Assert.That(form, Is.Not.Null);
-                // Timer should be set to 2500ms, but we won't wait for it
+                // Timer should be set to 2.5 seconds, but we won't wait for it
                 // Just verify the form was created successfully
             }
         }
