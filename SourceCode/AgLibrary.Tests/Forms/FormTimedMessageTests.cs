@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AgLibrary.Forms;
 using NUnit.Framework;
@@ -23,21 +24,21 @@ namespace AgLibrary.Tests.Forms
         }
 
         /// <summary>
-        /// Test that FormTimedMessage can be instantiated.
+        /// Test that FormTimedMessage sets title and message text correctly.
         /// </summary>
         [Test]
         [Category("FormLaunch")]
         [Category("ConsolidatedForms")]
-        public void FormTimedMessage_CanInstantiate()
+        public void FormTimedMessage_SetsTextCorrectly()
         {
-            FormTimedMessage form = null;
-            Assert.DoesNotThrow(() =>
+            using (var form = new FormTimedMessage(TimeSpan.FromSeconds(5), "Test Title", "Test message"))
             {
-                form = new FormTimedMessage(TimeSpan.FromSeconds(5), "Test Title", "Test message");
-                Assert.That(form, Is.Not.Null);
-                Assert.That(form.Width, Is.GreaterThan(0));
-                form.Dispose();
-            });
+                var lblTitle = FindControlRecursive<Label>(form, "lblTitle");
+                var lblMessage = FindControlRecursive<Label>(form, "lblMessage");
+
+                Assert.That(lblTitle.Text, Is.EqualTo("Test Title"));
+                Assert.That(lblMessage.Text, Is.EqualTo("Test message"));
+            }
         }
 
         /// <summary>
@@ -57,21 +58,22 @@ namespace AgLibrary.Tests.Forms
             }
         }
 
-        /// <summary>
-        /// Test that FormTimedMessage timer is properly configured.
-        /// Note: This test does not wait for the timer to elapse.
-        /// </summary>
-        [Test]
-        [Category("FormLaunch")]
-        [Category("ConsolidatedForms")]
-        public void FormTimedMessage_TimerIsConfigured()
+        private T FindControlRecursive<T>(Control parent, string name) where T : Control
         {
-            using (var form = new FormTimedMessage(TimeSpan.FromSeconds(2.5), "Timer Test", "Testing timer configuration"))
+            foreach (Control control in parent.Controls)
             {
-                Assert.That(form, Is.Not.Null);
-                // Timer should be set to 2.5 seconds, but we won't wait for it
-                // Just verify the form was created successfully
+                if (control is T && control.Name == name)
+                {
+                    return control as T;
+                }
+
+                var found = FindControlRecursive<T>(control, name);
+                if (found != null)
+                {
+                    return found;
+                }
             }
+            return null;
         }
     }
 }
