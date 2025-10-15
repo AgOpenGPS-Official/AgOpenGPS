@@ -102,8 +102,8 @@ namespace AgOpenGPS
                 }
 
                 Console.WriteLine("\n=== Headless mode test PASSED ===");
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
+                Console.WriteLine("Exiting...");
+                System.Threading.Thread.Sleep(1000);
             }
             catch (Exception ex)
             {
@@ -117,8 +117,8 @@ namespace AgOpenGPS
                 }
 
                 Console.WriteLine("\n=== Headless mode test FAILED ===");
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
+                Console.WriteLine("Exiting with error...");
+                System.Threading.Thread.Sleep(1000);
                 Environment.Exit(1);
             }
         }

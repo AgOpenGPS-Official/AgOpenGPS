@@ -49,7 +49,10 @@ namespace AgOpenGPS
                 Properties.Settings.Default.Save();
             }
             GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(mf.AppModel.CurrentLatLon);
-            mf.worldGrid.checkZoomWorldGrid(geoCoord);
+            if (mf.worldGrid != null)
+            {
+                mf.worldGrid.checkZoomWorldGrid(geoCoord);
+            }
         }
 
     }
