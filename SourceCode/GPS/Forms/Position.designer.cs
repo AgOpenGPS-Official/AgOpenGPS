@@ -1298,8 +1298,11 @@ namespace AgOpenGPS
             
 
             //determine where the rigid vehicle hitch ends
-            hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
-            hitchPos.northing = pn.fix.northing + (Math.Cos(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
+            double hitchLengthFromPivot = tool.GetHitchLengthFromVehiclePivot();
+            double hitchHeading = tool.GetHitchHeadingFromVehiclePivot(hitchLengthFromPivot);
+            double hitchDistanceFromAntenna = hitchLengthFromPivot - vehicle.VehicleConfig.AntennaPivot;
+            hitchPos.easting = pn.fix.easting + (Math.Sin(hitchHeading) * hitchDistanceFromAntenna);
+            hitchPos.northing = pn.fix.northing + (Math.Cos(hitchHeading) * hitchDistanceFromAntenna);
 
             //tool attached via a trailing hitch
             if (tool.isToolTrailing)
@@ -1315,7 +1318,7 @@ namespace AgOpenGPS
                     }
 
                     ////the tool is seriously jacknifed or just starting out so just spring it back.
-                    over = Math.Abs(Math.PI - Math.Abs(Math.Abs(tankPos.heading - fixHeading) - Math.PI));
+                    over = Math.Abs(Math.PI - Math.Abs(Math.Abs(tankPos.heading - hitchHeading) - Math.PI));
 
                     if (over < 2.0 && startCounter > 50)
                     {
@@ -1326,14 +1329,14 @@ namespace AgOpenGPS
                     //criteria for a forced reset to put tool directly behind vehicle
                     if (over > 2.0 | startCounter < 51)
                     {
-                        tankPos.heading = fixHeading;
+                        tankPos.heading = hitchHeading;
                         tankPos.easting = hitchPos.easting + (Math.Sin(tankPos.heading) * (tool.tankTrailingHitchLength));
                         tankPos.northing = hitchPos.northing + (Math.Cos(tankPos.heading) * (tool.tankTrailingHitchLength));
                     }
                 }
                 else
                 {
-                    tankPos.heading = fixHeading;
+                    tankPos.heading = hitchHeading;
                     tankPos.easting = hitchPos.easting;
                     tankPos.northing = hitchPos.northing;
                 }
@@ -1372,11 +1375,11 @@ namespace AgOpenGPS
             //rigidly connected to vehicle
             else
             {
-                toolPivotPos.heading = fixHeading;
+                toolPivotPos.heading = hitchHeading;
                 toolPivotPos.easting = hitchPos.easting;
                 toolPivotPos.northing = hitchPos.northing;
 
-                toolPos.heading = fixHeading;
+                toolPos.heading = hitchHeading;
                 toolPos.easting = hitchPos.easting;
                 toolPos.northing = hitchPos.northing;
             }
