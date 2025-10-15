@@ -1271,7 +1271,7 @@ namespace AgOpenGPS
         }
 
         //all the hitch, pivot, section, trailing hitch, headings and fixes
-        private void CalculatePositionHeading()
+        internal void CalculatePositionHeading()
         {
             #region pivot hitch trail
 

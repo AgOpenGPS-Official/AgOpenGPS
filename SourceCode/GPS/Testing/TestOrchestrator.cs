@@ -50,6 +50,17 @@ namespace AgOpenGPS.Testing
             // Wait a moment for initialization to complete
             System.Threading.Thread.Sleep(100);
 
+            // CRITICAL: In headless mode with simulator, immediately set isFirstHeadingSet=true
+            // because the simulator provides known good IMU heading values. This prevents
+            // UpdateFixPosition from returning early before calculating heading from GPS position.
+            // ALSO set headingFromSource to "Fix" because LoadSettings() is not called in headless mode
+            // (FormGPS_Load event only fires when form is shown, which doesn't happen in headless).
+            if (headless)
+            {
+                formGPS.isFirstHeadingSet = true;
+                formGPS.headingFromSource = Properties.Settings.Default.setGPS_headingFromWhichSource;
+            }
+
             // Initialize all controllers with the FormGPS instance
             FieldController = new Controllers.FieldController(formGPS);
             SimulatorController = new Controllers.SimulatorController(formGPS);
@@ -83,8 +94,20 @@ namespace AgOpenGPS.Testing
             // the counter on each step (which is typically 50-100ms)
             formGPS.makeUTurnCounter++;
 
-            // Get current steer angle from the machine control
-            double steerAngle = formGPS.mc.actualSteerAngleDegrees;
+            // Get steer angle: use commanded angle from autosteer if active, otherwise use actual
+            // In headless mode with autosteer ON, use guidanceLineSteerAngle (commanded by autosteer)
+            // In headless mode with autosteer OFF, use actualSteerAngleDegrees (manual control)
+            double steerAngle;
+            if (formGPS.isBtnAutoSteerOn)
+            {
+                // Autosteer is commanding - use guidanceLineSteerAngle (in hundredths of degrees)
+                steerAngle = formGPS.guidanceLineSteerAngle / 100.0;
+            }
+            else
+            {
+                // Manual control - use the actual steer angle that was set
+                steerAngle = formGPS.mc.actualSteerAngleDegrees;
+            }
 
             // Advance the simulation
             formGPS.sim.DoSimTick(steerAngle);

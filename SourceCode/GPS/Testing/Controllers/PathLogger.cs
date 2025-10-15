@@ -90,7 +90,24 @@ namespace AgOpenGPS.Testing.Controllers
                 ToolWidth = mf.tool.width,
                 ToolOverlap = mf.tool.overlap,
                 ToolOffset = mf.tool.offset,
-                IsABValid = mf.ABLine.isABValid
+                IsABValid = mf.ABLine.isABValid,
+
+                // Additional debug data for diagnosing autosteer issues
+                HowManyPathsAway = mf.ABLine.howManyPathsAway,
+                DistanceFromRefLine = mf.ABLine.distanceFromRefLine,
+                DistanceFromCurrentLinePivot = mf.ABLine.distanceFromCurrentLinePivot,
+                RefLinePtA_E = (mf.trk.gArr.Count > 0 && mf.trk.idx >= 0) ? mf.trk.gArr[mf.trk.idx].ptA.easting : 0,
+                RefLinePtA_N = (mf.trk.gArr.Count > 0 && mf.trk.idx >= 0) ? mf.trk.gArr[mf.trk.idx].ptA.northing : 0,
+                RefLinePtB_E = (mf.trk.gArr.Count > 0 && mf.trk.idx >= 0) ? mf.trk.gArr[mf.trk.idx].ptB.easting : 0,
+                RefLinePtB_N = (mf.trk.gArr.Count > 0 && mf.trk.idx >= 0) ? mf.trk.gArr[mf.trk.idx].ptB.northing : 0,
+
+                // Heading calculation debug data
+                IsFirstHeadingSet = mf.isFirstHeadingSet,
+                GpsHeading = glm.toDegrees(mf.gpsHeading),
+                FixHeading = glm.toDegrees(mf.fixHeading),
+                ImuHeading = mf.ahrs.imuHeading,
+                SimHeadingTrue = glm.toDegrees(mf.sim.headingTrue),
+                HeadingSource = mf.headingFromSource
             };
 
             loggedPath.Add(pathPoint);
@@ -126,7 +143,20 @@ namespace AgOpenGPS.Testing.Controllers
                          $"\"toolW\": {pt.ToolWidth.ToString("F2", CultureInfo.InvariantCulture)}, " +
                          $"\"toolOvl\": {pt.ToolOverlap.ToString("F2", CultureInfo.InvariantCulture)}, " +
                          $"\"toolOfs\": {pt.ToolOffset.ToString("F2", CultureInfo.InvariantCulture)}, " +
-                         $"\"abValid\": {pt.IsABValid.ToString().ToLower()}}}");
+                         $"\"abValid\": {pt.IsABValid.ToString().ToLower()}, " +
+                         $"\"pathsAway\": {pt.HowManyPathsAway}, " +
+                         $"\"distFromRef\": {pt.DistanceFromRefLine.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"distFromCur\": {pt.DistanceFromCurrentLinePivot.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"refA_E\": {pt.RefLinePtA_E.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"refA_N\": {pt.RefLinePtA_N.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"refB_E\": {pt.RefLinePtB_E.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"refB_N\": {pt.RefLinePtB_N.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"isFirstHeadingSet\": {pt.IsFirstHeadingSet.ToString().ToLower()}, " +
+                         $"\"gpsHeading\": {pt.GpsHeading.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"fixHeading\": {pt.FixHeading.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"imuHeading\": {pt.ImuHeading.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"simHeadingTrue\": {pt.SimHeadingTrue.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"headingSource\": \"{pt.HeadingSource}\"}}");
                 if (i < loggedPath.Count - 1) sb.Append(",");
                 sb.AppendLine();
             }

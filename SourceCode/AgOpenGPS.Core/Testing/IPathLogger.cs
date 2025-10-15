@@ -41,5 +41,22 @@ namespace AgOpenGPS.Core.Testing
         public double ToolOverlap { get; set; }
         public double ToolOffset { get; set; }
         public bool IsABValid { get; set; }
+
+        // Additional debug data for diagnosing autosteer issues
+        public int HowManyPathsAway { get; set; }
+        public double DistanceFromRefLine { get; set; }
+        public double DistanceFromCurrentLinePivot { get; set; }
+        public double RefLinePtA_E { get; set; }
+        public double RefLinePtA_N { get; set; }
+        public double RefLinePtB_E { get; set; }
+        public double RefLinePtB_N { get; set; }
+
+        // Debug fields for heading calculation
+        public bool IsFirstHeadingSet { get; set; }
+        public double GpsHeading { get; set; }
+        public double FixHeading { get; set; }
+        public double ImuHeading { get; set; }
+        public double SimHeadingTrue { get; set; }
+        public string HeadingSource { get; set; }
     }
 }

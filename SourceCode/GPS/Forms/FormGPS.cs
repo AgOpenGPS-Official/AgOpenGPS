@@ -298,7 +298,7 @@ namespace AgOpenGPS
             }
         }
 
-        private bool isHeadless = false;
+        internal bool isHeadless = false;
 
         public FormGPS() : this(false)
         {
