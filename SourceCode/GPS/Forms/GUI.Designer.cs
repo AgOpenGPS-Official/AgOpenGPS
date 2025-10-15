@@ -772,6 +772,8 @@ namespace AgOpenGPS
 
         public void PanelUpdateRightAndBottom()
         {
+            if (isHeadless) return;
+
             if (isJobStarted)
             {
                 int tracksTotal = 0, tracksVisible = 0;
@@ -953,6 +955,8 @@ namespace AgOpenGPS
 
         private void PanelsAndOGLSize()
         {
+            if (isHeadless) return;
+
             if (!isJobStarted)
             {
                 panelBottom.Visible = false;

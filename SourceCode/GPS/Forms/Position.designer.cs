@@ -197,7 +197,7 @@ namespace AgOpenGPS
 
                         if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Dual" && ahrs.autoSwitchDualFixOn)
                         {
-                            lblSpeed.ForeColor = System.Drawing.Color.Red;
+                            if (!isHeadless) lblSpeed.ForeColor = System.Drawing.Color.Red;
                         }
 
                         distanceCurrentStepFixDisplay = glm.Distance(prevDistFix, pn.fix);
@@ -317,7 +317,7 @@ namespace AgOpenGPS
 
                                 isFirstHeadingSet = true;
                                 hasBeenFirstHeadingSet = true;
-                                TimedMessageBox(2000, "Direction Reset", "Forward is Set");
+                                if (!isHeadless) TimedMessageBox(2000, "Direction Reset", "Forward is Set");
                                 Log.EventWriter("Forward Is Set");
 
                                 lastGPS = pn.fix;
@@ -707,7 +707,7 @@ namespace AgOpenGPS
                     {
                         if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Dual" && ahrs.autoSwitchDualFixOn)
                         {
-                            lblSpeed.ForeColor = System.Drawing.Color.Green;
+                            if (!isHeadless) lblSpeed.ForeColor = System.Drawing.Color.Green;
                             isChangingDirection = false;
                         }
 
@@ -956,7 +956,7 @@ namespace AgOpenGPS
 
                 p_254.pgn[p_254.lineDistance] = unchecked((byte)distanceX2);
 
-                if (!timerSim.Enabled)
+                if (!timerSim.Enabled && !isHeadless)
                 {
                     if (isBtnAutoSteerOn && avgSpeed > vehicle.maxSteerSpeed)
                     {
@@ -973,7 +973,7 @@ namespace AgOpenGPS
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + vehicle.minSteerSpeed.ToString("N0") + " Kmh");
                             else
                                 TimedMessageBox(3000, "AutoSteer Disabled", "Below Minimum Safe Steering Speed: " + (vehicle.minSteerSpeed * 0.621371).ToString("N1") + " MPH");
-                            
+
                             Log.EventWriter("Steer Off, Below Min Steering Speed");
                         }
                     }
@@ -1187,8 +1187,11 @@ namespace AgOpenGPS
 
 
             //update main window
-            oglMain.MakeCurrent();
-            oglMain.Refresh();
+            if (!isHeadless)
+            {
+                oglMain.MakeCurrent();
+                oglMain.Refresh();
+            }
 
             //end of UppdateFixPosition
 
@@ -1711,7 +1714,7 @@ namespace AgOpenGPS
                     //set display accordingly
                     isDayTime = (DateTime.Now.Ticks < sunset.Ticks && DateTime.Now.Ticks > sunrise.Ticks);
 
-                    SetZoom();
+                    if (!isHeadless) SetZoom();
                 }
                 return;
             }
