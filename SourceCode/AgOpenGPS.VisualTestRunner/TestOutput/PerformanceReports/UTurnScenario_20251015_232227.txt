@@ -1,0 +1,10 @@
+AgOpenGPS Visual Test Performance Report
+Generated: 2025-10-15 23:22:27
+============================================================
+
+Test Name:          UTurnScenario
+Duration:           24.11s
+Average CPU Usage:  75.7%
+Peak Working Set:   18.7 MB
+Peak Private Mem:   16.3 MB
+Final Working Set:  18.7 MB
