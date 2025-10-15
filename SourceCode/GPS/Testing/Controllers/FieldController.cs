@@ -103,6 +103,9 @@ namespace AgOpenGPS.Testing.Controllers
             }
 
             mf.trk.idx = trackIndex;
+
+            // Enable U-turn buttons (required for U-turns to work)
+            mf.EnableYouTurnButtons();
         }
 
         public Field GetCurrentField()
