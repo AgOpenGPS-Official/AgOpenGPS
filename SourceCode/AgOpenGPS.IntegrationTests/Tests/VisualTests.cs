@@ -63,8 +63,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine("\n=== Visual Test: Tractor Following Track ===");
             Console.WriteLine("This test runs the same test as Test_TractorFollowingTrack");
             Console.WriteLine("but with OpenGL visualization enabled.");
-            Console.WriteLine("Waiting 10 seconds for UI to fully load...\n");
-            Thread.Sleep(10000);
+            Console.WriteLine("Waiting 5 seconds for UI to fully load...\n");
+            Thread.Sleep(5000);
 
             // Run the actual test logic
             RunTractorFollowingTrackTest(visualMode: true);
@@ -185,8 +185,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine("\n=== Visual Test: U-Turn Scenario ===");
             Console.WriteLine("This test runs the same test as Test_UTurnScenario");
             Console.WriteLine("but with OpenGL visualization enabled.");
-            Console.WriteLine("Waiting 10 seconds for UI to fully load...\n");
-            Thread.Sleep(10000);
+            Console.WriteLine("Waiting 5 seconds for UI to fully load...\n");
+            Thread.Sleep(5000);
 
             // Run the actual test logic
             RunUTurnScenarioTest(visualMode: true);

@@ -97,10 +97,10 @@ namespace AgOpenGPS.VisualTestRunner
                 orchestrator.Initialize(headless: false);
                 orchestrator.ShowForm();
 
-                Console.WriteLine("Waiting for UI to initialize (10 seconds)...");
+                Console.WriteLine("Waiting for UI to initialize (5 seconds)...");
 
                 // Pump Windows messages during the wait so UI can render
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 50; i++)
                 {
                     System.Windows.Forms.Application.DoEvents();
                     Thread.Sleep(100); // Sleep in small increments
