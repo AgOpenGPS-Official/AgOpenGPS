@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
@@ -356,6 +357,13 @@ namespace AgOpenGPS.IntegrationTests.Tests
             pathLogger.StopLogging();
             var path = pathLogger.GetLoggedPath();
             Console.WriteLine($"\nStep 9: Simulation ended - Logged {path.Count} path points over {elapsedTime:F1}s");
+
+            // Export path data to JSON for visualization
+            string testOutputDir = Path.Combine(Path.GetDirectoryName(typeof(VisualTests).Assembly.Location), "..", "..", "..", "TestOutput");
+            Directory.CreateDirectory(testOutputDir);
+            string jsonPath = Path.Combine(testOutputDir, $"uturn_test_{(visualMode ? "visual" : "headless")}.json");
+            pathLogger.ExportToJson(jsonPath);
+            Console.WriteLine($"Path data exported to: {jsonPath}");
 
             // Verify results
             Console.WriteLine("\n=== Verification ===");
