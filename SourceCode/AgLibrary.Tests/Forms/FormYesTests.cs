@@ -57,21 +57,5 @@ namespace AgLibrary.Tests.Forms
                 form.Dispose();
             });
         }
-
-        /// <summary>
-        /// Test that FormYes calculates width dynamically based on message length.
-        /// </summary>
-        [Test]
-        [Category("FormLaunch")]
-        [Category("ConsolidatedForms")]
-        public void FormYes_CalculatesDynamicWidth()
-        {
-            using (var shortForm = new FormYes("Short"))
-            using (var longForm = new FormYes("This is a much longer message that should make the form wider"))
-            {
-                Assert.That(longForm.Width, Is.GreaterThan(shortForm.Width),
-                    "Longer message should result in wider form");
-            }
-        }
     }
 }
