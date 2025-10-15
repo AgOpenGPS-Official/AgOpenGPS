@@ -38,6 +38,7 @@
             //
             // panel1
             //
+            this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnSerialOK);
@@ -51,6 +52,7 @@
             //
             // lblTitle
             //
+            this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(38, 2);
             this.lblTitle.Name = "lblTitle";
@@ -62,6 +64,7 @@
             //
             // lblMessage2
             //
+            this.lblMessage.AutoSize = true;
             this.lblMessage.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
             this.lblMessage.Location = new System.Drawing.Point(38, 52);
             this.lblMessage.Name = "lblMessage";
@@ -109,6 +112,7 @@
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Red;
             this.ClientSize = new System.Drawing.Size(598, 352);
             this.ControlBox = false;
