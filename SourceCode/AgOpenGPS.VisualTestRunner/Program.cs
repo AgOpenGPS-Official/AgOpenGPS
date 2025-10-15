@@ -139,43 +139,17 @@ namespace AgOpenGPS.VisualTestRunner
                     monitoringThread.IsBackground = true;
                     monitoringThread.Start();
 
-                    // Run the test on a background thread so main thread can pump messages
-                    bool testComplete = false;
-                    Exception testException = null;
-
-                    var testThread = new Thread(() =>
+                    // Run the test on the main thread (OpenGL context must be used from UI thread)
+                    // The test itself will call Application.DoEvents() through StepSimulation
+                    try
                     {
-                        try
-                        {
-                            testMethod.Invoke(testInstance, new object[] { true });
-                        }
-                        catch (Exception ex)
-                        {
-                            testException = ex;
-                        }
-                        finally
-                        {
-                            testComplete = true;
-                        }
-                    });
-                    testThread.IsBackground = true;
-                    testThread.Start();
-
-                    // Keep main thread alive and pump messages for UI updates
-                    while (!testComplete)
-                    {
-                        System.Windows.Forms.Application.DoEvents();
-                        Thread.Sleep(50); // Small sleep to avoid CPU spinning
+                        testMethod.Invoke(testInstance, new object[] { true });
                     }
-
-                    // Check if test threw an exception
-                    if (testException != null)
+                    finally
                     {
-                        throw testException;
+                        // Stop monitoring
+                        monitor.Stop();
                     }
-
-                    // Stop monitoring
-                    monitor.Stop();
                 }
                 else
                 {
