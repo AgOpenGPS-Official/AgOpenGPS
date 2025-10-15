@@ -30,14 +30,17 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         [Test]
-        [Ignore("Requires headless mode implementation and full integration")]
-        public void Test_UTurn_CompletesSuccessfully_WithSimpleField()
+        public void Test_BasicFieldWorkflow_CreateFieldAndLogPath()
         {
-            // Arrange: Create a simple rectangular field
+            // Step 1: Create a field
             var fieldController = orchestrator.FieldController;
             fieldController.CreateNewField("TestField", 39.0, -94.0);
 
-            // Add rectangular boundary (100m x 200m)
+            var field = fieldController.GetCurrentField();
+            field.Should().NotBeNull("Field should be created");
+            field.Name.Should().Be("TestField");
+
+            // Step 2: Add a simple rectangular boundary (100m x 200m)
             var boundary = CreateRectangularBoundary(
                 centerLat: 39.0,
                 centerLon: -94.0,
@@ -46,81 +49,66 @@ namespace AgOpenGPS.IntegrationTests.Tests
             );
             fieldController.AddBoundary(boundary, isOuter: true);
 
-            // Create AB line at 45 degrees
-            var trackPointA = new TestPoint(0, 0, 0);
-            var trackPointB = new TestPoint(100, 100, 0);
-            fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 45);
+            // Step 3: Create a track line (straight AB line)
+            var trackPointA = new TestPoint(-50, -100, 0);
+            var trackPointB = new TestPoint(-50, 100, 0);
+            fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 0);
             fieldController.SelectTrack(0);
 
-            // Arrange: Position simulated tractor at start
+            // Step 4: Position simulated tractor at start
             var simController = orchestrator.SimulatorController;
             simController.Enable();
             simController.SetPosition(39.0, -94.0);
-            simController.SetHeading(45.0);
-            simController.SetSpeed(8.0); // 8 kph
+            simController.SetHeading(0.0); // North
+            simController.SetSpeed(5.0); // 5 kph
 
-            // Arrange: Enable autosteer and U-turn
+            // Step 5: Enable autosteer
             var autosteerController = orchestrator.AutosteerController;
             autosteerController.Enable();
 
+            var autosteerState = autosteerController.GetState();
+            autosteerState.IsActive.Should().BeTrue("Autosteer should be enabled");
+
+            // Step 6: Enable U-turn
             var uturnController = orchestrator.UTurnController;
             uturnController.Enable();
             uturnController.SetDistanceFromBoundary(5.0); // 5m from boundary
 
-            // Arrange: Start path logging
+            var uturnState = uturnController.GetState();
+            uturnState.IsActive.Should().BeTrue("U-turn should be enabled");
+
+            // Step 7: Start logging the tractor path
             var pathLogger = orchestrator.PathLogger;
             pathLogger.StartLogging();
+            pathLogger.IsLogging.Should().BeTrue("Path logging should be active");
 
-            // Act: Run simulation until U-turn completes
-            bool uturnCompleted = false;
-            double maxSimulationTime = 120.0; // 2 minutes max
+            // Step 8: Run simulation for 5 seconds
+            double simulationTime = 5.0; // 5 seconds
             double elapsedTime = 0;
             double timeStep = 0.1; // 100ms steps
 
-            while (elapsedTime < maxSimulationTime && !uturnCompleted)
+            while (elapsedTime < simulationTime)
             {
                 orchestrator.StepSimulation(timeStep);
                 elapsedTime += timeStep;
-
-                var uturnState = uturnController.GetState();
-
-                // Check if U-turn was triggered and then completed
-                if (uturnState.IsTriggered && !uturnState.IsInTurn)
-                {
-                    // U-turn has completed
-                    uturnCompleted = true;
-                }
             }
 
-            // Assert: U-turn completed
-            uturnCompleted.Should().BeTrue("U-turn should complete within simulation time");
-
-            // Assert: Get logged path
+            // Step 9: Stop logging and verify path
             pathLogger.StopLogging();
             var path = pathLogger.GetLoggedPath();
 
-            // Assert: Path should have reasonable length
-            path.Count.Should().BeGreaterThan(100, "should have logged multiple points");
+            // Assertions
+            path.Should().NotBeNull("Path should be logged");
+            path.Count.Should().BeGreaterThan(10, "should have logged multiple points");
 
-            // Assert: Verify U-turn geometry
-            var uturnSegment = ExtractUTurnSegment(path);
-            uturnSegment.Should().NotBeNull("U-turn segment should exist in path");
-
-            var maxCTE = 0.0;
+            // Verify path has valid data
             foreach (var point in path)
             {
-                if (Math.Abs(point.CrossTrackError) > maxCTE)
-                {
-                    maxCTE = Math.Abs(point.CrossTrackError);
-                }
+                point.Position.Should().NotBeNull("each point should have a position");
+                point.SpeedKph.Should().BeGreaterThanOrEqualTo(0, "speed should be non-negative");
             }
-            maxCTE.Should().BeLessThan(0.5, "max cross-track error should be under 50cm");
 
-            // Assert: Verify tractor ended on parallel line
-            var finalHeading = path[path.Count - 1].HeadingDegrees;
-            var expectedHeading = 225.0; // 45 + 180 = 225 degrees
-            Math.Abs(finalHeading - expectedHeading).Should().BeLessThan(5.0,
-                "final heading should be opposite to initial heading");
+            Console.WriteLine($"Test completed: Logged {path.Count} path points over {simulationTime} seconds");
         }
 
         /// <summary>

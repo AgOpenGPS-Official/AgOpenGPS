@@ -956,7 +956,7 @@ namespace AgOpenGPS
 
                 p_254.pgn[p_254.lineDistance] = unchecked((byte)distanceX2);
 
-                if (!timerSim.Enabled && !isHeadless)
+                if (!isHeadless && timerSim != null && !timerSim.Enabled)
                 {
                     if (isBtnAutoSteerOn && avgSpeed > vehicle.maxSteerSpeed)
                     {
