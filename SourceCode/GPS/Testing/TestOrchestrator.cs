@@ -40,6 +40,10 @@ namespace AgOpenGPS.Testing
             // Load registry settings (required before creating FormGPS)
             RegistrySettings.Load();
 
+            // Auto-accept terms for testing to avoid dialog popup
+            Properties.Settings.Default.setDisplay_isTermsAccepted = true;
+            Properties.Settings.Default.Save();
+
             // Create FormGPS in headless mode
             formGPS = new FormGPS(headless);
 

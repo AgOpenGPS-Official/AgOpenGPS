@@ -109,21 +109,17 @@ namespace AgOpenGPS.IntegrationTests.Tests
             }
 
             Console.WriteLine("\n=== Visual Test Complete ===");
-            Console.WriteLine("The AgOpenGPS window will remain open.");
-            Console.WriteLine("Close the window or press Enter to end the test...");
+            Console.WriteLine("The AgOpenGPS window will remain open for 5 seconds.");
+            Console.WriteLine("You can close the window early if desired.");
 
-            // Keep window open until user closes it or presses Enter
+            // Keep window open for 5 more seconds for inspection
             var form = orchestrator.GetFormGPS();
-            while (form != null && !form.IsDisposed && Console.KeyAvailable == false)
+            int remainingSeconds = 5;
+            while (form != null && !form.IsDisposed && remainingSeconds > 0)
             {
                 System.Windows.Forms.Application.DoEvents();
-                Thread.Sleep(100);
-            }
-
-            // If Enter was pressed, consume it
-            if (Console.KeyAvailable)
-            {
-                Console.ReadLine();
+                Thread.Sleep(1000);
+                remainingSeconds--;
             }
         }
 
