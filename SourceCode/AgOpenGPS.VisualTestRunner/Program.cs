@@ -109,9 +109,8 @@ namespace AgOpenGPS.VisualTestRunner
                 // Run the appropriate test using reflection to access test methods
                 var testInstance = new VisualTests();
 
-                // Call Setup method
-                var setupMethod = typeof(VisualTests).GetMethod("Setup");
-                setupMethod?.Invoke(testInstance, null);
+                // Skip Setup - we've already initialized the orchestrator above
+                // The test needs to use our orchestrator, not create its own
 
                 // Get the private RunUTurnScenarioTest or RunTractorFollowingTrackTest method
                 MethodInfo testMethod = null;
@@ -129,6 +128,11 @@ namespace AgOpenGPS.VisualTestRunner
                 if (testMethod != null)
                 {
                     Console.WriteLine($"\nRunning {testName} test in visual mode...\n");
+
+                    // Inject our orchestrator into the test instance
+                    var orchestratorField = typeof(VisualTests).GetField("orchestrator",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    orchestratorField?.SetValue(testInstance, orchestrator);
 
                     // Start monitoring thread
                     var monitoringThread = new Thread(() => MonitorPerformance());
@@ -178,9 +182,7 @@ namespace AgOpenGPS.VisualTestRunner
                     Console.WriteLine($"Error: Test method not found for {testName}");
                 }
 
-                // Call Teardown
-                var teardownMethod = typeof(VisualTests).GetMethod("Teardown");
-                teardownMethod?.Invoke(testInstance, null);
+                // Skip Teardown - we'll handle orchestrator cleanup in finally block
 
                 // Display results
                 monitor.PrintSummary();
