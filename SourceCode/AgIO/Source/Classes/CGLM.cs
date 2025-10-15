@@ -5,13 +5,6 @@ namespace AgIO
 {
     public static class glm
     {
-        private const double DefaultZeroTolerance = 1e-6;
-
-        public static bool IsZero(double value, double tolerance = DefaultZeroTolerance)
-        {
-            return Math.Abs(value) <= tolerance;
-        }
-
         //Regex file expression
         public const string fileRegex = "(^(PRN|AUX|NUL|CON|COM[1-9]|LPT[1-9]|(\\.+)$)(\\..*)?$)|(([\\x00-\\x1f\\\\?*:\";‌​|/<>])+)|([\\.]+)";
 
