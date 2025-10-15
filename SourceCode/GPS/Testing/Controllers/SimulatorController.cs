@@ -55,7 +55,8 @@ namespace AgOpenGPS.Testing.Controllers
             mf.pn.fix.northing = northing;
 
             // Convert local coordinates to lat/lon
-            GeoCoord geoCoord = new GeoCoord(easting, northing);
+            // NOTE: GeoCoord constructor takes (northing, easting) - NOT (easting, northing)!
+            GeoCoord geoCoord = new GeoCoord(northing, easting);
             Wgs84 latLon = mf.AppModel.LocalPlane.ConvertGeoCoordToWgs84(geoCoord);
 
             mf.sim.CurrentLatLon = latLon;
@@ -63,15 +64,24 @@ namespace AgOpenGPS.Testing.Controllers
 
             Properties.Settings.Default.setGPS_SimLatitude = latLon.Latitude;
             Properties.Settings.Default.setGPS_SimLongitude = latLon.Longitude;
+
+            // Update position through the full processing pipeline
+            mf.sentenceCounter = 0; // Reset counter so system thinks we have valid GPS
+            mf.UpdateFixPosition();
         }
 
         public void SetHeading(double headingDegrees)
         {
             double headingRadians = headingDegrees * 0.0174533; // Convert degrees to radians
+
+            // Set heading in all relevant places
             mf.sim.headingTrue = headingRadians;
             mf.pn.headingTrue = headingDegrees;
             mf.pn.headingTrueDual = headingDegrees;
             mf.ahrs.imuHeading = headingDegrees;
+
+            // Also ensure fixHeading is set for direction detection
+            mf.fixHeading = headingRadians;
         }
 
         public void SetSpeed(double speedKph)

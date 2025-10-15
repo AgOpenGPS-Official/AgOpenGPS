@@ -58,11 +58,12 @@ namespace AgOpenGPS.IntegrationTests.Tests
             orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
             orchestrator.Initialize(headless: false);
             orchestrator.ShowForm();
-            Thread.Sleep(500);
 
             Console.WriteLine("\n=== Visual Test: Tractor Following Track ===");
             Console.WriteLine("This test runs the same test as Test_TractorFollowingTrack");
-            Console.WriteLine("but with OpenGL visualization enabled.\n");
+            Console.WriteLine("but with OpenGL visualization enabled.");
+            Console.WriteLine("Waiting 10 seconds for UI to fully load...\n");
+            Thread.Sleep(10000);
 
             // Run the actual test logic
             RunTractorFollowingTrackTest(visualMode: true);
@@ -186,11 +187,12 @@ namespace AgOpenGPS.IntegrationTests.Tests
             orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
             orchestrator.Initialize(headless: false);
             orchestrator.ShowForm();
-            Thread.Sleep(500);
 
             Console.WriteLine("\n=== Visual Test: U-Turn Scenario ===");
             Console.WriteLine("This test runs the same test as Test_UTurnScenario");
-            Console.WriteLine("but with OpenGL visualization enabled.\n");
+            Console.WriteLine("but with OpenGL visualization enabled.");
+            Console.WriteLine("Waiting 10 seconds for UI to fully load...\n");
+            Thread.Sleep(10000);
 
             // Run the actual test logic
             RunUTurnScenarioTest(visualMode: true);
@@ -232,7 +234,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
             simController.SetPositionLocal(-10, -45); // Start on track, near southern boundary
             simController.SetHeading(0.0); // Heading north
             simController.SetSpeed(8.0);
-            Console.WriteLine("Step 4: Tractor positioned at E=-10m, N=-45m, heading north at 8 km/h");
+
+            // Verify position was set correctly
+            var initialState = simController.GetState();
+            Console.WriteLine($"Step 4: Tractor positioned at E={initialState.Easting:F2}m, N={initialState.Northing:F2}m, heading north at 8 km/h");
             if (visualMode) Thread.Sleep(300);
 
             // Step 5: Enable autosteer
@@ -246,6 +251,19 @@ namespace AgOpenGPS.IntegrationTests.Tests
             uturnController.Enable();
             uturnController.SetDistanceFromBoundary(5.0);
             Console.WriteLine("Step 6: U-turn enabled (trigger at 5m from boundary)");
+
+            // Debug: Print turn line points
+            var formGPS_debug = orchestrator.GetFormGPS();
+            if (formGPS_debug.bnd.bndList.Count > 0 && formGPS_debug.bnd.bndList[0].turnLine.Count > 0)
+            {
+                Console.WriteLine($"Turn line has {formGPS_debug.bnd.bndList[0].turnLine.Count} points:");
+                for (int i = 0; i < Math.Min(5, formGPS_debug.bnd.bndList[0].turnLine.Count); i++)
+                {
+                    var pt = formGPS_debug.bnd.bndList[0].turnLine[i];
+                    Console.WriteLine($"  Point {i}: E={pt.easting:F2}m, N={pt.northing:F2}m");
+                }
+            }
+
             if (visualMode) Thread.Sleep(300);
 
             // Step 7: Start path logging
@@ -257,7 +275,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine("Step 8: Running simulation...");
             double maxSimulationTime = 60.0;
             double elapsedTime = 0;
-            double timeStep = visualMode ? 0.05 : 0.1;
+            double timeStep = 0.05; // Use same timestep for both modes to isolate timing issues
             int frameCount = 0;
 
             bool uturnTriggered = false;
@@ -265,8 +283,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
             double uturnTriggerTime = 0;
             double uturnCompletionTime = 0;
 
-            // Get FormGPS for debug info in visual mode
-            var formGPS = visualMode ? orchestrator.GetFormGPS() : null;
+            // Get FormGPS for debug info (needed in both visual and headless modes)
+            var formGPS = orchestrator.GetFormGPS();
 
             while (elapsedTime < maxSimulationTime)
             {
@@ -297,35 +315,38 @@ namespace AgOpenGPS.IntegrationTests.Tests
                     break;
                 }
 
-                // Print progress
-                int progressInterval = visualMode ? 40 : 50; // Every 2s in visual, 5s in headless
+                // Print progress with detailed debug info
+                int progressInterval = 100; // Every 5s (100 frames * 0.05s)
                 if (frameCount % progressInterval == 0)
                 {
                     var simState = simController.GetState();
                     var autosteerState = autosteerController.GetState();
 
-                    if (visualMode && formGPS != null)
-                    {
-                        // Show debug info in visual mode
-                        var pivotPos = new AgOpenGPS.vec3(simState.Easting, simState.Northing, 0);
-                        bool isInTurnArea = formGPS.bnd.IsPointInsideTurnArea(pivotPos) != -1;
-                        bool isYouTurnBtnOn = formGPS.yt.isYouTurnBtnOn;
-                        int turnLineCount = formGPS.bnd.bndList.Count > 0 ? formGPS.bnd.bndList[0].turnLine.Count : 0;
+                    // Show detailed debug info in both modes
+                    var pivotPos = new AgOpenGPS.vec3(simState.Easting, simState.Northing, 0);
+                    bool isInTurnArea = formGPS.bnd.IsPointInsideTurnArea(pivotPos) != -1;
+                    bool isYouTurnBtnOn = formGPS.yt.isYouTurnBtnOn;
+                    int turnLineCount = formGPS.bnd.bndList.Count > 0 ? formGPS.bnd.bndList[0].turnLine.Count : 0;
+                    int youTurnPhase = formGPS.yt.youTurnPhase;
+                    int ytListCount = formGPS.yt.ytList.Count;
 
-                        // Check if out of bounds (boundary goes from -50 to +50 N, -25 to +25 E)
-                        bool isInBoundary = formGPS.bnd.bndList.Count > 0 &&
-                            formGPS.bnd.bndList[0].fenceLineEar.IsPointInPolygon(new AgOpenGPS.vec2(simState.Easting, simState.Northing));
-
-                        Console.WriteLine($"  Time: {elapsedTime:F1}s | N={simState.Northing:F2}m | " +
-                            $"XTE: {autosteerState.CrossTrackError:F3}m | " +
-                            $"UTurn: {(uturnState.IsTriggered ? "ACTIVE" : "waiting")} | " +
-                            $"InTurnArea: {isInTurnArea} | InBoundary: {isInBoundary} | YTBtnOn: {isYouTurnBtnOn} | TurnLinePts: {turnLineCount}");
-                    }
-                    else
+                    // Calculate distance to turn pattern start (this is what triggers the U-turn)
+                    double distToTurnPattern = -1;
+                    if (ytListCount > 2)
                     {
-                        // Simple progress in headless mode
-                        Console.WriteLine($"  Time: {elapsedTime:F1}s - N={simState.Northing:F2}m, UTurn: {uturnState.IsTriggered}");
+                        var turnPatternStart = formGPS.yt.ytList[2];
+                        distToTurnPattern = AgOpenGPS.glm.Distance(turnPatternStart, pivotPos);
                     }
+
+                    // Check if in boundary (boundary goes from -50 to +50 N, -25 to +25 E)
+                    bool isInBoundary = formGPS.bnd.bndList.Count > 0 &&
+                        formGPS.bnd.bndList[0].fenceLineEar.IsPointInPolygon(new AgOpenGPS.vec2(simState.Easting, simState.Northing));
+
+                    Console.WriteLine($"  Time: {elapsedTime:F1}s | N={simState.Northing:F2}m | " +
+                        $"XTE: {autosteerState.CrossTrackError:F3}m | " +
+                        $"UTurn: {(uturnState.IsTriggered ? "ACTIVE" : "waiting")} | " +
+                        $"InTurnArea: {isInTurnArea} | InBoundary: {isInBoundary} | YTBtnOn: {isYouTurnBtnOn} | " +
+                        $"Phase: {youTurnPhase} | YTListCnt: {ytListCount} | DistToPattern: {distToTurnPattern:F2}m | TurnLinePts: {turnLineCount}");
                 }
 
                 if (visualMode) Thread.Sleep(50);

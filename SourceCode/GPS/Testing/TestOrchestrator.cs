@@ -77,6 +77,12 @@ namespace AgOpenGPS.Testing
             // The simulator works by setting stepDistance and then calling DoSimTick
             // which internally calls UpdateFixPosition()
 
+            // CRITICAL: Increment counters that are normally incremented by tmrWatchdog_tick
+            // The U-turn logic requires makeUTurnCounter >= 4 before it can build turns
+            // tmrWatchdog_tick fires every 125ms, so we simulate that by incrementing
+            // the counter on each step (which is typically 50-100ms)
+            formGPS.makeUTurnCounter++;
+
             // Get current steer angle from the machine control
             double steerAngle = formGPS.mc.actualSteerAngleDegrees;
 
