@@ -145,18 +145,33 @@ namespace AgOpenGPS
             if (mf.isFirstHeadingSet && !mf.tool.isToolFrontFixed)
             {
                 // Draw the rigid hitch
+                double hitchLengthFromPivot = mf.tool.GetHitchLengthFromVehiclePivot();
+                double hitchHeading = mf.tool.GetHitchHeadingFromVehiclePivot(hitchLengthFromPivot);
+                double hitchAngleOffset = hitchHeading - mf.fixHeading;
+                double sinOffset = Math.Sin(hitchAngleOffset);
+                double cosOffset = Math.Cos(hitchAngleOffset);
+
+                XyCoord TransformVertex(double lateral, double longitudinal)
+                {
+                    double x = lateral * cosOffset + longitudinal * sinOffset;
+                    double y = longitudinal * cosOffset - lateral * sinOffset;
+                    return new XyCoord(x, y);
+                }
+
                 XyCoord[] vertices;
                 if (!mf.tool.isToolRearFixed)
                 {
-                    vertices = new XyCoord[] {
-                        new XyCoord(0, mf.tool.hitchLength), new XyCoord(0, 0)
+                    vertices = new XyCoord[]
+                    {
+                        TransformVertex(0, hitchLengthFromPivot), TransformVertex(0, 0)
                     };
                 }
                 else
                 {
-                    vertices = new XyCoord[] {
-                        new XyCoord(-0.35, mf.tool.hitchLength), new XyCoord(-0.35, 0),
-                        new XyCoord( 0.35, mf.tool.hitchLength), new XyCoord( 0.35, 0)
+                    vertices = new XyCoord[]
+                    {
+                        TransformVertex(-0.35, hitchLengthFromPivot), TransformVertex(-0.35, 0),
+                        TransformVertex( 0.35, hitchLengthFromPivot), TransformVertex( 0.35, 0)
                     };
                 }
                 LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);

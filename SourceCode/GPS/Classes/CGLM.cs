@@ -9,6 +9,13 @@ namespace AgOpenGPS
 
     public static class glm
     {
+        private const double DefaultZeroTolerance = 1e-6;
+
+        public static bool IsZero(double value, double tolerance = DefaultZeroTolerance)
+        {
+            return Math.Abs(value) <= tolerance;
+        }
+
         public static bool InRangeBetweenAB(double start_x, double start_y, double end_x, double end_y,
           double point_x, double point_y)
         {
