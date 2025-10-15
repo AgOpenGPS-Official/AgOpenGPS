@@ -27,7 +27,7 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
-        public ApplicationCore AppCore { get; }
+        public ApplicationCore AppCore { get; private set; }
 
         public ApplicationModel AppModel => AppCore.AppModel;
         public ApplicationViewModel AppViewModel => AppCore.AppViewModel;
