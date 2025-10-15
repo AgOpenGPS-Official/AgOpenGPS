@@ -50,6 +50,10 @@ namespace AgOpenGPS.Testing
             // Wait a moment for initialization to complete
             System.Threading.Thread.Sleep(100);
 
+            // Reset simulation time to 0 after FormGPS initialization
+            formGPS.secondsSinceStart = 0;
+            currentSimulationTime = 0;
+
             // Initialize all controllers with the FormGPS instance
             FieldController = new Controllers.FieldController(formGPS);
             SimulatorController = new Controllers.SimulatorController(formGPS);
@@ -73,6 +77,9 @@ namespace AgOpenGPS.Testing
 
             currentSimulationTime += deltaTimeSeconds;
 
+            // Update FormGPS time tracking - required for ABLine validation
+            formGPS.secondsSinceStart = currentSimulationTime;
+
             // Step the simulator which will trigger FormGPS.UpdateFixPosition()
             // The simulator works by setting stepDistance and then calling DoSimTick
             // which internally calls UpdateFixPosition()
@@ -83,16 +90,19 @@ namespace AgOpenGPS.Testing
             // the counter on each step (which is typically 50-100ms)
             formGPS.makeUTurnCounter++;
 
-            // Get current steer angle from the machine control
-            double steerAngle = formGPS.mc.actualSteerAngleDegrees;
+            // CRITICAL: Use the DESIRED steer angle from autosteer, not the actual angle
+            // guidanceLineSteerAngle is in hundredths of degrees, so divide by 100
+            // In real hardware, this would be sent to the autosteer module which would
+            // then update actualSteerAngleDegrees, but in simulation we apply it directly
+            double desiredSteerAngle = formGPS.guidanceLineSteerAngle / 100.0;
 
-            // Advance the simulation
-            formGPS.sim.DoSimTick(steerAngle);
+            // Advance the simulation with the desired steer angle
+            formGPS.sim.DoSimTick(desiredSteerAngle);
 
             // If path logging is active, log the current state
             if (PathLogger != null && ((Controllers.PathLogger)PathLogger).IsLogging)
             {
-                PathLogger.LogCurrentState();
+                PathLogger.LogCurrentState(currentSimulationTime);
             }
 
             // Process UI events if in visual mode
