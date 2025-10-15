@@ -1,3 +1,4 @@
+using AgLibrary.Forms;
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
@@ -334,7 +335,7 @@ namespace AgOpenGPS
             }
             catch (Exception ex)
             {
-                FormDialog.Show(
+                FormYes.Show(
                     "UDP Server",
                     "Load Error: " + ex.Message,
                     MessageBoxButtons.OK);

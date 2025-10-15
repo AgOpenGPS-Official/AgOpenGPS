@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
@@ -1187,7 +1188,7 @@ namespace AgOpenGPS
 
         private void btnVehicleReset_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result3 = FormYes.Show(
                 "Reset This Page to Defaults",
                 "Are you Sure",
                 MessageBoxButtons.YesNo);

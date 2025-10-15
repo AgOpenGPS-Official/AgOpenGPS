@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using AgLibrary.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
 
@@ -86,7 +87,7 @@ namespace ModSim
 
         public void TimedMessageBox(int timeout, string title, string message)
         {
-            var form = new FormTimedMessage(timeout, title, message);
+            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(timeout), title, message);
             form.Show();
         }
 

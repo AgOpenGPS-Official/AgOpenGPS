@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using AgLibrary.Forms;
 using AgLibrary.Logging;
 using AgLibrary.Settings;
 using AgOpenGPS.Controls;
@@ -63,7 +64,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
             else
             {
-                var form = new FormTimedMessage(2000, gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
+                var form = new FormTimedMessage(TimeSpan.FromSeconds(2), gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
                 form.Show(this);
                 textBoxName.Enabled = false;
             }
@@ -88,7 +89,7 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (File.Exists(newProfilePath))
             {
-                var overwrite = FormDialog.Show(
+                var overwrite = FormYes.Show(
                     gStr.gsSaveAndReturn,
                     $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?",
                     MessageBoxButtons.OKCancel);
@@ -104,7 +105,7 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (existingProfileName.Equals(EmptyProfile))
             {
-                var confirmReset = FormDialog.Show(
+                var confirmReset = FormYes.Show(
                     "!! WARNING !!",
                     "This will reset all Tractor measurements and control, Are you Sure??",
                     MessageBoxButtons.OKCancel);
@@ -161,7 +162,7 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 Log.EventWriter($"Error loading profile {existingProfileName}.xml ({result})");
 
-                FormDialog.Show(
+                FormYes.Show(
                     gStr.gsError,
                     "Error loading profile " + existingProfileName + ".xml\n\nResult: " + result,
                     MessageBoxButtons.OK);

@@ -1,3 +1,4 @@
+using AgLibrary.Forms;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
@@ -426,7 +427,7 @@ namespace AgOpenGPS
             if (mf.bnd.bndList.Count > 0)
             {
                 // Show custom confirmation dialog for boundary deletion
-                DialogResult result3 = FormDialog.Show(
+                DialogResult result3 = FormYes.Show(
                     gStr.gsDeleteForSure,
                     gStr.gsDeleteBoundaryMapping,
                     MessageBoxButtons.YesNo);

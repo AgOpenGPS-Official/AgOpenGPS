@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgLibrary.Forms;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace AgOpenGPS.Forms.Profiles
             string profileName = listViewProfiles.SelectedItems[0].Text;
             if (RegistrySettings.vehicleFileName != profileName)
             {
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormYes.Show(
                     gStr.gsSaveAndReturn,
                     $"Delete {profileName}.xml ?",
                     MessageBoxButtons.YesNo);
@@ -78,7 +79,7 @@ namespace AgOpenGPS.Forms.Profiles
                 if (listViewProfiles.SelectedItems.Count <= 0) return;
 
                 string profileName = listViewProfiles.SelectedItems[0].Text;
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormYes.Show(
                     gStr.gsSaveAndReturn,
                     $"Load {profileName}.xml ?",
                     MessageBoxButtons.YesNo);
@@ -103,7 +104,7 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 Log.EventWriter($"Error loading profile {profileName}.xml ({result})");
 
-                FormDialog.Show(
+                FormYes.Show(
                     gStr.gsError,
                     $"Error loading profile {profileName}.xml\n\nResult: {result}",
                     MessageBoxButtons.OK);

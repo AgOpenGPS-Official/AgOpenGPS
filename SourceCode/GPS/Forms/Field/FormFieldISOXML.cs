@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core;
 using AgOpenGPS.Core.Models;
@@ -206,7 +207,7 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 Log.EventWriter("Failed to create new field: " + ex);
-                FormDialog.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
+                FormYes.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
                 return;
             }
 
@@ -254,7 +255,7 @@ namespace AgOpenGPS
 
             if (Directory.Exists(directoryPath))
             {
-                FormDialog.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, MessageBoxButtons.OK);
+                FormYes.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, MessageBoxButtons.OK);
                 mf.currentFieldDirectory = "";
                 return;
             }

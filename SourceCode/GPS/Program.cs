@@ -1,3 +1,4 @@
+using AgLibrary.Forms;
 using AgOpenGPS.Forms;
 using System;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace AgOpenGPS
             }
             else
             {
-                FormDialog.Show(
+                FormYes.Show(
                     "Warning",
                     "AgOpenGPS is Already Running",
                     MessageBoxButtons.OK);

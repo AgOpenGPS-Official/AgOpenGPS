@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Core.Translations;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace AgOpenGPS.Forms.Pickers
 
             if (lvLines.Items.Count == 0)
             {
-                FormDialog.Show(
+                FormYes.Show(
                     "No Recorded Paths",
                     "Create A Path First",
                     MessageBoxButtons.OK);
@@ -131,7 +132,7 @@ namespace AgOpenGPS.Forms.Pickers
                 dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, selectedRecord + ".rec");
 
                 // Ask confirmation before deleting the file
-                DialogResult result3 = FormDialog.Show(
+                DialogResult result3 = FormYes.Show(
                     gStr.gsDeleteForSure,
                     dir2Delete,
                     MessageBoxButtons.YesNo);

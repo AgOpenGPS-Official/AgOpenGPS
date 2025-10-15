@@ -3,12 +3,14 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Accord.Imaging" Version="3.8.0" />
     <PackageReference Include="Accord.Video.DirectShow" Version="3.8.0" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

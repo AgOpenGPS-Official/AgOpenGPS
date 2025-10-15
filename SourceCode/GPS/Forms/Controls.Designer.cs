@@ -1,5 +1,6 @@
 //Please, if you use this, share the improvements
 
+using AgLibrary.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1363,7 +1364,7 @@ namespace AgOpenGPS
                 RegistrySettings.Save(RegKeys.workingDirectory, fbd.SelectedPath);
 
                 // Inform user that app needs to restart
-                FormDialog.Show("Restart Required",
+                FormYes.Show("Restart Required",
                     gStr.gsProgramWillExitPleaseRestart,
                     MessageBoxButtons.OK);
 
@@ -1433,12 +1434,12 @@ namespace AgOpenGPS
             if (isJobStarted)
             {
                 // Show message if field is still open
-                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
+                FormYes.Show("Warning", gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
             }
             else
             {
                 // Ask user for confirmation before resetting everything
-                DialogResult result2 = FormDialog.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
+                DialogResult result2 = FormYes.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
 
                 if (result2 == DialogResult.OK)
                 {
@@ -1446,7 +1447,7 @@ namespace AgOpenGPS
                     RegistrySettings.Reset();
 
                     // Notify user and close app
-                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, MessageBoxButtons.OK);
+                    FormYes.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, MessageBoxButtons.OK);
                     Close();
                 }
             }
@@ -1843,7 +1844,7 @@ namespace AgOpenGPS
             {
                 if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
                 {
-                    DialogResult result3 = FormDialog.Show(
+                    DialogResult result3 = FormYes.Show(
                         gStr.gsDeleteAllContoursAndSections,
                         gStr.gsDeleteForSure,
                         MessageBoxButtons.YesNo

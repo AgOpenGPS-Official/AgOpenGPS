@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿using AgLibrary.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
@@ -86,7 +87,7 @@ namespace AgOpenGPS
                             else
                             {
                                 // Show error for incomplete file
-                                FormDialog.Show(gStr.gsFileError,
+                                FormYes.Show(gStr.gsFileError,
                                     fieldDirectory + " is Damaged, Please Delete This Field",
                                     MessageBoxButtons.OK);
 
@@ -97,7 +98,7 @@ namespace AgOpenGPS
                         catch (Exception ex)
                         {
                             // Show error for invalid file content
-                            FormDialog.Show(gStr.gsFileError,
+                            FormYes.Show(gStr.gsFileError,
                                 fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken",
                                 MessageBoxButtons.OK);
 
@@ -201,7 +202,7 @@ namespace AgOpenGPS
                     fileList.Add("Error");
 
                     // Show error about missing Boundary.txt
-                    FormDialog.Show(gStr.gsFileError,
+                    FormYes.Show(gStr.gsFileError,
                         fieldDirectory + " is Damaged, Missing Boundary.Txt \r\n Delete Field or Fix",
                         MessageBoxButtons.OK);
 
@@ -306,7 +307,7 @@ namespace AgOpenGPS
             if (Directory.Exists(directoryName))
             {
                 // Show message that the directory already exists
-                FormDialog.Show(gStr.gsDirectoryExists,
+                FormYes.Show(gStr.gsDirectoryExists,
                     gStr.gsChooseADifferentName,
                     MessageBoxButtons.OK);
 
@@ -606,7 +607,7 @@ namespace AgOpenGPS
                     lvLines.SelectedItems[0].SubItems[2].Text == "Error")
                 {
                     // Show a custom dialog for damaged field warning
-                    FormDialog.Show(gStr.gsFileError,
+                    FormYes.Show(gStr.gsFileError,
                         "This Field is Damaged, Please Delete \r\n ALREADY TOLD YOU THAT :)",
                         MessageBoxButtons.OK);
                 }

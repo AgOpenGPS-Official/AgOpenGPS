@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgLibrary.Forms;
 using AgLibrary.Logging;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Controls;
@@ -1280,7 +1281,7 @@ namespace AgOpenGPS
         //message box pops up with info then goes away
         public void TimedMessageBox(int timeout, string s1, string s2)
         {
-            FormTimedMessage form = new FormTimedMessage(timeout, s1, s2);
+            FormTimedMessage form = new FormTimedMessage(TimeSpan.FromMilliseconds(timeout), s1, s2);
             form.Show(this);
             this.Activate();
         }
