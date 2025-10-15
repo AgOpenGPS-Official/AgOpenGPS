@@ -35,6 +35,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
         /// </summary>
         [Test]
         [Explicit("Run manually to visualize - opens UI window")]
+        [Apartment(System.Threading.ApartmentState.STA)]
         public void Visual_Test_TractorFollowingTrack()
         {
             Console.WriteLine("\n=== Visual Test: Tractor Following Track ===");
@@ -109,18 +110,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
             }
 
             Console.WriteLine("\n=== Visual Test Complete ===");
-            Console.WriteLine("The AgOpenGPS window will remain open for 5 seconds.");
-            Console.WriteLine("You can close the window early if desired.");
-
-            // Keep window open for 5 more seconds for inspection
-            var form = orchestrator.GetFormGPS();
-            int remainingSeconds = 5;
-            while (form != null && !form.IsDisposed && remainingSeconds > 0)
-            {
-                System.Windows.Forms.Application.DoEvents();
-                Thread.Sleep(1000);
-                remainingSeconds--;
-            }
         }
 
         /// <summary>
@@ -129,6 +118,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
         /// </summary>
         [Test]
         [Explicit("Run manually to visualize - opens UI window")]
+        [Apartment(System.Threading.ApartmentState.STA)]
         public void Visual_Test_UTurnScenario()
         {
             Console.WriteLine("\n=== Visual Test: U-Turn Scenario ===");
@@ -224,24 +214,9 @@ namespace AgOpenGPS.IntegrationTests.Tests
             if (!uturnTriggered)
             {
                 Console.WriteLine("\n*** WARNING: U-turn never triggered - this is the known issue! ***");
-                Console.WriteLine("You can now inspect the FormGPS window to see why.");
             }
 
             Console.WriteLine("\n=== Visual Test Complete ===");
-            Console.WriteLine("The AgOpenGPS window will remain open.");
-            Console.WriteLine("Close the window or press Enter to end the test...");
-
-            var form = orchestrator.GetFormGPS();
-            while (form != null && !form.IsDisposed && Console.KeyAvailable == false)
-            {
-                System.Windows.Forms.Application.DoEvents();
-                Thread.Sleep(100);
-            }
-
-            if (Console.KeyAvailable)
-            {
-                Console.ReadLine();
-            }
         }
 
         private System.Collections.Generic.List<TestPoint> CreateRectangularBoundary(

@@ -142,10 +142,17 @@ namespace AgOpenGPS.Testing
             PathLogger = null;
 
             // Close FormGPS if needed
-            // Note: In headless mode, there's no window to close
-            if (formGPS != null && !isHeadless)
+            // Dispose directly to bypass all the shutdown dialogs and delays
+            if (formGPS != null)
             {
-                formGPS.Close();
+                try
+                {
+                    if (!formGPS.IsDisposed)
+                    {
+                        formGPS.Dispose();
+                    }
+                }
+                catch { }
             }
 
             formGPS = null;
