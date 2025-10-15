@@ -75,7 +75,22 @@ namespace AgOpenGPS.Testing.Controllers
                 IsAutosteerActive = mf.isBtnAutoSteerOn,
                 IsInUTurn = mf.yt.isYouTurnTriggered,
                 CrossTrackError = mf.guidanceLineDistanceOff / 1000.0, // Convert mm to meters
-                SteerAngleDegrees = mf.mc.actualSteerAngleDegrees
+                SteerAngleDegrees = mf.mc.actualSteerAngleDegrees,
+
+                // Debug input data for XTE calculation
+                PivotEasting = mf.pivotAxlePos.easting,
+                PivotNorthing = mf.pivotAxlePos.northing,
+                PivotHeading = mf.pivotAxlePos.heading,
+                CurrentLinePtA_E = mf.ABLine.currentLinePtA.easting,
+                CurrentLinePtA_N = mf.ABLine.currentLinePtA.northing,
+                CurrentLinePtB_E = mf.ABLine.currentLinePtB.easting,
+                CurrentLinePtB_N = mf.ABLine.currentLinePtB.northing,
+                ABLineHeading = mf.ABLine.abHeading,
+                IsHeadingSameWay = mf.ABLine.isHeadingSameWay,
+                ToolWidth = mf.tool.width,
+                ToolOverlap = mf.tool.overlap,
+                ToolOffset = mf.tool.offset,
+                IsABValid = mf.ABLine.isABValid
             };
 
             loggedPath.Add(pathPoint);
@@ -91,10 +106,27 @@ namespace AgOpenGPS.Testing.Controllers
             for (int i = 0; i < loggedPath.Count; i++)
             {
                 var pt = loggedPath[i];
-                sb.Append($"    {{\"t\": {pt.Timestamp.ToString("F2", CultureInfo.InvariantCulture)}, \"e\": {pt.Easting.ToString("F2", CultureInfo.InvariantCulture)}, \"n\": {pt.Northing.ToString("F2", CultureInfo.InvariantCulture)}, " +
-                         $"\"heading\": {pt.HeadingDegrees.ToString("F2", CultureInfo.InvariantCulture)}, \"speed\": {pt.SpeedKph.ToString("F2", CultureInfo.InvariantCulture)}, " +
-                         $"\"xte\": {pt.CrossTrackError.ToString("F3", CultureInfo.InvariantCulture)}, \"autosteer\": {pt.IsAutosteerActive.ToString().ToLower()}, " +
-                         $"\"uturn\": {pt.IsInUTurn.ToString().ToLower()}}}");
+                sb.Append($"    {{\"t\": {pt.Timestamp.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"e\": {pt.Easting.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"n\": {pt.Northing.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"heading\": {pt.HeadingDegrees.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"speed\": {pt.SpeedKph.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"xte\": {pt.CrossTrackError.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"autosteer\": {pt.IsAutosteerActive.ToString().ToLower()}, " +
+                         $"\"uturn\": {pt.IsInUTurn.ToString().ToLower()}, " +
+                         $"\"pivotE\": {pt.PivotEasting.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"pivotN\": {pt.PivotNorthing.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"pivotHeading\": {pt.PivotHeading.ToString("F4", CultureInfo.InvariantCulture)}, " +
+                         $"\"lineA_E\": {pt.CurrentLinePtA_E.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"lineA_N\": {pt.CurrentLinePtA_N.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"lineB_E\": {pt.CurrentLinePtB_E.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"lineB_N\": {pt.CurrentLinePtB_N.ToString("F3", CultureInfo.InvariantCulture)}, " +
+                         $"\"abHeading\": {pt.ABLineHeading.ToString("F4", CultureInfo.InvariantCulture)}, " +
+                         $"\"sameway\": {pt.IsHeadingSameWay.ToString().ToLower()}, " +
+                         $"\"toolW\": {pt.ToolWidth.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"toolOvl\": {pt.ToolOverlap.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"toolOfs\": {pt.ToolOffset.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"abValid\": {pt.IsABValid.ToString().ToLower()}}}");
                 if (i < loggedPath.Count - 1) sb.Append(",");
                 sb.AppendLine();
             }
