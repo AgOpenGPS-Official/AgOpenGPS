@@ -33,7 +33,7 @@ namespace AgOpenGPS.Testing.Controllers
             }
         }
 
-        public void AddBoundary(List<vec3> boundaryPoints, bool isOuter = true)
+        public void AddBoundary(List<TestPoint> boundaryPoints, bool isOuter = true)
         {
             if (!IsFieldOpen)
             {
@@ -52,10 +52,10 @@ namespace AgOpenGPS.Testing.Controllers
                 isOuter = isOuter
             };
 
-            // Add all the points
+            // Add all the points (convert TestPoint to vec3)
             foreach (var point in boundaryPoints)
             {
-                bndList.fenceLineEar.Add(point);
+                bndList.fenceLineEar.Add(new vec3(point.Easting, point.Northing, point.Heading));
             }
 
             // Calculate area (simplified)
@@ -65,7 +65,7 @@ namespace AgOpenGPS.Testing.Controllers
             mf.bnd.bndList.Add(bndList);
         }
 
-        public void CreateTrack(vec3 pointA, vec3 pointB, double headingDegrees)
+        public void CreateTrack(TestPoint pointA, TestPoint pointB, double headingDegrees)
         {
             if (!IsFieldOpen)
             {
@@ -80,13 +80,13 @@ namespace AgOpenGPS.Testing.Controllers
                 isVisible = true
             };
 
-            // Set the track points
-            track.ptA = pointA;
-            track.ptB = pointB;
+            // Set the track points (convert TestPoint to vec3)
+            track.ptA = new vec3(pointA.Easting, pointA.Northing, pointA.Heading);
+            track.ptB = new vec3(pointB.Easting, pointB.Northing, pointB.Heading);
 
             // Calculate the heading
-            double dx = pointB.easting - pointA.easting;
-            double dy = pointB.northing - pointA.northing;
+            double dx = pointB.Easting - pointA.Easting;
+            double dy = pointB.Northing - pointA.Northing;
             track.heading = Math.Atan2(dx, dy);
 
             // Add to track array

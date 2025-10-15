@@ -4,6 +4,7 @@ using NUnit.Framework;
 using FluentAssertions;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Testing;
+using AgOpenGPS.Testing;
 
 namespace AgOpenGPS.IntegrationTests.Tests
 {
@@ -19,9 +20,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
         [SetUp]
         public void Setup()
         {
-            // Note: Requires headless mode support in FormGPS
             orchestrator = new TestOrchestrator();
-            // orchestrator.Initialize(headless: true);
+            orchestrator.Initialize(headless: true);
         }
 
         [TearDown]
@@ -48,8 +48,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
             fieldController.AddBoundary(boundary, isOuter: true);
 
             // Create AB line at 45 degrees
-            var trackPointA = new vec3(0, 0, 0);
-            var trackPointB = new vec3(100, 100, 0);
+            var trackPointA = new TestPoint(0, 0, 0);
+            var trackPointB = new TestPoint(100, 100, 0);
             fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 45);
             fieldController.SelectTrack(0);
 
@@ -127,22 +127,22 @@ namespace AgOpenGPS.IntegrationTests.Tests
         /// <summary>
         /// Helper to create a rectangular boundary centered at a lat/lon
         /// </summary>
-        private List<vec3> CreateRectangularBoundary(
+        private List<TestPoint> CreateRectangularBoundary(
             double centerLat, double centerLon,
             double widthMeters, double lengthMeters)
         {
             // This is a simplified version - would need proper coordinate conversion
-            var boundary = new List<vec3>();
+            var boundary = new List<TestPoint>();
 
             // For testing purposes, create a simple rectangle in local coordinates
             double halfWidth = widthMeters / 2.0;
             double halfLength = lengthMeters / 2.0;
 
-            boundary.Add(new vec3(-halfWidth, -halfLength, 0));
-            boundary.Add(new vec3(halfWidth, -halfLength, 0));
-            boundary.Add(new vec3(halfWidth, halfLength, 0));
-            boundary.Add(new vec3(-halfWidth, halfLength, 0));
-            boundary.Add(new vec3(-halfWidth, -halfLength, 0)); // Close the loop
+            boundary.Add(new TestPoint(-halfWidth, -halfLength, 0));
+            boundary.Add(new TestPoint(halfWidth, -halfLength, 0));
+            boundary.Add(new TestPoint(halfWidth, halfLength, 0));
+            boundary.Add(new TestPoint(-halfWidth, halfLength, 0));
+            boundary.Add(new TestPoint(-halfWidth, -halfLength, 0)); // Close the loop
 
             return boundary;
         }

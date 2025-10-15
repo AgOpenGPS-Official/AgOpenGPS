@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using FluentAssertions;
 using AgOpenGPS.Core.Testing;
+using AgOpenGPS.Testing;
 
 namespace AgOpenGPS.IntegrationTests.Tests
 {
@@ -15,9 +16,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
         [SetUp]
         public void Setup()
         {
-            // Note: This will need headless mode support in FormGPS to work properly
             orchestrator = new TestOrchestrator();
-            // orchestrator.Initialize(headless: true);
+            orchestrator.Initialize(headless: true);
         }
 
         [TearDown]
@@ -27,7 +27,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         [Test]
-        [Ignore("Requires headless mode implementation")]
         public void Test_Simulator_SetPosition()
         {
             // Arrange
@@ -47,7 +46,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         [Test]
-        [Ignore("Requires headless mode implementation")]
         public void Test_Simulator_SetHeading()
         {
             // Arrange
@@ -66,7 +64,6 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         [Test]
-        [Ignore("Requires headless mode implementation")]
         public void Test_Simulator_SetSpeed()
         {
             // Arrange
