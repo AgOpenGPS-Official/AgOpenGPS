@@ -1,4 +1,3 @@
-using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -346,6 +345,7 @@ namespace AgOpenGPS
             mf.font.DrawText3D(desPtA.easting, desPtA.northing, "&A", mf.camHeading);
             mf.font.DrawText3D(desPtB.easting, desPtB.northing, "&B", mf.camHeading);
         }
+
         public void DrawABLines()
         {
             //Draw AB Points
