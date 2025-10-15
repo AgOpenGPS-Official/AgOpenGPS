@@ -483,6 +483,3 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-
-# Test output artifacts
-TestOutput/

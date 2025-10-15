@@ -9,8 +9,7 @@ namespace AgOpenGPS.Core.Testing
         void StopLogging();
         List<PathPoint> GetLoggedPath();
         void ClearLog();
-        void LogCurrentState(double simulationTime);
-        void ExportToJson(string filePath);
+        void LogCurrentState();
         bool IsLogging { get; }
     }
 
