@@ -41,8 +41,8 @@ namespace AgOpenGPS.Testing
             RegistrySettings.Load();
 
             // Auto-accept terms for testing to avoid dialog popup
+            // Set in-memory only (don't save to disk) to avoid changing user's settings
             Properties.Settings.Default.setDisplay_isTermsAccepted = true;
-            Properties.Settings.Default.Save();
 
             // Create FormGPS in headless mode
             formGPS = new FormGPS(headless);
