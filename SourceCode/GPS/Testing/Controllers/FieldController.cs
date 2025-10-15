@@ -48,10 +48,24 @@ namespace AgOpenGPS.Testing.Controllers
             // Create a new boundary list
             CBoundaryList bndList = new CBoundaryList();
 
-            // Add all the points (convert TestPoint to vec2 for fence line)
-            foreach (var point in boundaryPoints)
+            // Add all the points to both fenceLine (vec3 with heading) and fenceLineEar (vec2)
+            for (int i = 0; i < boundaryPoints.Count; i++)
             {
+                var point = boundaryPoints[i];
+
+                // Add to fenceLineEar (vec2 - used for polygon tests)
                 bndList.fenceLineEar.Add(new vec2(point.Easting, point.Northing));
+
+                // Add to fenceLine (vec3 with heading - used for turn line generation)
+                // Calculate heading from this point to next point
+                int nextIdx = (i + 1) % boundaryPoints.Count;
+                var nextPoint = boundaryPoints[nextIdx];
+                double dx = nextPoint.Easting - point.Easting;
+                double dy = nextPoint.Northing - point.Northing;
+                double heading = Math.Atan2(dx, dy);
+                if (heading < 0) heading += glm.twoPI;
+
+                bndList.fenceLine.Add(new vec3(point.Easting, point.Northing, heading));
             }
 
             // Calculate area
@@ -60,6 +74,10 @@ namespace AgOpenGPS.Testing.Controllers
 
             // Add to the boundary manager
             mf.bnd.bndList.Add(bndList);
+
+            // Build turn lines (U-turn areas) from the boundaries
+            // This is critical - without this, U-turn triggering will never work
+            mf.bnd.BuildTurnLines();
         }
 
         public void CreateTrack(TestPoint pointA, TestPoint pointB, double headingDegrees)
