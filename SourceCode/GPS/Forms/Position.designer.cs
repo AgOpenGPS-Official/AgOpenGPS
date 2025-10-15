@@ -1298,8 +1298,9 @@ namespace AgOpenGPS
             
 
             //determine where the rigid vehicle hitch ends
-            hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
-            hitchPos.northing = pn.fix.northing + (Math.Cos(fixHeading) * (tool.hitchLength - vehicle.VehicleConfig.AntennaPivot));
+            double hitchLengthFromPivot = tool.GetHitchLengthFromVehiclePivot();
+            hitchPos.easting = pn.fix.easting + (Math.Sin(fixHeading) * (hitchLengthFromPivot - vehicle.VehicleConfig.AntennaPivot));
+            hitchPos.northing = pn.fix.northing + (Math.Cos(fixHeading) * (hitchLengthFromPivot - vehicle.VehicleConfig.AntennaPivot));
 
             //tool attached via a trailing hitch
             if (tool.isToolTrailing)

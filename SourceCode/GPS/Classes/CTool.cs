@@ -122,6 +122,23 @@ namespace AgOpenGPS
             isDisplayTramControl = Properties.Settings.Default.setTool_isDisplayTramControl;
         }
 
+        public double GetHitchLengthFromVehiclePivot()
+        {
+            double pivotToHitch = hitchLength;
+
+            if (mf.vehicle.VehicleConfig.Type == VehicleType.Articulated && !glm.IsZero(pivotToHitch))
+            {
+                double halfWheelbase = 0.5 * mf.vehicle.VehicleConfig.Wheelbase;
+
+                if (!glm.IsZero(halfWheelbase))
+                {
+                    pivotToHitch += Math.Sign(pivotToHitch) * halfWheelbase;
+                }
+            }
+
+            return pivotToHitch;
+        }
+
         private void DrawHitch(double trailingTank)
         {
             XyCoord[] vertices = {
@@ -155,8 +172,11 @@ namespace AgOpenGPS
             GL.PushMatrix();
 
             //translate down to the hitch pin
-            GL.Translate(Math.Sin(mf.fixHeading) * (hitchLength),
-                            Math.Cos(mf.fixHeading) * (hitchLength), 0);
+            double pivotToHitchLength = GetHitchLengthFromVehiclePivot();
+            GL.Translate(
+                Math.Sin(mf.fixHeading) * pivotToHitchLength,
+                Math.Cos(mf.fixHeading) * pivotToHitchLength,
+                0);
 
             //settings doesn't change trailing hitch length if set to rigid, so do it here
             double trailingTank, trailingTool;

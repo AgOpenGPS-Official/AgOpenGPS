@@ -145,18 +145,19 @@ namespace AgOpenGPS
             if (mf.isFirstHeadingSet && !mf.tool.isToolFrontFixed)
             {
                 // Draw the rigid hitch
+                double hitchLengthFromPivot = mf.tool.GetHitchLengthFromVehiclePivot();
                 XyCoord[] vertices;
                 if (!mf.tool.isToolRearFixed)
                 {
                     vertices = new XyCoord[] {
-                        new XyCoord(0, mf.tool.hitchLength), new XyCoord(0, 0)
+                        new XyCoord(0, hitchLengthFromPivot), new XyCoord(0, 0)
                     };
                 }
                 else
                 {
                     vertices = new XyCoord[] {
-                        new XyCoord(-0.35, mf.tool.hitchLength), new XyCoord(-0.35, 0),
-                        new XyCoord( 0.35, mf.tool.hitchLength), new XyCoord( 0.35, 0)
+                        new XyCoord(-0.35, hitchLengthFromPivot), new XyCoord(-0.35, 0),
+                        new XyCoord( 0.35, hitchLengthFromPivot), new XyCoord( 0.35, 0)
                     };
                 }
                 LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);
