@@ -128,8 +128,8 @@ namespace AgOpenGPS.Testing.Controllers
             }
             sb.AppendLine("  ],");
 
-            // Export AB line from track (more reliable than currentLinePtA/B which may be invalid)
-            sb.AppendLine("  \"abLine\": [");
+            // Export reference AB line (the track points - where user drove)
+            sb.AppendLine("  \"refABLine\": [");
             if (mf.trk.gArr.Count > 0 && mf.trk.idx >= 0 && mf.trk.gArr[mf.trk.idx].mode == TrackMode.AB)
             {
                 var track = mf.trk.gArr[mf.trk.idx];
@@ -138,10 +138,15 @@ namespace AgOpenGPS.Testing.Controllers
             }
             else
             {
-                // Fallback to currentLinePtA/B if no track
-                sb.AppendLine($"    {{\"e\": {mf.ABLine.currentLinePtA.easting.ToString("F2", CultureInfo.InvariantCulture)}, \"n\": {mf.ABLine.currentLinePtA.northing.ToString("F2", CultureInfo.InvariantCulture)}}},");
-                sb.AppendLine($"    {{\"e\": {mf.ABLine.currentLinePtB.easting.ToString("F2", CultureInfo.InvariantCulture)}, \"n\": {mf.ABLine.currentLinePtB.northing.ToString("F2", CultureInfo.InvariantCulture)}}}");
+                sb.AppendLine($"    {{\"e\": 0, \"n\": 0}},");
+                sb.AppendLine($"    {{\"e\": 0, \"n\": 1}}");
             }
+            sb.AppendLine("  ],");
+
+            // Export current AB line (offset for implement edge)
+            sb.AppendLine("  \"currentABLine\": [");
+            sb.AppendLine($"    {{\"e\": {mf.ABLine.currentLinePtA.easting.ToString("F2", CultureInfo.InvariantCulture)}, \"n\": {mf.ABLine.currentLinePtA.northing.ToString("F2", CultureInfo.InvariantCulture)}}},");
+            sb.AppendLine($"    {{\"e\": {mf.ABLine.currentLinePtB.easting.ToString("F2", CultureInfo.InvariantCulture)}, \"n\": {mf.ABLine.currentLinePtB.northing.ToString("F2", CultureInfo.InvariantCulture)}}}");
             sb.AppendLine("  ],");
 
             // Export turn pattern (ytList)
@@ -159,7 +164,10 @@ namespace AgOpenGPS.Testing.Controllers
             sb.AppendLine("  \"metadata\": {");
             sb.AppendLine($"    \"youTurnPhase\": {mf.yt.youTurnPhase},");
             sb.AppendLine($"    \"isYouTurnBtnOn\": {mf.yt.isYouTurnBtnOn.ToString().ToLower()},");
-            sb.AppendLine($"    \"turnAreaWidth\": {mf.yt.uturnDistanceFromBoundary.ToString("F2", CultureInfo.InvariantCulture)}");
+            sb.AppendLine($"    \"turnAreaWidth\": {mf.yt.uturnDistanceFromBoundary.ToString("F2", CultureInfo.InvariantCulture)},");
+            sb.AppendLine($"    \"toolWidth\": {mf.tool.width.ToString("F2", CultureInfo.InvariantCulture)},");
+            sb.AppendLine($"    \"toolOverlap\": {mf.tool.overlap.ToString("F2", CultureInfo.InvariantCulture)},");
+            sb.AppendLine($"    \"toolOffset\": {mf.tool.offset.ToString("F2", CultureInfo.InvariantCulture)}");
             sb.AppendLine("  }");
 
             sb.AppendLine("}");
