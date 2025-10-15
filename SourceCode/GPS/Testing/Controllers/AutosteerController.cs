@@ -58,10 +58,10 @@ namespace AgOpenGPS.Testing.Controllers
             return new AutosteerState
             {
                 IsActive = mf.isBtnAutoSteerOn,
-                CrossTrackError = mf.ABLine.distanceFromCurrentLine,
+                CrossTrackError = mf.ABLine.distanceFromCurrentLinePivot / 1000.0, // Convert mm to meters
                 SteerAngleDemand = mf.mc.actualSteerAngleDegrees,
                 Mode = currentMode,
-                GoalPointDistance = mf.ABLine.goalPointDistance
+                GoalPointDistance = 0 // Lookahead not directly accessible in FormGPS
             };
         }
     }

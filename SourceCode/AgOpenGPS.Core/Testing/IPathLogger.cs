@@ -9,6 +9,7 @@ namespace AgOpenGPS.Core.Testing
         void StopLogging();
         List<PathPoint> GetLoggedPath();
         void ClearLog();
+        void LogCurrentState();
         bool IsLogging { get; }
     }
 

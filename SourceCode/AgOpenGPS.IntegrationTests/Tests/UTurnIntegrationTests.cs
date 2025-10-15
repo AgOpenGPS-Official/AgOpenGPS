@@ -4,7 +4,6 @@ using NUnit.Framework;
 using FluentAssertions;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Testing;
-using AgOpenGPS.Testing;
 
 namespace AgOpenGPS.IntegrationTests.Tests
 {
@@ -15,12 +14,12 @@ namespace AgOpenGPS.IntegrationTests.Tests
     [TestFixture]
     public class UTurnIntegrationTests
     {
-        private TestOrchestrator orchestrator;
+        private AgOpenGPS.Testing.TestOrchestrator orchestrator;
 
         [SetUp]
         public void Setup()
         {
-            orchestrator = new TestOrchestrator();
+            orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
             orchestrator.Initialize(headless: true);
         }
 

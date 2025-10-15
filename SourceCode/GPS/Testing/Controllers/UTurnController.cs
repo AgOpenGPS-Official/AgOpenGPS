@@ -55,8 +55,7 @@ namespace AgOpenGPS.Testing.Controllers
         public void SetDistanceFromBoundary(double distanceMeters)
         {
             // Set the U-turn trigger distance from boundary
-            // The youTurnDistance property controls when U-turn is triggered
-            mf.yt.youTurnDistance = distanceMeters;
+            mf.yt.uturnDistanceFromBoundary = distanceMeters;
         }
 
         public void SetTurnMode(UTurnMode mode)
@@ -71,8 +70,8 @@ namespace AgOpenGPS.Testing.Controllers
             {
                 IsActive = mf.yt.isYouTurnBtnOn,
                 IsTriggered = mf.yt.isYouTurnTriggered,
-                IsInTurn = mf.yt.isYouTurnRight || mf.yt.isYouTurnLeft,
-                DistanceFromBoundary = mf.yt.youTurnDistance
+                IsInTurn = mf.yt.isYouTurnTriggered && mf.yt.isTurnLeft, // Check if actively in turn
+                DistanceFromBoundary = mf.yt.uturnDistanceFromBoundary
             };
         }
     }

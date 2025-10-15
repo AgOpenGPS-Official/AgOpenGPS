@@ -18,9 +18,9 @@ namespace AgOpenGPS.Testing.Controllers
 
         public void CreateNewField(string fieldName, double centerLat, double centerLon)
         {
-            // Set the local plane origin
+            // Set the local plane origin via DefineLocalPlane
             var origin = new Wgs84(centerLat, centerLon);
-            mf.AppModel.LocalPlane.Origin = origin;
+            mf.pn.DefineLocalPlane(origin, false);
             mf.AppModel.CurrentLatLon = origin;
 
             // Initialize the field name
@@ -46,20 +46,17 @@ namespace AgOpenGPS.Testing.Controllers
             }
 
             // Create a new boundary list
-            CBoundaryList bndList = new CBoundaryList
-            {
-                isSet = true,
-                isOuter = isOuter
-            };
+            CBoundaryList bndList = new CBoundaryList();
 
-            // Add all the points (convert TestPoint to vec3)
+            // Add all the points (convert TestPoint to vec2 for fence line)
             foreach (var point in boundaryPoints)
             {
-                bndList.fenceLineEar.Add(new vec3(point.Easting, point.Northing, point.Heading));
+                bndList.fenceLineEar.Add(new vec2(point.Easting, point.Northing));
             }
 
-            // Calculate area (simplified)
-            bndList.CalculateFenceArea();
+            // Calculate area
+            int idx = mf.bnd.bndList.Count;
+            bndList.CalculateFenceArea(idx);
 
             // Add to the boundary manager
             mf.bnd.bndList.Add(bndList);
@@ -73,16 +70,16 @@ namespace AgOpenGPS.Testing.Controllers
             }
 
             // Create a new track
-            CTrk track = new CTrk(mf)
+            CTrk track = new CTrk()
             {
                 name = "TestTrack",
                 mode = TrackMode.AB,
                 isVisible = true
             };
 
-            // Set the track points (convert TestPoint to vec3)
-            track.ptA = new vec3(pointA.Easting, pointA.Northing, pointA.Heading);
-            track.ptB = new vec3(pointB.Easting, pointB.Northing, pointB.Heading);
+            // Set the track points (convert TestPoint to vec2)
+            track.ptA = new vec2(pointA.Easting, pointA.Northing);
+            track.ptB = new vec2(pointB.Easting, pointB.Northing);
 
             // Calculate the heading
             double dx = pointB.Easting - pointA.Easting;

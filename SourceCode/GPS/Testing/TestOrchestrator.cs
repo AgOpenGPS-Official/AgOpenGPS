@@ -37,6 +37,9 @@ namespace AgOpenGPS.Testing
             isHeadless = headless;
             currentSimulationTime = 0;
 
+            // Load registry settings (required before creating FormGPS)
+            RegistrySettings.Load();
+
             // Create FormGPS in headless mode
             formGPS = new FormGPS(headless);
 

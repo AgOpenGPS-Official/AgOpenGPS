@@ -55,18 +55,22 @@ namespace AgOpenGPS.Testing.Controllers
                 return;
             }
 
+            // Convert fix position from local to lat/lon
+            GeoCoord fixGeo = new GeoCoord(mf.pn.fix.northing, mf.pn.fix.easting);
+            Wgs84 fixWgs = mf.AppModel.LocalPlane.ConvertGeoCoordToWgs84(fixGeo);
+
             var pathPoint = new PathPoint
             {
                 Timestamp = mf.secondsSinceStart - startTime,
-                Position = new Wgs84(mf.AppModel.FixPosition.Lat, mf.AppModel.FixPosition.Lon),
-                Easting = mf.AppModel.FixPosition.Easting,
-                Northing = mf.AppModel.FixPosition.Northing,
+                Position = fixWgs,
+                Easting = mf.pn.fix.easting,
+                Northing = mf.pn.fix.northing,
                 HeadingDegrees = mf.AppModel.FixHeading.AngleInDegrees,
-                SpeedKph = mf.AppModel.FixSpeed.KilometersPerHour,
+                SpeedKph = mf.avgSpeed,
                 IsAutosteerActive = mf.isBtnAutoSteerOn,
-                IsInUTurn = mf.yt.isYouTurnRight || mf.yt.isYouTurnLeft,
-                CrossTrackError = mf.ABLine.distanceFromCurrentLine,
-                SteerAngleDegrees = mf.AppModel.SteerAngle.AngleInDegrees
+                IsInUTurn = mf.yt.isYouTurnTriggered,
+                CrossTrackError = mf.guidanceLineDistanceOff / 1000.0, // Convert mm to meters
+                SteerAngleDegrees = mf.mc.actualSteerAngleDegrees
             };
 
             loggedPath.Add(pathPoint);
