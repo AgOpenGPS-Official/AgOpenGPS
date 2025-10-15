@@ -14,6 +14,7 @@ namespace AgOpenGPS.Testing.Controllers
         private bool isLogging;
         private List<PathPoint> loggedPath;
         private double startTime;
+        private DateTime testStartDateTime;
 
         public bool IsLogging => isLogging;
 
@@ -34,6 +35,7 @@ namespace AgOpenGPS.Testing.Controllers
             isLogging = true;
             loggedPath.Clear();
             startTime = mf.secondsSinceStart;
+            testStartDateTime = DateTime.Now;
         }
 
         public void StopLogging()
@@ -162,6 +164,7 @@ namespace AgOpenGPS.Testing.Controllers
 
             // Export metadata
             sb.AppendLine("  \"metadata\": {");
+            sb.AppendLine($"    \"testRunDateTime\": \"{testStartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}\",");
             sb.AppendLine($"    \"youTurnPhase\": {mf.yt.youTurnPhase},");
             sb.AppendLine($"    \"isYouTurnBtnOn\": {mf.yt.isYouTurnBtnOn.ToString().ToLower()},");
             sb.AppendLine($"    \"turnAreaWidth\": {mf.yt.uturnDistanceFromBoundary.ToString("F2", CultureInfo.InvariantCulture)},");

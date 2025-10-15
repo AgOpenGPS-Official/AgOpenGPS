@@ -15,7 +15,6 @@ import numpy as np
 import sys
 import argparse
 from pathlib import Path
-from datetime import datetime
 
 def load_json(filepath):
     """Load JSON data from file"""
@@ -145,14 +144,14 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
                 ax.scatter([e], [n], c='black', s=20, zorder=6, alpha=0.5)
                 ax.text(e + 1, n + 1, f'{t:.0f}s', fontsize=8, alpha=0.7)
 
-    # Set labels and title with timestamp
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # Set labels and title with test run timestamp
+    test_datetime = metadata.get("testRunDateTime", "Unknown")
     ax.set_xlabel('Easting (m)', fontsize=12)
     ax.set_ylabel('Northing (m)', fontsize=12)
     ax.set_title(f'{title}\\nPhase: {metadata.get("youTurnPhase", "?")} | ' +
                 f'YT Btn: {metadata.get("isYouTurnBtnOn", "?")} | ' +
                 f'Turn Area Width: {metadata.get("turnAreaWidth", "?"):.2f}m\\n' +
-                f'Generated: {timestamp}',
+                f'Test Run: {test_datetime}',
                 fontsize=14, fontweight='bold')
     ax.grid(True, alpha=0.3)
     ax.legend(loc='upper right', fontsize=10)
