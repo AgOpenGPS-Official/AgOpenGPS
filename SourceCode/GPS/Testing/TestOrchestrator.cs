@@ -98,6 +98,8 @@ namespace AgOpenGPS.Testing
             // Process UI events if in visual mode
             if (!isHeadless)
             {
+                // Force form to refresh/redraw
+                formGPS.Refresh();
                 System.Windows.Forms.Application.DoEvents();
             }
         }
