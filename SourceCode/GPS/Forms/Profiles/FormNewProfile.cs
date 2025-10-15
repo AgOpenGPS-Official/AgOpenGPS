@@ -64,7 +64,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
             else
             {
-                var form = new FormTimedMessage(TimeSpan.FromMilliseconds(2000), gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
+                var form = new FormTimedMessage(TimeSpan.FromSeconds(2), gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
                 form.Show(this);
                 textBoxName.Enabled = false;
             }

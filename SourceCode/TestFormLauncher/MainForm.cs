@@ -48,13 +48,13 @@ namespace TestFormLauncher
 
         private void BtnFormTimedMessage_Click(object sender, EventArgs e)
         {
-            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(3000), "Notification", "This message will close in 3 seconds");
+            var form = new FormTimedMessage(TimeSpan.FromSeconds(3), "Notification", "This message will close in 3 seconds");
             form.Show();
         }
 
         private void BtnFormTimedMessageLong_Click(object sender, EventArgs e)
         {
-            var form = new FormTimedMessage(TimeSpan.FromMilliseconds(5000), "Important Notice",
+            var form = new FormTimedMessage(TimeSpan.FromSeconds(5), "Important Notice",
                 "This is a longer message that will close automatically in 5 seconds. " +
                 "The form width should adjust to fit this text.");
             form.Show();

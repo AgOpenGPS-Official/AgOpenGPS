@@ -33,7 +33,7 @@ namespace AgLibrary.Tests.Forms
             FormTimedMessage form = null;
             Assert.DoesNotThrow(() =>
             {
-                form = new FormTimedMessage(TimeSpan.FromMilliseconds(5000), "Test Title", "Test message");
+                form = new FormTimedMessage(TimeSpan.FromSeconds(5), "Test Title", "Test message");
                 Assert.That(form, Is.Not.Null);
                 Assert.That(form.Width, Is.GreaterThan(0));
                 form.Dispose();
@@ -48,8 +48,8 @@ namespace AgLibrary.Tests.Forms
         [Category("ConsolidatedForms")]
         public void FormTimedMessage_CalculatesDynamicWidth()
         {
-            using (var shortForm = new FormTimedMessage(TimeSpan.FromMilliseconds(1000), "Title", "Short"))
-            using (var longForm = new FormTimedMessage(TimeSpan.FromMilliseconds(1000), "Title",
+            using (var shortForm = new FormTimedMessage(TimeSpan.FromSeconds(1), "Title", "Short"))
+            using (var longForm = new FormTimedMessage(TimeSpan.FromSeconds(1), "Title",
                 "This is a much longer message that should make the form wider"))
             {
                 Assert.That(longForm.Width, Is.GreaterThan(shortForm.Width),
