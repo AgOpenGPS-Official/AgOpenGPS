@@ -30,63 +30,95 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         /// <summary>
+        /// Headless test - Tractor following track
+        /// This uses the shared test logic from RunTractorFollowingTrackTest
+        /// </summary>
+        [Test]
+        public void Test_TractorFollowingTrack()
+        {
+            RunTractorFollowingTrackTest(visualMode: false);
+        }
+
+        /// <summary>
         /// Visual test - Shows field creation and tractor movement in real-time
         /// Run this test manually to see the OpenGL visualization
+        /// This is a wrapper around Test_TractorFollowingTrack that enables visualization
         /// </summary>
         [Test]
         [Explicit("Run manually to visualize - opens UI window")]
         [Apartment(System.Threading.ApartmentState.STA)]
         public void Visual_Test_TractorFollowingTrack()
         {
-            Console.WriteLine("\n=== Visual Test: Tractor Following Track ===");
-            Console.WriteLine("This test will open the AgOpenGPS window and show the tractor following a track.");
-            Console.WriteLine("Watch the OpenGL display for real-time visualization.\n");
+            // Shutdown the headless orchestrator from Setup
+            orchestrator?.Shutdown();
 
-            // Initialize in VISUAL mode (not headless)
+            // Create a new orchestrator in VISUAL mode
+            orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
             orchestrator.Initialize(headless: false);
             orchestrator.ShowForm();
-
-            // Give time for window to appear
             Thread.Sleep(500);
 
-            Console.WriteLine("Step 1: Creating field...");
+            Console.WriteLine("\n=== Visual Test: Tractor Following Track ===");
+            Console.WriteLine("This test runs the same test as Test_TractorFollowingTrack");
+            Console.WriteLine("but with OpenGL visualization enabled.\n");
+
+            // Run the actual test logic
+            RunTractorFollowingTrackTest(visualMode: true);
+
+            Console.WriteLine("\n=== Visual Test Complete ===");
+        }
+
+        /// <summary>
+        /// Shared test logic for tractor following track
+        /// Can run in both headless and visual modes
+        /// </summary>
+        private void RunTractorFollowingTrackTest(bool visualMode)
+        {
+            Console.WriteLine("\n=== Tractor Following Track Test ===\n");
+
+            // Step 1: Create field
             var fieldController = orchestrator.FieldController;
             fieldController.CreateNewField("VisualTestField", 39.0, -94.0);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 1: Field created");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 2: Adding boundary (100m x 200m)...");
+            // Step 2: Add boundary
             var boundary = CreateRectangularBoundary(39.0, -94.0, 100, 200);
             fieldController.AddBoundary(boundary, isOuter: true);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 2: Boundary added (100m x 200m)");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 3: Creating track line...");
+            // Step 3: Create track
             var trackPointA = new TestPoint(-10, -80, 0);
             var trackPointB = new TestPoint(-10, 80, 0);
             fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 0);
             fieldController.SelectTrack(0);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 3: Track created at X=-10m");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 4: Positioning tractor...");
+            // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
             simController.Enable();
             simController.SetPosition(39.0, -94.0);
             simController.SetHeading(0.0);
             simController.SetSpeed(8.0);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 4: Tractor positioned, heading north at 8 km/h");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 5: Enabling autosteer...");
+            // Step 5: Enable autosteer
             var autosteerController = orchestrator.AutosteerController;
             autosteerController.Enable();
-            Thread.Sleep(500);
+            Console.WriteLine("Step 5: Autosteer enabled\n");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("\nStep 6: Running simulation - Watch the AgOpenGPS window!");
-            Console.WriteLine("The tractor will drive north for 20 seconds...\n");
-
-            // Run simulation for 20 seconds with slower timestep for better visualization
+            // Step 6: Run simulation
+            Console.WriteLine("Step 6: Running simulation...");
             double simulationTime = 20.0;
             double elapsedTime = 0;
-            double timeStep = 0.05; // 50ms steps for smooth visualization
+            double timeStep = visualMode ? 0.05 : 0.1;
             int frameCount = 0;
+
+            double initialNorthing = simController.GetState().Northing;
 
             while (elapsedTime < simulationTime)
             {
@@ -95,85 +127,144 @@ namespace AgOpenGPS.IntegrationTests.Tests
                 frameCount++;
 
                 // Print progress every 2 seconds
-                if (frameCount % 40 == 0)
+                int progressInterval = visualMode ? 40 : 20;
+                if (frameCount % progressInterval == 0)
                 {
                     var simState = simController.GetState();
                     var autosteerState = autosteerController.GetState();
                     Console.WriteLine($"  Time: {elapsedTime:F1}s | " +
-                        $"Position: N={simState.Northing:F2}m | " +
+                        $"N={simState.Northing:F2}m | " +
                         $"XTE: {autosteerState.CrossTrackError:F3}m | " +
                         $"Speed: {simState.SpeedKph:F1} km/h");
                 }
 
-                // Small delay to make visualization smoother (approximately 20 Hz)
-                Thread.Sleep(50);
+                if (visualMode) Thread.Sleep(50);
             }
 
-            Console.WriteLine("\n=== Visual Test Complete ===");
+            // Verify results
+            var finalState = simController.GetState();
+            var finalAutosteerState = autosteerController.GetState();
+            double distanceTraveled = finalState.Northing - initialNorthing;
+
+            Console.WriteLine("\n=== Verification ===");
+            Console.WriteLine($"Distance traveled: {distanceTraveled:F2}m");
+            Console.WriteLine($"Final XTE: {finalAutosteerState.CrossTrackError:F3}m");
+            Console.WriteLine($"Autosteer active: {finalAutosteerState.IsActive}");
+
+            // Assertions
+            distanceTraveled.Should().BeGreaterThan(20.0, "Tractor should have moved at least 20m");
+            finalAutosteerState.IsActive.Should().BeTrue("Autosteer should still be active");
+            Math.Abs(finalAutosteerState.CrossTrackError).Should().BeLessThan(1.0, "Should maintain good cross-track accuracy");
+        }
+
+        /// <summary>
+        /// Headless U-turn test - runs without visualization
+        /// This uses the shared test logic from RunUTurnScenarioTest
+        /// </summary>
+        [Test]
+        public void Test_UTurnScenario()
+        {
+            RunUTurnScenarioTest(visualMode: false);
         }
 
         /// <summary>
         /// Visual test - Shows U-turn scenario with real-time visualization
         /// Run this test manually to debug U-turn triggering
+        /// This is a wrapper around Test_UTurnScenario that enables visualization
         /// </summary>
         [Test]
         [Explicit("Run manually to visualize - opens UI window")]
         [Apartment(System.Threading.ApartmentState.STA)]
         public void Visual_Test_UTurnScenario()
         {
-            Console.WriteLine("\n=== Visual Test: U-Turn Scenario ===");
-            Console.WriteLine("This test will show the tractor approaching a boundary with U-turn enabled.");
-            Console.WriteLine("Watch for U-turn trigger and execution.\n");
+            // Shutdown the headless orchestrator from Setup
+            orchestrator?.Shutdown();
 
-            // Initialize in VISUAL mode
+            // Create a new orchestrator in VISUAL mode
+            orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
             orchestrator.Initialize(headless: false);
             orchestrator.ShowForm();
             Thread.Sleep(500);
 
-            Console.WriteLine("Step 1: Creating field...");
-            var fieldController = orchestrator.FieldController;
-            fieldController.CreateNewField("UTurnVisualTest", 39.0, -94.0);
-            Thread.Sleep(500);
+            Console.WriteLine("\n=== Visual Test: U-Turn Scenario ===");
+            Console.WriteLine("This test runs the same test as Test_UTurnScenario");
+            Console.WriteLine("but with OpenGL visualization enabled.\n");
 
-            Console.WriteLine("Step 2: Adding smaller boundary (50m x 100m)...");
+            // Run the actual test logic
+            RunUTurnScenarioTest(visualMode: true);
+
+            Console.WriteLine("\n=== Visual Test Complete ===");
+        }
+
+        /// <summary>
+        /// Shared test logic for U-turn scenario
+        /// Can run in both headless and visual modes
+        /// </summary>
+        private void RunUTurnScenarioTest(bool visualMode)
+        {
+            Console.WriteLine("\n=== U-Turn Integration Test ===\n");
+
+            // Step 1: Create field
+            var fieldController = orchestrator.FieldController;
+            fieldController.CreateNewField("UTurnTestField", 39.0, -94.0);
+            Console.WriteLine("Step 1: Field created");
+            if (visualMode) Thread.Sleep(300);
+
+            // Step 2: Add boundary
             var boundary = CreateRectangularBoundary(39.0, -94.0, 50, 100);
             fieldController.AddBoundary(boundary, isOuter: true);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 2: Boundary added (50m x 100m)");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 3: Creating track...");
+            // Step 3: Create track
             var trackPointA = new TestPoint(-10, -50, 0);
             var trackPointB = new TestPoint(-10, 50, 0);
             fieldController.CreateTrack(trackPointA, trackPointB, headingDegrees: 0);
             fieldController.SelectTrack(0);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 3: Track created at X=-10m, running north-south");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 4: Positioning tractor at south end...");
+            // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
             simController.Enable();
             simController.SetPosition(39.0, -94.0);
             simController.SetHeading(0.0);
-            simController.SetSpeed(10.0); // Faster to reach boundary quicker
-            Thread.Sleep(500);
+            simController.SetSpeed(8.0);
+            Console.WriteLine("Step 4: Tractor positioned at start, heading north at 8 km/h");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 5: Enabling autosteer...");
+            // Step 5: Enable autosteer
             var autosteerController = orchestrator.AutosteerController;
             autosteerController.Enable();
-            Thread.Sleep(500);
+            Console.WriteLine("Step 5: Autosteer enabled");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("Step 6: Enabling U-turn (5m from boundary)...");
+            // Step 6: Enable U-turn
             var uturnController = orchestrator.UTurnController;
             uturnController.Enable();
             uturnController.SetDistanceFromBoundary(5.0);
-            Thread.Sleep(500);
+            Console.WriteLine("Step 6: U-turn enabled (trigger at 5m from boundary)");
+            if (visualMode) Thread.Sleep(300);
 
-            Console.WriteLine("\nStep 7: Running simulation - Watch for U-turn trigger!");
-            Console.WriteLine("The tractor will drive north until U-turn triggers or 60 seconds elapses...\n");
+            // Step 7: Start path logging
+            var pathLogger = orchestrator.PathLogger;
+            pathLogger.StartLogging();
+            Console.WriteLine("Step 7: Path logging started\n");
 
+            // Step 8: Run simulation
+            Console.WriteLine("Step 8: Running simulation...");
             double maxSimulationTime = 60.0;
             double elapsedTime = 0;
-            double timeStep = 0.05;
+            double timeStep = visualMode ? 0.05 : 0.1;
             int frameCount = 0;
+
             bool uturnTriggered = false;
+            bool uturnCompleted = false;
+            double uturnTriggerTime = 0;
+            double uturnCompletionTime = 0;
+
+            // Get FormGPS for debug info in visual mode
+            var formGPS = visualMode ? orchestrator.GetFormGPS() : null;
 
             while (elapsedTime < maxSimulationTime)
             {
@@ -187,36 +278,72 @@ namespace AgOpenGPS.IntegrationTests.Tests
                 if (!uturnTriggered && uturnState.IsTriggered)
                 {
                     uturnTriggered = true;
-                    Console.WriteLine($"\n*** U-TURN TRIGGERED at {elapsedTime:F1}s! ***\n");
-                }
-
-                // Print progress every 2 seconds
-                if (frameCount % 40 == 0)
-                {
+                    uturnTriggerTime = elapsedTime;
                     var simState = simController.GetState();
-                    var autosteerState = autosteerController.GetState();
-                    Console.WriteLine($"  Time: {elapsedTime:F1}s | " +
-                        $"N={simState.Northing:F2}m | " +
-                        $"XTE: {autosteerState.CrossTrackError:F3}m | " +
-                        $"UTurn: {(uturnState.IsTriggered ? "ACTIVE" : "waiting")}");
+                    Console.WriteLine($"  -> U-Turn TRIGGERED at {elapsedTime:F1}s");
+                    Console.WriteLine($"     Position: E={simState.Easting:F2}m, N={simState.Northing:F2}m");
                 }
 
-                // Exit if U-turn completes
-                if (uturnTriggered && !uturnState.IsTriggered)
+                // Check for U-turn completion
+                if (uturnTriggered && !uturnCompleted && !uturnState.IsTriggered)
                 {
-                    Console.WriteLine($"\n*** U-TURN COMPLETED at {elapsedTime:F1}s! ***\n");
+                    uturnCompleted = true;
+                    uturnCompletionTime = elapsedTime;
+                    var simState = simController.GetState();
+                    Console.WriteLine($"  -> U-Turn COMPLETED at {elapsedTime:F1}s");
+                    Console.WriteLine($"     Turn duration: {uturnCompletionTime - uturnTriggerTime:F1}s");
                     break;
                 }
 
-                Thread.Sleep(50);
+                // Print progress
+                int progressInterval = visualMode ? 40 : 50; // Every 2s in visual, 5s in headless
+                if (frameCount % progressInterval == 0)
+                {
+                    var simState = simController.GetState();
+                    var autosteerState = autosteerController.GetState();
+
+                    if (visualMode && formGPS != null)
+                    {
+                        // Show debug info in visual mode
+                        var pivotPos = new AgOpenGPS.vec3(simState.Easting, simState.Northing, 0);
+                        bool isInTurnArea = formGPS.bnd.IsPointInsideTurnArea(pivotPos) != -1;
+                        bool isYouTurnBtnOn = formGPS.yt.isYouTurnBtnOn;
+                        int turnLineCount = formGPS.bnd.bndList.Count > 0 ? formGPS.bnd.bndList[0].turnLine.Count : 0;
+
+                        // Check if out of bounds (boundary goes from -50 to +50 N, -25 to +25 E)
+                        bool isInBoundary = formGPS.bnd.bndList.Count > 0 &&
+                            formGPS.bnd.bndList[0].fenceLineEar.IsPointInPolygon(new AgOpenGPS.vec2(simState.Easting, simState.Northing));
+
+                        Console.WriteLine($"  Time: {elapsedTime:F1}s | N={simState.Northing:F2}m | " +
+                            $"XTE: {autosteerState.CrossTrackError:F3}m | " +
+                            $"UTurn: {(uturnState.IsTriggered ? "ACTIVE" : "waiting")} | " +
+                            $"InTurnArea: {isInTurnArea} | InBoundary: {isInBoundary} | YTBtnOn: {isYouTurnBtnOn} | TurnLinePts: {turnLineCount}");
+                    }
+                    else
+                    {
+                        // Simple progress in headless mode
+                        Console.WriteLine($"  Time: {elapsedTime:F1}s - N={simState.Northing:F2}m, UTurn: {uturnState.IsTriggered}");
+                    }
+                }
+
+                if (visualMode) Thread.Sleep(50);
             }
 
-            if (!uturnTriggered)
-            {
-                Console.WriteLine("\n*** WARNING: U-turn never triggered - this is the known issue! ***");
-            }
+            // Stop logging
+            pathLogger.StopLogging();
+            var path = pathLogger.GetLoggedPath();
+            Console.WriteLine($"\nStep 9: Simulation ended - Logged {path.Count} path points over {elapsedTime:F1}s");
 
-            Console.WriteLine("\n=== Visual Test Complete ===");
+            // Verify results
+            Console.WriteLine("\n=== Verification ===");
+            uturnTriggered.Should().BeTrue("U-turn should have been triggered");
+            Console.WriteLine($"✓ U-turn was triggered at {uturnTriggerTime:F1}s");
+
+            uturnCompleted.Should().BeTrue("U-turn should have completed");
+            Console.WriteLine($"✓ U-turn completed at {uturnCompletionTime:F1}s");
+
+            double turnDuration = uturnCompletionTime - uturnTriggerTime;
+            Console.WriteLine($"✓ U-turn duration: {turnDuration:F1}s");
         }
 
         private System.Collections.Generic.List<TestPoint> CreateRectangularBoundary(
@@ -227,11 +354,33 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             double halfWidth = widthMeters / 2.0;
             double halfLength = lengthMeters / 2.0;
+            double pointSpacing = 1.0; // 1 meter between points
 
-            boundary.Add(new TestPoint(-halfWidth, -halfLength, 0));
-            boundary.Add(new TestPoint(halfWidth, -halfLength, 0));
-            boundary.Add(new TestPoint(halfWidth, halfLength, 0));
-            boundary.Add(new TestPoint(-halfWidth, halfLength, 0));
+            // Bottom side: left to right (-halfWidth, -halfLength) to (halfWidth, -halfLength)
+            for (double e = -halfWidth; e < halfWidth; e += pointSpacing)
+            {
+                boundary.Add(new TestPoint(e, -halfLength, 0));
+            }
+
+            // Right side: bottom to top (halfWidth, -halfLength) to (halfWidth, halfLength)
+            for (double n = -halfLength; n < halfLength; n += pointSpacing)
+            {
+                boundary.Add(new TestPoint(halfWidth, n, 0));
+            }
+
+            // Top side: right to left (halfWidth, halfLength) to (-halfWidth, halfLength)
+            for (double e = halfWidth; e > -halfWidth; e -= pointSpacing)
+            {
+                boundary.Add(new TestPoint(e, halfLength, 0));
+            }
+
+            // Left side: top to bottom (-halfWidth, halfLength) to (-halfWidth, -halfLength)
+            for (double n = halfLength; n > -halfLength; n -= pointSpacing)
+            {
+                boundary.Add(new TestPoint(-halfWidth, n, 0));
+            }
+
+            // Close the boundary by adding the first point again
             boundary.Add(new TestPoint(-halfWidth, -halfLength, 0));
 
             return boundary;
