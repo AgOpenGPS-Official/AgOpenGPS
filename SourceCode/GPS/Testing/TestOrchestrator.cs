@@ -92,7 +92,7 @@ namespace AgOpenGPS.Testing
             // If path logging is active, log the current state
             if (PathLogger != null && ((Controllers.PathLogger)PathLogger).IsLogging)
             {
-                PathLogger.LogCurrentState();
+                PathLogger.LogCurrentState(currentSimulationTime);
             }
 
             // Process UI events if in visual mode
