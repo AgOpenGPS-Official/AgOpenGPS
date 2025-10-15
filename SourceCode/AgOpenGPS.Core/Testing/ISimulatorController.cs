@@ -8,6 +8,7 @@ namespace AgOpenGPS.Core.Testing
         void Disable();
         bool IsEnabled { get; }
         void SetPosition(double lat, double lon);
+        void SetPositionLocal(double easting, double northing);
         void SetHeading(double headingDegrees);
         void SetSpeed(double speedKph);
         void SetSteerAngle(double angleDegrees);

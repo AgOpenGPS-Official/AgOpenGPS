@@ -48,6 +48,23 @@ namespace AgOpenGPS.Testing.Controllers
             Properties.Settings.Default.setGPS_SimLongitude = lon;
         }
 
+        public void SetPositionLocal(double easting, double northing)
+        {
+            // Set position in local ENU coordinates (meters from origin)
+            mf.pn.fix.easting = easting;
+            mf.pn.fix.northing = northing;
+
+            // Convert local coordinates to lat/lon
+            GeoCoord geoCoord = new GeoCoord(easting, northing);
+            Wgs84 latLon = mf.AppModel.LocalPlane.ConvertGeoCoordToWgs84(geoCoord);
+
+            mf.sim.CurrentLatLon = latLon;
+            mf.AppModel.CurrentLatLon = latLon;
+
+            Properties.Settings.Default.setGPS_SimLatitude = latLon.Latitude;
+            Properties.Settings.Default.setGPS_SimLongitude = latLon.Longitude;
+        }
+
         public void SetHeading(double headingDegrees)
         {
             double headingRadians = headingDegrees * 0.0174533; // Convert degrees to radians

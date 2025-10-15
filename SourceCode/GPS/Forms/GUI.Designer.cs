@@ -1456,12 +1456,18 @@ namespace AgOpenGPS
         {
             yt.ResetYouTurn();
             yt.isYouTurnBtnOn = false;
-            btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            if (!isHeadless && btnAutoYouTurn != null)
+            {
+                btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            }
         }
         public void DisableYouTurnButtons()
         {
             yt.isYouTurnBtnOn = false;
-            btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            if (!isHeadless && btnAutoYouTurn != null)
+            {
+                btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            }
             yt.ResetYouTurn();
         }
 

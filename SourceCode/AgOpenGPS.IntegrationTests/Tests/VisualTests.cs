@@ -19,8 +19,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
         [SetUp]
         public void Setup()
         {
-            // Note: Initialize with headless: false to enable visualization
+            // Create orchestrator and initialize in headless mode for automated tests
+            // Visual tests will recreate it in visual mode
             orchestrator = new AgOpenGPS.Testing.TestOrchestrator();
+            orchestrator.Initialize(headless: true);
         }
 
         [TearDown]
@@ -99,10 +101,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
             // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
             simController.Enable();
-            simController.SetPosition(39.0, -94.0);
-            simController.SetHeading(0.0);
+            simController.SetPositionLocal(-10, -80); // Start on track, 80m south
+            simController.SetHeading(0.0); // Heading north
             simController.SetSpeed(8.0);
-            Console.WriteLine("Step 4: Tractor positioned, heading north at 8 km/h");
+            Console.WriteLine("Step 4: Tractor positioned at E=-10m, N=-80m, heading north at 8 km/h");
             if (visualMode) Thread.Sleep(300);
 
             // Step 5: Enable autosteer
@@ -227,10 +229,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
             // Step 4: Position tractor
             var simController = orchestrator.SimulatorController;
             simController.Enable();
-            simController.SetPosition(39.0, -94.0);
-            simController.SetHeading(0.0);
+            simController.SetPositionLocal(-10, -45); // Start on track, near southern boundary
+            simController.SetHeading(0.0); // Heading north
             simController.SetSpeed(8.0);
-            Console.WriteLine("Step 4: Tractor positioned at start, heading north at 8 km/h");
+            Console.WriteLine("Step 4: Tractor positioned at E=-10m, N=-45m, heading north at 8 km/h");
             if (visualMode) Thread.Sleep(300);
 
             // Step 5: Enable autosteer
