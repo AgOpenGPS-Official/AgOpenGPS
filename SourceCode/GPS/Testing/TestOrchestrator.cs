@@ -84,7 +84,35 @@ namespace AgOpenGPS.Testing
             {
                 PathLogger.LogCurrentState();
             }
+
+            // Process UI events if in visual mode
+            if (!isHeadless)
+            {
+                System.Windows.Forms.Application.DoEvents();
+            }
         }
+
+        /// <summary>
+        /// Show the FormGPS window (only works in non-headless mode)
+        /// </summary>
+        public void ShowForm()
+        {
+            if (isHeadless)
+            {
+                throw new InvalidOperationException("Cannot show form in headless mode. Initialize with headless: false");
+            }
+
+            if (formGPS != null && !formGPS.Visible)
+            {
+                formGPS.Show();
+                System.Windows.Forms.Application.DoEvents();
+            }
+        }
+
+        /// <summary>
+        /// Get whether the form is in headless mode
+        /// </summary>
+        public bool IsHeadless => isHeadless;
 
         /// <summary>
         /// Shutdown the orchestrator and clean up resources
