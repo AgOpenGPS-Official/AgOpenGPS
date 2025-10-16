@@ -50,14 +50,11 @@ namespace AgOpenGPS.Testing
             // Wait a moment for initialization to complete
             System.Threading.Thread.Sleep(100);
 
-            // CRITICAL: In headless mode with simulator, immediately set isFirstHeadingSet=true
-            // because the simulator provides known good IMU heading values. This prevents
-            // UpdateFixPosition from returning early before calculating heading from GPS position.
-            // ALSO set headingFromSource to "Fix" because LoadSettings() is not called in headless mode
+            // CRITICAL: In headless mode, set headingFromSource because LoadSettings() is not called
             // (FormGPS_Load event only fires when form is shown, which doesn't happen in headless).
+            // Without this, UpdateFixPosition's switch statement skips all heading calculation logic.
             if (headless)
             {
-                formGPS.isFirstHeadingSet = true;
                 formGPS.headingFromSource = Properties.Settings.Default.setGPS_headingFromWhichSource;
             }
 
