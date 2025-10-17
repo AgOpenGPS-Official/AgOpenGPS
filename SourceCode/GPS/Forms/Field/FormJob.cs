@@ -32,6 +32,7 @@ namespace AgOpenGPS
             btnFromExisting.Text = gStr.gsFromExisting;
             btnJobClose.Text = gStr.gsClose;
             btnJobAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
+            btnAgShareBulkUpload.Enabled = Properties.Settings.Default.AgShareEnabled;
 
             this.Text = gStr.gsStartNewField;
         }
@@ -107,11 +108,11 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnJobOpen_Click(object sender, EventArgs e)
+        private async void btnJobOpen_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
             }
 
             mf.filePickerFileAndDirectory = "";
@@ -128,11 +129,11 @@ namespace AgOpenGPS
 
 
 
-        private void btnInField_Click(object sender, EventArgs e)
+        private async void btnInField_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
             }
 
             string infieldList = "";
@@ -218,6 +219,10 @@ namespace AgOpenGPS
         private void btnFromKML_Click(object sender, EventArgs e)
         {
             //back to FormGPS
+            if (mf.isJobStarted)
+            {
+                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+            }
             DialogResult = DialogResult.No;
             Close();
         }
@@ -265,6 +270,10 @@ namespace AgOpenGPS
 
         private void btnJobAgShare_Click(object sender, EventArgs e)
         {
+            if (mf.isJobStarted)
+            {
+                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+            }
             using (var form = new FormAgShareDownloader(mf))
             {
                 form.ShowDialog(this);
