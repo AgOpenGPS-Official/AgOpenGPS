@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.lvLines = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chDistance = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnOpenExistingLv = new System.Windows.Forms.Button();
             this.btnDeleteAB = new System.Windows.Forms.Button();
@@ -42,7 +43,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvLines.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.lvLines.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chName});
+            this.chName,
+            this.chDistance});
             this.lvLines.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvLines.FullRowSelect = true;
             this.lvLines.GridLines = true;
@@ -56,12 +58,17 @@
             this.lvLines.TabIndex = 86;
             this.lvLines.UseCompatibleStateImageBehavior = false;
             this.lvLines.View = System.Windows.Forms.View.Details;
-            // 
+            //
             // chName
-            // 
+            //
             this.chName.Text = "Field Name";
-            this.chName.Width = 961;
-            // 
+            this.chName.Width = 750;
+            //
+            // chDistance
+            //
+            this.chDistance.Text = "Distance (km)";
+            this.chDistance.Width = 200;
+            //
             // timer1
             // 
             this.timer1.Interval = 300;
@@ -128,6 +135,7 @@
 
         private System.Windows.Forms.ListView lvLines;
         private System.Windows.Forms.ColumnHeader chName;
+        private System.Windows.Forms.ColumnHeader chDistance;
         private System.Windows.Forms.Button btnOpenExistingLv;
         private System.Windows.Forms.Button btnDeleteAB;
         private System.Windows.Forms.Timer timer1;
