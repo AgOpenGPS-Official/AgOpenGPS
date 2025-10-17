@@ -1398,7 +1398,7 @@ namespace AgOpenGPS
                 }
 
                 //only allow flag selection if flag form is open
-                Form fc = Application.OpenForms["Flags"];
+                Form fc = Application.OpenForms["FormFlags"];
                 if (fc != null)
                 {
                     fc.Focus();
