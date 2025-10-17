@@ -1,14 +1,14 @@
-# AgOpenGPS.Core Refactoring - Voortgang
+# AgOpenGPS.Core Refactoring - Progress
 
-**Project**: Migratie naar AgOpenGPS.Core met Performance-First Design
-**Start datum**: 2025-01-10
+**Project**: Migration to AgOpenGPS.Core with Performance-First Design
+**Start Date**: 2025-01-10
 **Last Update**: 2025-01-18
 
 ---
 
-## 📋 Overzicht
+## 📋 Overview
 
-Dit document houdt de voortgang bij van de refactoring van AgOpenGPS volgens het **Guidance_Refactoring_Plan.md**. Het doel is een schone, testbare, en **ultra-performante** service laag te bouwen in AgOpenGPS.Core.
+This document tracks the progress of the AgOpenGPS refactoring according to **Guidance_Refactoring_Plan.md**. The goal is to build a clean, testable, and **ultra-performant** service layer in AgOpenGPS.Core.
 
 ### Total Progress: Phase 5 of 7 ✅
 
@@ -23,57 +23,57 @@ Dit document houdt de voortgang bij van de refactoring van AgOpenGPS volgens het
 
 ---
 
-## ✅ Phase 1.1: Foundation & Basic Models (AFGEROND)
+## ✅ Phase 1.1: Foundation & Basic Models (COMPLETE)
 
-**Status**: 100% compleet
-**Datum**: Afgerond vóór 2025-01-10
+**Status**: 100% complete
+**Date**: Completed before 2025-01-10
 
-### Wat is gebouwd
+### What Was Built
 
-1. **Project Structuur**
-   - `AgOpenGPS.Core` class library project aangemaakt
-   - `AgOpenGPS.Core.Tests` test project met NUnit
-   - Clean folder structuur: Models, Extensions, Services (voorbereid)
+1. **Project Structure**
+   - `AgOpenGPS.Core` class library project created
+   - `AgOpenGPS.Core.Tests` test project with NUnit
+   - Clean folder structure: Models, Extensions, Services (prepared)
 
 2. **Base Models**
-   - `vec2.cs` - 2D punt met easting/northing
-   - `vec3.cs` - 3D punt met easting/northing/heading
-   - `GeoCoord.cs` - Geografische coördinaten met conversies
-   - `Wgs84.cs` - WGS84/UTM transformaties
+   - `vec2.cs` - 2D point with easting/northing
+   - `vec3.cs` - 3D point with easting/northing/heading
+   - `GeoCoord.cs` - Geographic coordinates with conversions
+   - `Wgs84.cs` - WGS84/UTM transformations
 
 3. **Geo Math Utilities**
-   - `GeoMath.cs` - Distance berekeningen, Catmull-Rom splines
-   - Basis implementaties (geoptimaliseerd in Phase 1.2)
+   - `GeoMath.cs` - Distance calculations, Catmull-Rom splines
+   - Basic implementations (optimized in Phase 1.2)
 
 4. **Tests**
-   - Basis test infrastructuur opgezet
+   - Basic test infrastructure set up
    - GeoCoord tests, Wgs84 tests
-   - Fundament voor uitgebreide test coverage
+   - Foundation for comprehensive test coverage
 
-### Lessen Geleerd
+### Lessons Learned
 
-- Clean project structuur vanaf het begin is cruciaal
-- Unit testing framework werkt goed met NUnit
-- Models zijn heel geschikt voor struct-based optimizations later
+- Clean project structure from the start is crucial
+- Unit testing framework works well with NUnit
+- Models are well-suited for struct-based optimizations later
 
 ---
 
-## ✅ Phase 1.2: Performance-Optimized Geometry Utilities (AFGEROND)
+## ✅ Phase 1.2: Performance-Optimized Geometry Utilities (COMPLETE)
 
-**Status**: 100% compleet
-**Datum**: 2025-01-11
-**Focus**: Ultra-high performance voor real-time guidance
+**Status**: 100% complete
+**Date**: 2025-01-11
+**Focus**: Ultra-high performance for real-time guidance
 
-### 🎯 Doelstellingen
+### 🎯 Objectives
 
-Volgens **Performance_First_Guidelines.md**:
-- FindClosestSegment: <500μs voor 1000-punt curves
+According to **Performance_First_Guidelines.md**:
+- FindClosestSegment: <500μs for 1000-point curves
 - Distance methods: <1μs per call
 - DistanceSquared: <0.5μs per call
-- Zero allocaties in hot paths
-- Agressieve optimalisatie voor 10-100Hz guidance loop
+- Zero allocations in hot paths
+- Aggressive optimization for 10-100Hz guidance loop
 
-### 📁 Bestanden Aangemaakt
+### 📁 Files Created
 
 1. **AgOpenGPS.Core/Geometry/GeometryUtils.cs** (293 regels)
    - `FindClosestSegment()` - Two-phase search algorithm
