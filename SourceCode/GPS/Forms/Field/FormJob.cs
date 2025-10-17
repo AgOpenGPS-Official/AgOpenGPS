@@ -137,6 +137,7 @@ namespace AgOpenGPS
             }
 
             string infieldList = "";
+            string distanceList = "";
             int numFields = 0;
 
             string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
@@ -170,8 +171,14 @@ namespace AgOpenGPS
                                     if (!string.IsNullOrEmpty(infieldList))
                                     {
                                         infieldList += ",";
+                                        distanceList += ",";
                                     }
                                     infieldList += Path.GetFileName(dir);
+
+                                    // Convert to miles if not metric
+                                    Distance distanceObj = new Distance(distance * 1000); // Distance expects meters
+                                    double displayDistance = mf.isMetric ? distanceObj.InKilometers : distanceObj.InMiles;
+                                    distanceList += displayDistance.ToString("F3");
                                 }
                             }
                         }
@@ -189,7 +196,7 @@ namespace AgOpenGPS
 
                 if (numFields > 1)
                 {
-                    using (FormDrivePicker form = new FormDrivePicker(mf, infieldList))
+                    using (FormDrivePicker form = new FormDrivePicker(mf, infieldList, distanceList))
                     {
                         //returns full field.txt file dir name
                         if (form.ShowDialog(this) == DialogResult.Yes)
