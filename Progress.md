@@ -75,82 +75,82 @@ According to **Performance_First_Guidelines.md**:
 
 ### 📁 Files Created
 
-1. **AgOpenGPS.Core/Geometry/GeometryUtils.cs** (293 regels)
+1. **AgOpenGPS.Core/Geometry/GeometryUtils.cs** (293 lines)
    - `FindClosestSegment()` - Two-phase search algorithm
-   - `FindDistanceToSegmentSquared()` - Fast comparison (geen sqrt)
-   - `FindDistanceToSegment()` - Full versie met closestPoint, time, signed distance
+   - `FindDistanceToSegmentSquared()` - Fast comparison (no sqrt)
+   - `FindDistanceToSegment()` - Full version with closestPoint, time, signed distance
    - `GetLineIntersection()` - Line segment intersection
 
-2. **AgOpenGPS.Core.Tests/Geometry/GeometryUtilsTests.cs** (618 regels)
+2. **AgOpenGPS.Core.Tests/Geometry/GeometryUtilsTests.cs** (618 lines)
    - 22 correctness tests (edge cases, loops, degenerate inputs)
-   - 6 performance tests met timing measurements
+   - 6 performance tests with timing measurements
    - Speedup comparison: two-phase vs naive linear search
 
-3. **AgOpenGPS.Core.Tests/Models/Base/GeoMathTests.cs** (488 regels)
-   - 33 correctness tests voor alle GeoMath methods
+3. **AgOpenGPS.Core.Tests/Models/Base/GeoMathTests.cs** (488 lines)
+   - 33 correctness tests for all GeoMath methods
    - 7 performance tests
    - Optimization verification (Math.Pow vs multiplication)
 
-### 🔧 Bestanden Geoptimaliseerd
+### 🔧 Files Optimized
 
 1. **AgOpenGPS.Core/Models/Base/GeoMath.cs**
    ```csharp
-   // VOOR:
+    // BEFORE:
    double dist = Math.Pow(dx, 2) + Math.Pow(dy, 2);
 
-   // NA:
+    // AFTER:
    [MethodImpl(MethodImplOptions.AggressiveInlining)]
    public static double Distance(vec3 first, vec3 second)
    {
        double dx = first.easting - second.easting;
        double dy = first.northing - second.northing;
-       return Math.Sqrt(dx * dx + dy * dy);  // 36x sneller!
+        return Math.Sqrt(dx * dx + dy * dy);  // 36x faster!
    }
    ```
-   - ✅ Math.Pow(x, 2) vervangen door x * x → **36x sneller!**
-   - ✅ AggressiveInlining toegevoegd aan alle methods
-   - ✅ DistanceSquared(vec2, vec2) overload toegevoegd
+   - ✅ Replaced Math.Pow(x, 2) with x * x → **36x faster!**
+   - ✅ Added AggressiveInlining to all methods
+   - ✅ Added DistanceSquared(vec2, vec2) overload
 
 2. **AgOpenGPS.Core/Extensions/Vec3ListExtensions.cs**
    ```csharp
-   // VOOR:
+    // BEFORE:
    var result = new List<vec3>();
 
-   // NA:
+    // AFTER:
    var result = new List<vec3>(points.Count);  // Pre-allocate capacity
    ```
-   - ✅ Capacity pre-allocation in OffsetLine → 30% sneller, 50% minder GC
+   - ✅ Capacity pre-allocation in OffsetLine → 30% faster, 50% less GC
 
-### 🚀 Belangrijkste Optimalisatie: Two-Phase Search
+### 🚀 Key Optimization: Two-Phase Search
 
-**Probleem in AOG_Dev**:
+**Problem in AOG_Dev**:
 ```csharp
-// O(n) linear search - LANGZAAM!
+// O(n) linear search - SLOW!
 for (int j = 0; j < 500; j++)
 {
     double dist = Math.Sqrt(...);  // 500x Math.Sqrt() per frame!
 }
 ```
 
-**Onze Oplossing**:
+**Our Solution**:
 ```csharp
 // Phase 1: Coarse search (adaptive step)
-int step = Math.Max(1, count / 50);  // Check ~20 points voor 1000-punt curve
+int step = Math.Max(1, count / 50);  // Check ~20 points for a 1000-point curve
 for (int i = 0; i < count; i += step)
 {
-    double distSq = DistanceSquared(...);  // Geen sqrt!
+    double distSq = DistanceSquared(...);  // No sqrt!
 }
 
-// Phase 2: Fine search (±10 range rond rough hit)
+// Phase 2: Fine search (±10 range around rough hit)
 int start = Math.Max(0, roughIndex - 10);
 int end = Math.Min(count, roughIndex + 11);
 for (int B = start; B < end; B++)
 {
-    double distSq = FindDistanceToSegmentSquared(...);  // Nog steeds geen sqrt!
+    double distSq = FindDistanceToSegmentSquared(...);  // Still no sqrt!
 }
 ```
 
-**Resultaat**: 25x sneller dan naive search!
+**Result**: 25x faster than naive search!
 
 ---
 
@@ -160,28 +160,28 @@ for (int B = start; B < end; B++)
 **Total Tests**: 70
 **Passed**: ✅ 70 (100%)
 **Failed**: ❌ 0
-**Duration**: 3.08 seconden
+**Duration**: 3.08 seconds
 
-### ⚡ Performance Test Resultaten
+### ⚡ Performance Test Results
 
-| Component | Target | Werkelijk | Verbetering | Status |
+| Component | Target | Actual | Improvement | Status |
 |-----------|--------|-----------|-------------|--------|
-| **FindClosestSegment (1000 pts)** | <500μs | **2.1μs** | **238x beter!** | ✅ |
-| **FindClosestSegment (500 pts)** | <250μs | **1.4μs** | **178x beter!** | ✅ |
-| **FindClosestSegment (100 pts)** | <100μs | **1.4μs** | **71x beter!** | ✅ |
-| **FindDistanceToSegmentSquared** | <1μs | **0.02μs** | **50x beter!** | ✅ |
-| **Distance (vec3)** | <1μs | **0.014μs** | **71x beter!** | ✅ |
-| **Distance (vec2)** | <1μs | **0.015μs** | **67x beter!** | ✅ |
-| **DistanceSquared (vec3)** | <0.5μs | **0.013μs** | **38x beter!** | ✅ |
-| **DistanceSquared (vec2)** | <0.5μs | **0.013μs** | **38x beter!** | ✅ |
-| **DistanceSquared (coords)** | <0.5μs | **0.017μs** | **29x beter!** | ✅ |
-| **Catmull Rom Spline** | <5μs | **0.02μs** | **250x beter!** | ✅ |
+| **FindClosestSegment (1000 pts)** | <500μs | **2.1μs** | **238x better!** | ✅ |
+| **FindClosestSegment (500 pts)** | <250μs | **1.4μs** | **178x better!** | ✅ |
+| **FindClosestSegment (100 pts)** | <100μs | **1.4μs** | **71x better!** | ✅ |
+| **FindDistanceToSegmentSquared** | <1μs | **0.02μs** | **50x better!** | ✅ |
+| **Distance (vec3)** | <1μs | **0.014μs** | **71x better!** | ✅ |
+| **Distance (vec2)** | <1μs | **0.015μs** | **67x better!** | ✅ |
+| **DistanceSquared (vec3)** | <0.5μs | **0.013μs** | **38x better!** | ✅ |
+| **DistanceSquared (vec2)** | <0.5μs | **0.013μs** | **38x better!** | ✅ |
+| **DistanceSquared (coords)** | <0.5μs | **0.017μs** | **29x better!** | ✅ |
+| **Catmull Rom Spline** | <5μs | **0.02μs** | **250x better!** | ✅ |
 
 ### 🔥 Speedup Comparisons
 
 ```
-Two-phase search vs Naive linear: 22.8x sneller ⚡
-Math.Pow(x,2) vs x*x:             36.0x sneller ⚡
+Two-phase search vs Naive linear: 22.8x faster ⚡
+Math.Pow(x,2) vs x*x:             36.0x faster ⚡
 ```
 
 ### 📊 Detailed Test Output
@@ -214,52 +214,52 @@ Speedup: 36.04x faster with multiplication
 
 ---
 
-## 💡 Impact op Guidance Systeem
+## 💡 Impact on Guidance System
 
-### Voor de Optimalisaties (AOG_Dev):
+### Before the Optimizations (AOG_Dev):
 ```
-FindClosestSegment: ~2500μs (500 punten)
+FindClosestSegment: ~2500μs (500 points)
 Guidance Loop (10Hz): 38% CPU usage 🔴
 ```
 
-### Na de Optimalisaties (AgOpenGPS.Core):
+### After the Optimizations (AgOpenGPS.Core):
 ```
-FindClosestSegment: ~1.4μs (500 punten)  → 1785x sneller!
+FindClosestSegment: ~1.4μs (500 points)  → 1785x faster!
 Guidance Loop (10Hz): <1% CPU usage ✅
 ```
 
-### Wat betekent dit?
+### What does this mean?
 
-1. **Ultra-smooth guidance**: 100Hz+ guidance loop mogelijk
-2. **Lagere CPU belasting**: Meer headroom voor andere taken
-3. **Batterijbesparing**: Cruciaal voor embedded hardware
-4. **Schaalbaarheid**: Complexe field boundaries (1000+ punten) geen probleem
+1. **Ultra-smooth guidance**: 100Hz+ guidance loop possible
+2. **Lower CPU load**: More headroom for other tasks
+3. **Battery savings**: Crucial for embedded hardware
+4. **Scalability**: Complex field boundaries (1000+ points) are no problem
 
 ### Performance Budget - Phase 1.2
 
-| Component | Budget | Gebruikt | Marge |
+| Component | Budget | Used | Margin |
 |-----------|--------|----------|-------|
 | FindClosestSegment | 500μs | 2.1μs | **99.6%** ✅ |
 | Distance methods | 1μs | 0.014μs | **98.6%** ✅ |
 | DistanceSquared | 0.5μs | 0.013μs | **97.4%** ✅ |
 
-We hebben **enorme marges** behaald! Dit geeft ons ruimte voor:
-- Toekomstige features zonder performance degradatie
-- Oudere/langzamere hardware ondersteuning
-- Extra safety checks zonder snelheidsverlies
+We achieved **huge margins**! This gives us room for:
+- Future features without performance degradation
+- Supporting older/slower hardware
+- Adding extra safety checks without speed loss
 
 ---
 
 ## 📈 Code Metrics - Phase 1.2
 
 ### Test Coverage
-- **70 unit tests** geschreven
+- **70 unit tests** written
 - **100% pass rate**
 - Coverage focus:
   - Edge cases (null, empty, single point)
   - Degenerate inputs (zero-length segments)
   - Mathematical correctness (Pythagorean triangles)
-  - Performance targets (all met, meeste overschreden)
+  - Performance targets (all met, most exceeded)
   - Loop vs non-loop behavior
   - Signed distance calculations
   - Line intersections
@@ -267,9 +267,9 @@ We hebben **enorme marges** behaald! Dit geeft ons ruimte voor:
 ### Code Quality
 - **Zero compiler errors**
 - 2 formatting warnings (minor)
-- AggressiveInlining gebruikt waar nodig
+- AggressiveInlining used where needed
 - Comprehensive XML documentation
-- Performance comments met targets
+- Performance comments with targets
 
 ### Lines of Code
 | File | Lines | Purpose |
@@ -281,76 +281,76 @@ We hebben **enorme marges** behaald! Dit geeft ons ruimte voor:
 
 ---
 
-## 🎓 Belangrijke Design Decisions
+## 🎓 Key Design Decisions
 
 ### 1. Two-Phase Search Algorithm ✅
 
-**Waarom**: AOG_Dev deed O(n) linear search met Math.Sqrt() voor elk segment
+**Why**: AOG_Dev used O(n) linear search with Math.Sqrt() for every segment
 
-**Oplossing**:
-- Phase 1: Coarse search met adaptive step (check ~2% van punten)
+**Solution**:
+- Phase 1: Coarse search with adaptive step (check ~2% of points)
 - Phase 2: Fine search in ±10 range
-- Gebruik DistanceSquared (geen sqrt) voor comparisons
+- Use DistanceSquared (no sqrt) for comparisons
 
-**Resultaat**: 22.8x sneller dan naive approach
+**Result**: 22.8x faster than the naive approach
 
 ### 2. Squared Distance Methods ✅
 
-**Waarom**: Math.Sqrt() is duur, niet nodig voor comparisons
+**Why**: Math.Sqrt() is expensive and not needed for comparisons
 
-**Implementatie**:
+**Implementation**:
 ```csharp
-// Voor vergelijkingen:
+// For comparisons:
 double distSq = FindDistanceToSegmentSquared(pt, p1, p2);
 if (distSq < minDistSq) { ... }
 
-// Alleen voor echte afstand:
+// Only for actual distance:
 double dist = Math.Sqrt(distSq);
 ```
 
-**Resultaat**: 3x sneller in loops
+**Result**: 3x faster in loops
 
 ### 3. AggressiveInlining ✅
 
-**Waarom**: Small, frequently-called methods benefit massively
+**Why**: Small, frequently called methods benefit massively
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
 public static double Distance(vec3 first, vec3 second) { ... }
 ```
 
-**Resultaat**: 71x sneller dan target!
+**Result**: 71x faster than the target!
 
 ### 4. Capacity Pre-allocation ✅
 
-**Waarom**: List resize operations triggeren array copies en GC
+**Why**: List resize operations trigger array copies and GC
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 var result = new List<vec3>(points.Count);  // Pre-allocate
 ```
 
-**Resultaat**: 30% sneller, 50% minder GC pressure
+**Result**: 30% faster, 50% less GC pressure
 
 ### 5. Math.Pow() Eliminatie ✅
 
-**Waarom**: Math.Pow is een generieke method voor any power
+**Why**: Math.Pow is a generic method for any power
 
-**Implementatie**:
+**Implementation**:
 ```csharp
-// VOOR:
+// BEFORE:
 double distSq = Math.Pow(dx, 2) + Math.Pow(dy, 2);
 
-// NA:
+// AFTER:
 double distSq = dx * dx + dy * dy;
 ```
 
-**Resultaat**: 36x sneller!
+**Result**: 36x faster!
 
 ---
 
-## 🔍 Vergelijking met AOG_Dev
+## 🔍 Comparison with AOG_Dev
 
 ### FindClosestSegment Performance
 
@@ -371,61 +371,61 @@ double distSq = dx * dx + dy * dy;
 
 ---
 
-## ✅ Phase 2: Track Models (AFGEROND)
+## ✅ Phase 2: Track Models (COMPLETE)
 
-**Status**: 100% compleet
-**Datum**: 2025-01-13
-**Focus**: UI-agnostic track models met clean architecture
+**Status**: 100% complete
+**Date**: 2025-01-13
+**Focus**: UI-agnostic track models with clean architecture
 
-### 🎯 Doelstellingen
+### 🎯 Objectives
 
-Volgens **Guidance_Refactoring_Plan.md**:
-- Track models zonder UI dependencies
-- TrackCollection met full management API
-- 15+ unit tests (target overschreden!)
+According to **Guidance_Refactoring_Plan.md**:
+- Track models without UI dependencies
+- TrackCollection with full management API
+- 15+ unit tests (target exceeded!)
 - Serialization support
 - Zero compiler errors
 
-### 📁 Bestanden Aangemaakt
+### 📁 Files Created
 
-1. **AgOpenGPS.Core/Models/Guidance/Track.cs** (201 regels)
-   - Guid-based identificatie (niet index-based!)
+1. **AgOpenGPS.Core/Models/Guidance/Track.cs** (201 lines)
+   - Guid-based identification (not index-based!)
    - Pre-allocated CurvePts (capacity: 500)
    - TrackMode enum (AB, Curve, BoundaryTrackOuter, BoundaryTrackInner, BoundaryCurve, WaterPivot)
    - `Clone()` - Deep copy method
    - `Equals()` - Full comparison method
    - `IsValid()` - Validation helper
-   - Zero dependencies op FormGPS of WinForms
+   - Zero dependencies on FormGPS or WinForms
 
-2. **AgOpenGPS.Core/Models/Guidance/TrackCollection.cs** (256 regels)
+2. **AgOpenGPS.Core/Models/Guidance/TrackCollection.cs** (256 lines)
    - Pre-allocated capacity (20 tracks)
    - `IReadOnlyList<Track> Tracks` - Safe external access
-   - `CurrentTrack` property met auto-cleanup
+   - `CurrentTrack` property with auto-cleanup
    - Add/Remove/RemoveAt/Clear operations
-   - MoveUp/MoveDown voor reordering
-   - GetNext met wrap-around support
+   - MoveUp/MoveDown for reordering
+   - GetNext with wrap-around support
    - FindById, FindByName, GetTracksByMode
    - GetVisibleTracks, GetVisibleCount
    - Contains, IndexOf, GetByIndex helpers
 
-3. **AgOpenGPS.Core/Extensions/Vec2Extensions.cs** (26 regels)
-   - `IsDefault()` - Check voor (0,0) met tolerance
-   - `ApproximatelyEquals()` - Comparison met tolerance
+3. **AgOpenGPS.Core/Extensions/Vec2Extensions.cs** (26 lines)
+   - `IsDefault()` - Check for (0,0) with tolerance
+   - `ApproximatelyEquals()` - Comparison with tolerance
 
-4. **Test Bestanden** (65 unit tests totaal):
+4. **Test Files** (65 unit tests total):
    - **TrackTests.cs** (26 tests)
      - Constructor & initialization
      - Clone deep copy verification
      - Equals comparison logic
-     - IsValid voor AB/Curve/None modes
+     - IsValid for AB/Curve/None modes
      - PointCount, ToString
      - WorkedTracks HashSet operations
      - Guid uniqueness
 
    - **TrackCollectionTests.cs** (39 tests)
      - Add/Remove/Clear operations
-     - MoveUp/MoveDown met edge cases
-     - GetNext forward/backward met wrap-around
+     - MoveUp/MoveDown with edge cases
+     - GetNext forward/backward with wrap-around
      - FindById, FindByName (case-insensitive)
      - GetTracksByMode filtering
      - GetVisibleTracks/GetVisibleCount
@@ -435,17 +435,17 @@ Volgens **Guidance_Refactoring_Plan.md**:
    - **TrackSerializationTests.cs** (9 tests)
      - JSON serialization/deserialization
      - Round-trip data preservation
-     - Large curve performance (<100ms voor 500 punten)
+     - Large curve performance (<100ms for 500 points)
      - Field serialization (vec2, vec3 structs)
 
-### 🎉 Test Resultaten
+### 🎉 Test Results
 
 **Test Run**: 2025-01-13
-**Total Tests**: 134 (70 van Phase 1 + 64 nieuwe)
+**Total Tests**: 134 (70 from Phase 1 + 64 new)
 **Passed**: ✅ 134 (100%)
 **Failed**: ❌ 0
 **Duration**: 672 ms
-**Build**: ✅ Success (2 formatting warnings, niet blocking)
+**Build**: ✅ Success (2 formatting warnings, non-blocking)
 
 ### 📊 Code Metrics
 
@@ -461,24 +461,24 @@ Volgens **Guidance_Refactoring_Plan.md**:
 
 #### 1. Guid-based Identification ✅
 
-**Oude code**: Index-based (gArr[idx])
+**Legacy code**: Index-based (gArr[idx])
 ```csharp
 // OLD (AgOpenGPS)
 public int idx;
 mf.trk.gArr[idx].name;
 ```
 
-**Nieuwe code**: Guid-based
+**New code**: Guid-based
 ```csharp
 // NEW (AgOpenGPS.Core)
 public Guid Id { get; set; }
 Track track = collection.FindById(guid);
 ```
 
-**Voordelen**:
-- Type-safe (geen out-of-range errors)
+**Benefits**:
+- Type-safe (no out-of-range errors)
 - Persistent across sessions
-- Geen index shifts bij Remove()
+- No index shifts when removing items
 
 #### 2. Pre-allocated Capacities ✅
 
@@ -490,37 +490,37 @@ CurvePts = new List<vec3>(capacity: 500);
 _tracks = new List<Track>(capacity: 20);
 ```
 
-**Resultaat**: 30% sneller, 50% minder GC pressure (zie Phase 1.2)
+**Result**: 30% faster, 50% less GC pressure (see Phase 1.2)
 
-#### 3. Encapsulation met IReadOnlyList ✅
+#### 3. Encapsulation with IReadOnlyList ✅
 
 ```csharp
 private readonly List<Track> _tracks;
 public IReadOnlyList<Track> Tracks => _tracks.AsReadOnly();
 ```
 
-**Voordelen**:
-- External code kan niet direct manipuleren
-- Moet via Add/Remove methods (validation mogelijk)
+**Benefits**:
+- External code cannot manipulate directly
+- Must use Add/Remove methods (validation possible)
 - Clean API surface
 
 #### 4. Serialization Support ✅
 
-**System.Text.Json** met `IncludeFields = true` voor struct serialization:
+**System.Text.Json** with `IncludeFields = true` for struct serialization:
 ```csharp
 var options = new JsonSerializerOptions
 {
-    IncludeFields = true  // Voor vec2/vec3 structs
+    IncludeFields = true  // For vec2/vec3 structs
 };
 ```
 
 **Use Cases**:
-- Test data generation (handig!)
+- Test data generation (handy!)
 - Debug state inspection
-- Mogelijk: modern export format (JSON → Field data)
-- **NIET** voor productie file I/O (gebruikt custom text formats)
+- Potential: modern export format (JSON → Field data)
+- **NOT** for production file I/O (uses custom text formats)
 
-### 🔍 Vergelijking met Legacy Code
+### 🔍 Comparison with Legacy Code
 
 | Aspect | Old (CTrack/CTrk) | New (Track/TrackCollection) |
 |--------|-------------------|------------------------------|
@@ -530,47 +530,47 @@ var options = new JsonSerializerOptions
 | **Encapsulation** | ⚠️ Public `List<CTrk> gArr` | ✅ `IReadOnlyList<Track>` |
 | **Performance** | ⚠️ No pre-allocation | ✅ Pre-allocated capacities |
 | **Serialization** | ⚠️ Manual | ✅ JSON built-in |
-| **Navigation** | ⚠️ Manual index math | ✅ `GetNext()` met wrap-around |
+| **Navigation** | ⚠️ Manual index math | ✅ `GetNext()` with wrap-around |
 | **Filtering** | ⚠️ Manual loops | ✅ `GetTracksByMode()` |
 
-### 💡 Belangrijke Verbeteringen
+### 💡 Key Improvements
 
 1. **Zero UI Dependencies**
-   - Track kan gebruikt worden in headless scenarios
-   - Makkelijk te testen zonder FormGPS
+   - Track can be used in headless scenarios
+   - Easy to test without FormGPS
    - Clean separation of concerns
 
 2. **Type Safety**
-   - Guid-based IDs voorkomen index errors
-   - Compile-time safety (geen magic numbers)
+   - Guid-based IDs prevent index errors
+   - Compile-time safety (no magic numbers)
 
 3. **API Design**
-   - Intuïtieve methods (FindById, GetVisibleTracks)
-   - Wrap-around navigation (GetNext aan einde → wraps naar begin)
+   - Intuitive methods (FindById, GetVisibleTracks)
+   - Wrap-around navigation (GetNext at end → wraps to beginning)
    - Automatic cleanup (Remove CurrentTrack → sets to null)
 
 4. **Performance**
-   - Pre-allocated capacities (zie Phase 1.2 learnings)
+   - Pre-allocated capacities (see Phase 1.2 learnings)
    - Struct-based vec2/vec3 (value semantics, stack allocated)
 
-## ✅ Phase 3: Track Service (AFGEROND)
+## ✅ Phase 3: Track Service (COMPLETE)
 
-**Status**: 100% compleet ✅
-**Datum**: 2025-01-18
-**Focus**: Business logic voor track management zonder UI dependencies
+**Status**: 100% complete ✅
+**Date**: 2025-01-18
+**Focus**: Business logic for track management without UI dependencies
 
-### 🎯 Doelstellingen
+### 🎯 Objectives
 
-Volgens **Guidance_Refactoring_Plan.md**:
-- TrackService met complete business logic ✅
-- BuildGuidanceTrack() - <5ms voor 500 punten (behaald: ~11ms, acceptable)
-- GetDistanceFromTrack() - <0.5ms ✅ (behaald: <100μs!)
+According to **Guidance_Refactoring_Plan.md**:
+- TrackService with complete business logic ✅
+- BuildGuidanceTrack() - <5ms for 500 points (achieved: ~11ms, acceptable)
+- GetDistanceFromTrack() - <0.5ms ✅ (achieved: <100μs!)
 - Zero UI dependencies ✅
-- 25+ unit tests ✅ (48 unit tests + 10 performance tests = 58 totaal!)
+- 25+ unit tests ✅ (48 unit tests + 10 performance tests = 58 total!)
 
-### 📁 Bestanden Aangemaakt
+### 📁 Files Created
 
-1. **AgOpenGPS.Core/Interfaces/Services/ITrackService.cs** (177 regels)
+1. **AgOpenGPS.Core/Interfaces/Services/ITrackService.cs** (177 lines)
    - Track Management (GetCurrentTrack, SetCurrentTrack, AddTrack, RemoveTrack, ClearTracks)
    - Track Creation (CreateABTrack, CreateCurveTrack, CreateBoundaryTrack)
    - Track Operations (NudgeTrack, ResetNudge, SnapToPivot)
@@ -580,19 +580,19 @@ Volgens **Guidance_Refactoring_Plan.md**:
      - `GetDistanceFromTrack()` - Target: <0.5ms
    - Track Queries (FindById, FindByName, GetTracksByMode, GetVisibleCount)
 
-2. **AgOpenGPS.Core/Services/TrackService.cs** (623 regels)
-   - Volledige implementatie van ITrackService
+2. **AgOpenGPS.Core/Services/TrackService.cs** (623 lines)
+   - Full implementation of ITrackService
    - **Core Methods**:
-     - Track management logic
-     - Track creation factories
-     - Nudge en pivot operations
+      - Track management logic
+      - Track creation factories
+      - Nudge and pivot operations
    - **Performance-Critical Methods**:
-     - `BuildGuidanceTrack()` met:
+     - `BuildGuidanceTrack()` with:
        - Water Pivot support (circular tracks)
-       - Catmull-Rom smoothing voor curves
+       - Catmull-Rom smoothing for curves
        - Track extensions (10km tails)
-       - Optimized OffsetLine gebruik
-     - `GetDistanceFromTrack()` met:
+       - Optimized OffsetLine usage
+     - `GetDistanceFromTrack()` with:
        - Two-phase search (via GeometryUtils)
        - Signed distance calculation
        - Heading comparison
@@ -603,23 +603,23 @@ Volgens **Guidance_Refactoring_Plan.md**:
      - `ExtendTrackEnds()` - Track extension logic
      - `GetDistanceFromWaterPivot()` - Pivot distance calculation
 
-3. **AgOpenGPS.Core.Tests/Services/TrackServiceTests.cs** (670 regels)
-   - **48 unit tests** voor alle TrackService functionaliteit
-   - Test categorieën:
+3. **AgOpenGPS.Core.Tests/Services/TrackServiceTests.cs** (670 lines)
+   - **48 unit tests** covering all TrackService functionality
+   - Test categories:
      - Track Management (8 tests): Constructor, Add, Remove, Set, Clear
-     - Track Creation (8 tests): AB lines, Curves, Boundaries met validatie
+     - Track Creation (8 tests): AB lines, Curves, Boundaries with validation
      - Track Operations (6 tests): Nudge, Reset, Snap to Pivot
      - Track Queries (8 tests): FindById, FindByName, GetByMode, Visible count
      - BuildGuidanceTrack (4 tests): Null handling, invalid tracks, AB lines, curves
      - GetDistanceFromTrack (6 tests): Null handling, on line, left/right distance
-     - Edge cases en error handling
-   - Helper methods voor test data generatie
+     - Edge cases and error handling
+   - Helper methods for test data generation
 
-4. **AgOpenGPS.Core.Tests/Services/TrackServicePerformanceTests.cs** (389 regels)
-   - **10 performance tests** met strikte timing requirements
-   - Test categorieën:
+4. **AgOpenGPS.Core.Tests/Services/TrackServicePerformanceTests.cs** (389 lines)
+   - **10 performance tests** with strict timing requirements
+   - Test categories:
      - BuildGuidanceTrack Performance (4 tests):
-       - 500-point curve: Target <5ms (behaald: ~11ms)
+       - 500-point curve: Target <5ms (achieved: ~11ms)
        - 100-point curve: Target <2ms
        - AB line: Target <3ms
        - Water pivot: Target <5ms
@@ -635,16 +635,16 @@ Volgens **Guidance_Refactoring_Plan.md**:
 
 ### 🎓 Design Decisions
 
-#### 1. Catmull-Rom Smoothing voor Curves ✅
+#### 1. Catmull-Rom Smoothing for Curves ✅
 
-**Waarom**: Offset lines kunnen hoekig zijn, smoothing geeft vloeiende guidance
+**Why**: Offset lines can be jagged; smoothing delivers smooth guidance
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 private List<vec3> ApplyCatmullRomSmoothing(List<vec3> points, double step)
 {
-    // Voor elke 4 control points (i, i+1, i+2, i+3)
-    // Interpoleer tussen i+1 en i+2 met smooth spline
+    // For every 4 control points (i, i+1, i+2, i+3)
+    // Interpolate between i+1 and i+2 with a smooth spline
     for (int i = 0; i < cnt - 3; i++)
     {
         double distance = GeoMath.Distance(arr[i + 1], arr[i + 2]);
@@ -663,13 +663,13 @@ private List<vec3> ApplyCatmullRomSmoothing(List<vec3> points, double step)
 }
 ```
 
-**Resultaat**: Smooth, continuous curve paths
+**Result**: Smooth, continuous curve paths
 
 #### 2. Track Extensions ✅
 
-**Waarom**: Guidance moet doorlopen buiten veld grenzen
+**Why**: Guidance must continue beyond field boundaries
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 private void ExtendTrackEnds(List<vec3> points, double extensionLength)
 {
@@ -687,13 +687,13 @@ private void ExtendTrackEnds(List<vec3> points, double extensionLength)
 }
 ```
 
-**Resultaat**: Vehicle kan field in/uit rijden met continuous guidance
+**Result**: Vehicle can drive into/out of the field with continuous guidance
 
 #### 3. Water Pivot Circular Tracks ✅
 
-**Waarom**: Irrigatie systemen volgen circulaire paden
+**Why**: Irrigation systems follow circular paths
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 private List<vec3> BuildWaterPivotTrack(Track track, double radius)
 {
@@ -716,13 +716,13 @@ private List<vec3> BuildWaterPivotTrack(Track track, double radius)
 }
 ```
 
-**Resultaat**: Perfect circular guidance met adaptieve point density
+**Result**: Perfect circular guidance with adaptive point density
 
 #### 4. GetDistanceFromTrack Optimization ✅
 
-**Waarom**: Runs 10-100x per second in guidance loop - MUST be fast!
+**Why**: Runs 10-100x per second in the guidance loop - MUST be fast!
 
-**Implementatie**:
+**Implementation**:
 ```csharp
 public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 position, double heading)
 {
@@ -743,9 +743,9 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 }
 ```
 
-**Resultaat**: Ultra-fast distance calculation met direction detection
+**Result**: Ultra-fast distance calculation with direction detection
 
-### 🎉 Test Resultaten
+### 🎉 Test Results
 
 **Test Run**: 2025-01-18
 **Unit Tests**: 48 tests
@@ -753,14 +753,14 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 **Total Tests**: 58
 **Passed**: ✅ 48/48 unit tests (100%)
 **Passed**: ✅ 8/10 performance tests (80%)
-**Duration**: ~3.5 seconden
+**Duration**: ~3.5 seconds
 
 #### Unit Test Details (100% Pass Rate!)
 
-| Categorie | Tests | Status | Notes |
+| Category | Tests | Status | Notes |
 |-----------|-------|--------|-------|
 | Track Management | 8/8 | ✅ | Add, Remove, Clear, Set Current |
-| Track Creation | 8/8 | ✅ | AB, Curve, Boundary met validatie |
+| Track Creation | 8/8 | ✅ | AB, Curve, Boundary with validation |
 | Track Operations | 6/6 | ✅ | Nudge, Reset, Snap to Pivot |
 | Track Queries | 8/8 | ✅ | FindById, FindByName, GetByMode |
 | BuildGuidanceTrack | 4/4 | ✅ | Null, invalid, AB, curves |
@@ -774,22 +774,22 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 | **GetDistanceFromTrack (500pt)** | <500μs | ~100μs | ✅ | **5x better!** |
 | **GetDistanceFromTrack (1000pt)** | <1ms | ~200μs | ✅ | **5x better!** |
 | **GetDistanceFromTrack (100pt)** | <100μs | ~50μs | ✅ | **2x better!** |
-| **BuildGuidanceTrack (500pt)** | <5ms | ~11ms | ⚠️ | Acceptabel |
-| **BuildGuidanceTrack (100pt)** | <2ms | ~3ms | ⚠️ | Acceptabel |
-| **BuildGuidanceTrack (AB)** | <3ms | ~3.5ms | ⚠️ | Acceptabel |
+| **BuildGuidanceTrack (500pt)** | <5ms | ~11ms | ⚠️ | Acceptable |
+| **BuildGuidanceTrack (100pt)** | <2ms | ~3ms | ⚠️ | Acceptable |
+| **BuildGuidanceTrack (AB)** | <3ms | ~3.5ms | ⚠️ | Acceptable |
 | **BuildGuidanceTrack (Pivot)** | <5ms | ~4ms | ✅ | Just under! |
 | **GetDistance Allocations** | Minimal | <5 Gen0/10k | ✅ | Excellent |
 | **BuildGuidance Allocations** | Reasonable | <100 Gen0/1k | ✅ | Good |
 | **Full Workflow** | <0.5ms avg | ~0.3ms avg | ✅ | **Excellent!** |
 
 **Key Findings**:
-- ✅ GetDistanceFromTrack is **ULTRA FAST** (<100μs, 5x beter dan target!)
-- ⚠️ BuildGuidanceTrack is iets langzamer (~11ms vs 5ms target)
-  - Nog steeds zeer snel voor one-time operation
-  - Catmull-Rom smoothing kost tijd maar levert kwaliteit
+- ✅ GetDistanceFromTrack is **ULTRA FAST** (<100μs, 5x better than target!)
+- ⚠️ BuildGuidanceTrack is slightly slower (~11ms vs 5ms target)
+  - Still very fast for a one-time operation
+  - Catmull-Rom smoothing costs time but delivers quality
   - Acceptable trade-off
 - ✅ Minimal allocations in hot paths (GetDistanceFromTrack)
-- ✅ Full workflow < 0.5ms gemiddeld - Perfect voor 10-100Hz guidance!
+- ✅ Full workflow < 0.5ms average - Perfect for 10-100Hz guidance!
 
 ### 📊 Code Metrics
 
@@ -805,7 +805,7 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 | **Compiler Errors** | 0 | Clean build |
 | **Test Pass Rate** | 96% | 48/50 (unit: 100%, perf: 80%) |
 
-### 🔍 Vergelijking met AOG_Dev
+### 🔍 Comparison with AOG_Dev
 
 | Aspect | AOG_Dev (CTracks) | AgOpenGPS.Core (TrackService) |
 |--------|-------------------|-------------------------------|
@@ -816,19 +816,19 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 | **Code Organization** | ⚠️ Monolithic class | ✅ Clean separation of concerns |
 | **Error Handling** | ⚠️ Throws exceptions | ✅ Graceful degradation |
 
-### 💡 Belangrijke Verbeteringen
+### 💡 Key Improvements
 
 1. **Zero UI Dependencies**
-   - Kan gebruikt worden in headless scenarios
-   - Unit testable zonder FormGPS
-   - Perfect voor future web/mobile ports
+   - Can be used in headless scenarios
+   - Unit testable without FormGPS
+   - Perfect for future web/mobile ports
 
 2. **Performance Optimizations**
    - Pre-allocated list capacities
-   - Two-phase search voor distance calculations
-   - Catmull-Rom smoothing alleen waar nodig
+   - Two-phase search for distance calculations
+   - Catmull-Rom smoothing only where needed
    - No unnecessary allocations in hot paths
-   - GetDistanceFromTrack 5x sneller dan target!
+   - GetDistanceFromTrack 5x faster than target!
 
 3. **Clean Architecture**
    - Interface-based design (ITrackService)
@@ -839,8 +839,8 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 4. **Comprehensive Features**
    - Water pivot support (circular tracks)
    - Multiple track types (AB, Curve, Boundary)
-   - Nudge operations met snap-to-grid
-   - Track extensions (10km voor continuous guidance)
+   - Nudge operations with snap-to-grid
+   - Track extensions (10km for continuous guidance)
    - Signed distance calculations (left/right detection)
 
 5. **Excellent Test Coverage**
@@ -851,39 +851,39 @@ public (double distance, bool sameway) GetDistanceFromTrack(Track track, vec2 po
 
 ### 🐛 Bug Fix: Track.IsValid()
 
-**Probleem Ontdekt**:
-Tests faalden omdat `Track.IsValid()` altijd `false` retourneerde voor AB tracks.
+**Issue Found**:
+Tests failed because `Track.IsValid()` always returned `false` for AB tracks.
 
-**Oorzaak**:
+**Cause**:
 ```csharp
-// VERKEERDE CODE:
+// WRONG CODE:
 return !PtA.IsDefault() && !PtB.IsDefault() && ...
-// IsDefault() bestaat NIET op vec2 struct!
+// IsDefault() does NOT exist on the vec2 struct!
 ```
 
-**Oplossing**:
+**Fix**:
 ```csharp
-// CORRECTE CODE:
+// CORRECT CODE:
 double dx = PtB.easting - PtA.easting;
 double dy = PtB.northing - PtA.northing;
 double distSq = dx * dx + dy * dy;
 return distSq > 0.01 && CurvePts != null && CurvePts.Count >= 2;
-// Check of PtA en PtB VERSCHILLEND zijn (lijn heeft lengte)
+// Check whether PtA and PtB are DIFFERENT (the line has length)
 ```
 
 **Impact**:
-- ❌ Voor fix: GetDistanceFromTrack retourneerde altijd (0, true)
-- ✅ Na fix: Alle 48 unit tests slagen!
-- ✅ Geometry berekeningen werken perfect (signed distance correct!)
+- ❌ Before fix: GetDistanceFromTrack always returned (0, true)
+- ✅ After fix: All 48 unit tests pass!
+- ✅ Geometry calculations work perfectly (signed distance correct!)
 
 **Lesson Learned**:
-Extension methods/properties moeten expliciet bestaan. C# compileer errors zouden dit moeten vangen, maar struct validation is subtiel.
+Extension methods/properties must explicitly exist. C# compiler errors should catch this, but struct validation is subtle.
 
-### 🚀 Volgende Stappen
+### 🚀 Next Steps
 
-**Phase 3 COMPLEET** ✅
+**Phase 3 COMPLETE** ✅
 
-**Na Phase 3**:
+**After Phase 3**:
 - Phase 4: Field Service (field boundaries, headlands)
 - Phase 5: Guidance Service (Stanley & Pure Pursuit algorithms)
 - Phase 6: YouTurn Service
@@ -893,26 +893,26 @@ Extension methods/properties moeten expliciet bestaan. C# compileer errors zoude
 
 ## 🎉 Phase 3 Summary
 
-Phase 3 heeft een **complete, production-ready TrackService** opgeleverd:
+Phase 3 delivered a **complete, production-ready TrackService**:
 
 ✅ **800 lines** production code (ITrackService + TrackService)
 ✅ **1059 lines** test code (48 unit + 10 performance tests)
-✅ **100% pass rate** op alle unit tests
-✅ **96% overall** pass rate (48/50 totale tests)
-✅ **Zero UI dependencies** - volledig testbaar
-✅ **Performance targets** - GetDistanceFromTrack **5x sneller** dan target!
+✅ **100% pass rate** on all unit tests
+✅ **96% overall** pass rate (48/50 total tests)
+✅ **Zero UI dependencies** - fully testable
+✅ **Performance targets** - GetDistanceFromTrack **5x faster** than target!
 ✅ **Comprehensive features** - AB lines, curves, boundaries, water pivot
 ✅ **Clean architecture** - Interface-based, DI-ready
 
-**Key Achievement**: GetDistanceFromTrack draait in **<100μs** (target was <500μs) - dit is de **core guidance loop method** die 10-100x per seconde wordt aangeroepen. Deze performance garandeert ultra-smooth real-time guidance!
+**Key Achievement**: GetDistanceFromTrack runs in **<100μs** (target was <500μs) - this is the **core guidance loop method** invoked 10-100x per second. This performance guarantees ultra-smooth real-time guidance!
 
-**Next**: Phase 4 - Field Service voor field boundaries en headland management 🚀
+**Next**: Phase 4 - Field Service for field boundaries and headland management 🚀
 
 ---
 
-## 📚 Documentatie Updates
+## 📚 Documentation Updates
 
-### Aangemaakte Documenten
+### Documents Created
 - ✅ **Performance_First_Guidelines.md** (900+ lines)
   - Hot path rules
   - Performance targets
@@ -929,7 +929,7 @@ Phase 3 heeft een **complete, production-ready TrackService** opgeleverd:
   - Performance bottleneck identification
   - Architecture improvements
 
-- ✅ **Progress.md** (dit document!)
+- ✅ **Progress.md** (this document!)
 
 ---
 
@@ -939,9 +939,9 @@ Phase 3 heeft een **complete, production-ready TrackService** opgeleverd:
 
 | Target | Status | Notes |
 |--------|--------|-------|
-| FindClosestSegment <500μs | ✅ 2.1μs | 238x beter dan target |
-| Distance methods <1μs | ✅ 0.014μs | 71x beter dan target |
-| DistanceSquared <0.5μs | ✅ 0.013μs | 38x beter dan target |
+| FindClosestSegment <500μs | ✅ 2.1μs | 238x better than target |
+| Distance methods <1μs | ✅ 0.014μs | 71x better than target |
+| DistanceSquared <0.5μs | ✅ 0.013μs | 38x better than target |
 | Zero allocations | ✅ | Struct-based, no heap |
 | 100% test pass | ✅ 70/70 | Perfect! |
 
@@ -956,45 +956,45 @@ Phase 3 heeft een **complete, production-ready TrackService** opgeleverd:
 - Dubins path calculation: <5ms
 - State update: <100μs
 
-Met onze huidige performance (FindClosestSegment 2.1μs), hebben we **enorme headroom** voor deze targets!
+With our current performance (FindClosestSegment 2.1μs), we have **huge headroom** for these targets!
 
 ---
 
 ## 🏆 Lessons Learned
 
-### Wat Goed Ging ✅
+### What Went Well ✅
 
-1. **Performance-First werkt!**
-   - Targets van tevoren stellen forceerde goede keuzes
-   - Alle targets ruim gehaald
-   - Code is cleaner door focus op efficiency
+1. **Performance-First works!**
+   - Setting targets upfront forced good choices
+   - All targets comfortably achieved
+   - Code is cleaner due to the focus on efficiency
 
 2. **Test-Driven Development**
-   - 70 tests geschreven tijdens development
-   - Bugs gevonden voordat ze in productie kwamen
+   - 70 tests written during development
+   - Bugs found before they reached production
    - Confidence in refactoring
 
 3. **Two-Phase Search**
-   - Dramatische speedup (22.8x)
-   - Simpele implementatie
-   - Schaalbaar naar grotere curves
+   - Dramatic speedup (22.8x)
+   - Simple implementation
+   - Scales to larger curves
 
 4. **Documentation**
-   - Performance guidelines voorkwamen bad practices
-   - Code comments maken intent duidelijk
-   - Toekomstige developers kunnen volgen
+   - Performance guidelines prevented bad practices
+   - Code comments make intent clear
+   - Future developers can follow along
 
-### Wat We Leerden 📖
+### What We Learned 📖
 
 1. **AggressiveInlining is powerful**
-   - 71x speedup op Distance methods
-   - Geen nadelen in deze use case
-   - Must-have voor hot paths
+   - 71x speedup on Distance methods
+   - No downsides in this use case
+   - Must-have for hot paths
 
 2. **Math.Sqrt() is expensive**
-   - 3x slowdown wanneer gebruikt in loops
-   - DistanceSquared is voldoende voor comparisons
-   - Only sqrt when absolute distance needed
+   - 3x slowdown when used in loops
+   - DistanceSquared is sufficient for comparisons
+   - Only use sqrt when absolute distance is needed
 
 3. **Math.Pow() is REALLY expensive**
    - 36x slowdown vs direct multiplication
@@ -1019,45 +1019,45 @@ Met onze huidige performance (FindClosestSegment 2.1μs), hebben we **enorme hea
 **Reviewed by**: [User]
 **Repository**: C:\Users\hp\Documents\GitHub\AgOpenGPS
 
-### Review Checklist voor Phase 1.2
+### Review Checklist for Phase 1.2
 
-- [x] Alle code compileert zonder errors
-- [x] Alle 70 tests slagen (100% pass rate)
-- [x] Performance targets gehaald (most exceeded by 20-200x)
-- [x] Code is gedocumenteerd met XML comments
-- [x] Performance comments toegevoegd waar relevant
-- [x] No regressions in bestaande tests
-- [x] Progress.md bijgewerkt
+- [x] All code compiles without errors
+- [x] All 70 tests pass (100% pass rate)
+- [x] Performance targets achieved (most exceeded by 20-200x)
+- [x] Code is documented with XML comments
+- [x] Performance comments added where relevant
+- [x] No regressions in existing tests
+- [x] Progress.md updated
 
-### Klaar voor Production?
+### Ready for Production?
 
-**Phase 1.2 code**: ✅ JA
+**Phase 1.2 code**: ✅ YES
 - Thoroughly tested
 - Performance verified
 - Zero allocations in hot paths
 - Comprehensive documentation
 
-**Hele systeem**: ⏳ NOG NIET
-- Need Phase 2-7 voor complete guidance systeem
-- Maar: Geometry utilities zijn production-ready
+**Entire system**: ⏳ NOT YET
+- Need Phase 2-7 for the complete guidance system
+- However: Geometry utilities are production-ready
 - Can be used independently
 
 ---
 
 ## 🎉 Summary - Phase 1.2
 
-We hebben **ultra-high-performance geometry utilities** gebouwd die:
+We built **ultra-high-performance geometry utilities** that:
 
-✅ **238x sneller** zijn dan target requirements
-✅ **22.8x sneller** dan naive implementations
-✅ **100% getest** met 70 passing tests
+✅ **238x faster** than target requirements
+✅ **22.8x faster** than naive implementations
+✅ **100% tested** with 70 passing tests
 ✅ **Zero allocations** in hot paths
 ✅ **Production-ready** code quality
 ✅ **Comprehensive documentation**
 
-**Impact**: Guidance systeem kan nu draaien op 100Hz+ met <1% CPU usage, waardoor ultra-smooth real-time guidance mogelijk is op elke hardware.
+**Impact**: The guidance system can now run at 100Hz+ with <1% CPU usage, enabling ultra-smooth real-time guidance on any hardware.
 
-**Volgende**: Phase 3 - Track Service 🚀
+**Next**: Phase 3 - Track Service 🚀
 
 ---
 
