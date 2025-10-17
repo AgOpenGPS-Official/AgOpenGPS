@@ -152,8 +152,11 @@ namespace AgOpenGPS.Core.Models.Guidance
 
             if (Mode == TrackMode.AB)
             {
-                // AB line needs valid points
-                return !PtA.IsDefault() && !PtB.IsDefault();
+                // AB line needs two different points AND populated curve points
+                double dx = PtB.easting - PtA.easting;
+                double dy = PtB.northing - PtA.northing;
+                double distSq = dx * dx + dy * dy;
+                return distSq > 0.01 && CurvePts != null && CurvePts.Count >= 2;
             }
             else
             {
