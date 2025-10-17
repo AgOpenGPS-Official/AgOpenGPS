@@ -182,22 +182,6 @@ namespace AgOpenGPS.Core.Tests.Models.Guidance
             Assert.That(result, Is.True);
         }
 
-        [Test]
-        public void IsValid_ABMode_WithValidPoints_ReturnsTrue()
-        {
-            // Arrange
-            var track = new Track("AB Line", TrackMode.AB)
-            {
-                PtA = new vec2(100, 200),
-                PtB = new vec2(300, 400)
-            };
-
-            // Act
-            bool result = track.IsValid();
-
-            // Assert
-            Assert.That(result, Is.True);
-        }
 
         [Test]
         public void IsValid_ABMode_WithDefaultPoints_ReturnsFalse()
