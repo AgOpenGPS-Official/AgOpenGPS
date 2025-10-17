@@ -1347,10 +1347,12 @@ namespace AgOpenGPS
                         if (point.X > centerX - 100 && point.X < centerX - 20)
                         {
                             tram.isLeftManualOn = !tram.isLeftManualOn;
+                            return;
                         }
                         if (point.X > centerX + 20 && point.X < centerX + 100)
                         {
                             tram.isRightManualOn = !tram.isRightManualOn;
+                            return;
                         }
                     }
                 }
@@ -1389,18 +1391,23 @@ namespace AgOpenGPS
                     return;
                 }
 
-                mouseX = point.X;
-                mouseY = oglMain.Height - point.Y;
+                //prevent flag selection if clicking on UI areas (left side, bottom, or bottom-left where version text is)
+                if (point.X < 80 || point.Y > oglMain.Height - 60 || (point.X < 300 && point.Y > oglMain.Height - 100))
+                {
+                    return;
+                }
 
-                //prevent flag selection if flag form is up
+                //only allow flag selection if flag form is open
                 Form fc = Application.OpenForms["Flags"];
                 if (fc != null)
                 {
                     fc.Focus();
-                    return;
+                    mouseX = point.X;
+                    mouseY = oglMain.Height - point.Y;
+                    leftMouseDownOnOpenGL = true;
                 }
 
-                leftMouseDownOnOpenGL = true;
+                //if flag form is NOT open, do not set leftMouseDownOnOpenGL
             }
         }
         private void SpeedLimitExceeded()
