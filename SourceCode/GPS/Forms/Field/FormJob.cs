@@ -112,7 +112,7 @@ namespace AgOpenGPS
         {
             if (mf.isJobStarted)
             {
-                await Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             mf.filePickerFileAndDirectory = "";
@@ -133,7 +133,7 @@ namespace AgOpenGPS
         {
             if (mf.isJobStarted)
             {
-                await Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             string infieldList = "";
@@ -223,12 +223,12 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnFromKML_Click(object sender, EventArgs e)
+        private async void btnFromKML_Click(object sender, EventArgs e)
         {
             //back to FormGPS
             if (mf.isJobStarted)
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await mf.FileSaveEverythingBeforeClosingField();
             }
             DialogResult = DialogResult.No;
             Close();
@@ -259,11 +259,11 @@ namespace AgOpenGPS
             Properties.Settings.Default.Save();
         }
 
-        private void btnFromISOXML_Click(object sender, EventArgs e)
+        private async void btnFromISOXML_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
             //back to FormGPS
             DialogResult = DialogResult.Abort;
@@ -275,11 +275,11 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
         }
 
-        private void btnJobAgShare_Click(object sender, EventArgs e)
+        private async void btnJobAgShare_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await mf.FileSaveEverythingBeforeClosingField();
             }
             using (var form = new FormAgShareDownloader(mf))
             {
