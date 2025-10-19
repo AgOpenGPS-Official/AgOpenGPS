@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance;
 using AgOpenGPS.Classes.AgShare.Helpers;
 
 namespace AgOpenGPS
@@ -17,7 +18,7 @@ namespace AgOpenGPS
         public double OriginLon { get; set; }
         public double Convergence { get; set; }
         public List<List<vec3>> Boundaries { get; set; }
-        public List<CTrk> Tracks { get; set; }
+        public List<Track> Tracks { get; set; }  // Changed from CTrk to Track
         public LocalPlane Converter { get; set; }
     }
 

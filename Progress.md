@@ -10,7 +10,7 @@
 
 This document tracks the progress of the AgOpenGPS refactoring according to **Guidance_Refactoring_Plan.md**. The goal is to build a clean, testable, and **ultra-performant** service layer in AgOpenGPS.Core.
 
-### Total Progress: Phase 5 of 7 ✅
+### Total Progress: Phase 6 of 7 (40% of Phase 6) 🚀
 
 - [x] **Phase 1.1**: Foundation & Basic Models (100%)
 - [x] **Phase 1.2**: Performance-Optimized Geometry Utilities (100%)
@@ -18,8 +18,8 @@ This document tracks the progress of the AgOpenGPS refactoring according to **Gu
 - [x] **Phase 3**: Track Service (100% ✅)
 - [x] **Phase 4**: Guidance Service (100% ✅)
 - [x] **Phase 5**: YouTurn Service (100% ✅)
-- [ ] **Phase 6**: Field Service (0%)
-- [ ] **Phase 7**: UI Integration (0%)
+- [ ] **Phase 6**: UI Integration (40% - Phases 6.1-6.3 complete)
+- [ ] **Phase 7**: Legacy Removal (0%)
 
 ---
 
@@ -1741,8 +1741,214 @@ Phase 5 delivered a **complete, production-ready YouTurnService**:
 
 **Key Achievement**: YouTurn creation averages **0.03ms** (target was <50ms) - 1667x faster! This means YouTurns can be regenerated on-the-fly during navigation with zero performance impact. P99 latency is 0.07ms with zero allocations!
 
-**Next**: Phase 6 - Field Service for boundary management and headland navigation 🚀
+**Next**: Phase 6 - UI Integration (FormGPS connection to services) 🚀
 
 ---
 
-*Last Update: 2025-01-18 (Phase 5: YouTurnService 100% complete ✅ - 29 unit tests + 9 performance tests, semicircle turn generation with 0.03ms average performance!)*
+## 🔄 Phase 6: UI Integration (IN PROGRESS)
+
+**Status**: 40% complete (Phases 6.1-6.3 done, working on 6.4)
+**Date Started**: 2025-01-19
+**Focus**: Connect FormGPS to TrackService/GuidanceService/YouTurnService
+
+### 🎯 Objectives
+
+According to **Guidance_Refactoring_Plan.md** (adjusted):
+- Service injection in FormGPS ✅
+- UpdateGuidance() unified method ✅
+- Replace CABLine/CABCurve/CGuidance with new services
+- Keep CTrack/CTrk temporarily for data (field save/load)
+- Delete CGuidance.cs (old guidance code)
+- **NOT Field Service** - that's separate, later
+
+**See**: `Phase_6_Detailed_Migration_Plan.md` for complete breakdown
+
+### 📁 What We're Replacing
+
+**OLD Code** (to be removed):
+- `CGuidance.cs` (413 lines) - Duplicate Stanley implementations for AB/Curve
+- CABLine guidance logic - `GetCurrentABLine()`, Pure Pursuit code
+- CABCurve guidance logic - `GetCurrentCurveLine()`, Pure Pursuit code
+
+**NEW Code** (already built):
+- `GuidanceService.cs` - Unified Stanley + Pure Pursuit (<0.5ms!)
+- `FormGPS.UpdateGuidance()` - Single call for all guidance types
+
+### ✅ Phase 6.1: Service Initialization (COMPLETE)
+
+**Date**: 2025-01-19
+**Status**: 100% complete ✅
+
+**Changes Made**:
+
+1. **FormGPS.cs** - Added using statements:
+   ```csharp
+   using AgOpenGPS.Core.Interfaces.Services;
+   using AgOpenGPS.Core.Services;
+   ```
+
+2. **FormGPS.cs** - Added service fields (line ~258):
+   ```csharp
+   /// <summary>
+   /// NEW: Refactored services from AgOpenGPS.Core (Phase 6)
+   /// </summary>
+   private ITrackService _trackService;
+   private IGuidanceService _guidanceService;
+   private IYouTurnService _youTurnService;
+   ```
+
+3. **FormGPS.cs** - Initialized services in constructor (line ~403):
+   ```csharp
+   //NEW: Initialize refactored services (Phase 6)
+   _trackService = new TrackService();
+   _guidanceService = new GuidanceService();
+   _youTurnService = new YouTurnService();
+   ```
+
+**Build Status**: ✅ Compiles successfully, 0 errors
+
+### ✅ Phase 6.2: UpdateGuidance() Method (COMPLETE)
+
+**Date**: 2025-01-19
+**Status**: 100% complete ✅
+
+**Changes Made**:
+
+1. **FormGPS.cs** - Created unified guidance method (line ~844):
+   ```csharp
+   /// <summary>
+   /// NEW: Unified guidance calculation using GuidanceService from AgOpenGPS.Core
+   /// Replaces old CGuidance.StanleyGuidanceABLine() and CGuidance.StanleyGuidanceCurve()
+   /// Works for BOTH AB Line and Curve (unified!)
+   /// Supports BOTH Stanley and Pure Pursuit algorithms
+   ///
+   /// PERFORMANCE: <0.5ms per call (tested!)
+   /// </summary>
+   public GuidanceResult UpdateGuidance(vec3 steerPosition, List<vec3> guidanceTrack)
+   {
+       // Update service configuration from vehicle settings
+       _guidanceService.Algorithm = isStanleyUsed
+           ? GuidanceAlgorithm.Stanley
+           : GuidanceAlgorithm.PurePursuit;
+
+       _guidanceService.StanleyGain = vehicle.stanleyDistanceErrorGain;
+       _guidanceService.StanleyHeadingErrorGain = vehicle.stanleyHeadingErrorGain;
+       _guidanceService.LookaheadDistance = vehicle.UpdateGoalPointDistance();
+       _guidanceService.MaxSteerAngle = vehicle.maxSteerAngle;
+
+       // Calculate guidance (FAST: <0.5ms!)
+       var result = _guidanceService.CalculateGuidance(
+           currentPosition: new vec2(steerPosition.easting, steerPosition.northing),
+           currentHeading: steerPosition.heading,
+           currentSpeed: avgSpeed,
+           trackCurvePoints: guidanceTrack,
+           isReverse: isReverse);
+
+       // Map result to FormGPS properties
+       guidanceLineDistanceOff = (short)Math.Round(result.CrossTrackError * 1000.0, ...);
+       guidanceLineSteerAngle = (short)(glm.toDegrees(result.SteerAngleRad) * 100.0);
+
+       vehicle.modeActualXTE = result.CrossTrackError;
+       vehicle.modeActualHeadingError = glm.toDegrees(result.HeadingError);
+
+       return result;
+   }
+   ```
+
+**Key Features**:
+- ✅ Works for BOTH AB Line and Curve (unified!)
+- ✅ Supports BOTH Stanley and Pure Pursuit
+- ✅ Dynamic configuration from vehicle settings
+- ✅ Performance: <0.5ms per call
+- ✅ Zero allocations (struct-based GuidanceResult)
+
+**Build Status**: ✅ Compiles successfully, 0 errors
+
+### ✅ Phase 6.3: TrackFiles.cs and File I/O Refactoring (COMPLETE)
+
+**Date**: 2025-01-19
+**Status**: 100% complete ✅
+
+**Changes Made**:
+
+1. **TrackFiles.cs** (IO/TrackFiles.cs):
+   - Changed Load() return type: `List<CTrk>` → `List<Track>`
+   - Changed Save() parameter: `List<CTrk>` → `List<Track>`
+   - Updated property names (lowercase → PascalCase)
+   - Kept vec2 types for PtA/PtB (no GeoCoord conversion needed)
+   - Added Guid generation for Track.Id
+
+2. **SaveOpen.Designer.cs** (Forms/SaveOpen.Designer.cs):
+   - Added temporary conversion helpers:
+     - `ConvertCTrkToTrack()` - Bridges old → new
+     - `ConvertTrackToCTrk()` - Bridges new → old
+   - Updated FileSaveTracks() to convert and use TrackFiles
+   - Updated FileLoadTracks() to load and convert back
+   - **Temporary**: Will be removed in Phase 6.4
+
+3. **AgShareDTO.cs** (Classes/AgShare/AgShareDTO.cs):
+   - Changed `List<CTrk> Tracks` → `List<Track> Tracks` in FieldSnapshot
+   - Added using statement for AgOpenGPS.Core.Models.Guidance
+
+4. **FormAgShareUploader.cs** (Forms/Field/FormAgShareUploader.cs):
+   - Changed LoadFieldSnapshot to use `List<Track>`
+   - Updated TrackFiles.Load() call
+
+5. **AgShareUploader.cs** (Classes/AgShare/AgShareUploader.cs):
+   - Added conversion from CTrk → Track in CreateSnapshot()
+   - Updated ConvertAbLines() to accept `List<Track>`
+   - Updated property names (mode→Mode, name→Name, ptA→PtA, curvePts→CurvePts)
+
+**Key Achievements**:
+- ✅ Track file I/O now uses new Track model
+- ✅ AgShare upload/download uses Track
+- ✅ Temporary bridge between old (CTrk) and new (Track) systems
+- ✅ Build succeeds with 0 errors
+- ✅ File format unchanged (backward compatible)
+
+**Build Status**: ✅ Compiles successfully, 0 errors
+
+### 📋 Phase 6 Remaining Tasks
+
+- [x] **Phase 6.3**: CTrk → Track migration in file I/O and AgShare ✅
+- [ ] **Phase 6.4**: Replace CTrack with TrackService in FormGPS
+- [ ] **Phase 6.5**: Replace guidance calls in Position.designer.cs
+- [ ] **Phase 6.6**: Update All UI Forms Using trk.gArr
+- [ ] **Phase 6.7**: Test build and fix errors
+- [ ] **Phase 6.8**: Delete old files (CGuidance.cs, CTrack.cs, CABLine.cs, CABCurve.cs)
+- [ ] **Phase 6.9**: Final verification and smoke test
+
+### 🎯 Phase 6 Success Criteria
+
+Phase 6 is complete when:
+1. ✅ Services initialized in FormGPS
+2. ✅ UpdateGuidance() method created
+3. ✅ TrackFiles.cs uses Track (not CTrk)
+4. ✅ Temporary conversion helpers in SaveOpen.Designer.cs
+5. ⏳ CTrack replaced with TrackService
+6. ⏳ Position.designer.cs uses new guidance
+7. ⏳ All UI forms updated
+8. ⏳ Build succeeds
+9. ⏳ AB line guidance works
+10. ⏳ Curve guidance works
+11. ⏳ Old files deleted (CGuidance, CTrack, CABLine, CABCurve)
+12. ⏳ Field save/load still works
+
+---
+
+## 📊 Overall Progress Update
+
+### Total Progress: Phase 6 of 7 (40% of Phase 6)
+
+- [x] **Phase 1.1**: Foundation & Basic Models (100%)
+- [x] **Phase 1.2**: Performance-Optimized Geometry (100%)
+- [x] **Phase 2**: Track Models (100%)
+- [x] **Phase 3**: Track Service (100%)
+- [x] **Phase 4**: Guidance Service (100%)
+- [x] **Phase 5**: YouTurn Service (100%)
+- [ ] **Phase 6**: UI Integration (40% - Phases 6.1-6.3 complete)
+- [ ] **Phase 7**: Legacy Removal (0%)
+
+---
+
+*Last Update: 2025-01-19 (Phase 6.3: TrackFiles.cs and file I/O now use Track model. AgShare upload/download migrated. Temporary conversion helpers added to SaveOpen.Designer.cs for bridging old/new systems.)*

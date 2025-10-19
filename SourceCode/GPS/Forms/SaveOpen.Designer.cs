@@ -203,7 +203,13 @@ namespace AgOpenGPS
         // Save tracks
         public void FileSaveTracks()
         {
-            TrackFiles.Save(GetFieldDir(true), trk.gArr);
+            // Convert CTrack.gArr (List<CTrk>) to List<Track> for saving
+            var tracksToSave = new List<AgOpenGPS.Core.Models.Guidance.Track>();
+            foreach (var oldTrack in trk.gArr)
+            {
+                tracksToSave.Add(ConvertCTrkToTrack(oldTrack));
+            }
+            TrackFiles.Save(GetFieldDir(true), tracksToSave);
         }
 
         // Load tracks
@@ -211,15 +217,52 @@ namespace AgOpenGPS
         {
             var dir = GetFieldDir();
 
-            List<CTrk> tracks;
+            List<AgOpenGPS.Core.Models.Guidance.Track> tracks;
             if (!TryLoad("TrackLines.txt", LoadCriticality.Optional, () => TrackFiles.Load(dir), out tracks))
             {
-                tracks = new List<CTrk>();
+                tracks = new List<AgOpenGPS.Core.Models.Guidance.Track>();
             }
 
+            // Convert Track back to CTrk for now (temporary until full migration)
             trk.gArr?.Clear();
-            trk.gArr.AddRange(tracks);
+            foreach (var newTrack in tracks)
+            {
+                trk.gArr.Add(ConvertTrackToCTrk(newTrack));
+            }
             trk.idx = -1;
+        }
+
+        // Temporary conversion helper - will be removed in Phase 6.4
+        private AgOpenGPS.Core.Models.Guidance.Track ConvertCTrkToTrack(CTrk oldTrack)
+        {
+            return new AgOpenGPS.Core.Models.Guidance.Track
+            {
+                Id = Guid.NewGuid(),
+                Name = oldTrack.name,
+                Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)oldTrack.mode,
+                PtA = oldTrack.ptA,
+                PtB = oldTrack.ptB,
+                NudgeDistance = oldTrack.nudgeDistance,
+                IsVisible = oldTrack.isVisible,
+                Heading = oldTrack.heading,
+                CurvePts = oldTrack.curvePts
+            };
+        }
+
+        // Temporary conversion helper - will be removed in Phase 6.4
+        private CTrk ConvertTrackToCTrk(AgOpenGPS.Core.Models.Guidance.Track track)
+        {
+            return new CTrk
+            {
+                name = track.Name,
+                mode = (TrackMode)track.Mode,
+                ptA = track.PtA,
+                ptB = track.PtB,
+                nudgeDistance = track.NudgeDistance,
+                isVisible = track.IsVisible,
+                heading = track.Heading,
+                curvePts = track.CurvePts
+            };
         }
 
         // Create Field.txt for a new field session.

@@ -264,7 +264,7 @@ namespace AgOpenGPS.Forms
                         return null;
 
                     // Load tracks from TrackLines.txt
-                    List<CTrk> tracks = TrackFiles.Load(fieldInfo.DirectoryPath);
+                    List<AgOpenGPS.Core.Models.Guidance.Track> tracks = TrackFiles.Load(fieldInfo.DirectoryPath);
 
                     // Get or create field ID
                     Guid fieldId;

@@ -1,5 +1,13 @@
 // This file centralizes all coordinate conversion previously handled in CNMEA
 // Now uses LocalPlane, Wgs84, GeoCoord, and related structs (C# 7.1 compatible)
+//
+// FIXED VERSION - Phase 6.3
+// Changes:
+// - Added using AgOpenGPS.Core.Models.Guidance
+// - Line 44: Convert CTrk list to Track list
+// - Line 164: ConvertAbLines() now accepts List<Track>
+// - Line 168: foreach uses Track instead of CTrk
+// - Lines 170-205: Updated property names (mode→Mode, ptA→PtA, curvePts→CurvePts, etc.)
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +19,7 @@ using System.Linq;
 using System.Diagnostics;
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance;
 using AgOpenGPS.Forms;
 
 namespace AgOpenGPS
@@ -41,7 +50,23 @@ namespace AgOpenGPS
                 boundaries.Add(b.fenceLine.ToList());
             }
 
-            List<CTrk> tracks = gps.trk.gArr.ToList();
+            // CHANGED: Convert CTrk to Track for AgShare upload
+            List<Track> tracks = new List<Track>();
+            foreach (var oldTrack in gps.trk.gArr)
+            {
+                tracks.Add(new Track
+                {
+                    Id = Guid.NewGuid(),
+                    Name = oldTrack.name,
+                    Mode = (Core.Models.Guidance.TrackMode)oldTrack.mode,
+                    PtA = oldTrack.ptA,
+                    PtB = oldTrack.ptB,
+                    NudgeDistance = oldTrack.nudgeDistance,
+                    IsVisible = oldTrack.isVisible,
+                    Heading = oldTrack.heading,
+                    CurvePts = oldTrack.curvePts
+                });
+            }
 
             Wgs84 origin = gps.AppModel.LocalPlane.Origin;
             LocalPlane plane = new LocalPlane(origin, new SharedFieldProperties());
@@ -161,22 +186,27 @@ namespace AgOpenGPS
         }
 
         // Convert track lines from local NE to WGS84 format
-        private static List<AbLineUploadDto> ConvertAbLines(List<CTrk> tracks, LocalPlane converter)
+        // CHANGED: Now uses List<Track> instead of List<CTrk>
+        private static List<AbLineUploadDto> ConvertAbLines(List<Track> tracks, LocalPlane converter)
         {
             List<AbLineUploadDto> result = new List<AbLineUploadDto>();
 
-            foreach (CTrk ab in tracks)
+            // CHANGED: foreach uses Track instead of CTrk
+            foreach (Track ab in tracks)
             {
-                if (ab.mode == TrackMode.AB)
+                // CHANGED: ab.mode → ab.Mode, TrackMode → Core.Models.Guidance.TrackMode
+                if (ab.Mode == Core.Models.Guidance.TrackMode.AB)
                 {
-                    GeoCoord a = new GeoCoord(ab.ptA.northing, ab.ptA.easting);
-                    GeoCoord b = new GeoCoord(ab.ptB.northing, ab.ptB.easting);
+                    // CHANGED: ab.ptA → ab.PtA, ab.ptB → ab.PtB
+                    GeoCoord a = new GeoCoord(ab.PtA.northing, ab.PtA.easting);
+                    GeoCoord b = new GeoCoord(ab.PtB.northing, ab.PtB.easting);
                     Wgs84 wgsA = converter.ConvertGeoCoordToWgs84(a);
                     Wgs84 wgsB = converter.ConvertGeoCoordToWgs84(b);
 
                     result.Add(new AbLineUploadDto
                     {
-                        Name = ab.name,
+                        // CHANGED: ab.name → ab.Name
+                        Name = ab.Name,
                         Type = "AB",
                         Coords = new List<CoordinateDto>
                         {
@@ -185,10 +215,12 @@ namespace AgOpenGPS
                         }
                     });
                 }
-                else if (ab.mode == TrackMode.Curve && ab.curvePts.Count >= 2)
+                // CHANGED: ab.mode → ab.Mode, ab.curvePts → ab.CurvePts
+                else if (ab.Mode == Core.Models.Guidance.TrackMode.Curve && ab.CurvePts != null && ab.CurvePts.Count >= 2)
                 {
                     List<CoordinateDto> coords = new List<CoordinateDto>();
-                    foreach (vec3 pt in ab.curvePts)
+                    // CHANGED: ab.curvePts → ab.CurvePts
+                    foreach (vec3 pt in ab.CurvePts)
                     {
                         GeoCoord geo = new GeoCoord(pt.northing, pt.easting);
                         Wgs84 wgs = converter.ConvertGeoCoordToWgs84(geo);
@@ -197,7 +229,8 @@ namespace AgOpenGPS
 
                     result.Add(new AbLineUploadDto
                     {
-                        Name = ab.name,
+                        // CHANGED: ab.name → ab.Name
+                        Name = ab.Name,
                         Type = "Curve",
                         Coords = coords
                     });
