@@ -52,13 +52,26 @@ namespace AgOpenGPS
             //translate
             this.Text = gStr.gsABDraw;
 
-            originalLine = mf.trk.idx;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            originalLine = mf._trackService.GetCurrentTrackIndex();
 
             gTemp.Clear();
 
-            foreach (var item in mf.trk.gArr)
+            foreach (var item in mf._trackService.GetAllTracks())
             {
-                gTemp.Add(new CTrk(item));
+                // Convert Track to CTrk for temporary backup
+                var oldTrack = new CTrk
+                {
+                    mode = (TrackMode)item.Mode,
+                    name = item.Name,
+                    ptA = item.PtA,
+                    ptB = item.PtB,
+                    heading = item.Heading,
+                    curvePts = item.CurvePts,
+                    nudgeDistance = item.NudgeDistance,
+                    isVisible = item.IsVisible
+                };
+                gTemp.Add(oldTrack);
             }
 
             //nudDistance.Value = (decimal)Math.Round(((mf.tool.width * mf.m2InchOrCm) * 0.5), 0); //
@@ -67,18 +80,12 @@ namespace AgOpenGPS
             if (isDrawSections) btnDrawSections.Image = Properties.Resources.MappingOn;
             else btnDrawSections.Image = Properties.Resources.MappingOff;
 
-            gTemp.Clear();
-
-            foreach (var item in mf.trk.gArr)
-            {
-                gTemp.Add(new CTrk(item));
-            }
-
             if (gTemp.Count != 0)
             {
-                if (mf.trk.idx > -1 && mf.trk.idx <= gTemp.Count)
+                int currentIndex = mf._trackService.GetCurrentTrackIndex();
+                if (currentIndex > -1 && currentIndex < gTemp.Count)
                 {
-                    indx = mf.trk.idx;
+                    indx = currentIndex;
                 }
                 else
                     indx = 0;
@@ -111,8 +118,9 @@ namespace AgOpenGPS
             {
                 if (gTemp.Count == 0)
                 {
-                    mf.trk.idx = -1;
-                    mf.trk.gArr.Clear();
+                    // NEW Phase 6.5: Clear tracks via _trackService
+                    mf._trackService.SetCurrentTrackIndex(-1);
+                    mf._trackService.ClearTracks();
                     mf.FileSaveTracks();
                     if (mf.isBtnAutoSteerOn)
                     {
@@ -123,19 +131,31 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    //load tracks from temp
-                    mf.trk.gArr.Clear();
+                    // NEW Phase 6.5: Restore tracks from temp to _trackService
+                    mf._trackService.ClearTracks();
                     foreach (var item in gTemp)
                     {
-                        mf.trk.gArr.Add(new CTrk(item));
+                        var track = new AgOpenGPS.Core.Models.Guidance.Track
+                        {
+                            Id = System.Guid.NewGuid(),
+                            Name = item.name,
+                            Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.mode,
+                            PtA = item.ptA,
+                            PtB = item.ptB,
+                            Heading = item.heading,
+                            CurvePts = item.curvePts,
+                            NudgeDistance = item.nudgeDistance,
+                            IsVisible = item.isVisible
+                        };
+                        mf._trackService.AddTrack(track);
                     }
 
                     mf.FileSaveTracks();
 
                     if (gTemp[indx].isVisible)
                     {
-                        mf.trk.idx = indx;
-                        if (mf.trk.idx != originalLine)
+                        mf._trackService.SetCurrentTrackIndex(indx);
+                        if (indx != originalLine)
                         {
                             if (mf.isBtnAutoSteerOn) mf.btnAutoSteer.PerformClick();
                             mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, "Return From Editing");
@@ -164,13 +184,13 @@ namespace AgOpenGPS
 
                                     if (gTemp[indx].isVisible)
                                     {
-                                        mf.trk.idx = indx;
+                                        mf._trackService.SetCurrentTrackIndex(indx);
                                         break;
                                     }
                                 }
                             }
 
-                            if (mf.trk.idx != originalLine)
+                            if (mf._trackService.GetCurrentTrackIndex() != originalLine)
                             {
                                 if (mf.isBtnAutoSteerOn)
                                 {
@@ -182,7 +202,7 @@ namespace AgOpenGPS
                         }
                         else
                         {
-                            mf.trk.idx = -1;
+                            mf._trackService.SetCurrentTrackIndex(-1);
 
                             mf.TimedMessageBox(2000, gStr.gsEditABLine, gStr.gsNoABLineActive);
                             if (mf.isBtnAutoSteerOn) mf.btnAutoSteer.PerformClick();

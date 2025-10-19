@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AgOpenGPS.Classes;
@@ -61,29 +62,42 @@ namespace AgOpenGPS.Forms.Field
 
         private void LoadTracks()
         {
+            // NEW Phase 6.5: Load tracks directly from file without affecting _trackService
             _trackList.Clear();
-            var tempTrackList = new List<CTrk>();
-            var originalTrackList = _mf.trk.gArr;
 
             try
             {
-                _mf.trk.gArr = tempTrackList;
-                _mf.FileLoadTracks();
+                string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, _mf.currentFieldDirectory);
 
-                if (tempTrackList.Count == 0)
+                // Load tracks directly from file (doesn't modify _trackService)
+                var loadedTracks = IO.TrackFiles.Load(directoryName);
+
+                if (loadedTracks == null || loadedTracks.Count == 0)
                 {
                     _mf.TimedMessageBox(3000, "Track Info", "No tracks found.");
                     return;
                 }
-                _trackList.AddRange(tempTrackList);
+
+                // Convert Track to CTrk for local use in this form
+                foreach (var track in loadedTracks)
+                {
+                    var oldTrack = new CTrk
+                    {
+                        mode = (TrackMode)track.Mode,
+                        name = track.Name,
+                        ptA = track.PtA,
+                        ptB = track.PtB,
+                        heading = track.Heading,
+                        curvePts = track.CurvePts,
+                        nudgeDistance = track.NudgeDistance,
+                        isVisible = track.IsVisible
+                    };
+                    _trackList.Add(oldTrack);
+                }
             }
             catch (Exception ex)
             {
                 _mf.TimedMessageBox(3000, "Track Load Error", ex.Message);
-            }
-            finally
-            {
-                _mf.trk.gArr = originalTrackList;
             }
         }
         #endregion
