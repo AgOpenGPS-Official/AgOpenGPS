@@ -387,7 +387,8 @@ namespace AgOpenGPS
             if (sender is TextBox t)
             {
                 int line = Convert.ToInt32(t.Name);
-                int numLines = mf.trk.gArr.Count;
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr.Count
+                int numLines = mf._trackService.GetTrackCount();
 
                 //un highlight selected item
                 for (int i = 0; i < numLines; i++)
@@ -395,7 +396,9 @@ namespace AgOpenGPS
                     flp.Controls[(i) * 3 + 1].BackColor = Color.AliceBlue;
                 }
 
-                if (mf.trk.gArr[line].isVisible)
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                var allTracks = mf._trackService.GetAllTracks();
+                if (allTracks[line].IsVisible)
                 {
                     //just highlight it
                     if (selectedItem == -1)
@@ -426,42 +429,50 @@ namespace AgOpenGPS
             if (selectedItem == -1 || selectedItem == 0)
                 return;
 
-            mf.trk.gArr.Reverse(selectedItem - 1, 2);
-            selectedItem--;
-            idx = selectedItem;
+            // NEW Phase 6.5: Use _trackService.Tracks.MoveUp instead of gArr.Reverse
+            var track = mf._trackService.GetTrackAt(selectedItem);
+            if (track != null && mf._trackService.Tracks.MoveUp(track))
+            {
+                selectedItem--;
+                idx = selectedItem;
 
-            int scrollPixels = flp.VerticalScroll.Value;
+                int scrollPixels = flp.VerticalScroll.Value;
 
-            scrollPixels -= 45;
-            if (scrollPixels < 0) scrollPixels = 0;
+                scrollPixels -= 45;
+                if (scrollPixels < 0) scrollPixels = 0;
 
-            flp.VerticalScroll.Value = 1;
-            flp.VerticalScroll.Value = scrollPixels;
-            flp.PerformLayout();
+                flp.VerticalScroll.Value = 1;
+                flp.VerticalScroll.Value = scrollPixels;
+                flp.PerformLayout();
 
-            UpdateTable();
+                UpdateTable();
+            }
         }
 
         private void btnMoveDn_Click(object sender, EventArgs e)
         {
-            if (selectedItem == -1 || selectedItem == (mf.trk.gArr.Count - 1))
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            if (selectedItem == -1 || selectedItem == (mf._trackService.GetTrackCount() - 1))
                 return;
 
-            mf.trk.gArr.Reverse(selectedItem, 2);
-            selectedItem++;
+            // NEW Phase 6.5: Use _trackService.Tracks.MoveDown instead of gArr.Reverse
+            var track = mf._trackService.GetTrackAt(selectedItem);
+            if (track != null && mf._trackService.Tracks.MoveDown(track))
+            {
+                selectedItem++;
+                idx = selectedItem;
 
-            idx = selectedItem;
+                int scrollPixels = flp.VerticalScroll.Value;
 
-            int scrollPixels = flp.VerticalScroll.Value;
+                scrollPixels += 45;
+                if (scrollPixels > flp.VerticalScroll.Maximum) scrollPixels = flp.VerticalScroll.Maximum;
 
-            scrollPixels += 45;
-            if (scrollPixels > flp.VerticalScroll.Maximum) scrollPixels = flp.VerticalScroll.Maximum;
+                flp.VerticalScroll.Value = 1;
+                flp.VerticalScroll.Value = scrollPixels;
+                flp.PerformLayout();
 
-            flp.VerticalScroll.Value = 1;
-            flp.VerticalScroll.Value = scrollPixels;
-            flp.PerformLayout();
-
-            UpdateTable();
+                UpdateTable();
+            }
         }
 
         private void btnSwapAB_Click(object sender, EventArgs e)
@@ -470,31 +481,34 @@ namespace AgOpenGPS
             {
                 idx = selectedItem;
 
-                if (mf.trk.gArr[idx].mode == TrackMode.AB)
-                {
-                    vec2 bob = mf.trk.gArr[idx].ptA;
-                    mf.trk.gArr[idx].ptA = mf.trk.gArr[idx].ptB;
-                    mf.trk.gArr[idx].ptB = new vec2(bob);
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr - direct property updates
+                var track = mf._trackService.GetAllTracks()[idx];
 
-                    mf.trk.gArr[idx].heading += Math.PI;
-                    if (mf.trk.gArr[idx].heading < 0) mf.trk.gArr[idx].heading += glm.twoPI;
-                    if (mf.trk.gArr[idx].heading > glm.twoPI) mf.trk.gArr[idx].heading -= glm.twoPI;
+                if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                {
+                    vec2 bob = track.PtA;
+                    track.PtA = track.PtB;
+                    track.PtB = new vec2(bob);
+
+                    track.Heading += Math.PI;
+                    if (track.Heading < 0) track.Heading += glm.twoPI;
+                    if (track.Heading > glm.twoPI) track.Heading -= glm.twoPI;
                 }
                 else
                 {
-                    int cnt = mf.trk.gArr[idx].curvePts.Count;
+                    int cnt = track.CurvePts.Count;
                     if (cnt > 0)
                     {
-                        mf.trk.gArr[idx].curvePts.Reverse();
+                        track.CurvePts.Reverse();
 
                         vec3[] arr = new vec3[cnt];
                         cnt--;
-                        mf.trk.gArr[idx].curvePts.CopyTo(arr);
-                        mf.trk.gArr[idx].curvePts.Clear();
+                        track.CurvePts.CopyTo(arr);
+                        track.CurvePts.Clear();
 
-                        mf.trk.gArr[idx].heading += Math.PI;
-                        if (mf.trk.gArr[idx].heading < 0) mf.trk.gArr[idx].heading += glm.twoPI;
-                        if (mf.trk.gArr[idx].heading > glm.twoPI) mf.trk.gArr[idx].heading -= glm.twoPI;
+                        track.Heading += Math.PI;
+                        if (track.Heading < 0) track.Heading += glm.twoPI;
+                        if (track.Heading > glm.twoPI) track.Heading -= glm.twoPI;
 
                         for (int i = 1; i < cnt; i++)
                         {
@@ -502,13 +516,13 @@ namespace AgOpenGPS
                             pt3.heading += Math.PI;
                             if (pt3.heading > glm.twoPI) pt3.heading -= glm.twoPI;
                             if (pt3.heading < 0) pt3.heading += glm.twoPI;
-                            mf.trk.gArr[idx].curvePts.Add(new vec3(pt3));
+                            track.CurvePts.Add(new vec3(pt3));
                         }
 
-                        vec2 temp = new vec2(mf.trk.gArr[idx].ptA);
+                        vec2 temp = new vec2(track.PtA);
 
-                        (mf.trk.gArr[idx].ptA) = new vec2(mf.trk.gArr[idx].ptB);
-                        (mf.trk.gArr[idx].ptB) = new vec2(temp);
+                        track.PtA = new vec2(track.PtB);
+                        track.PtB = new vec2(temp);
                     }
                 }
 
@@ -521,9 +535,11 @@ namespace AgOpenGPS
 
         private void btnHideShow_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < mf.trk.gArr.Count; i++)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            var allTracks = mf._trackService.GetAllTracks();
+            for (int i = 0; i < allTracks.Count; i++)
             {
-                mf.trk.gArr[i].isVisible = isOn;
+                allTracks[i].IsVisible = isOn;
             }
 
             isOn = !isOn;
@@ -549,10 +565,12 @@ namespace AgOpenGPS
         {
             if (selectedItem > -1)
             {
-                mf.trk.gArr.RemoveAt(selectedItem);
+                // NEW Phase 6.5: Use _trackService.RemoveTrackAt instead of gArr.RemoveAt
+                mf._trackService.RemoveTrackAt(selectedItem);
                 selectedItem = -1;
 
-                mf.trk.idx = mf.trk.gArr.Count - 1;
+                // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+                mf._trackService.SetCurrentTrackIndex(mf._trackService.GetTrackCount() - 1);
 
                 UpdateTable();
                 flp.Focus();
@@ -569,13 +587,21 @@ namespace AgOpenGPS
                 panelName.Visible = true;
                 this.Size = new System.Drawing.Size(270, 360);
 
-                mf.trk.gArr.Add(new CTrk(mf.trk.gArr[idx]));
+                // NEW Phase 6.5: Clone track and add via _trackService instead of gArr.Add(new CTrk())
+                var originalTrack = mf._trackService.GetTrackAt(idx);
+                if (originalTrack != null)
+                {
+                    var duplicateTrack = originalTrack.Clone();
+                    duplicateTrack.Id = System.Guid.NewGuid(); // New ID for duplicate
+                    mf._trackService.AddTrack(duplicateTrack);
 
-                idx = mf.trk.gArr.Count - 1;
+                    // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                    idx = mf._trackService.GetTrackCount() - 1;
 
-                selectedItem = -1;
+                    selectedItem = -1;
 
-                textBox1.Text = mf.trk.gArr[idx].name + " Copy";
+                    textBox1.Text = duplicateTrack.Name + " Copy";
+                }
             }
         }
 
@@ -585,12 +611,17 @@ namespace AgOpenGPS
             {
                 idx = selectedItem;
 
-                textBox2.Text = mf.trk.gArr[idx].name;
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                var track = mf._trackService.GetTrackAt(idx);
+                if (track != null)
+                {
+                    textBox2.Text = track.Name;
 
-                panelMain.Visible = false;
-                panelEditName.Visible = true;
+                    panelMain.Visible = false;
+                    panelEditName.Visible = true;
 
-                this.Size = new System.Drawing.Size(270, 360);
+                    this.Size = new System.Drawing.Size(270, 360);
+                }
             }
         }
 
@@ -1107,39 +1138,31 @@ namespace AgOpenGPS
                         else mf.ABLine.desName = "AB " +
                             (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-                        mf.trk.gArr.Add(new CTrk());
+                        // NEW Phase 6.5: Create Track object and add via _trackService instead of gArr.Add(new CTrk())
+                        var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+                        {
+                            Id = System.Guid.NewGuid(),
+                            Name = mf.ABLine.desName,
+                            Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.AB,
+                            PtA = new vec2(mf.ABLine.desPtA),
+                            PtB = new vec2(mf.ABLine.desPtB),
+                            Heading = mf.ABLine.desHeading,
+                            IsVisible = true,
+                            NudgeDistance = 0,
+                            CurvePts = new List<vec3>(),
+                            WorkedTracks = new HashSet<int>()
+                        };
+                        mf._trackService.AddTrack(newTrack);
 
-                        idx = mf.trk.gArr.Count - 1;
-
-                        mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
-                        mf.trk.gArr[idx].mode = TrackMode.AB;
-
-                        mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-                        mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
-
-                        //create a name
-                        mf.trk.gArr[idx].name = mf.ABLine.desName;
+                        idx = mf._trackService.GetTrackCount() - 1;
 
                         mf.curve.desList?.Clear();
                     }
                     else if (mf.curve.desList.Count > 2)
                     {
-                        //make sure point distance isn't too big 
+                        //make sure point distance isn't too big
                         mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
                         mf.curve.CalculateHeadings(ref mf.curve.desList);
-
-                        mf.trk.gArr.Add(new CTrk());
-
-                        //array number is 1 less since it starts at zero
-                        idx = mf.trk.gArr.Count - 1;
-
-                        mf.trk.gArr[idx].ptA =
-                            new vec2(mf.curve.desList[0].easting, mf.curve.desList[0].northing);
-                        mf.trk.gArr[idx].ptB =
-                            new vec2(mf.curve.desList[mf.curve.desList.Count - 1].easting,
-                            mf.curve.desList[mf.curve.desList.Count - 1].northing);
-
-                        mf.trk.gArr[idx].mode = TrackMode.Curve;
 
                         //calculate average heading of line
                         double x = 0, y = 0;
@@ -1153,18 +1176,12 @@ namespace AgOpenGPS
                         aveLineHeading = Math.Atan2(y, x);
                         if (aveLineHeading < 0) aveLineHeading += glm.twoPI;
 
-                        mf.trk.gArr[idx].heading = aveLineHeading;
-
                         //build the tail extensions
                         mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                         //SmoothAB(4);
                         mf.curve.CalculateHeadings(ref mf.curve.desList);
 
-                        //write out the Curve Points
-                        foreach (vec3 item in mf.curve.desList)
-                        {
-                            mf.trk.gArr[idx].curvePts.Add(new vec3(item));
-                        }
+                        // Determine name
                         if (namelist.Count > i)
                         {
                             trackName = namelist[i + 1].InnerText;
@@ -1173,7 +1190,24 @@ namespace AgOpenGPS
                         else mf.curve.desName = "Cu " +
                                  (Math.Round(glm.toDegrees(aveLineHeading), 1)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-                        mf.trk.gArr[idx].name = mf.curve.desName;
+                        // NEW Phase 6.5: Create Track object and add via _trackService instead of gArr.Add(new CTrk())
+                        var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+                        {
+                            Id = System.Guid.NewGuid(),
+                            Name = mf.curve.desName,
+                            Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.Curve,
+                            PtA = new vec2(mf.curve.desList[0].easting, mf.curve.desList[0].northing),
+                            PtB = new vec2(mf.curve.desList[mf.curve.desList.Count - 1].easting,
+                                mf.curve.desList[mf.curve.desList.Count - 1].northing),
+                            Heading = aveLineHeading,
+                            IsVisible = true,
+                            NudgeDistance = 0,
+                            CurvePts = new List<vec3>(mf.curve.desList), // Copy curve points
+                            WorkedTracks = new HashSet<int>()
+                        };
+                        mf._trackService.AddTrack(newTrack);
+
+                        idx = mf._trackService.GetTrackCount() - 1;
 
                         mf.curve.desList?.Clear();
                     }
@@ -1425,9 +1459,13 @@ namespace AgOpenGPS
         {
             if (textBox1.Text.Length == 0) textBox2.Text = "No Name " + DateTime.Now.ToString("hh:mm:ss", CultureInfo.InvariantCulture);
 
-            int idx = mf.trk.gArr.Count - 1;
-
-            mf.trk.gArr[idx].name = textBox1.Text.Trim();
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            int idx = mf._trackService.GetTrackCount() - 1;
+            var track = mf._trackService.GetTrackAt(idx);
+            if (track != null)
+            {
+                track.Name = textBox1.Text.Trim();
+            }
 
             panelMain.Visible = true;
             panelName.Visible = false;
@@ -1461,7 +1499,12 @@ namespace AgOpenGPS
 
             mf.curve.desList?.Clear();
 
-            mf.trk.gArr[idx].name = textBox2.Text.Trim();
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            var track = mf._trackService.GetTrackAt(idx);
+            if (track != null)
+            {
+                track.Name = textBox2.Text.Trim();
+            }
 
             this.Size = new System.Drawing.Size(650, 480);
 
