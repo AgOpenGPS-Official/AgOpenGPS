@@ -1962,10 +1962,113 @@ According to **Guidance_Refactoring_Plan.md** (adjusted):
   - ✅ **Batch 12** (Commit: ff634c2f): FormBuildTracks.cs COMPLETE - Migrated all remaining references: btnMoveUp/btnMoveDn (TrackCollection.MoveUp/MoveDown), btnListDelete (_trackService.RemoveTrackAt), btnDuplicate (Track.Clone), btnEditName/btnSaveEditName (Track.Name updates), KML import (both AB and Curve creation)
   - ✅ **Total Migrated**: ~220 references across 17 files - ALL UI files now use _trackService!
   - ⏳ **Remaining**: Files to delete in Phase 6.8 (CABLine, CABCurve, CYouTurn, CTrack: ~77 refs - intentionally left for deletion)
-- [ ] **Phase 6.6**: Replace guidance calls in Position.designer.cs
-- [ ] **Phase 6.7**: Test build and fix errors
-- [ ] **Phase 6.8**: Delete old files (CGuidance.cs, CTrack.cs, CABLine.cs, CABCurve.cs, CYouTurn.cs)
+- [ ] **Phase 6.6-6.8 COMBINED: "Big Bang" Legacy Removal** (READY TO START!)
+  - Strategy: Comment out old classes, fix all 60 compiler errors systematically
+  - Files to disable: CABLine.cs (666 lines), CABCurve.cs (1582 lines), CTrack.cs (351 lines), CGuidance.cs (412 lines)
+  - Analysis complete: 60 errors identified across 9 files (see Big Bang Plan below)
 - [ ] **Phase 6.9**: Final verification and smoke test
+
+---
+
+## 🎯 Phase 6.6-6.8: Big Bang Legacy Removal Plan
+
+**Status**: READY - Analysis complete, all errors catalogued
+**Commits**: ea95318d (Progress.md updated), 2dee2178 (Big Bang analysis)
+
+### 📋 Error Analysis Summary (60 total errors)
+
+When CABLine.cs, CABCurve.cs, CTrack.cs, and CGuidance.cs are disabled:
+
+#### **By Error Type:**
+1. **CTrk type references** - ~30 errors (needs `Track` replacement)
+2. **TrackMode enum** - ~6 errors (needs `using AgOpenGPS.Core.Models.Guidance`)
+3. **CABLine references** - ~3 errors (CYouTurn.cs needs refactoring)
+4. **CABCurve references** - ~3 errors (CYouTurn.cs needs refactoring)
+5. **FormGPS field usage** - ~18 errors (ABLine., curve., trk., gyd. calls throughout codebase)
+
+#### **By File (Priority Order):**
+1. **FormBuildTracks.cs** - 3 errors
+   - Line 25: `CTrk selectedTrack` → `Track selectedTrack`
+   - Line 28: `TrackMode curTrkMode` → needs `using AgOpenGPS.Core.Models.Guidance`
+   - Line 1524: `TrackMode` → same
+
+2. **FormHeadLine.cs** - 1 error
+   - Line 24: `TrackMode` → needs `using AgOpenGPS.Core.Models.Guidance`
+
+3. **FormRefNudge.cs, FormTramLine.cs, FormABDraw.cs** - 3 errors (1 each)
+   - CTrk field declarations → `Track`
+
+4. **FormBuildBoundaryFromTracks.cs** - 8 errors
+   - Lines 27-30: Field declarations (`CTrk` → `Track`)
+   - Lines 142, 262, 277, 292, 314: Method parameters/returns (`CTrk` → `Track`)
+
+5. **BoundaryBuilder.cs** - 6 errors
+   - Lines 23, 32, 393, 505, 575, 578: CTrk references → `Track`
+
+6. **IsoXml files** - 6 errors
+   - IsoXmlFieldImporter.cs (35): `CTrk` → `Track`
+   - IsoXmlParserHelpers.cs (113, 152, 168, 180, 202): `CTrk` → `Track`
+
+7. **CYouTurn.cs** - 3 errors ⚠️ COMPLEX
+   - Lines 1724, 1951: `CABCurve` references (GetClosestToolPoint calls)
+   - Line 1811: `CABLine` reference (GetClosestToolPoint call)
+   - **Solution**: Replace with _trackService.GetCurrentTrack() + GeometryUtils calls
+
+8. **Position.designer.cs** - ~10-15 errors (estimated)
+   - ABLine.BuildCurrentABLineList(), ABLine.GetCurrentABLine()
+   - curve.BuildCurveCurrentList(), curve.GetCurrentCurveLine()
+   - curve.isRecordingCurve, ABLine.isABValid, curve.isCurveValid
+   - **Solution**: Use _trackService + _guidanceService
+
+9. **Other files using mf.ABLine, mf.curve, mf.trk, mf.gyd** - ~10-15 errors
+   - OpenGL.Designer.cs, GUI.Designer.cs, Controls.Designer.cs
+   - Various rendering and UI code
+   - **Solution**: Case-by-case replacement
+
+### 🎯 Big Bang Execution Plan
+
+**Step 1: Quick Wins (TrackMode enum)** - ~10 minutes
+- Add `using AgOpenGPS.Core.Models.Guidance` to 4 files
+- **Files**: FormBuildTracks.cs, FormHeadLine.cs
+- **Estimated**: 6 errors fixed
+
+**Step 2: Simple Type Replacements** - ~30 minutes
+- Replace `CTrk` → `Track` in field declarations
+- **Files**: FormRefNudge.cs, FormTramLine.cs, FormABDraw.cs, FormBuildBoundaryFromTracks.cs, BoundaryBuilder.cs, IsoXml files
+- **Estimated**: 23 errors fixed
+
+**Step 3: CYouTurn.cs Refactoring** - ~1-2 hours
+- Replace CABLine/CABCurve.GetClosestToolPoint() calls
+- Use GeometryUtils.FindClosestSegment() with _trackService.GetCurrentTrack()
+- **Estimated**: 3 errors fixed (complex)
+
+**Step 4: Position.designer.cs Guidance Migration** - ~2-3 hours
+- Replace Build/Get methods with _trackService.BuildGuidanceTrack()
+- Replace guidance calculations with UpdateGuidance()
+- Handle curve recording, validation flags
+- **Estimated**: ~15 errors fixed (complex)
+
+**Step 5: Remaining FormGPS References** - ~2-3 hours
+- Systematically replace all mf.ABLine, mf.curve, mf.trk, mf.gyd usage
+- Update OpenGL rendering, UI updates
+- **Estimated**: ~13 errors fixed
+
+**Step 6: Final Cleanup** - ~1 hour
+- Remove commented code
+- Delete old files (CABLine.cs, CABCurve.cs, CTrack.cs, CGuidance.cs)
+- Update obsolete warnings
+- Final build verification
+
+**Total Estimated Time**: 8-12 hours of focused work
+**Files to Change**: ~15 files
+**Lines to Change**: ~100-150 lines
+
+### ✅ Ready to Start
+All errors catalogued, strategy defined, can proceed step-by-step!
+
+---
+
+## 📋 Phase 6 Remaining Tasks (Updated)
 
 ### 🎯 Phase 6 Success Criteria
 
