@@ -136,7 +136,7 @@ namespace AgOpenGPS.Forms.Field
         {
             var chk = new CheckBox
             {
-                Text = $"{track.name} ({track.mode})",
+                Text = $"{track.Name} ({track.Mode})",
                 Checked = true,
                 AutoSize = false,
                 Width = flpTrackList.Width - 10,
@@ -234,11 +234,11 @@ namespace AgOpenGPS.Forms.Field
 
             try
             {
-                if (trk.mode == TrackMode.AB)
+                if (trk.Mode == TrackMode.AB)
                 {
                     AdjustABTrackPoints(trk, isPointA, deltaMeters);
                 }
-                else if (trk.mode == TrackMode.Curve && trk.curvePts.Count >= 2)
+                else if (trk.Mode == TrackMode.Curve && trk.CurvePts.Count >= 2)
                 {
                     AdjustCurveTrackPoints(trk, isPointA, deltaMeters);
                 }
@@ -257,15 +257,15 @@ namespace AgOpenGPS.Forms.Field
         // BIG BANG Step 2: CTrk → Track
         private void AdjustABTrackPoints(Track track, bool isPointA, double deltaMeters)
         {
-            vec2 direction = (track.ptB - track.ptA).Normalize();
+            vec2 direction = (track.PtB - track.PtA).Normalize();
 
             if (isPointA)
             {
-                track.ptA += direction * deltaMeters;
+                track.PtA += direction * deltaMeters;
             }
             else
             {
-                track.ptB -= direction * deltaMeters;
+                track.PtB -= direction * deltaMeters;
             }
         }
 
@@ -289,22 +289,22 @@ namespace AgOpenGPS.Forms.Field
         // BIG BANG Step 2: CTrk → Track
         private void AdjustCurveStartPoint(Track track, int steps, bool isExtend)
         {
-            for (int s = 0; s < steps && (isExtend || track.curvePts.Count > 2); s++)
+            for (int s = 0; s < steps && (isExtend || track.CurvePts.Count > 2); s++)
             {
-                var pt0 = track.curvePts[0];
-                var pt1 = track.curvePts[1];
+                var pt0 = track.CurvePts[0];
+                var pt1 = track.CurvePts[1];
                 vec2 dir = (new vec2(pt0.easting, pt0.northing) - new vec2(pt1.easting, pt1.northing)).Normalize();
 
                 if (isExtend)
                 {
-                    track.curvePts.Insert(0, new vec3(
+                    track.CurvePts.Insert(0, new vec3(
                         pt0.easting + dir.easting,
                         pt0.northing + dir.northing,
                         pt0.heading));
                 }
                 else
                 {
-                    track.curvePts.RemoveAt(0);
+                    track.CurvePts.RemoveAt(0);
                 }
             }
         }
@@ -312,23 +312,23 @@ namespace AgOpenGPS.Forms.Field
         // BIG BANG Step 2: CTrk → Track
         private void AdjustCurveEndPoint(Track track, int steps, bool isExtend)
         {
-            for (int s = 0; s < steps && (isExtend || track.curvePts.Count > 2); s++)
+            for (int s = 0; s < steps && (isExtend || track.CurvePts.Count > 2); s++)
             {
-                int last = track.curvePts.Count - 1;
-                var ptN = track.curvePts[last];
-                var ptN1 = track.curvePts[last - 1];
+                int last = track.CurvePts.Count - 1;
+                var ptN = track.CurvePts[last];
+                var ptN1 = track.CurvePts[last - 1];
                 vec2 dir = (new vec2(ptN.easting, ptN.northing) - new vec2(ptN1.easting, ptN1.northing)).Normalize();
 
                 if (isExtend)
                 {
-                    track.curvePts.Add(new vec3(
+                    track.CurvePts.Add(new vec3(
                         ptN.easting + dir.easting,
                         ptN.northing + dir.northing,
                         ptN.heading));
                 }
                 else
                 {
-                    track.curvePts.RemoveAt(last);
+                    track.CurvePts.RemoveAt(last);
                 }
             }
         }
@@ -350,14 +350,14 @@ namespace AgOpenGPS.Forms.Field
 
             foreach (var trk in _selectedTracks)
             {
-                if (trk.mode == TrackMode.AB)
+                if (trk.Mode == TrackMode.AB)
                 {
-                    UpdateMinMax(trk.ptA);
-                    UpdateMinMax(trk.ptB);
+                    UpdateMinMax(trk.PtA);
+                    UpdateMinMax(trk.PtB);
                 }
-                else if (trk.mode == TrackMode.Curve)
+                else if (trk.Mode == TrackMode.Curve)
                 {
-                    foreach (var pt in trk.curvePts)
+                    foreach (var pt in trk.CurvePts)
                         UpdateMinMax(new vec2(pt.easting, pt.northing));
                 }
             }
@@ -475,13 +475,13 @@ namespace AgOpenGPS.Forms.Field
                 Color color = isSelected ? Color.Yellow : Color.Gray;
                 float width = isSelected ? SELECTED_TRACK_WIDTH : NORMAL_TRACK_WIDTH;
 
-                if (trk.mode == TrackMode.AB)
+                if (trk.Mode == TrackMode.AB)
                 {
-                    DrawLine(trk.ptA, trk.ptB, color, width);
+                    DrawLine(trk.PtA, trk.PtB, color, width);
                 }
-                else if (trk.mode == TrackMode.Curve)
+                else if (trk.Mode == TrackMode.Curve)
                 {
-                    DrawPolyline(trk.curvePts.Select(p => new vec2(p.easting, p.northing)).ToList(), color, width);
+                    DrawPolyline(trk.CurvePts.Select(p => new vec2(p.easting, p.northing)).ToList(), color, width);
                 }
             }
         }

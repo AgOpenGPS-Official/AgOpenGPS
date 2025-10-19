@@ -1,5 +1,4 @@
-﻿#if false // BIG BANG Step 1: Disabled for migration to new TrackService/GuidanceService architecture
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -350,4 +349,3 @@ namespace AgOpenGPS
         }
     }
 }
-#endif // BIG BANG: End of disabled CTrack.cs

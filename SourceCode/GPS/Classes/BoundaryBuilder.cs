@@ -45,27 +45,27 @@ namespace AgOpenGPS.Classes
 
             foreach (var trk in InputTracks)
             {
-                var pts = trk.mode == TrackMode.AB
+                var pts = trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB // BIG BANG Step 2: Use new TrackMode enum
                     ? new List<GeoCoord>
                       {
-                  new GeoCoord(trk.ptA.northing, trk.ptA.easting),
-                  new GeoCoord(trk.ptB.northing, trk.ptB.easting)
+                  new GeoCoord(trk.PtA.northing, trk.PtA.easting), // BIG BANG Step 2: camelCase → PascalCase
+                  new GeoCoord(trk.PtB.northing, trk.PtB.easting) // BIG BANG Step 2: camelCase → PascalCase
                       }
-                    : trk.curvePts
+                    : trk.CurvePts // BIG BANG Step 2: camelCase → PascalCase
                         .Select(p => new GeoCoord(p.northing, p.easting))
                         .ToList();
 
                 var extended = ExtendTrackEndpoints(pts, extendMeters);
 
-                if (trk.mode == TrackMode.AB && extended.Count >= 2)
+                if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB && extended.Count >= 2) // BIG BANG Step 2: Use new TrackMode enum
                 {
-                    trk.ptA = new vec2(extended[0].Easting, extended[0].Northing);
-                    trk.ptB = new vec2(extended[extended.Count - 1].Easting,
+                    trk.PtA = new vec2(extended[0].Easting, extended[0].Northing); // BIG BANG Step 2: camelCase → PascalCase
+                    trk.PtB = new vec2(extended[extended.Count - 1].Easting, // BIG BANG Step 2: camelCase → PascalCase
                                        extended[extended.Count - 1].Northing);
                 }
-                else if (trk.mode == TrackMode.Curve)
+                else if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve) // BIG BANG Step 2: Use new TrackMode enum
                 {
-                    trk.curvePts = extended
+                    trk.CurvePts = extended // BIG BANG Step 2: camelCase → PascalCase
                         .Select(p => new vec3(p.Easting, p.Northing, 0))
                         .ToList();
                 }
@@ -397,9 +397,9 @@ namespace AgOpenGPS.Classes
         // BIG BANG Step 2: CTrk → Track
         private List<vec2> GetTrackPoints(Track track)
         {
-            List<vec2> points = track.mode == TrackMode.AB
-                ? new List<vec2> { track.ptA, track.ptB }
-                : track.curvePts.Select(p => new vec2(p.easting, p.northing)).ToList();
+            List<vec2> points = track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB // BIG BANG Step 2: Use new TrackMode enum
+                ? new List<vec2> { track.PtA, track.PtB } // BIG BANG Step 2: camelCase → PascalCase
+                : track.CurvePts.Select(p => new vec2(p.easting, p.northing)).ToList(); // BIG BANG Step 2: camelCase → PascalCase
 
             return EnforceMaxStep(points, MAX_SEGMENT_STEP);
         }

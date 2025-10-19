@@ -194,7 +194,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
             {
                 Id = System.Guid.NewGuid(),
                 Heading = heading,
-                Mode = TrackMode.AB,
+                Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)TrackMode.AB, // BIG BANG Step 2: Cast old enum to new enum
                 PtA = ptA,
                 PtB = ptB,
                 Name = name.Trim(),
@@ -252,7 +252,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
             {
                 Id = System.Guid.NewGuid(),
                 Heading = avgHeading,
-                Mode = TrackMode.Curve,
+                Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)TrackMode.Curve, // BIG BANG Step 2: Cast old enum to new enum
                 PtA = ptA,
                 PtB = ptB,
                 Name = string.IsNullOrWhiteSpace(name) ? "Curve_" + DateTime.Now.ToString("HHmmss") : name,

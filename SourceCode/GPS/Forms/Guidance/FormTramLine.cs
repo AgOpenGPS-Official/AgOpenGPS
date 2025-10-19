@@ -157,9 +157,9 @@ namespace AgOpenGPS
                     //default side assuming built in AB Draw - isVisible is used for side to draw
                     gTemp.Add(new CTrk(oldTrack));
                     if (item.Mode == Core.Models.Guidance.TrackMode.AB)
-                        gTemp[gTemp.Count - 1].isVisible = false;
+                        gTemp[gTemp.Count - 1].IsVisible = false;
                     else
-                        gTemp[gTemp.Count - 1].isVisible = true;
+                        gTemp[gTemp.Count - 1].IsVisible = true;
                 }
             }
 
@@ -179,7 +179,7 @@ namespace AgOpenGPS
                 BuildTram();
                 if (tramList[0].Count == 0)
                 {
-                    gTemp[indx].isVisible = !gTemp[indx].isVisible;
+                    gTemp[indx].IsVisible = !gTemp[indx].IsVisible;
                     tramList.Clear();
                     tramArr.Clear();
                 }
@@ -242,13 +242,13 @@ namespace AgOpenGPS
 
         private void BuildTram()
         {
-            if (gTemp[indx].mode == TrackMode.Curve)
+            if (gTemp[indx].Mode == TrackMode.Curve)
             {
                 //if (Dist != 0)
                 //mf.trk.NudgeRefCurve(Dist);
                 BuildCurveTram();
             }
-            else if (gTemp[indx].mode == TrackMode.AB)
+            else if (gTemp[indx].Mode == TrackMode.AB)
             {
                 //if (Dist != 0)
                 //mf.trk.NudgeRefABLine(Dist);
@@ -265,7 +265,7 @@ namespace AgOpenGPS
             tramList?.Clear();
             tramArr?.Clear();
 
-            int refCount = gTemp[indx].curvePts.Count;
+            int refCount = gTemp[indx].CurvePts.Count;
 
             int cntr = startPass;
 
@@ -273,7 +273,7 @@ namespace AgOpenGPS
 
             //draw on correct side
             double sideHeading = 0;
-            if (gTemp[indx].isVisible) sideHeading = Math.PI;
+            if (gTemp[indx].IsVisible) sideHeading = Math.PI;
 
             for (int i = cntr; i <= (passes + startPass) - 1; i++)
             {
@@ -292,18 +292,18 @@ namespace AgOpenGPS
                 for (int j = 0; j < refCount; j += 1)
                 {
                     vec2 point = new vec2(
-                    (Math.Sin(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd) + gTemp[indx].curvePts[j].easting,
-                    (Math.Cos(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd) + gTemp[indx].curvePts[j].northing
+                    (Math.Sin(glm.PIBy2 + gTemp[indx].CurvePts[j].heading + sideHeading) *
+                        widd) + gTemp[indx].CurvePts[j].easting,
+                    (Math.Cos(glm.PIBy2 + gTemp[indx].CurvePts[j].heading + sideHeading) *
+                        widd) + gTemp[indx].CurvePts[j].northing
                         );
 
                     bool Add = true;
                     for (int t = 0; t < refCount; t++)
                     {
                         //distance check to be not too close to ref line
-                        double dist = ((point.easting - gTemp[indx].curvePts[t].easting) * (point.easting - gTemp[indx].curvePts[t].easting))
-                            + ((point.northing - gTemp[indx].curvePts[t].northing) * (point.northing - gTemp[indx].curvePts[t].northing));
+                        double dist = ((point.easting - gTemp[indx].CurvePts[t].easting) * (point.easting - gTemp[indx].CurvePts[t].easting))
+                            + ((point.northing - gTemp[indx].CurvePts[t].northing) * (point.northing - gTemp[indx].CurvePts[t].northing));
                         if (dist < distSqAway)
                         {
                             Add = false;
@@ -343,18 +343,18 @@ namespace AgOpenGPS
                 for (int j = 0; j < refCount; j += 1)
                 {
                     vec2 point = new vec2(
-                    Math.Sin(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd + gTemp[indx].curvePts[j].easting,
-                    Math.Cos(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd + gTemp[indx].curvePts[j].northing
+                    Math.Sin(glm.PIBy2 + gTemp[indx].CurvePts[j].heading + sideHeading) *
+                        widd + gTemp[indx].CurvePts[j].easting,
+                    Math.Cos(glm.PIBy2 + gTemp[indx].CurvePts[j].heading + sideHeading) *
+                        widd + gTemp[indx].CurvePts[j].northing
                         );
 
                     bool Add = true;
                     for (int t = 0; t < refCount; t++)
                     {
                         //distance check to be not too close to ref line
-                        double dist = ((point.easting - gTemp[indx].curvePts[t].easting) * (point.easting - gTemp[indx].curvePts[t].easting))
-                            + ((point.northing - gTemp[indx].curvePts[t].northing) * (point.northing - gTemp[indx].curvePts[t].northing));
+                        double dist = ((point.easting - gTemp[indx].CurvePts[t].easting) * (point.easting - gTemp[indx].CurvePts[t].easting))
+                            + ((point.northing - gTemp[indx].CurvePts[t].northing) * (point.northing - gTemp[indx].CurvePts[t].northing));
                         if (dist < distSqAway)
                         {
                             Add = false;
@@ -410,7 +410,7 @@ namespace AgOpenGPS
             if (headingCalc < 0) headingCalc += glm.twoPI;
             if (headingCalc > glm.twoPI) headingCalc -= glm.twoPI;
 
-            if (gTemp[indx].isVisible) headingCalc += Math.PI;
+            if (gTemp[indx].IsVisible) headingCalc += Math.PI;
             if (headingCalc > glm.twoPI) headingCalc -= glm.twoPI;
 
             hsin = Math.Sin(headingCalc);
@@ -722,7 +722,7 @@ namespace AgOpenGPS
             for (int i = 0; i < gTemp.Count; i++)
             {
                 //AB Lines
-                if (gTemp[i].mode == TrackMode.AB)
+                if (gTemp[i].Mode == TrackMode.AB)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(4);
@@ -745,12 +745,12 @@ namespace AgOpenGPS
                     GL.Disable(EnableCap.LineStipple);
                 }
 
-                else if (gTemp[i].mode == TrackMode.Curve || gTemp[i].mode == TrackMode.bndCurve)
+                else if (gTemp[i].Mode == TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(5);
 
-                    if (gTemp[i].mode == TrackMode.bndCurve) GL.LineStipple(1, 0x0007);
+                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.LineStipple(1, 0x0007);
                     else GL.LineStipple(1, 0x0707);
 
 
@@ -761,9 +761,9 @@ namespace AgOpenGPS
                     }
 
                     GL.Color3(0.30f, 0.97f, 0.30f);
-                    if (gTemp[i].mode == TrackMode.bndCurve) GL.Color3(0.70f, 0.5f, 0.2f);
+                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.Color3(0.70f, 0.5f, 0.2f);
                     GL.Begin(PrimitiveType.LineStrip);
-                    foreach (vec3 pts in gTemp[i].curvePts)
+                    foreach (vec3 pts in gTemp[i].CurvePts)
                     {
                         GL.Vertex3(pts.easting, pts.northing, 0);
                     }
@@ -777,14 +777,14 @@ namespace AgOpenGPS
                     GL.Color3(1.0f, 0.75f, 0.350f);
                     GL.Begin(PrimitiveType.Points);
 
-                    GL.Vertex3(gTemp[i].curvePts[0].easting,
-                                gTemp[i].curvePts[0].northing,
+                    GL.Vertex3(gTemp[i].CurvePts[0].easting,
+                                gTemp[i].CurvePts[0].northing,
                                 0);
 
 
                     GL.Color3(0.5f, 0.5f, 1.0f);
-                    GL.Vertex3(gTemp[i].curvePts[gTemp[i].curvePts.Count - 1].easting,
-                                gTemp[i].curvePts[gTemp[i].curvePts.Count - 1].northing,
+                    GL.Vertex3(gTemp[i].CurvePts[gTemp[i].CurvePts.Count - 1].easting,
+                                gTemp[i].CurvePts[gTemp[i].CurvePts.Count - 1].northing,
                                 0);
                     GL.End();
                 }
@@ -880,7 +880,7 @@ namespace AgOpenGPS
 
         private void btnSwapAB_Click(object sender, EventArgs e)
         {
-            gTemp[indx].isVisible = !gTemp[indx].isVisible;
+            gTemp[indx].IsVisible = !gTemp[indx].IsVisible;
             ResetStartNumLabels();
             BuildTram();
         }
@@ -919,7 +919,7 @@ namespace AgOpenGPS
 
             if (indx > -1 && gTemp.Count > 0)
             {
-                this.Text += "   " + gTemp[indx].name;
+                this.Text += "   " + gTemp[indx].Name;
                 lblCurveSelected.Text = (indx + 1).ToString() + " / " + gTemp.Count.ToString();
             }
             else

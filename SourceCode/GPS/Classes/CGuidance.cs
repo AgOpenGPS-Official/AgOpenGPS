@@ -1,5 +1,4 @@
-﻿#if false // BIG BANG Step 1: Disabled for migration to new TrackService/GuidanceService architecture
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace AgOpenGPS
@@ -412,4 +411,3 @@ namespace AgOpenGPS
         #endregion Stanley
     }
 }
-#endif // BIG BANG: End of disabled CGuidance.cs

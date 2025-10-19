@@ -187,14 +187,14 @@ namespace AgOpenGPS
                 var track = new AgOpenGPS.Core.Models.Guidance.Track
                 {
                     Id = System.Guid.NewGuid(),
-                    Name = item.name,
-                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.mode,
+                    Name = item.Name,
+                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.Mode,
                     IsVisible = item.isVisible,
                     NudgeDistance = item.nudgeDistance,
                     PtA = item.ptA,
                     PtB = item.ptB,
                     Heading = item.heading,
-                    CurvePts = new List<vec3>(item.curvePts),
+                    CurvePts = new List<vec3>(item.CurvePts),
                     WorkedTracks = new HashSet<int>()
                 };
                 mf._trackService.AddTrack(track);

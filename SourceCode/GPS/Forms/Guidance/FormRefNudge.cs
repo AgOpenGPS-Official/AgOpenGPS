@@ -144,14 +144,14 @@ namespace AgOpenGPS
                 var track = new AgOpenGPS.Core.Models.Guidance.Track
                 {
                     Id = System.Guid.NewGuid(),
-                    Name = item.name,
-                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.mode,
-                    PtA = item.ptA,
-                    PtB = item.ptB,
-                    Heading = item.heading,
-                    CurvePts = item.curvePts,
-                    NudgeDistance = item.nudgeDistance,
-                    IsVisible = item.isVisible
+                    Name = item.Name,
+                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.Mode,
+                    PtA = item.PtA,
+                    PtB = item.PtB,
+                    Heading = item.Heading,
+                    CurvePts = item.CurvePts,
+                    NudgeDistance = item.NudgeDistance,
+                    IsVisible = item.IsVisible
                 };
                 mf._trackService.AddTrack(track);
             }

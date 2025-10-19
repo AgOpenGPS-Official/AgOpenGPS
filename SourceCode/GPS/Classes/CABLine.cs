@@ -1,4 +1,3 @@
-#if false // BIG BANG Step 1: Disabled for migration to new TrackService/GuidanceService architecture
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -665,4 +664,3 @@ namespace AgOpenGPS
         }
     }
 }
-#endif // BIG BANG: End of disabled CABLine.cs
