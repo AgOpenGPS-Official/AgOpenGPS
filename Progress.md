@@ -1953,7 +1953,12 @@ According to **Guidance_Refactoring_Plan.md** (adjusted):
 
 - [x] **Phase 6.3**: CTrk → Track migration in file I/O and AgShare ✅
 - [x] **Phase 6.4**: TrackService integration and CTrack deprecation ✅
-- [ ] **Phase 6.5**: Replace all trk.gArr/trk.idx references throughout codebase (~294 occurrences in ~24 files)
+- [ ] **Phase 6.5**: Replace all trk.gArr/trk.idx references throughout codebase (IN PROGRESS)
+  - ✅ FormGPS.cs - 3 references migrated
+  - ✅ Position.designer.cs - 6 references migrated (CRITICAL guidance loop!)
+  - ✅ FormFieldISOXML.cs - 1 reference migrated (ISOXML import)
+  - ✅ FormTramLine.cs - 1 reference migrated (tram line generation)
+  - ⏳ Remaining: ~15 files with ~340 references
 - [ ] **Phase 6.6**: Replace guidance calls in Position.designer.cs
 - [ ] **Phase 6.7**: Test build and fix errors
 - [ ] **Phase 6.8**: Delete old files (CGuidance.cs, CTrack.cs, CABLine.cs, CABCurve.cs)
@@ -1992,4 +1997,4 @@ Phase 6 is complete when:
 
 ---
 
-*Last Update: 2025-01-19 (Phase 6.4: TrackService fully integrated. CTrack marked obsolete. SaveOpen.Designer.cs now uses _trackService directly (no more CTrk conversions!). Build succeeds with 0 errors. Ready for Phase 6.5: Replace ~294 trk.gArr references across ~24 files.)*
+*Last Update: 2025-01-19 (Phase 6.5 IN PROGRESS: Migrated 11 critical references across 4 files - FormGPS.cs (track clearing), Position.designer.cs (CRITICAL 10-100Hz guidance loop), FormFieldISOXML.cs (ISOXML import with CTrk→Track conversion), FormTramLine.cs (tram line generation). All files build successfully (0 errors). Commits: 44b85a71 + 206aab17. Remaining: ~15 files with ~340 references.)*
