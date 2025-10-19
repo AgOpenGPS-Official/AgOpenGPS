@@ -2000,16 +2000,23 @@ Phase 6 is complete when:
 
 *Last Update: 2025-01-19 (Phase 6.5 IN PROGRESS - 95% COMPLETE!)*
 
-**Recent Progress (Batches 8-10)**:
-- ✅ **Batch 8** (Commit: a1960328): Controls.Designer.cs (32 refs - track cycling, menu logic), FormTram.cs (23 refs - swap AB with Track update), FormQuickAB.cs (29 refs - AB/Curve/APlus creation via AddTrack) - 84 references migrated
+**Recent Progress (Batches 8-11)**:
+- ✅ **Batch 8** (Commit: a1960328): Controls.Designer.cs (32 refs), FormTram.cs (23 refs), FormQuickAB.cs (29 refs) - 84 references
 - ✅ **Batch 9** (Commit: 69f38b5e): Controls.Designer.cs final reference (WorkedTracks clearing)
 - ✅ **Batch 10** (Commit: d633103a): FormBuildTracks.cs partial - Load, Cancel, Use, UpdateTable methods (~21 refs)
-- ✅ **Total**: ~180 references migrated across 17 files, 10 commits, 0 build errors
-- ⏳ **Remaining**: FormBuildTracks.cs track creation methods (~94 refs - similar patterns to FormQuickAB completed in Batch 8)
-- ⏳ **To Skip**: CABLine, CABCurve, CYouTurn, CTrack (~77 refs) - will be deleted in Phase 6.8
+- ✅ **Batch 11** (Commit: 8f0c9cf2): **FormBuildTracks.cs REFACTORED** - Eliminated code duplication with CreateAndAddTrack() helper
+  - Created central helper method for all track creation (60 lines)
+  - Refactored 6 track creation methods: AB Line, APlus, Curve, LatLonPlus, LatLonLatLon, Pivot
+  - Eliminated ~86 lines of duplicated code
+  - All track creation now via _trackService.AddTrack()
+  - File: 1586 → 1578 lines (net -8, but massively DRYer!)
+- ✅ **Total**: ~200 references migrated across 17 files, 11 commits, 0 build errors
+- ⏳ **Remaining**: FormBuildTracks.cs KML import + btnDuplicate (~20 refs) + files to delete (CABLine, CABCurve, CYouTurn, CTrack: ~77 refs)
 
 **Key Achievements**:
-- All UI forms migrated except FormBuildTracks track creation
-- Batch replacement strategy working efficiently
-- Complex patterns solved: track cycling, backup/restore, track creation via _trackService.AddTrack()
-- Build status: 0 errors, only obsolete warnings from files marked for deletion
+- ✅ **Major refactoring**: FormBuildTracks.cs now DRY (Don't Repeat Yourself)
+- ✅ Single source of truth for track creation
+- ✅ Consistent behavior across all track types (AB/Curve/Pivot/LatLon)
+- ✅ All track creation methods migrated to _trackService
+- ✅ Build status: 0 errors, only obsolete warnings from files marked for deletion
+- ✅ Code quality significantly improved - easier to maintain and modify
