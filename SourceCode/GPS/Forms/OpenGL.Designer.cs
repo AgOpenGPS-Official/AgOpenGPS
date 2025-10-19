@@ -392,22 +392,13 @@ namespace AgOpenGPS
                     }
                     else// draw the current and reference AB Lines or CurveAB Ref and line
                     {
-                        //when switching lines, draw the ghost
-                        // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
-                        var currentTrack = _trackService.GetCurrentTrack();
-                        if (currentTrack != null)
-                        {
-                            if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
-                                ABLine.DrawABLines();
-                            else
-                                curve.DrawCurve();
-                        }
+                        // NEW Phase 6.8: Use DrawTrackGuidance() instead of ABLine/curve calls
+                        DrawTrackGuidance();
                     }
 
                     //draw line creations
-                    if (curve.isMakingCurve) curve.DrawCurveNew();
-
-                    if (ABLine.isMakingABLine) ABLine.DrawABLineNew();
+                    // NEW Phase 6.8: Use DrawTrackCreation() instead of separate calls
+                    DrawTrackCreation();
 
                     recPath.DrawRecordedLine();
                     recPath.DrawDubins();
@@ -442,14 +433,14 @@ namespace AgOpenGPS
 
                     if (camera.camSetDistance > -250)
                     {
-                        // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+                        // NEW Phase 6.8: Use lastGuidanceResult.GoalPoint instead of ABLine/curve fields
                         var currentTrack = _trackService.GetCurrentTrack();
-                        if (currentTrack != null && !isStanleyUsed)
+                        if (currentTrack != null && !isStanleyUsed && lastGuidanceResult.IsValid)
                         {
                             PointStyle backgroundPointStyle = new PointStyle(12.0f, Colors.Black);
                             PointStyle foregroundPointStyle = new PointStyle(6.0f, Colors.GoalPointColor);
                             PointStyle[] pointStyles = { backgroundPointStyle, foregroundPointStyle };
-                            vec2 goalPoint = currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB ? ABLine.goalPointAB : curve.goalPointCu;
+                            vec2 goalPoint = new vec2(lastGuidanceResult.GoalPoint.easting, lastGuidanceResult.GoalPoint.northing);
                             GLW.DrawPointLayered(pointStyles, goalPoint.easting, goalPoint.northing, 0.0);
                         }
                     }
@@ -2029,6 +2020,193 @@ namespace AgOpenGPS
             GL.End();
         }
 
+        /// <summary>
+        /// NEW Phase 6.8: Draw track guidance (AB lines or curves) using currentGuidanceDisplay data
+        /// Replaces ABLine.DrawABLines() and curve.DrawCurve()
+        /// </summary>
+        private void DrawTrackGuidance()
+        {
+            var track = _trackService.GetCurrentTrack();
+            if (track == null || !track.IsValid()) return;
+
+            var display = currentGuidanceDisplay;
+            int lineWidth = display.LineWidth;
+
+            if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+            {
+                // ========== AB LINE RENDERING ==========
+
+                // Draw AB Points (A = red, B = cyan)
+                GL.PointSize(8.0f);
+                GL.Begin(PrimitiveType.Points);
+                GL.Color3(0.0f, 0.90f, 0.95f); // Cyan for B
+                GL.Vertex3(display.RefPtB.easting, display.RefPtB.northing, 0.0);
+                GL.Color3(0.95f, 0.0f, 0.0f); // Red for A
+                GL.Vertex3(display.RefPtA.easting, display.RefPtA.northing, 0.0);
+                GL.End();
+                GL.PointSize(1.0f);
+
+                // Draw labels if not making a new line
+                if (!display.IsMakingTrack)
+                {
+                    font.DrawText3D(display.RefPtA.easting, display.RefPtA.northing, "&A", camHeading);
+                    font.DrawText3D(display.RefPtB.easting, display.RefPtB.northing, "&B", camHeading);
+                }
+
+                // Draw reference AB line (extended, dashed red)
+                GL.LineWidth(4);
+                GL.Enable(EnableCap.LineStipple);
+                GL.LineStipple(1, 0x0F00);
+                GL.Begin(PrimitiveType.Lines);
+                GL.Color3(0.930f, 0.2f, 0.2f);
+                GL.Vertex3(display.RefEndPtA.easting, display.RefEndPtA.northing, 0);
+                GL.Vertex3(display.RefEndPtB.easting, display.RefEndPtB.northing, 0);
+                GL.End();
+                GL.Disable(EnableCap.LineStipple);
+
+                // Draw tool shadow (implement width visualization)
+                double shadowOffset = display.IsHeadingSameWay ? tool.offset : -tool.offset;
+                GeoCoord ptA = display.CurrentLinePtA.ToGeoCoord();
+                GeoCoord ptB = display.CurrentLinePtB.ToGeoCoord();
+                GeoDir abDir = new GeoDir(display.Heading);
+                GeoDir perpRightDir = abDir.PerpendicularRight;
+                GeoDelta rightOffset = (shadowOffset + 0.5 * tool.width) * perpRightDir;
+                GeoDelta leftOffset = (shadowOffset - 0.5 * tool.width) * perpRightDir;
+
+                GeoCoord[] shadowCoords = {
+                    ptA + leftOffset,
+                    ptA + rightOffset,
+                    ptB + rightOffset,
+                    ptB + leftOffset
+                };
+
+                GL.Color4(0.5, 0.5, 0.5, 0.2);
+                GL.Begin(PrimitiveType.TriangleFan);
+                for (int i = 0; i < shadowCoords.Length; i++)
+                {
+                    GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
+                }
+                GL.End();
+
+                // Shadow lines
+                GL.Color4(0.55, 0.55, 0.55, 0.2);
+                GL.LineWidth(1);
+                GL.Begin(PrimitiveType.LineLoop);
+                for (int i = 0; i < shadowCoords.Length; i++)
+                {
+                    GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
+                }
+                GL.End();
+
+                // Draw current AB Line (black outline + magenta)
+                GL.LineWidth(lineWidth * 3);
+                GL.Begin(PrimitiveType.Lines);
+                GL.Color3(0, 0, 0);
+                GL.Vertex3(display.CurrentLinePtA.easting, display.CurrentLinePtA.northing, 0.0);
+                GL.Vertex3(display.CurrentLinePtB.easting, display.CurrentLinePtB.northing, 0.0);
+                GL.End();
+
+                GL.LineWidth(lineWidth);
+                GL.Begin(PrimitiveType.Lines);
+                GL.Color3(0.95f, 0.20f, 0.950f); // Magenta
+                GL.Vertex3(display.CurrentLinePtA.easting, display.CurrentLinePtA.northing, 0.0);
+                GL.Vertex3(display.CurrentLinePtB.easting, display.CurrentLinePtB.northing, 0.0);
+                GL.End();
+
+                // Draw side guide lines
+                if (isSideGuideLines && camera.camSetDistance > tool.width * -400)
+                {
+                    double toolWidth = tool.width - tool.overlap;
+                    double cosHeading = Math.Cos(-display.Heading);
+                    double sinHeading = Math.Sin(-display.Heading);
+
+                    // Black outline
+                    GL.Color4(0, 0, 0, 0.5);
+                    GL.LineWidth(lineWidth * 3);
+                    GL.Begin(PrimitiveType.Lines);
+                    for (int i = 1; i <= display.NumGuideLines; i++)
+                    {
+                        GL.Vertex3((cosHeading * (toolWidth * i)) + display.CurrentLinePtA.easting,
+                                   (sinHeading * (toolWidth * i)) + display.CurrentLinePtA.northing, 0);
+                        GL.Vertex3((cosHeading * (toolWidth * i)) + display.CurrentLinePtB.easting,
+                                   (sinHeading * (toolWidth * i)) + display.CurrentLinePtB.northing, 0);
+
+                        GL.Vertex3((cosHeading * (-toolWidth * i)) + display.CurrentLinePtA.easting,
+                                   (sinHeading * (-toolWidth * i)) + display.CurrentLinePtA.northing, 0);
+                        GL.Vertex3((cosHeading * (-toolWidth * i)) + display.CurrentLinePtB.easting,
+                                   (sinHeading * (-toolWidth * i)) + display.CurrentLinePtB.northing, 0);
+                    }
+                    GL.End();
+
+                    // Green lines
+                    GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
+                    GL.LineWidth(lineWidth);
+                    GL.Begin(PrimitiveType.Lines);
+                    for (int i = 1; i <= display.NumGuideLines; i++)
+                    {
+                        GL.Vertex3((cosHeading * (toolWidth * i)) + display.CurrentLinePtA.easting,
+                                   (sinHeading * (toolWidth * i)) + display.CurrentLinePtA.northing, 0);
+                        GL.Vertex3((cosHeading * (toolWidth * i)) + display.CurrentLinePtB.easting,
+                                   (sinHeading * (toolWidth * i)) + display.CurrentLinePtB.northing, 0);
+
+                        GL.Vertex3((cosHeading * (-toolWidth * i)) + display.CurrentLinePtA.easting,
+                                   (sinHeading * (-toolWidth * i)) + display.CurrentLinePtA.northing, 0);
+                        GL.Vertex3((cosHeading * (-toolWidth * i)) + display.CurrentLinePtB.easting,
+                                   (sinHeading * (-toolWidth * i)) + display.CurrentLinePtB.northing, 0);
+                    }
+                    GL.End();
+                }
+            }
+            else if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && display.CurvePoints != null && display.CurvePoints.Count > 1)
+            {
+                // ========== CURVE RENDERING ==========
+                // Draw the curve line
+                GL.LineWidth(lineWidth);
+                GL.Color3(0.95f, 0.2f, 0.50f);
+                GL.Begin(PrimitiveType.LineStrip);
+                foreach (var pt in display.CurvePoints)
+                {
+                    GL.Vertex3(pt.easting, pt.northing, 0.0);
+                }
+                GL.End();
+            }
+
+            // Draw YouTurn (still uses old class for now)
+            yt.DrawYouTurn();
+
+            // Reset to defaults
+            GL.PointSize(1.0f);
+            GL.LineWidth(1);
+        }
+
+        /// <summary>
+        /// NEW Phase 6.8: Draw new track being created (AB line or curve)
+        /// Replaces ABLine.DrawABLineNew() and curve.DrawCurveNew()
+        /// </summary>
+        private void DrawTrackCreation()
+        {
+            var display = currentGuidanceDisplay;
+
+            if (!display.IsMakingTrack) return;
+
+            int lineWidth = display.LineWidth;
+
+            // Draw the design line being created
+            GL.LineWidth(lineWidth);
+            GL.Begin(PrimitiveType.Lines);
+            GL.Color3(0.95f, 0.70f, 0.50f); // Orange
+            GL.Vertex3(display.DesignLineEndA.easting, display.DesignLineEndA.northing, 0.0);
+            GL.Vertex3(display.DesignLineEndB.easting, display.DesignLineEndB.northing, 0.0);
+            GL.End();
+
+            // Draw A & B markers
+            GL.Color3(0.2f, 0.950f, 0.20f); // Green
+            font.DrawText3D(display.DesignPtA.easting, display.DesignPtA.northing, "&A", camHeading);
+            font.DrawText3D(display.DesignPtB.easting, display.DesignPtB.northing, "&B", camHeading);
+
+            GL.LineWidth(1);
+        }
+
         private void DrawLightBar(double width, double height, double offlineDistance)
         {
             const int spacing = 32;
@@ -2375,26 +2553,29 @@ namespace AgOpenGPS
 
             string dire;
 
+            // NEW Phase 6.8: Use currentGuidanceDisplay instead of ABLine/curve fields
+            var display = currentGuidanceDisplay;
+
             if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
-                if (ABLine.isHeadingSameWay) dire = "{";
+                if (display.IsHeadingSameWay) dire = "{";
                 else dire = "}";
 
-                if (ABLine.howManyPathsAway > -1)
-                    dire = dire + (ABLine.howManyPathsAway + 1).ToString() + "R " + offs;
+                if (display.HowManyPathsAway > -1)
+                    dire = dire + (display.HowManyPathsAway + 1).ToString() + "R " + offs;
                 else
-                    dire = dire + (-ABLine.howManyPathsAway).ToString() + "L " + offs;
+                    dire = dire + (-display.HowManyPathsAway).ToString() + "L " + offs;
             }
             else
             {
-                if (curve.isHeadingSameWay) dire = "{";
+                if (display.IsHeadingSameWay) dire = "{";
                 else dire = "}";
 
                 GL.Color4(1.269, 1.25, 1.2510, 0.87);
-                if (curve.howManyPathsAway > -1)
-                    dire = dire + (curve.howManyPathsAway + 1).ToString() + "R " + offs;
+                if (display.HowManyPathsAway > -1)
+                    dire = dire + (display.HowManyPathsAway + 1).ToString() + "R " + offs;
                 else
-                    dire = dire + (-curve.howManyPathsAway).ToString() + "L " + offs;
+                    dire = dire + (-display.HowManyPathsAway).ToString() + "L " + offs;
             }
 
             int start = -(int)(((double)(dire.Length) * 0.45) * (22 * (1.0)));

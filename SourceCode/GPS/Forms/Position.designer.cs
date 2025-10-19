@@ -906,6 +906,9 @@ namespace AgOpenGPS
                         // Calculate guidance (cross-track error, steering angle)
                         var guidanceResult = UpdateGuidance(steerAxlePos, guidanceTrack);
 
+                        // NEW Phase 6.8: Calculate display data for OpenGL rendering
+                        CalculateGuidanceDisplayData(currentTrack, pivotAxlePos);
+
                         // Update legacy flags for UI compatibility
                         if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                         {

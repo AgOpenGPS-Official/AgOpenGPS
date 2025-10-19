@@ -266,6 +266,18 @@ namespace AgOpenGPS
         public IYouTurnService _youTurnService;
 
         /// <summary>
+        /// NEW Phase 6.8: Runtime guidance display data for OpenGL rendering
+        /// Replaces CABLine/CABCurve fields that were used for rendering
+        /// </summary>
+        public GuidanceDisplayData currentGuidanceDisplay;
+
+        /// <summary>
+        /// NEW Phase 6.8: Last guidance result from UpdateGuidance()
+        /// Contains goal point, cross-track error, steering angle, etc.
+        /// </summary>
+        public GuidanceResult lastGuidanceResult;
+
+        /// <summary>
         /// The new brightness code
         /// </summary>
         public CWindowsSettingsBrightnessController displayBrightness;
@@ -409,6 +421,10 @@ namespace AgOpenGPS
             _trackService = new TrackService();
             _guidanceService = new GuidanceService();
             _youTurnService = new YouTurnService();
+
+            // NEW Phase 6.8: Initialize guidance display data
+            currentGuidanceDisplay = GuidanceDisplayData.Empty();
+            lastGuidanceResult = GuidanceResult.Invalid();
 
             //sounds class
             sounds = new CSound();
@@ -888,7 +904,118 @@ namespace AgOpenGPS
             vehicle.modeActualXTE = result.CrossTrackError;
             vehicle.modeActualHeadingError = glm.toDegrees(result.HeadingError);
 
+            // NEW Phase 6.8: Store result for OpenGL rendering (goal point display)
+            lastGuidanceResult = result;
+
             return result;
+        }
+
+        /// <summary>
+        /// NEW Phase 6.8: Calculate guidance display data for OpenGL rendering
+        /// Replaces CABLine.BuildCurrentABLineList() logic
+        /// </summary>
+        /// <param name="track">Current active track</param>
+        /// <param name="pivot">Current pivot position</param>
+        public void CalculateGuidanceDisplayData(AgOpenGPS.Core.Models.Guidance.Track track, vec3 pivot)
+        {
+            if (track == null || !track.IsValid())
+            {
+                currentGuidanceDisplay = GuidanceDisplayData.Empty();
+                return;
+            }
+
+            const double abLength = 2000; // Extended line length
+            double widthMinusOverlap = tool.width - tool.overlap;
+
+            // Start with track reference points
+            currentGuidanceDisplay.RefPtA = track.PtA;
+            currentGuidanceDisplay.RefPtB = track.PtB;
+            currentGuidanceDisplay.Heading = track.Heading;
+
+            // Calculate extended endpoints
+            currentGuidanceDisplay.RefEndPtA = new vec2(
+                track.PtA.easting - (Math.Sin(track.Heading) * abLength),
+                track.PtA.northing - (Math.Cos(track.Heading) * abLength));
+
+            currentGuidanceDisplay.RefEndPtB = new vec2(
+                track.PtB.easting + (Math.Sin(track.Heading) * abLength),
+                track.PtB.northing + (Math.Cos(track.Heading) * abLength));
+
+            // Calculate distance from reference line
+            double dx = currentGuidanceDisplay.RefEndPtB.easting - currentGuidanceDisplay.RefEndPtA.easting;
+            double dy = currentGuidanceDisplay.RefEndPtB.northing - currentGuidanceDisplay.RefEndPtA.northing;
+
+            double distanceFromRefLine = ((dy * guidanceLookPos.easting) - (dx * guidanceLookPos.northing) +
+                (currentGuidanceDisplay.RefEndPtB.easting * currentGuidanceDisplay.RefEndPtA.northing) -
+                (currentGuidanceDisplay.RefEndPtB.northing * currentGuidanceDisplay.RefEndPtA.easting))
+                / Math.Sqrt((dy * dy) + (dx * dx));
+
+            distanceFromRefLine -= (0.5 * widthMinusOverlap);
+
+            // Determine if heading same way
+            currentGuidanceDisplay.IsHeadingSameWay = Math.PI - Math.Abs(Math.Abs(pivot.heading - track.Heading) - Math.PI) < glm.PIBy2;
+
+            // Calculate which pass we're on
+            double refDist = (distanceFromRefLine + (currentGuidanceDisplay.IsHeadingSameWay ? tool.offset : -tool.offset) - track.NudgeDistance) / widthMinusOverlap;
+            currentGuidanceDisplay.HowManyPathsAway = (refDist < 0) ? (int)(refDist - 0.5) : (int)(refDist + 0.5);
+
+            // Calculate current guidance line (offset from reference)
+            double distAway = widthMinusOverlap * currentGuidanceDisplay.HowManyPathsAway +
+                (currentGuidanceDisplay.IsHeadingSameWay ? -tool.offset : tool.offset) + track.NudgeDistance;
+            distAway += (0.5 * widthMinusOverlap);
+
+            vec2 nudgePtA = new vec2(track.PtA);
+            vec2 nudgePtB = new vec2(track.PtB);
+
+            vec2 point1 = new vec2(
+                (Math.Cos(-track.Heading) * distAway) + nudgePtA.easting,
+                (Math.Sin(-track.Heading) * distAway) + nudgePtA.northing);
+
+            vec2 point2 = new vec2(
+                (Math.Cos(-track.Heading) * distAway) + nudgePtB.easting,
+                (Math.Sin(-track.Heading) * distAway) + nudgePtB.northing);
+
+            currentGuidanceDisplay.CurrentLinePtA = new vec3(
+                point1.easting - (Math.Sin(track.Heading) * abLength),
+                point1.northing - (Math.Cos(track.Heading) * abLength),
+                track.Heading);
+
+            currentGuidanceDisplay.CurrentLinePtB = new vec3(
+                point2.easting + (Math.Sin(track.Heading) * abLength),
+                point2.northing + (Math.Cos(track.Heading) * abLength),
+                track.Heading);
+
+            // Display settings
+            currentGuidanceDisplay.LineWidth = Properties.Settings.Default.setDisplay_lineWidth;
+            currentGuidanceDisplay.NumGuideLines = Properties.Settings.Default.setAS_numGuideLines;
+
+            // Curve points (for curve mode)
+            if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && track.CurvePts != null)
+            {
+                currentGuidanceDisplay.CurvePoints = new List<vec3>(track.CurvePts);
+            }
+            else
+            {
+                currentGuidanceDisplay.CurvePoints = new List<vec3>();
+            }
+
+            // Creation mode (check legacy fields for now)
+            #pragma warning disable CS0618 // Type or member is obsolete
+            currentGuidanceDisplay.IsMakingTrack = (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB && ABLine.isMakingABLine) ||
+                                                   (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && curve.isMakingCurve);
+            if (currentGuidanceDisplay.IsMakingTrack)
+            {
+                if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                {
+                    currentGuidanceDisplay.DesignPtA = ABLine.desPtA;
+                    currentGuidanceDisplay.DesignPtB = ABLine.desPtB;
+                    currentGuidanceDisplay.DesignLineEndA = ABLine.desLineEndA;
+                    currentGuidanceDisplay.DesignLineEndB = ABLine.desLineEndB;
+                    currentGuidanceDisplay.DesignHeading = ABLine.desHeading;
+                    currentGuidanceDisplay.DesignName = ABLine.desName;
+                }
+            }
+            #pragma warning restore CS0618
         }
 
         //request a new job
@@ -1370,6 +1497,74 @@ namespace AgOpenGPS
             form.ShowDialog(this);
         }
     }//class FormGPS
+
+    /// <summary>
+    /// NEW Phase 6.8: Runtime guidance display data for OpenGL rendering
+    /// Contains all calculated values needed to render AB lines and curves
+    /// Replaces CABLine/CABCurve runtime fields
+    /// </summary>
+    public struct GuidanceDisplayData
+    {
+        // Track reference points (from Track model)
+        public vec2 RefPtA;              // Point A of AB line
+        public vec2 RefPtB;              // Point B of AB line
+        public vec2 RefEndPtA;           // Extended endpoint A
+        public vec2 RefEndPtB;           // Extended endpoint B
+        public double Heading;           // Track heading (radians)
+
+        // Current guidance line (calculated based on position)
+        public vec3 CurrentLinePtA;      // Current AB line start
+        public vec3 CurrentLinePtB;      // Current AB line end
+
+        // Guidance state
+        public bool IsHeadingSameWay;    // Driving same direction as AB line
+        public int HowManyPathsAway;     // Which pass we're on (negative = left, positive = right)
+
+        // Display settings
+        public int LineWidth;            // Line width for rendering
+        public int NumGuideLines;        // Number of side guide lines
+
+        // Creation mode (for drawing new tracks)
+        public bool IsMakingTrack;       // True if currently creating a new track
+        public vec2 DesignPtA;           // Design point A (during creation)
+        public vec2 DesignPtB;           // Design point B (during creation)
+        public vec2 DesignLineEndA;      // Design line extended endpoint A
+        public vec2 DesignLineEndB;      // Design line extended endpoint B
+        public double DesignHeading;     // Design line heading
+        public string DesignName;        // Design track name
+
+        // Curve points (for curve mode)
+        public List<vec3> CurvePoints;   // Current curve points for rendering
+
+        /// <summary>
+        /// Creates an invalid/empty display data struct
+        /// </summary>
+        public static GuidanceDisplayData Empty()
+        {
+            return new GuidanceDisplayData
+            {
+                RefPtA = new vec2(),
+                RefPtB = new vec2(),
+                RefEndPtA = new vec2(),
+                RefEndPtB = new vec2(),
+                Heading = 0,
+                CurrentLinePtA = new vec3(),
+                CurrentLinePtB = new vec3(),
+                IsHeadingSameWay = true,
+                HowManyPathsAway = 0,
+                LineWidth = 2,
+                NumGuideLines = 1,
+                IsMakingTrack = false,
+                DesignPtA = new vec2(),
+                DesignPtB = new vec2(),
+                DesignLineEndA = new vec2(),
+                DesignLineEndB = new vec2(),
+                DesignHeading = 0,
+                DesignName = "",
+                CurvePoints = new List<vec3>()
+            };
+        }
+    }
 }//namespace AgOpenGPS
 
 
