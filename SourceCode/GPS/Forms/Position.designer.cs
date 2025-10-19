@@ -893,19 +893,36 @@ namespace AgOpenGPS
                     }
                 }
 
-                //like normal - NEW Phase 6.5: Use _trackService
+                //like normal - NEW Phase 6.7: Use _trackService.BuildGuidanceTrack + UpdateGuidance
                 var currentTrack = _trackService.GetCurrentTrack();
-                if (currentTrack != null)
+                if (currentTrack != null && currentTrack.IsValid())
                 {
-                    if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                    // Build guidance track (extended AB line or smoothed curve)
+                    // offsetDistance: use nudge distance from track
+                    var guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
+
+                    if (guidanceTrack != null && guidanceTrack.Count >= 2)
                     {
-                        ABLine.BuildCurrentABLineList(pivotAxlePos);
-                        ABLine.GetCurrentABLine(pivotAxlePos, steerAxlePos);
+                        // Calculate guidance (cross-track error, steering angle)
+                        var guidanceResult = UpdateGuidance(steerAxlePos, guidanceTrack);
+
+                        // Update legacy flags for UI compatibility
+                        if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                        {
+                            ABLine.isABValid = guidanceResult.IsValid;
+                            curve.isCurveValid = false;
+                        }
+                        else
+                        {
+                            curve.isCurveValid = guidanceResult.IsValid;
+                            ABLine.isABValid = false;
+                        }
                     }
                     else
                     {
-                        curve.BuildCurveCurrentList(pivotAxlePos);
-                        curve.GetCurrentCurveLine(pivotAxlePos, steerAxlePos);
+                        // Invalid track - clear flags
+                        ABLine.isABValid = false;
+                        curve.isCurveValid = false;
                     }
                 }
             }
@@ -1413,6 +1430,7 @@ namespace AgOpenGPS
             //if (sectionTriggerStepDistance > 5) sectionTriggerStepDistance = 5;
 
             //finally fixed distance for making a curve line
+            // Phase 6.7: curve.isRecordingCurve still used (CABCurve obsolete but functional)
             if (curve.isRecordingCurve) sectionTriggerStepDistance *= 0.5;
 
             //precalc the sin and cos of heading * -1
@@ -1650,6 +1668,7 @@ namespace AgOpenGPS
                 recPath.recList.Add(new CRecPathPt(pivotAxlePos.easting, pivotAxlePos.northing, pivotAxlePos.heading, speed, autoBtn));
             }
 
+            // Phase 6.7: Curve recording still via CABCurve (legacy, to be migrated later)
             if (curve.isRecordingCurve)
             {
                 curve.desList.Add(new vec3(pivotAxlePos.easting, pivotAxlePos.northing, pivotAxlePos.heading));
