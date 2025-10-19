@@ -168,6 +168,7 @@ namespace AgOpenGPS
         /// <summary>
         /// AB Line object
         /// </summary>
+        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
         public CABLine ABLine;
 
         /// <summary>
@@ -190,6 +191,7 @@ namespace AgOpenGPS
         /// <summary>
         /// ABCurve instance
         /// </summary>
+        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
         public CABCurve curve;
 
         /// <summary>
@@ -252,6 +254,7 @@ namespace AgOpenGPS
         /// <summary>
         /// The new steer algorithms
         /// </summary>
+        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
         public CGuidance gyd;
 
         /// <summary>

@@ -591,15 +591,19 @@ namespace AgOpenGPS
 
             if ((char)keyData == hotkeys[7]) // nudge track left
             {
-                if (trk.idx > -1)
-                    trk.NudgeTrack((double)Properties.Settings.Default.setAS_snapDistance * -0.01);
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                var currentTrack = _trackService.GetCurrentTrack();
+                if (currentTrack != null)
+                    _trackService.NudgeTrack(currentTrack.Id, (double)Properties.Settings.Default.setAS_snapDistance * -0.01);
                 return true;
             }
 
             if ((char)keyData == hotkeys[8]) // nudge track right
             {
-                if (trk.idx > -1)
-                    trk.NudgeTrack((double)Properties.Settings.Default.setAS_snapDistance * 0.01);
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                var currentTrack = _trackService.GetCurrentTrack();
+                if (currentTrack != null)
+                    _trackService.NudgeTrack(currentTrack.Id, (double)Properties.Settings.Default.setAS_snapDistance * 0.01);
                 return true;
             }
 

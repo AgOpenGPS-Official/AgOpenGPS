@@ -20,18 +20,17 @@ namespace AgOpenGPS
 
         private void MarkAsWorkedTrack()
         {
-            // return if there was a track selected
-            if (this.trk.idx < 0) return;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            var track = _trackService.GetCurrentTrack();
+            if (track == null) return;
 
-            var track = this.trk.gArr[this.trk.idx];
-
-            if (track.mode == TrackMode.AB)
+            if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
-                track.workedTracks.Add(this.ABLine.howManyPathsAway);
+                track.WorkedTracks.Add(this.ABLine.howManyPathsAway);
             }
-            else if (track.mode == TrackMode.Curve)
+            else if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
-                track.workedTracks.Add(this.curve.howManyPathsAway);
+                track.WorkedTracks.Add(this.curve.howManyPathsAway);
             }
         }
 

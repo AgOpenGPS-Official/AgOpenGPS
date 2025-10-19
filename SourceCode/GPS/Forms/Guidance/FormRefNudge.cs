@@ -40,9 +40,22 @@ namespace AgOpenGPS
 
             snapAdj = Properties.Settings.Default.setAS_snapDistanceRef * 0.01;
 
-            foreach (var item in mf.trk.gArr)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            foreach (var item in mf._trackService.GetAllTracks())
             {
-                gTemp.Add(new CTrk(item));
+                // Convert Track back to CTrk for temporary backup
+                var oldTrack = new CTrk
+                {
+                    mode = (TrackMode)item.Mode,
+                    name = item.Name,
+                    ptA = item.PtA,
+                    ptB = item.PtB,
+                    heading = item.Heading,
+                    curvePts = item.CurvePts,
+                    nudgeDistance = item.NudgeDistance,
+                    isVisible = item.IsVisible
+                };
+                gTemp.Add(new CTrk(oldTrack));
             }
 
             lblOffset.Text = ((int)(distanceMoved * mf.m2InchOrCm)).ToString() + " " + mf.unitsInCm;
@@ -121,11 +134,25 @@ namespace AgOpenGPS
 
         private void btnCancelMain_Click(object sender, EventArgs e)
         {
-            mf.trk.gArr.Clear();
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            mf._trackService.ClearTracks();
 
             foreach (var item in gTemp)
             {
-                mf.trk.gArr.Add(new CTrk(item));
+                // Convert CTrk back to Track and add to service
+                var track = new AgOpenGPS.Core.Models.Guidance.Track
+                {
+                    Id = System.Guid.NewGuid(),
+                    Name = item.name,
+                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.mode,
+                    PtA = item.ptA,
+                    PtB = item.ptB,
+                    Heading = item.heading,
+                    CurvePts = item.curvePts,
+                    NudgeDistance = item.nudgeDistance,
+                    IsVisible = item.isVisible
+                };
+                mf._trackService.AddTrack(track);
             }
 
             mf.ABLine.isABValid = false;

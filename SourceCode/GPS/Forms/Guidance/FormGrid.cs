@@ -42,7 +42,8 @@ namespace AgOpenGPS
 
         private void FormABDraw_Load(object sender, EventArgs e)
         {
-            originalLine = mf.trk.idx;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            originalLine = mf._trackService.GetCurrentTrackIndex();
 
             Size = Properties.Settings.Default.setWindow_gridSize;
 
@@ -241,11 +242,13 @@ namespace AgOpenGPS
 
         private void btnAlignToTrack_Click(object sender, EventArgs e)
         {
-            if (mf.trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack != null)
             {
                 mf.worldGrid.gridRotation = Math.Atan2(
-                    mf.trk.gArr[mf.trk.idx].ptB.easting - mf.trk.gArr[mf.trk.idx].ptA.easting,
-                    mf.trk.gArr[mf.trk.idx].ptB.northing - mf.trk.gArr[mf.trk.idx].ptA.northing);
+                    currentTrack.PtB.easting - currentTrack.PtA.easting,
+                    currentTrack.PtB.northing - currentTrack.PtA.northing);
                 if (mf.worldGrid.gridRotation < 0) mf.worldGrid.gridRotation += glm.twoPI;
                 mf.worldGrid.gridRotation = glm.toDegrees(mf.worldGrid.gridRotation);
             }

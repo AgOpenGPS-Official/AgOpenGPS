@@ -149,7 +149,6 @@ namespace AgOpenGPS
         //obvious
         public bool CalculateFenceArea(int idx)
         {
-            Debug.WriteLine("CalculateFenceArea is Called");
             RemoveSelfIntersections();
             int ptCount = fenceLine.Count;
             if (ptCount < 1) return false;
