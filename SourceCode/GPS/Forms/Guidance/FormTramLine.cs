@@ -242,13 +242,13 @@ namespace AgOpenGPS
 
         private void BuildTram()
         {
-            if (gTemp[indx].Mode == TrackMode.Curve)
+            if (gTemp[indx].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
                 //if (Dist != 0)
                 //mf.trk.NudgeRefCurve(Dist);
                 BuildCurveTram();
             }
-            else if (gTemp[indx].Mode == TrackMode.AB)
+            else if (gTemp[indx].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
                 //if (Dist != 0)
                 //mf.trk.NudgeRefABLine(Dist);
@@ -722,7 +722,7 @@ namespace AgOpenGPS
             for (int i = 0; i < gTemp.Count; i++)
             {
                 //AB Lines
-                if (gTemp[i].Mode == TrackMode.AB)
+                if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(4);
@@ -745,7 +745,7 @@ namespace AgOpenGPS
                     GL.Disable(EnableCap.LineStipple);
                 }
 
-                else if (gTemp[i].Mode == TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
+                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(5);

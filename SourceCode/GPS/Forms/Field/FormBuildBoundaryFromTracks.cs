@@ -234,11 +234,11 @@ namespace AgOpenGPS.Forms.Field
 
             try
             {
-                if (trk.Mode == TrackMode.AB)
+                if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                 {
                     AdjustABTrackPoints(trk, isPointA, deltaMeters);
                 }
-                else if (trk.Mode == TrackMode.Curve && trk.CurvePts.Count >= 2)
+                else if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && trk.CurvePts.Count >= 2)
                 {
                     AdjustCurveTrackPoints(trk, isPointA, deltaMeters);
                 }
@@ -350,12 +350,12 @@ namespace AgOpenGPS.Forms.Field
 
             foreach (var trk in _selectedTracks)
             {
-                if (trk.Mode == TrackMode.AB)
+                if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                 {
                     UpdateMinMax(trk.PtA);
                     UpdateMinMax(trk.PtB);
                 }
-                else if (trk.Mode == TrackMode.Curve)
+                else if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
                 {
                     foreach (var pt in trk.CurvePts)
                         UpdateMinMax(new vec2(pt.easting, pt.northing));
@@ -475,11 +475,11 @@ namespace AgOpenGPS.Forms.Field
                 Color color = isSelected ? Color.Yellow : Color.Gray;
                 float width = isSelected ? SELECTED_TRACK_WIDTH : NORMAL_TRACK_WIDTH;
 
-                if (trk.Mode == TrackMode.AB)
+                if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                 {
                     DrawLine(trk.PtA, trk.PtB, color, width);
                 }
-                else if (trk.Mode == TrackMode.Curve)
+                else if (trk.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
                 {
                     DrawPolyline(trk.CurvePts.Select(p => new vec2(p.easting, p.northing)).ToList(), color, width);
                 }
