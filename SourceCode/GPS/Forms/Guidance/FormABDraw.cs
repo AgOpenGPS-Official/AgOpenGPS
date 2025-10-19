@@ -766,7 +766,7 @@ namespace AgOpenGPS
             for (int i = 0; i < gTemp.Count; i++)
             {
                 //AB Lines
-                if (gTemp[i].Mode == TrackMode.AB)
+                if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(4);
@@ -805,7 +805,7 @@ namespace AgOpenGPS
 
                 }
 
-                else if (gTemp[i].Mode == TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
+                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(5);
@@ -887,7 +887,7 @@ namespace AgOpenGPS
                 }
             }
 
-            if (indx > -1 && gTemp[indx].Mode != TrackMode.Curve)
+            if (indx > -1 && gTemp[indx].Mode != AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
                 btnALength.Enabled = false;
                 btnBLength.Enabled = false;
@@ -901,7 +901,7 @@ namespace AgOpenGPS
 
         private void btnALength_Click(object sender, EventArgs e)
         {
-            if (indx > -1 && gTemp[indx].Mode == TrackMode.Curve)
+            if (indx > -1 && gTemp[indx].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
                 //and the beginning
                 vec3 start = new vec3(gTemp[indx].CurvePts[0]);
@@ -918,7 +918,7 @@ namespace AgOpenGPS
 
         private void btnBLength_Click(object sender, EventArgs e)
         {
-            if (indx > -1 && gTemp[indx].Mode == TrackMode.Curve)
+            if (indx > -1 && gTemp[indx].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
                 int ptCnt = gTemp[indx].CurvePts.Count - 1;
 

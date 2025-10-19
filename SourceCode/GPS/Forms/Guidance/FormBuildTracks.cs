@@ -75,20 +75,8 @@ namespace AgOpenGPS
 
             foreach (var item in mf._trackService.GetAllTracks())
             {
-                // Convert Track to CTrk for backup
-                gTemp.Add(new CTrk
-                {
-                    name = item.Name,
-                    mode = (TrackMode)item.Mode,
-                    isVisible = item.IsVisible,
-                    nudgeDistance = item.NudgeDistance,
-                    ptA = item.PtA,
-                    ptB = item.PtB,
-                    heading = item.Heading,
-                    curvePts = new List<vec3>(item.CurvePts),
-                    endPtA = new vec2(),
-                    endPtB = new vec2()
-                });
+                // BIG BANG Step 2: gTemp is now List<Track>, just clone
+                gTemp.Add(item.Clone());
             }
 
             panelMain.Top = 3; panelMain.Left = 3;

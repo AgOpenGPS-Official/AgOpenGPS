@@ -42,21 +42,11 @@ namespace AgOpenGPS
             snapAdj = Properties.Settings.Default.setAS_snapDistanceRef * 0.01;
 
             // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            // BIG BANG Step 2: gTemp is now List<Track>, so just clone the tracks directly
             foreach (var item in mf._trackService.GetAllTracks())
             {
-                // Convert Track back to CTrk for temporary backup
-                var oldTrack = new CTrk
-                {
-                    mode = (TrackMode)item.Mode,
-                    name = item.Name,
-                    ptA = item.PtA,
-                    ptB = item.PtB,
-                    heading = item.Heading,
-                    curvePts = item.CurvePts,
-                    nudgeDistance = item.NudgeDistance,
-                    isVisible = item.IsVisible
-                };
-                gTemp.Add(new CTrk(oldTrack));
+                // Clone Track for temporary backup
+                gTemp.Add(item.Clone());
             }
 
             lblOffset.Text = ((int)(distanceMoved * mf.m2InchOrCm)).ToString() + " " + mf.unitsInCm;
@@ -136,24 +126,12 @@ namespace AgOpenGPS
         private void btnCancelMain_Click(object sender, EventArgs e)
         {
             // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            // BIG BANG Step 2: gTemp is now List<Track>, so just add them directly
             mf._trackService.ClearTracks();
 
             foreach (var item in gTemp)
             {
-                // Convert CTrk back to Track and add to service
-                var track = new AgOpenGPS.Core.Models.Guidance.Track
-                {
-                    Id = System.Guid.NewGuid(),
-                    Name = item.Name,
-                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.Mode,
-                    PtA = item.PtA,
-                    PtB = item.PtB,
-                    Heading = item.Heading,
-                    CurvePts = item.CurvePts,
-                    NudgeDistance = item.NudgeDistance,
-                    IsVisible = item.IsVisible
-                };
-                mf._trackService.AddTrack(track);
+                mf._trackService.AddTrack(item);
             }
 
             mf.ABLine.isABValid = false;

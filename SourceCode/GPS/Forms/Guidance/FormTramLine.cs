@@ -136,30 +136,22 @@ namespace AgOpenGPS
             gTemp?.Clear();
 
             // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            // BIG BANG Step 2: gTemp is now List<Track>, so clone and add directly
             var allTracks = mf._trackService.GetAllTracks();
             foreach (var item in allTracks)
             {
                 if ((item.Mode == Core.Models.Guidance.TrackMode.AB || item.Mode == Core.Models.Guidance.TrackMode.Curve) && item.IsVisible)
                 {
-                    // Convert Track back to CTrk for temporary use (will be refactored in later phase)
-                    var oldTrack = new CTrk
-                    {
-                        mode = (TrackMode)item.Mode,
-                        name = item.Name,
-                        ptA = item.PtA,
-                        ptB = item.PtB,
-                        heading = item.Heading,
-                        curvePts = item.CurvePts,
-                        nudgeDistance = item.NudgeDistance,
-                        isVisible = item.IsVisible
-                    };
+                    // Clone Track for temporary use
+                    var clonedTrack = item.Clone();
 
                     //default side assuming built in AB Draw - isVisible is used for side to draw
-                    gTemp.Add(new CTrk(oldTrack));
                     if (item.Mode == Core.Models.Guidance.TrackMode.AB)
-                        gTemp[gTemp.Count - 1].IsVisible = false;
+                        clonedTrack.IsVisible = false;
                     else
-                        gTemp[gTemp.Count - 1].IsVisible = true;
+                        clonedTrack.IsVisible = true;
+
+                    gTemp.Add(clonedTrack);
                 }
             }
 
@@ -745,12 +737,12 @@ namespace AgOpenGPS
                     GL.Disable(EnableCap.LineStipple);
                 }
 
-                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
+                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.bndCurve)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(5);
 
-                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.LineStipple(1, 0x0007);
+                    if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.bndCurve) GL.LineStipple(1, 0x0007);
                     else GL.LineStipple(1, 0x0707);
 
 
@@ -761,7 +753,7 @@ namespace AgOpenGPS
                     }
 
                     GL.Color3(0.30f, 0.97f, 0.30f);
-                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.Color3(0.70f, 0.5f, 0.2f);
+                    if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.bndCurve) GL.Color3(0.70f, 0.5f, 0.2f);
                     GL.Begin(PrimitiveType.LineStrip);
                     foreach (vec3 pts in gTemp[i].CurvePts)
                     {
