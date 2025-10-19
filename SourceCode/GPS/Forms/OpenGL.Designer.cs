@@ -393,9 +393,11 @@ namespace AgOpenGPS
                     else// draw the current and reference AB Lines or CurveAB Ref and line
                     {
                         //when switching lines, draw the ghost
-                        if (trk.idx > -1)
+                        // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+                        var currentTrack = _trackService.GetCurrentTrack();
+                        if (currentTrack != null)
                         {
-                            if (trk.gArr[trk.idx].mode == TrackMode.AB)
+                            if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                                 ABLine.DrawABLines();
                             else
                                 curve.DrawCurve();
@@ -440,12 +442,14 @@ namespace AgOpenGPS
 
                     if (camera.camSetDistance > -250)
                     {
-                        if (trk.idx > -1 && !isStanleyUsed)
+                        // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+                        var currentTrack = _trackService.GetCurrentTrack();
+                        if (currentTrack != null && !isStanleyUsed)
                         {
                             PointStyle backgroundPointStyle = new PointStyle(12.0f, Colors.Black);
                             PointStyle foregroundPointStyle = new PointStyle(6.0f, Colors.GoalPointColor);
                             PointStyle[] pointStyles = { backgroundPointStyle, foregroundPointStyle };
-                            vec2 goalPoint = trk.gArr[trk.idx].mode == TrackMode.AB ? ABLine.goalPointAB : curve.goalPointCu;
+                            vec2 goalPoint = currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB ? ABLine.goalPointAB : curve.goalPointCu;
                             GLW.DrawPointLayered(pointStyles, goalPoint.easting, goalPoint.northing, 0.0);
                         }
                     }
@@ -473,7 +477,8 @@ namespace AgOpenGPS
                         if (isLightbarOn) DrawSteerBarText();
                     }
 
-                    if (trk.idx > -1 && !ct.isContourBtnOn) DrawTrackInfo();
+                    // NEW Phase 6.5: Use _trackService instead of trk.idx
+                    if (_trackService.GetCurrentTrack() != null && !ct.isContourBtnOn) DrawTrackInfo();
 
 
                     if (bnd.bndList.Count > 0 && yt.isYouTurnBtnOn) DrawUTurnBtn();
@@ -832,7 +837,8 @@ namespace AgOpenGPS
 
             //draw 245 green for the tram tracks
 
-            if (tool.isDisplayTramControl && tram.displayMode != 0 && (trk.idx > -1))
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (tool.isDisplayTramControl && tram.displayMode != 0 && (_trackService.GetCurrentTrack() != null))
             {
                 GL.Color3((byte)0, (byte)245, (byte)0);
                 GL.LineWidth(4);
@@ -2114,7 +2120,8 @@ namespace AgOpenGPS
         {
             GL.Disable(EnableCap.DepthTest);
 
-            if (ct.isContourBtnOn || trk.idx > -1 || recPath.isDrivingRecordedPath)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (ct.isContourBtnOn || _trackService.GetCurrentTrack() != null || recPath.isDrivingRecordedPath)
             {
                 // EWMA of cross-track in mm (fast/visual smoothing)
                 avgPivDistance = avgPivDistance * 0.5 + lightbarDistance * 0.5;
@@ -2198,7 +2205,8 @@ namespace AgOpenGPS
         private void DrawSteerBarText()
         {
 
-            if (ct.isContourBtnOn || trk.idx > -1 || recPath.isDrivingRecordedPath)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (ct.isContourBtnOn || _trackService.GetCurrentTrack() != null || recPath.isDrivingRecordedPath)
             {
                 GL.Disable(EnableCap.DepthTest);
                 int spacing = oglMain.Width / 50;
@@ -2356,14 +2364,18 @@ namespace AgOpenGPS
 
         private void DrawTrackInfo()
         {
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            var currentTrack = _trackService.GetCurrentTrack();
+            if (currentTrack == null) return;
+
             string offs = "";
 
-            if (trk.gArr[trk.idx].nudgeDistance != 0)
-                offs = ((int)(trk.gArr[trk.idx].nudgeDistance * m2InchOrCm)).ToString() + unitsInCmNS;
+            if (currentTrack.NudgeDistance != 0)
+                offs = ((int)(currentTrack.NudgeDistance * m2InchOrCm)).ToString() + unitsInCmNS;
 
             string dire;
 
-            if (trk.gArr[trk.idx].mode == TrackMode.AB)
+            if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
                 if (ABLine.isHeadingSameWay) dire = "{";
                 else dire = "}";

@@ -62,14 +62,16 @@ namespace AgOpenGPS
 
         private void UpdateMoveLabel()
         {
-            if (mf.trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack != null)
             {
-                if (mf.trk.gArr[mf.trk.idx].nudgeDistance == 0)
-                    lblOffset.Text = ((int)(mf.trk.gArr[mf.trk.idx].nudgeDistance * mf.m2InchOrCm * -1)).ToString() + mf.unitsInCm;
-                else if (mf.trk.gArr[mf.trk.idx].nudgeDistance < 0)
-                    lblOffset.Text = "< " + ((int)(mf.trk.gArr[mf.trk.idx].nudgeDistance * mf.m2InchOrCm * -1)).ToString() + mf.unitsInCm;
+                if (currentTrack.NudgeDistance == 0)
+                    lblOffset.Text = ((int)(currentTrack.NudgeDistance * mf.m2InchOrCm * -1)).ToString() + mf.unitsInCm;
+                else if (currentTrack.NudgeDistance < 0)
+                    lblOffset.Text = "< " + ((int)(currentTrack.NudgeDistance * mf.m2InchOrCm * -1)).ToString() + mf.unitsInCm;
                 else
-                    lblOffset.Text = ((int)(mf.trk.gArr[mf.trk.idx].nudgeDistance * mf.m2InchOrCm)).ToString() + " >" + mf.unitsInCm;
+                    lblOffset.Text = ((int)(currentTrack.NudgeDistance * mf.m2InchOrCm)).ToString() + " >" + mf.unitsInCm;
             }
         }
 
@@ -117,12 +119,14 @@ namespace AgOpenGPS
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (mf.trk.idx > -1 && mf.trk.gArr.Count > 0)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack != null)
             {
-                if (mf.trk.gArr[mf.trk.idx].nudgeDistance < 0)
-                    lblOffset.Text = "< " + ((int)(mf.trk.gArr[mf.trk.idx].nudgeDistance * mf.m2InchOrCm * -1)).ToString();
+                if (currentTrack.NudgeDistance < 0)
+                    lblOffset.Text = "< " + ((int)(currentTrack.NudgeDistance * mf.m2InchOrCm * -1)).ToString();
                 else
-                    lblOffset.Text = ((int)(mf.trk.gArr[mf.trk.idx].nudgeDistance * mf.m2InchOrCm)).ToString() + " >";
+                    lblOffset.Text = ((int)(currentTrack.NudgeDistance * mf.m2InchOrCm)).ToString() + " >";
             }
         }
 
