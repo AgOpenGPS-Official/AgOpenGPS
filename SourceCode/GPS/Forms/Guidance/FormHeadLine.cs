@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 1: For TrackMode enum
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using OpenTK;

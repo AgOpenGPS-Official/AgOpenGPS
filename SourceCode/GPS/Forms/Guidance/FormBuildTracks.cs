@@ -1,6 +1,7 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 1: For TrackMode enum
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using System;
@@ -22,7 +23,8 @@ namespace AgOpenGPS
         private int originalLine = 0;
         private bool isClosing;
         private int selectedItem = -1;
-        public List<CTrk> gTemp = new List<CTrk>();
+        // BIG BANG Step 1: CTrk → Track
+        public List<Track> gTemp = new List<Track>();
 
         private bool isRefRightSide = true; //left side 0 middle 1 right 2
         TrackMode mode = TrackMode.None;
