@@ -739,8 +739,6 @@ namespace AgOpenGPS
             aveLineHeading = 0;
             mf.curve.isMakingCurve = false;
             mf.curve.isRecordingCurve = false;
-            panelCurve.Visible = false;
-            panelName.Visible = true;
 
             ptBb.easting = mf.pivotAxlePos.easting;
             ptBb.northing = mf.pivotAxlePos.northing;
@@ -748,32 +746,26 @@ namespace AgOpenGPS
             int cnt = mf.curve.desList.Count;
             if (mode == TrackMode.waterPivot && cnt > 2)
             {
-                mf.trk.gArr.Add(new CTrk());
-                //array number is 1 less since it starts at zero
-                idx = mf.trk.gArr.Count - 1;
+                // REFACTORED: Water Pivot track creation
+                vec2 centerPoint = FindCircleCenter(mf.curve.desList[0], mf.curve.desList[1], mf.curve.desList[2]);
 
-                mf.trk.gArr[idx].ptA = FindCircleCenter(mf.curve.desList[0], mf.curve.desList[1], mf.curve.desList[2]);
-                mf.trk.gArr[idx].mode = TrackMode.waterPivot;
-                mf.ABLine.desName = "Piv";
-                textBox1.Text = mf.ABLine.desName;
-
-                panelPivot.Visible = false;
-                panelName.Visible = true;
+                CreateAndAddTrack(
+                    name: "Piv",
+                    mode: TrackMode.waterPivot,
+                    ptA: centerPoint,
+                    ptB: new vec2(),
+                    heading: 0,
+                    curvePts: null,
+                    applyNudge: false,  // Pivot doesn't need nudge
+                    isCurveMode: false
+                );
             }
             else if (cnt > 2)
             {
-                //make sure point distance isn't too big 
+                // REFACTORED: Normal curve track creation
+                //make sure point distance isn't too big
                 mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
                 mf.curve.CalculateHeadings(ref mf.curve.desList);
-
-                mf.trk.gArr.Add(new CTrk());
-                //array number is 1 less since it starts at zero
-                idx = mf.trk.gArr.Count - 1;
-
-                mf.trk.gArr[idx].ptA = new vec2(ptAa);
-                mf.trk.gArr[idx].ptB = new vec2(ptBb);
-
-                mf.trk.gArr[idx].mode = TrackMode.Curve;
 
                 //calculate average heading of line
                 double x = 0, y = 0;
@@ -787,44 +779,27 @@ namespace AgOpenGPS
                 aveLineHeading = Math.Atan2(y, x);
                 if (aveLineHeading < 0) aveLineHeading += glm.twoPI;
 
-                mf.trk.gArr[idx].heading = aveLineHeading;
-
                 //build the tail extensions
                 mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                 SmoothAB(4);
                 mf.curve.CalculateHeadings(ref mf.curve.desList);
 
-                //write out the Curve Points
-                foreach (vec3 item in mf.curve.desList)
-                {
-                    mf.trk.gArr[idx].curvePts.Add(item);
-                }
+                string name = "Cu " + (Math.Round(glm.toDegrees(aveLineHeading), 1)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-                mf.curve.desName = "Cu " +
-                    (Math.Round(glm.toDegrees(aveLineHeading), 1)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
-
-                textBox1.Text = mf.curve.desName;
-
-                panelCurve.Visible = false;
-                panelName.Visible = true;
-
-                double dist;
-
-                if (isRefRightSide)
-                {
-                    dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                    mf.trk.idx = idx;
-                    mf.trk.NudgeRefCurve(dist);
-                }
-                else
-                {
-                    dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                    mf.trk.idx = idx;
-                    mf.trk.NudgeRefCurve(dist);
-                }
+                CreateAndAddTrack(
+                    name: name,
+                    mode: TrackMode.Curve,
+                    ptA: new vec2(ptAa),
+                    ptB: new vec2(ptBb),
+                    heading: aveLineHeading,
+                    curvePts: mf.curve.desList,
+                    applyNudge: true,
+                    isCurveMode: true
+                );
             }
             else
             {
+                // Insufficient points - cancel
                 mf.curve.desList?.Clear();
 
                 panelMain.Visible = true;
@@ -920,41 +895,21 @@ namespace AgOpenGPS
         private void btnEnter_AB_Click(object sender, EventArgs e)
         {
             timer1.Enabled = false;
-
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
 
-            idx = mf.trk.gArr.Count - 1;
+            // REFACTORED: Use helper method to eliminate duplication
+            string name = "AB " + (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
-
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
-
-            mf.ABLine.desName = "AB " +
-                (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
-            textBox1.Text = mf.ABLine.desName;
-
-            double dist;
-            if (isRefRightSide)
-            {
-                dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
-                mf.trk.NudgeRefABLine(dist);
-
-            }
-            else
-            {
-                dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
-                mf.trk.NudgeRefABLine(dist);
-            }
-
-
-            panelABLine.Visible = false;
-            panelName.Visible = true;
+            CreateAndAddTrack(
+                name: name,
+                mode: TrackMode.AB,
+                ptA: new vec2(mf.ABLine.desPtA),
+                ptB: new vec2(mf.ABLine.desPtB),
+                heading: mf.ABLine.desHeading,
+                curvePts: null,
+                applyNudge: true,
+                isCurveMode: false
+            );
 
             mf.Activate();
         }
@@ -1022,40 +977,22 @@ namespace AgOpenGPS
         private void btnEnter_APlus_Click(object sender, EventArgs e)
         {
             timer1.Enabled = false;
-
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
 
-            idx = mf.trk.gArr.Count - 1;
+            // REFACTORED: Use helper method to eliminate duplication
+            string name = "A+" + (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
+            CreateAndAddTrack(
+                name: name,
+                mode: TrackMode.AB,
+                ptA: new vec2(mf.ABLine.desPtA),
+                ptB: new vec2(mf.ABLine.desPtB),
+                heading: mf.ABLine.desHeading,
+                curvePts: null,
+                applyNudge: true,
+                isCurveMode: false
+            );
 
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
-
-            mf.ABLine.desName = "A+" +
-                (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
-            textBox1.Text = mf.ABLine.desName;
-
-            double dist;
-            if (isRefRightSide)
-            {
-                dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
-                mf.trk.NudgeRefABLine(dist);
-
-            }
-            else
-            {
-                dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
-                mf.trk.NudgeRefABLine(dist);
-            }
-
-            panelAPlus.Visible = false;
-            panelName.Visible = true;
             mf.Activate();
         }
 
@@ -1291,25 +1228,21 @@ namespace AgOpenGPS
         private void btnEnter_LatLonLatLon_Click(object sender, EventArgs e)
         {
             CalcHeadingAB();
-
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
 
-            idx = mf.trk.gArr.Count - 1;
+            // REFACTORED: Use helper method to eliminate duplication
+            string name = "AB " + (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
-
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
-
-            mf.ABLine.desName = "AB " +
-                (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
-            textBox1.Text = mf.ABLine.desName;
-
-            panelLatLonLatLon.Visible = false;
-            panelName.Visible = true;
+            CreateAndAddTrack(
+                name: name,
+                mode: TrackMode.AB,
+                ptA: new vec2(mf.ABLine.desPtA),
+                ptB: new vec2(mf.ABLine.desPtB),
+                heading: mf.ABLine.desHeading,
+                curvePts: null,
+                applyNudge: false,  // LatLon doesn't auto-nudge
+                isCurveMode: false
+            );
 
             this.Size = new System.Drawing.Size(270, 360);
         }
@@ -1363,29 +1296,25 @@ namespace AgOpenGPS
         private void btnEnter_LatLonPlus_Click(object sender, EventArgs e)
         {
             CalcHeadingAPlus();
-
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
 
-            idx = mf.trk.gArr.Count - 1;
-
+            // REFACTORED: Use helper method to eliminate duplication
             //start end of line
             mf.ABLine.desPtB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.ABLine.desHeading) * 200);
             mf.ABLine.desPtB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.ABLine.desHeading) * 200);
 
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
+            string name = "A+ " + (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
-
-            mf.ABLine.desName = "A+ " +
-                (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
-            textBox1.Text = mf.ABLine.desName;
-
-            panelLatLonPlus.Visible = false;
-            panelName.Visible = true;
+            CreateAndAddTrack(
+                name: name,
+                mode: TrackMode.AB,
+                ptA: new vec2(mf.ABLine.desPtA),
+                ptB: new vec2(mf.ABLine.desPtB),
+                heading: mf.ABLine.desHeading,
+                curvePts: null,
+                applyNudge: false,  // LatLon doesn't auto-nudge
+                isCurveMode: false
+            );
 
             this.Size = new System.Drawing.Size(270, 360);
         }
@@ -1422,15 +1351,17 @@ namespace AgOpenGPS
         {
             GeoCoord geoCoord = mf.AppModel.LocalPlane.ConvertWgs84ToGeoCoord(new Wgs84((double)nudLatitudePivot.Value, (double)nudLongitudePivot.Value));
 
-            mf.trk.gArr.Add(new CTrk());
-
-            idx = mf.trk.gArr.Count - 1;
-
-            mf.trk.gArr[idx].ptA = new vec2(geoCoord);
-            mf.trk.gArr[idx].mode = TrackMode.waterPivot;
-
-            mf.ABLine.desName = "Piv";
-            textBox1.Text = mf.ABLine.desName;
+            // REFACTORED: Use helper method to eliminate duplication
+            CreateAndAddTrack(
+                name: "Piv",
+                mode: TrackMode.waterPivot,
+                ptA: new vec2(geoCoord),
+                ptB: new vec2(),
+                heading: 0,
+                curvePts: null,
+                applyNudge: false,  // Pivot doesn't need nudge
+                isCurveMode: false
+            );
 
             panelPivot.Visible = false;
             panelName.Visible = true;
@@ -1538,6 +1469,67 @@ namespace AgOpenGPS
             flp.Focus();
             mf.Activate();
         }
+
+        #region Helper Methods
+
+        /// <summary>
+        /// REFACTORED: Central helper method for track creation - eliminates code duplication
+        /// Creates a new track via _trackService and optionally applies reference nudge
+        /// </summary>
+        private void CreateAndAddTrack(
+            string name,
+            TrackMode mode,
+            vec2 ptA,
+            vec2 ptB,
+            double heading,
+            List<vec3> curvePts = null,
+            bool applyNudge = true,
+            bool isCurveMode = false)
+        {
+            // Create new Track using _trackService
+            var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+            {
+                Id = System.Guid.NewGuid(),
+                Name = name,
+                Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)mode,
+                PtA = ptA,
+                PtB = ptB,
+                Heading = heading,
+                IsVisible = true,
+                NudgeDistance = 0,
+                CurvePts = curvePts != null ? new List<vec3>(curvePts) : new List<vec3>(),
+                WorkedTracks = new HashSet<int>()
+            };
+
+            mf._trackService.AddTrack(newTrack);
+            idx = mf._trackService.GetTrackCount() - 1;
+            mf._trackService.SetCurrentTrackIndex(idx);
+
+            // Apply reference nudge if requested
+            if (applyNudge)
+            {
+                double dist = isRefRightSide
+                    ? (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset
+                    : (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
+
+                if (isCurveMode)
+                    mf.trk.NudgeRefCurve(dist);
+                else
+                    mf.trk.NudgeRefABLine(dist);
+            }
+
+            // Update UI - show name panel
+            textBox1.Text = name;
+            panelCurve.Visible = false;
+            panelABLine.Visible = false;
+            panelAPlus.Visible = false;
+            panelLatLonPlus.Visible = false;
+            panelLatLonLatLon.Visible = false;
+            panelPivot.Visible = false;
+            panelName.Visible = true;
+        }
+
+        #endregion
 
         public void SmoothAB(int smPts)
         {
