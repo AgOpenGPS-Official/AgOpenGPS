@@ -1139,9 +1139,9 @@ namespace AgOpenGPS
             //curve line
             curve.ResetCurveLine();
 
-            //tracks
-            trk.gArr?.Clear();
-            trk.idx = -1;
+            //tracks - NEW Phase 6.5: Use _trackService
+            _trackService.ClearTracks();
+            _trackService.SetCurrentTrackIndex(-1);
 
             //clean up tram
             tram.displayMode = 0;

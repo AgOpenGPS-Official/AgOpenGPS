@@ -6,6 +6,7 @@ using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using AgOpenGPS.Protocols.ISOBUS;
+using AgOpenGPS.Core.Models.Guidance;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -287,7 +288,23 @@ namespace AgOpenGPS
             }
 
             List<CTrk> guidanceLines = importer.GetGuidanceLines();
-            mf.trk.gArr.AddRange(guidanceLines);
+            // NEW Phase 6.5: Convert CTrk to Track and add via _trackService
+            foreach (var oldTrack in guidanceLines)
+            {
+                var track = new Track
+                {
+                    Id = System.Guid.NewGuid(),
+                    Name = oldTrack.name,
+                    Mode = (Core.Models.Guidance.TrackMode)oldTrack.mode,  // Explicit namespace for TrackMode
+                    PtA = oldTrack.ptA,
+                    PtB = oldTrack.ptB,
+                    NudgeDistance = oldTrack.nudgeDistance,
+                    IsVisible = oldTrack.isVisible,
+                    Heading = oldTrack.heading,
+                    CurvePts = oldTrack.curvePts
+                };
+                mf._trackService.AddTrack(track);
+            }
 
             SaveFieldFiles(directoryPath);
             FinalizeField();

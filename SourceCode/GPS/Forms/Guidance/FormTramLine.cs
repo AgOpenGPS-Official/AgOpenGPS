@@ -134,13 +134,28 @@ namespace AgOpenGPS
             //load the lines from Trks
             gTemp?.Clear();
 
-            foreach (var item in mf.trk.gArr)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            var allTracks = mf._trackService.GetAllTracks();
+            foreach (var item in allTracks)
             {
-                if ((item.mode == TrackMode.AB || item.mode == TrackMode.Curve) && item.isVisible)
+                if ((item.Mode == Core.Models.Guidance.TrackMode.AB || item.Mode == Core.Models.Guidance.TrackMode.Curve) && item.IsVisible)
                 {
+                    // Convert Track back to CTrk for temporary use (will be refactored in later phase)
+                    var oldTrack = new CTrk
+                    {
+                        mode = (TrackMode)item.Mode,
+                        name = item.Name,
+                        ptA = item.PtA,
+                        ptB = item.PtB,
+                        heading = item.Heading,
+                        curvePts = item.CurvePts,
+                        nudgeDistance = item.NudgeDistance,
+                        isVisible = item.IsVisible
+                    };
+
                     //default side assuming built in AB Draw - isVisible is used for side to draw
-                    gTemp.Add(new CTrk(item));
-                    if (item.mode == TrackMode.AB)
+                    gTemp.Add(new CTrk(oldTrack));
+                    if (item.Mode == Core.Models.Guidance.TrackMode.AB)
                         gTemp[gTemp.Count - 1].isVisible = false;
                     else
                         gTemp[gTemp.Count - 1].isVisible = true;

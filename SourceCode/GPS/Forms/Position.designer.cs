@@ -879,23 +879,25 @@ namespace AgOpenGPS
             }
             else
             {
-                //auto track routine
+                //auto track routine - NEW Phase 6.5: Use _trackService
                 if (trk.isAutoTrack && !isBtnAutoSteerOn && trk.autoTrack3SecTimer >= 1)
                 {
                     trk.autoTrack3SecTimer = 0;
-                    int lastIndex = trk.idx;
-                    trk.idx = trk.FindClosestRefTrack(steerAxlePos);
-                    if (lastIndex != trk.idx)
+                    int lastIndex = _trackService.GetCurrentTrackIndex();
+                    int newIndex = trk.FindClosestRefTrack(steerAxlePos);
+                    _trackService.SetCurrentTrackIndex(newIndex);
+                    if (lastIndex != newIndex)
                     {
                         curve.isCurveValid = false;
                         ABLine.isABValid = false;
                     }
                 }
 
-                //like normal
-                if (trk.gArr != null && trk.gArr.Count > 0 && trk.idx >= 0 && trk.idx < trk.gArr.Count)
+                //like normal - NEW Phase 6.5: Use _trackService
+                var currentTrack = _trackService.GetCurrentTrack();
+                if (currentTrack != null)
                 {
-                    if (trk.gArr[trk.idx].mode == TrackMode.AB)
+                    if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                     {
                         ABLine.BuildCurrentABLineList(pivotAxlePos);
                         ABLine.GetCurrentABLine(pivotAxlePos, steerAxlePos);
@@ -1103,7 +1105,9 @@ namespace AgOpenGPS
                             }
                             else
                             {
-                                if (trk.gArr[trk.idx].mode == TrackMode.AB)
+                                // NEW Phase 6.5: Use _trackService
+                                var currentTrack = _trackService.GetCurrentTrack();
+                                if (currentTrack != null && currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                                 {
                                     yt.BuildABLineDubinsYouTurn();
                                 }
