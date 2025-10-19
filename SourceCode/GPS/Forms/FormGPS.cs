@@ -181,8 +181,10 @@ namespace AgOpenGPS
         public CContour ct;
 
         /// <summary>
-        /// Contour Mode Instance
+        /// OLD: Track management - DEPRECATED in Phase 6.4
+        /// Use _trackService instead
         /// </summary>
+        [Obsolete("Use _trackService instead. Will be removed after all references are migrated.")]
         public CTrack trk;
 
         /// <summary>
@@ -361,8 +363,8 @@ namespace AgOpenGPS
             //new instance of contour mode
             curve = new CABCurve(this);
 
-            //new track instance
-            trk = new CTrack(this);
+            //OLD: track instance - DEPRECATED in Phase 6.4, keeping for backward compatibility during migration
+            trk = new CTrack(this);  // TODO Phase 6.4: Remove after all trk.gArr references are migrated
 
             //new instance of contour mode
             hdl = new CHeadLine(this);

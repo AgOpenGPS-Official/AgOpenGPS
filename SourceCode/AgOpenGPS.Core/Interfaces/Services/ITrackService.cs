@@ -169,5 +169,46 @@ namespace AgOpenGPS.Core.Interfaces.Services
         /// </summary>
         /// <returns>Number of visible tracks.</returns>
         int GetVisibleTrackCount();
+
+        // ============================================================
+        // List Access Helpers (for UI compatibility during migration)
+        // ============================================================
+
+        /// <summary>
+        /// Gets all tracks as a read-only list.
+        /// </summary>
+        /// <returns>Read-only list of all tracks.</returns>
+        System.Collections.Generic.IReadOnlyList<Track> GetAllTracks();
+
+        /// <summary>
+        /// Gets a track at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The track at the index, or null if index is out of range.</returns>
+        Track GetTrackAt(int index);
+
+        /// <summary>
+        /// Gets the total number of tracks.
+        /// </summary>
+        /// <returns>The track count.</returns>
+        int GetTrackCount();
+
+        /// <summary>
+        /// Gets the index of the currently selected track.
+        /// </summary>
+        /// <returns>The index of the current track, or -1 if no track is selected.</returns>
+        int GetCurrentTrackIndex();
+
+        /// <summary>
+        /// Sets the current track by index.
+        /// </summary>
+        /// <param name="index">The zero-based index, or -1 to clear selection.</param>
+        void SetCurrentTrackIndex(int index);
+
+        /// <summary>
+        /// Removes a track at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the track to remove.</param>
+        void RemoveTrackAt(int index);
     }
 }

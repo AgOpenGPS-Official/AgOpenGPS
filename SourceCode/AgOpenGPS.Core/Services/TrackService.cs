@@ -423,6 +423,87 @@ namespace AgOpenGPS.Core.Services
         }
 
         // ============================================================
+        // List Access Helpers (for UI compatibility during migration)
+        // ============================================================
+
+        /// <summary>
+        /// Gets all tracks as a read-only list.
+        /// </summary>
+        /// <returns>Read-only list of all tracks.</returns>
+        public IReadOnlyList<Track> GetAllTracks()
+        {
+            return _tracks.Tracks;
+        }
+
+        /// <summary>
+        /// Gets a track at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index.</param>
+        /// <returns>The track at the index, or null if index is out of range.</returns>
+        public Track GetTrackAt(int index)
+        {
+            if (index < 0 || index >= _tracks.Tracks.Count)
+                return null;
+            return _tracks.Tracks[index];
+        }
+
+        /// <summary>
+        /// Gets the total number of tracks.
+        /// </summary>
+        /// <returns>The track count.</returns>
+        public int GetTrackCount()
+        {
+            return _tracks.Tracks.Count;
+        }
+
+        /// <summary>
+        /// Gets the index of the currently selected track.
+        /// </summary>
+        /// <returns>The index of the current track, or -1 if no track is selected.</returns>
+        public int GetCurrentTrackIndex()
+        {
+            Track current = GetCurrentTrack();
+            if (current == null)
+                return -1;
+
+            for (int i = 0; i < _tracks.Tracks.Count; i++)
+            {
+                if (_tracks.Tracks[i].Id == current.Id)
+                    return i;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Sets the current track by index.
+        /// </summary>
+        /// <param name="index">The zero-based index, or -1 to clear selection.</param>
+        public void SetCurrentTrackIndex(int index)
+        {
+            if (index < 0 || index >= _tracks.Tracks.Count)
+            {
+                SetCurrentTrack(null);
+            }
+            else
+            {
+                SetCurrentTrack(_tracks.Tracks[index]);
+            }
+        }
+
+        /// <summary>
+        /// Removes a track at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the track to remove.</param>
+        public void RemoveTrackAt(int index)
+        {
+            Track track = GetTrackAt(index);
+            if (track != null)
+            {
+                RemoveTrack(track);
+            }
+        }
+
+        // ============================================================
         // Private Helper Methods
         // ============================================================
 
