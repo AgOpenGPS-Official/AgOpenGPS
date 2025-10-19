@@ -66,13 +66,27 @@ namespace AgOpenGPS
 
         private void FormBuildTracks_Load(object sender, EventArgs e)
         {
-            idx = mf.trk.gArr.Count - 1;
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            idx = mf._trackService.GetTrackCount() - 1;
 
             gTemp.Clear();
 
-            foreach (var item in mf.trk.gArr)
+            foreach (var item in mf._trackService.GetAllTracks())
             {
-                gTemp.Add(new CTrk(item));
+                // Convert Track to CTrk for backup
+                gTemp.Add(new CTrk
+                {
+                    name = item.Name,
+                    mode = (TrackMode)item.Mode,
+                    isVisible = item.IsVisible,
+                    nudgeDistance = item.NudgeDistance,
+                    ptA = item.PtA,
+                    ptB = item.PtB,
+                    heading = item.Heading,
+                    curvePts = new List<vec3>(item.CurvePts),
+                    endPtA = new vec2(),
+                    endPtB = new vec2()
+                });
             }
 
             panelMain.Top = 3; panelMain.Left = 3;
@@ -101,7 +115,8 @@ namespace AgOpenGPS
 
             this.Size = new System.Drawing.Size(650, 480);
 
-            originalLine = mf.trk.idx;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            originalLine = mf._trackService.GetCurrentTrackIndex();
 
             selectedItem = -1;
             Location = Properties.Settings.Default.setWindow_buildTracksLocation;
@@ -162,14 +177,28 @@ namespace AgOpenGPS
             }
             if (mf.yt.isYouTurnBtnOn) mf.btnAutoYouTurn.PerformClick();
 
-            mf.trk.gArr.Clear();
+            // NEW Phase 6.5: Restore from backup via _trackService
+            mf._trackService.ClearTracks();
 
             foreach (var item in gTemp)
             {
-                mf.trk.gArr.Add(new CTrk(item));
+                var track = new AgOpenGPS.Core.Models.Guidance.Track
+                {
+                    Id = System.Guid.NewGuid(),
+                    Name = item.name,
+                    Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.mode,
+                    IsVisible = item.isVisible,
+                    NudgeDistance = item.nudgeDistance,
+                    PtA = item.ptA,
+                    PtB = item.ptB,
+                    Heading = item.heading,
+                    CurvePts = new List<vec3>(item.curvePts),
+                    WorkedTracks = new HashSet<int>()
+                };
+                mf._trackService.AddTrack(track);
             }
 
-            mf.trk.idx = originalLine;
+            mf._trackService.SetCurrentTrackIndex(originalLine);
 
             mf.curve.isCurveValid = false;
             mf.ABLine.isABValid = false;
@@ -191,24 +220,27 @@ namespace AgOpenGPS
 
             mf.FileSaveTracks();
 
-            if (selectedItem > -1 && mf.trk.gArr.Count > 0 && mf.trk.gArr[selectedItem].isVisible)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            var allTracks = mf._trackService.GetAllTracks();
+
+            if (selectedItem > -1 && allTracks.Count > 0 && allTracks[selectedItem].IsVisible)
             {
-                mf.trk.idx = selectedItem;
+                mf._trackService.SetCurrentTrackIndex(selectedItem);
                 mf.yt.ResetYouTurn();
 
                 Close();
             }
 
-            else if (mf.trk.gArr.Count > 0)
+            else if (allTracks.Count > 0)
             {
                 bool isOneVis = false;
                 int trac = -1;
 
-                foreach (var item in mf.trk.gArr)
+                for (int i = 0; i < allTracks.Count; i++)
                 {
-                    trac++;
-                    if (item.isVisible)
+                    if (allTracks[i].IsVisible)
                     {
+                        trac = i;
                         isOneVis = true;
                         break;
                     }
@@ -217,7 +249,7 @@ namespace AgOpenGPS
                 //just choose a visible something
                 if (isOneVis)
                 {
-                    mf.trk.idx = trac;
+                    mf._trackService.SetCurrentTrackIndex(trac);
                     mf.yt.ResetYouTurn();
                     Close();
                 }
@@ -254,8 +286,10 @@ namespace AgOpenGPS
             System.Drawing.Font backupfont = new System.Drawing.Font(base.Font.FontFamily, 18F, FontStyle.Regular);
             flp.Controls.Clear();
 
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            var allTracks = mf._trackService.GetAllTracks();
 
-            for (int i = 0; i < mf.trk.gArr.Count; i++)
+            for (int i = 0; i < allTracks.Count; i++)
             {
                 //outer inner
                 Button a = new Button
@@ -267,7 +301,7 @@ namespace AgOpenGPS
                 };
                 a.Click += A_Click;
 
-                if (mf.trk.gArr[i].isVisible)
+                if (allTracks[i].IsVisible)
                     a.BackColor = System.Drawing.Color.Green;
                 else
                     a.BackColor = System.Drawing.Color.Red;
@@ -281,9 +315,9 @@ namespace AgOpenGPS
                     FlatStyle = FlatStyle.Flat,
                 };
 
-                if (mf.trk.gArr[i].mode == TrackMode.AB)
+                if (allTracks[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
                     b.Image = Properties.Resources.TrackLine;
-                else if (mf.trk.gArr[i].mode == TrackMode.waterPivot)
+                else if (allTracks[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.WaterPivot)
                     b.Image = Properties.Resources.TrackPivot;
                 else
                     b.Image = Properties.Resources.TrackCurve;
@@ -294,7 +328,7 @@ namespace AgOpenGPS
                 {
                     Margin = new Padding(3),
                     Size = new Size(330, 35),
-                    Text = mf.trk.gArr[i].name,
+                    Text = allTracks[i].Name,
                     Name = i.ToString(),
                     Font = backupfont,
                     ReadOnly = true
@@ -302,7 +336,7 @@ namespace AgOpenGPS
                 t.Click += LineSelected_Click;
                 t.Cursor = System.Windows.Forms.Cursors.Default;
 
-                if (mf.trk.gArr[i].isVisible)
+                if (allTracks[i].IsVisible)
                     t.ForeColor = System.Drawing.Color.Black;
                 else
                     t.ForeColor = System.Drawing.Color.Gray;
@@ -331,17 +365,20 @@ namespace AgOpenGPS
             if (sender is Button b)
             {
                 int line = Convert.ToInt32(b.Name);
-                mf.trk.gArr[line].isVisible = !mf.trk.gArr[line].isVisible;
 
-                for (int i = 0; i < mf.trk.gArr.Count; i++)
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                var allTracks = mf._trackService.GetAllTracks();
+                allTracks[line].IsVisible = !allTracks[line].IsVisible;
+
+                for (int i = 0; i < allTracks.Count; i++)
                 {
                     flp.Controls[(i) * 3 + 1].BackColor = Color.AliceBlue;
                 }
                 selectedItem = -1;
 
-                b.BackColor = mf.trk.gArr[line].isVisible ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+                b.BackColor = allTracks[line].IsVisible ? System.Drawing.Color.Green : System.Drawing.Color.Red;
 
-                flp.Controls[(line) * 3 + 1].ForeColor = mf.trk.gArr[line].isVisible ? System.Drawing.Color.Black : System.Drawing.Color.Gray;
+                flp.Controls[(line) * 3 + 1].ForeColor = allTracks[line].IsVisible ? System.Drawing.Color.Black : System.Drawing.Color.Gray;
             }
         }
 
