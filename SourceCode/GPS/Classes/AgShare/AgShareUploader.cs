@@ -50,23 +50,8 @@ namespace AgOpenGPS
                 boundaries.Add(b.fenceLine.ToList());
             }
 
-            // CHANGED: Convert CTrk to Track for AgShare upload
-            List<Track> tracks = new List<Track>();
-            foreach (var oldTrack in gps.trk.gArr)
-            {
-                tracks.Add(new Track
-                {
-                    Id = Guid.NewGuid(),
-                    Name = oldTrack.name,
-                    Mode = (Core.Models.Guidance.TrackMode)oldTrack.mode,
-                    PtA = oldTrack.ptA,
-                    PtB = oldTrack.ptB,
-                    NudgeDistance = oldTrack.nudgeDistance,
-                    IsVisible = oldTrack.isVisible,
-                    Heading = oldTrack.heading,
-                    CurvePts = oldTrack.curvePts
-                });
-            }
+            // NEW Phase 6.5: Get tracks directly from _trackService (no conversion needed!)
+            List<Track> tracks = gps._trackService.GetAllTracks().ToList();
 
             Wgs84 origin = gps.AppModel.LocalPlane.Origin;
             LocalPlane plane = new LocalPlane(origin, new SharedFieldProperties());

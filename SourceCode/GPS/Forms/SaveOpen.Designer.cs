@@ -582,18 +582,19 @@ namespace AgOpenGPS
 
             kml.WriteEndElement(); // Boundaries
 
-            // AB lines
+            // AB lines - NEW Phase 6.5: Use _trackService
             kml.WriteStartElement("Folder");
             kml.WriteElementString("name", "AB_Lines");
             kml.WriteElementString("visibility", "0");
 
             string linePts = "";
 
-            foreach (CTrk track in trk.gArr)
+            var allTracks = _trackService.GetAllTracks();
+            foreach (var track in allTracks)
             {
                 kml.WriteStartElement("Placemark");
                 kml.WriteElementString("visibility", "0");
-                kml.WriteElementString("name", track.name);
+                kml.WriteElementString("name", track.Name);  // PascalCase
                 kml.WriteStartElement("Style");
                 kml.WriteStartElement("LineStyle");
                 kml.WriteElementString("color", "ff0000ff");
@@ -605,8 +606,8 @@ namespace AgOpenGPS
                 kml.WriteElementString("tessellate", "1");
                 kml.WriteStartElement("coordinates");
 
-                GeoCoord pointA = track.ptA.ToGeoCoord();
-                GeoDir heading = new GeoDir(track.heading);
+                GeoCoord pointA = track.PtA.ToGeoCoord();  // PascalCase
+                GeoDir heading = new GeoDir(track.Heading);  // PascalCase
                 linePts = GetGeoCoordToWgs84_KML(pointA - ABLine.abLength * heading);
                 linePts += GetGeoCoordToWgs84_KML(pointA + ABLine.abLength * heading);
                 kml.WriteRaw(linePts);
@@ -617,17 +618,17 @@ namespace AgOpenGPS
             }
             kml.WriteEndElement(); // AB_Lines
 
-            // Curve lines
+            // Curve lines - NEW Phase 6.5: Use _trackService
             kml.WriteStartElement("Folder");
             kml.WriteElementString("name", "Curve_Lines");
             kml.WriteElementString("visibility", "0");
 
-            for (int i = 0; i < trk.gArr.Count; i++)
+            for (int i = 0; i < allTracks.Count; i++)
             {
                 linePts = "";
                 kml.WriteStartElement("Placemark");
                 kml.WriteElementString("visibility", "0");
-                kml.WriteElementString("name", trk.gArr[i].name);
+                kml.WriteElementString("name", allTracks[i].Name);  // PascalCase
 
                 kml.WriteStartElement("Style");
                 kml.WriteStartElement("LineStyle");
@@ -640,7 +641,7 @@ namespace AgOpenGPS
                 kml.WriteElementString("tessellate", "1");
                 kml.WriteStartElement("coordinates");
 
-                foreach (vec3 v3 in trk.gArr[i].curvePts)
+                foreach (vec3 v3 in allTracks[i].CurvePts)  // PascalCase
                 {
                     linePts += GetGeoCoordToWgs84_KML(v3.ToGeoCoord());
                 }
@@ -890,13 +891,14 @@ namespace AgOpenGPS
 
             try
             {
+                // NEW Phase 6.5: Pass _trackService instead of trk
                 ISO11783_TaskFile.Export(
                     directoryName,
                     currentFieldDirectory,
                     (int)(fd.areaOuterBoundary),
                     bnd.bndList,
                     AppModel.LocalPlane,
-                    trk,
+                    _trackService,
                     ISO11783_TaskFile.Version.V3);
             }
             catch (Exception e)
@@ -917,13 +919,14 @@ namespace AgOpenGPS
 
             try
             {
+                // NEW Phase 6.5: Pass _trackService instead of trk
                 ISO11783_TaskFile.Export(
                     directoryName,
                     currentFieldDirectory,
                     (int)(fd.areaOuterBoundary),
                     bnd.bndList,
                     AppModel.LocalPlane,
-                    trk,
+                    _trackService,
                     ISO11783_TaskFile.Version.V4);
             }
             catch (Exception e)

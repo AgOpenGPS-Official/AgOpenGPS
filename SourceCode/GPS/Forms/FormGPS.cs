@@ -256,10 +256,11 @@ namespace AgOpenGPS
 
         /// <summary>
         /// NEW: Refactored services from AgOpenGPS.Core (Phase 6)
+        /// Made public for access by AgShareUploader and other classes during migration
         /// </summary>
-        private ITrackService _trackService;
-        private IGuidanceService _guidanceService;
-        private IYouTurnService _youTurnService;
+        public ITrackService _trackService;
+        public IGuidanceService _guidanceService;
+        public IYouTurnService _youTurnService;
 
         /// <summary>
         /// The new brightness code

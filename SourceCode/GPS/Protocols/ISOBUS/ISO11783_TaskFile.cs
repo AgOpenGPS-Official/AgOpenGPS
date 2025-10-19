@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance;
+using AgOpenGPS.Core.Interfaces.Services;
 using Dev4Agriculture.ISO11783.ISOXML.TaskFile;
 using Dev4Agriculture.ISO11783.ISOXML;
 using System;
+using System.Linq;
 
 namespace AgOpenGPS.Protocols.ISOBUS
 {
@@ -10,13 +13,14 @@ namespace AgOpenGPS.Protocols.ISOBUS
     {
         public enum Version { V3, V4 }
 
+        // NEW Phase 6.5: Changed CTrack → ITrackService
         public static void Export(
             string directoryName,
             string designator,
             int area,
             List<CBoundaryList> bndList,
             LocalPlane localPlane,
-            CTrack trk,
+            ITrackService trackService,
             Version version)
         {
             if (!Enum.IsDefined(typeof(Version), version))
@@ -25,7 +29,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
             var isoxml = ISOXML.Create(directoryName);
 
             SetFileInformation(isoxml, version);
-            AddPartfield(isoxml, designator, area, bndList, localPlane, trk, version);
+            AddPartfield(isoxml, designator, area, bndList, localPlane, trackService, version);
 
             isoxml.Save();
         }
@@ -50,13 +54,14 @@ namespace AgOpenGPS.Protocols.ISOBUS
             }
         }
 
+        // NEW Phase 6.5: Changed CTrack → ITrackService
         private static void AddPartfield(
             ISOXML isoxml,
             string designator,
             int area,
             List<CBoundaryList> bndList,
             LocalPlane localPlane,
-            CTrack trk,
+            ITrackService trackService,
             Version version)
         {
             var partfield = new ISOPartfield();
@@ -66,7 +71,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
             AddBoundary(partfield, bndList, localPlane);
             AddHeadland(partfield, bndList, localPlane);
-            AddTracks(isoxml, partfield, trk, localPlane, version);
+            AddTracks(isoxml, partfield, trackService, localPlane, version);
 
             isoxml.Data.Partfield.Add(partfield);
         }
@@ -135,20 +140,23 @@ namespace AgOpenGPS.Protocols.ISOBUS
             }
         }
 
-        private static void AddTracks(ISOXML isoxml, ISOPartfield partfield, CTrack trk, LocalPlane localPlane, Version version)
+        // NEW Phase 6.5: Changed CTrack → ITrackService
+        private static void AddTracks(ISOXML isoxml, ISOPartfield partfield, ITrackService trackService, LocalPlane localPlane, Version version)
         {
-            if (trk.gArr == null) return;
+            var allTracks = trackService.GetAllTracks();
+            if (allTracks == null || allTracks.Count == 0) return;
 
-            foreach (CTrk track in trk.gArr)
+            foreach (Track track in allTracks)
             {
-                if (track.mode != TrackMode.AB && track.mode != TrackMode.Curve) continue;
+                // NEW: Use PascalCase properties
+                if (track.Mode != Core.Models.Guidance.TrackMode.AB && track.Mode != Core.Models.Guidance.TrackMode.Curve) continue;
 
                 switch (version)
                 {
                     case Version.V3:
                         {
                             ISOLineString lineString = CreateLineString(track, localPlane, version);
-                            lineString.LineStringDesignator = track.name;
+                            lineString.LineStringDesignator = track.Name;  // PascalCase
                             partfield.LineString.Add(lineString);
                         }
                         break;
@@ -157,7 +165,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                         {
                             var guidanceGroup = new ISOGuidanceGroup
                             {
-                                GuidanceGroupDesignator = track.name
+                                GuidanceGroupDesignator = track.Name  // PascalCase
                             };
                             isoxml.IdTable.AddObjectAndAssignIdIfNone(guidanceGroup);
 
@@ -171,13 +179,13 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
                             ISOLineString lineString = CreateLineString(track, localPlane, version);
 
-                            switch (track.mode)
+                            switch (track.Mode)  // PascalCase
                             {
-                                case TrackMode.AB:
+                                case Core.Models.Guidance.TrackMode.AB:  // Full namespace
                                     guidancePattern.GuidancePatternType = ISOGuidancePatternType.AB;
                                     break;
 
-                                case TrackMode.Curve:
+                                case Core.Models.Guidance.TrackMode.Curve:  // Full namespace
                                     guidancePattern.GuidancePatternType = ISOGuidancePatternType.Curve;
                                     break;
 
@@ -196,14 +204,15 @@ namespace AgOpenGPS.Protocols.ISOBUS
             }
         }
 
-        private static ISOLineString CreateLineString(CTrk track, LocalPlane localPlane, Version version)
+        // NEW Phase 6.5: Changed CTrk → Track
+        private static ISOLineString CreateLineString(Track track, LocalPlane localPlane, Version version)
         {
-            switch (track.mode)
+            switch (track.Mode)  // PascalCase
             {
-                case TrackMode.AB:
+                case Core.Models.Guidance.TrackMode.AB:
                     return CreateABLineString(track, localPlane, version);
 
-                case TrackMode.Curve:
+                case Core.Models.Guidance.TrackMode.Curve:
                     return CreateCurveLineString(track, localPlane, version);
 
                 default:
@@ -212,15 +221,16 @@ namespace AgOpenGPS.Protocols.ISOBUS
         }
 
 
-        private static ISOLineString CreateABLineString(CTrk track, LocalPlane localPlane, Version version)
+        // NEW Phase 6.5: Changed CTrk → Track
+        private static ISOLineString CreateABLineString(Track track, LocalPlane localPlane, Version version)
         {
             var lineString = new ISOLineString
             {
                 LineStringType = ISOLineStringType.GuidancePattern
             };
 
-            GeoCoord pointA = track.ptA.ToGeoCoord();
-            GeoDir heading = new GeoDir(track.heading);
+            GeoCoord pointA = track.PtA.ToGeoCoord();  // PascalCase
+            GeoDir heading = new GeoDir(track.Heading);  // PascalCase
             Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(pointA - 1000.0 * heading);
 
             lineString.Point.Add(new ISOPoint
@@ -242,16 +252,17 @@ namespace AgOpenGPS.Protocols.ISOBUS
             return lineString;
         }
 
-        private static ISOLineString CreateCurveLineString(CTrk track, LocalPlane localPlane, Version version)
+        // NEW Phase 6.5: Changed CTrk → Track
+        private static ISOLineString CreateCurveLineString(Track track, LocalPlane localPlane, Version version)
         {
             var lineString = new ISOLineString
             {
                 LineStringType = ISOLineStringType.GuidancePattern
             };
 
-            for (int j = 0; j < track.curvePts.Count; j++)
+            for (int j = 0; j < track.CurvePts.Count; j++)  // PascalCase
             {
-                Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(track.curvePts[j].ToGeoCoord());
+                Wgs84 latLon = localPlane.ConvertGeoCoordToWgs84(track.CurvePts[j].ToGeoCoord());  // PascalCase
 
                 var point = new ISOPoint
                 {
@@ -265,7 +276,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
                     {
                         point.PointType = ISOPointType.GuidanceReferenceA;
                     }
-                    else if (j == track.curvePts.Count - 1)
+                    else if (j == track.CurvePts.Count - 1)  // PascalCase
                     {
                         point.PointType = ISOPointType.GuidanceReferenceB;
                     }
