@@ -31,7 +31,8 @@ namespace AgOpenGPS
 
         private double zoom = 1, sX = 0, sY = 0;
 
-        public List<CTrk> gTemp = new List<CTrk>();
+        // BIG BANG Step 2: CTrk → Track
+        public List<AgOpenGPS.Core.Models.Guidance.Track> gTemp = new List<AgOpenGPS.Core.Models.Guidance.Track>();
 
         public vec3 pint = new vec3(0.0, 1.0, 0.0);
 

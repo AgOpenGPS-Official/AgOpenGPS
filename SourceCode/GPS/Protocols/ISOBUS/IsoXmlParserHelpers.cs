@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Xml;
 using AgOpenGPS.Core;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 2: For Track
 
 namespace AgOpenGPS.Protocols.ISOBUS
 {
@@ -110,9 +111,9 @@ namespace AgOpenGPS.Protocols.ISOBUS
 
 
         // Parse all valid guidance lines
-        public static List<CTrk> ParseAllGuidanceLines(XmlNodeList fieldParts, ApplicationModel appModel)
+        public static List<Track> ParseAllGuidanceLines(XmlNodeList fieldParts, ApplicationModel appModel) // BIG BANG Step 2: CTrk → Track
         {
-            List<CTrk> tracks = new List<CTrk>();
+            List<Track> tracks = new List<Track>(); // BIG BANG Step 2: CTrk → Track
 
             foreach (XmlNode node in fieldParts)
             {
@@ -149,7 +150,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
         }
 
         // Parse GGP → GPN → LSG line
-        private static CTrk ParseGGPNode(XmlNode node, ApplicationModel appModel)
+        private static Track ParseGGPNode(XmlNode node, ApplicationModel appModel) // BIG BANG Step 2: CTrk → Track
         {
             var gpn = node.SelectSingleNode("GPN");
             var lsg = gpn?.SelectSingleNode("LSG[@A='5']");
@@ -165,7 +166,7 @@ namespace AgOpenGPS.Protocols.ISOBUS
         }
 
         // Parse LSG line directly
-        private static CTrk ParseLSGNode(XmlNode lsg, ApplicationModel appModel)
+        private static Track ParseLSGNode(XmlNode lsg, ApplicationModel appModel) // BIG BANG Step 2: CTrk → Track
         {
             string name = lsg.Attributes["B"]?.Value ?? "Unnamed";
             int count = lsg.SelectNodes("PNT").Count;
@@ -176,8 +177,8 @@ namespace AgOpenGPS.Protocols.ISOBUS
             return null;
         }
 
-        // Parse AB line into CTrk
-        private static CTrk ParseABLine(XmlNode lsg, string name, ApplicationModel appModel)
+        // Parse AB line into Track
+        private static Track ParseABLine(XmlNode lsg, string name, ApplicationModel appModel) // BIG BANG Step 2: CTrk → Track
         {
             var points = lsg.SelectNodes("PNT");
             if (points.Count < 2) return null;
@@ -188,18 +189,24 @@ namespace AgOpenGPS.Protocols.ISOBUS
             double heading = Math.Atan2(ptB.easting - ptA.easting, ptB.northing - ptA.northing);
             if (heading < 0) heading += glm.twoPI;
 
-            return new CTrk
+            // BIG BANG Step 2: CTrk → Track with PascalCase properties
+            return new Track
             {
-                heading = heading,
-                mode = TrackMode.AB,
-                ptA = ptA,
-                ptB = ptB,
-                name = name.Trim()
+                Id = System.Guid.NewGuid(),
+                Heading = heading,
+                Mode = TrackMode.AB,
+                PtA = ptA,
+                PtB = ptB,
+                Name = name.Trim(),
+                IsVisible = true,
+                NudgeDistance = 0,
+                CurvePts = new List<vec3>(),
+                WorkedTracks = new HashSet<int>()
             };
         }
 
-        // Parse Curve line into CTrk
-        private static CTrk ParseCurveLine(XmlNode lsg, string name, ApplicationModel appModel)
+        // Parse Curve line into Track
+        private static Track ParseCurveLine(XmlNode lsg, string name, ApplicationModel appModel) // BIG BANG Step 2: CTrk → Track
         {
             var points = lsg.SelectNodes("PNT");
             if (points == null || points.Count <= 2) return null;
@@ -240,19 +247,20 @@ namespace AgOpenGPS.Protocols.ISOBUS
                 ptB = new vec2(desList[desList.Count - 1].easting, desList[desList.Count - 1].northing);
             }
 
-            // Build track
-            var track = new CTrk
+            // Build track - BIG BANG Step 2: CTrk → Track with PascalCase properties
+            var track = new Track
             {
-                heading = avgHeading,
-                mode = TrackMode.Curve,
-                ptA = ptA,
-                ptB = ptB,
-                name = string.IsNullOrWhiteSpace(name) ? "Curve_" + DateTime.Now.ToString("HHmmss") : name
+                Id = System.Guid.NewGuid(),
+                Heading = avgHeading,
+                Mode = TrackMode.Curve,
+                PtA = ptA,
+                PtB = ptB,
+                Name = string.IsNullOrWhiteSpace(name) ? "Curve_" + DateTime.Now.ToString("HHmmss") : name,
+                IsVisible = true,
+                NudgeDistance = 0,
+                CurvePts = new List<vec3>(desList), // BIG BANG Step 2: Direct initialization instead of loop
+                WorkedTracks = new HashSet<int>()
             };
-
-            // Copy processed curve points
-            for (int i = 0; i < desList.Count; i++)
-                track.curvePts.Add(desList[i]);
 
             return track;
         }

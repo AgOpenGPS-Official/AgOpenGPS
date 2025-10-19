@@ -11,7 +11,8 @@ namespace AgOpenGPS
     public partial class FormRefNudge : Form
     {
         private readonly FormGPS mf = null;
-        public List<CTrk> gTemp = new List<CTrk>();
+        // BIG BANG Step 2: CTrk → Track
+        public List<AgOpenGPS.Core.Models.Guidance.Track> gTemp = new List<AgOpenGPS.Core.Models.Guidance.Track>();
 
 
         private double snapAdj = 0, distanceMoved = 0;

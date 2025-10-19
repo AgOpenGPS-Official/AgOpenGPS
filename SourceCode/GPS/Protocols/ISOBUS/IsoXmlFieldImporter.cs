@@ -4,6 +4,7 @@ using AgOpenGPS.Protocols.ISOBUS;
 using AgOpenGPS;
 using System.Collections.Generic;
 using System.Xml;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 2: For Track
 
 /// <summary>
 /// This class is responsible for importing field data from an ISO XML file.
@@ -32,6 +33,6 @@ public class IsoXmlFieldImporter
     public List<vec3> GetHeadland() =>
         IsoXmlParserHelpers.ParseHeadland(_fieldParts, _appModel);
 
-    public List<CTrk> GetGuidanceLines() =>
+    public List<Track> GetGuidanceLines() => // BIG BANG Step 2: CTrk → Track
         IsoXmlParserHelpers.ParseAllGuidanceLines(_fieldParts, _appModel);
 }

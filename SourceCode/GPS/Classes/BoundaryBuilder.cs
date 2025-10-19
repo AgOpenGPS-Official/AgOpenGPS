@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 2: For Track
 
 namespace AgOpenGPS.Classes
 {
@@ -20,7 +21,8 @@ namespace AgOpenGPS.Classes
         #endregion
 
         #region Properties
-        public List<CTrk> InputTracks { get; private set; } = new List<CTrk>();
+        // BIG BANG Step 2: CTrk → Track
+        public List<Track> InputTracks { get; private set; } = new List<Track>();
         public List<Segment> Segments { get; private set; } = new List<Segment>();
         public List<vec2> IntersectionPoints { get; private set; } = new List<vec2>();
         public List<Segment> TrimmedSegments { get; private set; } = new List<Segment>();
@@ -29,15 +31,17 @@ namespace AgOpenGPS.Classes
         #endregion
 
         #region Public API
-        public void SetTracks(List<CTrk> tracks)
+        // BIG BANG Step 2: CTrk → Track
+        public void SetTracks(List<Track> tracks)
         {
-            InputTracks = tracks?.ToList() ?? new List<CTrk>();
+            InputTracks = tracks?.ToList() ?? new List<Track>();
             Log.EventWriter("Tracks set successfully");
         }
 
         public void ExtendAllTracks(double extendMeters)
         {
-            var extendedTracks = new List<CTrk>();
+            // BIG BANG Step 2: CTrk → Track
+            var extendedTracks = new List<Track>();
 
             foreach (var trk in InputTracks)
             {
@@ -390,7 +394,8 @@ namespace AgOpenGPS.Classes
         #endregion
 
         #region Helper Methods
-        private List<vec2> GetTrackPoints(CTrk track)
+        // BIG BANG Step 2: CTrk → Track
+        private List<vec2> GetTrackPoints(Track track)
         {
             List<vec2> points = track.mode == TrackMode.AB
                 ? new List<vec2> { track.ptA, track.ptB }
@@ -502,7 +507,8 @@ namespace AgOpenGPS.Classes
             return trimmed;
         }
 
-        private List<Segment> CreateUniformSegments(List<vec2> points, CTrk parentTrack, double segmentLength)
+        // BIG BANG Step 2: CTrk → Track
+        private List<Segment> CreateUniformSegments(List<vec2> points, Track parentTrack, double segmentLength)
         {
             var segments = new List<Segment>();
 
@@ -572,10 +578,10 @@ namespace AgOpenGPS.Classes
         {
             public vec2 Start { get; private set; }
             public vec2 End { get; private set; }
-            public CTrk ParentTrack { get; }
+            public Track ParentTrack { get; } // BIG BANG Step 2: CTrk → Track
             public List<vec2> Intersections { get; } = new List<vec2>();
 
-            public Segment(vec2 start, vec2 end, CTrk parentTrack)
+            public Segment(vec2 start, vec2 end, Track parentTrack) // BIG BANG Step 2: CTrk → Track
             {
                 Start = start;
                 End = end;

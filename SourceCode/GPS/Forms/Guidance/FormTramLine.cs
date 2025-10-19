@@ -34,7 +34,8 @@ namespace AgOpenGPS
 
         private List<List<vec2>> tramList = new List<List<vec2>>();
 
-        private List<CTrk> gTemp = new List<CTrk>();
+        // BIG BANG Step 2: CTrk → Track
+        private List<AgOpenGPS.Core.Models.Guidance.Track> gTemp = new List<AgOpenGPS.Core.Models.Guidance.Track>();
 
         private int passes, startPass;
 

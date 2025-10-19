@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AgOpenGPS.Classes;
+using AgOpenGPS.Core.Models.Guidance; // BIG BANG Step 2: For Track
 using OpenTK.Graphics.OpenGL;
 using AgLibrary.Logging;
 
@@ -24,10 +25,11 @@ namespace AgOpenGPS.Forms.Field
 
         #region Fields
         private readonly FormGPS _mf;
-        private readonly List<CTrk> _trackList;
-        private readonly List<CTrk> _selectedTracks;
+        // BIG BANG Step 2: CTrk → Track
+        private readonly List<Track> _trackList;
+        private readonly List<Track> _selectedTracks;
         private BoundaryBuilder _builder;
-        private CTrk _activeTrack;
+        private Track _activeTrack;
         private double _viewLeft, _viewRight, _viewTop, _viewBottom;
         private bool _showTrimmedOnly;
         private Form _parentForm;
@@ -43,8 +45,9 @@ namespace AgOpenGPS.Forms.Field
             InitializeComponent();
             _mf = mf;
             _parentForm = parentForm;
-            _trackList = new List<CTrk>();
-            _selectedTracks = new List<CTrk>();
+            // BIG BANG Step 2: CTrk → Track
+            _trackList = new List<Track>();
+            _selectedTracks = new List<Track>();
             _showTrimmedOnly = false;
             _redrawPending = false;
 
@@ -78,21 +81,10 @@ namespace AgOpenGPS.Forms.Field
                     return;
                 }
 
-                // Convert Track to CTrk for local use in this form
+                // BIG BANG Step 2: No conversion needed - use Track directly
                 foreach (var track in loadedTracks)
                 {
-                    var oldTrack = new CTrk
-                    {
-                        mode = (TrackMode)track.Mode,
-                        name = track.Name,
-                        ptA = track.PtA,
-                        ptB = track.PtB,
-                        heading = track.Heading,
-                        curvePts = track.CurvePts,
-                        nudgeDistance = track.NudgeDistance,
-                        isVisible = track.IsVisible
-                    };
-                    _trackList.Add(oldTrack);
+                    _trackList.Add(track);
                 }
             }
             catch (Exception ex)
@@ -139,7 +131,8 @@ namespace AgOpenGPS.Forms.Field
             }
         }
 
-        private CheckBox CreateTrackCheckbox(CTrk track)
+        // BIG BANG Step 2: CTrk → Track
+        private CheckBox CreateTrackCheckbox(Track track)
         {
             var chk = new CheckBox
             {
@@ -162,7 +155,8 @@ namespace AgOpenGPS.Forms.Field
 
         private void OnTrackSelectionChanged(CheckBox checkbox)
         {
-            if (checkbox?.Tag is CTrk track)
+            // BIG BANG Step 2: CTrk → Track
+            if (checkbox?.Tag is Track track)
             {
                 if (checkbox.Checked)
                 {
@@ -187,7 +181,8 @@ namespace AgOpenGPS.Forms.Field
         {
             foreach (CheckBox cb in flpTrackList.Controls)
             {
-                if (cb.Tag is CTrk trk)
+                // BIG BANG Step 2: CTrk → Track
+                if (cb.Tag is Track trk)
                 {
                     if (!_selectedTracks.Contains(trk))
                     {
@@ -259,7 +254,8 @@ namespace AgOpenGPS.Forms.Field
         }
 
 
-        private void AdjustABTrackPoints(CTrk track, bool isPointA, double deltaMeters)
+        // BIG BANG Step 2: CTrk → Track
+        private void AdjustABTrackPoints(Track track, bool isPointA, double deltaMeters)
         {
             vec2 direction = (track.ptB - track.ptA).Normalize();
 
@@ -274,7 +270,8 @@ namespace AgOpenGPS.Forms.Field
         }
 
 
-        private void AdjustCurveTrackPoints(CTrk track, bool isStartPoint, double deltaMeters)
+        // BIG BANG Step 2: CTrk → Track
+        private void AdjustCurveTrackPoints(Track track, bool isStartPoint, double deltaMeters)
         {
             int steps = (int)Math.Abs(deltaMeters);
             bool isExtend = deltaMeters < 0;
@@ -289,7 +286,8 @@ namespace AgOpenGPS.Forms.Field
             }
         }
 
-        private void AdjustCurveStartPoint(CTrk track, int steps, bool isExtend)
+        // BIG BANG Step 2: CTrk → Track
+        private void AdjustCurveStartPoint(Track track, int steps, bool isExtend)
         {
             for (int s = 0; s < steps && (isExtend || track.curvePts.Count > 2); s++)
             {
@@ -311,7 +309,8 @@ namespace AgOpenGPS.Forms.Field
             }
         }
 
-        private void AdjustCurveEndPoint(CTrk track, int steps, bool isExtend)
+        // BIG BANG Step 2: CTrk → Track
+        private void AdjustCurveEndPoint(Track track, int steps, bool isExtend)
         {
             for (int s = 0; s < steps && (isExtend || track.curvePts.Count > 2); s++)
             {
@@ -615,7 +614,8 @@ namespace AgOpenGPS.Forms.Field
 
             foreach (CheckBox cb in flpTrackList.Controls)
             {
-                if (cb.Checked && cb.Tag is CTrk trk)
+                // BIG BANG Step 2: CTrk → Track
+                if (cb.Checked && cb.Tag is Track trk)
                 {
                     _selectedTracks.Add(trk);
                 }
