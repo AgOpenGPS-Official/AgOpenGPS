@@ -165,11 +165,12 @@ namespace AgOpenGPS
         //public CPatches[] triStrip;
         public List<CPatches> triStrip;
 
-        /// <summary>
-        /// AB Line object
-        /// </summary>
-        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
-        public CABLine ABLine;
+        // BIG BANG: Disabled - Use _guidanceService instead
+        // /// <summary>
+        // /// AB Line object
+        // /// </summary>
+        // [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
+        // public CABLine ABLine;
 
         /// <summary>
         /// TramLine class for boundary and settings
@@ -181,18 +182,20 @@ namespace AgOpenGPS
         /// </summary>
         public CContour ct;
 
-        /// <summary>
-        /// OLD: Track management - DEPRECATED in Phase 6.4
-        /// Use _trackService instead
-        /// </summary>
-        [Obsolete("Use _trackService instead. Will be removed after all references are migrated.")]
-        public CTrack trk;
+        // BIG BANG: Disabled - Use _trackService instead
+        // /// <summary>
+        // /// OLD: Track management - DEPRECATED in Phase 6.4
+        // /// Use _trackService instead
+        // /// </summary>
+        // [Obsolete("Use _trackService instead. Will be removed after all references are migrated.")]
+        // public CTrack trk;
 
-        /// <summary>
-        /// ABCurve instance
-        /// </summary>
-        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
-        public CABCurve curve;
+        // BIG BANG: Disabled - Use _guidanceService instead
+        // /// <summary>
+        // /// ABCurve instance
+        // /// </summary>
+        // [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
+        // public CABCurve curve;
 
         /// <summary>
         /// Auto Headland YouTurn
@@ -251,11 +254,12 @@ namespace AgOpenGPS
 
         public AgOpenGPS.Core.DrawLib.Font font;
 
-        /// <summary>
-        /// The new steer algorithms
-        /// </summary>
-        [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
-        public CGuidance gyd;
+        // BIG BANG: Disabled - Use _guidanceService instead
+        // /// <summary>
+        // /// The new steer algorithms
+        // /// </summary>
+        // [Obsolete("Use _guidanceService instead. Will be removed after all references are migrated.")]
+        // public CGuidance gyd;
 
         /// <summary>
         /// NEW: Refactored services from AgOpenGPS.Core (Phase 6)
@@ -358,17 +362,20 @@ namespace AgOpenGPS
             //our NMEA parser
             pn = new CNMEA(this);
 
-            //create the ABLine instance
-            ABLine = new CABLine(this);
+            // BIG BANG: Disabled - Use _guidanceService instead
+            // //create the ABLine instance
+            // ABLine = new CABLine(this);
 
             //new instance of contour mode
             ct = new CContour(this);
 
-            //new instance of contour mode
-            curve = new CABCurve(this);
+            // BIG BANG: Disabled - Use _guidanceService instead
+            // //new instance of contour mode
+            // curve = new CABCurve(this);
 
-            //OLD: track instance - DEPRECATED in Phase 6.4, keeping for backward compatibility during migration
-            trk = new CTrack(this);  // TODO Phase 6.4: Remove after all trk.gArr references are migrated
+            // BIG BANG: Disabled - Use _trackService instead
+            // //OLD: track instance - DEPRECATED in Phase 6.4, keeping for backward compatibility during migration
+            // trk = new CTrack(this);  // TODO Phase 6.4: Remove after all trk.gArr references are migrated
 
             //new instance of contour mode
             hdl = new CHeadLine(this);
@@ -402,8 +409,9 @@ namespace AgOpenGPS
 
             font = new AgOpenGPS.Core.DrawLib.Font(camera, ScreenTextures.Font);
 
-            //the new steer algorithms
-            gyd = new CGuidance(this);
+            // BIG BANG: Disabled - Use _guidanceService instead
+            // //the new steer algorithms
+            // gyd = new CGuidance(this);
 
             //NEW: Initialize refactored services (Phase 6)
             _trackService = new TrackService();

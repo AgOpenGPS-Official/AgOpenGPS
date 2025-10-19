@@ -1,4 +1,5 @@
-﻿using AgLibrary.Logging;
+﻿#if false // BIG BANG: Disabled for migration to new TrackService/GuidanceService architecture
+using AgLibrary.Logging;
 using AgOpenGPS.Core.Translations;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -1581,3 +1582,4 @@ namespace AgOpenGPS
         }
     }
 }
+#endif // BIG BANG: End of disabled CABCurve.cs
