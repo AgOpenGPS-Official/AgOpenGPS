@@ -75,15 +75,27 @@ namespace AgOpenGPS
             //if contour is on, turn it off
             if (ct.isContourBtnOn) { if (ct.isContourBtnOn) btnContour.PerformClick(); }
 
-            if (trk.gArr.Count > 0)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            var allTracks = _trackService.GetAllTracks();
+            if (allTracks.Count > 0)
             {
-                if (trk.idx == -1)
+                if (_trackService.GetCurrentTrack() == null)
                 {
                     //find index of first visible track
-                    trk.idx = trk.gArr.FindIndex(track => track.isVisible);
+                    int firstVisibleIndex = -1;
+                    for (int i = 0; i < allTracks.Count; i++)
+                    {
+                        if (allTracks[i].IsVisible)
+                        {
+                            firstVisibleIndex = i;
+                            break;
+                        }
+                    }
 
                     //otherwise default to index 0
-                    if (trk.idx == -1) trk.idx = 0;
+                    if (firstVisibleIndex == -1) firstVisibleIndex = 0;
+
+                    _trackService.SetCurrentTrackIndex(firstVisibleIndex);
 
                     EnableYouTurnButtons();
                     PanelUpdateRightAndBottom();
@@ -104,17 +116,9 @@ namespace AgOpenGPS
                 flp1.Visible = true;
 
                 //build the flyout based on properties of program
-                int tracksTotal = 0, tracksVisible = 0;
+                int tracksTotal = allTracks.Count;
+                int tracksVisible = allTracks.Count(t => t.IsVisible);
                 bool isBnd = bnd.bndList.Count > 0;
-
-                for (int i = 0; i < trk.gArr.Count; i++)
-                {
-                    tracksTotal++;
-                    if (trk.gArr[i].isVisible)
-                    {
-                        tracksVisible++;
-                    }
-                }
 
                 int btnCount = 0;
                 //nudge closest
@@ -184,7 +188,8 @@ namespace AgOpenGPS
             }
             else
             {
-                if (ct.isContourBtnOn | trk.idx > -1)
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                if (ct.isContourBtnOn | _trackService.GetCurrentTrack() != null)
                 {
                     isBtnAutoSteerOn = true;
                     btnAutoSteer.Image = trk.isAutoSnapToPivot ? Properties.Resources.AutoSteerOnSnapToPivot : Properties.Resources.AutoSteerOn;
@@ -221,7 +226,8 @@ namespace AgOpenGPS
                 //new direction so reset where to put turn diagnostic
                 yt.ResetCreatedYouTurn();
 
-                if (trk.idx == -1) return;
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                if (_trackService.GetCurrentTrack() == null) return;
 
                 yt.isYouTurnBtnOn = true;
                 yt.isTurnCreationTooClose = false;
@@ -247,18 +253,22 @@ namespace AgOpenGPS
             trk.isAutoTrack = false;
             btnAutoTrack.Image = Resources.AutoTrackOff;
 
-            if (trk.gArr.Count > 1)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            var allTracks = _trackService.GetAllTracks();
+            if (allTracks.Count > 1)
             {
+                int currentIndex = _trackService.GetCurrentTrackIndex();
                 while (true)
                 {
-                    trk.idx++;
-                    if (trk.idx == trk.gArr.Count) trk.idx = 0;
+                    currentIndex++;
+                    if (currentIndex == allTracks.Count) currentIndex = 0;
 
-                    if (trk.gArr[trk.idx].isVisible)
+                    if (allTracks[currentIndex].IsVisible)
                     {
+                        _trackService.SetCurrentTrackIndex(currentIndex);
                         guideLineCounter = 20;
                         lblGuidanceLine.Visible = true;
-                        lblGuidanceLine.Text = trk.gArr[trk.idx].name;
+                        lblGuidanceLine.Text = allTracks[currentIndex].Name;
                         break;
                     }
                 }
@@ -271,7 +281,7 @@ namespace AgOpenGPS
 
                 if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
 
-                lblNumCu.Text = (trk.idx + 1).ToString() + "/" + trk.gArr.Count.ToString();
+                lblNumCu.Text = (currentIndex + 1).ToString() + "/" + allTracks.Count.ToString();
             }
 
             twoSecondCounter = 100;
@@ -291,18 +301,22 @@ namespace AgOpenGPS
             trk.isAutoTrack = false;
             btnAutoTrack.Image = Resources.AutoTrackOff;
 
-            if (trk.gArr.Count > 1)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            var allTracks = _trackService.GetAllTracks();
+            if (allTracks.Count > 1)
             {
+                int currentIndex = _trackService.GetCurrentTrackIndex();
                 while (true)
                 {
-                    trk.idx--;
-                    if (trk.idx == -1) trk.idx = trk.gArr.Count - 1;
+                    currentIndex--;
+                    if (currentIndex == -1) currentIndex = allTracks.Count - 1;
 
-                    if (trk.gArr[trk.idx].isVisible)
+                    if (allTracks[currentIndex].IsVisible)
                     {
+                        _trackService.SetCurrentTrackIndex(currentIndex);
                         guideLineCounter = 20;
                         lblGuidanceLine.Visible = true;
-                        lblGuidanceLine.Text = trk.gArr[trk.idx].name;
+                        lblGuidanceLine.Text = allTracks[currentIndex].Name;
                         break;
                     }
                 }
@@ -313,7 +327,7 @@ namespace AgOpenGPS
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, "Track Changed");
                 }
 
-                lblNumCu.Text = (trk.idx + 1).ToString() + "/" + trk.gArr.Count.ToString();
+                lblNumCu.Text = (currentIndex + 1).ToString() + "/" + allTracks.Count.ToString();
             }
 
             ABLine.isABValid = false;
@@ -338,7 +352,8 @@ namespace AgOpenGPS
             }
 
 
-            if (trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (_trackService.GetCurrentTrack() != null)
             {
                 Form form = new FormRefNudge(this);
                 form.Show(this);
@@ -359,7 +374,8 @@ namespace AgOpenGPS
         }
         private void btnTracksOff_Click(object sender, EventArgs e)
         {
-            trk.idx = -1;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            _trackService.SetCurrentTrackIndex(-1);
 
             if (flp1.Visible)
             {
@@ -377,7 +393,8 @@ namespace AgOpenGPS
                 return;
             }
 
-            if (trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (_trackService.GetCurrentTrack() != null)
             {
                 Form form = new FormNudge(this);
                 form.Show(this);
@@ -484,7 +501,8 @@ namespace AgOpenGPS
             headlandToolStripMenuItem.Enabled = (bnd.bndList.Count > 0);
             headlandBuildToolStripMenuItem.Enabled = (bnd.bndList.Count > 0);
 
-            tramLinesMenuField.Enabled = tramsMultiMenuField.Enabled = (trk.gArr.Count > 0 && trk.idx > -1);
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            tramLinesMenuField.Enabled = tramsMultiMenuField.Enabled = (_trackService.GetAllTracks().Count > 0 && _trackService.GetCurrentTrack() != null);
         }
 
         public bool isCancelJobMenu;
@@ -592,7 +610,8 @@ namespace AgOpenGPS
             FieldMenuButtonEnableDisable(isJobStarted);
             toolStripBtnFieldTools.Enabled = isJobStarted;
             bnd.isHeadlandOn = (bnd.bndList.Count > 0 && bnd.bndList[0].hdLine.Count > 0);
-            trk.idx = -1;
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            _trackService.SetCurrentTrackIndex(-1);
             PanelUpdateRightAndBottom();
         }
 
@@ -702,14 +721,17 @@ namespace AgOpenGPS
         {
             if (ct.isContourBtnOn) btnContour.PerformClick();
 
-            if (trk.idx == -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (_trackService.GetCurrentTrack() == null)
             {
                 TimedMessageBox(1500, gStr.gsNoABLineActive, gStr.gsPleaseEnterABLine);
                 panelRight.Enabled = true;
                 return;
             }
 
-            Form form99 = new FormTram(this, trk.gArr[trk.idx].mode != TrackMode.AB);
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr[trk.idx]
+            var currentTrack = _trackService.GetCurrentTrack();
+            Form form99 = new FormTram(this, currentTrack.Mode != AgOpenGPS.Core.Models.Guidance.TrackMode.AB);
             form99.Show(this);
 
         }
@@ -718,7 +740,8 @@ namespace AgOpenGPS
         {
             if (ct.isContourBtnOn) btnContour.PerformClick();
 
-            if (trk.gArr.Count < 1)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr
+            if (_trackService.GetAllTracks().Count < 1)
             {
                 TimedMessageBox(1500, gStr.gsNoGuidanceLines, gStr.gsNoGuidanceLines);
                 panelRight.Enabled = true;
@@ -821,9 +844,11 @@ namespace AgOpenGPS
 
             DisableYouTurnButtons();
 
-            if (trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (_trackService.GetCurrentTrack() != null)
             {
-                trk.idx = -1;
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+            _trackService.SetCurrentTrackIndex(-1);
             }
 
             PanelUpdateRightAndBottom();
@@ -1809,7 +1834,8 @@ namespace AgOpenGPS
         }
         private void SmoothABtoolStripMenu_Click(object sender, EventArgs e)
         {
-            if (isJobStarted && trk.idx > -1)
+            // NEW Phase 6.5: Use _trackService instead of trk.idx
+            if (isJobStarted && _trackService.GetCurrentTrack() != null)
             {
                 using (var form = new FormSmoothAB(this))
                 {

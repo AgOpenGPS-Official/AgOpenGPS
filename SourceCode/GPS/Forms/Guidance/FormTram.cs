@@ -2,6 +2,7 @@
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -174,39 +175,58 @@ namespace AgOpenGPS
 
         private void btnSwapAB_Click(object sender, EventArgs e)
         {
-            if (mf.trk.gArr[mf.trk.idx].mode == TrackMode.AB)
+            // NEW Phase 6.5: Use _trackService instead of trk.gArr/trk.idx
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack == null) return;
+
+            // Create CTrk manually from Track for legacy manipulation
+            var ctrk = new CTrk
             {
-                vec2 bob = mf.trk.gArr[mf.trk.idx].ptA;
-                mf.trk.gArr[mf.trk.idx].ptA = mf.trk.gArr[mf.trk.idx].ptB;
-                mf.trk.gArr[mf.trk.idx].ptB = new vec2(bob);
+                name = currentTrack.Name,
+                mode = (TrackMode)currentTrack.Mode,
+                isVisible = currentTrack.IsVisible,
+                nudgeDistance = currentTrack.NudgeDistance,
+                ptA = currentTrack.PtA,
+                ptB = currentTrack.PtB,
+                heading = currentTrack.Heading,
+                curvePts = new List<vec3>(currentTrack.CurvePts),
+                endPtA = new vec2(),
+                endPtB = new vec2()
+            };
 
-                mf.trk.gArr[mf.trk.idx].heading += Math.PI;
-                if (mf.trk.gArr[mf.trk.idx].heading < 0) mf.trk.gArr[mf.trk.idx].heading += glm.twoPI;
-                if (mf.trk.gArr[mf.trk.idx].heading > glm.twoPI) mf.trk.gArr[mf.trk.idx].heading -= glm.twoPI;
+            if (ctrk.mode == TrackMode.AB)
+            {
+                vec2 bob = ctrk.ptA;
+                ctrk.ptA = ctrk.ptB;
+                ctrk.ptB = new vec2(bob);
 
-                double abHeading = mf.trk.gArr[mf.trk.idx].heading;
-                mf.trk.gArr[mf.trk.idx].endPtA.easting = mf.trk.gArr[mf.trk.idx].ptA.easting - (Math.Sin(abHeading) * mf.ABLine.abLength);
-                mf.trk.gArr[mf.trk.idx].endPtA.northing = mf.trk.gArr[mf.trk.idx].ptA.northing - (Math.Cos(abHeading) * mf.ABLine.abLength);
+                ctrk.heading += Math.PI;
+                if (ctrk.heading < 0) ctrk.heading += glm.twoPI;
+                if (ctrk.heading > glm.twoPI) ctrk.heading -= glm.twoPI;
 
-                mf.trk.gArr[mf.trk.idx].endPtB.easting = mf.trk.gArr[mf.trk.idx].ptB.easting + (Math.Sin(abHeading) * mf.ABLine.abLength);
-                mf.trk.gArr[mf.trk.idx].endPtB.northing = mf.trk.gArr[mf.trk.idx].ptB.northing + (Math.Cos(abHeading) * mf.ABLine.abLength);
+                double abHeading = ctrk.heading;
+                ctrk.endPtA.easting = ctrk.ptA.easting - (Math.Sin(abHeading) * mf.ABLine.abLength);
+                ctrk.endPtA.northing = ctrk.ptA.northing - (Math.Cos(abHeading) * mf.ABLine.abLength);
+
+                ctrk.endPtB.easting = ctrk.ptB.easting + (Math.Sin(abHeading) * mf.ABLine.abLength);
+                ctrk.endPtB.northing = ctrk.ptB.northing + (Math.Cos(abHeading) * mf.ABLine.abLength);
 
             }
             else
             {
-                int cnt = mf.trk.gArr[mf.trk.idx].curvePts.Count;
+                int cnt = ctrk.curvePts.Count;
                 if (cnt > 0)
                 {
-                    mf.trk.gArr[mf.trk.idx].curvePts.Reverse();
+                    ctrk.curvePts.Reverse();
 
                     vec3[] arr = new vec3[cnt];
                     cnt--;
-                    mf.trk.gArr[mf.trk.idx].curvePts.CopyTo(arr);
-                    mf.trk.gArr[mf.trk.idx].curvePts.Clear();
+                    ctrk.curvePts.CopyTo(arr);
+                    ctrk.curvePts.Clear();
 
-                    mf.trk.gArr[mf.trk.idx].heading += Math.PI;
-                    if (mf.trk.gArr[mf.trk.idx].heading < 0) mf.trk.gArr[mf.trk.idx].heading += glm.twoPI;
-                    if (mf.trk.gArr[mf.trk.idx].heading > glm.twoPI) mf.trk.gArr[mf.trk.idx].heading -= glm.twoPI;
+                    ctrk.heading += Math.PI;
+                    if (ctrk.heading < 0) ctrk.heading += glm.twoPI;
+                    if (ctrk.heading > glm.twoPI) ctrk.heading -= glm.twoPI;
 
                     for (int i = 1; i < cnt; i++)
                     {
@@ -214,15 +234,25 @@ namespace AgOpenGPS
                         pt3.heading += Math.PI;
                         if (pt3.heading > glm.twoPI) pt3.heading -= glm.twoPI;
                         if (pt3.heading < 0) pt3.heading += glm.twoPI;
-                        mf.trk.gArr[mf.trk.idx].curvePts.Add(pt3);
+                        ctrk.curvePts.Add(pt3);
                     }
 
-                    vec2 temp = new vec2(mf.trk.gArr[mf.trk.idx].ptA);
+                    vec2 temp = new vec2(ctrk.ptA);
 
-                    (mf.trk.gArr[mf.trk.idx].ptA) = new vec2(mf.trk.gArr[mf.trk.idx].ptB);
-                    (mf.trk.gArr[mf.trk.idx].ptB) = new vec2(temp);
+                    (ctrk.ptA) = new vec2(ctrk.ptB);
+                    (ctrk.ptB) = new vec2(temp);
                 }
             }
+
+            // Convert back and replace in track list
+            currentTrack.Name = ctrk.name;
+            currentTrack.Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)ctrk.mode;
+            currentTrack.IsVisible = ctrk.isVisible;
+            currentTrack.NudgeDistance = ctrk.nudgeDistance;
+            currentTrack.PtA = ctrk.ptA;
+            currentTrack.PtB = ctrk.ptB;
+            currentTrack.Heading = ctrk.heading;
+            currentTrack.CurvePts = ctrk.curvePts;
 
             mf.FileSaveTracks();
 

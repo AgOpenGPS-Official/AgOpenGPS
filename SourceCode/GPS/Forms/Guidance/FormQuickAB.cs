@@ -165,18 +165,9 @@ namespace AgOpenGPS
             int cnt = mf.curve.desList.Count;
             if (cnt > 3)
             {
-                //make sure point distance isn't too big 
+                //make sure point distance isn't too big
                 mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
                 mf.curve.CalculateHeadings(ref mf.curve.desList);
-
-                mf.trk.gArr.Add(new CTrk());
-                //array number is 1 less since it starts at zero
-                idx = mf.trk.gArr.Count - 1;
-
-                mf.trk.gArr[idx].ptA = new vec2(ptAa);
-                mf.trk.gArr[idx].ptB = new vec2(ptBb);
-
-                mf.trk.gArr[idx].mode = TrackMode.Curve;
 
                 //calculate average heading of line
                 double x = 0, y = 0;
@@ -190,23 +181,34 @@ namespace AgOpenGPS
                 aveLineHeading = Math.Atan2(y, x);
                 if (aveLineHeading < 0) aveLineHeading += glm.twoPI;
 
-                mf.trk.gArr[idx].heading = aveLineHeading;
-
                 //build the tail extensions
                 mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                 SmoothAB(4);
                 mf.curve.CalculateHeadings(ref mf.curve.desList);
 
-                //write out the Curve Points
-                foreach (vec3 item in mf.curve.desList)
-                {
-                    mf.trk.gArr[idx].curvePts.Add(item);
-                }
-
                 mf.curve.desName = "Cu " +
                     (Math.Round(glm.toDegrees(aveLineHeading), 1)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
                 textBox1.Text = mf.curve.desName;
+
+                // NEW Phase 6.5: Create track via _trackService
+                var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+                {
+                    Id = System.Guid.NewGuid(),
+                    Name = mf.curve.desName,
+                    Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.Curve,
+                    PtA = new vec2(ptAa),
+                    PtB = new vec2(ptBb),
+                    Heading = aveLineHeading,
+                    IsVisible = true,
+                    NudgeDistance = 0,
+                    CurvePts = new List<vec3>(mf.curve.desList),
+                    WorkedTracks = new HashSet<int>()
+                };
+
+                mf._trackService.AddTrack(newTrack);
+                idx = mf._trackService.GetTrackCount() - 1;
+                mf._trackService.SetCurrentTrackIndex(idx);
 
                 panelCurve.Visible = false;
                 panelName.Visible = true;
@@ -216,13 +218,11 @@ namespace AgOpenGPS
                 if (isRefRightSide)
                 {
                     dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                    mf.trk.idx = idx;
                     mf.trk.NudgeRefCurve(dist);
                 }
                 else
                 {
                     dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                    mf.trk.idx = idx;
                     mf.trk.NudgeRefCurve(dist);
                 }
             }
@@ -317,35 +317,41 @@ namespace AgOpenGPS
         {
             timer1.Enabled = false;
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
-
-            idx = mf.trk.gArr.Count - 1;
-
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
-
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
 
             mf.ABLine.desName = "AB " +
                 (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
 
             textBox1.Text = mf.ABLine.desName;
-            mf.trk.gArr[idx].name = mf.ABLine.desName;
+
+            // NEW Phase 6.5: Create track via _trackService
+            var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+            {
+                Id = System.Guid.NewGuid(),
+                Name = mf.ABLine.desName,
+                Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.AB,
+                PtA = new vec2(mf.ABLine.desPtA),
+                PtB = new vec2(mf.ABLine.desPtB),
+                Heading = mf.ABLine.desHeading,
+                IsVisible = true,
+                NudgeDistance = 0,
+                CurvePts = new List<vec3>(),
+                WorkedTracks = new HashSet<int>()
+            };
+
+            mf._trackService.AddTrack(newTrack);
+            idx = mf._trackService.GetTrackCount() - 1;
+            mf._trackService.SetCurrentTrackIndex(idx);
 
             double dist;
             if (isRefRightSide)
             {
                 dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
                 mf.trk.NudgeRefABLine(dist);
 
             }
             else
             {
                 dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
                 mf.trk.NudgeRefABLine(dist);
             }
             panelABLine.Visible = false;
@@ -431,33 +437,40 @@ namespace AgOpenGPS
             timer1.Enabled = false;
 
             mf.ABLine.isMakingABLine = false;
-            mf.trk.gArr.Add(new CTrk());
-
-            idx = mf.trk.gArr.Count - 1;
-
-            mf.trk.gArr[idx].ptA = new vec2(mf.ABLine.desPtA);
-            mf.trk.gArr[idx].ptB = new vec2(mf.ABLine.desPtB);
-
-            mf.trk.gArr[idx].mode = TrackMode.AB;
-
-            mf.trk.gArr[idx].heading = mf.ABLine.desHeading;
 
             mf.ABLine.desName = "A+" +
                 (Math.Round(glm.toDegrees(mf.ABLine.desHeading), 5)).ToString(CultureInfo.InvariantCulture) + "\u00B0 ";
             textBox1.Text = mf.ABLine.desName;
 
+            // NEW Phase 6.5: Create track via _trackService
+            var newTrack = new AgOpenGPS.Core.Models.Guidance.Track
+            {
+                Id = System.Guid.NewGuid(),
+                Name = mf.ABLine.desName,
+                Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.AB,
+                PtA = new vec2(mf.ABLine.desPtA),
+                PtB = new vec2(mf.ABLine.desPtB),
+                Heading = mf.ABLine.desHeading,
+                IsVisible = true,
+                NudgeDistance = 0,
+                CurvePts = new List<vec3>(),
+                WorkedTracks = new HashSet<int>()
+            };
+
+            mf._trackService.AddTrack(newTrack);
+            idx = mf._trackService.GetTrackCount() - 1;
+            mf._trackService.SetCurrentTrackIndex(idx);
+
             double dist;
             if (isRefRightSide)
             {
                 dist = (mf.tool.width - mf.tool.overlap) * 0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
                 mf.trk.NudgeRefABLine(dist);
 
             }
             else
             {
                 dist = (mf.tool.width - mf.tool.overlap) * -0.5 + mf.tool.offset;
-                mf.trk.idx = idx;
                 mf.trk.NudgeRefABLine(dist);
             }
 
@@ -497,9 +510,12 @@ namespace AgOpenGPS
         {
             if (textBox1.Text.Length == 0) textBox1.Text = "No Name " + DateTime.Now.ToString("hh:mm:ss", CultureInfo.InvariantCulture);
 
-            int idx = mf.trk.gArr.Count - 1;
-
-            mf.trk.gArr[idx].name = textBox1.Text.Trim();
+            // NEW Phase 6.5: Update track name via _trackService
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack != null)
+            {
+                currentTrack.Name = textBox1.Text.Trim();
+            }
 
             panelName.Visible = false;
 
@@ -517,7 +533,6 @@ namespace AgOpenGPS
 
             mf.ABLine.isMakingABLine = false;
             mf.curve.desList?.Clear();
-            mf.trk.idx = idx;
 
             Close();
         }

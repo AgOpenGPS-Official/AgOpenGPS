@@ -594,7 +594,7 @@ namespace AgOpenGPS
                 // NEW Phase 6.5: Use _trackService instead of trk.idx
                 var currentTrack = _trackService.GetCurrentTrack();
                 if (currentTrack != null)
-                    _trackService.NudgeTrack(currentTrack.Id, (double)Properties.Settings.Default.setAS_snapDistance * -0.01);
+                    _trackService.NudgeTrack(currentTrack, (double)Properties.Settings.Default.setAS_snapDistance * -0.01);
                 return true;
             }
 
@@ -603,7 +603,7 @@ namespace AgOpenGPS
                 // NEW Phase 6.5: Use _trackService instead of trk.idx
                 var currentTrack = _trackService.GetCurrentTrack();
                 if (currentTrack != null)
-                    _trackService.NudgeTrack(currentTrack.Id, (double)Properties.Settings.Default.setAS_snapDistance * 0.01);
+                    _trackService.NudgeTrack(currentTrack, (double)Properties.Settings.Default.setAS_snapDistance * 0.01);
                 return true;
             }
 
