@@ -894,39 +894,100 @@ namespace AgOpenGPS
                 }
 
                 //like normal - NEW Phase 6.7: Use _trackService.BuildGuidanceTrack + UpdateGuidance
-                var currentTrack = _trackService.GetCurrentTrack();
-                if (currentTrack != null && currentTrack.IsValid())
+                try
                 {
-                    // Build guidance track (extended AB line or smoothed curve)
-                    // offsetDistance: use nudge distance from track
-                    var guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
+                    var currentTrack = _trackService.GetCurrentTrack();
+                    System.Diagnostics.Debug.WriteLine($"Position guidance loop: currentTrack={(currentTrack != null ? currentTrack.Name + " (" + currentTrack.Mode + ")" : "NULL")}");
 
-                    if (guidanceTrack != null && guidanceTrack.Count >= 2)
+                    if (currentTrack != null)
                     {
-                        // Calculate guidance (cross-track error, steering angle)
-                        var guidanceResult = UpdateGuidance(steerAxlePos, guidanceTrack);
+                        System.Diagnostics.Debug.WriteLine($"  -> IsValid={currentTrack.IsValid()}, PtA=({currentTrack.PtA.easting:F2},{currentTrack.PtA.northing:F2}), PtB=({currentTrack.PtB.easting:F2},{currentTrack.PtB.northing:F2})");
 
-                        // NEW Phase 6.8: Calculate display data for OpenGL rendering
-                        CalculateGuidanceDisplayData(currentTrack, pivotAxlePos);
+                    if (currentTrack.IsValid())
+                    {
+                        System.Diagnostics.Debug.WriteLine($"  -> Track IS valid, building guidance...");
 
-                        // Update legacy flags for UI compatibility
-                        if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                        List<vec3> guidanceTrack = null;
+
+                        // TEMP Phase 6.8: For curves, use old CABCurve logic until we migrate to GuidanceService
+                        // For AB lines, use new TrackService
+                        if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
                         {
-                            ABLine.isABValid = guidanceResult.IsValid;
-                            curve.isCurveValid = false;
+                            // TEMP: Ensure old trk.gArr/idx are synced with new _trackService
+                            // This is needed because curve.BuildCurveCurrentList uses mf.trk.gArr[mf.trk.idx]
+                            #pragma warning disable CS0618 // Type or member is obsolete
+                            int currentIdx = _trackService.GetCurrentTrackIndex();
+                            if (currentIdx >= 0 && currentIdx < trk.gArr.Count && trk.idx != currentIdx)
+                            {
+                                trk.idx = currentIdx;
+                            }
+                            #pragma warning restore CS0618
+
+                            // Use old curve logic (finds closest point, calculates offset, builds current list)
+                            curve.BuildCurveCurrentList(pivotAxlePos);
+                            guidanceTrack = curve.curList;
+                            System.Diagnostics.Debug.WriteLine($"  -> Using curve.curList ({guidanceTrack?.Count ?? 0} points)");
                         }
                         else
                         {
-                            curve.isCurveValid = guidanceResult.IsValid;
+                            // Use new AB line logic
+                            guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
+                            System.Diagnostics.Debug.WriteLine($"  -> BuildGuidanceTrack returned: {(guidanceTrack != null ? guidanceTrack.Count + " points" : "NULL")}");
+                        }
+
+                        if (guidanceTrack != null && guidanceTrack.Count >= 2)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"  -> Calling UpdateGuidance with guidanceTrack ({guidanceTrack.Count} pts)");
+                            // Calculate guidance (cross-track error, steering angle)
+                            var guidanceResult = UpdateGuidance(steerAxlePos, guidanceTrack);
+                            System.Diagnostics.Debug.WriteLine($"  -> UpdateGuidance completed, now calling CalculateGuidanceDisplayData with guidanceTrack ({guidanceTrack.Count} pts)");
+
+                            // NEW Phase 6.8: Update display data with guidance track (for curve offset rendering)
+                            CalculateGuidanceDisplayData(currentTrack, pivotAxlePos, guidanceTrack);
+                            System.Diagnostics.Debug.WriteLine($"  -> CalculateGuidanceDisplayData completed");
+
+                            // Update legacy flags for UI compatibility
+                            if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
+                            {
+                                ABLine.isABValid = guidanceResult.IsValid;
+                                curve.isCurveValid = false;
+                            }
+                            else
+                            {
+                                curve.isCurveValid = guidanceResult.IsValid;
+                                ABLine.isABValid = false;
+                            }
+                        }
+                        else
+                        {
+                            // BuildGuidanceTrack failed - clear flags
                             ABLine.isABValid = false;
+                            curve.isCurveValid = false;
                         }
                     }
                     else
                     {
-                        // Invalid track - clear flags
+                        // Track not valid yet - clear flags
+                        System.Diagnostics.Debug.WriteLine($"  -> Track NOT valid (IsValid=false), skipping BuildGuidanceTrack");
+
+                        // NEW Phase 6.8: Calculate display data with reference points only (no guidanceTrack)
+                        // This shows at least the reference points even if CurvePts not built yet
+                        CalculateGuidanceDisplayData(currentTrack, pivotAxlePos, null);
+
                         ABLine.isABValid = false;
                         curve.isCurveValid = false;
                     }
+                }
+                else
+                {
+                    // No track - clear display data
+                    currentGuidanceDisplay = GuidanceDisplayData.Empty();
+                }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"ERROR in Position guidance loop: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"Stack: {ex.StackTrace}");
                 }
             }
 

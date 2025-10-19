@@ -226,6 +226,26 @@ namespace AgOpenGPS
                 _trackService.AddTrack(track);
             }
             _trackService.SetCurrentTrackIndex(-1);  // No track selected
+
+            // TEMP Phase 6.8: Also sync old trk.gArr for legacy curve code compatibility
+            #pragma warning disable CS0618 // Type or member is obsolete
+            trk.gArr.Clear();
+            foreach (var track in tracks)
+            {
+                // Convert Track → CTrk for legacy compatibility
+                var ctrk = new CTrk();
+                ctrk.mode = (TrackMode)(int)track.Mode;
+                ctrk.ptA = track.PtA;
+                ctrk.ptB = track.PtB;
+                ctrk.heading = track.Heading;
+                ctrk.nudgeDistance = track.NudgeDistance;
+                ctrk.name = track.Name;
+                ctrk.isVisible = track.IsVisible;
+                ctrk.curvePts = track.CurvePts ?? new List<vec3>();
+                trk.gArr.Add(ctrk);
+            }
+            trk.idx = -1;
+            #pragma warning restore CS0618
         }
 
         // Create Field.txt for a new field session.

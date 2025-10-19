@@ -2027,11 +2027,14 @@ namespace AgOpenGPS
         private void DrawTrackGuidance()
         {
             var track = _trackService.GetCurrentTrack();
-            if (track == null || !track.IsValid()) return;
+            if (track == null) return;
 
             var display = currentGuidanceDisplay;
             int lineWidth = display.LineWidth;
 
+            System.Diagnostics.Debug.WriteLine($"DrawTrackGuidance: track={track.Name}, mode={track.Mode}, CurvePoints={(display.CurvePoints != null ? display.CurvePoints.Count.ToString() : "null")} pts");
+
+            // Draw even if track.IsValid() is false - we want to see the reference points at least
             if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
                 // ========== AB LINE RENDERING ==========
@@ -2160,6 +2163,8 @@ namespace AgOpenGPS
             else if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && display.CurvePoints != null && display.CurvePoints.Count > 1)
             {
                 // ========== CURVE RENDERING ==========
+                System.Diagnostics.Debug.WriteLine($"DrawTrackGuidance: Drawing curve with {display.CurvePoints.Count} points");
+
                 // Draw the curve line
                 GL.LineWidth(lineWidth);
                 GL.Color3(0.95f, 0.2f, 0.50f);

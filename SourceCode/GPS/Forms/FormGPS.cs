@@ -916,21 +916,33 @@ namespace AgOpenGPS
         /// </summary>
         /// <param name="track">Current active track</param>
         /// <param name="pivot">Current pivot position</param>
-        public void CalculateGuidanceDisplayData(AgOpenGPS.Core.Models.Guidance.Track track, vec3 pivot)
+        /// <param name="guidanceTrack">Calculated guidance track from BuildGuidanceTrack (for curve rendering)</param>
+        public void CalculateGuidanceDisplayData(AgOpenGPS.Core.Models.Guidance.Track track, vec3 pivot, List<vec3> guidanceTrack = null)
         {
-            if (track == null || !track.IsValid())
+            System.Diagnostics.Debug.WriteLine($"CalculateGuidanceDisplayData ENTRY: track={(track != null ? track.Name : "null")}, pivot=({pivot.easting:F2},{pivot.northing:F2})");
+
+            if (track == null)
             {
+                System.Diagnostics.Debug.WriteLine("  -> Track is NULL, clearing display data");
                 currentGuidanceDisplay = GuidanceDisplayData.Empty();
                 return;
             }
 
-            const double abLength = 2000; // Extended line length
-            double widthMinusOverlap = tool.width - tool.overlap;
+            // Don't check IsValid() - we want to show reference points even if CurvePts not built yet
+            // if (!track.IsValid()) { ... }
 
-            // Start with track reference points
-            currentGuidanceDisplay.RefPtA = track.PtA;
-            currentGuidanceDisplay.RefPtB = track.PtB;
-            currentGuidanceDisplay.Heading = track.Heading;
+            try
+            {
+                const double abLength = 2000; // Extended line length
+                double widthMinusOverlap = tool.width - tool.overlap;
+
+                // Start with track reference points
+                currentGuidanceDisplay.RefPtA = track.PtA;
+                currentGuidanceDisplay.RefPtB = track.PtB;
+                currentGuidanceDisplay.Heading = track.Heading;
+
+                // DEBUG: Log track data to help diagnose rendering issues
+                System.Diagnostics.Debug.WriteLine($"CalculateGuidanceDisplayData: Track={track.Name}, Mode={track.Mode}, PtA=({track.PtA.easting:F2},{track.PtA.northing:F2}), PtB=({track.PtB.easting:F2},{track.PtB.northing:F2})");
 
             // Calculate extended endpoints
             currentGuidanceDisplay.RefEndPtA = new vec2(
@@ -990,9 +1002,25 @@ namespace AgOpenGPS
             currentGuidanceDisplay.NumGuideLines = Properties.Settings.Default.setAS_numGuideLines;
 
             // Curve points (for curve mode)
-            if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && track.CurvePts != null)
+            if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
             {
-                currentGuidanceDisplay.CurvePoints = new List<vec3>(track.CurvePts);
+                // Use the guidance track (offset curve from BuildGuidanceTrack) if available
+                // Otherwise fall back to reference curve points
+                if (guidanceTrack != null && guidanceTrack.Count > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"  -> Using guidanceTrack for curve ({guidanceTrack.Count} points)");
+                    currentGuidanceDisplay.CurvePoints = guidanceTrack;
+                }
+                else if (track.CurvePts != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"  -> Using reference track.CurvePts ({track.CurvePts.Count} points) - guidanceTrack={(guidanceTrack != null ? guidanceTrack.Count.ToString() : "null")}");
+                    currentGuidanceDisplay.CurvePoints = new List<vec3>(track.CurvePts);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"  -> No curve points available!");
+                    currentGuidanceDisplay.CurvePoints = new List<vec3>();
+                }
             }
             else
             {
@@ -1016,6 +1044,13 @@ namespace AgOpenGPS
                 }
             }
             #pragma warning restore CS0618
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ERROR in CalculateGuidanceDisplayData: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack: {ex.StackTrace}");
+                currentGuidanceDisplay = GuidanceDisplayData.Empty();
+            }
         }
 
         //request a new job

@@ -75,7 +75,6 @@ namespace AgOpenGPS
         public async void BuildCurveCurrentList(vec3 pivot)
         {
             double minDistA = 1000000, minDistB;
-
             //move the ABLine over based on the overlap amount set in vehicle
             double widthMinusOverlap = mf.tool.width - mf.tool.overlap;
 
