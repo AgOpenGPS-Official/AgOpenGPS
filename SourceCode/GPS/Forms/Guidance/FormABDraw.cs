@@ -60,19 +60,8 @@ namespace AgOpenGPS
 
             foreach (var item in mf._trackService.GetAllTracks())
             {
-                // Convert Track to CTrk for temporary backup
-                var oldTrack = new CTrk
-                {
-                    mode = (TrackMode)item.Mode,
-                    name = item.Name,
-                    ptA = item.PtA,
-                    ptB = item.PtB,
-                    heading = item.Heading,
-                    curvePts = item.CurvePts,
-                    nudgeDistance = item.NudgeDistance,
-                    isVisible = item.IsVisible
-                };
-                gTemp.Add(oldTrack);
+                // Use Track.Clone() for temporary backup
+                gTemp.Add(item.Clone());
             }
 
             //nudDistance.Value = (decimal)Math.Round(((mf.tool.width * mf.m2InchOrCm) * 0.5), 0); //
@@ -407,12 +396,13 @@ namespace AgOpenGPS
                 }
 
 
-                gTemp.Add(new CTrk());
+                var newTrack = new AgOpenGPS.Core.Models.Guidance.Track();
+                gTemp.Add(newTrack);
                 //array number is 1 less since it starts at zero
                 indx = gTemp.Count - 1;
 
-                gTemp[indx].PtA = new vec2(mf.curve.desList[0].easting, mf.curve.desList[0].northing);
-                gTemp[indx].PtB = new vec2(mf.curve.desList[mf.curve.desList.Count - 1].easting, mf.curve.desList[mf.curve.desList.Count - 1].northing);
+                newTrack.PtA = new vec2(mf.curve.desList[0].easting, mf.curve.desList[0].northing);
+                newTrack.PtB = new vec2(mf.curve.desList[mf.curve.desList.Count - 1].easting, mf.curve.desList[mf.curve.desList.Count - 1].northing);
 
                 pt3 = new vec3(mf.curve.desList[0]);
                 mf.curve.desList.Add(pt3);
@@ -433,7 +423,7 @@ namespace AgOpenGPS
                     if (q > 0) gTemp[indx].Name = "Inner Boundary Curve " + q.ToString();
 
                     gTemp[indx].Heading = 0;
-                    gTemp[indx].Mode = TrackMode.bndCurve;
+                    gTemp[indx].Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.BoundaryCurve;
 
                     //write out the Curve Points
                     foreach (vec3 item in mf.curve.desList)
@@ -497,13 +487,14 @@ namespace AgOpenGPS
                 }
             }
 
-            gTemp.Add(new CTrk());
+            var newTrack = new AgOpenGPS.Core.Models.Guidance.Track();
+            gTemp.Add(newTrack);
             //array number is 1 less since it starts at zero
             indx = gTemp.Count - 1;
 
-            gTemp[indx].PtA =
+            newTrack.PtA =
                 new vec2(mf.curve.desList[0].easting, mf.curve.desList[0].northing);
-            gTemp[indx].PtB =
+            newTrack.PtB =
                 new vec2(mf.curve.desList[mf.curve.desList.Count - 1].easting,
                 mf.curve.desList[mf.curve.desList.Count - 1].northing);
 
@@ -540,7 +531,7 @@ namespace AgOpenGPS
                     (Math.Round(glm.toDegrees(gTemp[indx].Heading), 1)).ToString(CultureInfo.InvariantCulture)
                     + "\u00B0";
 
-                gTemp[indx].Mode = TrackMode.Curve;
+                gTemp[indx].Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.Curve;
 
                 //write out the Curve Points
                 foreach (vec3 item in mf.curve.desList)
@@ -586,19 +577,22 @@ namespace AgOpenGPS
                 mf.bnd.bndList[bndSelect].fenceLine[end].northing - mf.bnd.bndList[bndSelect].fenceLine[start].northing);
             if (abHead < 0) abHead += glm.twoPI;
 
-            gTemp.Add(new CTrk());
+            var newTrack = new AgOpenGPS.Core.Models.Guidance.Track();
+            gTemp.Add(newTrack);
 
             indx = gTemp.Count - 1;
 
-            gTemp[indx].Heading = abHead;
-            gTemp[indx].Mode = TrackMode.AB;
+            newTrack.Heading = abHead;
+            newTrack.Mode = AgOpenGPS.Core.Models.Guidance.TrackMode.AB;
 
             //calculate the new points for the reference line and points
-            gTemp[indx].PtA.easting = mf.bnd.bndList[bndSelect].fenceLine[start].easting;
-            gTemp[indx].PtA.northing = mf.bnd.bndList[bndSelect].fenceLine[start].northing;
+            newTrack.PtA = new vec2(
+                mf.bnd.bndList[bndSelect].fenceLine[start].easting,
+                mf.bnd.bndList[bndSelect].fenceLine[start].northing);
 
-            gTemp[indx].PtB.easting = mf.bnd.bndList[bndSelect].fenceLine[end].easting;
-            gTemp[indx].PtB.northing = mf.bnd.bndList[bndSelect].fenceLine[end].northing;
+            newTrack.PtB = new vec2(
+                mf.bnd.bndList[bndSelect].fenceLine[end].easting,
+                mf.bnd.bndList[bndSelect].fenceLine[end].northing);
 
             //create a name
             gTemp[indx].Name = "AB " +
@@ -805,12 +799,12 @@ namespace AgOpenGPS
 
                 }
 
-                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == TrackMode.bndCurve)
+                else if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve || gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.BoundaryCurve)
                 {
                     GL.Enable(EnableCap.LineStipple);
                     GL.LineWidth(5);
 
-                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.LineStipple(1, 0x0007);
+                    if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.BoundaryCurve) GL.LineStipple(1, 0x0007);
                     else GL.LineStipple(1, 0x0707);
 
 
@@ -821,7 +815,7 @@ namespace AgOpenGPS
                     }
 
                     GL.Color3(0.30f, 0.97f, 0.30f);
-                    if (gTemp[i].Mode == TrackMode.bndCurve) GL.Color3(0.70f, 0.5f, 0.2f);
+                    if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.BoundaryCurve) GL.Color3(0.70f, 0.5f, 0.2f);
                     GL.Begin(PrimitiveType.LineStrip);
                     foreach (vec3 pts in gTemp[i].CurvePts)
                     {
@@ -880,7 +874,7 @@ namespace AgOpenGPS
             btnMakeBoundaryCurve.Enabled = true;
             for (int i = 0; i < gTemp.Count; i++)
             {
-                if (gTemp[i].Mode == TrackMode.bndCurve)
+                if (gTemp[i].Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.BoundaryCurve)
                 {
                     btnMakeBoundaryCurve.Enabled = false;
                     break;

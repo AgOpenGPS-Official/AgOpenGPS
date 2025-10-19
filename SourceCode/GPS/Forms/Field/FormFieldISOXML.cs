@@ -287,22 +287,10 @@ namespace AgOpenGPS
                 mf.bnd.bndList[0].hdLine.AddRange(headland);
             }
 
-            List<CTrk> guidanceLines = importer.GetGuidanceLines();
-            // NEW Phase 6.5: Convert CTrk to Track and add via _trackService
-            foreach (var oldTrack in guidanceLines)
+            List<Track> guidanceLines = importer.GetGuidanceLines();
+            // Add tracks directly via _trackService (already Track type from importer)
+            foreach (var track in guidanceLines)
             {
-                var track = new Track
-                {
-                    Id = System.Guid.NewGuid(),
-                    Name = oldTrack.name,
-                    Mode = (Core.Models.Guidance.TrackMode)oldTrack.mode,  // Explicit namespace for TrackMode
-                    PtA = oldTrack.ptA,
-                    PtB = oldTrack.ptB,
-                    NudgeDistance = oldTrack.nudgeDistance,
-                    IsVisible = oldTrack.isVisible,
-                    Heading = oldTrack.heading,
-                    CurvePts = oldTrack.curvePts
-                };
                 mf._trackService.AddTrack(track);
             }
 
