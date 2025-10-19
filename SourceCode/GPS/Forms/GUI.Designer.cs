@@ -188,8 +188,10 @@ namespace AgOpenGPS
                             break;
 
                         case 2:
-                            if (trk.idx > -1)
-                                lblCurrentField.Text = "Line: " + trk.gArr[trk.idx].name;
+                            // NEW Phase 6.5: Use _trackService instead of trk.idx/trk.gArr
+                            var currentTrack = _trackService.GetCurrentTrack();
+                            if (currentTrack != null)
+                                lblCurrentField.Text = "Line: " + currentTrack.Name;
                             else
                                 lblCurrentField.Text = "Line: " + gStr.gsNoGuidanceLines;
                             break;
@@ -333,7 +335,8 @@ namespace AgOpenGPS
                 //the main formgps windows
 
                 //Make sure it is off when it should
-                if (!ct.isContourBtnOn && trk.idx == -1 && isBtnAutoSteerOn)
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                if (!ct.isContourBtnOn && _trackService.GetCurrentTrack() == null && isBtnAutoSteerOn)
                 {
                     btnAutoSteer.PerformClick();
                     TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsNoGuidanceLines);
@@ -780,15 +783,15 @@ namespace AgOpenGPS
 
                 bool istram = (tram.tramList.Count + tram.tramBndOuterArr.Count) > 0;
 
-                for (int i = 0; i < trk.gArr.Count; i++)
-                {
-                    tracksTotal++;
-                    if (trk.gArr[i].isVisible) tracksVisible++;
-                }
+                // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                var allTracks = _trackService.GetAllTracks();
+                tracksTotal = allTracks.Count;
+                tracksVisible = allTracks.Count(t => t.IsVisible);
 
                 btnContourLock.Visible = ct.isContourBtnOn;
 
-                if (trk.idx > -1 || ct.isContourBtnOn)
+                // NEW Phase 6.5: Use _trackService instead of trk.idx
+                if (_trackService.GetCurrentTrack() != null || ct.isContourBtnOn)
                     btnAutoSteer.Enabled = true;
                 else
                 {
@@ -801,16 +804,19 @@ namespace AgOpenGPS
                     btnAutoSteer.Enabled = false;
                 }
 
-                btnAutoYouTurn.Visible = trk.idx > -1 && !ct.isContourBtnOn && isBnd;
-                btnCycleLines.Visible = tracksVisible > 1 && trk.idx > -1 && !ct.isContourBtnOn;
-                btnCycleLinesBk.Visible = tracksVisible > 1 && trk.idx > -1 && !ct.isContourBtnOn;
+                // NEW Phase 6.5: All button visibility checks use GetCurrentTrack() != null
+                bool hasCurrentTrack = _trackService.GetCurrentTrack() != null;
 
-                cboxpRowWidth.Visible = trk.idx > -1;
-                btnYouSkipEnable.Visible = trk.idx > -1;
+                btnAutoYouTurn.Visible = hasCurrentTrack && !ct.isContourBtnOn && isBnd;
+                btnCycleLines.Visible = tracksVisible > 1 && hasCurrentTrack && !ct.isContourBtnOn;
+                btnCycleLinesBk.Visible = tracksVisible > 1 && hasCurrentTrack && !ct.isContourBtnOn;
 
-                btnSnapToPivot.Visible = trk.idx > -1 && isNudgeOn;
-                btnAdjLeft.Visible = trk.idx > -1 && isNudgeOn;
-                btnAdjRight.Visible = trk.idx > -1 && isNudgeOn;
+                cboxpRowWidth.Visible = hasCurrentTrack;
+                btnYouSkipEnable.Visible = hasCurrentTrack;
+
+                btnSnapToPivot.Visible = hasCurrentTrack && isNudgeOn;
+                btnAdjLeft.Visible = hasCurrentTrack && isNudgeOn;
+                btnAdjRight.Visible = hasCurrentTrack && isNudgeOn;
 
                 btnTramDisplayMode.Visible = istram;
                 btnHeadlandOnOff.Visible = isHdl;
@@ -822,12 +828,14 @@ namespace AgOpenGPS
 
                 //btnResetToolHeading.Visible = this.Width > 1190;
 
-                btnAutoTrack.Visible = tracksVisible > 1 && trk.idx > -1 && !ct.isContourBtnOn;
+                btnAutoTrack.Visible = tracksVisible > 1 && hasCurrentTrack && !ct.isContourBtnOn;
 
-                if (trk.idx > -1 && trk.gArr.Count > 0 && !ct.isContourBtnOn)
+                // NEW Phase 6.5: Track counter uses _trackService
+                if (hasCurrentTrack && allTracks.Count > 0 && !ct.isContourBtnOn)
                 {
                     lblNumCu.Visible = true;
-                    lblNumCu.Text = (trk.idx + 1).ToString() + "/" + trk.gArr.Count.ToString();
+                    int currentIndex = _trackService.GetCurrentTrackIndex();
+                    lblNumCu.Text = (currentIndex + 1).ToString() + "/" + allTracks.Count.ToString();
                 }
                 else
                 {
@@ -1197,7 +1205,8 @@ namespace AgOpenGPS
                     if (isBtnAutoSteerOn || yt.isYouTurnBtnOn)
                     {
                         //uturn and swap uturn direction
-                        if (point.Y < 150 && point.Y > 90 && (trk.idx > -1))
+                        // NEW Phase 6.5: Use _trackService instead of trk.idx
+                        if (point.Y < 150 && point.Y > 90 && (_trackService.GetCurrentTrack() != null))
                         {
 
                             int middle = oglMain.Width / 2 + oglMain.Width / 5;
@@ -1273,7 +1282,8 @@ namespace AgOpenGPS
                         }
 
                         //lateral
-                        if (point.Y < 240 && point.Y > 170 && (trk.idx > -1))
+                        // NEW Phase 6.5: Use _trackService instead of trk.idx
+                        if (point.Y < 240 && point.Y > 170 && (_trackService.GetCurrentTrack() != null))
                         {
                             int middle = oglMain.Width / 2 - oglMain.Width / 4;
                             if (point.X > middle - 100 && point.X < middle && isLateralOn)
