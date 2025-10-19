@@ -1912,9 +1912,10 @@ namespace AgOpenGPS
                         patchSaveList?.Clear();
 
                         //delete all worked Lanes too
-                        foreach (CTrk TrackItem in trk.gArr)
+                        // NEW Phase 6.5: Use _trackService instead of trk.gArr
+                        foreach (var track in _trackService.GetAllTracks())
                         {
-                            TrackItem.workedTracks.Clear();
+                            track.WorkedTracks.Clear();
                         }
 
                         FileCreateContour();
