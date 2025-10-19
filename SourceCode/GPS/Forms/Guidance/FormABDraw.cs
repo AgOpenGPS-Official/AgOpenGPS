@@ -519,8 +519,8 @@ namespace AgOpenGPS
 
                 foreach (vec3 pt in mf.curve.desList)
                 {
-                    x += Math.Cos(pt.Heading);
-                    y += Math.Sin(pt.Heading);
+                    x += Math.Cos(pt.heading);
+                    y += Math.Sin(pt.heading);
                 }
                 x /= mf.curve.desList.Count;
                 y /= mf.curve.desList.Count;
@@ -909,8 +909,8 @@ namespace AgOpenGPS
                 for (int i = 1; i < 50; i++)
                 {
                     vec3 pt = new vec3(start);
-                    pt.easting -= (Math.Sin(pt.Heading) * i);
-                    pt.northing -= (Math.Cos(pt.Heading) * i);
+                    pt.easting -= (Math.Sin(pt.heading) * i);
+                    pt.northing -= (Math.Cos(pt.heading) * i);
                     gTemp[indx].CurvePts.Insert(0, pt);
                 }
             }
@@ -925,8 +925,8 @@ namespace AgOpenGPS
                 for (int i = 1; i < 50; i++)
                 {
                     vec3 pt = new vec3(gTemp[indx].CurvePts[ptCnt]);
-                    pt.easting += (Math.Sin(pt.Heading) * i);
-                    pt.northing += (Math.Cos(pt.Heading) * i);
+                    pt.easting += (Math.Sin(pt.heading) * i);
+                    pt.northing += (Math.Cos(pt.heading) * i);
                     gTemp[indx].CurvePts.Add(pt);
                 }
             }

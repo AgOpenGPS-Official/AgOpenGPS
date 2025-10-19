@@ -383,24 +383,24 @@ namespace AgOpenGPS
         {
             List<vec2> tramRef = new List<vec2>();
 
-            double abHeading = gTemp[indx].heading;
+            double abHeading = gTemp[indx].Heading;
 
             double hsin = Math.Sin(abHeading);
             double hcos = Math.Cos(abHeading);
 
-            gTemp[indx].endPtA.easting = gTemp[indx].ptA.easting - (Math.Sin(abHeading) * mf.maxFieldDistance);
-            gTemp[indx].endPtA.northing = gTemp[indx].ptA.northing - (Math.Cos(abHeading) * mf.maxFieldDistance);
+            gTemp[indx].EndPtA.easting = gTemp[indx].PtA.easting - (Math.Sin(abHeading) * mf.maxFieldDistance);
+            gTemp[indx].EndPtA.northing = gTemp[indx].PtA.northing - (Math.Cos(abHeading) * mf.maxFieldDistance);
 
-            gTemp[indx].endPtB.easting = gTemp[indx].ptB.easting + (Math.Sin(abHeading) * mf.maxFieldDistance);
-            gTemp[indx].endPtB.northing = gTemp[indx].ptB.northing + (Math.Cos(abHeading) * mf.maxFieldDistance);
+            gTemp[indx].EndPtB.easting = gTemp[indx].PtB.easting + (Math.Sin(abHeading) * mf.maxFieldDistance);
+            gTemp[indx].EndPtB.northing = gTemp[indx].PtB.northing + (Math.Cos(abHeading) * mf.maxFieldDistance);
 
-            double len = glm.Distance(gTemp[indx].endPtA, gTemp[indx].endPtB);
+            double len = glm.Distance(gTemp[indx].EndPtA, gTemp[indx].EndPtB);
             //divide up the AB line into segments
             vec2 P1 = new vec2();
             for (int i = 0; i < (int)len; i += 2)
             {
-                P1.easting = (hsin * i) + gTemp[indx].endPtA.easting;
-                P1.northing = (hcos * i) + gTemp[indx].endPtA.northing;
+                P1.easting = (hsin * i) + gTemp[indx].EndPtA.easting;
+                P1.northing = (hcos * i) + gTemp[indx].EndPtA.northing;
                 tramRef.Add(P1);
             }
 
@@ -737,8 +737,8 @@ namespace AgOpenGPS
 
                     GL.Begin(PrimitiveType.Lines);
 
-                    GL.Vertex3(gTemp[i].ptA.easting - (Math.Sin(gTemp[i].heading) * mf.ABLine.abLength), gTemp[i].ptA.northing - (Math.Cos(gTemp[i].heading) * mf.ABLine.abLength), 0);
-                    GL.Vertex3(gTemp[i].ptB.easting + (Math.Sin(gTemp[i].heading) * mf.ABLine.abLength), gTemp[i].ptB.northing + (Math.Cos(gTemp[i].heading) * mf.ABLine.abLength), 0);
+                    GL.Vertex3(gTemp[i].PtA.easting - (Math.Sin(gTemp[i].Heading) * mf.ABLine.abLength), gTemp[i].PtA.northing - (Math.Cos(gTemp[i].Heading) * mf.ABLine.abLength), 0);
+                    GL.Vertex3(gTemp[i].PtB.easting + (Math.Sin(gTemp[i].Heading) * mf.ABLine.abLength), gTemp[i].PtB.northing + (Math.Cos(gTemp[i].Heading) * mf.ABLine.abLength), 0);
 
                     GL.End();
 
@@ -996,10 +996,10 @@ namespace AgOpenGPS
             {
                 //calculate the point inside the boundary
                 pt3.easting = mf.bnd.bndList[0].fenceLine[i].easting -
-                    (Math.Sin(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * (mf.tram.tramWidth * 0.5 + mf.tram.halfWheelTrack));
+                    (Math.Sin(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].Heading) * (mf.tram.tramWidth * 0.5 + mf.tram.halfWheelTrack));
 
                 pt3.northing = mf.bnd.bndList[0].fenceLine[i].northing -
-                    (Math.Cos(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * (mf.tram.tramWidth * 0.5 + mf.tram.halfWheelTrack));
+                    (Math.Cos(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].Heading) * (mf.tram.tramWidth * 0.5 + mf.tram.halfWheelTrack));
 
                 bool Add = true;
 
@@ -1044,10 +1044,10 @@ namespace AgOpenGPS
             {
                 //calculate the point inside the boundary
                 pt3.easting = mf.bnd.bndList[0].fenceLine[i].easting -
-                    (Math.Sin(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * (mf.tram.tramWidth * 0.5 - mf.tram.halfWheelTrack));
+                    (Math.Sin(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].Heading) * (mf.tram.tramWidth * 0.5 - mf.tram.halfWheelTrack));
 
                 pt3.northing = mf.bnd.bndList[0].fenceLine[i].northing -
-                    (Math.Cos(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * (mf.tram.tramWidth * 0.5 - mf.tram.halfWheelTrack));
+                    (Math.Cos(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].Heading) * (mf.tram.tramWidth * 0.5 - mf.tram.halfWheelTrack));
 
                 bool Add = true;
 

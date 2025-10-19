@@ -189,11 +189,11 @@ namespace AgOpenGPS
                     Id = System.Guid.NewGuid(),
                     Name = item.Name,
                     Mode = (AgOpenGPS.Core.Models.Guidance.TrackMode)item.Mode,
-                    IsVisible = item.isVisible,
-                    NudgeDistance = item.nudgeDistance,
-                    PtA = item.ptA,
-                    PtB = item.ptB,
-                    Heading = item.heading,
+                    IsVisible = item.IsVisible,
+                    NudgeDistance = item.NudgeDistance,
+                    PtA = item.PtA,
+                    PtB = item.PtB,
+                    Heading = item.Heading,
                     CurvePts = new List<vec3>(item.CurvePts),
                     WorkedTracks = new HashSet<int>()
                 };
@@ -742,7 +742,7 @@ namespace AgOpenGPS
         {
             if (mf.curve.isMakingCurve)
             {
-                mf.curve.desList.Add(new vec3(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, mf.pivotAxlePos.heading));
+                mf.curve.desList.Add(new vec3(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, mf.pivotAxlePos.Heading));
                 btnBCurve.Enabled = mf.curve.desList.Count > 2;
                 if (mode == TrackMode.waterPivot)
                 {
@@ -804,8 +804,8 @@ namespace AgOpenGPS
                 double x = 0, y = 0;
                 foreach (vec3 pt in mf.curve.desList)
                 {
-                    x += Math.Cos(pt.heading);
-                    y += Math.Sin(pt.heading);
+                    x += Math.Cos(pt.Heading);
+                    y += Math.Sin(pt.Heading);
                 }
                 x /= mf.curve.desList.Count;
                 y /= mf.curve.desList.Count;
@@ -890,12 +890,12 @@ namespace AgOpenGPS
 
             mf.ABLine.desPtA = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
-            mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.pivotAxlePos.heading) * 1000);
-            mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.pivotAxlePos.heading) * 1000);
+            mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.pivotAxlePos.Heading) * 1000);
+            mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.pivotAxlePos.Heading) * 1000);
 
 
-            mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.heading) * 1000);
-            mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.heading) * 1000);
+            mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.Heading) * 1000);
+            mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.Heading) * 1000);
 
             btnBLine.Enabled = true;
             btnALine.Enabled = false;
@@ -965,16 +965,16 @@ namespace AgOpenGPS
 
             mf.ABLine.desPtA = new vec2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
 
-            mf.ABLine.desPtB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.heading) * 1);
-            mf.ABLine.desPtB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.heading) * 1);
+            mf.ABLine.desPtB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.Heading) * 1);
+            mf.ABLine.desPtB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.Heading) * 1);
 
-            mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.pivotAxlePos.heading) * 1000);
-            mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.pivotAxlePos.heading) * 1000);
+            mf.ABLine.desLineEndA.easting = mf.ABLine.desPtA.easting - (Math.Sin(mf.pivotAxlePos.Heading) * 1000);
+            mf.ABLine.desLineEndA.northing = mf.ABLine.desPtA.northing - (Math.Cos(mf.pivotAxlePos.Heading) * 1000);
 
-            mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.heading) * 1000);
-            mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.heading) * 1000);
+            mf.ABLine.desLineEndB.easting = mf.ABLine.desPtA.easting + (Math.Sin(mf.pivotAxlePos.Heading) * 1000);
+            mf.ABLine.desLineEndB.northing = mf.ABLine.desPtA.northing + (Math.Cos(mf.pivotAxlePos.Heading) * 1000);
 
-            mf.ABLine.desHeading = mf.pivotAxlePos.heading;
+            mf.ABLine.desHeading = mf.pivotAxlePos.Heading;
 
             btnEnter_AB.Enabled = true;
             nudHeading.Enabled = true;
@@ -1170,8 +1170,8 @@ namespace AgOpenGPS
                         double x = 0, y = 0;
                         foreach (vec3 pt in mf.curve.desList)
                         {
-                            x += Math.Cos(pt.heading);
-                            y += Math.Sin(pt.heading);
+                            x += Math.Cos(pt.Heading);
+                            y += Math.Sin(pt.Heading);
                         }
                         x /= mf.curve.desList.Count;
                         y /= mf.curve.desList.Count;
@@ -1589,14 +1589,14 @@ namespace AgOpenGPS
             {
                 arr[s].easting = mf.curve.desList[s].easting;
                 arr[s].northing = mf.curve.desList[s].northing;
-                arr[s].heading = mf.curve.desList[s].heading;
+                arr[s].Heading = mf.curve.desList[s].Heading;
             }
 
             for (int s = cnt - (smPts / 2); s < cnt; s++)
             {
                 arr[s].easting = mf.curve.desList[s].easting;
                 arr[s].northing = mf.curve.desList[s].northing;
-                arr[s].heading = mf.curve.desList[s].heading;
+                arr[s].Heading = mf.curve.desList[s].Heading;
             }
 
             //average them - center weighted average
@@ -1609,7 +1609,7 @@ namespace AgOpenGPS
                 }
                 arr[i].easting /= smPts;
                 arr[i].northing /= smPts;
-                arr[i].heading = mf.curve.desList[i].heading;
+                arr[i].Heading = mf.curve.desList[i].Heading;
             }
 
             //make a list to draw
