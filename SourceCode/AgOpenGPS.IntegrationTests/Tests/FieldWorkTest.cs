@@ -55,52 +55,68 @@ namespace AgOpenGPS.IntegrationTests.Tests
             // Field dimensions
             double fieldWidth = 50;  // meters
             double fieldLength = 100; // meters
+            double implementWidth = 5.0; // 5m implement width
 
-            // Start at the field corner (left edge, south end) for full coverage
-            double startEasting = -fieldWidth / 2.0 + 3.0; // 3m from left edge
+            // AB line at field edge (left boundary)
+            double abLineX = -fieldWidth / 2.0;
+
+            // Start on first track, half implement width to the right of AB line
+            double startEasting = abLineX + (implementWidth / 2.0);
             double startNorthing = -fieldLength / 2.0 + 5.0; // 5m from south edge
 
             // Setup field and track using shared helper
             var (fieldController, simController, autosteerController) = SetupBasicField(
                 fieldName: "FieldWorkTest",
                 fieldSize: (fieldWidth, fieldLength),
-                trackX: startEasting,
-                tractorStart: (startEasting, startNorthing)
+                trackX: abLineX,  // AB line at left edge
+                tractorStart: (startEasting, startNorthing)  // Tractor on first track
             );
 
             Console.WriteLine("Additional setup for field work:");
 
-            // Configure implement (5m width, single section for testing)
+            // Start a job - CRITICAL for section control to work!
             var formGPS = orchestrator.GetFormGPS();
-            formGPS.tool.width = 5.0; // 5m implement width
+            formGPS.JobNew();
+            Console.WriteLine($"6. Job started (isJobStarted = {formGPS.isJobStarted})");
+
+            // Configure implement (5m width, single section for testing)
+            formGPS.tool.width = implementWidth;
             formGPS.tool.numOfSections = 1;
             formGPS.tool.overlap = 0.2; // 20cm overlap
-            Console.WriteLine($"6. Implement configured: {formGPS.tool.width}m width");
+
+            // CRITICAL: Also set section widths to match tool width
+            for (int i = 0; i < formGPS.tool.numOfSections; i++)
+            {
+                formGPS.section[i].sectionWidth = implementWidth;
+            }
+            Console.WriteLine($"7. Implement configured: {formGPS.tool.width}m width, section[0].width={formGPS.section[0].sectionWidth}m");
 
             // Enable U-turn with custom settings
             var uturnController = orchestrator.UTurnController;
             uturnController.Enable();
             uturnController.SetDistanceFromBoundary(2.5); // 2.5m trigger distance from edge
             formGPS.yt.youTurnRadius = 5.0; // 5m U-turn radius
-            Console.WriteLine("7. U-turn enabled (trigger at 2.5m, radius 5m)");
+            Console.WriteLine("8. U-turn enabled (trigger at 2.5m, radius 5m)");
 
-            // Enable track skipping (skip 1 track between passes)
+            // Enable track skipping
             formGPS.yt.skipMode = SkipMode.Alternative; // Enable alternating turns
-            formGPS.yt.rowSkipsWidth = 1; // Skip 1 track width
-            Console.WriteLine("8. Track skipping enabled (skip count: 1, alternating mode)");
+            formGPS.yt.rowSkipsWidth = 2; // Need at least 2 for alternating mode (skip 1 track)
+            formGPS.yt.Set_Alternate_skips(); // Initialize alternating skip state
+            formGPS.yt.previousBigSkip = false; // Start with small skip first
+            Console.WriteLine("9. Track skipping enabled (skip count: 1, alternating mode)");
 
             // Enable implement - turn master switch ON first, then individual sections
             formGPS.autoBtnState = btnStates.Auto; // Turn on auto section control
             for (int i = 0; i < FormGPS.MAXSECTIONS; i++)
             {
-                formGPS.section[i].isSectionOn = true;
+                formGPS.section[i].sectionBtnState = btnStates.On; // Set button state to ON
             }
-            Console.WriteLine($"9. Implement auto section control enabled ({FormGPS.MAXSECTIONS} sections)");
+            Console.WriteLine($"10. Implement auto section control enabled (all sections set to ON)");
 
             // Start path logging
             var pathLogger = orchestrator.PathLogger;
             pathLogger.StartLogging();
-            Console.WriteLine("10. Path logging started\n");
+            Console.WriteLine("11. Path logging started\n");
 
             // Step 9: Run simulation until tractor crosses field boundary
             Console.WriteLine("=== Starting Simulation ===");
