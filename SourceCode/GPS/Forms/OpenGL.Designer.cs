@@ -2278,32 +2278,25 @@ namespace AgOpenGPS
 
             double iconWidth = 20.0 * scale;
             double iconHeight = 20.0 * scale;
-            double spacing = 8.0 * scale;
+            double spacing = 15.0 * scale;
 
             double padH = 12.0 * scale;
             double padV = 8.0 * scale;
 
             // Build label in display units (metric = meters, imperial = inches)
-            // NOTE: bnd.HeadlandDistance is assumed to be meters internally.
             string label;
             if (bnd.HeadlandDistance.HasValue)
             {
                 double meters = bnd.HeadlandDistance.Value;
-                bool imperial = !isMetric;
 
-                // m -> inch = 39.3700787
-                double displayValue = imperial ? (meters * 39.3700787) : meters;
-
-                // Formatting: keep one decimal for meters, no decimals for inches
-                string fmt = imperial ? "0" : "0.0";
-                string unit = imperial ? " IN" : " m";
-
-                label = displayValue.ToString(fmt) + unit;
+                // Show feet (2 decimals) or meters (1 decimal)
+                label = Distance.MediumBigDistanceString(isMetric, meters, 0, 1);
             }
             else
             {
                 label = "--";
             }
+
             // Measure content
             double textWidth = label.Length * charWidth;
             double contentWidth = iconWidth + spacing + textWidth;
@@ -2458,7 +2451,7 @@ namespace AgOpenGPS
 
             // --- Text next to icon, vertically centered in the box ---
             double textX = iconX + iconWidth + spacing;
-            double textY = boxY + (boxHeight - textLineHeight) * 0.1;
+            double textY = boxY + (boxHeight - textLineHeight) - 4;
 
             if (bnd.HeadlandDistance.HasValue && bnd.HeadlandDistance.Value > 20.0)
                 GL.Color3(0.0f, 0.9f, 0.0f);

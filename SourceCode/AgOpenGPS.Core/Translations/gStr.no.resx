@@ -210,7 +210,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Auto Dual &lt;&gt; Fiks</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Bytt hastighet (km/t)</value>
+    <value>Bytt hastighet</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Bakgrunn</value>
@@ -915,7 +915,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Lagre og gå tilbake</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Tid for en øl! Ha det!</value>
+    <value>Vi ses neste gang!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Lagrer felt..</value>
@@ -1218,4 +1218,5 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsZoomIn" xml:space="preserve">
     <value>Zoom inn</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

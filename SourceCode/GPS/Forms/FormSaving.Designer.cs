@@ -80,7 +80,7 @@
             this.labelBeer.Name = "labelBeer";
             this.labelBeer.Size = new System.Drawing.Size(466, 37);
             this.labelBeer.TabIndex = 4;
-            this.labelBeer.Text = "✔ Time for a Beer! Goodbye!";
+            this.labelBeer.Text = "✔ See you next time!";
             this.labelBeer.Visible = false;
             // 
             // FormSaving

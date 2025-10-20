@@ -94,9 +94,9 @@ namespace AgOpenGPS
             label126.Text = Properties.Settings.Default.setTool_trailingToolToPivotLength.ToString();
             label128.Text = Properties.Settings.Default.setVehicle_hitchLength.ToString();
             label130.Text = Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead.ToString();
-            label132.Text = "*****";
+            label132.Text = "N/A";
             label134.Text = Properties.Settings.Default.setVehicle_isStanleyUsed.ToString();
-            label136.Text = "*****";
+            label136.Text = "N/A";
             label138.Text = Properties.Settings.Default.setVehicle_maxAngularVelocity.ToString();
             label140.Text = Properties.Settings.Default.set_youTurnRadius.ToString();
             label142.Text = Properties.Settings.Default.setVehicle_numSections.ToString();
@@ -120,6 +120,7 @@ namespace AgOpenGPS
 
             lblEastingField.Text = Math.Round(mf.pn.fix.easting, 2).ToString();
             lblNorthingField.Text = Math.Round(mf.pn.fix.northing, 2).ToString();
+            lblSemVer.Text = Program.SemVer;
 
             //lblLatitude.Text = mf.Latitude;
             //lblLongitude.Text = mf.Longitude;

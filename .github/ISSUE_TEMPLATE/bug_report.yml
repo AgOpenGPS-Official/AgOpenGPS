@@ -1,0 +1,105 @@
+﻿name: Bug Report
+description: Report a bug in a released version of AgOpenGPS
+title: ""
+labels: ["needs-triage"]
+type: "Bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this issue! Please provide as much detail as possible to help us fix it.
+
+  - type: input
+    id: version
+    attributes:
+      label: AgOpenGPS Version
+      description: Which version are you using? (Check Menu > About in the application)
+      placeholder: "e.g., v6.8.0, v7.0.1, develop[a1b2c3d]..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear description of what the bug is
+      placeholder: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Open AgOpenGPS...
+        2. Go to Settings...
+        3. Click on...
+        4. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: severity
+    attributes:
+      label: Severity and Impact
+      description: How severe is this bug and why?
+      placeholder: |
+        Describe the severity level and justify your assessment:
+        - Critical: Application crashes, data loss, or completely unusable
+        - High: Major feature is broken or severely impaired
+        - Medium: Minor feature issue or workaround exists
+        - Low: Cosmetic issue or very minor inconvenience
+
+        Example: "High - Auto-steer disengages randomly during operation, requiring constant manual intervention"
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: What OS are you running?
+      placeholder: "e.g., Windows 11, Windows 10, Ubuntu 24.04 with Wine..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware Setup
+      description: Describe your hardware configuration
+      placeholder: |
+        Setup type: (e.g., GPS receiver only, GPS + Section Control, GPS + Auto-steer, Full setup, Simulator, Other)
+        GPS receiver: (e.g., F9P, BNO085)
+        Connection type: (e.g., USB, Ethernet, UDP)
+        PCB board: (e.g., v4.1 Standard, v5.0)
+        Auto-steer motor: (if using auto-steer)
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Error messages, logs, screenshots, videos, field files, configuration files, etc.
+      placeholder: |
+        Copy and paste any error messages you see.
+        Log files can be found in the AgOpenGPS installation folder.
+
+        Add any other context that might help diagnose the issue:
+        - Screenshots or videos
+        - Field files (upload the field folder as a zip file from C:\Users\username\Documents\AgOpenGPS\Fields\)
+        - Configuration files
+      render: text
+    validations:
+      required: false

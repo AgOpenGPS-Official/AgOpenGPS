@@ -135,6 +135,9 @@
   <data name="gsAbout" xml:space="preserve">
     <value>O programie…</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Czynność anulowana</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresywność</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Pokaż wszystkie ustawienia</value>
   </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alfa</value>
@@ -198,7 +204,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Auto Dual &lt;&gt; Fix</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Prędkość przełączania (km/h)</value>
+    <value>Prędkość przełączania</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Tło</value>
@@ -319,6 +325,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   </data>
   <data name="gsCurrentTurnSensor" xml:space="preserve">
     <value>Czujnik skrętu</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Krzywa</value>
   </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Plik linii krzywej jest uszkodzony</value>
@@ -446,6 +455,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Dodatkowe Linie</value>
   </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Szybko</value>
+  </data>
   <data name="gsField" xml:space="preserve">
     <value>Pole</value>
   </data>
@@ -454,6 +466,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   </data>
   <data name="gsFieldIsOpen" xml:space="preserve">
     <value>Pole jest otwarte</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Manu pola</value>
   </data>
   <data name="gsFieldNotOpen" xml:space="preserve">
     <value>Pole zamknięte</value>
@@ -497,6 +512,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsFromKml" xml:space="preserve">
     <value>Z pliku KML</value>
   </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Przerwa</value>
+  </data>
   <data name="gsGrid" xml:space="preserve">
     <value>Siatka</value>
   </data>
@@ -526,6 +544,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   </data>
   <data name="gsHitchLength" xml:space="preserve">
     <value>Długość zaczepu</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Trzymaj</value>
   </data>
   <data name="gsHydraulicLift" xml:space="preserve">
     <value>Podnośnik hydr.</value>
@@ -562,6 +583,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   </data>
   <data name="gsInvertRelays" xml:space="preserve">
     <value>Odwróć przekaźniki</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Odwróć obrót</value>
   </data>
   <data name="gsInvertWas" xml:space="preserve">
     <value>Odwróć WAS</value>
@@ -674,6 +698,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsNew" xml:space="preserve">
     <value>Nowy z domyślnego</value>
   </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Następna linia nawigacyjna</value>
+  </data>
   <data name="gsNight" xml:space="preserve">
     <value>Noc</value>
   </data>
@@ -718,6 +745,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   </data>
   <data name="gsOnOff" xml:space="preserve">
     <value>On/Off</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Przeźroczystość:</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Otwórz</value>
@@ -843,7 +873,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Zapisz i wróć</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Czas na piwo! Do widzenia!</value>
+    <value>Do zobaczenia następnym razem!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Zapisywanie pola..</value>
@@ -950,6 +980,9 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
   <data name="gsStartNewField" xml:space="preserve">
     <value>Rozpocznij nowe pole</value>
   </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="gsSteerAngle" xml:space="preserve">
     <value>Kąt skrętu</value>
   </data>
@@ -985,6 +1018,9 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Do pliku</value>
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>Za szybko</value>
   </data>
   <data name="gsToolLeft" xml:space="preserve">
     <value>Narzędzie po lewej</value>
@@ -1097,40 +1133,5 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <data name="gsCurve" xml:space="preserve">
-    <value>Krzywa</value>
-  </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Pokaż wszystkie ustawienia</value>
-  </data>
-  <data name="gsFast" xml:space="preserve">
-    <value>Szybko</value>
-  </data>
-  <data name="gsAckermann" xml:space="preserve">
-    <value>Ackermann</value>
-  </data>
-  <data name="gsFieldMenu" xml:space="preserve">
-    <value>Manu pola</value>
-  </data>
-  <data name="gsGap" xml:space="preserve">
-    <value>Przerwa</value>
-  </data>
-  <data name="gsHold" xml:space="preserve">
-    <value>Trzymaj</value>
-  </data>
-  <data name="gsInvertRoll" xml:space="preserve">
-    <value>Odwróć obrót</value>
-  </data>
-  <data name="gsNextGuidanceLine" xml:space="preserve">
-    <value>Następna linia nawigacyjna</value>
-  </data>
-  <data name="gsOpacity" xml:space="preserve">
-    <value>Przeźroczystość:</value>
-  </data>
-  <data name="gsStatus" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="gsTooFast" xml:space="preserve">
-    <value>Za szybko</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

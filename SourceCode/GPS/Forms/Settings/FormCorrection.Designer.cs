@@ -276,7 +276,7 @@
             this.Name = "FormCorrection";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Roll Correction Graph";
+            this.Text = "Roll Correction Chart";
             this.Load += new System.EventHandler(this.FormSteerGraph_Load);
             ((System.ComponentModel.ISupportInitialize)(this.rollChart)).EndInit();
             this.ResumeLayout(false);

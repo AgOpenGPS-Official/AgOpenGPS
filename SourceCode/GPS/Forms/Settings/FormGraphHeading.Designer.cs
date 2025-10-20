@@ -254,7 +254,7 @@
             this.label4.Text = "0";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // FormHeadingGraph
+            // FormGraphHeading
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -271,10 +271,10 @@
             this.Controls.Add(this.rollChart);
             this.Controls.Add(this.unoChart);
             this.Location = new System.Drawing.Point(30, 30);
-            this.Name = "FormHeadingGraph";
+            this.Name = "FormGraphHeading";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Roll Correction Graph";
+            this.Text = "Heading Chart";
             this.Load += new System.EventHandler(this.FormSteerGraph_Load);
             ((System.ComponentModel.ISupportInitialize)(this.unoChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollChart)).EndInit();

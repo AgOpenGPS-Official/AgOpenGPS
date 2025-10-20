@@ -1,5 +1,6 @@
 ﻿//Please, if you use this, share the improvements
 
+using Accord.Math.Distances;
 using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Translations;
@@ -109,7 +110,7 @@ namespace AgOpenGPS
 
             //tabTSections_Enter(this, e);
             lblVehicleToolWidth.Text = Convert.ToString((int)(mf.tool.width * 100 * mf.cm2CmOrIn));
-            SectionFeetInchesTotalWidthLabelUpdate();
+            SectionFeetInchesTotalWidthLabelUpdate(mf.isMetric, mf.tool.width);
 
             tab1.SelectedTab = tabSummary;
             //Label translations
@@ -245,6 +246,7 @@ namespace AgOpenGPS
             labelGuideLinesOnOff.Text = gStr.gsExtraGuideLines;
             labelSectionLinesOnOff.Text = gStr.gsSectionLines;
             labelElevationOnOff.Text = gStr.gsElevationlog;
+            labelElevationOnOff.Text = gStr.gsElevationlog;
             unitsGroupBox.Text = gStr.gsUnits;
             cboxIsAutoSwitchDualFixOn.Text = gStr.gsAutoSwitchDualFix;
             labelAutoSwitchDualFixSpeed.Text = gStr.gsAutoSwitchDualFixSpeed;
@@ -359,7 +361,7 @@ namespace AgOpenGPS
 
         private void tabSummary_Enter(object sender, EventArgs e)
         {
-            SectionFeetInchesTotalWidthLabelUpdate();
+            SectionFeetInchesTotalWidthLabelUpdate(mf.isMetric, mf.tool.width);
             UpdateSummary();
         }
 

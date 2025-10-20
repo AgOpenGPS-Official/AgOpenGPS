@@ -156,6 +156,9 @@
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Érzékenység</value>
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Összes beállítás megtekintése</value>
+  </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Átlátszóság</value>
   </data>
@@ -205,6 +208,12 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
   </data>
   <data name="gsAutoSteerPort" xml:space="preserve">
     <value>Automata kormányzás portja</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Duál &lt;&gt; Fix</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Váltási sebesség</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Háttér</value>
@@ -771,6 +780,9 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
   <data name="gsOn" xml:space="preserve">
     <value>Be</value>
   </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>Be késleltetés</value>
+  </data>
   <data name="gsOnOff" xml:space="preserve">
     <value>Be/Ki</value>
   </data>
@@ -925,7 +937,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Mentés és visszatérés</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Itt az ideje egy sörnek! Viszlát!</value>
+    <value>Viszlát legközelebb!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Tábla mentése..</value>
@@ -1237,16 +1249,5 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Összes beállítás megtekintése</value>
-  </data>
-  <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value>Auto Duál &lt;&gt; Fix</value>
-  </data>
-  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Váltási sebesség (km/h)</value>
-  </data>
-  <data name="gsOnDelay" xml:space="preserve">
-    <value>Be késleltetés</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

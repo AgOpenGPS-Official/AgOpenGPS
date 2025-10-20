@@ -34,7 +34,7 @@
             this.lblSelectedField = new System.Windows.Forms.Label();
             this.progressBarDownloadAll = new System.Windows.Forms.ProgressBar();
             this.chkForceOverwrite = new System.Windows.Forms.CheckBox();
-            this.btnOpen = new System.Windows.Forms.Button();
+            this.btnGetSelected = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSaveAll = new System.Windows.Forms.Button();
             this.lblDownloading = new System.Windows.Forms.Label();
@@ -74,22 +74,24 @@
             this.glControl1.Size = new System.Drawing.Size(654, 567);
             this.glControl1.TabIndex = 3;
             this.glControl1.VSync = false;
-            // 
+            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
+            //
             // lblSelectedField
-            // 
-            this.lblSelectedField.AutoSize = true;
+            //
+            this.lblSelectedField.AutoEllipsis = true;
+            this.lblSelectedField.AutoSize = false;
             this.lblSelectedField.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSelectedField.Location = new System.Drawing.Point(12, 592);
             this.lblSelectedField.Name = "lblSelectedField";
-            this.lblSelectedField.Size = new System.Drawing.Size(170, 25);
+            this.lblSelectedField.Size = new System.Drawing.Size(460, 25);
             this.lblSelectedField.TabIndex = 5;
             this.lblSelectedField.Text = "Selected Field:";
             // 
             // progressBarDownloadAll
             // 
-            this.progressBarDownloadAll.Location = new System.Drawing.Point(614, 628);
+            this.progressBarDownloadAll.Location = new System.Drawing.Point(683, 628);
             this.progressBarDownloadAll.Name = "progressBarDownloadAll";
-            this.progressBarDownloadAll.Size = new System.Drawing.Size(387, 23);
+            this.progressBarDownloadAll.Size = new System.Drawing.Size(289, 23);
             this.progressBarDownloadAll.TabIndex = 7;
             // 
             // chkForceOverwrite
@@ -102,26 +104,33 @@
             this.chkForceOverwrite.FlatAppearance.BorderSize = 0;
             this.chkForceOverwrite.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightSalmon;
             this.chkForceOverwrite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkForceOverwrite.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkForceOverwrite.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkForceOverwrite.Image = global::AgOpenGPS.Properties.Resources.ForceOverwrite;
-            this.chkForceOverwrite.Location = new System.Drawing.Point(458, 595);
+            this.chkForceOverwrite.Location = new System.Drawing.Point(482, 585);
             this.chkForceOverwrite.Name = "chkForceOverwrite";
-            this.chkForceOverwrite.Size = new System.Drawing.Size(64, 64);
+            this.chkForceOverwrite.Size = new System.Drawing.Size(92, 105);
             this.chkForceOverwrite.TabIndex = 8;
+            this.chkForceOverwrite.Text = "Overwrite";
+            this.chkForceOverwrite.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.chkForceOverwrite.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.chkForceOverwrite.UseVisualStyleBackColor = false;
             // 
-            // btnOpen
+            // btnGetSelected
             // 
-            this.btnOpen.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnOpen.FlatAppearance.BorderSize = 0;
-            this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpen.Image = global::AgOpenGPS.Properties.Resources.DownloadAndUse;
-            this.btnOpen.Location = new System.Drawing.Point(1030, 598);
-            this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(64, 64);
-            this.btnOpen.TabIndex = 6;
-            this.btnOpen.UseVisualStyleBackColor = true;
-            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
+            this.btnGetSelected.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnGetSelected.FlatAppearance.BorderSize = 0;
+            this.btnGetSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGetSelected.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetSelected.Image = global::AgOpenGPS.Properties.Resources.DownloadAndUse;
+            this.btnGetSelected.Location = new System.Drawing.Point(978, 585);
+            this.btnGetSelected.Name = "btnGetSelected";
+            this.btnGetSelected.Size = new System.Drawing.Size(83, 105);
+            this.btnGetSelected.TabIndex = 6;
+            this.btnGetSelected.Text = "Get Selected";
+            this.btnGetSelected.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnGetSelected.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnGetSelected.UseVisualStyleBackColor = true;
+            this.btnGetSelected.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // btnClose
             // 
@@ -129,9 +138,9 @@
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnClose.Location = new System.Drawing.Point(1100, 598);
+            this.btnClose.Location = new System.Drawing.Point(1067, 596);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(64, 64);
+            this.btnClose.Size = new System.Drawing.Size(83, 84);
             this.btnClose.TabIndex = 4;
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -141,21 +150,25 @@
             this.btnSaveAll.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSaveAll.FlatAppearance.BorderSize = 0;
             this.btnSaveAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveAll.Image = global::AgOpenGPS.Properties.Resources.DownloadAll;
-            this.btnSaveAll.Location = new System.Drawing.Point(544, 592);
+            this.btnSaveAll.Location = new System.Drawing.Point(583, 585);
             this.btnSaveAll.Name = "btnSaveAll";
-            this.btnSaveAll.Size = new System.Drawing.Size(64, 64);
+            this.btnSaveAll.Size = new System.Drawing.Size(94, 105);
             this.btnSaveAll.TabIndex = 2;
+            this.btnSaveAll.Text = "Get All";
+            this.btnSaveAll.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSaveAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSaveAll.UseVisualStyleBackColor = true;
             this.btnSaveAll.Click += new System.EventHandler(this.BtnDownloadAll_Click);
             // 
             // lblDownloading
             // 
             this.lblDownloading.AutoSize = true;
-            this.lblDownloading.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDownloading.Location = new System.Drawing.Point(617, 592);
+            this.lblDownloading.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDownloading.Location = new System.Drawing.Point(678, 592);
             this.lblDownloading.Name = "lblDownloading";
-            this.lblDownloading.Size = new System.Drawing.Size(294, 25);
+            this.lblDownloading.Size = new System.Drawing.Size(259, 24);
             this.lblDownloading.TabIndex = 9;
             this.lblDownloading.Text = "Downloading...Please Wait";
             // 
@@ -166,12 +179,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.ClientSize = new System.Drawing.Size(1161, 663);
+            this.ClientSize = new System.Drawing.Size(1157, 693);
             this.ControlBox = false;
             this.Controls.Add(this.lblDownloading);
             this.Controls.Add(this.chkForceOverwrite);
             this.Controls.Add(this.progressBarDownloadAll);
-            this.Controls.Add(this.btnOpen);
+            this.Controls.Add(this.btnGetSelected);
             this.Controls.Add(this.lblSelectedField);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.glControl1);
@@ -199,7 +212,7 @@
         private OpenTK.GLControl glControl1;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblSelectedField;
-        private System.Windows.Forms.Button btnOpen;
+        private System.Windows.Forms.Button btnGetSelected;
         private System.Windows.Forms.ProgressBar progressBarDownloadAll;
         private System.Windows.Forms.CheckBox chkForceOverwrite;
         private System.Windows.Forms.Label lblDownloading;

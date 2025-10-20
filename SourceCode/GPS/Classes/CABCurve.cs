@@ -473,6 +473,13 @@ namespace AgOpenGPS
                 Log.EventWriter("Exception Build new offset curve" + e.ToString());
             }
 
+            // Resample to uniform spacing to prevent lookahead jumping
+            if (newCurList.Count > 2)
+            {
+                double targetSpacing = 1.0; // 1 meter uniform spacing
+                newCurList = ResampleCurveToUniformSpacing(newCurList, targetSpacing);
+            }
+
             return newCurList;
         }
 
@@ -1007,16 +1014,6 @@ namespace AgOpenGPS
                     for (int h = 0; h < curList.Count; h++) GL.Vertex3(curList[h].easting, curList[h].northing, 0);
                     GL.End();
 
-                    if (!mf.isStanleyUsed && mf.camera.camSetDistance > -200)
-                    {
-                        //Draw lookahead Point
-                        GL.PointSize(4.0f);
-                        GL.Begin(PrimitiveType.Points);
-                        GL.Color3(1.0f, 0.95f, 0.195f);
-                        GL.Vertex3(goalPointCu.easting, goalPointCu.northing, 0.0);
-                        GL.End();
-                    }
-
                     mf.yt.DrawYouTurn();
                 }
             }
@@ -1307,6 +1304,89 @@ namespace AgOpenGPS
             }
         }
 
+        // Resample curve points to uniform spacing to prevent lookahead jumping
+        private List<vec3> ResampleCurveToUniformSpacing(List<vec3> originalList, double targetSpacing)
+        {
+            if (originalList == null || originalList.Count < 2)
+                return originalList;
+
+            List<vec3> resampledList = new List<vec3>();
+
+            // Always add the first point
+            resampledList.Add(originalList[0]);
+
+            double accumulatedDistance = 0;
+            int sourceIndex = 1;
+
+            while (sourceIndex < originalList.Count)
+            {
+                double segmentLength = glm.Distance(originalList[sourceIndex - 1], originalList[sourceIndex]);
+
+                if (segmentLength < 0.001) // Skip duplicate points
+                {
+                    sourceIndex++;
+                    continue;
+                }
+
+                accumulatedDistance += segmentLength;
+
+                // Add points at uniform intervals
+                while (accumulatedDistance >= targetSpacing && sourceIndex < originalList.Count)
+                {
+                    // Calculate how far back we need to go on this segment
+                    double overshoot = accumulatedDistance - targetSpacing;
+                    double ratio = 1.0 - (overshoot / segmentLength);
+
+                    vec3 newPoint = new vec3(
+                        originalList[sourceIndex - 1].easting + ratio * (originalList[sourceIndex].easting - originalList[sourceIndex - 1].easting),
+                        originalList[sourceIndex - 1].northing + ratio * (originalList[sourceIndex].northing - originalList[sourceIndex - 1].northing),
+                        originalList[sourceIndex - 1].heading
+                    );
+
+                    resampledList.Add(newPoint);
+                    accumulatedDistance -= targetSpacing;
+                }
+
+                sourceIndex++;
+            }
+
+            // Always add the final point if we didn't generate enough samples
+            // This ensures short curves (< targetSpacing) remain valid with at least 2 points
+            if (resampledList.Count == 1)
+            {
+                resampledList.Add(originalList[originalList.Count - 1]);
+            }
+
+            // Recalculate headings for the resampled points
+            for (int i = 0; i < resampledList.Count - 1; i++)
+            {
+                double newHeading = Math.Atan2(
+                    resampledList[i + 1].easting - resampledList[i].easting,
+                    resampledList[i + 1].northing - resampledList[i].northing);
+
+                if (newHeading < 0)
+                    newHeading += glm.twoPI;
+
+                resampledList[i] = new vec3(
+                    resampledList[i].easting,
+                    resampledList[i].northing,
+                    newHeading
+                );
+            }
+
+            // Set last point heading same as previous
+            if (resampledList.Count > 1)
+            {
+                resampledList[resampledList.Count - 1] = new vec3(
+                    resampledList[resampledList.Count - 1].easting,
+                    resampledList[resampledList.Count - 1].northing,
+                    resampledList[resampledList.Count - 2].heading
+                );
+            }
+
+            return resampledList;
+        }
+
 
         //turning the visual line into the real reference line to use
         public void SaveSmoothList()
@@ -1421,12 +1501,13 @@ namespace AgOpenGPS
             double distSoFar = 0;
             vec3 start = curList[startIndex];
 
-            // Check all points' distances from the pivot inside the "look ahead"-distance and find the nearest
+            // First: search forward in the direction of travel
+            // This prevents jumping backwards to closer points
             int offset = 1;
 
             while (offset < curList.Count)
             {
-                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;  // Wrap around
+                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;
                 double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
 
                 if (dist < minDist)
@@ -1446,14 +1527,13 @@ namespace AgOpenGPS
                 }
             }
 
-            // Continue traversing until the distance starts growing
+            // Continue traversing forward until the distance starts growing
             while (offset < curList.Count)
             {
-                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;  // Wrap around
+                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;
                 double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
                 if (dist < minDist)
                 {
-                    // Getting closer
                     minDist = dist;
                     minDistIndex = pointIndex;
                 }
@@ -1465,21 +1545,34 @@ namespace AgOpenGPS
                 offset++;
             }
 
-            // Traverse from the start point also into another direction to be sure we choose the minimum local distance.
-            // (This is also needed due to the way AB-curve is handled (the search may start one off from the last known nearest point)).
-            for (offset = 1; offset < curList.Count; offset++)
+            // Only check backwards if we haven't found a good point forward
+            // This prevents jumping back unless absolutely necessary (e.g., sharp turn or lost tracking)
+            // We limit backwards search to a small distance to avoid jumping to parallel lines
+            double backwardSearchLimit = 3.0; // Only search 3 meters backward
+            distSoFar = 0;
+            start = curList[startIndex];
+
+            for (offset = 1; offset < curList.Count && distSoFar < backwardSearchLimit; offset++)
             {
-                int pointIndex = (startIndex + (offset * (-directionMultiplier)) + curList.Count) % curList.Count;  // Wrap around
+                int pointIndex = (startIndex + (offset * (-directionMultiplier)) + curList.Count) % curList.Count;
+
+                distSoFar += glm.Distance(start, curList[pointIndex]);
+                start = curList[pointIndex];
+
+                if (distSoFar >= backwardSearchLimit)
+                    break;
+
                 double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
-                if (dist < minDist)
+
+                // Only accept backwards point if it's significantly closer (20% threshold)
+                if (dist < minDist * 0.8)
                 {
-                    // Getting closer
                     minDist = dist;
                     minDistIndex = pointIndex;
                 }
                 else
                 {
-                    // Getting farther, no point to continue
+                    // Not significantly closer, stop searching backwards
                     break;
                 }
             }

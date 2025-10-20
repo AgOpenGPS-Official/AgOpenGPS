@@ -1,0 +1,48 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for AgOpenGPS
+title: ""
+labels: ["needs-triage"]
+type: "Feature"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please describe your idea below.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: What problem does this feature solve? What workflow would it improve?
+      placeholder: |
+        Example: "When working with small fields, I need to manually adjust the AB line offset multiple times..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: |
+        Describe your ideal solution.
+        If this involves UI changes, attach mockups, sketches, or screenshots.
+        Links to similar features in other software, technical details, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: priority
+    attributes:
+      label: Priority and Impact
+      description: How important is this feature to your workflow and why?
+      placeholder: |
+        Describe the priority level and justify your assessment:
+        - Critical: Blocks work or prevents core functionality
+        - High: Would save significant time/effort in daily operations
+        - Medium: Nice to have, improves convenience
+        - Low: Minor improvement or edge case
+
+        Example: "High - Currently spend 10+ minutes per field manually adjusting settings that could be automated"
+    validations:
+      required: false

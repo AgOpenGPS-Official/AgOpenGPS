@@ -663,6 +663,13 @@ namespace AgOpenGPS
                     int cnt1 = ytList.Count;
                     int cnt2 = ytList2.Count;
 
+                    //Validate that both lists have elements to prevent crashes
+                    if (cnt1 == 0 || cnt2 == 0)
+                    {
+                        FailCreate();
+                        return false;
+                    }
+
                     //Find if the turn goes same way as turnline heading
                     bool isFirstTurnLineSameWay = true;
                     double firstHeadingDifference = Math.Abs(inClosestTurnPt.turnLineHeading - ytList[ytList.Count - 1].heading);
@@ -686,9 +693,9 @@ namespace AgOpenGPS
                     //is in and out on same segment? so only 1 segment
                     if (startClosestTurnPt.turnLineIndex == goalClosestTurnPt.turnLineIndex)
                     {
-                        for (int a = 0; a < cnt2; cnt2--)
+                        for (int a = 0; a < cnt2; a++)
                         {
-                            ytList.Add(new vec3(ytList2[cnt2 - 1]));
+                            ytList.Add(new vec3(ytList2[cnt2 - 1 - a]));
                         }
                     }
                     else
@@ -740,9 +747,9 @@ namespace AgOpenGPS
                         }
 
                         //add the out from ytList2
-                        for (int a = 0; a < cnt2; cnt2--)
+                        for (int a = 0; a < cnt2; a++)
                         {
-                            ytList.Add(new vec3(ytList2[cnt2 - 1]));
+                            ytList.Add(new vec3(ytList2[cnt2 - 1 - a]));
                         }
                     }
 
@@ -1069,6 +1076,13 @@ namespace AgOpenGPS
                     int cnt1 = ytList.Count;
                     int cnt2 = ytList2.Count;
 
+                    //Validate that both lists have elements to prevent crashes
+                    if (cnt1 == 0 || cnt2 == 0)
+                    {
+                        FailCreate();
+                        return false;
+                    }
+
                     //Find if the turn goes same way as turnline heading
                     bool isFirstTurnLineSameWay = true;
                     double firstHeadingDifference = Math.Abs(inClosestTurnPt.turnLineHeading - ytList[ytList.Count - 1].heading);
@@ -1093,9 +1107,9 @@ namespace AgOpenGPS
                     //is in and out on same segment? so only 1 segment
                     if (startClosestTurnPt.turnLineIndex == goalClosestTurnPt.turnLineIndex)
                     {
-                        for (int a = 0; a < cnt2; cnt2--)
+                        for (int a = 0; a < cnt2; a++)
                         {
-                            ytList.Add(new vec3(ytList2[cnt2 - 1]));
+                            ytList.Add(new vec3(ytList2[cnt2 - 1 - a]));
                         }
 
                     }
@@ -1149,9 +1163,9 @@ namespace AgOpenGPS
                         }
 
                         //add the out from ytList2
-                        for (int a = 0; a < cnt2; cnt2--)
+                        for (int a = 0; a < cnt2; a++)
                         {
-                            ytList.Add(new vec3(ytList2[cnt2 - 1]));
+                            ytList.Add(new vec3(ytList2[cnt2 - 1 - a]));
                         }
                     }
 
@@ -2438,6 +2452,7 @@ namespace AgOpenGPS
             mf.p_239.pgn[mf.p_239.uturn] = 0;
             isOutSameCurve = false;
             isGoingStraightThrough = false;
+            maxProgressIndexReached = 0;
         }
 
         public void FailCreate()
@@ -2548,6 +2563,7 @@ namespace AgOpenGPS
         }
 
         public int onA;
+        private int maxProgressIndexReached = 0;
 
         //determine distance from youTurn guidance line
         public bool DistanceFromYouTurnLine()
@@ -2563,7 +2579,10 @@ namespace AgOpenGPS
                     vec3 pivot = mf.steerAxlePos;
 
                     //find the closest 2 points to current fix
-                    for (int t = 0; t < ptCount; t++)
+                    //Start search from max progress minus small lookback to prevent jumping back to start
+                    //when start and end positions overlap
+                    int searchStartIndex = Math.Max(0, maxProgressIndexReached - 5);
+                    for (int t = searchStartIndex; t < ptCount; t++)
                     {
                         double dist = ((pivot.easting - ytList[t].easting) * (pivot.easting - ytList[t].easting))
                                         + ((pivot.northing - ytList[t].northing) * (pivot.northing - ytList[t].northing));
@@ -2611,8 +2630,16 @@ namespace AgOpenGPS
                     }
                     B = A + 1;
 
+                    // Track maximum progress through the path
+                    if (A > maxProgressIndexReached)
+                        maxProgressIndexReached = A;
+
+                    // Only complete if we've progressed through at least 50% of the path
+                    // This prevents premature completion when start and end positions are the same
+                    bool hasProgressedEnough = maxProgressIndexReached > (ptCount / 2);
+
                     //return and reset if too far away or end of the line
-                    if (B >= ptCount - 1)
+                    if (B >= ptCount - 1 && hasProgressedEnough)
                     {
                         CompleteYouTurn();
                         return false;
@@ -2677,7 +2704,10 @@ namespace AgOpenGPS
                     vec3 pivot = mf.pivotAxlePos;
 
                     //find the closest 2 points to current fix
-                    for (int t = 0; t < ptCount; t++)
+                    //Start search from max progress minus small lookback to prevent jumping back to start
+                    //when start and end positions overlap
+                    int searchStartIndex = Math.Max(0, maxProgressIndexReached - 5);
+                    for (int t = searchStartIndex; t < ptCount; t++)
                     {
                         double dist = ((pivot.easting - ytList[t].easting) * (pivot.easting - ytList[t].easting))
                                         + ((pivot.northing - ytList[t].northing) * (pivot.northing - ytList[t].northing));
@@ -2702,9 +2732,18 @@ namespace AgOpenGPS
                     }
 
                     onA = A;
+
+                    // Track maximum progress through the path
+                    if (A > maxProgressIndexReached)
+                        maxProgressIndexReached = A;
+
                     double distancePiv = glm.Distance(ytList[A], pivot);
 
-                    if ((A > 0 && distancePiv > 2) || (B >= ptCount - 1))
+                    // Only complete if we've progressed through at least 50% of the path
+                    // This prevents premature completion when start and end positions are the same
+                    bool hasProgressedEnough = maxProgressIndexReached > (ptCount / 2);
+
+                    if (((A > 0 && distancePiv > 2) || (B >= ptCount - 1)) && hasProgressedEnough)
                     {
                         CompleteYouTurn();
                         return false;

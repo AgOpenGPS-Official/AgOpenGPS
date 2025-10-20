@@ -122,6 +122,67 @@ namespace AgOpenGPS
             isDisplayTramControl = Properties.Settings.Default.setTool_isDisplayTramControl;
         }
 
+        public double GetHitchLengthFromVehiclePivot()
+        {
+            double pivotToHitch = hitchLength;
+
+            if (mf.vehicle.VehicleConfig.Type == VehicleType.Articulated && !glm.IsZero(pivotToHitch))
+            {
+                double halfWheelbase = 0.5 * mf.vehicle.VehicleConfig.Wheelbase;
+
+                if (!glm.IsZero(halfWheelbase))
+                {
+                    pivotToHitch += Math.Sign(pivotToHitch) * halfWheelbase;
+                }
+            }
+
+            return pivotToHitch;
+        }
+
+        public double GetHitchHeadingFromVehiclePivot(double pivotToHitchLength)
+        {
+            double hitchHeading = mf.fixHeading;
+
+            if (mf.vehicle.VehicleConfig.Type == VehicleType.Articulated && !glm.IsZero(pivotToHitchLength))
+            {
+                double steerAngleDegrees = mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees;
+                double articulationRadians = glm.toRadians(steerAngleDegrees);
+
+                // The hitch translation already starts from the averaged vehicle heading
+                // (fixHeading). Applying the full rear-frame deflection on top of that
+                // over-rotates the hitch, so scale the articulation once more to keep the
+                // lateral movement aligned with the rear frame.
+                double rearHeadingOffset = 0.25 * articulationRadians;
+
+                if (pivotToHitchLength > 0)
+                {
+                    hitchHeading += rearHeadingOffset;
+                }
+                else
+                {
+                    hitchHeading -= rearHeadingOffset;
+                }
+
+                hitchHeading = NormalizeAngle(hitchHeading);
+            }
+
+            return hitchHeading;
+        }
+
+        private static double NormalizeAngle(double angle)
+        {
+            if (angle < 0)
+            {
+                angle = (angle % glm.twoPI) + glm.twoPI;
+            }
+            else if (angle >= glm.twoPI)
+            {
+                angle %= glm.twoPI;
+            }
+
+            return angle;
+        }
+
         private void DrawHitch(double trailingTank)
         {
             XyCoord[] vertices = {
@@ -155,8 +216,12 @@ namespace AgOpenGPS
             GL.PushMatrix();
 
             //translate down to the hitch pin
-            GL.Translate(Math.Sin(mf.fixHeading) * (hitchLength),
-                            Math.Cos(mf.fixHeading) * (hitchLength), 0);
+            double pivotToHitchLength = GetHitchLengthFromVehiclePivot();
+            double hitchHeading = GetHitchHeadingFromVehiclePivot(pivotToHitchLength);
+            GL.Translate(
+                Math.Sin(hitchHeading) * pivotToHitchLength,
+                Math.Cos(hitchHeading) * pivotToHitchLength,
+                0);
 
             //settings doesn't change trailing hitch length if set to rigid, so do it here
             double trailingTank, trailingTool;

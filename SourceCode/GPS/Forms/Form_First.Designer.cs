@@ -153,7 +153,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button3.Location = new System.Drawing.Point(3, 7);
+            this.button3.Location = new System.Drawing.Point(979, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(35, 24);
             this.button3.TabIndex = 133;
@@ -239,11 +239,11 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(41, 15);
+            this.label15.Location = new System.Drawing.Point(26, 15);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(166, 25);
+            this.label15.Size = new System.Drawing.Size(187, 25);
             this.label15.TabIndex = 143;
-            this.label15.Text = "AOG Discourse";
+            this.label15.Text = "Discourse Forum";
             // 
             // Form_First
             // 

@@ -294,6 +294,8 @@
             this.labelDeadZone = new System.Windows.Forms.Label();
             this.label251 = new System.Windows.Forms.Label();
             this.label252 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblSemVer = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelMaxSteerDegree
@@ -3567,6 +3569,27 @@
             this.label252.Text = "300";
             this.label252.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.Black;
+            this.lblVersion.Location = new System.Drawing.Point(981, 522);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(82, 23);
+            this.lblVersion.TabIndex = 887;
+            this.lblVersion.Text = "Version";
+            // 
+            // lblSemVer
+            // 
+            this.lblSemVer.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSemVer.ForeColor = System.Drawing.Color.IndianRed;
+            this.lblSemVer.Location = new System.Drawing.Point(1060, 525);
+            this.lblSemVer.Name = "lblSemVer";
+            this.lblSemVer.Size = new System.Drawing.Size(116, 23);
+            this.lblSemVer.TabIndex = 888;
+            this.lblSemVer.Text = "6.8.0.Beta3";
+            // 
             // FormAllSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -3575,6 +3598,8 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1188, 671);
+            this.Controls.Add(this.lblSemVer);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label90);
             this.Controls.Add(this.label197);
             this.Controls.Add(this.labelDeadZoneDelay);
@@ -4121,5 +4146,7 @@
         private System.Windows.Forms.Label labelDeadZone;
         private System.Windows.Forms.Label label251;
         private System.Windows.Forms.Label label252;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblSemVer;
     }
 }

@@ -54,9 +54,9 @@ jobs:
     - name: Publish
       run: dotnet publish --no-restore --configuration ${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Create AgOpenGPS.zip
+    - name: Create AgOpenGPS_${{ env.GitVersion_SemVer }}.zip
       shell: powershell
-      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}" -Destination "AgOpenGPS.zip"
+      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}" -Destination "AgOpenGPS_${{ env.GitVersion_SemVer }}.zip"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
@@ -67,4 +67,4 @@ jobs:
           Automated Release by GitHub Action CI
         draft: ${{ github.ref_name == 'master' }}
         prerelease: ${{ contains(github.ref_name, 'release/') }}
-        files: AgOpenGPS.zip
+        files: AgOpenGPS_${{ env.GitVersion_SemVer }}.zip

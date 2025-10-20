@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
@@ -667,9 +668,9 @@ namespace AgOpenGPS
             }
             else
             {
-                nudMaxSteerSpeed.Value = (decimal)(Properties.Settings.Default.setAS_maxSteerSpeed * 0.62137);
-                nudMinSteerSpeed.Value = (decimal)(Properties.Settings.Default.setAS_minSteerSpeed * 0.62137);
-                nudGuidanceSpeedLimit.Value = (decimal)(Properties.Settings.Default.setAS_functionSpeedLimit * 0.62137);
+                nudMaxSteerSpeed.Value = (decimal)Speed.KmhToMph(Properties.Settings.Default.setAS_maxSteerSpeed);
+                nudMinSteerSpeed.Value = (decimal)Speed.KmhToMph(Properties.Settings.Default.setAS_minSteerSpeed);
+                nudGuidanceSpeedLimit.Value = (decimal)Speed.KmhToMph(Properties.Settings.Default.setAS_functionSpeedLimit);
                 label160.Text = label163.Text = label166.Text = "mph";
             }
 
@@ -687,7 +688,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_minSteerSpeed = ((double)nudMinSteerSpeed.Value);
-                if (!mf.isMetric) Properties.Settings.Default.setAS_minSteerSpeed *= 1.609344;
+                if (!mf.isMetric) Properties.Settings.Default.setAS_minSteerSpeed = Speed.MphToKmh(Properties.Settings.Default.setAS_minSteerSpeed);
                 mf.vehicle.minSteerSpeed = Properties.Settings.Default.setAS_minSteerSpeed;
             }
         }
@@ -697,7 +698,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_maxSteerSpeed = ((double)nudMaxSteerSpeed.Value);
-                if (!mf.isMetric) Properties.Settings.Default.setAS_maxSteerSpeed *= 1.609344;
+                if (!mf.isMetric) Properties.Settings.Default.setAS_maxSteerSpeed = Speed.MphToKmh(Properties.Settings.Default.setAS_maxSteerSpeed);
                 mf.vehicle.maxSteerSpeed = Properties.Settings.Default.setAS_maxSteerSpeed;
             }
         }
@@ -707,7 +708,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setAS_functionSpeedLimit = ((double)nudGuidanceSpeedLimit.Value);
-                if (!mf.isMetric) Properties.Settings.Default.setAS_functionSpeedLimit *= 1.609344;
+                if (!mf.isMetric) Properties.Settings.Default.setAS_functionSpeedLimit = Speed.MphToKmh(Properties.Settings.Default.setAS_functionSpeedLimit);
                 mf.vehicle.functionSpeedLimit = Properties.Settings.Default.setAS_functionSpeedLimit;
             }
         }

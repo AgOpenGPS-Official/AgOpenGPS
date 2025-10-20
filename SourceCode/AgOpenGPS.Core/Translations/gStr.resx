@@ -213,7 +213,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Auto Dual &lt;&gt; Fix</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Switch speed (km/h)</value>
+    <value>Switch Speed</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Background</value>
@@ -933,7 +933,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Save and Return</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Time for a Beer! Goodbye!</value>
+    <value>See you next time!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Saving field..</value>
@@ -1244,5 +1244,20 @@ USE AT OWN RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Force Overwrite</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Get All</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Get Selected</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Downloading...Please Wait</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Download Fields From AgShare</value>
   </data>
 </root>

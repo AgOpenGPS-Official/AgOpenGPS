@@ -44,8 +44,6 @@
             this.lblVersion = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
             this.btnVideo = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -213,34 +211,6 @@
             this.label2.Size = new System.Drawing.Size(271, 138);
             this.label2.TabIndex = 129;
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 11.25F);
-            this.label15.Location = new System.Drawing.Point(728, 511);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(137, 18);
-            this.label15.TabIndex = 127;
-            this.label15.Text = "Enable Terms Form";
-            // 
-            // button4
-            // 
-            this.button4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Image = global::AgOpenGPS.Properties.Resources.Settings48;
-            this.button4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button4.Location = new System.Drawing.Point(862, 486);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(110, 62);
-            this.button4.TabIndex = 126;
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // btnVideo
             // 
             this.btnVideo.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -251,7 +221,7 @@
             this.btnVideo.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVideo.Image = global::AgOpenGPS.Properties.Resources.Webcam;
             this.btnVideo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnVideo.Location = new System.Drawing.Point(862, 409);
+            this.btnVideo.Location = new System.Drawing.Point(862, 493);
             this.btnVideo.Name = "btnVideo";
             this.btnVideo.Size = new System.Drawing.Size(110, 62);
             this.btnVideo.TabIndex = 130;
@@ -263,7 +233,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Tahoma", 11.25F);
-            this.label8.Location = new System.Drawing.Point(736, 433);
+            this.label8.Location = new System.Drawing.Point(736, 517);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(125, 18);
             this.label8.TabIndex = 131;
@@ -290,8 +260,6 @@
             this.Controls.Add(this.btnVideo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
@@ -333,8 +301,6 @@
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnVideo;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label13;

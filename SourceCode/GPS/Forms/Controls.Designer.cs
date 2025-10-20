@@ -1,5 +1,13 @@
 //Please, if you use this, share the improvements
 
+using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Forms.Pickers;
+using AgOpenGPS.Forms.Profiles;
+using AgOpenGPS.IO;
+using AgOpenGPS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,13 +17,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AgLibrary.Logging;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Forms;
-using AgOpenGPS.Forms.Pickers;
-using AgOpenGPS.Forms.Profiles;
-using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -168,7 +169,7 @@ namespace AgOpenGPS
                     if (isMetric)
                         TimedMessageBox(3000, "AutoSteer Disabled", "Above Maximum Safe Steering Speed: " + vehicle.maxSteerSpeed.ToString("N0") + " Kmh");
                     else
-                        TimedMessageBox(3000, "AutoSteer Disabled", "Above Maximum Safe Steering Speed: " + (vehicle.maxSteerSpeed * 0.621371).ToString("N1") + " MPH");
+                        TimedMessageBox(3000, "AutoSteer Disabled", "Above Maximum Safe Steering Speed: " + Speed.KmhToMph(vehicle.maxSteerSpeed).ToString("N1") + " MPH");
 
                     return;
                 }
@@ -1151,6 +1152,7 @@ namespace AgOpenGPS
                 pn.fix.easting, pn.fix.northing,
                 fixHeading, flagColor, nextflag, nextflag.ToString());
             flagPts.Add(flagPt);
+            flagPts = FlagsFiles.DeduplicateFlags(flagPts);
             FileSaveFlags();
 
             Form fc = Application.OpenForms["FormFlags"];
@@ -1794,15 +1796,6 @@ namespace AgOpenGPS
         {
             Form form = new FormAllSettings(this);
             form.Show(this);
-        }
-        private void guidelinesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            isSideGuideLines = !isSideGuideLines;
-            if (isSideGuideLines) guidelinesToolStripMenuItem.Checked = true;
-            else guidelinesToolStripMenuItem.Checked = false;
-
-            Properties.Settings.Default.setMenu_isSideGuideLines = isSideGuideLines;
-            Properties.Settings.Default.Save();
         }
         private void boundaryToolToolStripMenu_Click(object sender, EventArgs e)
         {

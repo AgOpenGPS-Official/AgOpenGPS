@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 
 namespace AgOpenGPS.Forms.Config
@@ -30,35 +31,19 @@ namespace AgOpenGPS.Forms.Config
 
         public void UpdateSummary(FormGPS mf)
         {
-            lblSumWheelbase.Text = (mf.isMetric ?
-                (Properties.Settings.Default.setVehicle_wheelbase * mf.m2InchOrCm).ToString("N0") :
-                (Properties.Settings.Default.setVehicle_wheelbase * mf.m2InchOrCm).ToString("N0"))
-                + mf.unitsInCm;
+            lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_wheelbase);
 
             lblSumNumSections.Text = mf.tool.numOfSections.ToString();
 
-            string snapDist = mf.isMetric ?
-                Properties.Settings.Default.setAS_snapDistance.ToString() :
-                (Properties.Settings.Default.setAS_snapDistance * mf.cm2CmOrIn).ToString("N1");
-
-            lblNudgeDistance.Text = snapDist + mf.unitsInCm.ToString();
+            lblNudgeDistance.Text = Distance.VerySmallDistanceString(mf.isMetric, 0.01 * Properties.Settings.Default.setAS_snapDistance);
             lblUnits.Text = mf.isMetric ? "Metric" : "Imperial";
 
             lblSummaryVehicleName.Text = gStr.gsCurrent + ": " + RegistrySettings.vehicleFileName;
 
-            lblTramWidth.Text = mf.isMetric ?
-                ((Properties.Settings.Default.setTram_tramWidth).ToString() + " m") :
-                ConvertMeterToFeet(Properties.Settings.Default.setTram_tramWidth);
+            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, Properties.Settings.Default.setTram_tramWidth);
 
-            lblToolOffset.Text = (mf.isMetric ?
-                (Properties.Settings.Default.setVehicle_toolOffset * mf.m2InchOrCm).ToString() :
-                (Properties.Settings.Default.setVehicle_toolOffset * mf.m2InchOrCm).ToString("N1")) +
-                mf.unitsInCm;
-
-            lblOverlap.Text = (mf.isMetric ?
-                (Properties.Settings.Default.setVehicle_toolOverlap * mf.m2InchOrCm).ToString() :
-                (Properties.Settings.Default.setVehicle_toolOverlap * mf.m2InchOrCm).ToString("N1")) +
-                mf.unitsInCm;
+            lblToolOffset.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_toolOffset);
+            lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_toolOverlap);
 
             lblLookahead.Text = Properties.Settings.Default.setVehicle_toolLookAheadOn.ToString() + " sec";
         }
@@ -68,13 +53,5 @@ namespace AgOpenGPS.Forms.Config
             lblSummaryWidth.Text = widthText;
         }
 
-        private string ConvertMeterToFeet(double meter)
-        {
-            double toFeet = meter * 3.28;
-            string feetInch = Convert.ToString((int)toFeet) + "' ";
-            double temp = Math.Round((toFeet - Math.Truncate(toFeet)) * 12, 0);
-            feetInch += Convert.ToString(temp) + '"';
-            return feetInch;
-        }
     }
 }

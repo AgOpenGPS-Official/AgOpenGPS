@@ -1,14 +1,32 @@
-﻿using System;
+﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using AgOpenGPS.Core.Models;
-using AgLibrary.Logging;
+using System.Linq;
 
 namespace AgOpenGPS.IO
 {
     public static class FlagsFiles
     {
+        public static List<CFlag> DeduplicateFlags(IEnumerable<CFlag> flags)
+        {
+            var distinctFlags = new List<CFlag>();
+            foreach (var f in flags)
+            {
+                bool duplicate = distinctFlags.Any(d =>
+                    Math.Abs(d.latitude - f.latitude) < 1e-8 &&
+                    Math.Abs(d.longitude - f.longitude) < 1e-8);
+
+                if (!duplicate)
+                {
+                    distinctFlags.Add(f);
+                }
+            }
+            return distinctFlags;
+        }
+
         public static List<CFlag> Load(string fieldDirectory)
         {
             var result = new List<CFlag>();
@@ -38,7 +56,15 @@ namespace AgOpenGPS.IO
                     int id = int.Parse(words[words.Length >= 8 ? 6 : 5], CultureInfo.InvariantCulture);
                     string notes = (words.Length >= 8 ? words[7] : "").Trim();
 
-                    result.Add(new CFlag(lat, lon, easting, northing, heading, color, id, notes));
+                    // Use the same duplicate check as in Save
+                    bool duplicate = result.Any(d =>
+                        Math.Abs(d.latitude - lat) < 1e-8 &&
+                        Math.Abs(d.longitude - lon) < 1e-8);
+
+                    if (!duplicate)
+                    {
+                        result.Add(new CFlag(lat, lon, easting, northing, heading, color, id, notes));
+                    }
                 }
             }
 
@@ -47,18 +73,33 @@ namespace AgOpenGPS.IO
 
         public static void Save(string fieldDirectory, IReadOnlyList<CFlag> flags)
         {
+
             var filename = Path.Combine(fieldDirectory, "Flags.txt");
 
+            // Prevent saving duplicates based on latitude and longitude
+            var distinctFlags = new List<CFlag>();
+            if (flags != null)
+            {
+                foreach (var f in flags ?? new List<CFlag>())
+                {
+                    bool duplicate = distinctFlags.Any(d =>
+                        Math.Abs(d.latitude - f.latitude) < 1e-8 &&
+                        Math.Abs(d.longitude - f.longitude) < 1e-8);
+
+                    if (!duplicate)
+                    {
+                        distinctFlags.Add(f);
+                    }
+                }
+            }
             using (var writer = new StreamWriter(filename, false))
             {
                 writer.WriteLine("$Flags");
+                writer.WriteLine(distinctFlags.Count.ToString(CultureInfo.InvariantCulture));
 
-                var list = flags ?? new List<CFlag>();
-                writer.WriteLine(list.Count.ToString(CultureInfo.InvariantCulture));
-
-                for (int i = 0; i < list.Count; i++)
+                for (int i = 0; i < distinctFlags.Count; i++)
                 {
-                    var f = list[i];
+                    var f = distinctFlags[i];
                     writer.WriteLine(
                         f.latitude.ToString(CultureInfo.InvariantCulture) + "," +
                         f.longitude.ToString(CultureInfo.InvariantCulture) + "," +

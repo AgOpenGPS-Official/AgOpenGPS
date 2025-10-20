@@ -159,19 +159,49 @@ namespace AgOpenGPS
                 var ring = boundaries[i];
                 bool isHole = i != 0;
 
+                // Header for hole/outer ring (legacy AOG format)
                 lines.Add(isHole ? "True" : "False");
-                lines.Add(ring.Count.ToString());
 
-                var enriched = BoundaryHelper.WithHeadings(ring);
+                // ---- Normalize ring using CBoundaryList ----
+                var bnd = new CBoundaryList();
 
-                foreach (var pt in enriched)
+                // Ensure fenceLine exists and is empty
+                if (bnd.fenceLine == null)
                 {
+                    bnd.fenceLine = new List<vec3>();
+                }
+                else
+                {
+                    bnd.fenceLine.Clear();
+                }
+
+                // Inline conversion LocalPoint -> vec3 (heading will be recomputed)
+                for (int p = 0; p < ring.Count; p++)
+                {
+                    var lp = ring[p];
+                    bnd.fenceLine.Add(new vec3(lp.Easting, lp.Northing, 0.0));
+                }
+
+                // First calculate area / winding (FixFenceLine spacing depends on area; winding may be reversed here)
+                bnd.CalculateFenceArea(i);
+
+                // Then fix spacing and recalc headings (also populates fenceLineEar if used elsewhere)
+                bnd.FixFenceLine(i);
+
+                // Use the fixed/normalized fenceLine for output
+                int fixedCount = bnd.fenceLine.Count;
+                lines.Add(fixedCount.ToString(CultureInfo.InvariantCulture));
+
+                for (int k = 0; k < fixedCount; k++)
+                {
+                    var pt = bnd.fenceLine[k];
                     lines.Add(
-                        pt.Easting.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                        pt.Northing.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                        pt.Heading.ToString("0.#####", CultureInfo.InvariantCulture)
+                        pt.easting.ToString("0.###", CultureInfo.InvariantCulture) + "," +
+                        pt.northing.ToString("0.###", CultureInfo.InvariantCulture) + "," +
+                        pt.heading.ToString("0.#####", CultureInfo.InvariantCulture)
                     );
                 }
+                // ---- end normalization ----
             }
 
             File.WriteAllLines(Path.Combine(fieldDir, "Boundary.txt"), lines);

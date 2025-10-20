@@ -4,6 +4,7 @@ using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
+using AgOpenGPS.IO;
 using System;
 using System.Globalization;
 using System.IO;
@@ -82,6 +83,7 @@ namespace AgOpenGPS
                 geoCoord.Easting, geoCoord.Northing,
                 0, flagColor, nextflag, (nextflag).ToString());
             mf.flagPts.Add(flagPt);
+            mf.flagPts = FlagsFiles.DeduplicateFlags(mf.flagPts);
             mf.FileSaveFlags();
 
             Form fc = Application.OpenForms["FormFlags"];
@@ -135,6 +137,7 @@ namespace AgOpenGPS
                                 geoCoord.Easting, geoCoord.Northing,
                                 0, flagColor, nextflag, flagName);
                             mf.flagPts.Add(flagPt);
+                            mf.flagPts = FlagsFiles.DeduplicateFlags(mf.flagPts);
                             mf.FileSaveFlags();
                         }
                         else

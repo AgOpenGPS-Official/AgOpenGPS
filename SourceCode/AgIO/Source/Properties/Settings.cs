@@ -73,6 +73,10 @@ namespace AgIO.Properties
         public byte eth_loopFour = 255;
         public bool setDisplay_isAutoRunGPS_Out = false;
         public bool setDisplay_StartMinimized = false;
+        public bool isobus_isOn = false;
+        public int isobus_canAdapterIndex = 0;
+        public int isobus_canChannelIndex = 0;
+
         public LoadResult Load()
         {
             string path = Path.Combine(RegistrySettings.profileDirectory, RegistrySettings.profileName + ".XML");

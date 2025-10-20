@@ -735,7 +735,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Gem og vend tilbage</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Tid til en øl! Farvel!</value>
+    <value>Vi ses næste gang!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Gemmer felt..</value>
@@ -938,4 +938,5 @@ ANVENDELSE PÅ EGET RISIKO.</value>
   <data name="gsWorked" xml:space="preserve">
     <value>Bearbejdet</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

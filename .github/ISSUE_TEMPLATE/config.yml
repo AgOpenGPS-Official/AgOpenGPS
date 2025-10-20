@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discourse Community Forum
+    url: https://agopengps.discourse.group/
+    about: Ask questions, get support, and discuss AgOpenGPS with the community
+  - name: Documentation
+    url: https://docs.agopengps.com/
+    about: Read the official documentation and guides

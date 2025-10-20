@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAgShareBulkUpload = new System.Windows.Forms.Button();
             this.btnJobAgShare = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -57,6 +58,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.btnAgShareBulkUpload, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnJobAgShare, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label4, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 2);
@@ -81,6 +83,29 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(605, 469);
             this.tableLayoutPanel1.TabIndex = 106;
             // 
+            // btnAgShareBulkUpload
+            // 
+            this.btnAgShareBulkUpload.BackColor = System.Drawing.Color.Transparent;
+            this.btnAgShareBulkUpload.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAgShareBulkUpload.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnAgShareBulkUpload.FlatAppearance.BorderSize = 0;
+            this.btnAgShareBulkUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgShareBulkUpload.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgShareBulkUpload.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnAgShareBulkUpload.Image = global::AgOpenGPS.Properties.Resources.AgShare;
+            this.btnAgShareBulkUpload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAgShareBulkUpload.Location = new System.Drawing.Point(319, 376);
+            this.btnAgShareBulkUpload.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.btnAgShareBulkUpload.Name = "btnAgShareBulkUpload";
+            this.btnAgShareBulkUpload.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btnAgShareBulkUpload.Size = new System.Drawing.Size(281, 89);
+            this.btnAgShareBulkUpload.TabIndex = 114;
+            this.btnAgShareBulkUpload.Text = "AgShare Upload";
+            this.btnAgShareBulkUpload.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAgShareBulkUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAgShareBulkUpload.UseVisualStyleBackColor = false;
+            this.btnAgShareBulkUpload.Click += new System.EventHandler(this.btnAgShareBulkUpload_Click);
+            // 
             // btnJobAgShare
             // 
             this.btnJobAgShare.BackColor = System.Drawing.Color.Transparent;
@@ -98,7 +123,7 @@
             this.btnJobAgShare.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnJobAgShare.Size = new System.Drawing.Size(281, 89);
             this.btnJobAgShare.TabIndex = 112;
-            this.btnJobAgShare.Text = "AgShare";
+            this.btnJobAgShare.Text = "AgShare Download";
             this.btnJobAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnJobAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnJobAgShare.UseVisualStyleBackColor = false;
@@ -408,5 +433,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnJobAgShare;
+        private System.Windows.Forms.Button btnAgShareBulkUpload;
     }
 }

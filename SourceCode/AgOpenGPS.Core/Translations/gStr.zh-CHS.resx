@@ -1117,7 +1117,7 @@
     <value>自动双修&lt;&gt;修复</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>切换速度 (公里/小时)</value>
+    <value>切换速度</value>
   </data>
   <data name="gsBuildAround" xml:space="preserve">
     <value>围绕建立</value>

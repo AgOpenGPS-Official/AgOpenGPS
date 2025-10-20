@@ -1,4 +1,4 @@
-﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using System;
@@ -39,7 +39,7 @@ namespace AgOpenGPS
 
             if (!mf.timerSim.Enabled)
             {
-                mf.TimedMessageBox(2000, "Simulator is off", "Go Back To Work, No Time For Games");
+                mf.TimedMessageBox(3000, "Simulator is off", "Simulator can't work while using real Antenna");
                 Close();
             }
             mf.pn.DefineLocalPlane(new Wgs84((double)nudLatitude.Value, (double)nudLongitude.Value), true);

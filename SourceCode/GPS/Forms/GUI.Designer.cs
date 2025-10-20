@@ -390,7 +390,6 @@ namespace AgOpenGPS
 
             //Tools Menu
             SmoothABtoolStripMenu.Text = gStr.gsSmoothABCurve;
-            guidelinesToolStripMenuItem.Text = gStr.gsExtraGuideLines;
             boundariesToolStripMenuItem.Text = gStr.gsBoundary;
             headlandToolStripMenuItem.Text = gStr.gsHeadland;
             headlandBuildToolStripMenuItem.Text = gStr.gsHeadland + " Builder";
@@ -437,8 +436,6 @@ namespace AgOpenGPS
             deleteContourPathsToolStripMenuItem.Visible = Properties.Settings.Default.setFeatures.isHideContourOn;
             webcamToolStrip.Visible = Properties.Settings.Default.setFeatures.isWebCamOn;
             offsetFixToolStrip.Visible = Properties.Settings.Default.setFeatures.isOffsetFixOn;
-            if (isSideGuideLines) guidelinesToolStripMenuItem.Checked = true;
-            else guidelinesToolStripMenuItem.Checked = false;
 
             //left side
             btnStartAgIO.Visible = Properties.Settings.Default.setFeatures.isAgIOOn;
@@ -883,6 +880,7 @@ namespace AgOpenGPS
                     case 7:
                         panelRight.Controls.Add(btnContour);
                         panelRight.Controls.Add(btnContourLock);
+                        panelRight.Controls.Add(btnIsobusSectionControl);
                         break;
 
                     default:
@@ -1354,10 +1352,12 @@ namespace AgOpenGPS
                         if (point.X > centerX - 100 && point.X < centerX - 20)
                         {
                             tram.isLeftManualOn = !tram.isLeftManualOn;
+                            return;
                         }
                         if (point.X > centerX + 20 && point.X < centerX + 100)
                         {
                             tram.isRightManualOn = !tram.isRightManualOn;
+                            return;
                         }
                     }
                 }
@@ -1396,18 +1396,23 @@ namespace AgOpenGPS
                     return;
                 }
 
-                mouseX = point.X;
-                mouseY = oglMain.Height - point.Y;
-
-                //prevent flag selection if flag form is up
-                Form fc = Application.OpenForms["Flags"];
-                if (fc != null)
+                //prevent flag selection if clicking on UI areas (left side, bottom, or bottom-left where version text is)
+                if (point.X < 80 || point.Y > oglMain.Height - 60 || (point.X < 300 && point.Y > oglMain.Height - 100))
                 {
-                    fc.Focus();
                     return;
                 }
 
-                leftMouseDownOnOpenGL = true;
+                //only allow flag selection if flag form is open
+                Form fc = Application.OpenForms["FormFlags"];
+                if (fc != null)
+                {
+                    fc.Focus();
+                    mouseX = point.X;
+                    mouseY = oglMain.Height - point.Y;
+                    leftMouseDownOnOpenGL = true;
+                }
+
+                //if flag form is NOT open, do not set leftMouseDownOnOpenGL
             }
         }
         private void SpeedLimitExceeded()
@@ -1420,7 +1425,7 @@ namespace AgOpenGPS
             else
             {
                 TimedMessageBox(2000, gStr.gsTooFast, gStr.gsSlowDownBelow + " "
-                    + (vehicle.functionSpeedLimit * 0.621371).ToString("N1") + " " + gStr.gsMPH);
+                    + Speed.KmhToMph(vehicle.functionSpeedLimit).ToString("N1") + " " + gStr.gsMPH);
             }
 
             Log.EventWriter("UTurn or Lateral Speed exceeded");
@@ -1530,9 +1535,9 @@ namespace AgOpenGPS
             get
             {
                 if (avgSpeed > 2)
-                    return (avgSpeed * 0.62137).ToString("N1");
+                    return Speed.KmhToMph(avgSpeed).ToString("N1");
                 else
-                    return (avgSpeed * 0.62137).ToString("N2");
+                    return Speed.KmhToMph(avgSpeed).ToString("N2");
             }
         }
         public string SpeedKPH

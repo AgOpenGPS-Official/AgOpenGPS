@@ -903,7 +903,7 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
     <value>Enregistrer et revenir</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>C'est l'heure de la bière ! Au revoir !</value>
+    <value>À la prochaine !</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Sauvegarde du champ..</value>

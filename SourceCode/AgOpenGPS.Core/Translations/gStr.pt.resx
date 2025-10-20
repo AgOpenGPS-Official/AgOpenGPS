@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>Desenhe AB - Clique em 2 pontos no limite para começar</value>
+  </data>
   <data name="gsABline" xml:space="preserve">
     <value>Linha AB</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
     <value>Sobre...</value>
@@ -457,7 +463,7 @@
     <value>Salvar e retornar</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Hora de uma cerveja! Tchau!</value>
+    <value>Até a próxima!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Salvando campo..</value>
@@ -564,12 +570,7 @@
   <data name="gsXTEChart" xml:space="preserve">
     <value>Gráfico XTE</value>
   </data>
-  <data name="gsAPlus" xml:space="preserve">
-    <value>A+</value>
-  </data>
-  <data name="gsABDraw" xml:space="preserve">
-    <value>Desenhe AB - Clique em 2 pontos no limite para começar</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="gsADConverter" xml:space="preserve">
     <value>Conversor AD</value>
   </data>
@@ -630,7 +631,7 @@ A ordem em que você os tocar será a ordem em que aparecerão no menu, de baixo
     <value>Automático Duplo &lt;&gt; Fixo</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Velocidade de troca (km/h)</value>
+    <value>Velocidade de troca</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Fundo</value>
@@ -643,5 +644,194 @@ A ordem em que você os tocar será a ordem em que aparecerão no menu, de baixo
   </data>
   <data name="gsBuild" xml:space="preserve">
     <value>Construir</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Construir em torno</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Seletor de botões</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>Comportamento da câmera</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Verificar atualizações</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Escolher</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Linha de Clipe</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Pixel</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Seletor de cores</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Contagens por Grau</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>% Cobertura</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>Criar novo campo a partir do ISO-XML</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Sensor de curva atual</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Curva</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>Dia</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>---Zona Morta---</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>Excluir campo</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Diâmetro</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Direto</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Marcadores de direção</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Discordo</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Discussões em:</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Distância até a bandeira</value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>Configurações de antena dupla</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Antena de Posição Dupla está no lado Direito</value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Editar cor</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Registro de elevação</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Habilitar</value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Digite o nome</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Digite o nome do registro</value>
+  </data>
+  <data name="gsExit" xml:space="preserve">
+    <value>Saída</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>Sair para o Windows em:</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Diretrizes extras</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Rápido</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Menu de campo</value>
+  </data>
+  <data name="gsFieldPicker" xml:space="preserve">
+    <value>Carregar arquivo</value>
+  </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Textura do campo</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Distância de Correção para Correção</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>Alarme de correção RTK</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarme para direção automática</value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>Criar sinalizadores</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>Bandeiras</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Lacuna</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Passo mínimo do GPS</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Grade</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>Mensagens de hardware</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>Cabeçalho</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Deslocamento de direção (grau)</value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Comprimento do engate</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>Segurar</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>Levantamento Hidráulico</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>Configuração do Levantamento Hidráulico</value>
+  </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value>Antecipar</value>
+  </data>
+  <data name="gsIMUAxis" xml:space="preserve">
+    <value>Troca de Eixos da IMU</value>
+  </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Sem imagem:</value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>Fusão</value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>Integrante</value>
   </data>
 </root>

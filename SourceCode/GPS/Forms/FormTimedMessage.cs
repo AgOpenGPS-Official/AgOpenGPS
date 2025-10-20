@@ -12,16 +12,26 @@ namespace AgOpenGPS
         {
             InitializeComponent();
 
-            //get copy of the calling main form
-            //mf = callingForm as FormGPS;
-
+            // Set text first
             lblMessage.Text = titleString;
             lblMessage2.Text = messageString;
 
-            timer1.Interval = timeInMsec;
+            // Force labels to measure their content
+            lblMessage.AutoSize = true;
+            lblMessage2.AutoSize = true;
 
-            int messWidth = messageString.Length;
-            Width = messWidth * 15 + 120;
+            // Calculate required size based on actual label sizes
+            int maxLabelWidth = Math.Max(lblMessage.PreferredWidth, lblMessage2.PreferredWidth);
+            int totalLabelHeight = lblMessage.PreferredHeight + lblMessage2.PreferredHeight + lblMessage2.Top;
+
+            // Add padding for panel and form borders
+            int requiredWidth = maxLabelWidth + 60;  // Extra space for padding
+            int requiredHeight = totalLabelHeight + 30;  // Extra space for padding
+
+            // Set form size
+            this.ClientSize = new System.Drawing.Size(requiredWidth, requiredHeight);
+
+            timer1.Interval = timeInMsec;
             this.Left = 20;
             this.Top = 20;
         }

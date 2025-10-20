@@ -377,10 +377,10 @@ namespace AgOpenGPS
             {
                 vec3 pt3;
                 mf.curve.desList?.Clear();
-                for (int i = 0; i < mf.bnd.bndList[bndSelect].fenceLine.Count; i++)
+                for (int i = 0; i < mf.bnd.bndList[q].fenceLine.Count; i++)
                 {
                     //calculate the point inside the boundary
-                    pt3 = new vec3(mf.bnd.bndList[bndSelect].fenceLine[i]);
+                    pt3 = new vec3(mf.bnd.bndList[q].fenceLine[i]);
 
                     mf.curve.desList.Add(new vec3(pt3));
                 }

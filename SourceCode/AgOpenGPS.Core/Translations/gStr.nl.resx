@@ -192,7 +192,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Autosteer Configuratie</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Dual&lt;&gt;Fix km/h</value>
+    <value>Dual&lt;&gt;Fix</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Achtergrond</value>
@@ -873,7 +873,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Opslaan en terugkeren</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Tijd voor een biertje! Tot ziens!</value>
+    <value>Tot de volgende keer!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Veld opslaan..</value>
@@ -1138,5 +1138,18 @@ GEBRUIK OP EIGEN RISICO.</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Calibreer Gyroscoop</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Overschrijf</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Download Alles</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Ophalen...Even wachten</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Download velden vanaf AgShare</value>
   </data>
 </root>

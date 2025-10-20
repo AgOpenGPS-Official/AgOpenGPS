@@ -391,7 +391,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Auto Dual &lt;&gt; Fix</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Rychlost sepnutí (km/h)</value>
+    <value>Rychlost sepnutí</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Pozadí</value>
