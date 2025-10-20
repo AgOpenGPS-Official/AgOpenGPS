@@ -2032,8 +2032,6 @@ namespace AgOpenGPS
             var display = currentGuidanceDisplay;
             int lineWidth = display.LineWidth;
 
-            System.Diagnostics.Debug.WriteLine($"DrawTrackGuidance: track={track.Name}, mode={track.Mode}, CurvePoints={(display.CurvePoints != null ? display.CurvePoints.Count.ToString() : "null")} pts");
-
             // Draw even if track.IsValid() is false - we want to see the reference points at least
             if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
             {
@@ -2163,17 +2161,89 @@ namespace AgOpenGPS
             else if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve && display.CurvePoints != null && display.CurvePoints.Count > 1)
             {
                 // ========== CURVE RENDERING ==========
-                System.Diagnostics.Debug.WriteLine($"DrawTrackGuidance: Drawing curve with {display.CurvePoints.Count} points");
 
-                // Draw the curve line
-                GL.LineWidth(lineWidth);
-                GL.Color3(0.95f, 0.2f, 0.50f);
-                GL.Begin(PrimitiveType.LineStrip);
-                foreach (var pt in display.CurvePoints)
+                // Draw reference curve (dashed red) - original track
+                if (track.CurvePts != null && track.CurvePts.Count > 1)
                 {
-                    GL.Vertex3(pt.easting, pt.northing, 0.0);
+                    GL.LineWidth(4);
+                    GL.Enable(EnableCap.LineStipple);
+                    GL.LineStipple(1, 0x0F00);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Color3(0.930f, 0.2f, 0.2f); // Red like AB line reference
+                    foreach (var pt in track.CurvePts)
+                    {
+                        GL.Vertex3(pt.easting, pt.northing, 0.0);
+                    }
+                    GL.End();
+                    GL.Disable(EnableCap.LineStipple);
                 }
-                GL.End();
+
+                // Draw current curve guidance line (black outline + magenta) - offset curve for vehicle
+                if (display.CurvePoints != null && display.CurvePoints.Count > 1)
+                {
+                    // Black outline
+                    GL.LineWidth(lineWidth * 3);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Color3(0, 0, 0);
+                    foreach (var pt in display.CurvePoints)
+                    {
+                        GL.Vertex3(pt.easting, pt.northing, 0.0);
+                    }
+                    GL.End();
+
+                    // Magenta guidance line (matches AB line color)
+                    GL.LineWidth(lineWidth);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Color3(0.95f, 0.20f, 0.950f); // Magenta like AB line
+                    foreach (var pt in display.CurvePoints)
+                    {
+                        GL.Vertex3(pt.easting, pt.northing, 0.0);
+                    }
+                    GL.End();
+                }
+
+                // Draw side guide lines for curves (offset from CURRENT track, not reference)
+                if (isSideGuideLines && camera.camSetDistance > tool.width * -400 && display.CurvePoints != null && display.CurvePoints.Count > 1)
+                {
+                    double toolWidth = tool.width - tool.overlap;
+                    int numLines = display.NumGuideLines;
+
+                    // Build offset curves relative to CURRENT guidance track (display.CurvePoints)
+                    // Not the reference track - user wants to see where NEXT passes will be
+                    for (int side = -numLines; side <= numLines; side++)
+                    {
+                        if (side == 0) continue; // Skip center (already drawn)
+
+                        double offset = toolWidth * side;
+
+                        // Use OffsetLine extension method which includes self-intersection prevention
+                        // This prevents sharp kinks when curves are too tight for the offset distance
+                        var curveCopy = new System.Collections.Generic.List<AgOpenGPS.Core.Models.vec3>(display.CurvePoints);
+                        var offsetCurve = curveCopy.OffsetLine(offset, 0.5, false);
+
+                        if (offsetCurve.Count < 2) continue;
+
+                        // Draw black outline
+                        GL.LineWidth(lineWidth * 3);
+                        GL.Begin(PrimitiveType.LineStrip);
+                        GL.Color4(0, 0, 0, 0.5);
+                        foreach (var pt in offsetCurve)
+                        {
+                            GL.Vertex3(pt.easting, pt.northing, 0.0);
+                        }
+                        GL.End();
+
+                        // Draw green guide line
+                        GL.LineWidth(lineWidth);
+                        GL.Begin(PrimitiveType.LineStrip);
+                        GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
+                        foreach (var pt in offsetCurve)
+                        {
+                            GL.Vertex3(pt.easting, pt.northing, 0.0);
+                        }
+                        GL.End();
+                    }
+                }
             }
 
             // Draw YouTurn (still uses old class for now)

@@ -2,7 +2,7 @@
 
 **Project**: Migration to AgOpenGPS.Core with Performance-First Design
 **Start Date**: 2025-01-10
-**Last Update**: 2025-01-18
+**Last Update**: 2025-10-20
 
 ---
 
@@ -10,7 +10,7 @@
 
 This document tracks the progress of the AgOpenGPS refactoring according to **Guidance_Refactoring_Plan.md**. The goal is to build a clean, testable, and **ultra-performant** service layer in AgOpenGPS.Core.
 
-### Total Progress: Phase 6 of 7 (50% of Phase 6) 🚀
+### Total Progress: Phase 6 of 7 (85% of Phase 6) 🚀
 
 - [x] **Phase 1.1**: Foundation & Basic Models (100%)
 - [x] **Phase 1.2**: Performance-Optimized Geometry Utilities (100%)
@@ -18,7 +18,7 @@ This document tracks the progress of the AgOpenGPS refactoring according to **Gu
 - [x] **Phase 3**: Track Service (100% ✅)
 - [x] **Phase 4**: Guidance Service (100% ✅)
 - [x] **Phase 5**: YouTurn Service (100% ✅)
-- [ ] **Phase 6**: UI Integration (50% - Phases 6.1-6.4 complete)
+- [ ] **Phase 6**: UI Integration (85% - Phases 6.1-6.9 complete, YouTurn remaining)
 - [ ] **Phase 7**: Legacy Removal (0%)
 
 ---
@@ -2239,6 +2239,270 @@ Added comprehensive logging for troubleshooting:
 **Bugs Fixed**: 4 critical rendering bugs
 **Build Status**: ✅ 0 errors, warnings only
 **Testing Status**: ✅ Basic rendering works, ⚠️ guidance calculations need work
+
+---
+
+## ✅ Phase 6.9: Unified Curve & AB Line Guidance - Pure Pursuit Refinement (COMPLETE)
+
+**Date**: 2025-10-20
+**Status**: Complete ✅
+**Commits**: 7208340e - Phase 6.9 Complete
+
+### 🎯 Objectives
+
+Phase 6.9 unified the guidance system to use a single Pure Pursuit implementation for BOTH curves and AB lines, eliminating the hybrid approach from Phase 6.8. Key goals:
+
+1. **Unified Guidance Algorithm**: One Pure Pursuit implementation matching AOG_Dev
+2. **Correct Lookahead Direction**: Handle `isReverse` and `isHeadingSameWay` properly
+3. **Track Locking**: Prevent track switching during autosteer
+4. **Simplified Logic**: Remove complexity, improve predictability
+
+### 🔧 Major Changes
+
+#### 1. **Unified Pure Pursuit with AOG_Dev Formula** ✅
+
+**Problem**: Used classical Pure Pursuit formula, different from AOG_Dev
+**Solution**: Implemented exact AOG_Dev local coordinate transformation
+
+```csharp
+// AOG_Dev Pure Pursuit (CABLine.cs:267-275)
+// Local heading transformation
+double localHeading = (2.0 * Math.PI) - vehicleHeading;
+
+// Dot product with SWAPPED cos/sin order
+double dotProduct = (deltaEast * Math.Cos(localHeading))
+                  + (deltaNorth * Math.Sin(localHeading));
+
+// Distance squared (NOT distance!)
+double distanceSquared = (deltaEast * deltaEast) + (deltaNorth * deltaNorth);
+
+// AOG_Dev formula
+double steerAngle = Math.Atan(2.0 * dotProduct * Wheelbase / distanceSquared);
+```
+
+**Key Differences from Classical Pure Pursuit**:
+- Uses local coordinate transformation: `2π - vehicleHeading`
+- Dot product uses cos/sin (swapped order)
+- Uses `distanceSquared` instead of `distance` in denominator
+- NO track heading added (just vehicle heading transformation)
+
+**Files Modified**: `GuidanceService.cs:210-244`
+
+#### 2. **XOR Direction Logic for Lookahead** ✅
+
+**Problem**: Complex direction logic with `reverseMultiplier * headingMultiplier`
+**Solution**: Use simple XOR matching AOG_Dev exactly
+
+```csharp
+// AOG_Dev logic (CABLine.cs:249, CABCurve.cs:605)
+bool xorResult = isReverse ^ isHeadingSameWay;
+int direction = xorResult ? 1 : -1;  // +1 = walk forward, -1 = walk backward
+int startIdx = (direction > 0) ? rB : rA;
+```
+
+**Truth Table**:
+| isReverse | isHeadingSameWay | XOR Result | Direction | Meaning |
+|-----------|------------------|------------|-----------|---------|
+| false     | true             | false      | -1        | Forward driving, same direction |
+| false     | false            | true       | +1        | Forward driving, 180° reversed |
+| true      | true             | true       | +1        | Reverse driving, same direction |
+| true      | false            | false      | -1        | Reverse driving, 180° reversed |
+
+**Files Modified**: `GuidanceService.cs:339-351`
+
+#### 3. **Track Locking During Autosteer** ✅
+
+**Problem**: Track switching occurred even when autosteer active, causing instability
+**Solution**: Block ALL track switches when `isBtnAutoSteerOn == true`
+
+```csharp
+// Position.designer.cs:994-996
+bool needsRebuild = (cachedGuidanceTrack == null ||
+    (!isBtnAutoSteerOn && howManyPathsAway != lastHowManyPathsAway) ||
+    (!isBtnAutoSteerOn && isHeadingSameWay != lastIsHeadingSameWay && tool.offset != 0));
+```
+
+**Behavior**:
+- **Autosteer OFF**: Track switching works normally at midpoint (0.5 threshold)
+- **Autosteer ON**: Track completely locked - no switches even if far from XTE
+- **Cache null**: Always rebuild (first frame)
+
+**Files Modified**: `Position.designer.cs:991-996`
+
+#### 4. **Simple Midpoint Track Switching** ✅
+
+**Problem**: Originally tried steer-aware switching - too complex and unpredictable
+**Solution**: Switch at simple midpoint (50% between lines)
+
+```csharp
+// Position.designer.cs:949-955
+double switchThreshold = 0.5;  // Switch at midpoint (like AOG_Dev default)
+
+int howManyPathsAway = RefDist < 0
+    ? (int)(RefDist - switchThreshold)
+    : (int)(RefDist + switchThreshold);
+```
+
+**Evolution**:
+1. **Tried**: Steer-aware switching (0.3 influence, 0.5 base) ❌
+2. **Tried**: Adaptive lookahead based on steer angle ❌
+3. **Final**: Simple midpoint switching ✅
+
+**Files Modified**: `Position.designer.cs:949-955`
+
+#### 5. **Eliminated CABCurve.BuildCurveCurrentList()** ✅
+
+**Problem**: Phase 6.8 used legacy curve code, causing dual-system complexity
+**Solution**: Both curves and AB lines now use unified `GuidanceService.CalculatePurePursuit()`
+
+**Before (Phase 6.8)**:
+```csharp
+if (currentTrack.Mode == Curve) {
+    curve.BuildCurveCurrentList(pivotAxlePos);  // Legacy!
+    guidanceTrack = curve.curList;
+} else {
+    guidanceTrack = _trackService.BuildGuidanceTrack(...);
+}
+```
+
+**After (Phase 6.9)**:
+```csharp
+// ALWAYS use unified guidance
+guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, distAway);
+var guidanceResult = UpdateGuidance(pivotAxlePos, guidanceTrack, isHeadingSameWay);
+```
+
+**Impact**: CABCurve.BuildCurveCurrentList() no longer called from Position.designer.cs
+
+**Files Modified**: `Position.designer.cs:982-1006`
+
+### 📊 Architecture Changes
+
+#### Before Phase 6.9 (Hybrid System):
+```
+Position Update Loop:
+├─ AB Lines → TrackService.BuildGuidanceTrack() → GuidanceService
+└─ Curves → CABCurve.BuildCurveCurrentList() → Legacy Pure Pursuit
+```
+
+#### After Phase 6.9 (Unified System):
+```
+Position Update Loop:
+├─ AB Lines → TrackService.BuildGuidanceTrack() → GuidanceService.CalculatePurePursuit()
+└─ Curves → TrackService.BuildGuidanceTrack() → GuidanceService.CalculatePurePursuit()
+                                                      ↑
+                                            SAME implementation!
+```
+
+### 🐛 Issues Debugged & Fixed
+
+#### Issue 1: Circular Driving with AOG_Dev Formula
+**Symptom**: Vehicle drove in circles instead of toward goal point
+**Root Cause**: Missing local heading transformation - used trackHeading instead of simple `2π - vehicleHeading`
+**Fix**: Removed track heading from formula, used pure coordinate transformation
+
+#### Issue 2: Wrong Lookahead Direction
+**Symptom**: Goal point walked wrong direction along track when `isHeadingSameWay` changed
+**Root Cause**: Custom direction logic didn't match AOG_Dev XOR behavior
+**Fix**: Replaced with simple XOR: `direction = (isReverse ^ isHeadingSameWay) ? 1 : -1`
+
+#### Issue 3: Reverse Lookahead Distance
+**Symptom**: Tried to adjust lookahead distance when reversing (added/subtracted meters)
+**Root Cause**: Misunderstanding - AOG_Dev uses XOR for DIRECTION, not distance adjustment
+**Fix**: Removed distance adjustments, trusted XOR logic for placement
+
+#### Issue 4: Track Switching During Autosteer
+**Symptom**: Track switched even with 0 XTE and autosteer active
+**Root Cause**: `needsRebuild` didn't check `isBtnAutoSteerOn` for heading flip condition
+**Fix**: Added `!isBtnAutoSteerOn` check to ALL rebuild conditions
+
+#### Issue 5: Steer-Aware Switching Too Complex
+**Symptom**: Track switching unpredictable, too aggressive/conservative at times
+**Root Cause**: Tried to use WAS steering angle to predict intent
+**Fix**: Removed steer influence, reverted to simple 0.5 midpoint threshold
+
+### 📈 Files Modified
+
+1. **GuidanceService.cs** (~60 lines changed)
+   - Lines 210-244: AOG_Dev Pure Pursuit implementation
+   - Lines 332-351: XOR direction logic for FindGoalPoint
+   - Removed track heading from local heading calculation
+   - Simplified to match AOG_Dev exactly
+
+2. **Position.designer.cs** (~40 lines changed)
+   - Lines 949-955: Simple midpoint switching (0.5 threshold)
+   - Lines 991-996: Track locking when autosteer active
+   - Lines 982-1006: Unified guidance call (no curve/AB split)
+   - Removed legacy curve code path
+
+3. **CVehicle.cs** (~10 lines changed/removed)
+   - Removed adaptive lookahead based on steer angle
+   - Kept XTE-based lookahead (Hold/Acquire)
+
+### ✅ Results
+
+**Build Status**: ✅ 0 errors, warnings only
+**Testing Status**: ✅ Curves and AB lines use same guidance
+**Performance**: ✅ No allocations in hot path
+**Stability**: ✅ Track locking prevents unwanted switches
+
+### 🎯 Key Takeaways
+
+1. **Match Reference Implementation**: AOG_Dev formula works - don't reinvent
+2. **Keep It Simple**: Steer-aware switching added complexity without clear benefit
+3. **XOR is Elegant**: Single boolean expression handles all 4 direction cases
+4. **Lock During Autosteer**: Critical for stability - no switches mid-operation
+5. **Unified is Better**: Same code for curves/AB lines reduces bugs
+
+#### 6. **Unified Curve Rendering with Self-Intersection Prevention** ✅
+
+**Problem**: Curves only showed reference line, no current guidance track. When offset curves became too sharp, they would self-intersect creating visual artifacts.
+
+**Solution Part 1 - Unified Rendering** (OpenGL.Designer.cs):
+- Reference curve: Red dashed line (like AB line reference)
+- Current guidance curve: Magenta solid line (like AB line current)
+- Side guide lines: Green offset curves showing next passes
+
+**Solution Part 2 - AOG_Dev Self-Intersection Prevention** (Vec3ListExtensions.cs):
+
+```csharp
+// For each offset point, check distance to ALL original points
+// If offset comes too close to original curve, skip that point
+for (int j = 0; j < count; j++)
+{
+    double check = GeoMath.DistanceSquared(northing, easting,
+                                          points[j].northing, points[j].easting);
+    if (check < distanceSquared)
+    {
+        isValidOffset = false;  // Too close - would self-intersect
+        break;
+    }
+}
+```
+
+**Why This Works**:
+- When a curve is so sharp that the offset curve would fold back
+- The offset point comes closer to the original curve than the offset distance
+- This automatically detects self-intersection without complex geometry
+- Exact implementation from AOG_Dev (CExtensionMethods.cs:609-652)
+
+**Files Modified**:
+- `Vec3ListExtensions.cs:44-72` - AOG_Dev self-intersection check
+- `OpenGL.Designer.cs:2165-2246` - Unified curve rendering with side guide lines
+
+**Evolution**:
+1. **Tried**: Dot product forward progress check ❌ (created kinks)
+2. **Tried**: Radius-based curvature prediction ❌ (not accurate enough)
+3. **Tried**: Direct line segment intersection ❌ (too strict, blocked entire curve)
+4. **Final**: AOG_Dev distance check to original points ✅
+
+### 📋 Next Steps: YouTurn Implementation
+
+With unified guidance and rendering complete, ready for:
+- YouTurn trigger detection
+- YouTurn path generation
+- Integration with guidance loop
+- Testing with curves and AB lines
 
 ---
 

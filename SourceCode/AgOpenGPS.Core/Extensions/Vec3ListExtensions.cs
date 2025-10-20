@@ -28,7 +28,10 @@ namespace AgOpenGPS.Core.Models
             var result = new List<vec3>(points.Count);
             int count = points.Count;
 
-            double distSq = distance * distance - 0.0001;
+            // Phase 6.9 FIX: This should be minDist squared, NOT distance squared!
+            // distance = offset distance (how far parallel to shift)
+            // minDist = minimum spacing between points on the offset line
+            double distSq = minDist * minDist - 0.0001;
 
             // Create offset points perpendicular to heading
             for (int i = 0; i < count; i++)
@@ -38,29 +41,34 @@ namespace AgOpenGPS.Core.Models
                 var easting = points[i].easting + (Math.Cos(points[i].heading) * distance);
                 var northing = points[i].northing - (Math.Sin(points[i].heading) * distance);
 
-                bool Add = true;
+                // Phase 6.9: AOG_Dev self-intersection prevention approach
+                // Check if offset point is too close to ANY original points
+                // If curve is so sharp that offset comes back near original, skip it
+                bool isValidOffset = true;
+                double distanceSquared = distance * distance - 0.0001;
 
-                // Check if this point is too close to any original point
                 for (int j = 0; j < count; j++)
                 {
                     double check = GeoMath.DistanceSquared(northing, easting, points[j].northing, points[j].easting);
-                    if (check < distSq)
+                    if (check < distanceSquared)
                     {
-                        Add = false;
+                        isValidOffset = false;
                         break;
                     }
                 }
 
-                if (Add)
+                if (isValidOffset)
                 {
                     if (result.Count > 0)
                     {
                         double dist = GeoMath.DistanceSquared(northing, easting, result[result.Count - 1].northing, result[result.Count - 1].easting);
-                        if (dist > minDist)
+                        if (dist > distSq)
                             result.Add(new vec3(easting, northing, 0));
                     }
                     else
+                    {
                         result.Add(new vec3(easting, northing, 0));
+                    }
                 }
             }
 
