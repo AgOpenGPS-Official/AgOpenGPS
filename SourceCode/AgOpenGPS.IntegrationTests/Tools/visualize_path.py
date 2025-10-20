@@ -122,16 +122,17 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
                     continue  # Already drew reference line
 
                 # Calculate offset for this track
-                offset_e = perp_e * track_num * tool_width
-                offset_n = perp_n * track_num * tool_width
+                # Note: negate the offset to go in the correct direction
+                offset_e = -perp_e * track_num * tool_width
+                offset_n = -perp_n * track_num * tool_width
 
                 # Offset the clipped line
                 track_e = [e + offset_e for e in clipped_e]
                 track_n = [n + offset_n for n in clipped_n]
 
-                # Draw track with thinner line
+                # Draw track with more visible styling
                 label = 'Parallel Tracks' if track_num == int(min_track) else None
-                ax.plot(track_e, track_n, 'b--', linewidth=0.8, label=label, alpha=0.4, zorder=1)
+                ax.plot(track_e, track_n, 'b--', linewidth=1.2, label=label, alpha=0.6, zorder=1)
         else:
             # Vertical or single point - plot as-is
             ax.plot(ab_e, ab_n, 'b-', linewidth=2, label='AB Line (Reference)', alpha=0.7)
