@@ -107,7 +107,21 @@ namespace AgOpenGPS.Testing.Controllers
                 FixHeading = glm.toDegrees(mf.fixHeading),
                 ImuHeading = mf.ahrs.imuHeading,
                 SimHeadingTrue = glm.toDegrees(mf.sim.headingTrue),
-                HeadingSource = mf.headingFromSource
+                HeadingSource = mf.headingFromSource,
+
+                // Section/Implement control debug data
+                IsJobStarted = mf.isJobStarted,
+                AutoBtnState = mf.autoBtnState.ToString(),
+                ManualBtnState = mf.manualBtnState.ToString(),
+                PatchCounter = mf.patchCounter,
+                Section0_IsSectionOn = mf.section[0].isSectionOn,
+                Section0_SectionBtnState = mf.section[0].sectionBtnState.ToString(),
+                Section0_IsMappingOn = mf.section[0].isMappingOn,
+                Section0_SectionOnRequest = mf.section[0].sectionOnRequest,
+                Section0_SectionOffRequest = mf.section[0].sectionOffRequest,
+                Section0_SpeedPixels = mf.section[0].speedPixels,
+                AvgSpeed = mf.avgSpeed,
+                SlowSpeedCutoff = mf.vehicle.slowSpeedCutoff
             };
 
             loggedPath.Add(pathPoint);
@@ -156,7 +170,19 @@ namespace AgOpenGPS.Testing.Controllers
                          $"\"fixHeading\": {pt.FixHeading.ToString("F2", CultureInfo.InvariantCulture)}, " +
                          $"\"imuHeading\": {pt.ImuHeading.ToString("F2", CultureInfo.InvariantCulture)}, " +
                          $"\"simHeadingTrue\": {pt.SimHeadingTrue.ToString("F2", CultureInfo.InvariantCulture)}, " +
-                         $"\"headingSource\": \"{pt.HeadingSource}\"}}");
+                         $"\"headingSource\": \"{pt.HeadingSource}\", " +
+                         $"\"jobStarted\": {pt.IsJobStarted.ToString().ToLower()}, " +
+                         $"\"autoBtnState\": \"{pt.AutoBtnState}\", " +
+                         $"\"manualBtnState\": \"{pt.ManualBtnState}\", " +
+                         $"\"patchCounter\": {pt.PatchCounter}, " +
+                         $"\"sec0_on\": {pt.Section0_IsSectionOn.ToString().ToLower()}, " +
+                         $"\"sec0_btnState\": \"{pt.Section0_SectionBtnState}\", " +
+                         $"\"sec0_mapping\": {pt.Section0_IsMappingOn.ToString().ToLower()}, " +
+                         $"\"sec0_onReq\": {pt.Section0_SectionOnRequest.ToString().ToLower()}, " +
+                         $"\"sec0_offReq\": {pt.Section0_SectionOffRequest.ToString().ToLower()}, " +
+                         $"\"sec0_speedPx\": {pt.Section0_SpeedPixels.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"avgSpeed\": {pt.AvgSpeed.ToString("F2", CultureInfo.InvariantCulture)}, " +
+                         $"\"slowCutoff\": {pt.SlowSpeedCutoff.ToString("F2", CultureInfo.InvariantCulture)}}}");
                 if (i < loggedPath.Count - 1) sb.Append(",");
                 sb.AppendLine();
             }

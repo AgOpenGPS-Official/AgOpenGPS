@@ -58,5 +58,19 @@ namespace AgOpenGPS.Core.Testing
         public double ImuHeading { get; set; }
         public double SimHeadingTrue { get; set; }
         public string HeadingSource { get; set; }
+
+        // Section/Implement control debug data
+        public bool IsJobStarted { get; set; }
+        public string AutoBtnState { get; set; }
+        public string ManualBtnState { get; set; }
+        public int PatchCounter { get; set; }
+        public bool Section0_IsSectionOn { get; set; }
+        public string Section0_SectionBtnState { get; set; }
+        public bool Section0_IsMappingOn { get; set; }
+        public bool Section0_SectionOnRequest { get; set; }
+        public bool Section0_SectionOffRequest { get; set; }
+        public double Section0_SpeedPixels { get; set; }
+        public double AvgSpeed { get; set; }
+        public double SlowSpeedCutoff { get; set; }
     }
 }
