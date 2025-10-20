@@ -18,7 +18,7 @@ namespace AgOpenGPS
         public CCoverageTracker(FormGPS _f)
         {
             mf = _f;
-            gridResolution = 0.25; // 25cm per grid cell (matches typical resolution)
+            gridResolution = 0.10; // 10cm per grid cell for better accuracy
         }
 
         /// <summary>
@@ -57,8 +57,9 @@ namespace AgOpenGPS
                 gridHeight = (int)Math.Ceiling((fieldMaxY - fieldMinY) / gridResolution);
 
                 // Cap grid size to prevent excessive memory use
-                if (gridWidth > 1000) gridWidth = 1000;
-                if (gridHeight > 2000) gridHeight = 2000;
+                // At 0.1m resolution: 100m x 200m field = 1000 x 2000 grid = 2MB
+                if (gridWidth > 2000) gridWidth = 2000;
+                if (gridHeight > 4000) gridHeight = 4000;
             }
 
             // Initialize grid (0 = not covered, 1 = once, 2 = twice, 3+ = more)
