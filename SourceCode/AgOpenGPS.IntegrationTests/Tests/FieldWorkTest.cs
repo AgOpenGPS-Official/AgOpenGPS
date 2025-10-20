@@ -80,16 +80,42 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine($"6. Job started (isJobStarted = {formGPS.isJobStarted})");
 
             // Configure implement (5m width, single section for testing)
-            formGPS.tool.width = implementWidth;
+            Console.WriteLine($"\n=== IMPLEMENT CONFIGURATION DEBUG ===");
+            Console.WriteLine($"BEFORE configuration:");
+            Console.WriteLine($"  tool.width = {formGPS.tool.width}m");
+            Console.WriteLine($"  tool.numOfSections = {formGPS.tool.numOfSections}");
+            Console.WriteLine($"  section[0]: width={formGPS.section[0].sectionWidth}m, left={formGPS.section[0].positionLeft}m, right={formGPS.section[0].positionRight}m");
+
+            // Set tool configuration
             formGPS.tool.numOfSections = 1;
             formGPS.tool.overlap = 0.2; // 20cm overlap
+            formGPS.tool.isSectionsNotZones = true; // Use sections mode (not zones)
+            formGPS.tool.offset = 0.0; // No offset
 
-            // CRITICAL: Also set section widths to match tool width
-            for (int i = 0; i < formGPS.tool.numOfSections; i++)
+            // CRITICAL: Manually set section positions for single 5m-wide section
+            // Section positions are measured from center (negative = left, positive = right)
+            double halfWidth = implementWidth / 2.0;
+            formGPS.section[0].positionLeft = -halfWidth;   // -2.5m
+            formGPS.section[0].positionRight = halfWidth;    // +2.5m
+            formGPS.section[0].sectionWidth = implementWidth; // 5.0m
+
+            // CRITICAL: Call SectionCalcWidths() to update tool.width from section positions
+            // This calculates tool.width, farLeftPosition, farRightPosition from the sections
+            formGPS.SectionCalcWidths();
+
+            Console.WriteLine($"\nAFTER configuration:");
+            Console.WriteLine($"  tool.width = {formGPS.tool.width}m (calculated from sections)");
+            Console.WriteLine($"  tool.halfWidth = {formGPS.tool.halfWidth}m");
+            Console.WriteLine($"  tool.numOfSections = {formGPS.tool.numOfSections}");
+            Console.WriteLine($"  tool.farLeftPosition = {formGPS.tool.farLeftPosition}m");
+            Console.WriteLine($"  tool.farRightPosition = {formGPS.tool.farRightPosition}m");
+            for (int i = 0; i < 3; i++) // Show first 3 sections
             {
-                formGPS.section[i].sectionWidth = implementWidth;
+                Console.WriteLine($"  section[{i}]: width={formGPS.section[i].sectionWidth}m, left={formGPS.section[i].positionLeft}m, right={formGPS.section[i].positionRight}m");
             }
-            Console.WriteLine($"7. Implement configured: {formGPS.tool.width}m width, section[0].width={formGPS.section[0].sectionWidth}m");
+            Console.WriteLine($"===========================\n");
+
+            Console.WriteLine($"7. Implement configured: {formGPS.tool.width}m width, {formGPS.tool.numOfSections} section(s)");
 
             // Enable U-turn with custom settings
             var uturnController = orchestrator.UTurnController;
