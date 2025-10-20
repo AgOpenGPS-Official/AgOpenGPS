@@ -238,6 +238,11 @@ namespace AgOpenGPS
         /// </summary>
         public CFieldData fd;
 
+        /// <summary>
+        /// Coverage tracker for headless mode (no OpenGL)
+        /// </summary>
+        public CCoverageTracker coverageTracker;
+
         ///// <summary>
         ///// Sound
         ///// </summary>
@@ -834,6 +839,10 @@ namespace AgOpenGPS
 
             AppModel.Fields.OpenField();
             startCounter = 0;
+
+            // Initialize coverage tracker for headless mode
+            coverageTracker = new CCoverageTracker(this);
+            coverageTracker.InitializeGrid();
 
             if (!isHeadless)
             {

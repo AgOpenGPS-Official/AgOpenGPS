@@ -2,35 +2,27 @@
 
 ## Known Issues
 
-### Overlap Calculation Not Working in Headless Mode
-**Status:** ROOT CAUSE IDENTIFIED
+### Overlap Calculation in Headless Mode
+**Status:** FIXED
 **Priority:** Medium
 
 **Root Cause:**
 Section control logic WORKS CORRECTLY in headless mode after extraction.
 - ✅ Section control extracted to UpdateSectionControl() - WORKING
 - ✅ Coverage is recorded in workedAreaTotal - WORKING
-- ❌ actualAreaCovered stays at 0 because overlap calculation requires OpenGL
+- ✅ actualAreaCovered now works using grid-based tracking - FIXED
 
-Overlap calculation (OpenGL.Designer.cs lines 1183-1226) reads pixels from OpenGL:
-```csharp
-GL.ReadPixels(0, 0, grnWidth, grnWidth, PixelFormat.Green, PixelType.UnsignedByte, overPix);
-```
-This doesn't work in headless mode, so `actualAreaCovered` = 0.
+Original overlap calculation (OpenGL.Designer.cs lines 1183-1226) reads pixels from OpenGL which doesn't work in headless mode.
 
-**Visual Test Confirmation:**
-- ✅ Implement DOES turn on in Visual_Test_SectionControl (Paint events fire in visual mode)
-- ❌ Other issues found: only 1 section, implement turns on then tractor teleports to other location
+**Solution Implemented:**
+Created CCoverageTracker class with grid-based coverage tracking:
+1. ✅ CCoverageTracker.cs created with 0.25m resolution grid
+2. ✅ InitializeGrid() called in JobNew()
+3. ✅ MarkCoverage() called from CPatches.AddMappingPoint()
+4. ✅ CalculateOverlap() called from UpdateSectionControl()
+5. ✅ Tests now show actualAreaCovered and overlapPercent working in headless mode
 
-**Solution:**
-Extract section control logic from Paint handler into a separate method (e.g., `UpdateSectionControl()`) that can be called from:
-1. The Paint handler (for normal UI operation)
-2. The simulation step (for headless testing)
-
-**Implementation Task:**
-- [ ] Extract section control logic (lines ~1025-1162 in OpenGL.Designer.cs) into new method
-- [ ] Call new method from both `oglBack_Paint` and from a simulation update hook
-- [ ] Test that headless mode now records coverage properly
+The grid-based tracker uses the same algorithm as the OpenGL version but operates on a coverage grid instead of reading pixels.
 
 ### Visual Test Issues
 **Status:** Open

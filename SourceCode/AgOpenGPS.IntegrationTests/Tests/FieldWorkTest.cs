@@ -63,7 +63,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             // Start on first track, half implement width to the right of AB line
             double startEasting = abLineX + (implementWidth / 2.0);
-            double startNorthing = -fieldLength / 2.0 + 5.0; // 5m from south edge
+            double startNorthing = -fieldLength / 2.0 + 1.0; // 5m from south edge
 
             // Setup field and track using shared helper
             var (fieldController, simController, autosteerController) = SetupBasicField(
@@ -89,7 +89,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             // Set tool configuration
             formGPS.tool.numOfSections = 1;
-            formGPS.tool.overlap = 0.2; // 20cm overlap
+            formGPS.tool.overlap = 0.0; // No overlap
             formGPS.tool.isSectionsNotZones = true; // Use sections mode (not zones)
             formGPS.tool.offset = 0.0; // No offset
 
@@ -155,7 +155,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
                 debugCounter++;
 
                 // Enable implement after 2 seconds (tractor has started moving)
-                if (!implementEnabled && elapsedTime >= 2.0)
+                if (!implementEnabled && elapsedTime >= 1.0)
                 {
                     formGPS.autoBtnState = btnStates.Auto; // Turn on auto section control
                     for (int i = 0; i < FormGPS.MAXSECTIONS; i++)
