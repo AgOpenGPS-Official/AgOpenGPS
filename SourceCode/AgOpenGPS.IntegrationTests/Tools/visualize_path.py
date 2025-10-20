@@ -56,8 +56,8 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
         # Mark turn line points
         ax.scatter(turn_e, turn_n, c='red', s=30, alpha=0.5, zorder=3)
 
-    # Plot AB line (blue) - clip to reasonable range
-    if ab_line:
+    # Plot AB line and parallel tracks
+    if ab_line and len(ab_line) >= 2:
         ab_e = [pt['e'] for pt in ab_line]
         ab_n = [pt['n'] for pt in ab_line]
 
@@ -83,19 +83,58 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
             clip_n_min = -200
             clip_n_max = 200
 
-        # Clip AB line to calculated extent
-        if len(ab_n) >= 2 and ab_n[0] != ab_n[1]:
-            # Linear interpolation for clipped line
+        # Get tool width from metadata for track spacing
+        tool_width = metadata.get('toolWidth', 5.0)
+
+        # Calculate line slope and intercept (for vertical or horizontal AB lines)
+        if ab_n[0] != ab_n[1]:
+            # Non-vertical line
             slope = (ab_e[1] - ab_e[0]) / (ab_n[1] - ab_n[0])
             intercept = ab_e[0] - slope * ab_n[0]
 
+            # Calculate perpendicular vector for track offsets
+            # For line with slope m, perpendicular has slope -1/m
+            # But we need to handle vertical/horizontal cases
+            line_vec_e = ab_e[1] - ab_e[0]
+            line_vec_n = ab_n[1] - ab_n[0]
+            line_length = np.sqrt(line_vec_e**2 + line_vec_n**2)
+
+            # Unit perpendicular vector (90° rotation)
+            perp_e = -line_vec_n / line_length
+            perp_n = line_vec_e / line_length
+
+            # Determine range of tracks to draw based on tractor path
+            if tractor_path:
+                paths_away_values = [pt.get('pathsAway', 0) for pt in tractor_path]
+                min_track = min(paths_away_values) if paths_away_values else -5
+                max_track = max(paths_away_values) if paths_away_values else 5
+            else:
+                min_track, max_track = -5, 5
+
+            # Draw reference AB line (track 0)
             clipped_e = [slope * clip_n_min + intercept, slope * clip_n_max + intercept]
             clipped_n = [clip_n_min, clip_n_max]
+            ax.plot(clipped_e, clipped_n, 'b-', linewidth=2.5, label='AB Line (Reference)', alpha=0.8, zorder=2)
 
-            ax.plot(clipped_e, clipped_n, 'b-', linewidth=2, label='AB Line (Guidance)', alpha=0.7)
+            # Draw parallel tracks
+            for track_num in range(int(min_track), int(max_track) + 1):
+                if track_num == 0:
+                    continue  # Already drew reference line
+
+                # Calculate offset for this track
+                offset_e = perp_e * track_num * tool_width
+                offset_n = perp_n * track_num * tool_width
+
+                # Offset the clipped line
+                track_e = [e + offset_e for e in clipped_e]
+                track_n = [n + offset_n for n in clipped_n]
+
+                # Draw track with thinner line
+                label = 'Parallel Tracks' if track_num == int(min_track) else None
+                ax.plot(track_e, track_n, 'b--', linewidth=0.8, label=label, alpha=0.4, zorder=1)
         else:
             # Vertical or single point - plot as-is
-            ax.plot(ab_e, ab_n, 'b-', linewidth=2, label='AB Line (Guidance)', alpha=0.7)
+            ax.plot(ab_e, ab_n, 'b-', linewidth=2, label='AB Line (Reference)', alpha=0.7)
 
     # Plot turn pattern (orange)
     if turn_pattern:
