@@ -1,5 +1,7 @@
 ﻿//Please, if you use this, share the improvements
 
+#pragma warning disable CS0618 // Type or member is obsolete (temp during Phase 6.9 migration)
+
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using System;
@@ -907,33 +909,10 @@ namespace AgOpenGPS
                     {
                         System.Diagnostics.Debug.WriteLine($"  -> Track IS valid, building guidance...");
 
-                        List<vec3> guidanceTrack = null;
-
-                        // TEMP Phase 6.8: For curves, use old CABCurve logic until we migrate to GuidanceService
-                        // For AB lines, use new TrackService
-                        if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.Curve)
-                        {
-                            // TEMP: Ensure old trk.gArr/idx are synced with new _trackService
-                            // This is needed because curve.BuildCurveCurrentList uses mf.trk.gArr[mf.trk.idx]
-                            #pragma warning disable CS0618 // Type or member is obsolete
-                            int currentIdx = _trackService.GetCurrentTrackIndex();
-                            if (currentIdx >= 0 && currentIdx < trk.gArr.Count && trk.idx != currentIdx)
-                            {
-                                trk.idx = currentIdx;
-                            }
-                            #pragma warning restore CS0618
-
-                            // Use old curve logic (finds closest point, calculates offset, builds current list)
-                            curve.BuildCurveCurrentList(pivotAxlePos);
-                            guidanceTrack = curve.curList;
-                            System.Diagnostics.Debug.WriteLine($"  -> Using curve.curList ({guidanceTrack?.Count ?? 0} points)");
-                        }
-                        else
-                        {
-                            // Use new AB line logic
-                            guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
-                            System.Diagnostics.Debug.WriteLine($"  -> BuildGuidanceTrack returned: {(guidanceTrack != null ? guidanceTrack.Count + " points" : "NULL")}");
-                        }
+                        // Phase 6.9: UNIFIED - Both AB and Curve use TrackService.BuildGuidanceTrack()
+                        // This is the AOG_Dev unified approach - no more separate CABLine/CABCurve logic!
+                        List<vec3> guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
+                        System.Diagnostics.Debug.WriteLine($"  -> BuildGuidanceTrack ({currentTrack.Mode}) returned: {(guidanceTrack != null ? guidanceTrack.Count + " points" : "NULL")}");
 
                         if (guidanceTrack != null && guidanceTrack.Count >= 2)
                         {
