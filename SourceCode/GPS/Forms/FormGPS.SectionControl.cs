@@ -376,8 +376,14 @@ namespace AgOpenGPS
             //send the byte out to section machines
             BuildMachineByte();
 
-            // Calculate overlap using grid tracker (replaces OpenGL pixel-reading method)
-            if (coverageTracker != null)
+            // Calculate overlap using software rasterizer (replaces OpenGL pixel-reading method)
+            // Use software rasterizer for high-precision 1cm resolution coverage tracking
+            if (softwareRasterizer != null)
+            {
+                softwareRasterizer.CalculateOverlap();
+            }
+            // Fallback to grid-based tracker if software rasterizer is not available
+            else if (coverageTracker != null)
             {
                 coverageTracker.CalculateOverlap();
             }

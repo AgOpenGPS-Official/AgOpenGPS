@@ -243,6 +243,11 @@ namespace AgOpenGPS
         /// </summary>
         public CCoverageTracker coverageTracker;
 
+        /// <summary>
+        /// Software rasterizer for OpenGL-free coverage calculation
+        /// </summary>
+        public CSoftwareRasterizer softwareRasterizer;
+
         ///// <summary>
         ///// Sound
         ///// </summary>
@@ -843,6 +848,10 @@ namespace AgOpenGPS
             // Initialize coverage tracker for headless mode
             coverageTracker = new CCoverageTracker(this);
             coverageTracker.InitializeGrid();
+
+            // Initialize software rasterizer for OpenGL-free coverage calculation
+            softwareRasterizer = new CSoftwareRasterizer(this);
+            softwareRasterizer.Initialize();
 
             if (!isHeadless)
             {

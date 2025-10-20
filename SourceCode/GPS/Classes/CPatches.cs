@@ -124,6 +124,21 @@ namespace AgOpenGPS
                 mf.coverageTracker.MarkCoverage(leftPoint, rightPoint, prevLeftPoint, prevRightPoint);
             }
 
+            // Render triangles to software rasterizer for OpenGL-free coverage calculation
+            if (mf.softwareRasterizer != null && triangleList.Count >= 5)
+            {
+                // Get the last 4 points added (2 triangles forming a quad)
+                int idx = triangleList.Count - 1;
+                vec3 v0 = triangleList[idx - 3];  // Previous left
+                vec3 v1 = triangleList[idx - 2];  // Previous right
+                vec3 v2 = triangleList[idx - 1];  // Current left
+                vec3 v3 = triangleList[idx];      // Current right
+
+                // Render two triangles that form the quad
+                mf.softwareRasterizer.RenderTriangle(v0, v1, v2);
+                mf.softwareRasterizer.RenderTriangle(v1, v3, v2);
+            }
+
             // Update previous points for next iteration
             prevLeftPoint = leftPoint;
             prevRightPoint = rightPoint;
