@@ -10,11 +10,15 @@ Usage:
 """
 
 import json
-import matplotlib.pyplot as plt
-import numpy as np
 import sys
 import argparse
 from pathlib import Path
+
+# Set matplotlib backend to Agg (non-interactive) to avoid Tk dependency
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
 
 def load_json(filepath):
     """Load JSON data from file"""
@@ -30,7 +34,7 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
     tractor_path = data.get('tractorPath', [])
     field_boundary = data.get('fieldBoundary', [])
     turn_lines = data.get('turnLines', [])
-    ab_line = data.get('abLine', [])
+    ab_line = data.get('refABLine', [])  # Changed from 'abLine' to 'refABLine'
     turn_pattern = data.get('turnPattern', [])
     metadata = data.get('metadata', {})
 
@@ -118,19 +122,33 @@ def plot_uturn_data(data, title="U-Turn Test Visualization"):
         path_t = [pt['t'] for pt in tractor_path]
         uturn_active = [pt['uturn'] for pt in tractor_path]
 
-        # Split path into segments: before U-turn, during U-turn, after U-turn
-        before_uturn = [(e, n) for e, n, u in zip(path_e, path_n, uturn_active) if not u]
-        during_uturn = [(e, n) for e, n, u in zip(path_e, path_n, uturn_active) if u]
+        # Plot as continuous segments, changing color when U-turn state changes
+        i = 0
+        straight_plotted = False
+        uturn_plotted = False
 
-        # Plot path before U-turn (green)
-        if before_uturn:
-            before_e, before_n = zip(*before_uturn)
-            ax.plot(before_e, before_n, 'g-', linewidth=2, label='Path (Straight)', alpha=0.8)
+        while i < len(tractor_path):
+            # Find the end of the current segment (same uturn state)
+            current_state = uturn_active[i]
+            j = i
+            while j < len(tractor_path) and uturn_active[j] == current_state:
+                j += 1
 
-        # Plot path during U-turn (magenta)
-        if during_uturn:
-            during_e, during_n = zip(*during_uturn)
-            ax.plot(during_e, during_n, 'm-', linewidth=3, label='Path (U-Turn)', alpha=0.9, zorder=4)
+            # Extract segment
+            segment_e = path_e[i:j]
+            segment_n = path_n[i:j]
+
+            # Plot segment with appropriate color
+            if current_state:  # U-turn
+                label = 'Path (U-Turn)' if not uturn_plotted else None
+                ax.plot(segment_e, segment_n, 'm-', linewidth=3, label=label, alpha=0.9, zorder=4)
+                uturn_plotted = True
+            else:  # Straight
+                label = 'Path (Straight)' if not straight_plotted else None
+                ax.plot(segment_e, segment_n, 'g-', linewidth=2, label=label, alpha=0.8)
+                straight_plotted = True
+
+            i = j
 
         # Mark start and end points
         ax.scatter([path_e[0]], [path_n[0]], c='green', s=150,
