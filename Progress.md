@@ -2099,15 +2099,146 @@ Created `CalculateGuidanceDisplayData()` method (lines 913-1017):
 
 ### 🎯 Next Steps
 
-**Phase 6.9**: Final cleanup and verification
-- Delete CABLine.DrawABLines() and CABCurve.DrawCurve() methods (no longer called!)
-- Runtime testing: verify AB line and curve guidance rendering works correctly
-- Check that track creation still functions
+**Phase 6.9**: Bug Fixes & Runtime Testing (IN PROGRESS)
+- ❌ Fix Goal Point distance calculations (not working correctly)
+- ❌ Fix XTE (Cross Track Error) calculations
+- ❌ Fix/test YouTurn functionality
+- ❌ Verify AB line guidance accuracy
+- ⏳ Runtime testing with real field data
+- ⏳ Check track creation still functions
 
-**Phase 7**: Complete legacy removal
+**Phase 7**: Complete Legacy Removal
+- Delete obsolete rendering methods (DrawABLines, DrawCurve)
+- Migrate curve logic to GuidanceService (currently using legacy CABCurve)
 - Delete CABLine.cs, CABCurve.cs, CTrack.cs, CGuidance.cs
+- Remove Track→CTrk conversion layer
 - Remove all obsolete attributes
 - Final build verification
+
+---
+
+## ✅ Phase 6.8 Updates: Bug Fixes & Curve Support (COMPLETE)
+
+**Date**: 2025-10-20
+**Status**: Complete with known issues ✅
+**Commits**:
+- dc9cd54a - Initial OpenGL migration
+- c873df6d - Fixes & curve support
+
+### 🐛 Critical Bugs Fixed
+
+#### 1. AB Line Not Rendering (FIXED ✅)
+**Symptom**: AB lines loaded from file but not displayed
+**Root Cause**:
+- `Track.IsValid()` returned false (CurvePts not built yet)
+- `CalculateGuidanceDisplayData()` early-returned on IsValid check
+- Reference points (PtA/PtB) were correct but never rendered
+
+**Solution**: Removed `!track.IsValid()` check (FormGPS.cs:931)
+- Shows reference points immediately, even if guidance track not built
+- Matches user expectation: "I loaded a track, show it!"
+
+#### 2. Track Switching Data Persistence (FIXED ✅)
+**Symptom**: Old track PtA/PtB appeared when switching to different track
+**Root Cause**: CalculateGuidanceDisplayData called TWICE per frame:
+1. First call (guidanceTrack=null) → sets reference curve
+2. **Rendering happens** ← uses reference data!
+3. Second call (guidanceTrack=offset) → updates to offset curve (too late)
+
+**Solution**: Call CalculateGuidanceDisplayData only ONCE (Position.designer.cs:906-955)
+- If IsValid=true: call with guidanceTrack (offset curve/line)
+- If IsValid=false: call with null (reference only)
+- Eliminates race condition between data updates and rendering
+
+#### 3. Curve Showing Only Reference Line (FIXED ✅)
+**Symptom**: Curves displayed reference line, not offset guidance around vehicle
+**Root Cause**:
+- Used `BuildGuidanceTrack(track, track.NudgeDistance)`
+- Only used nudgeDistance as offset
+- Did NOT calculate:
+  - Closest point on curve to vehicle
+  - `howManyPathsAway` (which pass we're on)
+  - Proper offset distance formula
+
+**Solution**: Use legacy curve logic temporarily (Position.designer.cs:914-930)
+```csharp
+if (currentTrack.Mode == Curve) {
+    curve.BuildCurveCurrentList(pivotAxlePos);  // Legacy logic
+    guidanceTrack = curve.curList;
+} else {
+    guidanceTrack = _trackService.BuildGuidanceTrack(...);  // New logic
+}
+```
+- Legacy code finds closest curve point
+- Calculates howManyPathsAway properly
+- Builds offset curve with correct distance
+- **TODO Phase 7**: Migrate to GuidanceService
+
+#### 4. Legacy Curve Code Crash (FIXED ✅)
+**Symptom**: `IndexOutOfRangeException` when selecting curve
+**Root Cause**:
+- `curve.BuildCurveCurrentList()` uses `mf.trk.gArr[mf.trk.idx]`
+- FileLoadTracks only populated `_trackService` (new system)
+- Old `trk.gArr` was empty → crash
+
+**Solution**: Maintain dual systems temporarily (SaveOpen.Designer.cs:230-248)
+```csharp
+// Load into new system
+foreach (var track in tracks) {
+    _trackService.AddTrack(track);
+}
+
+// ALSO load into old system (Track → CTrk conversion)
+foreach (var track in tracks) {
+    var ctrk = new CTrk();
+    ctrk.ptA = track.PtA;
+    ctrk.curvePts = track.CurvePts;
+    // ... copy all fields
+    trk.gArr.Add(ctrk);
+}
+```
+- Sync trk.idx before calling legacy code (Position.designer.cs:919)
+- **TODO Phase 7**: Remove CTrk/trk.gArr entirely
+
+### 📊 Debug Infrastructure
+
+Added comprehensive logging for troubleshooting:
+- **FormGPS.cs**: Entry/exit logging, exception handling
+- **Position.designer.cs**: IsValid checks, guidanceTrack results, flow tracing
+- **OpenGL.Designer.cs**: Render point counts, mode verification
+- Invaluable for diagnosing data flow and timing issues
+
+### ⚠️ Known Remaining Issues
+
+1. **Goal Point Distance** - Calculations not working correctly
+2. **XTE (Cross-Track Error)** - Needs verification/fixes
+3. **YouTurn** - Functionality needs testing/migration
+4. **AB Line Guidance** - May need accuracy refinement
+
+### 🏗️ Temporary Architecture
+
+**Dual Track Storage** (until Phase 7):
+- **New**: `_trackService` (Track objects) - used for rendering, file I/O
+- **Old**: `trk.gArr` (CTrk objects) - used by legacy curve code
+- Conversion happens in FileLoadTracks (Track → CTrk)
+- Synced on every track switch
+
+**Hybrid Guidance Calculation**:
+- **AB Lines**: New logic via `_trackService.BuildGuidanceTrack()`
+- **Curves**: Legacy logic via `curve.BuildCurveCurrentList()`
+- Split needed because curve offset calculation not yet migrated
+
+### 📈 Impact
+
+**Files Modified**: 5
+- FormGPS.cs: ~25 lines (removed checks, added logging)
+- Position.designer.cs: ~50 lines (flow fixes, curve/AB split, logging)
+- SaveOpen.Designer.cs: ~20 lines (Track→CTrk conversion)
+- OpenGL.Designer.cs: ~5 lines (debug logging)
+
+**Bugs Fixed**: 4 critical rendering bugs
+**Build Status**: ✅ 0 errors, warnings only
+**Testing Status**: ✅ Basic rendering works, ⚠️ guidance calculations need work
 
 ---
 
@@ -2232,7 +2363,7 @@ Phase 6 is complete when:
 
 ## 📊 Overall Progress Update
 
-### Total Progress: Phase 6 of 7 (95% of Phase 6) 🚀
+### Total Progress: Phase 6 of 7 (98% of Phase 6) 🚀
 
 - [x] **Phase 1.1**: Foundation & Basic Models (100%)
 - [x] **Phase 1.2**: Performance-Optimized Geometry (100%)
@@ -2240,12 +2371,14 @@ Phase 6 is complete when:
 - [x] **Phase 3**: Track Service (100%)
 - [x] **Phase 4**: Guidance Service (100%)
 - [x] **Phase 5**: YouTurn Service (100%)
-- [ ] **Phase 6**: UI Integration (95% - Phases 6.1-6.8 complete, build ✅)
+- [ ] **Phase 6**: UI Integration (98% - Phases 6.1-6.8 complete, Phase 6.9 in progress)
 - [ ] **Phase 7**: Legacy Removal (0%)
 
 ---
 
-*Last Update: 2025-10-20 (Phase 6.8 OpenGL Migration COMPLETE! 🎉)*
+*Last Update: 2025-10-20 (Phase 6.8 Complete with Bug Fixes! 🎉)*
+
+**Latest Achievement**: OpenGL rendering fully migrated! AB lines and curves now render using new architecture (with temporary legacy curve support). 4 critical bugs fixed. Ready for Phase 6.9 (guidance calculation fixes).
 
 **Recent Progress (Batches 8-11 + Big Bang Steps 1-2.5)**:
 - ✅ **Batch 8** (Commit: a1960328): Controls.Designer.cs (32 refs), FormTram.cs (23 refs), FormQuickAB.cs (29 refs) - 84 references
