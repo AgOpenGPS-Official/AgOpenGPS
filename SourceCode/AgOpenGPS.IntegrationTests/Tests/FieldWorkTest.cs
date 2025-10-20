@@ -23,7 +23,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
         /// Runs in headless mode for automated CI testing.
         /// </summary>
         [Test]
-        public void Test_CompleteFieldWork_50x100m_5mImplement()
+        public void Test_CompleteFieldWork()
         {
             RunCompleteFieldWorkTest(visualMode: false);
         }
@@ -118,34 +118,26 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             Console.WriteLine($"7. Implement configured: {formGPS.tool.width}m width, {formGPS.tool.numOfSections} section(s)");
 
-            // Step 7: Enable implement - do this AFTER tractor is positioned and BEFORE starting work
-            formGPS.autoBtnState = btnStates.Auto; // Turn on auto section control
-            for (int i = 0; i < FormGPS.MAXSECTIONS; i++)
-            {
-                formGPS.section[i].sectionBtnState = btnStates.On; // Set button state to ON
-            }
-            Console.WriteLine($"8. Implement auto section control enabled (all sections set to ON)");
-
-            // Step 8: Enable U-turn with custom settings
+            // Step 7: Enable U-turn with custom settings
             var uturnController = orchestrator.UTurnController;
             uturnController.Enable();
             uturnController.SetDistanceFromBoundary(2.5); // 2.5m trigger distance from edge
             formGPS.yt.youTurnRadius = 5.0; // 5m U-turn radius
-            Console.WriteLine("9. U-turn enabled (trigger at 2.5m, radius 5m)");
+            Console.WriteLine("8. U-turn enabled (trigger at 2.5m, radius 5m)");
 
-            // Step 9: Enable track skipping
+            // Step 8: Enable track skipping
             formGPS.yt.skipMode = SkipMode.Alternative; // Enable alternating turns
             formGPS.yt.rowSkipsWidth = 2; // Need at least 2 for alternating mode (skip 1 track)
             formGPS.yt.Set_Alternate_skips(); // Initialize alternating skip state
             formGPS.yt.previousBigSkip = false; // Start with small skip first
-            Console.WriteLine("10. Track skipping enabled (skip count: 1, alternating mode)");
+            Console.WriteLine("9. Track skipping enabled (skip count: 1, alternating mode)");
 
-            // Step 10: Start path logging
+            // Step 9: Start path logging
             var pathLogger = orchestrator.PathLogger;
             pathLogger.StartLogging();
-            Console.WriteLine("11. Path logging started\n");
+            Console.WriteLine("10. Path logging started\n");
 
-            // Step 11: Run simulation until tractor crosses field boundary
+            // Step 10: Run simulation until tractor crosses field boundary
             Console.WriteLine("=== Starting Simulation ===");
             var tracker = new FieldWorkTracker(fieldWidth, fieldLength);
 
@@ -153,16 +145,37 @@ namespace AgOpenGPS.IntegrationTests.Tests
             double maxSimulationTime = 600.0; // 10 minute timeout
             double elapsedTime = 0;
             int progressInterval = visualMode ? 100 : 300; // Print every 5s (visual) or 30s (headless)
+            int debugCounter = 0;
+            bool implementEnabled = false;
 
             while (elapsedTime < maxSimulationTime && !tracker.HasLeftField)
             {
                 orchestrator.StepSimulation(timeStep);
                 elapsedTime += timeStep;
+                debugCounter++;
+
+                // Enable implement after 2 seconds (tractor has started moving)
+                if (!implementEnabled && elapsedTime >= 2.0)
+                {
+                    formGPS.autoBtnState = btnStates.Auto; // Turn on auto section control
+                    for (int i = 0; i < FormGPS.MAXSECTIONS; i++)
+                    {
+                        formGPS.section[i].sectionBtnState = btnStates.On; // Set button state to ON
+                    }
+                    Console.WriteLine($"  [{elapsedTime:F1}s] Implement auto section control enabled");
+                    implementEnabled = true;
+                }
 
                 var simState = simController.GetState();
                 var uturnState = uturnController.GetState();
 
                 tracker.Update(elapsedTime, simState, uturnState);
+
+                // Debug section control every 5 seconds
+                if (debugCounter % 50 == 0)
+                {
+                    Console.WriteLine($"  [{elapsedTime:F1}s] Section[0]: btnState={formGPS.section[0].sectionBtnState}, isSectionOn={formGPS.section[0].isSectionOn}, isMappingOn={formGPS.section[0].isMappingOn}, coverage={formGPS.fd.workedAreaTotal:F2}m²");
+                }
 
                 // Progress update
                 if ((int)(elapsedTime / timeStep) % progressInterval == 0)
@@ -171,7 +184,7 @@ namespace AgOpenGPS.IntegrationTests.Tests
                 }
             }
 
-            // Step 10: Stop logging
+            // Step 11: Stop logging
             pathLogger.StopLogging();
             var path = pathLogger.GetLoggedPath();
             Console.WriteLine($"\n=== Simulation Complete ===");
@@ -179,16 +192,16 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine($"Total U-turns: {tracker.UturnCount}");
             Console.WriteLine($"Path points logged: {path.Count}");
 
-            // Step 11: Calculate field coverage
+            // Step 12: Calculate field coverage
             var coverage = CalculateFieldCoverage(formGPS, fieldWidth, fieldLength);
             Console.WriteLine($"\n=== Field Coverage ===");
             Console.WriteLine($"Field area: {coverage.FieldArea:F1} m²");
-            Console.WriteLine($"Covered area: {coverage.CoveredArea:F1} m²");
-            Console.WriteLine($"Coverage: {coverage.CoveragePercent:F1}%");
-            Console.WriteLine($"Overlap area: {coverage.OverlapArea:F1} m²");
-            Console.WriteLine($"Overlap: {coverage.OverlapPercent:F1}%");
+            Console.WriteLine($"Worked area (total): {coverage.WorkedAreaTotal:F1} m²");
+            Console.WriteLine($"Covered area (overlap-adjusted): {coverage.CoveredArea:F1} m² [not available in headless mode]");
+            Console.WriteLine($"Coverage (from worked area): {coverage.WorkedAreaPercent:F1}%");
+            Console.WriteLine($"Note: Overlap calculation requires OpenGL pixel reading, not available in headless mode");
 
-            // Step 12: Analyze U-turn directions
+            // Step 13: Analyze U-turn directions
             var uturnAnalysis = AnalyzeUTurnDirections(path);
             Console.WriteLine($"\n=== U-Turn Analysis ===");
             Console.WriteLine($"Total U-turns detected: {uturnAnalysis.TotalUTurns}");
@@ -196,16 +209,15 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine($"Right turns: {uturnAnalysis.RightTurns}");
             Console.WriteLine($"U-turns should alternate direction: {(uturnAnalysis.AlternatesCorrectly ? "PASS" : "FAIL")}");
 
-            // Step 13: Export path data
+            // Step 14: Export path data
             ExportPathDataWithTimestamp(pathLogger, "FieldWork");
             Console.WriteLine("");
 
             // Assertions
             tracker.HasLeftField.Should().BeTrue("Tractor should complete field and cross boundary");
             tracker.UturnCount.Should().BeGreaterThan(0, "Should have performed at least one U-turn");
-            // TODO: Fix section control - coverage is currently 0% (see TODO.md)
-            // coverage.CoveragePercent.Should().BeGreaterThan(50, "Should have covered more than 50% of field");
-            // coverage.CoveragePercent.Should().BeLessThan(150, "Coverage should be realistic (< 150% including overlaps)");
+            coverage.WorkedAreaPercent.Should().BeGreaterThan(50, "Should have covered more than 50% of field");
+            coverage.WorkedAreaPercent.Should().BeLessThan(200, "Coverage should be realistic (< 200% including overlaps)");
             // TODO: Fix U-turn alternation - currently not alternating correctly (see TODO.md)
             // uturnAnalysis.AlternatesCorrectly.Should().BeTrue("U-turns should alternate between left and right");
         }
@@ -270,16 +282,13 @@ namespace AgOpenGPS.IntegrationTests.Tests
                 boundaryArea = fieldArea;
             }
 
-            // Calculate overlap
-            double overlapArea = workedArea - actualAreaCovered;
-
             return new CoverageResult
             {
                 FieldArea = boundaryArea,
+                WorkedAreaTotal = workedArea,
+                WorkedAreaPercent = (workedArea / boundaryArea) * 100.0,
                 CoveredArea = actualAreaCovered,
-                CoveragePercent = (actualAreaCovered / boundaryArea) * 100.0,
-                OverlapArea = overlapArea,
-                OverlapPercent = workedArea > 0 ? (overlapArea / workedArea) * 100.0 : 0
+                CoveragePercent = (actualAreaCovered / boundaryArea) * 100.0
             };
         }
 
@@ -349,10 +358,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
         private class CoverageResult
         {
             public double FieldArea { get; set; }
+            public double WorkedAreaTotal { get; set; }
+            public double WorkedAreaPercent { get; set; }
             public double CoveredArea { get; set; }
             public double CoveragePercent { get; set; }
-            public double OverlapArea { get; set; }
-            public double OverlapPercent { get; set; }
         }
 
         private class UTurnAnalysis

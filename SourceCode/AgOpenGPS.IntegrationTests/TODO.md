@@ -2,17 +2,21 @@
 
 ## Known Issues
 
-### Section Control Not Working in Headless Mode
+### Overlap Calculation Not Working in Headless Mode
 **Status:** ROOT CAUSE IDENTIFIED
-**Priority:** High
+**Priority:** Medium
 
 **Root Cause:**
-Section control logic is embedded inside the `oglBack_Paint` event handler in `OpenGL.Designer.cs` (line 1025+).
-In headless mode, Paint events don't fire, so section control code never executes. This means:
-- `sectionOnRequest` never gets set to `true`
-- `isMappingOn` stays `false`
-- `TurnMappingOn()` is never called
-- Coverage is never recorded (stays at 0 m²)
+Section control logic WORKS CORRECTLY in headless mode after extraction.
+- ✅ Section control extracted to UpdateSectionControl() - WORKING
+- ✅ Coverage is recorded in workedAreaTotal - WORKING
+- ❌ actualAreaCovered stays at 0 because overlap calculation requires OpenGL
+
+Overlap calculation (OpenGL.Designer.cs lines 1183-1226) reads pixels from OpenGL:
+```csharp
+GL.ReadPixels(0, 0, grnWidth, grnWidth, PixelFormat.Green, PixelType.UnsignedByte, overPix);
+```
+This doesn't work in headless mode, so `actualAreaCovered` = 0.
 
 **Visual Test Confirmation:**
 - ✅ Implement DOES turn on in Visual_Test_SectionControl (Paint events fire in visual mode)
