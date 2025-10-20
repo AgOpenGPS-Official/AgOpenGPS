@@ -2495,71 +2495,105 @@ namespace AgOpenGPS
         //build the points and path of youturn to be scaled and transformed
         public void BuildManualYouTurn(bool isTurnRight, bool isTurnButtonTriggered)
         {
-            double head;
-            //point on AB line closest to pivot axle point from ABLine PurePursuit
-            if (mf.trk.idx > -1 && mf.trk.gArr.Count > 0)
-            {
-                if (mf.trk.gArr[mf.trk.idx].mode == TrackMode.AB)
-                {
-                    rEastYT = mf.ABLine.rEastAB;
-                    rNorthYT = mf.ABLine.rNorthAB;
-                    isHeadingSameWay = mf.ABLine.isHeadingSameWay;
-                    head = mf.ABLine.abHeading;
-                }
+            // Phase 6.10: Use unified guidance data (like AOG_Dev)
+            var currentTrack = mf._trackService.GetCurrentTrack();
+            if (currentTrack == null || !currentTrack.IsValid()) return;
 
-                else
-                {
-                    rEastYT = mf.curve.rEastCu;
-                    rNorthYT = mf.curve.rNorthCu;
-                    isHeadingSameWay = mf.curve.isHeadingSameWay;
-                    head = mf.curve.manualUturnHeading;
-                }
-            }
-            else return;
+            // Use unified guidance data from FormGPS (populated in UpdateGuidance)
+            double head = mf.manualUturnHeading;
+            isHeadingSameWay = mf.isHeadingSameWay;
 
             //grab the vehicle widths and offsets
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth + (isTurnRight ? mf.tool.offset * 2.0 : -mf.tool.offset * 2.0);
 
-            CDubins dubYouTurnPath = new CDubins();
-            CDubins.turningRadius = youTurnRadius;
-
             //if its straight across it makes 2 loops instead so goal is a little lower then start
-            if (!isHeadingSameWay) head += 3.14;
-            else head -= 0.01;
+            if (!isHeadingSameWay) head += Math.PI;
 
-            //move the start forward 2 meters, this point is critical to formation of uturn
-            rEastYT += (Math.Sin(head) * 4);
-            rNorthYT += (Math.Cos(head) * 4);
+            //move the start forward, this point is critical to formation of uturn
+            // Use unified track position (rEastTrk, rNorthTrk) like AOG_Dev
+            double rEastYT = mf.rEastTrk + Math.Sin(head) * (4 + youTurnStartOffset);
+            double rNorthYT = mf.rNorthTrk + Math.Cos(head) * (4 + youTurnStartOffset);
 
             //now we have our start point
             vec3 start = new vec3(rEastYT, rNorthYT, head);
             vec3 goal = new vec3();
 
-            //now we go the other way to turn round
-            head -= Math.PI;
-            if (head < 0) head += glm.twoPI;
-
-            //set up the goal point for Dubins
-            goal.heading = head;
-            if (isTurnButtonTriggered)
+            // Calculate goal point for turn (like AOG_Dev)
+            if (isTurnRight)
             {
-                if (isTurnRight)
-                {
-                    goal.easting = rEastYT - (Math.Cos(-head) * turnOffset);
-                    goal.northing = rNorthYT - (Math.Sin(-head) * turnOffset);
-                }
-                else
-                {
-                    goal.easting = rEastYT + (Math.Cos(-head) * turnOffset);
-                    goal.northing = rNorthYT + (Math.Sin(-head) * turnOffset);
-                }
+                goal.easting = start.easting + (Math.Cos(head) * turnOffset);
+                goal.northing = start.northing - (Math.Sin(head) * turnOffset);
+            }
+            else
+            {
+                goal.easting = start.easting - (Math.Cos(head) * turnOffset);
+                goal.northing = start.northing + (Math.Sin(head) * turnOffset);
             }
 
-            //generate the turn points
-            ytList = dubYouTurnPath.GenerateDubins(start, goal);
+            //generate the turn points (like AOG_Dev)
+            double extraSagitta = 0;
+            if (Math.Abs(turnOffset) < youTurnRadius * 2)
+                extraSagitta = (youTurnRadius * 2 - Math.Abs(turnOffset)) * 0.5;
+
+            ytList = GetOffsetSemicirclePoints(start, head, isTurnRight, youTurnRadius, extraSagitta, glm.PIBy2);
+            ytList2 = GetOffsetSemicirclePoints(goal, head, !isTurnRight, youTurnRadius, extraSagitta, glm.PIBy2);
+
+            ytList2.Reverse();
+            ytList.AddRange(ytList2);
+
+            ytList.Insert(0, new vec3(start.easting - Math.Sin(head) * youTurnStartOffset, start.northing - Math.Cos(head) * youTurnStartOffset, 0));
+            ytList.Add(new vec3(goal.easting - Math.Sin(head) * youTurnStartOffset, goal.northing - Math.Cos(head) * youTurnStartOffset, 0));
 
             isTurnLeft = !isTurnRight;
             YouTurnTrigger();
+        }
+
+        // Phase 6.10: AOG_Dev semicircle generation methods for smooth U-turns
+        private List<vec3> GetOffsetSemicirclePoints(vec3 currentPos, double theta, bool isTurningRight, double turningRadius, double offsetDistance, double angle)
+        {
+            List<vec3> points = new List<vec3>() { currentPos };
+
+            double firstArcAngle = Math.Acos(1 - (offsetDistance * 0.5) / turningRadius);
+
+            if (offsetDistance > 0)
+            {
+                AddCoordinatesToPath(ref currentPos, ref theta, points, firstArcAngle * turningRadius, !isTurningRight, turningRadius);
+            }
+
+            // Calculate the total remaining angle to complete the semicircle
+            double remainingAngle = angle + firstArcAngle;
+
+            AddCoordinatesToPath(ref currentPos, ref theta, points, remainingAngle * turningRadius, isTurningRight, turningRadius);
+            return points;
+        }
+
+        private void AddCoordinatesToPath(ref vec3 currentPos, ref double theta, List<vec3> finalPath, double length, bool isTurningRight, double turningRadius)
+        {
+            int segments = (int)Math.Ceiling(length / (youTurnRadius * 0.1));
+
+            double dist = length / segments;
+
+            //Which way are we turning?
+            double turnParameter = (dist / turningRadius) * (isTurningRight ? 1.0 : -1.0);
+            double radius = isTurningRight ? turningRadius : -turningRadius;
+
+            double sinH = Math.Sin(theta);
+            double cosH = Math.Cos(theta);
+
+            for (int i = 0; i < segments; i++)
+            {
+                currentPos.easting += cosH * radius;
+                currentPos.northing -= sinH * radius;
+                //Update the heading
+                theta += turnParameter;
+                theta %= glm.twoPI;
+                sinH = Math.Sin(theta);
+                cosH = Math.Cos(theta);
+                currentPos.easting -= cosH * radius;
+                currentPos.northing += sinH * radius;
+
+                finalPath.Add(currentPos);
+            }
         }
 
         public int onA;

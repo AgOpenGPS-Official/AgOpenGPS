@@ -278,6 +278,14 @@ namespace AgOpenGPS
         public GuidanceResult lastGuidanceResult;
 
         /// <summary>
+        /// Phase 6.10: Unified guidance data (like AOG_Dev gyd)
+        /// Used for YouTurn creation and other features
+        /// </summary>
+        public double rEastTrk, rNorthTrk;  // Closest point on track (r = reference point)
+        public double manualUturnHeading;    // Heading for manual U-turn creation
+        public bool isHeadingSameWay;        // Is vehicle heading same way as track?
+
+        /// <summary>
         /// The new brightness code
         /// </summary>
         public CWindowsSettingsBrightnessController displayBrightness;
@@ -863,7 +871,7 @@ namespace AgOpenGPS
         /// </summary>
         /// <param name="steerPosition">Current steer axle position</param>
         /// <param name="guidanceTrack">The active track curve points (AB or Curve)</param>
-        public GuidanceResult UpdateGuidance(vec3 steerPosition, List<vec3> guidanceTrack)
+        public GuidanceResult UpdateGuidance(vec3 steerPosition, List<vec3> guidanceTrack, bool isHeadingSameWay = true)
         {
             if (guidanceTrack == null || guidanceTrack.Count < 2)
             {
@@ -878,15 +886,18 @@ namespace AgOpenGPS
             _guidanceService.StanleyGain = vehicle.stanleyDistanceErrorGain;
             _guidanceService.StanleyHeadingErrorGain = vehicle.stanleyHeadingErrorGain;
             _guidanceService.LookaheadDistance = vehicle.UpdateGoalPointDistance();
+            _guidanceService.Wheelbase = vehicle.VehicleConfig.Wheelbase; // Phase 6.9: Use actual wheelbase for Pure Pursuit
             _guidanceService.MaxSteerAngle = vehicle.maxSteerAngle;
 
             // Calculate guidance (FAST: <0.5ms!)
+            // Phase 6.9: Pass isHeadingSameWay to determine lookahead direction
             var result = _guidanceService.CalculateGuidance(
                 currentPosition: new vec2(steerPosition.easting, steerPosition.northing),
                 currentHeading: steerPosition.heading,
                 currentSpeed: avgSpeed,
                 trackCurvePoints: guidanceTrack,
-                isReverse: isReverse);
+                isReverse: isReverse,
+                isHeadingSameWay: isHeadingSameWay);
 
             if (!result.IsValid)
             {
@@ -907,6 +918,17 @@ namespace AgOpenGPS
             // NEW Phase 6.8: Store result for OpenGL rendering (goal point display)
             lastGuidanceResult = result;
 
+            // Phase 6.10: Update unified guidance data (for YouTurn creation, etc.)
+            // Get closest point on track from guidance calculation
+            if (result.ClosestPointIndex >= 0 && result.ClosestPointIndex < guidanceTrack.Count)
+            {
+                var closestPt = guidanceTrack[result.ClosestPointIndex];
+                rEastTrk = closestPt.easting;
+                rNorthTrk = closestPt.northing;
+                manualUturnHeading = closestPt.heading;
+            }
+            this.isHeadingSameWay = isHeadingSameWay;
+
             return result;
         }
 
@@ -917,13 +939,20 @@ namespace AgOpenGPS
         /// <param name="track">Current active track</param>
         /// <param name="pivot">Current pivot position</param>
         /// <param name="guidanceTrack">Calculated guidance track from BuildGuidanceTrack (for curve rendering)</param>
-        public void CalculateGuidanceDisplayData(AgOpenGPS.Core.Models.Guidance.Track track, vec3 pivot, List<vec3> guidanceTrack = null)
+        /// <param name="howManyPathsAway">Phase 6.9: Calculated paths away (pass -999 to recalculate)</param>
+        /// <param name="isHeadingSameWay">Phase 6.9: Heading direction (pass with howManyPathsAway)</param>
+        /// <param name="distAway">Phase 6.9: Calculated offset distance (pass -999 to recalculate)</param>
+        public void CalculateGuidanceDisplayData(
+            AgOpenGPS.Core.Models.Guidance.Track track,
+            vec3 pivot,
+            List<vec3> guidanceTrack = null,
+            int howManyPathsAway = -999,
+            bool isHeadingSameWay = true,
+            double distAway = -999)
         {
-            System.Diagnostics.Debug.WriteLine($"CalculateGuidanceDisplayData ENTRY: track={(track != null ? track.Name : "null")}, pivot=({pivot.easting:F2},{pivot.northing:F2})");
-
+            // Phase 6.9: Debug logging removed for performance
             if (track == null)
             {
-                System.Diagnostics.Debug.WriteLine("  -> Track is NULL, clearing display data");
                 currentGuidanceDisplay = GuidanceDisplayData.Empty();
                 return;
             }
@@ -941,9 +970,6 @@ namespace AgOpenGPS
                 currentGuidanceDisplay.RefPtB = track.PtB;
                 currentGuidanceDisplay.Heading = track.Heading;
 
-                // DEBUG: Log track data to help diagnose rendering issues
-                System.Diagnostics.Debug.WriteLine($"CalculateGuidanceDisplayData: Track={track.Name}, Mode={track.Mode}, PtA=({track.PtA.easting:F2},{track.PtA.northing:F2}), PtB=({track.PtB.easting:F2},{track.PtB.northing:F2})");
-
             // Calculate extended endpoints
             currentGuidanceDisplay.RefEndPtA = new vec2(
                 track.PtA.easting - (Math.Sin(track.Heading) * abLength),
@@ -953,28 +979,37 @@ namespace AgOpenGPS
                 track.PtB.easting + (Math.Sin(track.Heading) * abLength),
                 track.PtB.northing + (Math.Cos(track.Heading) * abLength));
 
-            // Calculate distance from reference line
-            double dx = currentGuidanceDisplay.RefEndPtB.easting - currentGuidanceDisplay.RefEndPtA.easting;
-            double dy = currentGuidanceDisplay.RefEndPtB.northing - currentGuidanceDisplay.RefEndPtA.northing;
+            // Phase 6.9 FIX: Use passed-in values if available, otherwise recalculate
+            // This prevents duplicate calculation and ensures consistency with Position.designer.cs
+            if (howManyPathsAway == -999)
+            {
+                // Legacy path: recalculate (should not be used anymore)
+                double dx = currentGuidanceDisplay.RefEndPtB.easting - currentGuidanceDisplay.RefEndPtA.easting;
+                double dy = currentGuidanceDisplay.RefEndPtB.northing - currentGuidanceDisplay.RefEndPtA.northing;
 
-            double distanceFromRefLine = ((dy * guidanceLookPos.easting) - (dx * guidanceLookPos.northing) +
-                (currentGuidanceDisplay.RefEndPtB.easting * currentGuidanceDisplay.RefEndPtA.northing) -
-                (currentGuidanceDisplay.RefEndPtB.northing * currentGuidanceDisplay.RefEndPtA.easting))
-                / Math.Sqrt((dy * dy) + (dx * dx));
+                vec2 pivotPos2D = new vec2(pivot.easting, pivot.northing);
+                double distanceFromRefLine = ((dy * pivotPos2D.easting) - (dx * pivotPos2D.northing) +
+                    (currentGuidanceDisplay.RefEndPtB.easting * currentGuidanceDisplay.RefEndPtA.northing) -
+                    (currentGuidanceDisplay.RefEndPtB.northing * currentGuidanceDisplay.RefEndPtA.easting))
+                    / Math.Sqrt((dy * dy) + (dx * dx));
 
-            distanceFromRefLine -= (0.5 * widthMinusOverlap);
+                distanceFromRefLine -= (0.5 * widthMinusOverlap);
 
-            // Determine if heading same way
-            currentGuidanceDisplay.IsHeadingSameWay = Math.PI - Math.Abs(Math.Abs(pivot.heading - track.Heading) - Math.PI) < glm.PIBy2;
+                currentGuidanceDisplay.IsHeadingSameWay = Math.PI - Math.Abs(Math.Abs(pivot.heading - track.Heading) - Math.PI) < glm.PIBy2;
 
-            // Calculate which pass we're on
-            double refDist = (distanceFromRefLine + (currentGuidanceDisplay.IsHeadingSameWay ? tool.offset : -tool.offset) - track.NudgeDistance) / widthMinusOverlap;
-            currentGuidanceDisplay.HowManyPathsAway = (refDist < 0) ? (int)(refDist - 0.5) : (int)(refDist + 0.5);
+                double refDist = (distanceFromRefLine + (currentGuidanceDisplay.IsHeadingSameWay ? tool.offset : -tool.offset) - track.NudgeDistance) / widthMinusOverlap;
+                currentGuidanceDisplay.HowManyPathsAway = (refDist < 0) ? (int)(refDist - 0.5) : (int)(refDist + 0.5);
 
-            // Calculate current guidance line (offset from reference)
-            double distAway = widthMinusOverlap * currentGuidanceDisplay.HowManyPathsAway +
-                (currentGuidanceDisplay.IsHeadingSameWay ? -tool.offset : tool.offset) + track.NudgeDistance;
-            distAway += (0.5 * widthMinusOverlap);
+                distAway = widthMinusOverlap * currentGuidanceDisplay.HowManyPathsAway +
+                    (currentGuidanceDisplay.IsHeadingSameWay ? -tool.offset : tool.offset) + track.NudgeDistance;
+                distAway += (0.5 * widthMinusOverlap);
+            }
+            else
+            {
+                // Phase 6.9: Use passed-in values (correct path!)
+                currentGuidanceDisplay.HowManyPathsAway = howManyPathsAway;
+                currentGuidanceDisplay.IsHeadingSameWay = isHeadingSameWay;
+            }
 
             vec2 nudgePtA = new vec2(track.PtA);
             vec2 nudgePtB = new vec2(track.PtB);
