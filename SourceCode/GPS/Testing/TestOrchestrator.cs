@@ -109,6 +109,13 @@ namespace AgOpenGPS.Testing
             // Advance the simulation
             formGPS.sim.DoSimTick(steerAngle);
 
+            // Update section control in headless mode (normally called by Paint handler)
+            // This allows section control logic to run without requiring OpenGL Paint events
+            if (isHeadless)
+            {
+                formGPS.UpdateSectionControl();
+            }
+
             // If path logging is active, log the current state
             if (PathLogger != null && ((Controllers.PathLogger)PathLogger).IsLogging)
             {
