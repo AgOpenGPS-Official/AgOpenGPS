@@ -197,9 +197,10 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Console.WriteLine($"\n=== Field Coverage ===");
             Console.WriteLine($"Field area: {coverage.FieldArea:F1} m²");
             Console.WriteLine($"Worked area (total): {coverage.WorkedAreaTotal:F1} m²");
-            Console.WriteLine($"Covered area (overlap-adjusted): {coverage.CoveredArea:F1} m² [not available in headless mode]");
+            Console.WriteLine($"Covered area (overlap-adjusted): {coverage.CoveredArea:F1} m²");
+            Console.WriteLine($"Overlap percentage: {formGPS.fd.overlapPercent:F1}%");
             Console.WriteLine($"Coverage (from worked area): {coverage.WorkedAreaPercent:F1}%");
-            Console.WriteLine($"Note: Overlap calculation requires OpenGL pixel reading, not available in headless mode");
+            Console.WriteLine($"Coverage (overlap-adjusted): {coverage.CoveragePercent:F1}%");
 
             // Step 13: Analyze U-turn directions
             var uturnAnalysis = AnalyzeUTurnDirections(path);

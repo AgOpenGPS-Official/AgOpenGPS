@@ -376,7 +376,7 @@ namespace AgOpenGPS
             //send the byte out to section machines
             BuildMachineByte();
 
-            // Calculate overlap in headless mode using grid tracker
+            // Calculate overlap using grid tracker (replaces OpenGL pixel-reading method)
             if (coverageTracker != null)
             {
                 coverageTracker.CalculateOverlap();

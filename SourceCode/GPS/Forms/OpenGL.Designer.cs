@@ -1179,51 +1179,54 @@ namespace AgOpenGPS
 
                 //oglZoom.SwapBuffers();
 
+                // DEPRECATED: OpenGL pixel-reading overlap calculation
+                // Now using grid-based CCoverageTracker for more accurate and consistent results
+                // The grid-based tracker runs in UpdateSectionControl() and works in both UI and headless modes
 
-                int grnHeight = oglZoom.Height;
-                int grnWidth = oglZoom.Width;
-                byte[] overPix = new byte[grnHeight * grnWidth + 1];
+                //int grnHeight = oglZoom.Height;
+                //int grnWidth = oglZoom.Width;
+                //byte[] overPix = new byte[grnHeight * grnWidth + 1];
 
-                GL.ReadPixels(0, 0, grnWidth, grnWidth, OpenTK.Graphics.OpenGL.PixelFormat.Green, PixelType.UnsignedByte, overPix);
+                //GL.ReadPixels(0, 0, grnWidth, grnWidth, OpenTK.Graphics.OpenGL.PixelFormat.Green, PixelType.UnsignedByte, overPix);
 
-                int once = 0;
-                int twice = 0;
-                int more = 0;
-                int level = 0;
-                double total = 0;
-                double total2 = 0;
+                //int once = 0;
+                //int twice = 0;
+                //int more = 0;
+                //int level = 0;
+                //double total = 0;
+                //double total2 = 0;
 
-                //50, 96, 112                
-                for (int i = 0; i < grnHeight * grnWidth; i++)
-                {
+                ////50, 96, 112
+                //for (int i = 0; i < grnHeight * grnWidth; i++)
+                //{
 
-                    if (overPix[i] > 105)
-                    {
-                        more++;
-                        level = overPix[i];
-                    }
-                    else if (overPix[i] > 85)
-                    {
-                        twice++;
-                        level = overPix[i];
-                    }
-                    else if (overPix[i] > 50)
-                    {
-                        once++;
-                    }
-                }
-                total = once + twice + more;
-                total2 = total + twice + more + more;
+                //    if (overPix[i] > 105)
+                //    {
+                //        more++;
+                //        level = overPix[i];
+                //    }
+                //    else if (overPix[i] > 85)
+                //    {
+                //        twice++;
+                //        level = overPix[i];
+                //    }
+                //    else if (overPix[i] > 50)
+                //    {
+                //        once++;
+                //    }
+                //}
+                //total = once + twice + more;
+                //total2 = total + twice + more + more;
 
-                if (total2 > 0)
-                {
-                    fd.actualAreaCovered = (total / total2 * fd.workedAreaTotal);
-                    fd.overlapPercent = Math.Round(((1 - total / total2) * 100), 2);
-                }
-                else
-                {
-                    fd.actualAreaCovered = fd.overlapPercent = 0;
-                }
+                //if (total2 > 0)
+                //{
+                //    fd.actualAreaCovered = (total / total2 * fd.workedAreaTotal);
+                //    fd.overlapPercent = Math.Round(((1 - total / total2) * 100), 2);
+                //}
+                //else
+                //{
+                //    fd.actualAreaCovered = fd.overlapPercent = 0;
+                //}
 
                 //GL.Flush();
                 ////oglZoom.MakeCurrent();
