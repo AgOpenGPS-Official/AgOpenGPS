@@ -79,24 +79,24 @@ namespace AgOpenGPS.IntegrationTests.Tests
             workedArea.Should().BeGreaterThan(0, "Should have recorded some coverage");
             actualAreaCovered.Should().BeGreaterThan(0, "actualAreaCovered should be calculated in headless mode");
 
-            // NOTE: Grid-based tracker detects "overlap" even on straight passes because
-            // consecutive quadrilaterals cover some of the same grid cells as the implement moves forward.
-            // This is geometrically correct - the overlap calculation is working as designed.
+            // NOTE: Software rasterizer at 1cm resolution accurately detects minimal overlap
+            // on straight passes. Previous grid-based tracker (10cm) showed artificial overlap
+            // because consecutive quads covered the same grid cells.
 
-            // For a single straight pass:
-            // - workedAreaTotal counts all triangles (slight geometric overlap between consecutive positions)
-            // - actualAreaCovered accounts for this overlap
-            // Ratio typically 0.75-0.85 due to forward movement overlap
+            // For a single straight pass with software rasterizer:
+            // - workedAreaTotal counts all triangles
+            // - actualAreaCovered should be nearly equal to workedAreaTotal (minimal overlap)
+            // Ratio typically 0.95-1.0 due to high precision 1cm resolution
             double ratio = actualAreaCovered / workedArea;
-            ratio.Should().BeGreaterThan(0.70, "actualAreaCovered should be 70-90% of workedAreaTotal");
-            ratio.Should().BeLessThan(0.90, "Ratio should reflect normal forward movement overlap");
+            ratio.Should().BeGreaterThan(0.95, "actualAreaCovered should be 95-100% of workedAreaTotal with minimal overlap");
+            ratio.Should().BeLessThanOrEqualTo(1.0, "Ratio cannot exceed 1.0");
 
-            // Overlap percentage for single pass is typically 15-30%
-            overlapPercent.Should().BeInRange(10.0, 35.0, "Single pass shows forward movement overlap");
+            // Overlap percentage for single pass should be minimal (< 5%)
+            overlapPercent.Should().BeLessThan(5.0, "Single pass shows minimal overlap with 1cm resolution");
 
-            // Actual area should be close to expected (within 20% tolerance)
-            actualAreaCovered.Should().BeInRange(expectedArea * 0.75, expectedArea * 1.10,
-                "Actual coverage should be reasonable compared to expected area");
+            // Actual area should be close to expected (within 10% tolerance with 1cm resolution)
+            actualAreaCovered.Should().BeInRange(expectedArea * 0.90, expectedArea * 1.10,
+                "Actual coverage should be within 10% of expected area with high-resolution tracking");
         }
 
         /// <summary>
