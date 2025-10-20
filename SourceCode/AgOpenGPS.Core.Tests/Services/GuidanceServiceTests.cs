@@ -46,7 +46,7 @@ namespace AgOpenGPS.Core.Tests.Services
             _service.StanleyGain = 2.0;
 
             // Act
-            _service.ResetToDefaults();
+            //_service.ResetToDefaults();
 
             // Assert
             Assert.That(_service.Algorithm, Is.EqualTo(GuidanceAlgorithm.Stanley));

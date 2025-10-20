@@ -2246,8 +2246,65 @@ namespace AgOpenGPS
                 }
             }
 
-            // Draw YouTurn (still uses old class for now)
-            yt.DrawYouTurn();
+            // Draw YouTurn - unified rendering style
+            if (yt.ytList.Count >= 3)
+            {
+
+                // Determine color based on YouTurn state
+                if (yt.isYouTurnTriggered)
+                {
+                    // Active turn - magenta (matching guidance color)
+                    GL.Color3(0.95f, 0.5f, 0.95f);
+                }
+                else if (yt.isOutOfBounds)
+                {
+                    // Out of bounds - red/orange warning
+                    GL.Color3(0.9495f, 0.395f, 0.325f);
+                }
+                else if (yt.youTurnPhase < 130 && yt.youTurnPhase > 70)
+                {
+                    // Planning/preview phase - yellow
+                    GL.Color3(1.0f, 1.0f, 0.0f);
+                }
+                else
+                {
+                    // Ready - green
+                    GL.Color3(0.395f, 0.925f, 0.30f);
+                }
+
+                // Draw YouTurn path as line strip (more visible than points)
+                GL.LineWidth(lineWidth);
+                GL.Begin(PrimitiveType.LineStrip);
+                for (int i = 0; i < yt.ytList.Count; i++)
+                {
+                    GL.Vertex3(yt.ytList[i].easting, yt.ytList[i].northing, 0);
+                }
+                GL.End();
+
+                // Draw next curve/line to transition to (if available and in late phase)
+                if (!yt.isGoingStraightThrough && yt.youTurnPhase > 70 && yt.nextCurve != null && yt.nextCurve.Count > 1)
+                {
+                    // Black outline
+                    GL.LineWidth(lineWidth * 3);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Color3(0, 0, 0);
+                    for (int i = 0; i < yt.nextCurve.Count; i++)
+                    {
+                        GL.Vertex3(yt.nextCurve[i].easting, yt.nextCurve[i].northing, 0);
+                    }
+                    GL.End();
+
+                    // Cyan guidance line for next track
+                    GL.LineWidth(lineWidth);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Color3(0.0f, 1.0f, 1.0f);
+                    for (int i = 0; i < yt.nextCurve.Count; i++)
+                    {
+                        GL.Vertex3(yt.nextCurve[i].easting, yt.nextCurve[i].northing, 0);
+                    }
+                    GL.End();
+                }
+            }
 
             // Reset to defaults
             GL.PointSize(1.0f);

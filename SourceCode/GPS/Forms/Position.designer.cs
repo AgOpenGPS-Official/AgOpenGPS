@@ -4,6 +4,7 @@
 
 using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,6 +34,11 @@ namespace AgOpenGPS
         public double guidanceLookAheadTime = 2;
         public vec2 guidanceLookPos = new vec2(0, 0);
         public double dualReverseDetectionDistance;
+
+        // Phase 6.9: Track snapping - remember last state to avoid rebuilding every frame
+        private int lastHowManyPathsAway = int.MaxValue;
+        private bool lastIsHeadingSameWay = true;
+        private List<vec3> cachedGuidanceTrack = null;
 
         //for heading or Atan2 as camera
         public string headingFromSource, headingFromSourceBak;
@@ -899,31 +905,128 @@ namespace AgOpenGPS
                 try
                 {
                     var currentTrack = _trackService.GetCurrentTrack();
-                    System.Diagnostics.Debug.WriteLine($"Position guidance loop: currentTrack={(currentTrack != null ? currentTrack.Name + " (" + currentTrack.Mode + ")" : "NULL")}");
+                    // Phase 6.9: Debug logging removed for performance (was causing 15ms frame times)
 
                     if (currentTrack != null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"  -> IsValid={currentTrack.IsValid()}, PtA=({currentTrack.PtA.easting:F2},{currentTrack.PtA.northing:F2}), PtB=({currentTrack.PtB.easting:F2},{currentTrack.PtB.northing:F2})");
-
                     if (currentTrack.IsValid())
                     {
-                        System.Diagnostics.Debug.WriteLine($"  -> Track IS valid, building guidance...");
 
-                        // Phase 6.9: UNIFIED - Both AB and Curve use TrackService.BuildGuidanceTrack()
-                        // This is the AOG_Dev unified approach - no more separate CABLine/CABCurve logic!
-                        List<vec3> guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, currentTrack.NudgeDistance);
-                        System.Diagnostics.Debug.WriteLine($"  -> BuildGuidanceTrack ({currentTrack.Mode}) returned: {(guidanceTrack != null ? guidanceTrack.Count + " points" : "NULL")}");
+                        // Phase 6.9: Calculate actual offset distance from vehicle to track
+                        // Based on AOG_Dev CTracks.GetDistanceFromRefTrack (lines 178-238)
 
-                        if (guidanceTrack != null && guidanceTrack.Count >= 2)
+                        double widthMinusOverlap = tool.width - tool.overlap;
+                        double distanceFromRefLine = 0;
+                        bool isHeadingSameWay = true;
+
+                        // Phase 6.9 FIX: Find distance from PIVOT position to reference track
+                        // AOG_Dev uses actual pivot position, NOT a forward-projected lookahead position
+                        if (currentTrack.Mode != AgOpenGPS.Core.Models.Guidance.TrackMode.WaterPivot)
                         {
-                            System.Diagnostics.Debug.WriteLine($"  -> Calling UpdateGuidance with guidanceTrack ({guidanceTrack.Count} pts)");
-                            // Calculate guidance (cross-track error, steering angle)
-                            var guidanceResult = UpdateGuidance(steerAxlePos, guidanceTrack);
-                            System.Diagnostics.Debug.WriteLine($"  -> UpdateGuidance completed, now calling CalculateGuidanceDisplayData with guidanceTrack ({guidanceTrack.Count} pts)");
+                            // Find closest segment on reference track using PIVOT position (convert vec3 to vec2)
+                            vec2 pivotPos2D = new vec2(pivotAxlePos.easting, pivotAxlePos.northing);
+                            var (distance, sameway) = _trackService.GetDistanceFromTrack(currentTrack, pivotPos2D, pivotAxlePos.heading);
+                            distanceFromRefLine = distance;
+                            isHeadingSameWay = sameway;
+                        }
+                        else // Water pivot
+                        {
+                            // Cross product for pivot direction
+                            isHeadingSameWay = ((pivotAxlePos.easting - currentTrack.PtA.easting) * (steerAxlePos.northing - currentTrack.PtA.northing)
+                                - (pivotAxlePos.northing - currentTrack.PtA.northing) * (steerAxlePos.easting - currentTrack.PtA.easting)) < 0;
 
-                            // NEW Phase 6.8: Update display data with guidance track (for curve offset rendering)
-                            CalculateGuidanceDisplayData(currentTrack, pivotAxlePos, guidanceTrack);
-                            System.Diagnostics.Debug.WriteLine($"  -> CalculateGuidanceDisplayData completed");
+                            // Distance from pivot center (use pivot position, not lookahead)
+                            vec2 pivotPos2D = new vec2(pivotAxlePos.easting, pivotAxlePos.northing);
+                            distanceFromRefLine = -GeoMath.Distance(pivotPos2D, currentTrack.PtA);
+                        }
+
+                        // Adjust for tool positioning
+                        distanceFromRefLine -= (0.5 * widthMinusOverlap);
+
+                        // Calculate how many tool widths away from reference
+                        double RefDist = (distanceFromRefLine + (isHeadingSameWay ? tool.offset : -tool.offset) - currentTrack.NudgeDistance) / widthMinusOverlap;
+
+                        // Phase 6.9 FIX: Switch tracks at midpoint (simple, predictable)
+                        // Switch threshold: 0.5 = switch at 50% between lines (midpoint)
+                        double switchThreshold = 0.5;
+
+                        int howManyPathsAway = RefDist < 0
+                            ? (int)(RefDist - switchThreshold)
+                            : (int)(RefDist + switchThreshold);
+
+                        // Calculate actual offset distance for guidance track
+                        double distAway = widthMinusOverlap * howManyPathsAway +
+                                         (isHeadingSameWay ? -tool.offset : tool.offset) +
+                                         currentTrack.NudgeDistance;
+                        distAway += (0.5 * widthMinusOverlap);
+
+                        // Phase 6.9 FIX: Only rebuild guidance track when howManyPathsAway changes (like AOG_Dev CABLine.cs:120)
+                        // This prevents rebuilding every frame and ensures smooth track snapping
+                        // CRITICAL: When autosteer is active, LOCK to current track - NO switching!
+                        bool needsRebuild = (cachedGuidanceTrack == null ||
+                                            (!isBtnAutoSteerOn && howManyPathsAway != lastHowManyPathsAway) ||
+                                            (!isBtnAutoSteerOn && isHeadingSameWay != lastIsHeadingSameWay && tool.offset != 0));
+
+                        List<vec3> guidanceTrack;
+                        if (needsRebuild)
+                        {
+                            lastHowManyPathsAway = howManyPathsAway;
+                            lastIsHeadingSameWay = isHeadingSameWay;
+
+                            // Phase 6.9: UNIFIED - Both AB and Curve use TrackService.BuildGuidanceTrack()
+                            guidanceTrack = _trackService.BuildGuidanceTrack(currentTrack, distAway);
+                            cachedGuidanceTrack = guidanceTrack; // Cache for next frame
+                        }
+                        else
+                        {
+                            // Use cached track - no rebuild needed
+                            guidanceTrack = cachedGuidanceTrack;
+                        }
+
+                        // Phase 6.10: Check if YouTurn is active - it takes priority over normal guidance
+                        if (yt.isYouTurnTriggered && yt.ytList.Count >= 2)
+                        {
+                            // YouTurn is active - use YouTurn path for guidance instead of normal track
+                            // This allows the vehicle to follow the turn pattern
+                            vec3 guidancePosition = pivotAxlePos;
+
+                            // Use YouTurn path (ytList) as guidance track
+                            var youturnTrack = new System.Collections.Generic.List<AgOpenGPS.Core.Models.vec3>();
+                            foreach (var pt in yt.ytList)
+                            {
+                                youturnTrack.Add(new AgOpenGPS.Core.Models.vec3(pt.easting, pt.northing, pt.heading));
+                            }
+
+                            // Always heading same way during YouTurn (following the turn pattern)
+                            var guidanceResult = UpdateGuidance(guidancePosition, youturnTrack, true);
+
+                            // Store YouTurn guidance for display
+                            lastGuidanceResult = guidanceResult;
+                        }
+                        else if (guidanceTrack != null && guidanceTrack.Count >= 2)
+                        {
+                            // Normal track guidance (AB line or curve)
+                            // Phase 6.9 FIX: Use PIVOT position for lookahead (NOT steer axle or tool!)
+                            // Reasoning:
+                            // - Pivot is the reference point that can actually follow the curve
+                            // - Tool position (especially rigid tools behind pivot) causes wrong steering during curves
+                            // - Steer axle is too far forward (wheelbase delay)
+                            // - Pivot gives best balance: responsive but can handle curvature
+                            vec3 guidancePosition = pivotAxlePos;
+
+                            // Phase 6.9 FIX: Pass isHeadingSameWay to UpdateGuidance for correct lookahead direction
+                            // If !isHeadingSameWay, the lookahead walks backwards along track (180° reversed)
+                            var guidanceResult = UpdateGuidance(guidancePosition, guidanceTrack, isHeadingSameWay);
+
+                            // Store guidance result
+                            lastGuidanceResult = guidanceResult;
+
+                            // Phase 6.9 FIX: Only update display data when track was rebuilt (like AOG_Dev)
+                            // This prevents expensive calculations every frame
+                            if (needsRebuild)
+                            {
+                                CalculateGuidanceDisplayData(currentTrack, pivotAxlePos, guidanceTrack, howManyPathsAway, isHeadingSameWay, distAway);
+                            }
 
                             // Update legacy flags for UI compatibility
                             if (currentTrack.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB)
@@ -939,28 +1042,37 @@ namespace AgOpenGPS
                         }
                         else
                         {
-                            // BuildGuidanceTrack failed - clear flags
+                            // BuildGuidanceTrack failed - clear flags AND reset guidance result
                             ABLine.isABValid = false;
                             curve.isCurveValid = false;
+                            lastGuidanceResult = GuidanceResult.Invalid();
+                            cachedGuidanceTrack = null; // Phase 6.9: Clear cache
+                            lastHowManyPathsAway = int.MaxValue;
                         }
                     }
                     else
                     {
-                        // Track not valid yet - clear flags
-                        System.Diagnostics.Debug.WriteLine($"  -> Track NOT valid (IsValid=false), skipping BuildGuidanceTrack");
-
+                        // Track not valid yet - clear flags AND reset guidance result
                         // NEW Phase 6.8: Calculate display data with reference points only (no guidanceTrack)
                         // This shows at least the reference points even if CurvePts not built yet
                         CalculateGuidanceDisplayData(currentTrack, pivotAxlePos, null);
 
                         ABLine.isABValid = false;
                         curve.isCurveValid = false;
+                        lastGuidanceResult = GuidanceResult.Invalid();
+                        cachedGuidanceTrack = null; // Phase 6.9: Clear cache
+                        lastHowManyPathsAway = int.MaxValue;
                     }
                 }
                 else
                 {
-                    // No track - clear display data
+                    // No track - clear display data AND reset guidance result
                     currentGuidanceDisplay = GuidanceDisplayData.Empty();
+                    lastGuidanceResult = GuidanceResult.Invalid();
+                    ABLine.isABValid = false;
+                    curve.isCurveValid = false;
+                    cachedGuidanceTrack = null; // Phase 6.9: Clear cache
+                    lastHowManyPathsAway = int.MaxValue;
                 }
                 }
                 catch (Exception ex)
@@ -1351,12 +1463,12 @@ namespace AgOpenGPS
             steerAxlePos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * vehicle.VehicleConfig.Wheelbase);
             steerAxlePos.heading = fixHeading;
 
-            //guidance look ahead distance based on time or tool width at least 
-            
-            double guidanceLookDist = (Math.Max(tool.width * 0.5, avgSpeed * 0.277777 * guidanceLookAheadTime));
-            guidanceLookPos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * guidanceLookDist);
-            guidanceLookPos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * guidanceLookDist);
-            
+            // Phase 6.9: guidanceLookPos is DEPRECATED and no longer used
+            // AOG_Dev calculates lookahead distance dynamically via UpdateGoalPointDistance()
+            // which is called in UpdateGuidance() → GuidanceService.CalculateGuidance()
+            // Keep variable for legacy compatibility but don't calculate it
+            // guidanceLookPos is now unused - offset calculation uses actual pivot position
+
 
             //determine where the rigid vehicle hitch ends
             double hitchLengthFromPivot = tool.GetHitchLengthFromVehiclePivot();

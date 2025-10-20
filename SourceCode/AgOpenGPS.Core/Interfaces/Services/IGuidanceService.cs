@@ -28,6 +28,13 @@ namespace AgOpenGPS.Core.Interfaces.Services
         double LookaheadDistance { get; set; }
 
         /// <summary>
+        /// Vehicle wheelbase (distance between front and rear axle) in meters.
+        /// Used in Pure Pursuit formula for steering calculation.
+        /// Default: 2.5m (typical tractor)
+        /// </summary>
+        double Wheelbase { get; set; }
+
+        /// <summary>
         /// Stanley gain parameter for heading control.
         /// Default: 1.0, Range: 0.1-5.0
         /// Higher = more aggressive heading correction.
@@ -62,13 +69,15 @@ namespace AgOpenGPS.Core.Interfaces.Services
         /// <param name="currentSpeed">Current vehicle speed (m/s)</param>
         /// <param name="trackCurvePoints">The active track's curve points (from TrackService.BuildGuidanceTrack)</param>
         /// <param name="isReverse">True if vehicle is driving in reverse</param>
+        /// <param name="isHeadingSameWay">True if vehicle heading is same direction as track (not 180° reversed)</param>
         /// <returns>GuidanceResult struct with steering angle and diagnostic info</returns>
         GuidanceResult CalculateGuidance(
             vec2 currentPosition,
             double currentHeading,
             double currentSpeed,
             System.Collections.Generic.List<vec3> trackCurvePoints,
-            bool isReverse = false);
+            bool isReverse = false,
+            bool isHeadingSameWay = true);
 
         // ============================================================
         // Algorithm-Specific Methods (for testing/debugging)
@@ -86,7 +95,8 @@ namespace AgOpenGPS.Core.Interfaces.Services
             double currentHeading,
             double currentSpeed,
             System.Collections.Generic.List<vec3> trackCurvePoints,
-            bool isReverse);
+            bool isReverse,
+            bool isHeadingSameWay = true);
 
         /// <summary>
         /// Calculates Pure Pursuit algorithm steering.
@@ -100,7 +110,8 @@ namespace AgOpenGPS.Core.Interfaces.Services
             double currentHeading,
             double currentSpeed,
             System.Collections.Generic.List<vec3> trackCurvePoints,
-            bool isReverse);
+            bool isReverse,
+            bool isHeadingSameWay = true);
 
         // ============================================================
         // Utility Methods
@@ -116,12 +127,16 @@ namespace AgOpenGPS.Core.Interfaces.Services
         /// <param name="trackCurvePoints">Track curve points to search</param>
         /// <param name="lookaheadDistance">Distance ahead to find goal point</param>
         /// <param name="goalPoint">Output: The goal point on track</param>
+        /// <param name="isHeadingSameWay">True if vehicle heading is same direction as track (not 180° reversed)</param>
+        /// <param name="isReverse">True if vehicle is driving in reverse (lookahead behind vehicle)</param>
         /// <returns>True if goal point found, false otherwise</returns>
         bool FindGoalPoint(
             vec2 currentPosition,
             System.Collections.Generic.List<vec3> trackCurvePoints,
             double lookaheadDistance,
-            out vec3 goalPoint);
+            out vec3 goalPoint,
+            bool isHeadingSameWay = true,
+            bool isReverse = false);
 
         /// <summary>
         /// Clamps steering angle to maximum allowed range.

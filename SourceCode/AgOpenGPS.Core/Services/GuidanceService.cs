@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
-using AgOpenGPS.Core.Interfaces.Services;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Models.Guidance;
+using AgOpenGPS.Core.Interfaces.Services;
 using AgOpenGPS.Core.Geometry;
 
 namespace AgOpenGPS.Core.Services
 {
     /// <summary>
-    /// Implementation of IGuidanceService for calculating steering guidance.
-    /// Based on CGuidance from AOG_Dev with performance optimizations.
+    /// Service for calculating guidance steering based on vehicle position and active track.
+    /// Implements both Stanley and Pure Pursuit algorithms.
     ///
-    /// PERFORMANCE CRITICAL: Zero allocations in CalculateGuidance!
-    /// Target: <1ms per calculation (called 10-100x per second)
+    /// PERFORMANCE CRITICAL: Runs 10-100 times per second!
+    /// Target: <1ms per calculation with ZERO allocations.
     /// </summary>
     public class GuidanceService : IGuidanceService
     {
@@ -19,55 +20,52 @@ namespace AgOpenGPS.Core.Services
         // Configuration Properties
         // ============================================================
 
-        public GuidanceAlgorithm Algorithm { get; set; }
-        public double LookaheadDistance { get; set; }
-        public double StanleyGain { get; set; }
-        public double StanleyHeadingErrorGain { get; set; }
-        public double MaxSteerAngle { get; set; }
+        public GuidanceAlgorithm Algorithm { get; set; } = GuidanceAlgorithm.PurePursuit;
+
+        // Stanley parameters
+        public double StanleyGain { get; set; } = 2.5; // XTE gain - higher = more aggressive XTE correction
+        public double StanleyHeadingErrorGain { get; set; } = 0.3; // Heading weight (0-1) - lower = more XTE focus
+        public double StanleyIntegralGain { get; set; } = 0.0;
+
+        // Pure Pursuit parameters
+        public double LookaheadDistance { get; set; } = 2.0;
+        public double Wheelbase { get; set; } = 2.5; // Vehicle wheelbase in meters (default tractor)
+        public double PurePursuitDampingGain { get; set; } = 0.3; // XTE damping to prevent overshoot (0-1, default 0.3)
+
+        // Common parameters
+        public double MaxSteerAngle { get; set; } = 0.785398; // 45 degrees in radians
+        public double EpsilonSpeed { get; set; } = 0.1; // Minimum speed for division
+        public double MinSpeed { get; set; } = 0.25; // Minimum speed threshold
 
         // ============================================================
-        // Constants
+        // Main Calculation Method
         // ============================================================
 
-        private const double DefaultLookahead = 3.0;        // 3 meters
-        private const double DefaultStanleyGain = 1.0;
-        private const double DefaultHeadingGain = 0.5;      // 50% heading, 50% cross-track
-        private const double DefaultMaxSteerAngle = Math.PI / 4; // 45 degrees
-        private const double MinSpeed = 0.1;                // Minimum speed to avoid division by zero
-        private const double EpsilonSpeed = 0.01;           // Small epsilon for Stanley formula
-
-        // ============================================================
-        // Constructor
-        // ============================================================
-
-        public GuidanceService()
-        {
-            Algorithm = GuidanceAlgorithm.Stanley;
-            LookaheadDistance = DefaultLookahead;
-            StanleyGain = DefaultStanleyGain;
-            StanleyHeadingErrorGain = DefaultHeadingGain;
-            MaxSteerAngle = DefaultMaxSteerAngle;
-        }
-
-        // ============================================================
-        // Main Guidance Calculation (PERFORMANCE CRITICAL!)
-        // ============================================================
-
+        /// <summary>
+        /// Calculate guidance steering based on current position and track.
+        /// Dispatches to Stanley or Pure Pursuit based on Algorithm setting.
+        /// </summary>
         public GuidanceResult CalculateGuidance(
             vec2 currentPosition,
             double currentHeading,
             double currentSpeed,
             List<vec3> trackCurvePoints,
-            bool isReverse = false)
+            bool isReverse,
+            bool isHeadingSameWay = true)
         {
+            if (trackCurvePoints == null || trackCurvePoints.Count < 2)
+            {
+                return GuidanceResult.Invalid();
+            }
+
             // Dispatch to appropriate algorithm
             if (Algorithm == GuidanceAlgorithm.PurePursuit)
             {
-                return CalculatePurePursuit(currentPosition, currentHeading, currentSpeed, trackCurvePoints, isReverse);
+                return CalculatePurePursuit(currentPosition, currentHeading, currentSpeed, trackCurvePoints, isReverse, isHeadingSameWay);
             }
             else
             {
-                return CalculateStanley(currentPosition, currentHeading, currentSpeed, trackCurvePoints, isReverse);
+                return CalculateStanley(currentPosition, currentHeading, currentSpeed, trackCurvePoints, isReverse, isHeadingSameWay);
             }
         }
 
@@ -80,7 +78,8 @@ namespace AgOpenGPS.Core.Services
             double currentHeading,
             double currentSpeed,
             List<vec3> trackCurvePoints,
-            bool isReverse)
+            bool isReverse,
+            bool isHeadingSameWay = true)
         {
             // Validate inputs
             if (trackCurvePoints == null || trackCurvePoints.Count < 2)
@@ -88,13 +87,13 @@ namespace AgOpenGPS.Core.Services
                 return GuidanceResult.Invalid();
             }
 
-            // Find closest segment on track (optimized two-phase search)
+            // Find closest segment
             if (!GeometryUtils.FindClosestSegment(trackCurvePoints, currentPosition, out int rA, out int rB, false))
             {
                 return GuidanceResult.Invalid();
             }
 
-            // Calculate signed cross-track error
+            // Calculate cross-track error (signed distance to track)
             double crossTrackError = GeometryUtils.FindDistanceToSegment(
                 currentPosition,
                 trackCurvePoints[rA],
@@ -155,7 +154,8 @@ namespace AgOpenGPS.Core.Services
             double currentHeading,
             double currentSpeed,
             List<vec3> trackCurvePoints,
-            bool isReverse)
+            bool isReverse,
+            bool isHeadingSameWay = true)
         {
             // Validate inputs
             if (trackCurvePoints == null || trackCurvePoints.Count < 2)
@@ -177,8 +177,10 @@ namespace AgOpenGPS.Core.Services
                 out double time,
                 signed: true);
 
-            // Find goal point at lookahead distance
-            if (!FindGoalPoint(currentPosition, trackCurvePoints, LookaheadDistance, out vec3 goalPoint))
+            // Phase 6.9 FIX: Find goal point at lookahead distance, respecting heading direction AND reverse
+            // isHeadingSameWay: if false, walk backwards along track (180° reversed heading)
+            // isReverse: if true, lookahead is BEHIND vehicle instead of in front
+            if (!FindGoalPoint(currentPosition, trackCurvePoints, LookaheadDistance, out vec3 goalPoint, isHeadingSameWay, isReverse))
             {
                 // Fallback to closest point if goal not found
                 goalPoint = closestPoint;
@@ -199,13 +201,40 @@ namespace AgOpenGPS.Core.Services
 
             // Pure Pursuit formula:
             // steer = atan(2 * L * sin(alpha) / lookahead)
-            // where L = wheelbase (we use lookahead as proxy)
+            // where L = wheelbase (distance between front and rear axle)
             //
-            // Simplified (for our case, assume L ≈ lookahead/2):
-            // steer = atan(sin(alpha) / lookahead) * lookahead
-            // steer ≈ alpha for small angles
+            // Phase 6.9 FIX: Use actual Wheelbase instead of LookaheadDistance
+            // The wheelbase determines how aggressively the vehicle can turn
+            // Longer wheelbase = less aggressive steering response
 
-            double steerAngle = Math.Atan(2.0 * LookaheadDistance * Math.Sin(alpha) / (distanceToGoal + EpsilonSpeed));
+            // Phase 6.9 FIX: Use AOG_Dev Pure Pursuit formula (CABLine.cs:270-275)
+            // This is NOT the classical Pure Pursuit formula!
+            //
+            // AOG_Dev uses a simple local coordinate system transformation:
+            // localHeading = 2π - vehicleHeading
+            // (plus a small integral term 'inty' which we ignore for now)
+            //
+            // This works for BOTH curves and AB lines - it's unified!
+
+            // Calculate local heading - simple transformation
+            double localHeading = (2.0 * Math.PI) - vehicleHeading;
+
+            // Vector from current position to goal point
+            double deltaEast = goalPoint.easting - currentPosition.easting;
+            double deltaNorth = goalPoint.northing - currentPosition.northing;
+
+            // AOG_Dev dot product: NOTE cos/sin usage!
+            // (CABLine.cs:273-274)
+            double dotProduct = (deltaEast * Math.Cos(localHeading)) + (deltaNorth * Math.Sin(localHeading));
+
+            // Distance squared to goal point
+            double distanceSquared = (deltaEast * deltaEast) + (deltaNorth * deltaNorth);
+
+            // Prevent division by zero
+            if (distanceSquared < 0.01) distanceSquared = 0.01; // Min 10cm distance
+
+            // AOG_Dev Pure Pursuit formula (CABLine.cs:273-275)
+            double steerAngle = Math.Atan(2.0 * dotProduct * Wheelbase / distanceSquared);
 
             // Clamp to max steer angle
             steerAngle = ClampSteerAngle(steerAngle);
@@ -236,78 +265,134 @@ namespace AgOpenGPS.Core.Services
             vec2 currentPosition,
             List<vec3> trackCurvePoints,
             double lookaheadDistance,
-            out vec3 goalPoint)
+            out vec3 goalPoint,
+            bool isHeadingSameWay = true,
+            bool isReverse = false)
         {
             goalPoint = new vec3();
 
             if (trackCurvePoints == null || trackCurvePoints.Count < 2)
                 return false;
 
-            // OPTIMIZATION: Use DistanceSquared to avoid sqrt in loop
-            double lookaheadSq = lookaheadDistance * lookaheadDistance;
+            // Phase 6.9 FIX: Follow AOG_Dev logic - find closest point FIRST, then walk along track
+            // This ensures smooth lookahead movement along the track (CABCurve.cs lines 792-824)
 
-            // First, find closest point as starting reference
-            if (!GeometryUtils.FindClosestSegment(trackCurvePoints, currentPosition, out int closestIdx, out int _, false))
+            // Find closest segment
+            if (!GeometryUtils.FindClosestSegment(trackCurvePoints, currentPosition, out int rA, out int rB, false))
             {
                 return false;
             }
 
-            // Search forward from closest point for goal point at lookahead distance
-            // Strategy: Find first point >= lookahead distance ahead
-
             int count = trackCurvePoints.Count;
-            int searchRange = Math.Min(50, count); // Search up to 50 points ahead
+
+            // Calculate closest point on the segment (like AOG_Dev rEastCu/rNorthCu)
+            vec3 ptA = trackCurvePoints[rA];
+            vec3 ptB = trackCurvePoints[rB];
+
+            double dx = ptB.easting - ptA.easting;
+            double dy = ptB.northing - ptA.northing;
+            double segmentLengthSq = dx * dx + dy * dy;
+
+            vec3 closestPoint;
+            if (segmentLengthSq < 0.0001)
+            {
+                closestPoint = ptA;
+            }
+            else
+            {
+                // Project currentPosition onto segment
+                double U = ((currentPosition.easting - ptA.easting) * dx +
+                           (currentPosition.northing - ptA.northing) * dy) / segmentLengthSq;
+                U = Math.Max(0, Math.Min(1, U)); // Clamp to [0,1]
+
+                closestPoint = new vec3(
+                    ptA.easting + U * dx,
+                    ptA.northing + U * dy,
+                    ptA.heading + U * (ptB.heading - ptA.heading)
+                );
+            }
+
+            // Phase 6.9: Detect if track is a loop
+            vec3 firstPt = trackCurvePoints[0];
+            vec3 lastPt = trackCurvePoints[count - 1];
+            double dx_loop = lastPt.easting - firstPt.easting;
+            double dy_loop = lastPt.northing - firstPt.northing;
+            double distSq_loop = dx_loop * dx_loop + dy_loop * dy_loop;
+            bool isLoop = distSq_loop < 4.0; // 2 meters
+
+            // Phase 6.9 FIX: Walk along track from closest point, accumulating distance
+            // UNIFIED APPROACH: same logic for curves and AB lines
+            //
+            // Direction combines TWO independent factors:
+            // 1. isReverse: Physical reverse driving (lookahead BEHIND vehicle)
+            // 2. isHeadingSameWay: Track direction (forward or 180° reversed on track)
+            vec3 start = closestPoint;
+            double distSoFar = 0;
+
+            // Use lookahead distance as-is
+            // The XOR logic below handles the direction (forward/backward on track)
+            double effectiveLookahead = lookaheadDistance;
+
+            // SIMPLE UNIFIED LOGIC (matches AOG_Dev XOR logic in CABLine.cs:249)
+            // AOG_Dev: if (isReverse XOR isHeadingSameWay) → + direction, else → - direction
+            //
+            // Truth table:
+            // isReverse=false, isHeadingSameWay=true  → XOR=false → walk backward (-1)
+            // isReverse=false, isHeadingSameWay=false → XOR=true  → walk forward (+1)
+            // isReverse=true,  isHeadingSameWay=true  → XOR=true  → walk forward (+1)
+            // isReverse=true,  isHeadingSameWay=false → XOR=false → walk backward (-1)
+            bool xorResult = isReverse ^ isHeadingSameWay;
+            int direction = xorResult ? 1 : -1;
+
+            // Start index based on direction
+            int startIdx = (direction > 0) ? rB : rA;
+
+            int searchRange = Math.Min(200, count); // Search up to 200 points
 
             for (int i = 0; i < searchRange; i++)
             {
-                int idx = (closestIdx + i) % count; // Wrap around for closed loops
+                int idx;
+                if (isLoop)
+                {
+                    idx = (startIdx + (direction * i) + count) % count;
+                }
+                else
+                {
+                    idx = startIdx + (direction * i);
+                    if (idx >= count || idx < 0)
+                    {
+                        // Reached end - use boundary point
+                        goalPoint = idx >= count ? trackCurvePoints[count - 1] : trackCurvePoints[0];
+                        return true;
+                    }
+                }
+
                 vec3 pt = trackCurvePoints[idx];
 
-                double dx = pt.easting - currentPosition.easting;
-                double dy = pt.northing - currentPosition.northing;
-                double distSq = dx * dx + dy * dy;
+                // Distance from start to this point
+                double tempDist = GeoMath.Distance(start, pt);
 
-                // Found point at or beyond lookahead distance
-                if (distSq >= lookaheadSq)
+                // Will we go too far?
+                if ((distSoFar + tempDist) > effectiveLookahead)
                 {
-                    // Interpolate between previous and current point for exact lookahead distance
-                    if (i > 0)
-                    {
-                        int prevIdx = (closestIdx + i - 1) % count;
-                        vec3 prevPt = trackCurvePoints[prevIdx];
+                    // Interpolate for exact lookahead distance (using effective distance)
+                    double j = (effectiveLookahead - distSoFar) / tempDist; // Remainder to travel
+                    j = Math.Max(0, Math.Min(1, j));
 
-                        // Distance to previous point
-                        double dx0 = prevPt.easting - currentPosition.easting;
-                        double dy0 = prevPt.northing - currentPosition.northing;
-                        double dist0Sq = dx0 * dx0 + dy0 * dy0;
-
-                        // Interpolate between prevPt and pt
-                        double dist0 = Math.Sqrt(dist0Sq);
-                        double dist1 = Math.Sqrt(distSq);
-
-                        if (dist1 - dist0 > 0.01) // Avoid division by zero
-                        {
-                            double t = (lookaheadDistance - dist0) / (dist1 - dist0);
-                            t = Math.Max(0, Math.Min(1, t)); // Clamp to [0,1]
-
-                            goalPoint = new vec3(
-                                prevPt.easting + t * (pt.easting - prevPt.easting),
-                                prevPt.northing + t * (pt.northing - prevPt.northing),
-                                prevPt.heading + t * (pt.heading - prevPt.heading)
-                            );
-                            return true;
-                        }
-                    }
-
-                    // Use current point directly
-                    goalPoint = pt;
+                    goalPoint = new vec3(
+                        ((1 - j) * start.easting) + (j * pt.easting),
+                        ((1 - j) * start.northing) + (j * pt.northing),
+                        ((1 - j) * start.heading) + (j * pt.heading)
+                    );
                     return true;
                 }
+
+                distSoFar += tempDist;
+                start = pt;
             }
 
-            // Fallback: use furthest point searched
-            int fallbackIdx = (closestIdx + searchRange - 1) % count;
-            goalPoint = trackCurvePoints[fallbackIdx];
+            // Fallback: use furthest point reached
+            goalPoint = start;
             return true;
         }
 
@@ -352,15 +437,11 @@ namespace AgOpenGPS.Core.Services
         }
 
         /// <summary>
-        /// Resets all parameters to defaults.
+        /// Validates and clamps steering angle to safe range.
         /// </summary>
-        public void ResetToDefaults()
+        public void SetMaxSteerAngle(double maxAngle)
         {
-            Algorithm = GuidanceAlgorithm.Stanley;
-            LookaheadDistance = DefaultLookahead;
-            StanleyGain = DefaultStanleyGain;
-            StanleyHeadingErrorGain = DefaultHeadingGain;
-            MaxSteerAngle = DefaultMaxSteerAngle;
+            MaxSteerAngle = Math.Max(0.1, Math.Min(Math.PI / 2, maxAngle));
         }
     }
 }

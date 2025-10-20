@@ -223,7 +223,23 @@ namespace AgOpenGPS
             _trackService.ClearTracks();
             foreach (var track in tracks)
             {
-                _trackService.AddTrack(track);
+                // Phase 6.9 FIX: Rebuild CurvePts for AB lines if missing
+                // Old AB line files don't have CurvePts saved, so rebuild them
+                if (track.Mode == AgOpenGPS.Core.Models.Guidance.TrackMode.AB &&
+                    (track.CurvePts == null || track.CurvePts.Count == 0))
+                {
+                    System.Diagnostics.Debug.WriteLine($"FileLoadTracks: AB track '{track.Name}' has no CurvePts, rebuilding via TrackService");
+                    // Use TrackService to create a proper AB track with CurvePts
+                    var rebuiltTrack = _trackService.CreateABTrack(track.PtA, track.PtB, track.Heading, track.Name);
+                    rebuiltTrack.NudgeDistance = track.NudgeDistance;
+                    rebuiltTrack.IsVisible = track.IsVisible;
+                    rebuiltTrack.Id = track.Id;
+                    _trackService.AddTrack(rebuiltTrack);
+                }
+                else
+                {
+                    _trackService.AddTrack(track);
+                }
             }
             _trackService.SetCurrentTrackIndex(-1);  // No track selected
 

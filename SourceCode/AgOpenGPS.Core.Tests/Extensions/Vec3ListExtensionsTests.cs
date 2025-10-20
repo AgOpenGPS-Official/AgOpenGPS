@@ -158,7 +158,7 @@ namespace AgOpenGPS.Core.Tests.Extensions
             {
                 double dist = GeoMath.Distance(offsetPoints[i - 1], offsetPoints[i]);
                 Assert.That(dist, Is.GreaterThanOrEqualTo(Math.Sqrt(minDist) * 0.9),
-                    $"Distance between points {i-1} and {i} should respect minimum distance");
+                    $"Distance between points {i - 1} and {i} should respect minimum distance");
             }
         }
 
