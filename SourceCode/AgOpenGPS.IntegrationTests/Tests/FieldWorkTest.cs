@@ -18,12 +18,12 @@ namespace AgOpenGPS.IntegrationTests.Tests
     {
         /// <summary>
         /// Tests complete field work operation from edge to edge with multiple U-turns.
-        /// Creates a 30m x 100m field, enables autosteer, U-turn, and section control.
+        /// Creates a 50m x 100m field, enables autosteer, U-turn, and section control.
         /// Verifies coverage percentage, U-turn count, and alternating U-turn directions.
         /// Runs in headless mode for automated CI testing.
         /// </summary>
         [Test]
-        public void Test_CompleteFieldWork_FromEdgeToEdge_WithUTurns()
+        public void Test_CompleteFieldWork_50x100m_5mImplement()
         {
             RunCompleteFieldWorkTest(visualMode: false);
         }
@@ -43,10 +43,11 @@ namespace AgOpenGPS.IntegrationTests.Tests
         }
 
         /// <summary>
-        /// Core test logic: Creates a 30m x 100m field with track on left edge,
+        /// Core test logic: Creates a 50m x 100m field with track on left edge,
         /// enables autosteer, U-turn (5m trigger), and section control.
         /// Simulates until tractor crosses field boundary (completes the field).
         /// Analyzes coverage percentage, U-turn count, and direction alternation.
+        /// Field width (50m) is evenly divisible by implement width (5m) = 10 passes.
         /// </summary>
         private void RunCompleteFieldWorkTest(bool visualMode)
         {
@@ -117,34 +118,34 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             Console.WriteLine($"7. Implement configured: {formGPS.tool.width}m width, {formGPS.tool.numOfSections} section(s)");
 
-            // Enable U-turn with custom settings
-            var uturnController = orchestrator.UTurnController;
-            uturnController.Enable();
-            uturnController.SetDistanceFromBoundary(2.5); // 2.5m trigger distance from edge
-            formGPS.yt.youTurnRadius = 5.0; // 5m U-turn radius
-            Console.WriteLine("8. U-turn enabled (trigger at 2.5m, radius 5m)");
-
-            // Enable track skipping
-            formGPS.yt.skipMode = SkipMode.Alternative; // Enable alternating turns
-            formGPS.yt.rowSkipsWidth = 2; // Need at least 2 for alternating mode (skip 1 track)
-            formGPS.yt.Set_Alternate_skips(); // Initialize alternating skip state
-            formGPS.yt.previousBigSkip = false; // Start with small skip first
-            Console.WriteLine("9. Track skipping enabled (skip count: 1, alternating mode)");
-
-            // Enable implement - turn master switch ON first, then individual sections
+            // Step 7: Enable implement - do this AFTER tractor is positioned and BEFORE starting work
             formGPS.autoBtnState = btnStates.Auto; // Turn on auto section control
             for (int i = 0; i < FormGPS.MAXSECTIONS; i++)
             {
                 formGPS.section[i].sectionBtnState = btnStates.On; // Set button state to ON
             }
-            Console.WriteLine($"10. Implement auto section control enabled (all sections set to ON)");
+            Console.WriteLine($"8. Implement auto section control enabled (all sections set to ON)");
 
-            // Start path logging
+            // Step 8: Enable U-turn with custom settings
+            var uturnController = orchestrator.UTurnController;
+            uturnController.Enable();
+            uturnController.SetDistanceFromBoundary(2.5); // 2.5m trigger distance from edge
+            formGPS.yt.youTurnRadius = 5.0; // 5m U-turn radius
+            Console.WriteLine("9. U-turn enabled (trigger at 2.5m, radius 5m)");
+
+            // Step 9: Enable track skipping
+            formGPS.yt.skipMode = SkipMode.Alternative; // Enable alternating turns
+            formGPS.yt.rowSkipsWidth = 2; // Need at least 2 for alternating mode (skip 1 track)
+            formGPS.yt.Set_Alternate_skips(); // Initialize alternating skip state
+            formGPS.yt.previousBigSkip = false; // Start with small skip first
+            Console.WriteLine("10. Track skipping enabled (skip count: 1, alternating mode)");
+
+            // Step 10: Start path logging
             var pathLogger = orchestrator.PathLogger;
             pathLogger.StartLogging();
             Console.WriteLine("11. Path logging started\n");
 
-            // Step 9: Run simulation until tractor crosses field boundary
+            // Step 11: Run simulation until tractor crosses field boundary
             Console.WriteLine("=== Starting Simulation ===");
             var tracker = new FieldWorkTracker(fieldWidth, fieldLength);
 
