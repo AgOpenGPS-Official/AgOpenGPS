@@ -611,41 +611,58 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    // Check if AgShare upload should be included in progress (already started in FileSaveEverythingBeforeClosingField)
-                    bool showAgShareProgress = Settings.Default.AgShareEnabled &&
-                                               Settings.Default.AgShareUploadActive &&
-                                               isAgShareUploadStarted;
+                    // Check if AgShare upload should be shown (will be started in FileSaveEverythingBeforeClosingField)
+                    bool isAgShareEnabled = Settings.Default.AgShareEnabled &&
+                                           Settings.Default.AgShareUploadActive &&
+                                           !isAgShareUploadStarted;
 
                     // Setup progress steps
-                    if (showAgShareProgress) savingForm.AddStep("AgShare", gStr.gsSaveUploadToAgshare);
                     savingForm.AddStep("Field", gStr.gsSaveField);
+                    if (isAgShareEnabled) savingForm.AddStep("AgShare", gStr.gsSaveUploadToAgshare);
                     savingForm.AddStep("Settings", gStr.gsSaveSettings);
                     savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
 
                     savingForm.Show();
                     await Task.Delay(300); // Let UI settle
 
-                    // STEP 1: AgShare Upload (if already started in FileSaveEverythingBeforeClosingField)
-                    // NOTE: The upload was already started, we just wait for it to complete
-                    if (showAgShareProgress && agShareUploadTask != null)
-                    {
-                        try
-                        {
-                            await agShareUploadTask;
-                            savingForm.UpdateStep("AgShare", gStr.gsSaveUploadCompleted, SavingStepState.Done);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.EventWriter($"AgShare upload error during shutdown: {ex}");
-                            savingForm.UpdateStep("AgShare", gStr.gsSaveUploadFailed, SavingStepState.Failed);
-                        }
-                    }
-
-                    // STEP 2: Save Field (Boundary, Tracks, Sections, Contour, etc.)
+                    // STEP 1: Save Field (Boundary, Tracks, Sections, Contour, etc.)
+                    // NOTE: This also starts AND waits for AgShare upload if enabled
                     try
                     {
                         await FileSaveEverythingBeforeClosingField();
                         savingForm.UpdateStep("Field", gStr.gsSaveFieldSavedLocal, SavingStepState.Done);
+
+                        // STEP 2: Update AgShare status (upload was completed in FileSaveEverythingBeforeClosingField)
+
+                        if (Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive && isAgShareUploadStarted)
+                        {
+
+                            // The upload was already awaited in FileSaveEverythingBeforeClosingField
+                            // Check if the task completed successfully
+                            if (agShareUploadTask != null)
+                            {
+
+                                if (agShareUploadTask.Status == TaskStatus.RanToCompletion)
+                                {
+                                    savingForm.UpdateStep("AgShare", gStr.gsSaveUploadCompleted, SavingStepState.Done);
+                                }
+                                else if (agShareUploadTask.Status == TaskStatus.Faulted)
+                                {
+                                    savingForm.UpdateStep("AgShare", gStr.gsSaveUploadFailed, SavingStepState.Failed);
+                                }
+                                else
+                                {
+                                    // Still running or cancelled? This shouldn't happen as FileSaveEverythingBeforeClosingField awaits it
+                                    savingForm.UpdateStep("AgShare", "Upload status unknown", SavingStepState.Failed);
+                                }
+                            }
+                            else
+                            {
+                            }
+                        }
+                        else
+                        {
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1181,8 +1198,12 @@ namespace AgOpenGPS
             worldGrid.BingBitmap = Properties.Resources.z_bingMap;
 
             // Reset AgShare upload state and clear snapshot after field is closed
-            isAgShareUploadStarted = false;
-            snapshot = null;
+            // NOTE: Don't reset during shutdown - the shutdown flow needs to check this flag
+            if (!isShuttingDown)
+            {
+                isAgShareUploadStarted = false;
+                snapshot = null;
+            }
 
         }
 

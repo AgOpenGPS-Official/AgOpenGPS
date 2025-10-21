@@ -618,7 +618,7 @@ namespace AgOpenGPS
             }
 
             // Start AgShare upload (if enabled)
-            Task agShareUploadTask = Task.CompletedTask;
+            agShareUploadTask = Task.CompletedTask;
             if (!isAgShareUploadStarted &&
                 Settings.Default.AgShareEnabled &&
                 Settings.Default.AgShareUploadActive)
