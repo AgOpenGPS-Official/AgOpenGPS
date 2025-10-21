@@ -612,10 +612,9 @@ namespace AgOpenGPS
 
                 if (isJobStarted)
                 {
-                    // Check if AgShare upload should be shown (will be started in FileSaveEverythingBeforeClosingField)
+                    // Check if AgShare is enabled (step will be added regardless of whether upload already started)
                     bool isAgShareEnabled = Settings.Default.AgShareEnabled &&
-                                           Settings.Default.AgShareUploadActive &&
-                                           !isAgShareUploadStarted;
+                                           Settings.Default.AgShareUploadActive;
 
                     // Setup progress steps
                     savingForm.AddStep("Field", gStr.gsSaveField);
@@ -634,15 +633,12 @@ namespace AgOpenGPS
                         savingForm.UpdateStep("Field", gStr.gsSaveFieldSavedLocal, SavingStepState.Done);
 
                         // STEP 2: Update AgShare status (upload was completed in FileSaveEverythingBeforeClosingField)
-
-                        if (Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive && isAgShareUploadStarted)
+                        if (isAgShareEnabled && isAgShareUploadStarted)
                         {
-
                             // The upload was already awaited in FileSaveEverythingBeforeClosingField
                             // Check if the task completed successfully
                             if (agShareUploadTask != null)
                             {
-
                                 if (agShareUploadTask.Status == TaskStatus.RanToCompletion)
                                 {
                                     savingForm.UpdateStep("AgShare", gStr.gsSaveUploadCompleted, SavingStepState.Done);
@@ -657,12 +653,6 @@ namespace AgOpenGPS
                                     savingForm.UpdateStep("AgShare", "Upload status unknown", SavingStepState.Failed);
                                 }
                             }
-                            else
-                            {
-                            }
-                        }
-                        else
-                        {
                         }
                     }
                     catch (Exception ex)
@@ -681,7 +671,7 @@ namespace AgOpenGPS
                         {
                             isShuttingDown = false;
                             if (savingForm != null && !savingForm.IsDisposed) savingForm.Close();
-                            throw new OperationCanceledException("User cancelled shutdown due to save error");
+                            return; // Exit without calling FinishShutdown - user cancelled
                         }
                     }
 
@@ -707,49 +697,26 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    // No job started - just save settings
-                    savingForm.AddStep("Settings", gStr.gsSaveSettings);
-                    savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
-                    savingForm.Show();
-                    await Task.Delay(300);
-
-                    // Save settings and system log
+                    // Job not started - just save settings
                     try
                     {
                         Settings.Default.Save();
-                        Log.FileSaveSystemEvents(); // FIX: Was missing!
-                        await Task.Delay(300);
-                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                        Log.FileSaveSystemEvents();
                     }
                     catch (Exception ex)
                     {
                         Log.EventWriter($"Settings save error: {ex}");
-                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
                     }
-
-                    await Task.Delay(300);
-                    savingForm.UpdateStep("Finalize", gStr.gsSaveAllDone, SavingStepState.Done);
-                    await Task.Delay(750);
-                    savingForm.Finish();
-                }
-
-                // Keep form visible briefly to show completion
-                await Task.Delay(2000);
-
-                // Close form safely
-                if (savingForm != null && !savingForm.IsDisposed && savingForm.Visible)
-                {
-                    savingForm.Close();
                 }
             }
             finally
             {
                 // Ensure form is disposed
                 savingForm?.Dispose();
-
-                // Always call FinishShutdown to complete the process
-                FinishShutdown(choice);
             }
+
+            // Only finish shutdown if we didn't return early due to user cancellation
+            FinishShutdown(choice);
         }
 
 
