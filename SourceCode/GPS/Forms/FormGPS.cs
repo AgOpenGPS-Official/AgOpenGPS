@@ -585,6 +585,7 @@ namespace AgOpenGPS
             // Execute shutdown with proper exception handling
             try
             {
+                Log.EventWriter("Closing Application " + DateTime.Now);
                 await ShowSavingFormAndShutdown(choice);
             }
             catch (Exception ex)
@@ -688,7 +689,7 @@ namespace AgOpenGPS
                     try
                     {
                         Settings.Default.Save();
-                        Log.FileSaveSystemEvents(); // FIX: Was missing!
+                        Log.FileSaveSystemEvents();
                         await Task.Delay(300);
                         savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
                     }
