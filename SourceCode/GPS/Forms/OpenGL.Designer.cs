@@ -732,8 +732,6 @@ namespace AgOpenGPS
             }
         }
 
-        private int bbCounter = 0;
-
         private void oglBack_Load(object sender, EventArgs e)
         {
             oglBack.MakeCurrent();
