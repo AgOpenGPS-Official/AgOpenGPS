@@ -111,10 +111,12 @@ namespace AgOpenGPS
             }
             else
             {
-                //turn on buttons when GPS is active again (or SIM is enabled)
+                //turn on buttons when GPS is active and initialized (or SIM is enabled and initialized)
+                //Settings and Special Functions can be enabled when GPS is active
                 toolStripDropDownButton1.Enabled = true;
                 toolStripDropDownButton4.Enabled = true;
-                btnJobMenu.Enabled = true;
+                //Job/Field button only enabled when GPS position is initialized to prevent opening FormJob with SIM coords while GNSS is still initializing
+                btnJobMenu.Enabled = isGPSPositionInitialized;
             }
 
             ////////////////////////////////////////////// 10 second ///////////////////////////////////////////////////////
