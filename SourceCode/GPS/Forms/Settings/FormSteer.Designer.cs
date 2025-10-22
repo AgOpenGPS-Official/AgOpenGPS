@@ -1724,7 +1724,7 @@
             // 
             this.hsbarHighSteerPWM.LargeChange = 2;
             this.hsbarHighSteerPWM.Location = new System.Drawing.Point(68, 179);
-            this.hsbarHighSteerPWM.Maximum = 255;
+            this.hsbarHighSteerPWM.Maximum = 256;
             this.hsbarHighSteerPWM.Name = "hsbarHighSteerPWM";
             this.hsbarHighSteerPWM.Size = new System.Drawing.Size(202, 30);
             this.hsbarHighSteerPWM.TabIndex = 274;
