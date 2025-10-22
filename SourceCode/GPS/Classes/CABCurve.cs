@@ -538,8 +538,9 @@ namespace AgOpenGPS
 
                     newGuideLL.Add(newGuideList);
 
+                    double toolOffset = isHeadingSameWay ? mf.tool.offset : -mf.tool.offset;
                     double nextGuideDist = (mf.tool.width - mf.tool.overlap) * numGuides +
-                        (isHeadingSameWay ? -mf.tool.offset : mf.tool.offset) + track.nudgeDistance;
+                        (2 * toolOffset);
 
                     //nextGuideDist += (0.5 * (mf.tool.width - mf.tool.overlap));
 
