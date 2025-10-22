@@ -56,7 +56,7 @@ jobs:
 
     - name: Create AgOpenGPS_${{ env.GitVersion_SemVer }}.zip
       shell: powershell
-      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}" -Destination "AgOpenGPS_${{ env.GitVersion_SemVer }}.zip"
+      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}/*" -DestinationPath "AgOpenGPS_${{ env.GitVersion_SemVer }}.zip"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
