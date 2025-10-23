@@ -178,7 +178,11 @@ namespace AgOpenGPS.Forms.Field
             chkForceOverwrite.Enabled = true;
 
             // Show result
-            string message = $"Downloaded {result.Downloaded} new field(s).\nSkipped {result.Skipped} existing.";
+            string message = $"Downloaded {result.Downloaded} new field(s).";
+            if (result.Skipped > 0)
+            {
+                message += $"\nSkipped {result.Skipped} existing.";
+            }
             if (result.Failed > 0)
             {
                 message += $"\nFailed {result.Failed} field(s).";

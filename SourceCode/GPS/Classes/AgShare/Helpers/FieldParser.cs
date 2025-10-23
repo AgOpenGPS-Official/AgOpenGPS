@@ -2,11 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS.Classes.AgShare.Helpers
 {
     public static class AgShareFieldParser
     {
+        /// <summary>
+        /// Validates if coordinates are within valid WGS84 ranges
+        /// </summary>
+        private static bool IsValidCoordinate(double latitude, double longitude)
+        {
+            return latitude >= -90 && latitude <= 90 &&
+                   longitude >= -180 && longitude <= 180;
+        }
+
         public static LocalFieldModel Parse(AgShareFieldDto dto)
         {
             if (dto == null)
@@ -20,14 +30,18 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
             }
 
             // Validate coordinates are within valid ranges
-            if (dto.Latitude < -90 || dto.Latitude > 90)
+            if (!IsValidCoordinate(dto.Latitude, dto.Longitude))
             {
-                throw new ArgumentException($"Invalid latitude: {dto.Latitude}", nameof(dto));
+                throw new ArgumentException($"Invalid origin coordinates: Lat={dto.Latitude}, Lon={dto.Longitude}", nameof(dto));
             }
 
-            if (dto.Longitude < -180 || dto.Longitude > 180)
+            // Field must have at least a boundary or AB line
+            bool hasBoundaries = dto.Boundaries != null && dto.Boundaries.Count > 0;
+            bool hasAbLines = dto.AbLines != null && dto.AbLines.Count > 0;
+
+            if (!hasBoundaries && !hasAbLines)
             {
-                throw new ArgumentException($"Invalid longitude: {dto.Longitude}", nameof(dto));
+                throw new ArgumentException($"Field '{dto.Name}' has no boundaries or AB lines", nameof(dto));
             }
 
             var result = new LocalFieldModel
@@ -61,9 +75,9 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                         }
 
                         // Validate coordinates
-                        if (point.Latitude < -90 || point.Latitude > 90 ||
-                            point.Longitude < -180 || point.Longitude > 180)
+                        if (!IsValidCoordinate(point.Latitude, point.Longitude))
                         {
+                            Log.EventWriter($"[AgShare] Skipping invalid boundary coordinate in field '{dto.Name}': Lat={point.Latitude}, Lon={point.Longitude}");
                             continue; // Skip invalid coordinates
                         }
 
@@ -95,11 +109,10 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                         continue;
                     }
 
-                    if (ab.Coords[0].Latitude < -90 || ab.Coords[0].Latitude > 90 ||
-                        ab.Coords[0].Longitude < -180 || ab.Coords[0].Longitude > 180 ||
-                        ab.Coords[1].Latitude < -90 || ab.Coords[1].Latitude > 90 ||
-                        ab.Coords[1].Longitude < -180 || ab.Coords[1].Longitude > 180)
+                    if (!IsValidCoordinate(ab.Coords[0].Latitude, ab.Coords[0].Longitude) ||
+                        !IsValidCoordinate(ab.Coords[1].Latitude, ab.Coords[1].Longitude))
                     {
+                        Log.EventWriter($"[AgShare] Skipping AB line '{ab.Name ?? "Unnamed"}' in field '{dto.Name}' - invalid start/end coordinates");
                         continue; // Skip AB lines with invalid coordinates
                     }
 
@@ -128,9 +141,9 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                             }
 
                             // Validate coordinates
-                            if (p.Latitude < -90 || p.Latitude > 90 ||
-                                p.Longitude < -180 || p.Longitude > 180)
+                            if (!IsValidCoordinate(p.Latitude, p.Longitude))
                             {
+                                Log.EventWriter($"[AgShare] Skipping invalid curve point in AB line '{ab.Name ?? "Unnamed"}' of field '{dto.Name}': Lat={p.Latitude}, Lon={p.Longitude}");
                                 continue; // Skip invalid coordinates
                             }
 

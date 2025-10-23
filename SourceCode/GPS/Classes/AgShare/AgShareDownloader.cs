@@ -25,47 +25,6 @@ namespace AgOpenGPS
             client = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
         }
 
-        /// <summary>
-        /// Validates that a field DTO contains the minimum required data to be processed safely
-        /// </summary>
-        private bool ValidateFieldDto(AgShareFieldDto dto)
-        {
-            if (dto == null)
-                return false;
-
-            // Field must have a valid name
-            if (string.IsNullOrWhiteSpace(dto.Name))
-            {
-                Log.EventWriter("[AgShare] Validation failed: Field name is null or empty");
-                return false;
-            }
-
-            // Validate origin coordinates are within valid ranges
-            if (dto.Latitude < -90 || dto.Latitude > 90)
-            {
-                Log.EventWriter($"[AgShare] Validation failed: Invalid latitude {dto.Latitude} for field '{dto.Name}'");
-                return false;
-            }
-
-            if (dto.Longitude < -180 || dto.Longitude > 180)
-            {
-                Log.EventWriter($"[AgShare] Validation failed: Invalid longitude {dto.Longitude} for field '{dto.Name}'");
-                return false;
-            }
-
-            // Field must have at least a boundary or AB line
-            bool hasBoundaries = dto.Boundaries != null && dto.Boundaries.Count > 0;
-            bool hasAbLines = dto.AbLines != null && dto.AbLines.Count > 0;
-
-            if (!hasBoundaries && !hasAbLines)
-            {
-                Log.EventWriter($"[AgShare] Validation failed: Field '{dto.Name}' has no boundaries or AB lines");
-                return false;
-            }
-
-            return true;
-        }
-
         // Downloads a field and saves it to disk
         public async Task<bool> DownloadAndSaveAsync(Guid fieldId)
         {
@@ -89,20 +48,8 @@ namespace AgOpenGPS
                     return false;
                 }
 
-                if (!ValidateFieldDto(dto))
-                {
-                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Invalid or incomplete field data");
-                    return false;
-                }
-
+                // Parse DTO - validation is now done inside Parse method
                 var model = AgShareFieldParser.Parse(dto);
-
-                // Validate model name for directory creation
-                if (string.IsNullOrWhiteSpace(model.Name))
-                {
-                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Field has no valid name");
-                    return false;
-                }
 
                 string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, model.Name);
                 FieldFileWriter.WriteAllFiles(model, fieldDir);
@@ -143,9 +90,15 @@ namespace AgOpenGPS
                     return null;
                 }
 
-                if (!ValidateFieldDto(dto))
+                // Validation is now done in Parse method, but we'll do a quick check here
+                // since Parse throws exceptions and we want to return null for preview failures
+                try
                 {
-                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Invalid or incomplete field data");
+                    AgShareFieldParser.Parse(dto);
+                }
+                catch (ArgumentException ex)
+                {
+                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: {ex.Message}");
                     return null;
                 }
 
@@ -199,6 +152,7 @@ namespace AgOpenGPS
 
                     if (alreadyExists && !forceOverwrite)
                     {
+                        Log.EventWriter($"[AgShare] DownloadAll: Skipping field {field.Name} (ID: {field.Id}) - already exists");
                         skipped++;
                     }
                     else
