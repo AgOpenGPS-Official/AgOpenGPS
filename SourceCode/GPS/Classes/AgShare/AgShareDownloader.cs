@@ -25,14 +25,85 @@ namespace AgOpenGPS
             client = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
         }
 
+        /// <summary>
+        /// Validates that a field DTO contains the minimum required data to be processed safely
+        /// </summary>
+        private bool ValidateFieldDto(AgShareFieldDto dto)
+        {
+            if (dto == null)
+                return false;
+
+            // Field must have a valid name
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                Log.EventWriter("[AgShare] Validation failed: Field name is null or empty");
+                return false;
+            }
+
+            // Validate origin coordinates are within valid ranges
+            if (dto.Latitude < -90 || dto.Latitude > 90)
+            {
+                Log.EventWriter($"[AgShare] Validation failed: Invalid latitude {dto.Latitude} for field '{dto.Name}'");
+                return false;
+            }
+
+            if (dto.Longitude < -180 || dto.Longitude > 180)
+            {
+                Log.EventWriter($"[AgShare] Validation failed: Invalid longitude {dto.Longitude} for field '{dto.Name}'");
+                return false;
+            }
+
+            // Field must have at least a boundary or AB line
+            bool hasBoundaries = dto.Boundaries != null && dto.Boundaries.Count > 0;
+            bool hasAbLines = dto.AbLines != null && dto.AbLines.Count > 0;
+
+            if (!hasBoundaries && !hasAbLines)
+            {
+                Log.EventWriter($"[AgShare] Validation failed: Field '{dto.Name}' has no boundaries or AB lines");
+                return false;
+            }
+
+            return true;
+        }
+
         // Downloads a field and saves it to disk
         public async Task<bool> DownloadAndSaveAsync(Guid fieldId)
         {
             try
             {
                 string json = await client.DownloadFieldAsync(fieldId);
+
+                // Validate JSON response
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Empty response from server");
+                    return false;
+                }
+
                 var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+
+                // Validate DTO
+                if (dto == null)
+                {
+                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Failed to deserialize field data");
+                    return false;
+                }
+
+                if (!ValidateFieldDto(dto))
+                {
+                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Invalid or incomplete field data");
+                    return false;
+                }
+
                 var model = AgShareFieldParser.Parse(dto);
+
+                // Validate model name for directory creation
+                if (string.IsNullOrWhiteSpace(model.Name))
+                {
+                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Field has no valid name");
+                    return false;
+                }
+
                 string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, model.Name);
                 FieldFileWriter.WriteAllFiles(model, fieldDir);
                 return true;
@@ -54,51 +125,123 @@ namespace AgOpenGPS
         // Downloads a field DTO for preview only
         public async Task<AgShareFieldDto> DownloadFieldPreviewAsync(Guid fieldId)
         {
-            string json = await client.DownloadFieldAsync(fieldId);
-            return JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+            try
+            {
+                string json = await client.DownloadFieldAsync(fieldId);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Empty response from server");
+                    return null;
+                }
+
+                var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+
+                if (dto == null)
+                {
+                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Failed to deserialize field data");
+                    return null;
+                }
+
+                if (!ValidateFieldDto(dto))
+                {
+                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Invalid or incomplete field data");
+                    return null;
+                }
+
+                return dto;
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: {ex.GetType().Name} - {ex.Message}");
+                return null;
+            }
         }
-        public async Task<(int Downloaded, int Skipped)> DownloadAllAsync(
+        public async Task<(int Downloaded, int Skipped, int Failed)> DownloadAllAsync(
             bool forceOverwrite = false,
             IProgress<int> progress = null)
         {
             var fields = await GetOwnFieldsAsync();
-            int skipped = 0, downloaded = 0;
+
+            if (fields == null || fields.Count == 0)
+            {
+                Log.EventWriter("[AgShare] DownloadAll: No fields available to download");
+                return (0, 0, 0);
+            }
+
+            int skipped = 0, downloaded = 0, failed = 0;
 
             foreach (var field in fields)
             {
-                string dir = Path.Combine(RegistrySettings.fieldsDirectory, field.Name);
-                string agsharePath = Path.Combine(dir, "agshare.txt");
-
-                bool alreadyExists = false;
-                if (File.Exists(agsharePath))
+                try
                 {
-                    try
+                    // Validate field metadata
+                    if (field == null || string.IsNullOrWhiteSpace(field.Name))
                     {
-                        var id = File.ReadAllText(agsharePath).Trim();
-                        alreadyExists = Guid.TryParse(id, out Guid guid) && guid == field.Id;
+                        Log.EventWriter($"[AgShare] DownloadAll: Skipping field with invalid name");
+                        failed++;
+                        continue;
                     }
-                    catch { }
-                }
 
-                if (alreadyExists && !forceOverwrite)
-                {
-                    skipped++;
-                }
-                else
-                {
-                    var preview = await DownloadFieldPreviewAsync(field.Id);
-                    if (preview != null)
+                    string dir = Path.Combine(RegistrySettings.fieldsDirectory, field.Name);
+                    string agsharePath = Path.Combine(dir, "agshare.txt");
+
+                    bool alreadyExists = false;
+                    if (File.Exists(agsharePath))
                     {
-                        var model = AgShareFieldParser.Parse(preview);
-                        FieldFileWriter.WriteAllFiles(model, dir);
-                        downloaded++;
+                        try
+                        {
+                            var id = File.ReadAllText(agsharePath).Trim();
+                            alreadyExists = Guid.TryParse(id, out Guid guid) && guid == field.Id;
+                        }
+                        catch { }
+                    }
+
+                    if (alreadyExists && !forceOverwrite)
+                    {
+                        skipped++;
+                    }
+                    else
+                    {
+                        var preview = await DownloadFieldPreviewAsync(field.Id);
+                        if (preview != null)
+                        {
+                            var model = AgShareFieldParser.Parse(preview);
+
+                            // Extra validation before writing
+                            if (model != null && !string.IsNullOrWhiteSpace(model.Name))
+                            {
+                                FieldFileWriter.WriteAllFiles(model, dir);
+                                downloaded++;
+                            }
+                            else
+                            {
+                                Log.EventWriter($"[AgShare] DownloadAll: Failed to parse field {field.Name} (ID: {field.Id})");
+                                failed++;
+                            }
+                        }
+                        else
+                        {
+                            Log.EventWriter($"[AgShare] DownloadAll: Failed to download field {field.Name} (ID: {field.Id})");
+                            failed++;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Log.EventWriter($"[AgShare] DownloadAll: Error processing field {field?.Name ?? "unknown"}: {ex.GetType().Name} - {ex.Message}");
+                    failed++;
+                }
 
-                progress?.Report(downloaded + skipped);
+                progress?.Report(downloaded + skipped + failed);
             }
 
-            return (downloaded, skipped);
+            if (failed > 0)
+            {
+                Log.EventWriter($"[AgShare] DownloadAll completed: {downloaded} downloaded, {skipped} skipped, {failed} failed");
+            }
+
+            return (downloaded, skipped, failed);
         }
 
 

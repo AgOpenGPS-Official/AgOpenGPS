@@ -171,8 +171,12 @@ namespace AgOpenGPS.Forms.Field
             chkForceOverwrite.Enabled = true;
 
             // Show result
-            gps.TimedMessageBox(3000, "AgShare",
-                $"Downloaded {result.Downloaded} new field(s).\nSkipped {result.Skipped} existing.");
+            string message = $"Downloaded {result.Downloaded} new field(s).\nSkipped {result.Skipped} existing.";
+            if (result.Failed > 0)
+            {
+                message += $"\nFailed {result.Failed} field(s).";
+            }
+            gps.TimedMessageBox(3000, "AgShare", message);
         }
 
 
