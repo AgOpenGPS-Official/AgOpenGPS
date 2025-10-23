@@ -106,8 +106,29 @@ namespace AgOpenGPS.Testing
                 steerAngle = formGPS.mc.actualSteerAngleDegrees;
             }
 
-            // Advance the simulation
-            formGPS.sim.DoSimTick(steerAngle);
+            // CSim.DoSimTick assumes 10Hz (0.1s ticks) in its hardcoded formulas
+            // To maintain correct simulation without modifying CSim.cs, we call it
+            // multiple times at 0.1s intervals to match the requested deltaTimeSeconds
+            const double CSIM_TICK_RATE = 0.1; // CSim assumes 10Hz
+            int numTicks = (int)Math.Round(deltaTimeSeconds / CSIM_TICK_RATE);
+            if (numTicks < 1) numTicks = 1; // At least one tick
+
+            for (int i = 0; i < numTicks; i++)
+            {
+                formGPS.sim.DoSimTick(steerAngle);
+
+                // CSim.DoSimTick incorrectly calculates vtgSpeed with formula: 4 * stepDistance * 10
+                // We need to fix it after each tick. stepDistance is in meters per 0.1s tick,
+                // so the correct speed is: stepDistance * 10 (to get m/s)
+                double correctSpeedMs = Math.Abs(formGPS.sim.stepDistance * 10.0);
+                double correctSpeedKph = correctSpeedMs * 3.6;
+
+                formGPS.pn.vtgSpeed = Math.Abs(Math.Round(correctSpeedMs, 2));
+                formGPS.pn.speed = Math.Abs(Math.Round(correctSpeedKph, 2));
+
+                // Also need to recalculate avgSpeed since AverageTheSpeed() was already called with wrong value
+                formGPS.pn.AverageTheSpeed();
+            }
 
             // Update section control in headless mode (normally called by Paint handler)
             // This allows section control logic to run without requiring OpenGL Paint events

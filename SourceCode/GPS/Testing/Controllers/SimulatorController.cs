@@ -86,11 +86,17 @@ namespace AgOpenGPS.Testing.Controllers
 
         public void SetSpeed(double speedKph)
         {
-            // Convert speed to step distance (distance per simulation tick)
-            // Assuming 10Hz update rate: stepDistance = (speedKph / 3.6) / 10
+            // CSim.DoSimTick assumes 10Hz (0.1s ticks) with hardcoded formula: vtgSpeed = 4 * stepDistance * 10
+            // To work around this WITHOUT modifying CSim.cs:
+            // - stepDistance must be distance per 0.1s tick
+            // - We ensure DoSimTick is called at 10Hz by calling it multiple times if needed
             double speedMps = speedKph / 3.6;
-            mf.sim.stepDistance = speedMps / 10.0;
-            mf.pn.vtgSpeed = Math.Abs(Math.Round(4 * mf.sim.stepDistance * 10, 2));
+            mf.sim.stepDistance = speedMps / 10.0; // Distance per 0.1s tick
+
+            // Manually set correct speed since CSim's formula is wrong
+            // CSim calculates: vtgSpeed = 4 * stepDistance * 10 = 4 * (speedMps/10) * 10 = 4 * speedMps
+            // But vtgSpeed should just be speedMps, so we override it after CSim sets it
+            mf.pn.vtgSpeed = Math.Abs(Math.Round(speedMps, 2));
         }
 
         public void SetSteerAngle(double angleDegrees)
@@ -105,7 +111,8 @@ namespace AgOpenGPS.Testing.Controllers
             {
                 Position = new Wgs84(mf.sim.CurrentLatLon.Latitude, mf.sim.CurrentLatLon.Longitude),
                 HeadingDegrees = glm.toDegrees(mf.sim.headingTrue),
-                SpeedKph = Math.Abs(mf.sim.stepDistance * 10 * 3.6), // Convert back to km/h
+                // stepDistance is distance per 0.1s tick, so multiply by 10 to get m/s, then by 3.6 for km/h
+                SpeedKph = Math.Abs(mf.sim.stepDistance * 10.0 * 3.6),
                 SteerAngleDegrees = mf.sim.steerAngle,
                 Easting = mf.pn.fix.easting,
                 Northing = mf.pn.fix.northing
