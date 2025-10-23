@@ -82,6 +82,13 @@ namespace AgOpenGPS.Forms.Field
 
             // Download and parse field for preview
             var previewDto = await downloader.DownloadFieldPreviewAsync(dto.Id);
+
+            if (previewDto == null)
+            {
+                gps.TimedMessageBox(2000, "AgShare", "Failed to download field preview. Check logs for details.");
+                return;
+            }
+
             var localModel = AgShareFieldParser.Parse(previewDto); // Already converted to NE
 
             RenderField(localModel);
