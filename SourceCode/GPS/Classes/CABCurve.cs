@@ -527,7 +527,10 @@ namespace AgOpenGPS
 
             try
             {
-                for (int numGuides = -_passes; numGuides <= _passes; numGuides++)
+                bool isSwitch = isHeadingSameWay;
+
+                //left side
+                for (int numGuides = -1; numGuides > -_passes; numGuides--)
                 {
                     if (ct.IsCancellationRequested)
                         break;
@@ -537,11 +540,19 @@ namespace AgOpenGPS
                     List<vec3> newGuideList = new List<vec3>();
 
                     newGuideLL.Add(newGuideList);
-
-                    double nextGuideDist = (mf.tool.width - mf.tool.overlap) * numGuides +
-                        (isHeadingSameWay ? -mf.tool.offset : mf.tool.offset) + track.nudgeDistance;
-
-                    //nextGuideDist += (0.5 * (mf.tool.width - mf.tool.overlap));
+                    double nextGuideDist = 0;
+                    if (isHeadingSameWay)
+                    {
+                        nextGuideDist = (mf.tool.width - mf.tool.overlap) * numGuides + track.nudgeDistance;
+                        nextGuideDist += (isSwitch ? mf.tool.offset * 2 : 0);
+                        isSwitch = !isSwitch;
+                    }
+                    else
+                    {
+                        nextGuideDist = (mf.tool.width - mf.tool.overlap) * -numGuides + track.nudgeDistance;
+                        nextGuideDist += (isSwitch ? 0 : -mf.tool.offset * 2);
+                        isSwitch = !isSwitch;
+                    }
 
                     nextGuideDist += distAway;
 
@@ -613,6 +624,103 @@ namespace AgOpenGPS
                         }
                     }
                 }
+
+                //right side
+                for (int numGuides = 1; numGuides < _passes; numGuides++)
+                {
+                    if (ct.IsCancellationRequested)
+                        break;
+                    if (numGuides == 0) continue;
+
+                    //the list of points of curve new list from async
+                    List<vec3> newGuideList = new List<vec3>();
+
+                    newGuideLL.Add(newGuideList);
+                    double nextGuideDist = 0;
+                    if (isHeadingSameWay)
+                    {
+                        nextGuideDist = (mf.tool.width - mf.tool.overlap) * numGuides + track.nudgeDistance;
+                        nextGuideDist += (isSwitch ? mf.tool.offset * 2 : 0);
+                        isSwitch = !isSwitch;
+                    }
+                    else
+                    {
+                        nextGuideDist = (mf.tool.width - mf.tool.overlap) * -numGuides + track.nudgeDistance;
+                        nextGuideDist += (isSwitch ? 0 : -mf.tool.offset * 2);
+                        isSwitch = !isSwitch;
+                    }
+
+                    nextGuideDist += distAway;
+
+                    double step = (mf.tool.width - mf.tool.overlap) * 0.48;
+                    if (step > 4) step = 4;
+                    if (step < 1) step = 1;
+
+                    double distSqAway = (nextGuideDist * nextGuideDist) - 0.01;
+
+                    int refCount = track.curvePts.Count;
+                    for (int i = 0; i < refCount; i++)
+                    {
+                        if (ct.IsCancellationRequested)
+                            break;
+
+                        vec3 point = new vec3(
+                        track.curvePts[i].easting + (Math.Sin(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
+                        track.curvePts[i].northing + (Math.Cos(glm.PIBy2 + track.curvePts[i].heading) * nextGuideDist),
+                        track.curvePts[i].heading);
+                        bool add = true;
+
+                        for (int t = 0; t < refCount; t++)
+                        {
+                            double dist = ((point.easting - track.curvePts[t].easting) * (point.easting - track.curvePts[t].easting))
+                                + ((point.northing - track.curvePts[t].northing) * (point.northing - track.curvePts[t].northing));
+                            if (dist < distSqAway)
+                            {
+                                add = false;
+                                break;
+                            }
+                        }
+
+                        if (add)
+                        {
+                            if (newGuideList.Count > 0)
+                            {
+                                double dist = ((point.easting - newGuideList[newGuideList.Count - 1].easting) * (point.easting - newGuideList[newGuideList.Count - 1].easting))
+                                    + ((point.northing - newGuideList[newGuideList.Count - 1].northing) * (point.northing - newGuideList[newGuideList.Count - 1].northing));
+                                if (dist > step)
+                                {
+                                    if (mf.bnd.bndList.Count > 0)
+                                    {
+                                        if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
+                                        {
+                                            newGuideList.Add(point);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        newGuideList.Add(point);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (mf.bnd.bndList.Count > 0)
+                                {
+                                    if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
+                                    {
+                                        newGuideList.Add(point);
+                                    }
+                                }
+                                else
+                                {
+                                    newGuideList.Add(point);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
             }
             catch (Exception e)
             {
