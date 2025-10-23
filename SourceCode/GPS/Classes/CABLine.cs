@@ -437,14 +437,12 @@ namespace AgOpenGPS
                 double cosHeading = Math.Cos(-abHeading);
                 double sinHeading = Math.Sin(-abHeading);
 
-                GL.Color4(0, 0, 0, 0.5);
-
-                GL.LineWidth(lineWidth * 3);
-
-                GL.Begin(PrimitiveType.Lines);
-
                 if (toolOffset == 0)
                 {
+                    GL.Color4(0, 0, 0, 0.5);
+                    GL.LineWidth(lineWidth * 3);
+                    GL.Begin(PrimitiveType.Lines);
+
                     for (int i = 1; i <= numGuideLines; i++)
                     {
                         GL.Vertex3((cosHeading * (toolWidth * i)) + currentLinePtA.easting, (sinHeading * (toolWidth * i)) + currentLinePtA.northing, 0);
@@ -454,8 +452,6 @@ namespace AgOpenGPS
                         GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtB.easting, (sinHeading * (-toolWidth * i)) + currentLinePtB.northing, 0);
                     }
                     GL.End();
-                    //GL.Enable(EnableCap.LineStipple);
-                    //GL.LineStipple(1, 0x000F);
 
                     GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
                     GL.LineWidth(lineWidth);
@@ -470,12 +466,9 @@ namespace AgOpenGPS
                         GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtB.easting, (sinHeading * (-toolWidth * i)) + currentLinePtB.northing, 0);
                     }
                     GL.End();
-
-
                 }
                 else
                 {
-                    GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
                     toolOffset *= 0.5;
 
                     vec3 mA = new vec3();
@@ -492,9 +485,13 @@ namespace AgOpenGPS
                     mB.easting = cosHeading * toolOffset + currentLinePtB.easting;
                     mB.northing = sinHeading * toolOffset + currentLinePtB.northing;
 
+                    //heavy shadow
+                    GL.Color4(0, 0, 0, 0.5);
+                    GL.LineWidth(lineWidth * 3);
+                    GL.Begin(PrimitiveType.Lines);
+
                     for (int i = 1; i <= numGuideLines; i++)
                     {
-
                         GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing, 0);
                         GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing, 0);
 
@@ -509,7 +506,29 @@ namespace AgOpenGPS
                         GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing, 0);
                         GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing, 0);
                     }
+                    GL.End();
 
+                    //green lines
+                    GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
+                    GL.LineWidth(lineWidth);
+                    GL.Begin(PrimitiveType.Lines);
+
+                    for (int i = 1; i <= numGuideLines; i++)
+                    {
+                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing, 0);
+                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing, 0);
+
+                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mA.northing, 0);
+                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mB.northing, 0);
+
+                        i++;
+
+                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mA.northing, 0);
+                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mB.northing, 0);
+
+                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing, 0);
+                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing, 0);
+                    }
                     GL.End();
                 }
             }

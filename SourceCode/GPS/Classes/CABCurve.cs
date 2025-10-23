@@ -55,7 +55,6 @@ namespace AgOpenGPS
 
         //derivative counters
         private int counter2;
-
         public double inty;
 
         // Should we find the global nearest curve point (instead of local) on the next search.
@@ -214,7 +213,6 @@ namespace AgOpenGPS
                 }
             }
         }
-
 
         public List<vec3> BuildNewOffsetList(double distAway, CTrk track, CancellationToken ct = default)
         {
@@ -716,11 +714,9 @@ namespace AgOpenGPS
                                     newGuideList.Add(point);
                                 }
                             }
-
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -729,7 +725,6 @@ namespace AgOpenGPS
 
             return newGuideLL;
         }
-
 
         public void GetCurrentCurveLine(vec3 pivot, vec3 steer)
         {
@@ -1114,8 +1109,6 @@ namespace AgOpenGPS
                 {
                     GL.LineWidth(mf.ABLine.lineWidth * 3);
                     GL.Color3(0, 0, 0);
-
-                    //GL.Enable(EnableCap.LineSmooth);
 
                     //ablines and curves are a line - the rest a loop
                     if (mf.trk.gArr[mf.trk.idx].mode <= TrackMode.Curve)
@@ -1544,7 +1537,6 @@ namespace AgOpenGPS
 
             return resampledList;
         }
-
 
         //turning the visual line into the real reference line to use
         public void SaveSmoothList()
