@@ -90,17 +90,9 @@ namespace AgOpenGPS
                     return null;
                 }
 
-                // Validation is now done in Parse method, but we'll do a quick check here
-                // since Parse throws exceptions and we want to return null for preview failures
-                try
-                {
-                    AgShareFieldParser.Parse(dto);
-                }
-                catch (ArgumentException ex)
-                {
-                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: {ex.Message}");
-                    return null;
-                }
+                // Validation is done in Parse method
+                // If validation fails, the outer catch will handle it
+                AgShareFieldParser.Parse(dto);
 
                 return dto;
             }
