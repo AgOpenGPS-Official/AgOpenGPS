@@ -189,7 +189,15 @@ namespace AgOpenGPS
 
                         case 2:
                             if (trk.idx > -1)
-                                lblCurrentField.Text = "Line: " + trk.gArr[trk.idx].name;
+                            {
+                                double turnedAbAngle = 0;
+                                turnedAbAngle = glm.toDegrees(trk.gArr[trk.idx].heading) + 180;
+                                if (turnedAbAngle > 360)
+                                    turnedAbAngle = turnedAbAngle - 360;
+
+                                turnedAbAngle = Math.Round(turnedAbAngle, 5);
+                                lblCurrentField.Text = "Line: " + trk.gArr[trk.idx].name + " - " + Convert.ToString(Math.Round(glm.toDegrees(trk.gArr[trk.idx].heading), 5)) + ", " + turnedAbAngle;
+                            }
                             else
                                 lblCurrentField.Text = "Line: " + gStr.gsNoGuidanceLines;
                             break;
