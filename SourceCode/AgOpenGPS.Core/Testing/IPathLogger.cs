@@ -5,7 +5,7 @@ namespace AgOpenGPS.Core.Testing
 {
     public interface IPathLogger
     {
-        void StartLogging();
+        void StartLogging(string testName = null);
         void StopLogging();
         List<PathPoint> GetLoggedPath();
         void ClearLog();

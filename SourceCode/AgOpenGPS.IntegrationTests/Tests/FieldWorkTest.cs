@@ -134,8 +134,9 @@ namespace AgOpenGPS.IntegrationTests.Tests
 
             // Step 9: Start path logging
             var pathLogger = orchestrator.PathLogger;
-            pathLogger.StartLogging();
-            Console.WriteLine("10. Path logging started\n");
+            string testName = visualMode ? "Visual_Test_CompleteFieldWork" : "Test_CompleteFieldWork";
+            pathLogger.StartLogging(testName);
+            Console.WriteLine($"10. Path logging started (test: {testName})\n");
 
             // Step 10: Run simulation until tractor crosses field boundary
             Console.WriteLine("=== Starting Simulation ===");

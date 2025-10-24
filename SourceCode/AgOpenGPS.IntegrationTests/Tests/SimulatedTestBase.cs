@@ -108,7 +108,8 @@ namespace AgOpenGPS.IntegrationTests.Tests
             Func<double, bool> stopCondition = null,
             Action<double, SimulatorState, AutosteerState> printProgress = null)
         {
-            double step = timeStep ?? (visualMode ? 0.05 : 0.1);
+            // Use same timestep for both modes to ensure consistent simulation speed
+            double step = timeStep ?? 0.1;
             double elapsedTime = 0;
             int frameCount = 0;
             int progressInterval = visualMode ? 40 : 20;
