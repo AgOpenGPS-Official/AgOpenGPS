@@ -200,6 +200,7 @@ namespace AgOpenGPS
                 nudDrawbarLength.Left = 580;
 
                 picboxToolHitch.BackgroundImage = Properties.Resources.ToolHitchPageFrontHarvester;
+                label112.Text = mf.unitsInCm;
             }
 
             nudDrawbarLength.Value = (int)(Math.Abs(Properties.Settings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
