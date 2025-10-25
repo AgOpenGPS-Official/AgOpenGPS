@@ -697,16 +697,31 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    // Job not started - just save settings
+                    // Job not started - just save settings with visual feedback
+                    savingForm.AddStep("Settings", gStr.gsSaveSettings);
+                    savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
+
+                    savingForm.Show();
+                    await Task.Delay(300); // Let UI settle
+
                     try
                     {
                         Settings.Default.Save();
                         Log.FileSaveSystemEvents();
+                        await Task.Delay(300);
+                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
                     }
                     catch (Exception ex)
                     {
                         Log.EventWriter($"Settings save error: {ex}");
+                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
                     }
+
+                    // Finalizing
+                    await Task.Delay(500);
+                    savingForm.UpdateStep("Finalize", gStr.gsSaveAllDone, SavingStepState.Done);
+                    await Task.Delay(750);
+                    savingForm.Finish();
                 }
             }
             finally
