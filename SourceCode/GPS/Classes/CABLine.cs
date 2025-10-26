@@ -489,22 +489,26 @@ namespace AgOpenGPS
                     GL.Color4(0, 0, 0, 0.5);
                     GL.LineWidth(lineWidth * 3);
                     GL.Begin(PrimitiveType.Lines);
-
+                    List<GeoCoord> extraGuideLines = new List<GeoCoord>();
                     for (int i = 1; i <= numGuideLines; i++)
                     {
-                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing, 0);
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) + toolOffset) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing).ToGeoCoord());
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) + toolOffset) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing).ToGeoCoord());
 
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mB.northing, 0);
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) + toolOffset) + mA.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mA.northing).ToGeoCoord());
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) + toolOffset) + mB.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mB.northing).ToGeoCoord());
 
                         i++;
 
-                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mB.northing, 0);
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) - toolOffset) + mA.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mA.northing).ToGeoCoord());
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) - toolOffset) + mB.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mB.northing).ToGeoCoord());
 
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing, 0);
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing).ToGeoCoord());
+                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing).ToGeoCoord());
+                    }
+                    foreach (var coord in extraGuideLines)
+                    {
+                        GL.Vertex2(coord.Easting, coord.Northing);
                     }
                     GL.End();
 
@@ -512,64 +516,13 @@ namespace AgOpenGPS
                     GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
                     GL.LineWidth(lineWidth);
                     GL.Begin(PrimitiveType.Lines);
-
-                    for (int i = 1; i <= numGuideLines; i++)
+                    foreach (var coord in extraGuideLines)
                     {
-                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing, 0);
-
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) + toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mB.northing, 0);
-
-                        i++;
-
-                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mB.northing, 0);
-
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing, 0);
-                        GL.Vertex3((cosHeading * ((toolWidth * -i) - toolOffset)) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing, 0);
+                        GL.Vertex2(coord.Easting, coord.Northing);
                     }
                     GL.End();
                 }
             }
-
-            if (!mf.isStanleyUsed && mf.camera.camSetDistance > -200)
-            {
-                ////Draw lookahead Point
-                //GL.PointSize(16.0f);
-                //GL.Begin(PrimitiveType.Points);
-                //GL.Color3(1.0f, 1.0f, 0.0f);
-                //GL.Vertex3(goalPointAB.easting, goalPointAB.northing, 0.0);
-                ////GL.Vertex3(mf.gyd.rEastSteer, mf.gyd.rNorthSteer, 0.0);
-                ////GL.Vertex3(mf.gyd.rEastPivot, mf.gyd.rNorthPivot, 0.0);
-                //GL.End();
-                //GL.PointSize(1.0f);
-
-                //if (ppRadiusAB < 50 && ppRadiusAB > -50)
-                //{
-                //    const int numSegments = 200;
-                //    double theta = glm.twoPI / numSegments;
-                //    double c = Math.Cos(theta);//precalculate the sine and cosine
-                //    double s = Math.Sin(theta);
-                //    //double x = ppRadiusAB;//we start at angle = 0
-                //    double x = 0;//we start at angle = 0
-                //    double y = 0;
-
-                //    GL.LineWidth(2);
-                //    GL.Color3(0.53f, 0.530f, 0.950f);
-                //    GL.Begin(PrimitiveType.Lines);
-                //    for (int ii = 0; ii < numSegments - 15; ii++)
-                //    {
-                //        //glVertex2f(x + cx, y + cy);//output vertex
-                //        GL.Vertex3(x + radiusPointAB.easting, y + radiusPointAB.northing, 0);//output vertex
-                //        double t = x;//apply the rotation matrix
-                //        x = (c * x) - (s * y);
-                //        y = (s * t) + (c * y);
-                //    }
-                //    GL.End();
-                //}
-            }
-
             mf.yt.DrawYouTurn();
 
             GL.PointSize(1.0f);
