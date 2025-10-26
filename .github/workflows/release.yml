@@ -63,6 +63,7 @@ jobs:
       with:
         name: Release ${{ env.GitVersion_SemVer }}
         tag_name: ${{ env.GitVersion_SemVer }}
+        target_commitish: ${{ github.sha }}
         body: |
           Automated Release by GitHub Action CI
         draft: ${{ github.ref_name == 'master' }}
