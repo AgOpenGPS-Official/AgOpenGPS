@@ -470,43 +470,26 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    toolOffset *= 0.5;
-
-                    vec3 mA = new vec3();
-                    vec3 mB = new vec3();
-
-                    if (!isHeadingSameWay)
-                    {
-                        toolOffset *= -1;
-                    }
-
-                    mA.easting = cosHeading * toolOffset + currentLinePtA.easting;
-                    mA.northing = sinHeading * toolOffset + currentLinePtA.northing;
-
-                    mB.easting = cosHeading * toolOffset + currentLinePtB.easting;
-                    mB.northing = sinHeading * toolOffset + currentLinePtB.northing;
-
                     //heavy shadow
                     GL.Color4(0, 0, 0, 0.5);
                     GL.LineWidth(lineWidth * 3);
                     GL.Begin(PrimitiveType.Lines);
                     GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
-                    GeoDir perpendicularRight = currentLine.Direction.PerpendicularRight;
-                    GeoDelta toolOffsetDelta = toolOffset * perpendicularRight;
-                    GeoLine mLine = currentLine.ParallelLine(toolOffsetDelta);
+                    GeoDir perpendicularRightDir = currentLine.Direction.PerpendicularRight;
                     List<GeoLine> lines = new List<GeoLine>();
 
+                    double oddOffset = 2 * (isHeadingSameWay ? mf.tool.offset : -mf.tool.offset);
                     for (int i = 1; i <= numGuideLines; i += 2)
                     {
-                        GeoLine rightOddLine = mLine.ParallelLine(((toolWidth * i) + toolOffset) * perpendicularRight);
-                        GeoLine leftOddLine = mLine.ParallelLine(((toolWidth * -i) + toolOffset) * perpendicularRight);
+                        GeoLine rightOddLine = currentLine.ParallelLine((toolWidth * i + oddOffset) * perpendicularRightDir);
+                        GeoLine leftOddLine = currentLine.ParallelLine((toolWidth * -i + oddOffset) * perpendicularRightDir);
                         lines.Add(rightOddLine);
                         lines.Add(leftOddLine);
                     }
                     for (int i = 2; i <= numGuideLines; i += 2)
                     {
-                        GeoLine rightEvenLine = mLine.ParallelLine(((toolWidth * i) - toolOffset) * perpendicularRight);
-                        GeoLine leftEvenLine = mLine.ParallelLine(((toolWidth * -i) - toolOffset) * perpendicularRight);
+                        GeoLine rightEvenLine = currentLine.ParallelLine((toolWidth * i) * perpendicularRightDir);
+                        GeoLine leftEvenLine = currentLine.ParallelLine((toolWidth * -i) * perpendicularRightDir);
                         lines.Add(rightEvenLine);
                         lines.Add(leftEvenLine);
                     }
