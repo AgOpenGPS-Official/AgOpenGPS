@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -730,5 +730,534 @@ Menüde aşağıdan yukarıya doğru seçtiğiniz sıraya göre görünecektir.<
   </data>
   <data name="gsNight" xml:space="preserve">
     <value>Gece</value>
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>Alfa</value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>Edinmek</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Edinme = Faktör * Tutma</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>Edinilmiş Faktör</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>Ek Stili</value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value>Otomatik Kapanma AgIO</value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value>AgIO'yu Otomatik Başlat</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Otomatik Çift &lt;&gt; Düzeltme</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Anahtarlama Hızı</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>Etrafında Oluştur</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Düğme Seçici</value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value>Önce Tüm Pencereleri Kapatın</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>Renk Seçici</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Derece Başına Sayım</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>ISO-XML'den Yeni Alan Oluştur</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Dönüş Akım Sensörü</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Yön İşaretleyicileri</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>Katılmıyorum</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Tartışmalar:</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Çift Pozisyonlu Anten Sağ Taraftadır</value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Rengi Düzenle</value>
+  </data>
+  <data name="gsEditFieldName" xml:space="preserve">
+    <value>Alan Adını Düzenle</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Yükseklik Kaydı</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Etkinleştir</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>Windows'a çıkış:</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>RTK Düzeltme Alarmı</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarm Otomatik Direksiyonu Durdur</value>
+  </data>
+  <data name="gsFromExisting" xml:space="preserve">
+    <value>Mevcuttan</value>
+  </data>
+  <data name="gsFromKml" xml:space="preserve">
+    <value>KML'den</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Rehberlik Durduruldu</value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value>Başlık Tablosu</value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Askı Uzunluğu</value>
+  </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>Çapraz iz hatasını azaltmak için direksiyon açısını yavaşça artıracaktır</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Düzgün Çizgi</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>Çizgi Genişliği</value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value>Zamanı Düşür</value>
+  </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>Elle Dönüş</value>
+  </data>
+  <data name="gsMapForBackground" xml:space="preserve">
+    <value>Bing Haritasını Arka Plan Olarak Ekle</value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value>Minimum Taşınma</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Sonraki Rehberlik Hattı</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Dürtmek:</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Dürtme Mesafesi</value>
+  </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>Referans Parçasını Taşı</value>
+  </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>Açıkk</value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>Gecikmede</value>
+  </data>
+  <data name="gsOnOff" xml:space="preserve">
+    <value>Açık/Kapalı</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Şeffaflık:</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Çakışma:</value>
+  </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>Çakışma / Boşluk</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>Geçersiz kıl</value>
+  </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Eğrinin Sonu Geçmiş</value>
+  </data>
+  <data name="gsPivotDistance" xml:space="preserve">
+    <value>Pivot Mesafesi</value>
+  </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value>Lütfen bekleyin...</value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
+    <value>Nokta</value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value>İşlenecek Noktalar</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Çokgenler</value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value>Güç Kaybı Kapatma</value>
+  </data>
+  <data name="gsPresetColor" xml:space="preserve">
+    <value>Önceden Ayarlanmış Rengi Seçin</value>
+  </data>
+  <data name="gsPressureTurnSensor" xml:space="preserve">
+    <value>Dönüş Basınç Sensörü</value>
+  </data>
+  <data name="gsPreview" xml:space="preserve">
+    <value>Önizleme</value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value>Orantılı Kazanç</value>
+  </data>
+  <data name="gsQuickAB" xml:space="preserve">
+    <value>Hızlı AB Line oluştur</value>
+  </data>
+  <data name="gsRaiseTime" xml:space="preserve">
+    <value>Zamanı Artır</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Oran</value>
+  </data>
+  <data name="gsRecordedPathMenu" xml:space="preserve">
+    <value>Kaydedilen Yol</value>
+  </data>
+  <data name="gsRecordedPathPicker" xml:space="preserve">
+    <value>Yol Yükünü Kaydet</value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value>Noktaları Azalt</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Ofseti Kaldır</value>
+  </data>
+  <data name="gsReset" xml:space="preserve">
+    <value>Sıfırla</value>
+  </data>
+  <data name="gsReverseDistance" xml:space="preserve">
+    <value>Ters Mesafe</value>
+  </data>
+  <data name="gsReverseSteer" xml:space="preserve">
+    <value>Ters Algılama</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Sağ</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Sağ Menü</value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value>Rulo Filtresi</value>
+  </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Tamamdır. Şimdi kapatıyorum.</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Bir dahaki sefere görüşmek üzere!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Alan kaydediliyor..</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Alan parametreleri kaydediliyor...</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Alan parametreleri kaydedildi.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Alan yerel olarak kaydedildi.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Kapatma işlemi tamamlanıyor..</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Ayarlar kaydediliyor...</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Ayarlar kaydedildi.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Yükleme tamamlandı.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Yükleme başarısız oldu.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Alan AgShare'e yükleniyor...</value>
+  </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Ekran Düğmeleri</value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value>Bölüm Renklerini Ayarla</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Bölüm Çizgileri</value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Bölümler:</value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value>Düğmeleri Seçin</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Önceden Ayarlanmış Rengi Seçin</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Gönder + Kaydet</value>
+  </data>
+  <data name="gsShutdown" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value>Kapatma süresi:</value>
+  </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Basit Tramvay Oluşturucu</value>
+  </data>
+  <data name="gsSingleAntennaSetting" xml:space="preserve">
+    <value>Tek Anten Ayarları</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>AgShare'den Alanları İndirin</value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>İnşa etmek</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Klip Hattı</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Piksel</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Direkt</value>
+  </data>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>İçeri Girmek</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Boşluk</value>
+  </data>
+  <data name="gsPivot" xml:space="preserve">
+    <value>Eksen</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Bitki Pop</value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value>Noktalar</value>
+  </data>
+  <data name="gsRemain" xml:space="preserve">
+    <value>Sürdürmek</value>
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value>Yavaş</value>
+  </data>
+  <data name="gsSlowDownBelow" xml:space="preserve">
+    <value>Aşağıda Yavaşlayın</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Akıcı</value>
+  </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Sesler</value>
+  </data>
+  <data name="gsSpeedFactor" xml:space="preserve">
+    <value>Hız Faktörü</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Hız göstergesi</value>
+  </data>
+  <data name="gsStart" xml:space="preserve">
+    <value>Başlat</value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Tam Ekran Başlat</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Direksiyon Açısı</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Direksiyon Çubuğu</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Yön Tabloları</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Düğme - Basarak Aç. Basarak Kapat
+Anahtar - Basıldığında Aç, Bırakıldığında Kapat</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>Harici Etkinleştirme</value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value>Geri giderken yönlendirme</value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value>Yönlendirme Tepkisi</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Direksiyon Anahtarı</value>
+  </data>
+  <data name="gsSteerWizard" xml:space="preserve">
+    <value>Direksiyon Sihirbazı</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Sürüm için Şartlar ve Koşullar: </value>
+  </data>
+  <data name="gsTermsOne" xml:space="preserve">
+    <value>Bu ÜCRETSİZ programın kopyalarını, ister ücretsiz, ister ücretli, geliştirilmiş, değiştirilmiş olarak dağıtırsanız, GPLv3 Lisansı'nda belirtilen özgürlüklerin aynısını alıcılara da aktarmalısınız.</value>
+  </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value>AgOpenGPS, yönlendirme sistemleri, GPS cümleleri ve makine kontrolünün teorik uygulamaları hakkında bilgi edinmeyi amaçlayan tamamen eğitim amaçlı bir yazılımdır.
+
+Hiçbir koşulda gerçek ekipmanlarda kullanılmamalıdır. Öğrencinin makine yönlendirmesini güvenli bir şekilde deneyimleyebilmesi için bir simülatör sağlanmıştır.
+
+Herhangi bir güvenlik sistemi bulunmamaktadır ve ima edilmemiştir.
+
+KULLANIM RİSKİNİZ KENDİ TARAFINIZCA YAPILMAKTADIR.</value>
+  </data>
+  <data name="gsTermsTwo" xml:space="preserve">
+    <value>Kaynak kodu almalarını veya alabileceklerini garanti altına almalısınız. Ayrıca, haklarını bilmeleri için bu şartları onlara göstermelisiniz. Başkalarının eserlerini çalıp kendi eserinizmiş gibi göstermeyin.</value>
+  </data>
+  <data name="gsTooFast" xml:space="preserve">
+    <value>Çok Hızlı</value>
+  </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Araç Sol</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Takım Ofset Yönü</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Araç Sağ</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Araçlar Menüsü</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>İzlemek</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Parçalar</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Tramvay Genişliği:</value>
+  </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Kapatma Gecikmesi</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Rec-Path'i Kapat</value>
+  </data>
+  <data name="gsTurnSensor" xml:space="preserve">
+    <value>Dönüş Sensörü</value>
+  </data>
+  <data name="gsUnit" xml:space="preserve">
+    <value>Birimler:</value>
+  </data>
+  <data name="gsUnits" xml:space="preserve">
+    <value>Birimler</value>
+  </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value>Kullanıcı 1</value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value>Kullanıcı 2</value>
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value>Kullanıcı 3</value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value>Kullanıcı 4</value>
+  </data>
+  <data name="gsUturn" xml:space="preserve">
+    <value>U Dönüşü</value>
+  </data>
+  <data name="gsUturnCompensation" xml:space="preserve">
+    <value>U Dönüşü Telafisi</value>
+  </data>
+  <data name="gsUturnExtension" xml:space="preserve">
+    <value>Uzatma uzunluğunu 2 veya 3x Yarıçap olarak ayarlayın</value>
+  </data>
+  <data name="gsUturnSmooth" xml:space="preserve">
+    <value>Düzeltmeyi 3-4x Yarıçapında Ayarla</value>
+  </data>
+  <data name="gsWasZero" xml:space="preserve">
+    <value>Was Sıfır</value>
+  </data>
+  <data name="gsWheelbase" xml:space="preserve">
+    <value>Dingil açıklığı:</value>
+  </data>
+  <data name="gsWidth" xml:space="preserve">
+    <value>Genişlik:</value>
+  </data>
+  <data name="gsWindowsStillOpen" xml:space="preserve">
+    <value>Windows Hala Açık</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Sihirbaz</value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value>Sihirbazlar</value>
+  </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Çalışma Anahtarı</value>
+  </data>
+  <data name="gsWorkWidth" xml:space="preserve">
+    <value>Genişlik</value>
+  </data>
+  <data name="gsWorked" xml:space="preserve">
+    <value>çalıştı</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Roll Sıfır</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Bölgesi</value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Bölgeler</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Yakınlaştır</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Üzerine Yazmaya Zorla</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Hepsini Al</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Seçiliyi Al</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>İndiriliyor...Lütfen Bekleyin</value>
+  </data>
+  <data name="gsVehiclegroupbox" xml:space="preserve">
+    <value>Araç Tipi:</value>
+  </data>
+  <data name="gsXTEChart" xml:space="preserve">
+    <value>XTE Tablosu</value>
+  </data>
+  <data name="gsSideHillComp" xml:space="preserve">
+    <value>Derece Başına Yan Tepe Telafisi</value>
+  </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Kalfalık Oku</value>
   </data>
 </root>

@@ -547,12 +547,12 @@ namespace AgOpenGPS
         // Centralized shutdown coordinator
         private bool isShuttingDown = false;
 
-        private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
+        private async void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isShuttingDown) return;
-            //set the shutdown flag to true to prevent re-entrance
-            isShuttingDown = true;
 
+            // Set shutdown flag to prevent re-entrance
+            isShuttingDown = true;
             e.Cancel = true; // Prevent immediate close
 
             // Close subforms
@@ -571,7 +571,6 @@ namespace AgOpenGPS
             {
                 TimedMessageBox(2000, gStr.gsWindowsStillOpen, gStr.gsCloseAllWindowsFirst);
                 isShuttingDown = false;
-                e.Cancel = true;
                 return;
             }
 
@@ -579,69 +578,123 @@ namespace AgOpenGPS
             int choice = SaveOrNot();
             if (choice == 1)
             {
+                // User cancelled shutdown
                 isShuttingDown = false;
-                e.Cancel = true;
                 return;
             }
-            // Save and upload field data if applicable
-            if (isJobStarted)
+
+            // Turn off auto sections if active
+            if (isJobStarted && autoBtnState == btnStates.Auto)
             {
-                if (autoBtnState == btnStates.Auto)
-                    btnSectionMasterAuto.PerformClick();
+                btnSectionMasterAuto.PerformClick();
             }
 
-            BeginInvoke(new Func<Task>(async () => await ShowSavingFormAndShutdown(choice)));
+            // Execute shutdown with proper exception handling
+            try
+            {
+                Log.EventWriter("Closing Application " + DateTime.Now);
+                await ShowSavingFormAndShutdown(choice);
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter($"CRITICAL: Shutdown error: {ex}");
+                MessageBox.Show($"Error during shutdown: {ex.Message}\n\nAttempting force exit...",
+                    "Shutdown Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Ensure application exits even if shutdown fails
+                Application.Exit();
+            }
         }
 
 
         private async Task ShowSavingFormAndShutdown(int choice)
         {
-            using (FormSaving savingForm = new FormSaving())
+            FormSaving savingForm = null;
+
+            try
             {
+                savingForm = new FormSaving();
+
                 if (isJobStarted)
                 {
-                    bool isAgShareStepEnabled = Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive && !isAgShareUploadStarted;
+                    // Check if AgShare is enabled (step will be added regardless of whether upload already started)
+                    bool isAgShareEnabled = Settings.Default.AgShareEnabled &&
+                                           Settings.Default.AgShareUploadActive;
 
-                    savingForm.AddStep("Params", gStr.gsSaveFieldParam);
-                    if (isAgShareStepEnabled) savingForm.AddStep("AgShare", gStr.gsSaveUploadToAgshare);
+                    // Setup progress steps
                     savingForm.AddStep("Field", gStr.gsSaveField);
+                    if (isAgShareEnabled) savingForm.AddStep("AgShare", gStr.gsSaveUploadToAgshare);
                     savingForm.AddStep("Settings", gStr.gsSaveSettings);
                     savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
 
                     savingForm.Show();
-
                     await Task.Delay(300); // Let UI settle
 
-                    // STEP 0: Parameters
-                    await Task.Delay(300);
-                    savingForm.UpdateStep("Params", gStr.gsSaveFieldParamSaved, SavingStepState.Done);
-
-                    // STEP 1: AgShare Upload
-                    if (isAgShareStepEnabled)
+                    // STEP 1: Save Field (Boundary, Tracks, Sections, Contour, etc.)
+                    // NOTE: This also starts AND waits for AgShare upload if enabled
+                    try
                     {
-                        isAgShareUploadStarted = true;
+                        await FileSaveEverythingBeforeClosingField();
+                        savingForm.UpdateStep("Field", gStr.gsSaveFieldSavedLocal, SavingStepState.Done);
 
-                        try
+                        // STEP 2: Update AgShare status (upload was completed in FileSaveEverythingBeforeClosingField)
+                        if (isAgShareEnabled && isAgShareUploadStarted)
                         {
-                            agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
-                            await agShareUploadTask;
-                            savingForm.UpdateStep("AgShare", gStr.gsSaveUploadCompleted, SavingStepState.Done);
+                            // The upload was already awaited in FileSaveEverythingBeforeClosingField
+                            // Check if the task completed successfully
+                            if (agShareUploadTask != null)
+                            {
+                                if (agShareUploadTask.Status == TaskStatus.RanToCompletion)
+                                {
+                                    savingForm.UpdateStep("AgShare", gStr.gsSaveUploadCompleted, SavingStepState.Done);
+                                }
+                                else if (agShareUploadTask.Status == TaskStatus.Faulted)
+                                {
+                                    savingForm.UpdateStep("AgShare", gStr.gsSaveUploadFailed, SavingStepState.Failed);
+                                }
+                                else
+                                {
+                                    // Still running or cancelled? This shouldn't happen as FileSaveEverythingBeforeClosingField awaits it
+                                    savingForm.UpdateStep("AgShare", "Upload status unknown", SavingStepState.Failed);
+                                }
+                            }
                         }
-                        catch (Exception ex)
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"CRITICAL: Field save error during shutdown: {ex}");
+                        savingForm.UpdateStep("Field", "Field save FAILED: " + ex.Message, SavingStepState.Failed);
+
+                        // Ask user if they want to continue despite error
+                        DialogResult result = MessageBox.Show(
+                            $"Field data save failed:\n{ex.Message}\n\nContinue shutdown anyway? (data may be lost)",
+                            "Critical Save Error",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
+
+                        if (result == DialogResult.No)
                         {
-                            Log.EventWriter("AgShare upload error during shutdown: " + ex.Message);
-                            savingForm.UpdateStep("AgShare", gStr.gsSaveUploadFailed, SavingStepState.Failed);
+                            isShuttingDown = false;
+                            if (savingForm != null && !savingForm.IsDisposed) savingForm.Close();
+                            return; // Exit without calling FinishShutdown - user cancelled
                         }
                     }
 
-                    // STEP 2: Save Field
-                    await FileSaveEverythingBeforeClosingField();
-                    savingForm.UpdateStep("Field", gStr.gsSaveFieldSavedLocal, SavingStepState.Done);
-
-                    // STEP 3: Settings
-                    Settings.Default.Save();
-                    await Task.Delay(300);
-                    savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                    // STEP 3: Settings + System Log
+                    try
+                    {
+                        Settings.Default.Save();
+                        Log.FileSaveSystemEvents();
+                        await Task.Delay(300);
+                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Settings save error: {ex}");
+                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
+                    }
 
                     // STEP 4: Finalizing
                     await Task.Delay(500);
@@ -651,27 +704,40 @@ namespace AgOpenGPS
                 }
                 else
                 {
+                    // Job not started - just save settings with visual feedback
                     savingForm.AddStep("Settings", gStr.gsSaveSettings);
                     savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
 
                     savingForm.Show();
-
                     await Task.Delay(300); // Let UI settle
 
-                    // Only saving settings and finalizing
-                    Settings.Default.Save();
-                    await Task.Delay(300);
-                    savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
-                    await Task.Delay(300);
+                    try
+                    {
+                        Settings.Default.Save();
+                        Log.FileSaveSystemEvents();
+                        await Task.Delay(300);
+                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Settings save error: {ex}");
+                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
+                    }
+
+                    // Finalizing
+                    await Task.Delay(500);
                     savingForm.UpdateStep("Finalize", gStr.gsSaveAllDone, SavingStepState.Done);
                     await Task.Delay(750);
                     savingForm.Finish();
                 }
-
-                await Task.Delay(2000);
-                savingForm.Close();
+            }
+            finally
+            {
+                // Ensure form is disposed
+                savingForm?.Dispose();
             }
 
+            // Only finish shutdown if we didn't return early due to user cancellation
             FinishShutdown(choice);
         }
 
@@ -1125,8 +1191,12 @@ namespace AgOpenGPS
             btnSection1Man.Text = "1";
 
             // Reset AgShare upload state and clear snapshot after field is closed
-            isAgShareUploadStarted = false;
-            snapshot = null;
+            // NOTE: Don't reset during shutdown - the shutdown flow needs to check this flag
+            if (!isShuttingDown)
+            {
+                isAgShareUploadStarted = false;
+                snapshot = null;
+            }
         }
 
         public void FieldMenuButtonEnableDisable(bool isOn)

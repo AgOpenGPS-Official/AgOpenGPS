@@ -10,7 +10,7 @@ namespace AgOpenGPS
         private readonly FormGPS mf = null;
         private readonly ListViewItem itm;
 
-        public FormDrivePicker(Form callingForm, string _fileList)
+        public FormDrivePicker(Form callingForm, string _fileList, string _distanceList)
         {
             //get copy of the calling main form
             mf = callingForm as FormGPS;
@@ -21,10 +21,19 @@ namespace AgOpenGPS
             this.Text = gStr.gsFieldPicker;
             btnOpenExistingLv.Text = gStr.gsUseSelected;
 
+            // Set distance column header based on metric setting
+            chDistance.Text = mf.isMetric ? "Distance (km)" : "Distance (mi)";
+
             string[] fileList = _fileList.Split(',');
+            string[] distanceList = _distanceList.Split(',');
+
             for (int i = 0; i < fileList.Length; i++)
             {
                 itm = new ListViewItem(fileList[i]);
+                if (i < distanceList.Length)
+                {
+                    itm.SubItems.Add(distanceList[i]);
+                }
                 lvLines.Items.Add(itm);
             }
         }

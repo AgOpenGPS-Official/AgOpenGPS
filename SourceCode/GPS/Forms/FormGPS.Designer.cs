@@ -1844,10 +1844,11 @@ namespace AgOpenGPS
             this.btnStartAgIO.Click += new System.EventHandler(this.btnStartAgIO_Click);
             // 
             // btnJobMenu
-            // 
+            //
             this.btnJobMenu.BackColor = System.Drawing.Color.Transparent;
             this.btnJobMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnJobMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnJobMenu.Enabled = false;
             this.btnJobMenu.FlatAppearance.BorderColor = System.Drawing.Color.RoyalBlue;
             this.btnJobMenu.FlatAppearance.BorderSize = 0;
             this.btnJobMenu.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent;

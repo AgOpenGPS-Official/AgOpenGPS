@@ -1402,7 +1402,10 @@ namespace AgOpenGPS
             if (fileSaveAlwaysCounter > 60)
             {
                 fileSaveAlwaysCounter = 0;
-                //if (sbMissedSentence.Length > 0) FileSaveMissedEvents();
+                if (Log.sbEvents.Length > 0)
+                {
+                    Log.FileSaveSystemEvents();
+                }
             }
 
             //if a minute has elapsed save the field in case of crash and to be able to resume            
