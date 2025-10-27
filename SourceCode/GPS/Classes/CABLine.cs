@@ -495,19 +495,20 @@ namespace AgOpenGPS
                     GeoDelta toolOffsetDelta = toolOffset * perpendicularRight;
                     GeoLine mLine = currentLine.ParallelLine(toolOffsetDelta);
                     List<GeoLine> lines = new List<GeoLine>();
-                    for (int i = 1; i <= numGuideLines; i++)
+
+                    for (int i = 1; i <= numGuideLines; i += 2)
                     {
-                        GeoLine rightLine = mLine.ParallelLine(((toolWidth * i) + toolOffset) * perpendicularRight);
-                        GeoLine leftLine = mLine.ParallelLine(((toolWidth * -i) + toolOffset) * perpendicularRight);
-                        lines.Add(rightLine);
-                        lines.Add(leftLine);
-
-                        i++;
-
-                        rightLine = mLine.ParallelLine(((toolWidth * i) - toolOffset) * perpendicularRight);
-                        leftLine = mLine.ParallelLine(((toolWidth * -i) - toolOffset) * perpendicularRight);
-                        lines.Add(rightLine);
-                        lines.Add(leftLine);
+                        GeoLine rightOddLine = mLine.ParallelLine(((toolWidth * i) + toolOffset) * perpendicularRight);
+                        GeoLine leftOddLine = mLine.ParallelLine(((toolWidth * -i) + toolOffset) * perpendicularRight);
+                        lines.Add(rightOddLine);
+                        lines.Add(leftOddLine);
+                    }
+                    for (int i = 2; i <= numGuideLines; i += 2)
+                    {
+                        GeoLine rightEvenLine = mLine.ParallelLine(((toolWidth * i) - toolOffset) * perpendicularRight);
+                        GeoLine leftEvenLine = mLine.ParallelLine(((toolWidth * -i) - toolOffset) * perpendicularRight);
+                        lines.Add(rightEvenLine);
+                        lines.Add(leftEvenLine);
                     }
                     for (int i = 0; i < lines.Count; i++)
                     {
