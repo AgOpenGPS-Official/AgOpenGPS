@@ -490,23 +490,6 @@ namespace AgOpenGPS
                     GL.Color4(0, 0, 0, 0.5);
                     GL.LineWidth(lineWidth * 3);
                     GL.Begin(PrimitiveType.Lines);
-                    List<GeoCoord> extraGuideLines = new List<GeoCoord>();
-                    for (int i = 1; i <= numGuideLines; i++)
-                    {
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) + toolOffset) + mA.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mA.northing).ToGeoCoord());
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) + toolOffset) + mB.easting, (sinHeading * ((toolWidth * i) + toolOffset)) + mB.northing).ToGeoCoord());
-
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) + toolOffset) + mA.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mA.northing).ToGeoCoord());
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) + toolOffset) + mB.easting, (sinHeading * ((toolWidth * -i) + toolOffset)) + mB.northing).ToGeoCoord());
-
-                        i++;
-
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) - toolOffset) + mA.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mA.northing).ToGeoCoord());
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * i) - toolOffset) + mB.easting, (sinHeading * ((toolWidth * i) - toolOffset)) + mB.northing).ToGeoCoord());
-
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing).ToGeoCoord());
-                        extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing).ToGeoCoord());
-                    }
                     GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
                     GeoDir perpendicularRight = currentLine.Direction.PerpendicularRight;
                     GeoDelta toolOffsetDelta = toolOffset * perpendicularRight;
@@ -528,8 +511,6 @@ namespace AgOpenGPS
                     }
                     for (int i = 0; i < lines.Count; i++)
                     {
-                        DebugAsserts.AreEqual(lines[i].CoordA, extraGuideLines[2 * i]);
-                        DebugAsserts.AreEqual(lines[i].CoordB, extraGuideLines[2 * i + 1]);
                         GLW.Vertex2(lines[i].CoordA);
                         GLW.Vertex2(lines[i].CoordB);
                     }
