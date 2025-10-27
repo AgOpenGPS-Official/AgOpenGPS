@@ -432,85 +432,47 @@ namespace AgOpenGPS
 
             if (mf.isSideGuideLines && mf.camera.camSetDistance > mf.tool.width * -400)
             {
-                //get the tool offset and width
-                double toolOffset = mf.tool.offset * 2;
                 double toolWidth = mf.tool.width - mf.tool.overlap;
-                double cosHeading = Math.Cos(-abHeading);
-                double sinHeading = Math.Sin(-abHeading);
+                //heavy shadow
+                GL.Color4(0, 0, 0, 0.5);
+                GL.LineWidth(lineWidth * 3);
+                GL.Begin(PrimitiveType.Lines);
+                GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
+                GeoDir perpendicularRightDir = currentLine.Direction.PerpendicularRight;
+                List<GeoLine> lines = new List<GeoLine>();
 
-                if (toolOffset == 0)
+                double oddOffset = 2 * (isHeadingSameWay ? mf.tool.offset : -mf.tool.offset);
+                for (int i = 1; i <= numGuideLines; i += 2)
                 {
-                    GL.Color4(0, 0, 0, 0.5);
-                    GL.LineWidth(lineWidth * 3);
-                    GL.Begin(PrimitiveType.Lines);
-
-                    for (int i = 1; i <= numGuideLines; i++)
-                    {
-                        GL.Vertex3((cosHeading * (toolWidth * i)) + currentLinePtA.easting, (sinHeading * (toolWidth * i)) + currentLinePtA.northing, 0);
-                        GL.Vertex3((cosHeading * (toolWidth * i)) + currentLinePtB.easting, (sinHeading * (toolWidth * i)) + currentLinePtB.northing, 0);
-
-                        GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtA.easting, (sinHeading * (-toolWidth * i)) + currentLinePtA.northing, 0);
-                        GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtB.easting, (sinHeading * (-toolWidth * i)) + currentLinePtB.northing, 0);
-                    }
-                    GL.End();
-
-                    GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
-                    GL.LineWidth(lineWidth);
-                    GL.Begin(PrimitiveType.Lines);
-
-                    for (int i = 1; i <= numGuideLines; i += 2)
-                    {
-                        GL.Vertex3((cosHeading * (toolWidth * i)) + currentLinePtA.easting, (sinHeading * (toolWidth * i)) + currentLinePtA.northing, 0);
-                        GL.Vertex3((cosHeading * (toolWidth * i)) + currentLinePtB.easting, (sinHeading * (toolWidth * i)) + currentLinePtB.northing, 0);
-
-                        GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtA.easting, (sinHeading * (-toolWidth * i)) + currentLinePtA.northing, 0);
-                        GL.Vertex3((cosHeading * (-toolWidth * i)) + currentLinePtB.easting, (sinHeading * (-toolWidth * i)) + currentLinePtB.northing, 0);
-                    }
-                    GL.End();
+                    GeoLine rightOddLine = currentLine.ParallelLine((toolWidth * i + oddOffset) * perpendicularRightDir);
+                    GeoLine leftOddLine = currentLine.ParallelLine((toolWidth * -i + oddOffset) * perpendicularRightDir);
+                    lines.Add(rightOddLine);
+                    lines.Add(leftOddLine);
                 }
-                else
+                for (int i = 2; i <= numGuideLines; i += 2)
                 {
-                    //heavy shadow
-                    GL.Color4(0, 0, 0, 0.5);
-                    GL.LineWidth(lineWidth * 3);
-                    GL.Begin(PrimitiveType.Lines);
-                    GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
-                    GeoDir perpendicularRightDir = currentLine.Direction.PerpendicularRight;
-                    List<GeoLine> lines = new List<GeoLine>();
-
-                    double oddOffset = 2 * (isHeadingSameWay ? mf.tool.offset : -mf.tool.offset);
-                    for (int i = 1; i <= numGuideLines; i += 2)
-                    {
-                        GeoLine rightOddLine = currentLine.ParallelLine((toolWidth * i + oddOffset) * perpendicularRightDir);
-                        GeoLine leftOddLine = currentLine.ParallelLine((toolWidth * -i + oddOffset) * perpendicularRightDir);
-                        lines.Add(rightOddLine);
-                        lines.Add(leftOddLine);
-                    }
-                    for (int i = 2; i <= numGuideLines; i += 2)
-                    {
-                        GeoLine rightEvenLine = currentLine.ParallelLine((toolWidth * i) * perpendicularRightDir);
-                        GeoLine leftEvenLine = currentLine.ParallelLine((toolWidth * -i) * perpendicularRightDir);
-                        lines.Add(rightEvenLine);
-                        lines.Add(leftEvenLine);
-                    }
-                    for (int i = 0; i < lines.Count; i++)
-                    {
-                        GLW.Vertex2(lines[i].CoordA);
-                        GLW.Vertex2(lines[i].CoordB);
-                    }
-                    GL.End();
-
-                    //green lines
-                    GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
-                    GL.LineWidth(lineWidth);
-                    GL.Begin(PrimitiveType.Lines);
-                    for (int i = 0; i < lines.Count; i++)
-                    {
-                        GLW.Vertex2(lines[i].CoordA);
-                        GLW.Vertex2(lines[i].CoordB);
-                    }
-                    GL.End();
+                    GeoLine rightEvenLine = currentLine.ParallelLine((toolWidth * i) * perpendicularRightDir);
+                    GeoLine leftEvenLine = currentLine.ParallelLine((toolWidth * -i) * perpendicularRightDir);
+                    lines.Add(rightEvenLine);
+                    lines.Add(leftEvenLine);
                 }
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    GLW.Vertex2(lines[i].CoordA);
+                    GLW.Vertex2(lines[i].CoordB);
+                }
+                GL.End();
+
+                //green lines
+                GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
+                GL.LineWidth(lineWidth);
+                GL.Begin(PrimitiveType.Lines);
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    GLW.Vertex2(lines[i].CoordA);
+                    GLW.Vertex2(lines[i].CoordB);
+                }
+                GL.End();
             }
             mf.yt.DrawYouTurn();
 
