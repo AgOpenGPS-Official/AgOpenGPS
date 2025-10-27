@@ -1,3 +1,4 @@
+using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -506,9 +507,31 @@ namespace AgOpenGPS
                         extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mA.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mA.northing).ToGeoCoord());
                         extraGuideLines.Add(new vec2(cosHeading * ((toolWidth * -i) - toolOffset) + mB.easting, (sinHeading * ((toolWidth * -i) - toolOffset)) + mB.northing).ToGeoCoord());
                     }
-                    foreach (var coord in extraGuideLines)
+                    GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
+                    GeoDir perpendicularRight = currentLine.Direction.PerpendicularRight;
+                    GeoDelta toolOffsetDelta = toolOffset * perpendicularRight;
+                    GeoLine mLine = currentLine.ParallelLine(toolOffsetDelta);
+                    List<GeoLine> lines = new List<GeoLine>();
+                    for (int i = 1; i <= numGuideLines; i++)
                     {
-                        GL.Vertex2(coord.Easting, coord.Northing);
+                        GeoLine rightLine = mLine.ParallelLine(((toolWidth * i) + toolOffset) * perpendicularRight);
+                        GeoLine leftLine = mLine.ParallelLine(((toolWidth * -i) + toolOffset) * perpendicularRight);
+                        lines.Add(rightLine);
+                        lines.Add(leftLine);
+
+                        i++;
+
+                        rightLine = mLine.ParallelLine(((toolWidth * i) - toolOffset) * perpendicularRight);
+                        leftLine = mLine.ParallelLine(((toolWidth * -i) - toolOffset) * perpendicularRight);
+                        lines.Add(rightLine);
+                        lines.Add(leftLine);
+                    }
+                    for (int i = 0; i < lines.Count; i++)
+                    {
+                        DebugAsserts.AreEqual(lines[i].CoordA, extraGuideLines[2 * i]);
+                        DebugAsserts.AreEqual(lines[i].CoordB, extraGuideLines[2 * i + 1]);
+                        GLW.Vertex2(lines[i].CoordA);
+                        GLW.Vertex2(lines[i].CoordB);
                     }
                     GL.End();
 
@@ -516,9 +539,10 @@ namespace AgOpenGPS
                     GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
                     GL.LineWidth(lineWidth);
                     GL.Begin(PrimitiveType.Lines);
-                    foreach (var coord in extraGuideLines)
+                    for (int i = 0; i < lines.Count; i++)
                     {
-                        GL.Vertex2(coord.Easting, coord.Northing);
+                        GLW.Vertex2(lines[i].CoordA);
+                        GLW.Vertex2(lines[i].CoordB);
                     }
                     GL.End();
                 }

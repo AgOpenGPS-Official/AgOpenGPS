@@ -13,6 +13,9 @@ namespace AgOpenGPS.Core.Models
         {
             AngleInRadians = Math.Atan2(delta.EastingDelta, delta.NorthingDelta);
         }
+        public GeoDir(GeoCoord fromCoord, GeoCoord toCoord) : this(new GeoDelta(fromCoord, toCoord))
+        {
+        }
 
         public double AngleInRadians { get; }
         public double AngleInDegrees => Units.RadiansToDegrees(AngleInRadians);
