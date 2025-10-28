@@ -95,6 +95,12 @@ namespace AgOpenGPS
         public double fixToFixHeadingDistance = 0, gpsMinimumStepDistance = 0.05;
         private bool hasBeenFirstHeadingSet = false;
 
+        // Shadow Fix heading system for smooth AutoSwitch Dual<>Fix transitions
+        private double shadowFixHeading = 0;
+        private double shadowGpsHeading = 0;
+        private double shadowImuOffset = 0;
+        private bool isShadowFixInitialized = false;
+
 
         public bool isChangingDirection, isReverseWithIMU;
 
@@ -176,11 +182,49 @@ namespace AgOpenGPS
             {
                 if (Math.Abs(pn.speed) > ahrs.autoSwitchDualFixSpeed)
                 {
+                    // Switching to Fix mode
+                    if (headingFromSource == "Dual")
+                    {
+                        // Seamless takeover of shadow state
+                        if (isShadowFixInitialized)
+                        {
+                            // Take over shadow state as starting point
+                            gpsHeading = shadowGpsHeading;
+                            fixHeading = shadowFixHeading;
+
+                            // If real IMU present, update the offset
+                            if (ahrs.imuHeading != 99999)
+                            {
+                                // Calculate new IMU offset based on shadow heading
+                                double imuHeadingRad = glm.toRadians(ahrs.imuHeading);
+                                imuGPS_Offset = shadowFixHeading - imuHeadingRad;
+
+                                if (imuGPS_Offset >= glm.twoPI) imuGPS_Offset -= glm.twoPI;
+                                else if (imuGPS_Offset < 0) imuGPS_Offset += glm.twoPI;
+                            }
+                            else
+                            {
+                                // No real IMU: use shadow offset as basis
+                                imuGPS_Offset = shadowImuOffset;
+                            }
+
+                            // Update camera heading to prevent jump
+                            smoothCamHeading = shadowFixHeading;
+                        }
+                    }
+
                     headingFromSource = "Fix";
                     ahrs.isDualAsIMU = true;
                 }
                 else
                 {
+                    // Switching to Dual mode (or staying in Dual)
+                    if (headingFromSource == "Fix")
+                    {
+                        // From Fix to Dual: reset shadow system for fresh start
+                        isShadowFixInitialized = false;
+                    }
+
                     headingFromSource = "Dual";
                     ahrs.isDualAsIMU = false;
                     ahrs.imuHeading = 99999;
@@ -792,13 +836,115 @@ namespace AgOpenGPS
 
                         camHeading = glm.toDegrees(smoothCamHeading);
 
-                        // FOR AUTOSWITCH DUALFIX2FIX START
-                        // save current fix and set as valid to make switch dual to fix2fix fluid
-                        for (int i = totalFixSteps - 1; i > 0; i--) stepFixPts[i] = stepFixPts[i - 1];
-                        stepFixPts[0].easting = pn.fix.easting;
-                        stepFixPts[0].northing = pn.fix.northing;
-                        stepFixPts[0].isSet = 1;
-                        // FOR AUTOSWITCH DUALFIX2FIX END
+                        // Shadow Fix Heading System
+                        // When AutoSwitch is active, calculate parallel Fix heading that stays warm
+                        if (ahrs.autoSwitchDualFixOn)
+                        {
+                            // Update stepFixPts array for shadow heading calculation
+                            distanceCurrentStepFix = glm.Distance(stepFixPts[0], pn.fix);
+
+                            if (distanceCurrentStepFix >= gpsMinimumStepDistance && stepFixPts[0].isSet == 1)
+                            {
+                                // Shift array and add new position
+                                for (int i = totalFixSteps - 1; i > 0; i--) stepFixPts[i] = stepFixPts[i - 1];
+                                stepFixPts[0].easting = pn.fix.easting;
+                                stepFixPts[0].northing = pn.fix.northing;
+                                stepFixPts[0].isSet = 1;
+
+                                // Calculate shadow Fix heading based on movement
+                                double minFixHeadingDistSquared = minHeadingStepDist * minHeadingStepDist;
+                                double shadowFixToFixHeadingDistance = 0;
+                                int shadowCurrentStepFix = 0;
+
+                                for (int i = 0; i < totalFixSteps; i++)
+                                {
+                                    if (stepFixPts[i].isSet == 0) break;
+
+                                    shadowFixToFixHeadingDistance = glm.DistanceSquared(stepFixPts[i], pn.fix);
+                                    shadowCurrentStepFix = i;
+
+                                    if (shadowFixToFixHeadingDistance > minFixHeadingDistSquared)
+                                    {
+                                        break;
+                                    }
+                                }
+
+                                if (shadowFixToFixHeadingDistance >= minFixHeadingDistSquared * 0.5)
+                                {
+                                    // Calculate new shadow GPS heading
+                                    double newShadowGpsHeading = Math.Atan2(
+                                        pn.fix.easting - stepFixPts[shadowCurrentStepFix].easting,
+                                        pn.fix.northing - stepFixPts[shadowCurrentStepFix].northing);
+
+                                    if (newShadowGpsHeading < 0) newShadowGpsHeading += glm.twoPI;
+
+                                    shadowGpsHeading = newShadowGpsHeading;
+
+                                    // CRITICAL: Use Dual heading as virtual IMU
+                                    // This is the key to seamless transition!
+                                    double virtualImuHeading = fixHeading; // Dual heading = "perfect IMU"
+
+                                    // Calculate gyro delta between "virtual IMU" (Dual) and calculated Fix heading
+                                    double gyroDelta = virtualImuHeading - shadowGpsHeading;
+
+                                    if (gyroDelta < 0) gyroDelta += glm.twoPI;
+                                    else if (gyroDelta >= glm.twoPI) gyroDelta -= glm.twoPI;
+
+                                    // Normalize delta
+                                    if (gyroDelta >= -glm.PIBy2 && gyroDelta <= glm.PIBy2)
+                                        gyroDelta *= -1.0;
+                                    else
+                                    {
+                                        if (gyroDelta > glm.PIBy2)
+                                            gyroDelta = glm.twoPI - gyroDelta;
+                                        else
+                                            gyroDelta = (glm.twoPI + gyroDelta) * -1.0;
+                                    }
+
+                                    if (gyroDelta > glm.twoPI) gyroDelta -= glm.twoPI;
+                                    else if (gyroDelta < -glm.twoPI) gyroDelta += glm.twoPI;
+
+                                    // Update shadow IMU offset with fusion weight
+                                    // Use same fusionWeight as real IMU for consistency
+                                    double shadowFusionWeight = (ahrs.imuHeading != 99999)
+                                        ? ahrs.fusionWeight
+                                        : 0.3; // Default fusion weight if no real IMU
+
+                                    if (!isShadowFixInitialized)
+                                    {
+                                        // First time: initialize directly
+                                        shadowImuOffset = gyroDelta;
+                                        isShadowFixInitialized = true;
+                                    }
+                                    else
+                                    {
+                                        // Filter the offset update
+                                        shadowImuOffset += (gyroDelta * shadowFusionWeight);
+                                    }
+
+                                    if (shadowImuOffset > glm.twoPI) shadowImuOffset -= glm.twoPI;
+                                    else if (shadowImuOffset < 0) shadowImuOffset += glm.twoPI;
+
+                                    // Calculate filtered shadow Fix heading
+                                    shadowFixHeading = virtualImuHeading + shadowImuOffset;
+                                    if (shadowFixHeading >= glm.twoPI) shadowFixHeading -= glm.twoPI;
+                                    else if (shadowFixHeading < 0) shadowFixHeading += glm.twoPI;
+                                }
+                            }
+                            else if (stepFixPts[0].isSet == 0)
+                            {
+                                // Initialize first position
+                                stepFixPts[0].easting = pn.fix.easting;
+                                stepFixPts[0].northing = pn.fix.northing;
+                                stepFixPts[0].isSet = 1;
+                            }
+                        }
+                        else
+                        {
+                            // If AutoSwitch is off, reset shadow system
+                            isShadowFixInitialized = false;
+                        }
+                        // End Shadow Fix Heading System
 
                         TheRest();
 
