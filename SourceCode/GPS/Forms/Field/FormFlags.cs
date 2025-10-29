@@ -25,7 +25,9 @@ namespace AgOpenGPS
         {
             if (mf.flagNumberPicked > mf.flagPts.Count)
             {
-                mf.flagNumberPicked = mf.flagPts.Count - 1;
+                if (mf.flagPts.Count == 1) mf.flagNumberPicked = 1;
+                else
+                    mf.flagNumberPicked = mf.flagPts.Count - 1;
             }
             lblLatStart.Text = mf.flagPts[mf.flagNumberPicked - 1].latitude.ToString();
             lblLonStart.Text = mf.flagPts[mf.flagNumberPicked - 1].longitude.ToString();
