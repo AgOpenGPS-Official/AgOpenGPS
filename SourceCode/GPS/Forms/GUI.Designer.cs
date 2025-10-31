@@ -198,11 +198,12 @@ namespace AgOpenGPS
                                     oppositeAbAngle = oppositeAbAngle - 360;
                                 }
 
-                                lblCurrentField.Text = "Line: " + trk.gArr[trk.idx].name + " - " + glm.toDegrees(trk.gArr[trk.idx].heading).ToString("N3") + ", " + oppositeAbAngle.ToString("N3");
+                                GeoDir headingDir = new GeoDir(trk.gArr[trk.idx].heading);
+                                lblCurrentField.Text = gStr.gsABline + ": " + trk.gArr[trk.idx].name + "  " + headingDir.HeadingString("N3") + ", " + headingDir.Inverted.HeadingString("N3");
                             }
                             else
                             {
-                                lblCurrentField.Text = "Line: " + gStr.gsNoGuidanceLines;
+                                lblCurrentField.Text = gStr.gsABline + ": " + gStr.gsNoGuidanceLines;
                             }
                             break;
 
