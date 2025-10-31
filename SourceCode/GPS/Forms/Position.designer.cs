@@ -184,22 +184,33 @@ namespace AgOpenGPS
                     // Switching to Fix mode
                     if (headingFromSource == "Dual")
                     {
+                        Log.EventWriter("-- SWITCH FROM DUAL TO FIX -- ");
+
                         // Start blend transition from Dual to Fix
                         lastDualHeading = fixHeading; // Save current Dual heading
+                        Log.EventWriter("- lastDualHeading: " + lastDualHeading.ToString() + "");
                         blendTransitionFrames = BLEND_FRAMES;
 
                         // Initialize Fix heading with Dual heading for smooth start
                         gpsHeading = lastDualHeading;
 
+                        Log.EventWriter("- imuGPS_Offset1: " + imuGPS_Offset.ToString() + "");
+
                         // If real IMU present, initialize offset based on current heading
                         if (ahrs.imuHeading != 99999)
                         {
                             double imuHeadingRad = glm.toRadians(ahrs.imuHeading);
+                            Log.EventWriter("- imuHeadingRad: " + imuHeadingRad.ToString() + "");
+
                             imuGPS_Offset = lastDualHeading - imuHeadingRad;
+                            Log.EventWriter("- imuGPS_Offset2: " + imuGPS_Offset.ToString() + "");
 
                             if (imuGPS_Offset >= glm.twoPI) imuGPS_Offset -= glm.twoPI;
                             else if (imuGPS_Offset < 0) imuGPS_Offset += glm.twoPI;
                         }
+
+                        Log.EventWriter("- imuGPS_Offset3: " + imuGPS_Offset.ToString() + "");
+                        Log.EventWriter("-- SWITCH FROM DUAL TO FIX END -- ");
                     }
 
                     headingFromSource = "Fix";
@@ -210,9 +221,15 @@ namespace AgOpenGPS
                     // Switching to Dual mode (or staying in Dual)
                     if (headingFromSource == "Fix")
                     {
+                        Log.EventWriter("-- SWITCH FROM FIX TO DUAL -- ");
+
                         // Start blend transition from Fix to Dual
                         lastFixHeading = fixHeading; // Save current Fix heading
+                        Log.EventWriter("- fixHeading 228: " + fixHeading.ToString() + "");
+
                         blendTransitionFrames = BLEND_FRAMES;
+
+                        Log.EventWriter("-- SWITCH FROM FIX TO DUAL END -- ");
                     }
 
                     headingFromSource = "Dual";
@@ -279,6 +296,7 @@ namespace AgOpenGPS
                                 else if (gpsHeading >= glm.twoPI) gpsHeading -= glm.twoPI;
 
                                 fixHeading = gpsHeading;
+                                Log.EventWriter("- fixHeading 299: " + fixHeading.ToString() + "");
 
                                 //set the imu to gps heading offset
                                 if (ahrs.imuHeading != 99999)
@@ -315,6 +333,7 @@ namespace AgOpenGPS
                                     else if (imuCorrected < 0) imuCorrected += glm.twoPI;
 
                                     fixHeading = imuCorrected;
+                                    Log.EventWriter("- fixHeading 336: " + fixHeading.ToString() + "");
                                 }
 
                                 //set the camera 
@@ -507,6 +526,7 @@ namespace AgOpenGPS
 
                             //use imu as heading when going slow
                             fixHeading = imuCorrected;
+                            Log.EventWriter("- fixHeading 529: " + fixHeading.ToString() + "");
 
                             #endregion
                         }
@@ -563,6 +583,7 @@ namespace AgOpenGPS
 
                             //set the headings
                             fixHeading = gpsHeading = newGPSHeading;
+                            Log.EventWriter("- fixHeading 586: " + fixHeading.ToString() + "");
                         }
 
                         //save current fix and set as valid
@@ -574,10 +595,16 @@ namespace AgOpenGPS
                         // Blend during transition from Dual to Fix for smooth heading change
                         if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Dual" && ahrs.autoSwitchDualFixOn && blendTransitionFrames > 0)
                         {
+                            Log.EventWriter("# BLEND START #");
                             double blendFactor = (double)blendTransitionFrames / (double)BLEND_FRAMES;
+
+                            Log.EventWriter("- lastDualHeading: " + lastDualHeading.ToString() + "");
+                            Log.EventWriter("- fixHeading 603: " + fixHeading.ToString() + "");
 
                             // Blend between last Dual heading and new Fix heading
                             double headingDiff = lastDualHeading - fixHeading;
+
+                            Log.EventWriter("- headingDiff: " + headingDiff.ToString() + "");
 
                             // Normalize difference to shortest path
                             if (headingDiff > Math.PI) headingDiff -= glm.twoPI;
@@ -585,12 +612,15 @@ namespace AgOpenGPS
 
                             // Apply blend
                             fixHeading = fixHeading + (headingDiff * blendFactor);
+                            Log.EventWriter("- fixHeading blend: " + fixHeading.ToString() + "");
 
                             // Normalize result
                             if (fixHeading >= glm.twoPI) fixHeading -= glm.twoPI;
                             else if (fixHeading < 0) fixHeading += glm.twoPI;
+                            Log.EventWriter("- fixHeading blend normalize: " + fixHeading.ToString() + "");
 
                             blendTransitionFrames--;
+                            Log.EventWriter("# BLEND END #");
                         }
 
                         #endregion
@@ -632,6 +662,7 @@ namespace AgOpenGPS
 
                             //use imu as heading when going slow
                             fixHeading = imuCorrected;
+                            Log.EventWriter("- fixHeading byPass: " + fixHeading.ToString() + "");
                         }
 
                         camDelta = fixHeading - smoothCamHeading;
