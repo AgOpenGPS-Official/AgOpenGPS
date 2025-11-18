@@ -543,7 +543,7 @@ namespace AgOpenGPS
             vehicle.VehicleConfig.Opacity = ((double)(Properties.Settings.Default.setDisplay_vehicleOpacity) * 0.01);
             vehicle.VehicleConfig.IsImage = Properties.Settings.Default.setDisplay_isVehicleImage;
 
-            string directoryName = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string directoryName = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly()?.Location ?? System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             simulatorOnToolStripMenuItem.Checked = Settings.Default.setMenu_isSimulatorOn;
             if (simulatorOnToolStripMenuItem.Checked)
@@ -782,6 +782,8 @@ namespace AgOpenGPS
 
         public void PanelUpdateRightAndBottom()
         {
+            if (isHeadless) return;
+
             if (isJobStarted)
             {
                 int tracksTotal = 0, tracksVisible = 0;
@@ -964,6 +966,8 @@ namespace AgOpenGPS
 
         private void PanelsAndOGLSize()
         {
+            if (isHeadless) return;
+
             if (!isJobStarted)
             {
                 panelBottom.Visible = false;
@@ -1470,12 +1474,18 @@ namespace AgOpenGPS
         {
             yt.ResetYouTurn();
             yt.isYouTurnBtnOn = false;
-            btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            if (!isHeadless && btnAutoYouTurn != null)
+            {
+                btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            }
         }
         public void DisableYouTurnButtons()
         {
             yt.isYouTurnBtnOn = false;
-            btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            if (!isHeadless && btnAutoYouTurn != null)
+            {
+                btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+            }
             yt.ResetYouTurn();
         }
 

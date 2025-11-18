@@ -22,6 +22,9 @@ namespace AgOpenGPS
         //points in world space that start and end of section are in
         public vec2 leftPoint, rightPoint;
 
+        //previous points for coverage tracking
+        private vec2 prevLeftPoint, prevRightPoint;
+
         public int numTriangles = 0;
         public int currentStartSectionNum, currentEndSectionNum;
         public int newStartSectionNum, newEndSectionNum;
@@ -64,6 +67,10 @@ namespace AgOpenGPS
 
                 leftPoint = mf.section[currentStartSectionNum].leftPoint;
                 rightPoint = mf.section[currentEndSectionNum].rightPoint;
+
+                // Save initial points for coverage tracking
+                prevLeftPoint = leftPoint;
+                prevRightPoint = rightPoint;
 
                 //left side of triangle
                 triangleList.Add(new vec3(leftPoint.easting, leftPoint.northing, 0));
@@ -110,6 +117,31 @@ namespace AgOpenGPS
 
             //Right side
             triangleList.Add(new vec3(rightPoint.easting, rightPoint.northing, 0));
+
+            // Mark coverage in grid tracker for headless mode
+            if (mf.coverageTracker != null)
+            {
+                mf.coverageTracker.MarkCoverage(leftPoint, rightPoint, prevLeftPoint, prevRightPoint);
+            }
+
+            // Render triangles to software rasterizer for OpenGL-free coverage calculation
+            if (mf.softwareRasterizer != null && triangleList.Count >= 5)
+            {
+                // Get the last 4 points added (2 triangles forming a quad)
+                int idx = triangleList.Count - 1;
+                vec3 v0 = triangleList[idx - 3];  // Previous left
+                vec3 v1 = triangleList[idx - 2];  // Previous right
+                vec3 v2 = triangleList[idx - 1];  // Current left
+                vec3 v3 = triangleList[idx];      // Current right
+
+                // Render two triangles that form the quad
+                mf.softwareRasterizer.RenderTriangle(v0, v1, v2);
+                mf.softwareRasterizer.RenderTriangle(v1, v3, v2);
+            }
+
+            // Update previous points for next iteration
+            prevLeftPoint = leftPoint;
+            prevRightPoint = rightPoint;
 
             //countExit the triangle pairs
             numTriangles++;

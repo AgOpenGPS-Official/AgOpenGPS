@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishDir>..\..\AgOpenGPS\</PublishDir>
     <ApplicationIcon>AOG.ico</ApplicationIcon>

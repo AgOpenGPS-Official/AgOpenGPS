@@ -484,4 +484,7 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
+# Test output files
+**/TestOutput/
+
 .claude/settings.local.json

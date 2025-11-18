@@ -27,7 +27,7 @@ namespace AgOpenGPS
     //the main form object
     public partial class FormGPS : Form
     {
-        public ApplicationCore AppCore { get; }
+        public ApplicationCore AppCore { get; private set; }
 
         public ApplicationModel AppModel => AppCore.AppModel;
         public ApplicationViewModel AppViewModel => AppCore.AppViewModel;
@@ -238,6 +238,16 @@ namespace AgOpenGPS
         /// </summary>
         public CFieldData fd;
 
+        /// <summary>
+        /// Coverage tracker for headless mode (no OpenGL)
+        /// </summary>
+        public CCoverageTracker coverageTracker;
+
+        /// <summary>
+        /// Software rasterizer for OpenGL-free coverage calculation
+        /// </summary>
+        public CSoftwareRasterizer softwareRasterizer;
+
         ///// <summary>
         ///// Sound
         ///// </summary>
@@ -303,13 +313,29 @@ namespace AgOpenGPS
             }
         }
 
-        public FormGPS()
+        internal bool isHeadless = false;
+
+        public FormGPS() : this(false)
         {
-            //winform initialization
-            InitializeComponent();
+        }
 
-            InitializeLanguages();
+        public FormGPS(bool headless)
+        {
+            isHeadless = headless;
 
+            if (!isHeadless)
+            {
+                //winform initialization
+                InitializeComponent();
+                InitializeLanguages();
+            }
+
+            // Core initialization - always runs
+            InitializeCore();
+        }
+
+        private void InitializeCore()
+        {
             AppCore = new ApplicationCore(
                 new DirectoryInfo(RegistrySettings.baseDirectory),
                 null,
@@ -322,7 +348,11 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setDisplay_camPitch,
                 Properties.Settings.Default.setDisplay_camZoom);
 
-            worldGrid = new WorldGrid(Resources.z_Floor);
+            if (!isHeadless)
+            {
+                worldGrid = new WorldGrid(Resources.z_Floor);
+                font = new AgOpenGPS.Core.DrawLib.Font(camera, ScreenTextures.Font);
+            }
 
             //our vehicle made with gl object and pointer of mainform
             vehicle = new CVehicle(this);
@@ -379,13 +409,8 @@ namespace AgOpenGPS
             //fieldData all in one place
             fd = new CFieldData(this);
 
-            //start the stopwatch
-            //swFrame.Start();
-
             //instance of tram
             tram = new CTram(this);
-
-            font = new AgOpenGPS.Core.DrawLib.Font(camera, ScreenTextures.Font);
 
             //the new steer algorithms
             gyd = new CGuidance(this);
@@ -886,16 +911,34 @@ namespace AgOpenGPS
             AppModel.Fields.OpenField();
             startCounter = 0;
 
-            btnFieldStats.Visible = true;
+            // Initialize coverage tracker for headless mode
+            coverageTracker = new CCoverageTracker(this);
+            coverageTracker.InitializeGrid();
 
-            btnSectionMasterManual.Enabled = true;
-            manualBtnState = btnStates.Off;
-            btnSectionMasterManual.Image = Properties.Resources.ManualOff;
+            // Initialize software rasterizer for OpenGL-free coverage calculation
+            softwareRasterizer = new CSoftwareRasterizer(this);
+            softwareRasterizer.Initialize();
 
-            btnSectionMasterAuto.Enabled = true;
-            autoBtnState = btnStates.Off;
-            btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
+            if (!isHeadless)
+            {
+                btnFieldStats.Visible = true;
 
+                btnSectionMasterManual.Enabled = true;
+                manualBtnState = btnStates.Off;
+                btnSectionMasterManual.Image = Properties.Resources.ManualOff;
+
+                btnSectionMasterAuto.Enabled = true;
+                autoBtnState = btnStates.Off;
+                btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
+            }
+            else
+            {
+                manualBtnState = btnStates.Off;
+                autoBtnState = btnStates.Off;
+            }
+
+            if (!isHeadless)
+            {
             btnSection1Man.BackColor = Color.Red;
             btnSection2Man.BackColor = Color.Red;
             btnSection3Man.BackColor = Color.Red;
@@ -984,6 +1027,8 @@ namespace AgOpenGPS
             lblGuidanceLine.Visible = false;
             lblHardwareMessage.Visible = false;
             btnAutoTrack.Image = Resources.AutoTrackOff;
+            }
+
             trk.isAutoTrack = false;
         }
 
@@ -1201,6 +1246,8 @@ namespace AgOpenGPS
 
         public void FieldMenuButtonEnableDisable(bool isOn)
         {
+            if (isHeadless) return;
+
             SmoothABtoolStripMenu.Enabled = isOn;
             deleteContourPathsToolStripMenuItem.Enabled = isOn;
             boundaryToolToolStripMenu.Enabled = isOn;
@@ -1219,6 +1266,8 @@ namespace AgOpenGPS
         //take the distance from object and convert to camera data
         public void SetZoom()
         {
+            if (isHeadless) return;
+
             //match grid to cam distance and redo perspective
             double gridStep = camera.camSetDistance / -15;
 
@@ -1360,6 +1409,8 @@ namespace AgOpenGPS
             var form = new FormYes(s1);
             form.ShowDialog(this);
         }
+
+        // UpdateSectionControl() method moved to FormGPS.SectionControl.cs
     }//class FormGPS
 }//namespace AgOpenGPS
 
