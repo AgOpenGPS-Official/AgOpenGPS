@@ -166,6 +166,7 @@ namespace AgOpenGPS.Core.Tests.Models
                 {
                     p.Add(polygon[(i + rotate) % polygon.Count]);
                 }
+                double oldArea = p.Area;
                 int nInterSection = p.RemoveSelfIntersections();
                 Assert.That(nInterSection, Is.EqualTo(2));
                 Assert.That(p.Area, Is.EqualTo(1.5));
