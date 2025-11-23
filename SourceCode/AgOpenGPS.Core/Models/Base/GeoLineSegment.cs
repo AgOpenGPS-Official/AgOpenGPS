@@ -10,6 +10,7 @@
 
         public GeoCoord CoordA { get; }
         public GeoCoord CoordB { get; }
+        public double Length => CoordA.Distance(CoordB);
         public GeoDelta Delta => new GeoDelta(CoordA, CoordB);
 
         public GeoDir Direction => new GeoDir(Delta);

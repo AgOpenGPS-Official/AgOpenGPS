@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Accord.Imaging.Filters;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -67,6 +69,12 @@ namespace AgOpenGPS.Core.Models
             Invalidate();
         }
 
+        public GeoLineSegment GetLineSegment(int index)
+        {
+            int nextIndex = (index + 1) % _coords.Count;
+            return new GeoLineSegment(this[index], this[nextIndex]);
+        }
+
         public bool IsFarAwayFromPath(GeoCoord testCoord, double minimumDistanceSquared)
         {
             return _coords.TrueForAll(coordOnPath => coordOnPath.DistanceSquared(testCoord) >= minimumDistanceSquared);
@@ -106,6 +114,76 @@ namespace AgOpenGPS.Core.Models
             if (IsClockwise)
             {
                 ReverseWinding();
+            }
+        }
+
+        public double GetLength(int indexA, int indexB)
+        {
+            double len = 0.0;
+            if (indexA < indexB)
+            {
+                for (int i = indexA; i + 1 < indexB; i++)
+                {
+                    len += GetLineSegment(i).Length;
+                }
+            }
+            else
+            {
+                for (int i = indexA; i + 1 < indexB + Count; i++)
+                {
+                    len += GetLineSegment(i < Count ? i : i - Count).Length;
+                }
+            }
+            return len;
+        }
+
+        public int RemoveSelfIntersections()
+        {
+            for (int paIndex = 0; paIndex < Count; paIndex++)
+            {
+                int pbIndex = (paIndex + 1) % Count;
+                GeoLineSegment segmentP = GetLineSegment(paIndex);
+
+                // Skip neighbouring segments
+                int qaLast = paIndex == 0 ? Count - 1 : Count;
+                for (int qaIndex = paIndex + 2; qaIndex < qaLast; qaIndex++)
+                {
+                    GeoLineSegment segmentQ = GetLineSegment(qaIndex);
+                    GeoCoord? intersectionPoint = segmentP.IntersectionPoint(segmentQ);
+                    if (intersectionPoint.HasValue)
+                    {
+                        GeoCoord ip = intersectionPoint.Value;
+                        int qbIndex = (qaIndex + 1) % Count;
+                        double pbqaLength = ip.Distance(this[pbIndex]) + GetLength(pbIndex, qaIndex) + this[qaIndex].Distance(ip);
+                        double qbpaLength = ip.Distance(this[qbIndex]) + GetLength(qbIndex, paIndex) + this[paIndex].Distance(ip);
+                        if (pbqaLength < qbpaLength)
+                        {
+                            Replace(pbIndex, qaIndex, intersectionPoint.Value);
+                        }
+                        else
+                        {
+                            Replace(qbIndex, paIndex, intersectionPoint.Value);
+                        }
+                        return 1 + RemoveSelfIntersections();
+
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private void Replace(int startIndex, int endIndex, GeoCoord coord)
+        {
+            if (startIndex < endIndex)
+            {
+                _coords.RemoveRange(startIndex, endIndex + 1 - startIndex);
+                _coords.Insert(startIndex, coord);
+            }
+            else
+            {
+                _coords.RemoveRange(startIndex, Count - startIndex);
+                _coords.Insert(startIndex, coord);
+                _coords.RemoveRange(0, endIndex + 1);
             }
         }
 
