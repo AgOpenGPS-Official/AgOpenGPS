@@ -202,6 +202,7 @@ namespace AgOpenGPS
                 if (!isEndOfTheRecLine)
                 {
                     mf.sim.stepDistance = recList[C].speed / 34.86;
+                    mf.p_239.SetRecordedSpeed(recList[C].speed); // ПЕРЕДАЧА ЗАПИСАННОЙ СКОРОСТИ В МАШИННЫЙ МОДУЛЬ
                     north = recList[C].northing;
 
                     pathCount = recList.Count - C;
@@ -263,6 +264,7 @@ namespace AgOpenGPS
             shortestDubinsList.Clear();
             mf.sim.stepDistance = 0;
             isDrivingRecordedPath = false;
+            mf.p_239.pgn[mf.p_239.recordedSpeed] = 0; // ГАРАНТИРОВАННЫЙ СБРОС
             mf.btnPathGoStop.Image = Properties.Resources.boundaryPlay;
             mf.btnPathRecordStop.Enabled = true;
             mf.btnPickPath.Enabled = true;
