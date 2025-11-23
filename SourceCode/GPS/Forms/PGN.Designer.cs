@@ -152,7 +152,7 @@ namespace AgOpenGPS
             public int hydLift = 7;
             public int tram = 8;
             public int geoStop = 9; //out of bounds etc
-            public int recordedSpeed = 10; //ЗАПИСАННАЯ СКОРОСТЬ ИЗ МАРШРУТА
+            public int recordedSpeed = 10; //Saved route speed
             public int sc1to8 = 11;
             public int sc9to16 = 12;
 
@@ -161,7 +161,7 @@ namespace AgOpenGPS
             }
 
             /// <summary>
-            /// Установка записанной скорости (0-255 км/ч)
+            /// Set recorded speed (0-255 км/ч)
             /// </summary>
             public void SetRecordedSpeed(double speedKmh)
             {
