@@ -185,6 +185,7 @@ namespace AgOpenGPS.Core.Models
                 _coords.Insert(startIndex, coord);
                 _coords.RemoveRange(0, endIndex + 1);
             }
+            Invalidate();
         }
 
         private void ReverseWinding()
