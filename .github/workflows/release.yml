@@ -33,12 +33,12 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v4.1.0
+      uses: gittools/actions/gitversion/setup@v3.2.0
       with:
-        versionSpec: '6.3.x'
+        versionSpec: '5.12.x'
 
     - name: Determine Version
-      uses: gittools/actions/gitversion/execute@v4.1.0
+      uses: gittools/actions/gitversion/execute@v3.2.0
       with:
         updateProjectFiles: true
 
@@ -56,13 +56,14 @@ jobs:
 
     - name: Create AgOpenGPS_${{ env.GitVersion_SemVer }}.zip
       shell: powershell
-      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}" -Destination "AgOpenGPS_${{ env.GitVersion_SemVer }}.zip"
+      run: Compress-Archive -Path "${{env.PUBLISH_DIR}}/*" -DestinationPath "AgOpenGPS_${{ env.GitVersion_SemVer }}.zip"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
         name: Release ${{ env.GitVersion_SemVer }}
         tag_name: ${{ env.GitVersion_SemVer }}
+        target_commitish: ${{ github.sha }}
         body: |
           Automated Release by GitHub Action CI
         draft: ${{ github.ref_name == 'master' }}

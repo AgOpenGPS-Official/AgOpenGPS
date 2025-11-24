@@ -1,6 +1,5 @@
 ﻿name: Bug Report
 description: Report a bug in a released version of AgOpenGPS
-title: ""
 labels: ["needs-triage"]
 type: "Bug"
 body:

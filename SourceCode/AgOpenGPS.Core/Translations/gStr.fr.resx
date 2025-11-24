@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -150,11 +150,17 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Création trains de pulvé avancé</value>
   </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Télécharger les Parcelles depuis AgShare</value>
+  </data>
   <data name="gsAgree" xml:space="preserve">
     <value>J'accepte les termes &amp; conditions</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agressivité</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Voir tous les réglages</value>
   </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alpha</value>
@@ -392,6 +398,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Distance drapeau</value>
   </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Téléchargement... Patientez</value>
+  </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>En Route</value>
   </data>
@@ -455,6 +464,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   <data name="gsExitToWindows" xml:space="preserve">
     <value>Fermeture dans :</value>
   </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Multilignes</value>
+  </data>
   <data name="gsFast" xml:space="preserve">
     <value>Rapide</value>
   </data>
@@ -503,6 +515,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   <data name="gsForNow" xml:space="preserve">
     <value>Pour l'instant</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Forcer l'enregistrement</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Drapeaux</value>
   </data>
@@ -514,6 +529,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Ecart</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Pas GPS Minimum</value>
   </data>
   <data name="gsGrid" xml:space="preserve">
     <value>Grille</value>
@@ -995,6 +1013,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   <data name="gsSort" xml:space="preserve">
     <value>Trier</value>
   </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Sons</value>
+  </data>
   <data name="gsSouth" xml:space="preserve">
     <value>Sud</value>
   </data>
@@ -1012,6 +1033,9 @@ L'ordre dans lequel vous cliquez, sera l'ordre dans lequel ils apparaîtrons dan
   </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Démarrer ou supprimer bordure</value>
+  </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Démarrer en plein écran</value>
   </data>
   <data name="gsStartNewField" xml:space="preserve">
     <value>Démarrer nouveau champ</value>
@@ -1107,6 +1131,9 @@ UTILISER À VOS PROPRES RISQUES.</value>
   <data name="gsTurnOffDelay" xml:space="preserve">
     <value>Coupure (secs)</value>
   </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Arrêter Chemins Enregistrés</value>
+  </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
     <value>Activer le contour ou créer Ligne AB</value>
   </data>
@@ -1199,14 +1226,5 @@ UTILISER À VOS PROPRES RISQUES.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Voir tous les réglages</value>
-  </data>
-  <data name="gsExtraGuideLines" xml:space="preserve">
-    <value>Multilignes</value>
-  </data>
-  <data name="gsStartFullscreen" xml:space="preserve">
-    <value>Démarrer en plein écran</value>
   </data>
 </root>

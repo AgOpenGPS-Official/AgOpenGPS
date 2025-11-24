@@ -828,7 +828,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete For Sure?.
+        ///   Looks up a localized string similar to Are you sure you want to delete?.
         /// </summary>
         public static string gsDeleteForSure {
             get {

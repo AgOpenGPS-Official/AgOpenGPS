@@ -6,15 +6,15 @@ namespace AgOpenGPS.Core.Models
     public class GeoPolygon : GeoPathBase
     {
         protected readonly List<GeoCoord> _coords;
-        protected bool _areaValid;
-        private double _area;
-        private GeoBoundingBox _boundingBox;
+        protected bool _signedAreaValid;
+        private double _signedArea;
         private bool _bbValid;
+        private GeoBoundingBox _boundingBox;
 
         public GeoPolygon()
         {
             _coords = new List<GeoCoord>();
-            _areaValid = true;
+            Invalidate();
         }
 
         public override int Count => _coords.Count;
@@ -24,20 +24,10 @@ namespace AgOpenGPS.Core.Models
             get { return _coords[index]; }
         }
 
-        public GeoCoord Last => this[this.Count - 1];
+        public GeoCoord Last => this[Count - 1];
 
-        public double Area
-        {
-            get
-            {
-                if (!_areaValid)
-                {
-                    _area = CalculateArea();
-                    _areaValid = true;
-                }
-                return _area;
-            }
-        }
+        public double Area => Math.Abs(SignedArea);
+        public bool IsClockwise => SignedArea > 0;
 
         public GeoBoundingBox BoundingBox
         {
@@ -52,16 +42,29 @@ namespace AgOpenGPS.Core.Models
             }
         }
 
+        private double SignedArea
+        {
+            get
+            {
+                if (!_signedAreaValid)
+                {
+                    _signedArea = CalculateSignedArea();
+                    _signedAreaValid = true;
+                }
+                return _signedArea;
+            }
+        }
+
         public void Clear()
         {
             _coords.Clear();
-            _areaValid = false;
+            Invalidate();
         }
 
         public virtual void Add(GeoCoord coord)
         {
             _coords.Add(coord);
-            _areaValid = false;
+            Invalidate();
         }
 
         public bool IsFarAwayFromPath(GeoCoord testCoord, double minimumDistanceSquared)
@@ -90,7 +93,29 @@ namespace AgOpenGPS.Core.Models
             return result;
         }
 
-        private double CalculateArea()
+        public void ForceClockwiseWinding()
+        {
+            if (!IsClockwise)
+            {
+                ReverseWinding();
+            }
+        }
+
+        public void ForceCounterClockwiseWinding()
+        {
+            if (IsClockwise)
+            {
+                ReverseWinding();
+            }
+        }
+
+        private void ReverseWinding()
+        {
+            _coords.Reverse();
+            _signedArea = -_signedArea;
+        }
+
+        private double CalculateSignedArea()
         {
             double area = 0.0;
             int ptCount = _coords.Count;
@@ -101,10 +126,7 @@ namespace AgOpenGPS.Core.Models
             {
                 area += (_coords[j].Easting + _coords[i].Easting) * (_coords[j].Northing - _coords[i].Northing);
             }
-
-            area = 0.5 * Math.Abs(area);
-
-            return area;
+            return 0.5 * area;
         }
 
         private GeoBoundingBox CalculateBoundingBox()
@@ -116,6 +138,12 @@ namespace AgOpenGPS.Core.Models
                 bb.Include(coord);
             }
             return bb;
+        }
+
+        private void Invalidate()
+        {
+            _signedAreaValid = false;
+            _bbValid = false;
         }
     }
 

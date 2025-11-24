@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -76,6 +135,9 @@
   <data name="gsAbout" xml:space="preserve">
     <value>Despre...</value>
   </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Acțiunea a fost anulată</value>
   </data>
@@ -87,6 +149,9 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Creați urme tehnologice avansate</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Descărcați câmpurile din AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Sunt de acord cu Termenii și Condițiile</value>
@@ -146,6 +211,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsAutoSteerPort" xml:space="preserve">
     <value>Port direcție automată</value>
+  </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Dual &lt;&gt; Fix</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
     <value>Viteza de comutare</value>
@@ -210,6 +278,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsChooseBuildDifferentone" xml:space="preserve">
     <value>Alegeți sau creați unul diferit</value>
   </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Linie de fixare</value>
+  </data>
   <data name="gsClose" xml:space="preserve">
     <value>Închide</value>
   </data>
@@ -218,6 +289,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Închideți câmpul mai întâi</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; Pixel</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Selector culoare</value>
@@ -240,6 +314,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
     <value>Nicio cale validă</value>
   </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Numărătoare pe grad</value>
+  </data>
   <data name="gsCoverage" xml:space="preserve">
     <value>% acoperire</value>
   </data>
@@ -257,6 +334,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsCurrent" xml:space="preserve">
     <value>Actual</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Senzor de viraj curent</value>
   </data>
   <data name="gsCurve" xml:space="preserve">
     <value>Curbă</value>
@@ -327,6 +407,12 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Distanța până la steag</value>
   </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Obțineți totul</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Descărcare... Vă rugăm să așteptați</value>
+  </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Condu în</value>
   </data>
@@ -353,9 +439,6 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsEditFieldName" xml:space="preserve">
     <value>Editați numele câmpului</value>
-  </data>
-  <data name="gsCurrentTurnSensor" xml:space="preserve">
-    <value>Senzor de viraj curent</value>
   </data>
   <data name="gsElevationlog" xml:space="preserve">
     <value>Jurnal Altitudine</value>
@@ -444,6 +527,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsForNow" xml:space="preserve">
     <value>Deocamdată</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Suprascrie forțată</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Steaguri</value>
   </data>
@@ -455,6 +541,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Spațiu</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Obțineți selecția</value>
   </data>
   <data name="gsGpsStep" xml:space="preserve">
     <value>Pas minim GPS</value>
@@ -681,11 +770,11 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Nimic șters</value>
   </data>
-  <data name="gsNudgeDistance" xml:space="preserve">
-    <value>Distanța de ajustare</value>
-  </data>
   <data name="gsNudge" xml:space="preserve">
     <value>Ajustare:</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Distanța de ajustare</value>
   </data>
   <data name="gsNudgeRefTrack" xml:space="preserve">
     <value>Mutare urmă de referință</value>
@@ -743,6 +832,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Distanța pivotului</value>
+  </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Plantă Pop</value>
   </data>
   <data name="gsPleaseEnterABLine" xml:space="preserve">
     <value>Vă rugăm să introduceți linia AB</value>
@@ -842,9 +934,6 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsRollFilter" xml:space="preserve">
     <value>Filtru ruliu</value>
-  </data>
-  <data name="gsZeroRoll" xml:space="preserve">
-    <value>Ruliu zero</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
     <value>Sud-Est</value>
@@ -1009,27 +1098,6 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsSteerSwitch" xml:space="preserve">
     <value>Întrerupător de direcție</value>
   </data>
-  <data name="gsWorkSwitch" xml:space="preserve">
-    <value>Întrerupător de lucru</value>
-  </data>
-  <data name="gsAckermann" xml:space="preserve">
-    <value>Ackermann</value>
-  </data>
-  <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value>Auto Dual &lt;&gt; Fix</value>
-  </data>
-  <data name="gsClipLine" xml:space="preserve">
-    <value>Linie de fixare</value>
-  </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Pixel</value>
-  </data>
-  <data name="gsCountsPerDegree" xml:space="preserve">
-    <value>Numărătoare pe grad</value>
-  </data>
-  <data name="gsPlantPop" xml:space="preserve">
-    <value>Plantă Pop</value>
-  </data>
   <data name="gsSteerWizard" xml:space="preserve">
     <value>Asistentul de ghidare</value>
   </data>
@@ -1165,6 +1233,9 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
   <data name="gsWizards" xml:space="preserve">
     <value>Asistenți</value>
   </data>
+  <data name="gsWorkSwitch" xml:space="preserve">
+    <value>Întrerupător de lucru</value>
+  </data>
   <data name="gsWorkWidth" xml:space="preserve">
     <value>Lățime</value>
   </data>
@@ -1173,6 +1244,9 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
   </data>
   <data name="gsXTEChart" xml:space="preserve">
     <value>Graficul XTE</value>
+  </data>
+  <data name="gsZeroRoll" xml:space="preserve">
+    <value>Ruliu zero</value>
   </data>
   <data name="gsZone" xml:space="preserve">
     <value>Zonă</value>
@@ -1185,20 +1259,5 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsForceOverwrite" xml:space="preserve">
-    <value>Suprascrie forțată</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Obțineți totul</value>
-  </data>
-  <data name="gsGetSelected" xml:space="preserve">
-    <value>Obțineți selecția</value>
-  </data>
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Descărcare... Vă rugăm să așteptați</value>
-  </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Descărcați câmpurile din AgShare</value>
   </data>
 </root>

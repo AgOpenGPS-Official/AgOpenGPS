@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -140,6 +140,9 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Creer uitgebreide spuitpaden</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Download velden vanaf AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Ik stem in met de algemene voorwaarden</value>
@@ -368,6 +371,12 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Afstand tot Vlag</value>
   </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Download Alles</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Ophalen...Even wachten</value>
+  </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Rij in perceel</value>
   </data>
@@ -478,6 +487,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsForNow" xml:space="preserve">
     <value>Tijdelijk</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Overschrijf</value>
   </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Vlaggen</value>
@@ -1138,18 +1150,5 @@ GEBRUIK OP EIGEN RISICO.</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Calibreer Gyroscoop</value>
-  </data>
-  <data name="gsForceOverwrite" xml:space="preserve">
-    <value>Overschrijf</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Download Alles</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Ophalen...Even wachten</value>
-  </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Download velden vanaf AgShare</value>
   </data>
 </root>

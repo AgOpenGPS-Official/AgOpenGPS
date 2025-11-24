@@ -103,6 +103,11 @@ namespace AgOpenGPS.Core.DrawLib
             vertex2Array.Dispose();
         }
 
+        public static void Vertex2(GeoCoord geoCoord)
+        {
+            GL.Vertex2(geoCoord.Easting, geoCoord.Northing);
+        }
+
         public static void Translate(double x, double y, double z)
         {
             GL.Translate(x, y, z);

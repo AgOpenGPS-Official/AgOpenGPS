@@ -32,6 +32,7 @@ namespace AgOpenGPS
             btnFromExisting.Text = gStr.gsFromExisting;
             btnJobClose.Text = gStr.gsClose;
             btnJobAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
+            btnAgShareBulkUpload.Enabled = Properties.Settings.Default.AgShareEnabled;
 
             this.Text = gStr.gsStartNewField;
         }
@@ -107,11 +108,11 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnJobOpen_Click(object sender, EventArgs e)
+        private async void btnJobOpen_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             mf.filePickerFileAndDirectory = "";
@@ -128,14 +129,15 @@ namespace AgOpenGPS
 
 
 
-        private void btnInField_Click(object sender, EventArgs e)
+        private async void btnInField_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = Task.Run(() => mf.FileSaveEverythingBeforeClosingField());
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             string infieldList = "";
+            string distanceList = "";
             int numFields = 0;
 
             string[] dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
@@ -169,8 +171,14 @@ namespace AgOpenGPS
                                     if (!string.IsNullOrEmpty(infieldList))
                                     {
                                         infieldList += ",";
+                                        distanceList += ",";
                                     }
                                     infieldList += Path.GetFileName(dir);
+
+                                    // Convert to miles if not metric
+                                    Distance distanceObj = new Distance(distance * 1000); // Distance expects meters
+                                    double displayDistance = mf.isMetric ? distanceObj.InKilometers : distanceObj.InMiles;
+                                    distanceList += displayDistance.ToString("F3");
                                 }
                             }
                         }
@@ -188,7 +196,7 @@ namespace AgOpenGPS
 
                 if (numFields > 1)
                 {
-                    using (FormDrivePicker form = new FormDrivePicker(mf, infieldList))
+                    using (FormDrivePicker form = new FormDrivePicker(mf, infieldList, distanceList))
                     {
                         //returns full field.txt file dir name
                         if (form.ShowDialog(this) == DialogResult.Yes)
@@ -215,9 +223,13 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnFromKML_Click(object sender, EventArgs e)
+        private async void btnFromKML_Click(object sender, EventArgs e)
         {
             //back to FormGPS
+            if (mf.isJobStarted)
+            {
+                await mf.FileSaveEverythingBeforeClosingField();
+            }
             DialogResult = DialogResult.No;
             Close();
         }
@@ -247,11 +259,11 @@ namespace AgOpenGPS
             Properties.Settings.Default.Save();
         }
 
-        private void btnFromISOXML_Click(object sender, EventArgs e)
+        private async void btnFromISOXML_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
             //back to FormGPS
             DialogResult = DialogResult.Abort;
@@ -263,8 +275,12 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
         }
 
-        private void btnJobAgShare_Click(object sender, EventArgs e)
+        private async void btnJobAgShare_Click(object sender, EventArgs e)
         {
+            if (mf.isJobStarted)
+            {
+                await mf.FileSaveEverythingBeforeClosingField();
+            }
             using (var form = new FormAgShareDownloader(mf))
             {
                 form.ShowDialog(this);

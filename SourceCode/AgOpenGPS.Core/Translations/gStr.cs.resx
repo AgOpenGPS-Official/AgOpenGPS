@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="gsABline" xml:space="preserve">
-    <value>AB Linie</value>
-  </data>
   <data name="gsABDraw" xml:space="preserve">
     <value>Draw AB - Klepněte na tlačítko 2 body na boundary začít</value>
+  </data>
+  <data name="gsABline" xml:space="preserve">
+    <value>AB Linie</value>
   </data>
   <data name="gsADConverter" xml:space="preserve">
     <value>AD převodník</value>
@@ -150,6 +209,30 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsAutoSteerPort" xml:space="preserve">
     <value>AutoSteer Port</value>
   </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Dual &lt;&gt; Fix</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Rychlost sepnutí</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>Pozadí</value>
+  </data>
+  <data name="gsBasedOnField" xml:space="preserve">
+    <value>Na základě pole:</value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Spodní menu</value>
+  </data>
+  <data name="gsBoundary" xml:space="preserve">
+    <value>Okraje</value>
+  </data>
+  <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
+    <value>Soubor okrajových křivek poškozen</value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>Jas</value>
+  </data>
   <data name="gsBuild" xml:space="preserve">
     <value>Sestavení</value>
   </data>
@@ -158,6 +241,48 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Ale pole je zatíženo</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>Tlačítko Picker</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>Chovani kamery</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>Střed</value>
+  </data>
+  <data name="gsCentimeters" xml:space="preserve">
+    <value>Centimetr</value>
+  </data>
+  <data name="gsCharts" xml:space="preserve">
+    <value>Grafy</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>Kontrola aktualizací</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>Vyberte</value>
+  </data>
+  <data name="gsChooseADifferentField" xml:space="preserve">
+    <value>Vyberte jiné pole</value>
+  </data>
+  <data name="gsChooseADifferentName" xml:space="preserve">
+    <value>Vyberte jiný název</value>
+  </data>
+  <data name="gsChooseBuildDifferentone" xml:space="preserve">
+    <value>Vyberte nebo vytvořte jiný</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>Klip linka</value>
+  </data>
+  <data name="gsClose" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value>Zavřít nejprve Všechna Okna</value>
   </data>
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Zavřít pole První</value>
@@ -387,72 +512,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsFlagFileIsCorrupt" xml:space="preserve">
     <value>Vlajkový soubor poškozen</value>
   </data>
-  <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value>Auto Dual &lt;&gt; Fix</value>
-  </data>
-  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Rychlost sepnutí</value>
-  </data>
-  <data name="gsBackground" xml:space="preserve">
-    <value>Pozadí</value>
-  </data>
-  <data name="gsBasedOnField" xml:space="preserve">
-    <value>Na základě pole:</value>
-  </data>
-  <data name="gsBottomMenu" xml:space="preserve">
-    <value>Spodní menu</value>
-  </data>
-  <data name="gsBoundary" xml:space="preserve">
-    <value>Okraje</value>
-  </data>
-  <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
-    <value>Soubor okrajových křivek poškozen</value>
-  </data>
-  <data name="gsBrightness" xml:space="preserve">
-    <value>Jas</value>
-  </data>
-  <data name="gsButtonPicker" xml:space="preserve">
-    <value>Tlačítko Picker</value>
-  </data>
-  <data name="gsCameraBehavior" xml:space="preserve">
-    <value>Chovani kamery</value>
-  </data>
-  <data name="gsCancel" xml:space="preserve">
-    <value>Hledat</value>
-  </data>
-  <data name="gsCenter" xml:space="preserve">
-    <value>Střed</value>
-  </data>
-  <data name="gsCentimeters" xml:space="preserve">
-    <value>Centimetr</value>
-  </data>
-  <data name="gsCharts" xml:space="preserve">
-    <value>Grafy</value>
-  </data>
-  <data name="gsCheckForUpdates" xml:space="preserve">
-    <value>Kontrola aktualizací</value>
-  </data>
-  <data name="gsChoose" xml:space="preserve">
-    <value>Vyberte</value>
-  </data>
-  <data name="gsChooseADifferentField" xml:space="preserve">
-    <value>Vyberte jiné pole</value>
-  </data>
-  <data name="gsChooseADifferentName" xml:space="preserve">
-    <value>Vyberte jiný název</value>
-  </data>
-  <data name="gsChooseBuildDifferentone" xml:space="preserve">
-    <value>Vyberte nebo vytvořte jiný</value>
-  </data>
-  <data name="gsClipLine" xml:space="preserve">
-    <value>Klip linka</value>
-  </data>
-  <data name="gsClose" xml:space="preserve">
-    <value>Zavřít</value>
-  </data>
-  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
-    <value>Zavřít nejprve Všechna Okna</value>
-  </data>
   <data name="gsFlags" xml:space="preserve">
     <value>Vytvořit vlajky</value>
   </data>
@@ -525,6 +584,9 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsImage" xml:space="preserve">
     <value>Žádný obrázek:</value>
   </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>Splynuti</value>
+  </data>
   <data name="gsInches" xml:space="preserve">
     <value>Palec</value>
   </data>
@@ -551,6 +613,9 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsInvertWas" xml:space="preserve">
     <value>Invertuj WAS</value>
+  </data>
+  <data name="gsKMH" xml:space="preserve">
+    <value>kmh</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
     <value>Klávesnice</value>
@@ -594,6 +659,12 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsLowerTime" xml:space="preserve">
     <value>Dolní Čas</value>
   </data>
+  <data name="gsMPH" xml:space="preserve">
+    <value>mph</value>
+  </data>
+  <data name="gsMachinePort" xml:space="preserve">
+    <value>Stroj Port</value>
+  </data>
   <data name="gsManual" xml:space="preserve">
     <value>Manuální</value>
   </data>
@@ -636,6 +707,9 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsMissingSectionFile" xml:space="preserve">
     <value>Chybí soubor sekce</value>
   </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
   <data name="gsMore" xml:space="preserve">
     <value>Více</value>
   </data>
@@ -644,6 +718,9 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsMultiColorSections" xml:space="preserve">
     <value>Více barev</value>
+  </data>
+  <data name="gsN_East" xml:space="preserve">
+    <value>NVychod</value>
   </data>
   <data name="gsN_West" xml:space="preserve">
     <value>Nzápad</value>
@@ -696,15 +773,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsOffsetFix" xml:space="preserve">
     <value>Posun Fix</value>
   </data>
-  <data name="gsMachinePort" xml:space="preserve">
-    <value>Stroj Port</value>
-  </data>
-  <data name="gsMode" xml:space="preserve">
-    <value>Mode</value>
-  </data>
-  <data name="gsN_East" xml:space="preserve">
-    <value>NVychod</value>
-  </data>
   <data name="gsOn" xml:space="preserve">
     <value>Zap</value>
   </data>
@@ -713,15 +781,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsOnOff" xml:space="preserve">
     <value>Zap/Vyp</value>
-  </data>
-  <data name="gsImuFusion" xml:space="preserve">
-    <value>Splynuti</value>
-  </data>
-  <data name="gsKMH" xml:space="preserve">
-    <value>kmh</value>
-  </data>
-  <data name="gsMPH" xml:space="preserve">
-    <value>mph</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
     <value>Neprůsvitnost:</value>
@@ -1030,6 +1089,9 @@ Přepínač - Sepnuto Zap., Uvolněno Vyp</value>
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Zastav Záznam Pauza Hranice</value>
   </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Naváděcí Šipka</value>
+  </data>
   <data name="gsTermsConditions" xml:space="preserve">
     <value>Podmínky pro verzi: </value>
   </data>
@@ -1182,8 +1244,5 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsSvennArrow" xml:space="preserve">
-    <value>Naváděcí Šipka</value>
   </data>
 </root>

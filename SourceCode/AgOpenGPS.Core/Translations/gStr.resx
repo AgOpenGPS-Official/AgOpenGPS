@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -149,6 +149,9 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Create Advanced Tramlines</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Download Fields From AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>I Agree to the Terms and Conditions</value>
@@ -372,7 +375,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Delete Field</value>
   </data>
   <data name="gsDeleteForSure" xml:space="preserve">
-    <value>Delete For Sure?</value>
+    <value>Are you sure you want to delete?</value>
   </data>
   <data name="gsDiameter" xml:space="preserve">
     <value>Diameter</value>
@@ -403,6 +406,12 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Distance to Flag</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Get All</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Downloading...Please Wait</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Drive In</value>
@@ -518,6 +527,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsForNow" xml:space="preserve">
     <value>For Now</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Force Overwrite</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Flags</value>
   </data>
@@ -529,6 +541,9 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Gap</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Get Selected</value>
   </data>
   <data name="gsGpsStep" xml:space="preserve">
     <value>Minimum GPS Step</value>
@@ -1244,20 +1259,5 @@ USE AT OWN RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsForceOverwrite" xml:space="preserve">
-    <value>Force Overwrite</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Get All</value>
-  </data>
-  <data name="gsGetSelected" xml:space="preserve">
-    <value>Get Selected</value>
-  </data>
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Downloading...Please Wait</value>
-  </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Download Fields From AgShare</value>
   </data>
 </root>

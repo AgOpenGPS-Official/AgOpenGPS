@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -149,6 +149,9 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Створення розширених технологічних колій</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Завантажити поля з AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Я погоджуюся з Умовами та положеннями</value>
@@ -404,6 +407,12 @@
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Відстань до прапора</value>
   </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Отримати все</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Завантаження... Зачекайте</value>
+  </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>В'їзд</value>
   </data>
@@ -518,6 +527,9 @@
   <data name="gsForNow" xml:space="preserve">
     <value>Зараз</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Примусове перезаписування</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Прапори</value>
   </data>
@@ -529,6 +541,9 @@
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Розрив</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Отримати обраний</value>
   </data>
   <data name="gsGpsStep" xml:space="preserve">
     <value>Мінімальний крок GPS</value>
@@ -1244,21 +1259,5 @@
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gsForceOverwrite" xml:space="preserve">
-    <value>Примусове перезаписування</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Отримати все</value>
-  </data>
-  <data name="gsGetSelected" xml:space="preserve">
-    <value>Отримати обраний</value>
-  </data>
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Завантаження... Зачекайте</value>
-  </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Завантажити поля з AgShare</value>
   </data>
 </root>

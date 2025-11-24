@@ -82,6 +82,13 @@ namespace AgOpenGPS.Forms.Field
 
             // Download and parse field for preview
             var previewDto = await downloader.DownloadFieldPreviewAsync(dto.Id);
+
+            if (previewDto == null)
+            {
+                gps.TimedMessageBox(2000, "AgShare", "Failed to download field preview. Check logs for details.");
+                return;
+            }
+
             var localModel = AgShareFieldParser.Parse(previewDto); // Already converted to NE
 
             RenderField(localModel);
@@ -171,8 +178,16 @@ namespace AgOpenGPS.Forms.Field
             chkForceOverwrite.Enabled = true;
 
             // Show result
-            gps.TimedMessageBox(3000, "AgShare",
-                $"Downloaded {result.Downloaded} new field(s).\nSkipped {result.Skipped} existing.");
+            string message = $"Downloaded {result.Downloaded} new field(s).";
+            if (result.Skipped > 0)
+            {
+                message += $"\nSkipped {result.Skipped} existing.";
+            }
+            if (result.Failed > 0)
+            {
+                message += $"\nFailed {result.Failed} field(s).";
+            }
+            gps.TimedMessageBox(3000, "AgShare", message);
         }
 
 
