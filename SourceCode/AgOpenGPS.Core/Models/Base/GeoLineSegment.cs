@@ -14,6 +14,12 @@
 
         public GeoDir Direction => new GeoDir(Delta);
 
+        // Returns a new GeoLineSegment shifted over 'offset' w.r.t the original
+        public GeoLineSegment Shifted(GeoDelta offset)
+        {
+            return new GeoLineSegment(CoordA + offset, CoordB + offset);
+        }
+
         public GeoCoord? IntersectionPoint(GeoLineSegment otherSegment)
         {
             const double epsilon = 1e-9;

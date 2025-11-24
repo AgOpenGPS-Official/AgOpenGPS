@@ -437,22 +437,22 @@ namespace AgOpenGPS
                 GL.Color4(0, 0, 0, 0.5);
                 GL.LineWidth(lineWidth * 3);
                 GL.Begin(PrimitiveType.Lines);
-                GeoLine currentLine = new GeoLine(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
+                GeoLineSegment currentLine = new GeoLineSegment(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
                 GeoDir perpendicularRightDir = currentLine.Direction.PerpendicularRight;
-                List<GeoLine> lines = new List<GeoLine>();
+                List<GeoLineSegment> lines = new List<GeoLineSegment>();
 
                 double oddOffset = 2 * (isHeadingSameWay ? mf.tool.offset : -mf.tool.offset);
                 for (int i = 1; i <= numGuideLines; i += 2)
                 {
-                    GeoLine rightOddLine = currentLine.ParallelLine((toolWidth * i + oddOffset) * perpendicularRightDir);
-                    GeoLine leftOddLine = currentLine.ParallelLine((toolWidth * -i + oddOffset) * perpendicularRightDir);
+                    GeoLineSegment rightOddLine = currentLine.Shifted((toolWidth * i + oddOffset) * perpendicularRightDir);
+                    GeoLineSegment leftOddLine = currentLine.Shifted((toolWidth * -i + oddOffset) * perpendicularRightDir);
                     lines.Add(rightOddLine);
                     lines.Add(leftOddLine);
                 }
                 for (int i = 2; i <= numGuideLines; i += 2)
                 {
-                    GeoLine rightEvenLine = currentLine.ParallelLine((toolWidth * i) * perpendicularRightDir);
-                    GeoLine leftEvenLine = currentLine.ParallelLine((toolWidth * -i) * perpendicularRightDir);
+                    GeoLineSegment rightEvenLine = currentLine.Shifted((toolWidth * i) * perpendicularRightDir);
+                    GeoLineSegment leftEvenLine = currentLine.Shifted((toolWidth * -i) * perpendicularRightDir);
                     lines.Add(rightEvenLine);
                     lines.Add(leftEvenLine);
                 }
