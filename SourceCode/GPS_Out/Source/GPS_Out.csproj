@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <OutputPath>..\..\..\AgOpenGPS\</OutputPath>
     <PublishDir>..\..\..\AgOpenGPS\</PublishDir>
     <ApplicationIcon>satellite.ico</ApplicationIcon>
     <UseWindowsForms>true</UseWindowsForms>
