@@ -139,6 +139,16 @@ namespace AgOpenGPS.Core.Models
 
         public int RemoveSelfIntersections()
         {
+            int intersections = 0;
+            while (RemoveFirstIntersection())
+            {
+                intersections++;
+            }
+            return intersections;
+        }
+
+        private bool RemoveFirstIntersection()
+        {
             for (int paIndex = 0; paIndex < Count; paIndex++)
             {
                 int pbIndex = (paIndex + 1) % Count;
@@ -154,6 +164,7 @@ namespace AgOpenGPS.Core.Models
                     {
                         GeoCoord ip = intersectionPoint.Value;
                         int qbIndex = (qaIndex + 1) % Count;
+                        // Compute lengths to remove the smaller 'half'.
                         double pbqaLength = ip.Distance(this[pbIndex]) + GetLength(pbIndex, qaIndex) + this[qaIndex].Distance(ip);
                         double qbpaLength = ip.Distance(this[qbIndex]) + GetLength(qbIndex, paIndex) + this[paIndex].Distance(ip);
                         if (pbqaLength < qbpaLength)
@@ -164,12 +175,11 @@ namespace AgOpenGPS.Core.Models
                         {
                             Replace(qbIndex, paIndex, intersectionPoint.Value);
                         }
-                        return 1 + RemoveSelfIntersections();
-
+                        return true;
                     }
                 }
             }
-            return 0;
+            return false;
         }
 
         private void Replace(int startIndex, int endIndex, GeoCoord coord)
