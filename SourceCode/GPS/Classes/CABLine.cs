@@ -1,6 +1,6 @@
+using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +8,17 @@ namespace AgOpenGPS
 {
     public class CABLine
     {
+        private readonly ColorRgba newAbLineColor = new ColorRgba(0.95f, 0.70f, 0.50f);
+        private readonly ColorRgba pointsTextGreen = new ColorRgba(0.2f, 0.950f, 0.20f);
+        private readonly ColorRgba pointARed = new ColorRgba(0.95f, 0.0f, 0.0f);
+        private readonly ColorRgba pointBCyan = new ColorRgba(0.0f, 0.90f, 0.95f);
+        private readonly ColorRgba referenceLineRed = new ColorRgba(0.930f, 0.2f, 0.2f);
+        private readonly ColorRgba shadowAreaGray = new ColorRgba(0.5f, 0.5f, 0.5f, 0.2f);
+        private readonly ColorRgba shadowLinesGray = new ColorRgba(0.55f, 0.55f, 0.55f, 0.2f);
+        private readonly ColorRgba currentAbLinePurple = new ColorRgba(0.95f, 0.20f, 0.950f);
+        private readonly ColorRgba extraGuidelinesBlack = new ColorRgba(0.0f, 0.0f, 0.0f, 0.5f);
+        private readonly ColorRgba extraGuidelinesGreen = new ColorRgba(0.19907f, 0.6f, 0.19750f, 0.6f);
+
         public double abHeading, abLength;
 
         public bool isABValid;
@@ -335,51 +346,48 @@ namespace AgOpenGPS
         public void DrawABLineNew()
         {
             //ABLine currently being designed
-            GL.LineWidth(lineWidth);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Color3(0.95f, 0.70f, 0.50f);
-            GL.Vertex3(desLineEndA.easting, desLineEndA.northing, 0.0);
-            GL.Vertex3(desLineEndB.easting, desLineEndB.northing, 0.0);
-            GL.End();
+            GeoCoord[] desLineEndPoints = { desLineEndA.ToGeoCoord(), desLineEndB.ToGeoCoord() };
 
-            GL.Color3(0.2f, 0.950f, 0.20f);
+            GLW.SetLineWidth(lineWidth);
+            GLW.SetColor(newAbLineColor);
+            GLW.DrawLinesPrimitive(desLineEndPoints);
+
+            GLW.SetColor(pointsTextGreen);
             mf.font.DrawText3D(desPtA.easting, desPtA.northing, "&A", mf.camHeading);
             mf.font.DrawText3D(desPtB.easting, desPtB.northing, "&B", mf.camHeading);
         }
 
         public void DrawABLines()
         {
-            //Draw AB Points
-            GL.PointSize(8.0f);
-            GL.Begin(PrimitiveType.Points);
+            // Draw AB Points
+            CTrk track = mf.trk.gArr[mf.trk.idx];
+            GLW.SetPointSize(8.0f);
+            GLW.BeginPointsPrimitive();
 
-            GL.Color3(0.0f, 0.90f, 0.95f);
-            GL.Vertex3(mf.trk.gArr[mf.trk.idx].ptB.easting, mf.trk.gArr[mf.trk.idx].ptB.northing, 0.0);
-            GL.Color3(0.95f, 0.0f, 0.0f);
-            GL.Vertex3(mf.trk.gArr[mf.trk.idx].ptA.easting, mf.trk.gArr[mf.trk.idx].ptA.northing, 0.0);
-            //GL.Color3(0.00990f, 0.990f, 0.095f);
-            //GL.Vertex3(mf.bnd.iE, mf.bnd.iN, 0.0);
-            GL.End();
+            GLW.SetColor(pointBCyan);
+            GLW.Vertex2(track.ptB.ToGeoCoord());
+            GLW.SetColor(pointARed);
+            GLW.Vertex2(track.ptA.ToGeoCoord());
+            GLW.EndPrimitive();
+
+            GLW.DrawPoint(track.ptA.ToGeoCoord());
 
             if (!isMakingABLine)
             {
-                mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].ptA.easting, mf.trk.gArr[mf.trk.idx].ptA.northing, "&A", mf.camHeading);
-                mf.font.DrawText3D(mf.trk.gArr[mf.trk.idx].ptB.easting, mf.trk.gArr[mf.trk.idx].ptB.northing, "&B", mf.camHeading);
+                mf.font.DrawText3D(track.ptA.easting, track.ptA.northing, "&A", mf.camHeading);
+                mf.font.DrawText3D(track.ptB.easting, track.ptB.northing, "&B", mf.camHeading);
             }
 
-            GL.PointSize(1.0f);
+            GLW.SetPointSize(1.0f);
 
             //Draw reference AB line
-            GL.LineWidth(4);
-            GL.Enable(EnableCap.LineStipple);
-            GL.LineStipple(1, 0x0F00);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Color3(0.930f, 0.2f, 0.2f);
-            GL.Vertex3(mf.trk.gArr[mf.trk.idx].endPtA.easting, mf.trk.gArr[mf.trk.idx].endPtA.northing, 0);
-            GL.Vertex3(mf.trk.gArr[mf.trk.idx].endPtB.easting, mf.trk.gArr[mf.trk.idx].endPtB.northing, 0);
-            GL.End();
-            GL.Disable(EnableCap.LineStipple);
-
+            GeoCoord[] abEndPoints = { track.endPtA.ToGeoCoord(), track.endPtB.ToGeoCoord() };
+            GLW.SetLineWidth(4.0f);
+            GLW.EnableLineStipple();
+            GLW.SetLineStipple(1, 0x0F00);
+            GLW.SetColor(referenceLineRed);
+            GLW.DrawLinesPrimitive(abEndPoints);
+            GLW.DisableLineStipple();
 
             // shadow
             double shadowOffset = isHeadingSameWay ? mf.tool.offset : -mf.tool.offset;
@@ -397,87 +405,55 @@ namespace AgOpenGPS
                 ptB + leftOffset
             };
 
-            GL.Color4(0.5, 0.5, 0.5, 0.2);
-            GL.Begin(PrimitiveType.TriangleFan);
-            for (int i = 0; i < shadowCoords.Length; i++)
-            {
-                GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
-            }
-            GL.End();
-            //shadow lines
-            GL.Color4(0.55, 0.55, 0.55, 0.2);
-            GL.LineWidth(1);
-            GL.Begin(PrimitiveType.LineLoop);
-            for (int i = 0; i < shadowCoords.Length; i++)
-            {
-                GL.Vertex3(shadowCoords[i].Easting, shadowCoords[i].Northing, 0);
-            }
-            GL.End();
+            GLW.SetColor(shadowAreaGray);
+            GLW.DrawTriangleFanPrimitive(shadowCoords);
+            GLW.SetColor(shadowLinesGray);
+            GLW.SetLineWidth(1.0f);
+            GLW.DrawLineLoopPrimitive(shadowCoords);
 
             //draw current AB Line
-            GL.LineWidth(lineWidth * 3);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Color3(0, 0, 0);
-            GL.Vertex3(currentLinePtA.easting, currentLinePtA.northing, 0.0);
-            GL.Vertex3(currentLinePtB.easting, currentLinePtB.northing, 0.0);
-            GL.End();
-
-            //draw current AB Line
-            GL.LineWidth(lineWidth);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Color3(0.95f, 0.20f, 0.950f);
-            GL.Vertex3(currentLinePtA.easting, currentLinePtA.northing, 0.0);
-            GL.Vertex3(currentLinePtB.easting, currentLinePtB.northing, 0.0);
-            GL.End();
+            GeoCoord[] currentAbLine = { currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord() };
+            LineStyle[] purpleOnBlackLineStyles = new LineStyle[]
+            {
+                new LineStyle(lineWidth * 3, Colors.Black),
+                new LineStyle(lineWidth, currentAbLinePurple)
+            };
+            GLW.DrawLinesPrimitiveLayered(purpleOnBlackLineStyles, currentAbLine);
 
             if (mf.isSideGuideLines && mf.camera.camSetDistance > mf.tool.width * -400)
             {
                 double toolWidth = mf.tool.width - mf.tool.overlap;
-                //heavy shadow
-                GL.Color4(0, 0, 0, 0.5);
-                GL.LineWidth(lineWidth * 3);
-                GL.Begin(PrimitiveType.Lines);
                 GeoLineSegment currentLine = new GeoLineSegment(currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord());
                 GeoDir perpendicularRightDir = currentLine.Direction.PerpendicularRight;
-                List<GeoLineSegment> lines = new List<GeoLineSegment>();
+                GeoLineSegment[] lines = new GeoLineSegment[2 * numGuideLines];
+                int linesIndex = 0;
 
                 double oddOffset = 2 * (isHeadingSameWay ? mf.tool.offset : -mf.tool.offset);
                 for (int i = 1; i <= numGuideLines; i += 2)
                 {
                     GeoLineSegment rightOddLine = currentLine.Shifted((toolWidth * i + oddOffset) * perpendicularRightDir);
                     GeoLineSegment leftOddLine = currentLine.Shifted((toolWidth * -i + oddOffset) * perpendicularRightDir);
-                    lines.Add(rightOddLine);
-                    lines.Add(leftOddLine);
+                    lines[linesIndex++] = rightOddLine;
+                    lines[linesIndex++] = leftOddLine;
                 }
                 for (int i = 2; i <= numGuideLines; i += 2)
                 {
                     GeoLineSegment rightEvenLine = currentLine.Shifted((toolWidth * i) * perpendicularRightDir);
                     GeoLineSegment leftEvenLine = currentLine.Shifted((toolWidth * -i) * perpendicularRightDir);
-                    lines.Add(rightEvenLine);
-                    lines.Add(leftEvenLine);
+                    lines[linesIndex++] = rightEvenLine;
+                    lines[linesIndex++] = leftEvenLine;
                 }
-                for (int i = 0; i < lines.Count; i++)
+                LineStyle[] greenOnBlackLineStyles = new LineStyle[]
                 {
-                    GLW.Vertex2(lines[i].CoordA);
-                    GLW.Vertex2(lines[i].CoordB);
-                }
-                GL.End();
-
-                //green lines
-                GL.Color4(0.19907f, 0.6f, 0.19750f, 0.6f);
-                GL.LineWidth(lineWidth);
-                GL.Begin(PrimitiveType.Lines);
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    GLW.Vertex2(lines[i].CoordA);
-                    GLW.Vertex2(lines[i].CoordB);
-                }
-                GL.End();
+                    new LineStyle(lineWidth * 3, extraGuidelinesBlack),
+                    new LineStyle(lineWidth, extraGuidelinesGreen)
+                };
+                GLW.DrawLinesPrimitiveLayered(greenOnBlackLineStyles, lines);
             }
             mf.yt.DrawYouTurn();
 
-            GL.PointSize(1.0f);
-            GL.LineWidth(1);
+            GLW.SetPointSize(1.0f);
+            GLW.SetLineWidth(1.0f);
         }
 
         public void BuildTram()

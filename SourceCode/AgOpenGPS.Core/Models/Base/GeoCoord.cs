@@ -6,12 +6,13 @@ namespace AgOpenGPS.Core.Models
     {
         public GeoCoord(double northing, double easting)
         {
-            Northing = northing;
             Easting = easting;
+            Northing = northing;
         }
 
-        public double Northing { get; }
+        // Do not change the order of Easting and Northing. Vertex2Array expects Easting before Northing
         public double Easting { get; }
+        public double Northing { get; }
 
         public double DistanceSquared(GeoCoord coord2)
         {

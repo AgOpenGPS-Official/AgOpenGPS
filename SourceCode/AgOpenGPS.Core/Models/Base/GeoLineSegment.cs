@@ -1,6 +1,6 @@
 ﻿namespace AgOpenGPS.Core.Models
 {
-    public class GeoLineSegment
+    public struct GeoLineSegment
     {
         public GeoLineSegment(GeoCoord coordA, GeoCoord coordB)
         {

@@ -1,6 +1,5 @@
 ﻿using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
 
 namespace AgOpenGPS.Core.DrawLib
 {
@@ -8,60 +7,48 @@ namespace AgOpenGPS.Core.DrawLib
     // Please use this class in stead of direct calls to functions in the GL toolkit.
     public static partial class GLW
     {
-
-        public static void DrawPoint(double x, double y, double z)
+        public static void DrawPoint(GeoCoord geoCoord)
         {
             GL.Begin(PrimitiveType.Points);
-            GL.Vertex3(x, y, z);
+            GL.Vertex2(geoCoord.Easting, geoCoord.Northing);
             GL.End();
         }
 
-        public static void DrawLinesPrimitive(XyCoord[] vertices)
+        public static void DrawLinesPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.Lines, vertices);
         }
 
-        public static void DrawLineLoopPrimitive(XyCoord[] vertices)
+        public static void DrawLineLoopPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.LineLoop, vertices);
         }
 
-        public static void DrawLineStripPrimitive(XyCoord[] vertices)
+        public static void DrawLineStripPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.LineStrip, vertices);
         }
 
-        public static void DrawTriangleFanPrimitive(XyCoord[] vertices)
+        public static void DrawTriangleFanPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.TriangleFan, vertices);
         }
 
-        public static void DrawPointLayered(
-            PointStyle[] pointStyles,
-            double x, double y, double z)
-        {
-            foreach (PointStyle pointStyle in pointStyles)
-            {
-                SetPointStyle(pointStyle);
-                DrawPoint(x, y, z);
-            }
-        }
-
         public static void DrawLinesPrimitiveLayered(
             LineStyle[] lineStyles,
-            XyCoord[] vertices)
+            GeoCoord[] vertices)
         {
             DrawPrimitiveLayered(PrimitiveType.Lines, lineStyles, vertices);
         }
 
         public static void DrawLineLoopPrimitiveLayered(
             LineStyle[] lineStyles,
-            XyCoord[] vertices)
+            GeoCoord[] vertices)
         {
             DrawPrimitiveLayered(PrimitiveType.LineLoop, lineStyles, vertices);
         }
 
-        private static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
+        private static void DrawPrimitive(PrimitiveType primitiveType, GeoCoord[] vertices)
         {
             Vertex2Array vertex2Array = new Vertex2Array(vertices);
             GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
@@ -71,7 +58,7 @@ namespace AgOpenGPS.Core.DrawLib
         private static void DrawPrimitiveLayered(
             PrimitiveType primitiveType,
             LineStyle[] lineStyles,
-            XyCoord[] vertices)
+            GeoCoord[] vertices)
         {
             Vertex2Array vertex2Array = new Vertex2Array(vertices);
             foreach (LineStyle lineStyle in lineStyles)
@@ -80,6 +67,11 @@ namespace AgOpenGPS.Core.DrawLib
                 GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
             }
             vertex2Array.Dispose();
+        }
+
+        public static void Vertex2(GeoCoord geoCoord)
+        {
+            GL.Vertex2(geoCoord.Easting, geoCoord.Northing);
         }
 
     }

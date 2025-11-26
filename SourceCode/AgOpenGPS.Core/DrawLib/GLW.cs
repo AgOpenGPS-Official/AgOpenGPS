@@ -17,10 +17,20 @@ namespace AgOpenGPS.Core.DrawLib
             GL.Color4(color.Red, color.Green, color.Blue, color.Alpha);
         }
 
+        public static void SetLineWidth(float lineWidth)
+        {
+            GL.LineWidth(lineWidth);
+        }
+
         public static void SetLineStyle(LineStyle lineStyle)
         {
             GL.LineWidth(lineStyle.Width);
             SetColor(lineStyle.Color);
+        }
+
+        public static void SetPointSize(float pointSize)
+        {
+            GL.PointSize(pointSize);
         }
 
         public static void SetPointStyle(PointStyle pointStyle)
