@@ -214,7 +214,7 @@ namespace AgOpenGPS.Core.Tests.Models
         }
 
         [Test]
-        public void Test_RemoveSelfIntersections_Latst()
+        public void Test_RemoveSelfIntersections_Last()
         {
             GeoPolygon polygon = new GeoPolygon();
             polygon.Add(new GeoCoord(4, 0));  // 3_0
