@@ -117,19 +117,22 @@ namespace AgOpenGPS.Core.Models
             }
         }
 
+        // Return the total length of all consecutive line segments between vertex A and B,
+        // (when traveling from A to B in the direction of increasing indices)
+
         public double GetLength(int indexA, int indexB)
         {
             double len = 0.0;
             if (indexA < indexB)
             {
-                for (int i = indexA; i + 1 < indexB; i++)
+                for (int i = indexA; i < indexB; i++)
                 {
                     len += GetLineSegment(i).Length;
                 }
             }
             else
             {
-                for (int i = indexA; i + 1 < indexB + Count; i++)
+                for (int i = indexA; i < indexB + Count; i++)
                 {
                     len += GetLineSegment(i < Count ? i : i - Count).Length;
                 }
