@@ -142,12 +142,16 @@ namespace AgOpenGPS.Core.Models
 
         public int RemoveSelfIntersections()
         {
-            int intersections = 0;
+            int nIntersections = 0;
             while (RemoveFirstIntersection())
             {
-                intersections++;
+                nIntersections++;
             }
-            return intersections;
+            if (0 < nIntersections)
+            {
+                RemoveCloseNeighbours(0.001);
+            }
+            return nIntersections;
         }
 
         private bool RemoveFirstIntersection()
@@ -199,6 +203,30 @@ namespace AgOpenGPS.Core.Models
                 _coords.RemoveRange(0, endIndex + 1);
             }
             Invalidate();
+        }
+
+        // Returns the number of removed vertices
+        public int RemoveCloseNeighbours(double tooCloseDistance)
+        {
+            double tooCloseDistanceSquared = tooCloseDistance * tooCloseDistance;
+            GeoCoord prevVertex = Last;
+            int dstIndex = 0;
+            for (int srcIndex = 0; srcIndex < _coords.Count; srcIndex++)
+            {
+                GeoCoord srcVertex = _coords[srcIndex];
+                if (tooCloseDistanceSquared < prevVertex.DistanceSquared(srcVertex))
+                {
+                    prevVertex = _coords[srcIndex];
+                    _coords[dstIndex++] = _coords[srcIndex];
+                }
+            }
+            int nRemoved = Count - dstIndex;
+            if (0 < nRemoved)
+            {
+                _coords.RemoveRange(dstIndex, nRemoved);
+                Invalidate();
+            }
+            return nRemoved;
         }
 
         private void ReverseWinding()
