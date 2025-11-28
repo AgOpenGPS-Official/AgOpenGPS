@@ -1,7 +1,6 @@
 ﻿using Accord.Imaging.Filters;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -16,6 +15,12 @@ namespace AgOpenGPS.Core.Models
         public GeoPolygon()
         {
             _coords = new List<GeoCoord>();
+            Invalidate();
+        }
+
+        public GeoPolygon(int capacity = 16)
+        {
+            _coords = new List<GeoCoord>(capacity);
             Invalidate();
         }
 
