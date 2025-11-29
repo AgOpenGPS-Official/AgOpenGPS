@@ -1736,6 +1736,7 @@ namespace AgOpenGPS
                     }
                     yt.Set_Alternate_skips();
                     break;
+
                 case SkipMode.Alternative:
                     btnYouSkipEnable.Image = Resources.YouSkipWorkedTracks;
                     yt.skipMode = SkipMode.IgnoreWorkedTracks;
@@ -1746,14 +1747,31 @@ namespace AgOpenGPS
                         cboxpRowWidth.Text = "1";
                     }
                     break;
+
                 case SkipMode.IgnoreWorkedTracks:
+                    btnYouSkipEnable.Image = Resources.YouSkipOn;
+                    yt.skipMode = SkipMode.Outward;
+                    btnYouSkipEnable.Text = "Outward";
+                    if (!yt.isYouTurnBtnOn)
+                        btnAutoYouTurn.PerformClick();
+                    break;
+
+                case SkipMode.Outward:
+                    btnYouSkipEnable.Image = Resources.YouSkipOn;
+                    yt.skipMode = SkipMode.Inward;
+                    btnYouSkipEnable.Text = "Inward";
+                    if (!yt.isYouTurnBtnOn)
+                        btnAutoYouTurn.PerformClick();
+                    break;
+
+                case SkipMode.Inward:
                     btnYouSkipEnable.Image = Resources.YouSkipOff;
                     yt.skipMode = SkipMode.Normal;
+                    btnYouSkipEnable.Text = ""; // Очищаем текст при возврате в Normal
                     break;
             }
 
             yt.ResetCreatedYouTurn();
-
         }
 
 

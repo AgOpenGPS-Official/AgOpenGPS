@@ -144,7 +144,7 @@ namespace AgOpenGPS
         {
             /// <summary>
             /// PGN - 239 - EF 
-            /// uturn=5  tree=6  hydLift = 8 
+            /// uturn=5  speed=6  hydLift=7  tram=8  geoStop=9  recordedSpeed=10  sc1to8=11  sc9to16=12 
             /// </summary>
             public byte[] pgn = new byte[] { 0x80, 0x81, 0x7f, 0xEF, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
             public int uturn = 5;
@@ -152,12 +152,20 @@ namespace AgOpenGPS
             public int hydLift = 7;
             public int tram = 8;
             public int geoStop = 9; //out of bounds etc
-            //public int  = 10;
+            public int recordedSpeed = 10; //Saved route speed
             public int sc1to8 = 11;
             public int sc9to16 = 12;
 
             public CPGN_EF()
             {
+            }
+
+            /// <summary>
+            /// Set recorded speed (0-255 км/ч)
+            /// </summary>
+            public void SetRecordedSpeed(double speedKmh)
+            {
+                pgn[recordedSpeed] = (byte)Math.Max(0, Math.Min(255, (int)speedKmh));
             }
 
             public void Reset()

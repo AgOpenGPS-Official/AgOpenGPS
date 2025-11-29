@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AgOpenGPS
 {
-    public enum SkipMode { Normal, Alternative, IgnoreWorkedTracks };
+    public enum SkipMode { Normal, Alternative, IgnoreWorkedTracks, Outward, Inward };
 
     public class CYouTurn
     {
@@ -2421,19 +2421,36 @@ namespace AgOpenGPS
                 mf.ABLine.howManyPathsAway += (isTurnLeft ^ mf.ABLine.isHeadingSameWay) ? rowSkipsWidth : -rowSkipsWidth;
                 mf.ABLine.isHeadingSameWay = !mf.ABLine.isHeadingSameWay;
 
-                if (skipMode == SkipMode.Alternative && rowSkipsWidth2 > 1)
+                switch (skipMode)
                 {
-                    if (--turnSkips == 0)
-                    {
+                    case SkipMode.Alternative:
+                        if (rowSkipsWidth2 > 1)
+                        {
+                            if (--turnSkips == 0)
+                            {
+                                isTurnLeft = !isTurnLeft;
+                                turnSkips = rowSkipsWidth2 * 2 - 1;
+                            }
+                            else if (previousBigSkip = !previousBigSkip)
+                                rowSkipsWidth = rowSkipsWidth2 - 1;
+                            else
+                                rowSkipsWidth = rowSkipsWidth2;
+                        }
+                        else isTurnLeft = !isTurnLeft;
+                        break;
+
+                    case SkipMode.Outward:
+                        rowSkipsWidth = rowSkipsWidth + 1;
+                        break;
+
+                    case SkipMode.Inward:
+                        rowSkipsWidth = Math.Max(1, rowSkipsWidth - 1);
+                        break;
+
+                    default:
                         isTurnLeft = !isTurnLeft;
-                        turnSkips = rowSkipsWidth2 * 2 - 1;
-                    }
-                    else if (previousBigSkip = !previousBigSkip)
-                        rowSkipsWidth = rowSkipsWidth2 - 1;
-                    else
-                        rowSkipsWidth = rowSkipsWidth2;
+                        break;
                 }
-                else isTurnLeft = !isTurnLeft;
             }
         }
 
