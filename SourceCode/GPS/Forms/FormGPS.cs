@@ -525,15 +525,27 @@ namespace AgOpenGPS
 
             hotkeys = Properties.Settings.Default.setKey_hotkeys.ToCharArray();
 
-            if (RegistrySettings.vehicleFileName == "")
+            if (RegistrySettings.baseDirectory == "")
             {
-                Log.EventWriter("No profile selected, prompt to create a new one");
-
-                YesMessageBox("No profile selected\n\nCreate a new profile to save your configuration\n\nIf no profile is created, NO changes will be saved!");
-
-                using (FormNewProfile form = new FormNewProfile(this))
+                if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "agOpenGPS")))
                 {
-                    form.ShowDialog(this);
+                    Log.EventWriter("No profile selected, prompt to create a new one");
+
+                    YesMessageBox("No profile selected\n\nCreate a new profile to save your configuration\n\nIf no profile is created, NO changes will be saved!");
+
+                    using (FormNewProfile form = new FormNewProfile(this))
+                    {
+                        form.ShowDialog(this);
+                    }
+                }
+                else
+                {
+                    Log.EventWriter("No registry keys found, but existing profiles in $Documents, so prompting to load one");
+
+                    using (FormLoadProfile form = new FormLoadProfile(this))
+                    {
+                        form.ShowDialog(this);
+                    }
                 }
             }
             //Init AgShareClient

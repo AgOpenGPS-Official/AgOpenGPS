@@ -53,10 +53,10 @@ namespace AgIO
                 profileName = regKey.GetValue(RegKeys.profileName).ToString();
 
                 //Culture from Registry Key
-                if (regKey.GetValue("Language").ToString() == "")
+                if (regKey.GetValue(RegKeys.language) == null)
                 {
                     regKey.SetValue("Language", "en");
-                    Log.EventWriter("Registry -> Culture was null and Created");
+                    Log.EventWriter("Registry -> Language/culture was null and Created");
                 }
                 culture = regKey.GetValue("Language").ToString();
 
