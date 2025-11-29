@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="gsABDraw" xml:space="preserve">
+    <value>線分ABを描画 - 境界線上の2点をクリックして開始</value>
+  </data>
+  <data name="gsABline" xml:space="preserve">
+    <value>ABライン</value>
+  </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>AD コンバーター</value>
+  </data>
+  <data name="gsAbout" xml:space="preserve">
+    <value>詳細...</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>アッカーマン</value>
+  </data>
+  <data name="gsActionHasBeenCancelled" xml:space="preserve">
+    <value>アクションはキャンセルされました</value>
+  </data>
+  <data name="gsActive" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="gsActual" xml:space="preserve">
+    <value>実際</value>
+  </data>
+  <data name="gsAdvancedTramLines" xml:space="preserve">
+    <value>高度なトラムラインを作成する</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>AgShareからフィールドをダウンロード</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>利用規約に同意します</value>
+  </data>
+  <data name="gsAgressiveness" xml:space="preserve">
+    <value>攻撃性</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>すべての設定を表示</value>
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>アルファ</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>アンテナの高さ</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>アンテナ　オフセット</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>適用済み</value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>取得する</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>取得 = 要因 * 保有</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>取得要因</value>
+  </data>
+  <data name="gsArea" xml:space="preserve">
+    <value>エリア</value>
+  </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>メニュー（右側）に表示させたい左側のボタンをタッチしてください。
+
+押した順番が、メニューに表示される順番（下から上）になります。</value>
+  </data>
+  <data name="gsAttachmentStyle" xml:space="preserve">
+    <value>アタッチメントの形状</value>
+  </data>
+  <data name="gsAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="gsAutoOffAgIO" xml:space="preserve">
+    <value>AgIOの自動終了</value>
+  </data>
+  <data name="gsAutoStartAgIO" xml:space="preserve">
+    <value>AgIOを自動起動</value>
+  </data>
+  <data name="gsAutoSteer" xml:space="preserve">
+    <value>自動操舵</value>
+  </data>
+  <data name="gsAutoSteerConfiguration" xml:space="preserve">
+    <value>自動操舵の設定</value>
+  </data>
+  <data name="gsAutoSteerPort" xml:space="preserve">
+    <value>AutoSteerのポート</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>スイッチ速度</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>バックグラウンド</value>
+  </data>
+  <data name="gsBasedOnField" xml:space="preserve">
+    <value>フィールドに基づく:</value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>メニュー</value>
+  </data>
+  <data name="gsBoundary" xml:space="preserve">
+    <value>バウンダリー</value>
+  </data>
+  <data name="gsBoundaryLineFilesAreCorrupt" xml:space="preserve">
+    <value>境界線ファイル破損</value>
+  </data>
+  <data name="gsBrightness" xml:space="preserve">
+    <value>明るさ</value>
+  </data>
+  <data name="gsBuild" xml:space="preserve">
+    <value>ビルド</value>
+  </data>
+  <data name="gsBuildAround" xml:space="preserve">
+    <value>周りのビルド</value>
+  </data>
+  <data name="gsButFieldIsLoaded" xml:space="preserve">
+    <value>しかし、フィールドはロードされます</value>
+  </data>
+  <data name="gsButtonPicker" xml:space="preserve">
+    <value>ボタンピッカー</value>
+  </data>
+  <data name="gsCameraBehavior" xml:space="preserve">
+    <value>カメラの動作</value>
+  </data>
+  <data name="gsCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="gsCenter" xml:space="preserve">
+    <value>センター</value>
+  </data>
+  <data name="gsCentimeters" xml:space="preserve">
+    <value>センチメートル</value>
+  </data>
+  <data name="gsCharts" xml:space="preserve">
+    <value>チャート</value>
+  </data>
+  <data name="gsCheckForUpdates" xml:space="preserve">
+    <value>アップデートの確認</value>
+  </data>
+  <data name="gsChoose" xml:space="preserve">
+    <value>お問い合わせ</value>
+  </data>
+  <data name="gsChooseADifferentField" xml:space="preserve">
+    <value>異なるフィールドを選択</value>
+  </data>
+  <data name="gsChooseADifferentName" xml:space="preserve">
+    <value>別の名前を選択してください</value>
+  </data>
+  <data name="gsChooseBuildDifferentone" xml:space="preserve">
+    <value>別のものを選択または作成する</value>
+  </data>
+  <data name="gsClipLine" xml:space="preserve">
+    <value>クリップ ライン</value>
+  </data>
+  <data name="gsClose" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="gsCloseAllWindowsFirst" xml:space="preserve">
+    <value>すべてのウィンドウを最初に閉じる</value>
+  </data>
+  <data name="gsCloseFieldFirst" xml:space="preserve">
+    <value>フィールドを先に閉じる</value>
+  </data>
+  <data name="gsCmPix" xml:space="preserve">
+    <value>Cm -&gt; ピクセル</value>
+  </data>
+  <data name="gsColorPicker" xml:space="preserve">
+    <value>カラーピッカー</value>
+  </data>
+  <data name="gsColors" xml:space="preserve">
+    <value>カラー</value>
+  </data>
+  <data name="gsCompletelyDeleteBoundary" xml:space="preserve">
+    <value>境界をすべて削除</value>
+  </data>
+  <data name="gsConfiguration" xml:space="preserve">
+    <value>仕様</value>
+  </data>
+  <data name="gsContourFileIsCorrupt" xml:space="preserve">
+    <value>輪郭ファイルが破損しています</value>
+  </data>
+  <data name="gsContourOn" xml:space="preserve">
+    <value>輪郭を強調</value>
+  </data>
+  <data name="gsCouldntGenerateValidPath" xml:space="preserve">
+    <value>有効なパスがありません</value>
+  </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>1度あたりのカウント数</value>
+  </data>
+  <data name="gsCoverage" xml:space="preserve">
+    <value>%の適用範囲</value>
+  </data>
+  <data name="gsCreate" xml:space="preserve">
+    <value>作成する</value>
+  </data>
+  <data name="gsCreateABoundaryFirst" xml:space="preserve">
+    <value>まず境界線を作る</value>
+  </data>
+  <data name="gsCreateNewField" xml:space="preserve">
+    <value>新しいフィールドを作成する</value>
+  </data>
+  <data name="gsCreateNewFromIsoXML" xml:space="preserve">
+    <value>ISO-XMLから新しいフィールドを作成する</value>
+  </data>
+  <data name="gsCurrent" xml:space="preserve">
+    <value>現在の位置:</value>
+  </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>現在の角度センサー</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>カーブ</value>
+  </data>
+  <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
+    <value>カーブ ライン ファイル破損</value>
+  </data>
+  <data name="gsCurveNotOn" xml:space="preserve">
+    <value>カーブが無効中</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>日中</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>---デッドゾーン---</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>デフォルト</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
+    <value>すべてのセクションと輪郭を削除</value>
+  </data>
+  <data name="gsDeleteAppliedArea" xml:space="preserve">
+    <value>応用領域の削除</value>
+  </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>このアクションは全ての境界線を削除します。 実行しますか?</value>
+  </data>
+  <data name="gsDeleteContourPaths" xml:space="preserve">
+    <value>輪郭パスの削除</value>
+  </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>フィールドを削除</value>
+  </data>
+  <data name="gsDeleteForSure" xml:space="preserve">
+    <value>削除しますか?</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>直径</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>ダイレクト</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>方向マーカー</value>
+  </data>
+  <data name="gsDirectories" xml:space="preserve">
+    <value>ディレクター</value>
+  </data>
+  <data name="gsDirectoryExists" xml:space="preserve">
+    <value>ディレクトリリスト</value>
+  </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>反対</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>議論は以下で行われています：</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="gsDistance" xml:space="preserve">
+    <value>距離</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>旗への距離</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>お問い合わせ</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>ダウンロード中…お待ち下さい</value>
+  </data>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>現在地から選択</value>
+  </data>
+  <data name="gsDriveThru" xml:space="preserve">
+    <value>ドライブスルー</value>
+  </data>
+  <data name="gsDriving" xml:space="preserve">
+    <value>運転</value>
+  </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>デュアルアンテナ設定</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>2つの内、ポジション アンテナは右側になります</value>
+  </data>
+  <data name="gsEast" xml:space="preserve">
+    <value>東</value>
+  </data>
+  <data name="gsEditABLine" xml:space="preserve">
+    <value>ABラインの編集</value>
+  </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>色の編集</value>
+  </data>
+  <data name="gsEditFieldName" xml:space="preserve">
+    <value>フィールド名を編集</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>関連するログ</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>有効</value>
+  </data>
+  <data name="gsEncoderCounts" xml:space="preserve">
+    <value>カウント数</value>
+  </data>
+  <data name="gsEnterCoordinatesForSimulator" xml:space="preserve">
+    <value>シミュレータの座標を入力してください</value>
+  </data>
+  <data name="gsEnterFieldName" xml:space="preserve">
+    <value>フィールド名を入力してください</value>
+  </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>名前を入力してください</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>作業記録名を入力してください</value>
+  </data>
+  <data name="gsEnterSimCoords" xml:space="preserve">
+    <value>シムコードを入力してください</value>
+  </data>
+  <data name="gsError" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="gsErrorreadingKML" xml:space="preserve">
+    <value>読込エラー KML</value>
+  </data>
+  <data name="gsExit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>終了してWindowsに戻る:</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>追加のガイドライン</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>速い</value>
+  </data>
+  <data name="gsField" xml:space="preserve">
+    <value>フィールド</value>
+  </data>
+  <data name="gsFieldFileIsCorrupt" xml:space="preserve">
+    <value>フィールドファイルが破損しています</value>
+  </data>
+  <data name="gsFieldIsOpen" xml:space="preserve">
+    <value>すでにフィールドは開いています</value>
+  </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>フィールドメニュー</value>
+  </data>
+  <data name="gsFieldNotOpen" xml:space="preserve">
+    <value>フィールドが読み込めません</value>
+  </data>
+  <data name="gsFieldPicker" xml:space="preserve">
+    <value>ファイルを読み込む</value>
+  </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>フィールドテクスチャ</value>
+  </data>
+  <data name="gsFileError" xml:space="preserve">
+    <value>ファイルエラー</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>固定点間距離</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>RTK Fix アラーム</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Autosteerの警報停止</value>
+  </data>
+  <data name="gsFlagByLatLon" xml:space="preserve">
+    <value>緯度経度による基準点</value>
+  </data>
+  <data name="gsFlagFileIsCorrupt" xml:space="preserve">
+    <value>基準点ファイル破損</value>
+  </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>基準点を作成する</value>
+  </data>
+  <data name="gsForNow" xml:space="preserve">
+    <value>詳しくはこちら</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>強制上書き</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>基準点</value>
+  </data>
+  <data name="gsFromExisting" xml:space="preserve">
+    <value>既存から</value>
+  </data>
+  <data name="gsFromKml" xml:space="preserve">
+    <value>KMLから</value>
+  </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>ギャップ</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>選択する</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>最小GPSステップ</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>ガイダンスの終了</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>ハードウェアメッセージ</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>機首</value>
+  </data>
+  <data name="gsHeadingChart" xml:space="preserve">
+    <value>機首チャート</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>機首オフセット（角度）</value>
+  </data>
+  <data name="gsHeadland" xml:space="preserve">
+    <value>ヘッドランド</value>
+  </data>
+  <data name="gsHeadlandForm" xml:space="preserve">
+    <value>ヘッドランドの作成と編集</value>
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>ヒッチの長さ</value>
+  </data>
+  <data name="gsHold" xml:space="preserve">
+    <value>ホールド</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>油圧上昇</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>油圧上昇の構成</value>
+  </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value>見通し</value>
+  </data>
+  <data name="gsIMUAxis" xml:space="preserve">
+    <value>IMU軸の入替</value>
+  </data>
+  <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
+    <value>間違った方向にタップすると車両が移動します</value>
+  </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>イメージ無し:</value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>フュージョン</value>
+  </data>
+  <data name="gsInches" xml:space="preserve">
+    <value>インチ</value>
+  </data>
+  <data name="gsInner" xml:space="preserve">
+    <value>内側</value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>積分</value>
+  </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>ステアリング角度を徐々に増加させて、横方向誤差を低減する</value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>リレー動作を反転</value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value>モーター回転方向の反転</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>リレー動作を反転</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>ロール角の反転</value>
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value>WASの反転</value>
+  </data>
+  <data name="gsKMH" xml:space="preserve">
+    <value>時速</value>
+  </data>
+  <data name="gsAOGMenu" xml:space="preserve">
+    <value>AOGメニュー</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
+  </data>
+</root>
