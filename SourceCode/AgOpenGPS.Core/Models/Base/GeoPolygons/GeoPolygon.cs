@@ -152,7 +152,7 @@ namespace AgOpenGPS.Core.Models
             {
                 nIntersections++;
             }
-            if (0 < nIntersections)
+            if (nIntersections > 0)
             {
                 RemoveCloseNeighbours(0.001);
             }
@@ -226,7 +226,7 @@ namespace AgOpenGPS.Core.Models
                 }
             }
             int nRemoved = Count - dstIndex;
-            if (0 < nRemoved)
+            if (nRemoved > 0)
             {
                 _coords.RemoveRange(dstIndex, nRemoved);
                 Invalidate();
