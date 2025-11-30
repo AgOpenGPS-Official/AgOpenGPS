@@ -31,6 +31,7 @@ namespace AgOpenGPS
         private int bndSelect = 0, smPtsChoose = 1, smPts = 4;
 
         private double zoom = 1, sX = 0, sY = 0;
+        private const double panStep = 0.15;
 
         public List<vec3> secList = new List<vec3>();
         public List<vec3> bndList = new List<vec3>();
@@ -376,15 +377,7 @@ namespace AgOpenGPS
 
         private void Reset()
         {
-            cboxIsZoom.Visible = false;
             btnSlice.Visible = false;
-            btnCenterOGL.Visible = false;
-            btnZoomIn.Visible = false;
-            btnZoomOut.Visible = false;
-            btnMoveDn.Visible = false;
-            btnMoveUp.Visible = false;
-            btnMoveLeft.Visible = false;
-            btnMoveRight.Visible = false;
 
             //start all over
             start = end = 99999;
@@ -615,17 +608,10 @@ namespace AgOpenGPS
 
             btnStartStop.Enabled = false;
 
-            cboxIsZoom.Visible = true;
             btnSlice.Visible = true;
-            btnCenterOGL.Visible = true;
             btnCancelTouch.Visible = true;
             btnZoomIn.Visible = true;
             btnZoomOut.Visible = true;
-
-            btnMoveDn.Visible = false;
-            btnMoveUp.Visible = false;
-            btnMoveLeft.Visible = false;
-            btnMoveRight.Visible = false;
         }
 
         private void SmoothList()
@@ -778,43 +764,39 @@ namespace AgOpenGPS
 
         private void btnZoomOut_Click(object sender, EventArgs e)
         {
-            zoom += 0.1;
+            zoom *= 2;
             if (zoom > 1) zoom = 1;
+        }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            zoom *= 0.5;
+            if (zoom < 0.015625) zoom = 0.015625;
         }
 
         private void btnMoveDn_Click(object sender, EventArgs e)
         {
-            if (zoom == 0.1)
-                sY += 0.01;
+            sY += panStep * zoom;
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-            if (zoom == 0.1)
-                sY -= 0.01;
+            sY -= panStep * zoom;
+        }
+
+        private void btnMoveLeft_Click(object sender, EventArgs e)
+        {
+            sX += panStep * zoom;
+        }
+
+        private void btnMoveRight_Click(object sender, EventArgs e)
+        {
+            sX -= panStep * zoom;
         }
 
         private void btnResetReduce_Click_1(object sender, EventArgs e)
         {
             Reset();
-        }
-
-        private void btnMoveLeft_Click(object sender, EventArgs e)
-        {
-            if (zoom == 0.1)
-                sX += 0.01;
-        }
-
-        private void btnMoveRight_Click(object sender, EventArgs e)
-        {
-            if (zoom == 0.1)
-                sX -= 0.01;
-        }
-
-        private void btnZoomIn_Click(object sender, EventArgs e)
-        {
-            zoom -= 0.1;
-            if (zoom < 0.1) zoom = 0.1;
         }
 
         private void btnSlice_Click(object sender, EventArgs e)
@@ -933,9 +915,9 @@ namespace AgOpenGPS
 
             if (cboxIsZoom.Checked)
             {
-                sX = ((halfWid - (double)ptt.X) / wid) * 1.1;
-                sY = ((halfWid - (double)ptt.Y) / -wid) * 1.1;
-                zoom = 0.1;
+                sX += ((halfWid - (double)ptt.X) / wid) * 1.1 * zoom;
+                sY += ((halfWid - (double)ptt.Y) / -wid) * 1.1 * zoom;
+                zoom = 0.125;
                 cboxIsZoom.Checked = false;
                 return;
             }
@@ -1225,24 +1207,6 @@ namespace AgOpenGPS
         private void timer1_Tick(object sender, EventArgs e)
         {
             oglSelf.Refresh();
-
-            if (timer1.Interval == 500)
-            {
-                if (zoom == 0.1)
-                {
-                    btnMoveDn.Visible = true;
-                    btnMoveUp.Visible = true;
-                    btnMoveLeft.Visible = true;
-                    btnMoveRight.Visible = true;
-                }
-                else
-                {
-                    btnMoveDn.Visible = false;
-                    btnMoveUp.Visible = false;
-                    btnMoveLeft.Visible = false;
-                    btnMoveRight.Visible = false;
-                }
-            }
         }
 
         private void oglSelf_Resize(object sender, EventArgs e)
