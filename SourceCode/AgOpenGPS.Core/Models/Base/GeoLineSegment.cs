@@ -11,6 +11,7 @@
         public GeoCoord CoordA { get; }
         public GeoCoord CoordB { get; }
         public double Length => CoordA.Distance(CoordB);
+        public double LengthSquared => CoordA.DistanceSquared(CoordB);
         public GeoDelta Delta => new GeoDelta(CoordA, CoordB);
 
         public GeoDir Direction => new GeoDir(Delta);
@@ -33,11 +34,16 @@
                     double t = aToOtherADelta.CrossProductZ(otherDelta) / denominator;
                     if (-epsilon <= t && t <= 1.0 + epsilon)
                     {
-                        intersectionPoint = CoordA + t * delta;
+                        intersectionPoint = Interpolate(t);
                     }
                 }
             }
             return intersectionPoint;
+        }
+
+        public GeoCoord Interpolate(double alpha)
+        {
+            return CoordA + alpha * Delta;
         }
 
     }
