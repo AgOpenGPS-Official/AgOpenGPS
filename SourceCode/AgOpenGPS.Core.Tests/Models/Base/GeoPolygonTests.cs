@@ -216,35 +216,35 @@ namespace AgOpenGPS.Core.Tests.Models
         [Test]
         public void Test_RemoveCloseNeighbours_First()
         {
-            GeoPolygon pOrg = new GeoPolygon();
-            pOrg.Add(new GeoCoord(1.01, 1.0)); // Too close
-            pOrg.Add(new GeoCoord(2.0, -3.0));
-            pOrg.Add(new GeoCoord(-2.0, -4.0));
-            pOrg.Add(new GeoCoord(1.0, 1.0));
-            GeoPolygon pTest = CopyPolygon(pOrg);
-            int nRemoved = pTest.RemoveCloseNeighbours(0.1);
+            GeoPolygon originalPolygon = new GeoPolygon();
+            originalPolygon.Add(new GeoCoord(1.01, 1.0)); // Too close
+            originalPolygon.Add(new GeoCoord(2.0, -3.0));
+            originalPolygon.Add(new GeoCoord(-2.0, -4.0));
+            originalPolygon.Add(new GeoCoord(1.0, 1.0));
+            GeoPolygon testPolygon = CopyPolygon(originalPolygon);
+            int nRemoved = testPolygon.RemoveCloseNeighbours(0.1);
             Assert.That(nRemoved, Is.EqualTo(1));
-            Assert.That(pTest.Count + nRemoved, Is.EqualTo(pOrg.Count));
-            Assert.That(pTest[0], Is.EqualTo(pOrg[1]));
-            Assert.That(pTest[1], Is.EqualTo(pOrg[2]));
-            Assert.That(pTest[2], Is.EqualTo(pOrg[3]));
+            Assert.That(testPolygon.Count + nRemoved, Is.EqualTo(originalPolygon.Count));
+            Assert.That(testPolygon[0], Is.EqualTo(originalPolygon[1]));
+            Assert.That(testPolygon[1], Is.EqualTo(originalPolygon[2]));
+            Assert.That(testPolygon[2], Is.EqualTo(originalPolygon[3]));
         }
 
         [Test]
         public void Test_RemoveCloseNeighbours_Last()
         {
-            GeoPolygon pOrg = new GeoPolygon();
-            pOrg.Add(new GeoCoord(2.0, -3.0));
-            pOrg.Add(new GeoCoord(-2.0, -4.0));
-            pOrg.Add(new GeoCoord(1.0, 1.0));
-            pOrg.Add(new GeoCoord(1.01, 1.0)); // Too close
-            GeoPolygon pTest = CopyPolygon(pOrg);
-            int nRemoved = pTest.RemoveCloseNeighbours(0.1);
+            GeoPolygon originalPolygon = new GeoPolygon();
+            originalPolygon.Add(new GeoCoord(2.0, -3.0));
+            originalPolygon.Add(new GeoCoord(-2.0, -4.0));
+            originalPolygon.Add(new GeoCoord(1.0, 1.0));
+            originalPolygon.Add(new GeoCoord(1.01, 1.0)); // Too close
+            GeoPolygon testPolygon = CopyPolygon(originalPolygon);
+            int nRemoved = testPolygon.RemoveCloseNeighbours(0.1);
             Assert.That(nRemoved, Is.EqualTo(1));
-            Assert.That(pTest.Count + nRemoved, Is.EqualTo(pOrg.Count));
-            Assert.That(pTest[0], Is.EqualTo(pOrg[0]));
-            Assert.That(pTest[1], Is.EqualTo(pOrg[1]));
-            Assert.That(pTest[2], Is.EqualTo(pOrg[2]));
+            Assert.That(testPolygon.Count + nRemoved, Is.EqualTo(originalPolygon.Count));
+            Assert.That(testPolygon[0], Is.EqualTo(originalPolygon[0]));
+            Assert.That(testPolygon[1], Is.EqualTo(originalPolygon[1]));
+            Assert.That(testPolygon[2], Is.EqualTo(originalPolygon[2]));
         }
 
         [Test]
