@@ -1,5 +1,7 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Helpers;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -1446,7 +1448,8 @@ namespace AgOpenGPS
 
             while (sourceIndex < originalList.Count)
             {
-                double segmentLength = glm.Distance(originalList[sourceIndex - 1], originalList[sourceIndex]);
+                GeoLineSegment segment = GeoRefactorHelper.GetLineSegment(originalList, sourceIndex - 1);
+                double segmentLength = segment.Length;
 
                 if (segmentLength < 0.001) // Skip duplicate points
                 {
@@ -1464,8 +1467,7 @@ namespace AgOpenGPS
                     double ratio = 1.0 - (overshoot / segmentLength);
 
                     vec3 newPoint = new vec3(
-                        originalList[sourceIndex - 1].easting + ratio * (originalList[sourceIndex].easting - originalList[sourceIndex - 1].easting),
-                        originalList[sourceIndex - 1].northing + ratio * (originalList[sourceIndex].northing - originalList[sourceIndex - 1].northing),
+                        segment.Interpolate(ratio),
                         originalList[sourceIndex - 1].heading
                     );
 

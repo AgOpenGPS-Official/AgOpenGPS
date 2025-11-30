@@ -26,11 +26,11 @@ namespace AgOpenGPS
             heading = v.heading;
         }
 
-        public vec3(GeoCoord geoCoord)
+        public vec3(GeoCoord geoCoord, double direction = 0.0)
         {
             easting = geoCoord.Easting;
             northing = geoCoord.Northing;
-            heading = 0.0;
+            heading = direction;
         }
 
         public GeoCoord ToGeoCoord()

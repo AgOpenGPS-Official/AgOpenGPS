@@ -5,6 +5,40 @@ namespace AgOpenGPS.Core.Tests.Models
 {
     public class GeoLineSegmentTests
     {
+        [Test]
+        public void Test_Length_Zero()
+        {
+            GeoCoord coord = new GeoCoord(-11.0, 12.0);
+            GeoLineSegment segment = new GeoLineSegment(coord, coord);
+            Assert.That(segment.Length, Is.Zero);
+        }
+
+        [Test]
+        public void Test_Length_NotZero()
+        {
+            GeoCoord coordA = new GeoCoord(-19.0, 20.0);
+            GeoCoord coordB = new GeoCoord(-22.0, 24.0);
+            GeoLineSegment segment = new GeoLineSegment(coordA, coordB);
+            Assert.That(segment.Length, Is.EqualTo(5.0));
+
+        }
+
+        [Test]
+        public void Test_LengthSquared_Zero()
+        {
+            GeoCoord coord = new GeoCoord(13.0, -14.0);
+            GeoLineSegment segment = new GeoLineSegment(coord, coord);
+            Assert.That(segment.LengthSquared, Is.Zero);
+        }
+
+        [Test]
+        public void Test_LengthSquared_NotZero()
+        {
+            GeoCoord coordA = new GeoCoord(-15.0, 16.0);
+            GeoCoord coordB = new GeoCoord(-17.0, 19.0);
+            GeoLineSegment segment = new GeoLineSegment(coordA, coordB);
+            Assert.That(segment.LengthSquared, Is.EqualTo(4.0 + 9.0));
+        }
 
         [Test]
         public void Test_Intersects()
