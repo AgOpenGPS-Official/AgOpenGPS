@@ -1,6 +1,6 @@
 ﻿namespace AgOpenGPS.Core.Models
 {
-    public class GeoLineSegment
+    public struct GeoLineSegment
     {
         public GeoLineSegment(GeoCoord coordA, GeoCoord coordB)
         {
@@ -14,6 +14,12 @@
         public GeoDelta Delta => new GeoDelta(CoordA, CoordB);
 
         public GeoDir Direction => new GeoDir(Delta);
+
+        // Returns a new GeoLineSegment shifted over 'offset' w.r.t the original
+        public GeoLineSegment Shifted(GeoDelta offset)
+        {
+            return new GeoLineSegment(CoordA + offset, CoordB + offset);
+        }
 
         public GeoCoord? IntersectionPoint(GeoLineSegment otherSegment)
         {
