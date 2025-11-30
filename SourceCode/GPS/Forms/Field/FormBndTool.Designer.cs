@@ -61,6 +61,7 @@
             this.labelPointsToProcess = new System.Windows.Forms.Label();
             this.lblI = new System.Windows.Forms.Label();
             this.labelPoints = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.tlp1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -287,7 +288,6 @@
             this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.tlp1.SetColumnSpan(this.btnExit, 2);
-            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnExit.FlatAppearance.BorderSize = 0;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -324,13 +324,12 @@
             this.btnZoomIn.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnZoomIn.BackColor = System.Drawing.Color.White;
             this.btnZoomIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.tlp1.SetColumnSpan(this.btnZoomIn, 2);
             this.btnZoomIn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnZoomIn.FlatAppearance.BorderSize = 0;
             this.btnZoomIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnZoomIn.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnZoomIn.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnZoomIn.Location = new System.Drawing.Point(126, 630);
+            this.btnZoomIn.Location = new System.Drawing.Point(92, 630);
             this.btnZoomIn.Name = "btnZoomIn";
             this.btnZoomIn.Size = new System.Drawing.Size(55, 60);
             this.btnZoomIn.TabIndex = 571;
@@ -349,6 +348,7 @@
             this.tlp1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.15436F));
             this.tlp1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 2.684564F));
             this.tlp1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.48323F));
+            this.tlp1.Controls.Add(this.btnCancel, 3, 9);
             this.tlp1.Controls.Add(this.label3, 0, 5);
             this.tlp1.Controls.Add(this.labelReset, 0, 3);
             this.tlp1.Controls.Add(this.btnMoveUp, 2, 8);
@@ -385,6 +385,7 @@
             this.tlp1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.8345F));
             this.tlp1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.8564F));
             this.tlp1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 79F));
+            this.tlp1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlp1.Size = new System.Drawing.Size(299, 700);
             this.tlp1.TabIndex = 572;
             // 
@@ -626,6 +627,23 @@
             this.labelPoints.Text = "Points:";
             this.labelPoints.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
+            this.btnCancel.Location = new System.Drawing.Point(157, 625);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(63, 70);
+            this.btnCancel.TabIndex = 582;
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // FormBndTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -689,5 +707,6 @@
         private System.Windows.Forms.Label labelReset;
         private System.Windows.Forms.Button btnResetReduce;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -1,3 +1,4 @@
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
@@ -9,9 +10,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace AgOpenGPS
 {
@@ -31,6 +34,7 @@ namespace AgOpenGPS
         private int bndSelect = 0, smPtsChoose = 1, smPts = 4;
 
         private double zoom = 1, sX = 0, sY = 0;
+        private const double panStep = 0.15;
 
         public List<vec3> secList = new List<vec3>();
         public List<vec3> bndList = new List<vec3>();
@@ -103,10 +107,48 @@ namespace AgOpenGPS
             labelPoints.Text = gStr.gsPoints;
             labelPointsToProcess.Text = gStr.gsPointsToProcess;
 
+            DeleteTempBoundary();
+
             //load sections if bnd exists, load bnd if exists
             if (mf.bnd.bndList.Count == 0)
             {
                 Reset();
+            }
+            else
+            {
+                var result = new List<CBoundaryList>();
+                for (int i = 0; i < mf.bnd.bndList.Count; i++)
+                {
+                    var b = new CBoundaryList();
+                    b.isDriveThru = mf.bnd.bndList[i].isDriveThru;
+
+                    for (int j = 0; j < mf.bnd.bndList[i].fenceLine.Count; j++)
+                    {
+                        b.fenceLine.Add(mf.bnd.bndList[i].fenceLine[j]);
+                    }
+                    // Compute area and ear
+                    b.CalculateFenceArea(result.Count);
+                    if (b.fenceLineEar != null) b.fenceLineEar.Clear();
+
+                    double delta = 0;
+                    for (int k = 0; k < b.fenceLine.Count; k++)
+                    {
+                        if (k == 0)
+                        {
+                            b.fenceLineEar.Add(new vec2(b.fenceLine[k].easting, b.fenceLine[k].northing));
+                            continue;
+                        }
+                        delta += b.fenceLine[k - 1].heading - b.fenceLine[k].heading;
+                        if (Math.Abs(delta) > 0.005)
+                        {
+                            b.fenceLineEar.Add(new vec2(b.fenceLine[k].easting, b.fenceLine[k].northing));
+                            delta = 0;
+                        }
+                    }
+                    result.Add(b);
+                }
+
+                mf.bnd.tempBndList.AddRange(result);
             }
         }
 
@@ -376,15 +418,7 @@ namespace AgOpenGPS
 
         private void Reset()
         {
-            cboxIsZoom.Visible = false;
             btnSlice.Visible = false;
-            btnCenterOGL.Visible = false;
-            btnZoomIn.Visible = false;
-            btnZoomOut.Visible = false;
-            btnMoveDn.Visible = false;
-            btnMoveUp.Visible = false;
-            btnMoveLeft.Visible = false;
-            btnMoveRight.Visible = false;
 
             //start all over
             start = end = 99999;
@@ -402,7 +436,7 @@ namespace AgOpenGPS
             bndList?.Clear();
             smooList?.Clear();
 
-            DeleteBoundary();
+            DeleteTempBoundary();
 
             //for every new chunk of patch
             for (int j = 0; j < mf.triStrip.Count; j++)
@@ -581,7 +615,7 @@ namespace AgOpenGPS
             SmoothList();
         }
 
-        private void BuildBnd()
+        private void BuildTempBnd()
         {
             if (smooList.Count == 0) return;
 
@@ -589,8 +623,7 @@ namespace AgOpenGPS
             {
                 secList?.Clear();
 
-                //just in case
-                DeleteBoundary();
+                DeleteTempBoundary();
 
                 CBoundaryList New = new CBoundaryList();
 
@@ -599,33 +632,74 @@ namespace AgOpenGPS
                     New.fenceLine.Add(new vec3(smooList[i]));
                 }
 
-                New.CalculateFenceArea(0);
-                New.FixFenceLine(0);
-                mf.bnd.bndList.Add(New);
+                mf.bnd.tempBndList.Add(New);
                 smooList.Clear();
                 bndList?.Clear();
-
-                //turn lines made from boundaries
-                mf.CalculateMinMax();
-                mf.bnd.BuildTurnLines();
-
-                mf.fd.UpdateFieldBoundaryGUIAreas();
-                mf.FileSaveBoundary();
             }
 
             btnStartStop.Enabled = false;
 
-            cboxIsZoom.Visible = true;
             btnSlice.Visible = true;
-            btnCenterOGL.Visible = true;
             btnCancelTouch.Visible = true;
             btnZoomIn.Visible = true;
             btnZoomOut.Visible = true;
+        }
 
-            btnMoveDn.Visible = false;
-            btnMoveUp.Visible = false;
-            btnMoveLeft.Visible = false;
-            btnMoveRight.Visible = false;
+        private void BuildBnd()
+        {
+            secList?.Clear();
+
+            DeleteBoundary();
+
+            var result = new List<CBoundaryList>();
+            for (int i = 0; i < mf.bnd.tempBndList.Count; i++)
+            {
+                var b = new CBoundaryList();
+                b.isDriveThru = mf.bnd.tempBndList[i].isDriveThru;
+
+                for (int j = 0; j < mf.bnd.tempBndList[i].fenceLine.Count; j++)
+                {
+                    b.fenceLine.Add(mf.bnd.tempBndList[i].fenceLine[j]);
+                }
+                // Compute area and ear
+                b.CalculateFenceArea(result.Count);
+                if (b.fenceLineEar != null) b.fenceLineEar.Clear();
+
+                double delta = 0;
+                for (int k = 0; k < b.fenceLine.Count; k++)
+                {
+                    if (k == 0)
+                    {
+                        b.fenceLineEar.Add(new vec2(b.fenceLine[k].easting, b.fenceLine[k].northing));
+                        continue;
+                    }
+                    delta += b.fenceLine[k - 1].heading - b.fenceLine[k].heading;
+                    if (Math.Abs(delta) > 0.005)
+                    {
+                        b.fenceLineEar.Add(new vec2(b.fenceLine[k].easting, b.fenceLine[k].northing));
+                        delta = 0;
+                    }
+                }
+                result.Add(b);
+            }
+
+            mf.bnd.bndList.AddRange(result);
+
+            for (int i = 0; i < mf.bnd.bndList.Count; i++)
+            {
+                mf.bnd.bndList[i].CalculateFenceArea(i);
+                mf.bnd.bndList[i].FixFenceLine(i);
+            }
+
+            DeleteTempBoundary();
+            bndList?.Clear();
+
+            //turn lines made from boundaries
+            mf.CalculateMinMax();
+            mf.bnd.BuildTurnLines();
+
+            mf.fd.UpdateFieldBoundaryGUIAreas();
+            mf.FileSaveBoundary();
         }
 
         private void SmoothList()
@@ -746,9 +820,14 @@ namespace AgOpenGPS
             mf.FileSaveHeadland();
         }
 
+        private void DeleteTempBoundary()
+        {
+            mf.bnd.tempBndList?.Clear(); //if (mf.bnd.tempBndList.Count > 0) mf.bnd.tempBndList.Clear();
+        }
 
         private void btnStartStop_Click(object sender, EventArgs e)
         {
+            btnExit.Enabled = false;
             Spacing();
 
             PacMan();
@@ -761,7 +840,8 @@ namespace AgOpenGPS
 
             Smooth();
 
-            BuildBnd();
+            BuildTempBnd();
+            btnExit.Enabled = true;
         }
 
         private void cboxSmooth_SelectedIndexChanged(object sender, EventArgs e)
@@ -778,43 +858,39 @@ namespace AgOpenGPS
 
         private void btnZoomOut_Click(object sender, EventArgs e)
         {
-            zoom += 0.1;
+            zoom *= 2;
             if (zoom > 1) zoom = 1;
+        }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            zoom *= 0.5;
+            if (zoom < 0.015625) zoom = 0.015625;
         }
 
         private void btnMoveDn_Click(object sender, EventArgs e)
         {
-            if (zoom == 0.1)
-                sY += 0.01;
+            sY += panStep * zoom;
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-            if (zoom == 0.1)
-                sY -= 0.01;
+            sY -= panStep * zoom;
+        }
+
+        private void btnMoveLeft_Click(object sender, EventArgs e)
+        {
+            sX += panStep * zoom;
+        }
+
+        private void btnMoveRight_Click(object sender, EventArgs e)
+        {
+            sX -= panStep * zoom;
         }
 
         private void btnResetReduce_Click_1(object sender, EventArgs e)
         {
             Reset();
-        }
-
-        private void btnMoveLeft_Click(object sender, EventArgs e)
-        {
-            if (zoom == 0.1)
-                sX += 0.01;
-        }
-
-        private void btnMoveRight_Click(object sender, EventArgs e)
-        {
-            if (zoom == 0.1)
-                sX -= 0.01;
-        }
-
-        private void btnZoomIn_Click(object sender, EventArgs e)
-        {
-            zoom -= 0.1;
-            if (zoom < 0.1) zoom = 0.1;
         }
 
         private void btnSlice_Click(object sender, EventArgs e)
@@ -823,9 +899,9 @@ namespace AgOpenGPS
             int limit = end;
             if (end == 99999 || start == 99999) return;
 
-            if (bndSelect >= 0 && bndSelect < mf.bnd.bndList.Count && mf.bnd.bndList[bndSelect].fenceLine.Count > 0)
+            if (bndSelect >= 0 && bndSelect < mf.bnd.tempBndList.Count && mf.bnd.tempBndList[bndSelect].fenceLine.Count > 0)
             {
-                if ((Math.Abs(start - end)) > (mf.bnd.bndList[bndSelect].fenceLine.Count * 0.5))
+                if ((Math.Abs(start - end)) > (mf.bnd.tempBndList[bndSelect].fenceLine.Count * 0.5))
                 {
                     isLoop = true;
                     if (start < end)
@@ -834,7 +910,7 @@ namespace AgOpenGPS
                     }
 
                     limit = end;
-                    end = mf.bnd.bndList[bndSelect].fenceLine.Count;
+                    end = mf.bnd.tempBndList[bndSelect].fenceLine.Count;
                 }
                 else //normal
                 {
@@ -844,8 +920,8 @@ namespace AgOpenGPS
                     }
                 }
 
-                vec3[] arr = new vec3[mf.bnd.bndList[0].fenceLine.Count];
-                mf.bnd.bndList[0].fenceLine.CopyTo(arr);
+                vec3[] arr = new vec3[mf.bnd.tempBndList[bndSelect].fenceLine.Count];
+                mf.bnd.tempBndList[bndSelect].fenceLine.CopyTo(arr);
 
                 if (start++ == arr.Length) start--;
                 //if (end-- == -1) end = 0;
@@ -856,7 +932,7 @@ namespace AgOpenGPS
                     //calculate the point inside the boundary
                     arr[i].heading = 999;
 
-                    if (isLoop && i == mf.bnd.bndList[bndSelect].fenceLine.Count - 1)
+                    if (isLoop && i == mf.bnd.tempBndList[bndSelect].fenceLine.Count - 1)
                     {
                         i = -1;
                         isLoop = false;
@@ -867,13 +943,13 @@ namespace AgOpenGPS
                 if (isC)
                     arr[start] = new vec3(pint);
 
-                mf.bnd.bndList[bndSelect].fenceLine.Clear();
+                mf.bnd.tempBndList[bndSelect].fenceLine.Clear();
 
                 for (int i = 0; i < arr.Length; i++)
                 {
                     //calculate the point inside the boundary
                     if (arr[i].heading != 999)
-                        mf.bnd.bndList[bndSelect].fenceLine.Add(new vec3(arr[i]));
+                        mf.bnd.tempBndList[bndSelect].fenceLine.Add(new vec3(arr[i]));
 
                     if (isLoop && i == arr.Length - 1)
                     {
@@ -882,14 +958,6 @@ namespace AgOpenGPS
                         end = limit;
                     }
                 }
-
-                mf.bnd.bndList[0].FixFenceLine(0);
-
-                mf.CalculateMinMax();
-                mf.bnd.BuildTurnLines();
-
-                mf.fd.UpdateFieldBoundaryGUIAreas();
-                mf.FileSaveBoundary();
             }
 
             start = 99999; end = 99999;
@@ -907,8 +975,32 @@ namespace AgOpenGPS
             sY = 0;
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            //Exit and use the old boundary
+            DeleteTempBoundary();
+            //Close();
+        }
+
         private void btnExit_Click(object sender, EventArgs e)
         {
+            // if tempBunList is clear but bonList not, prompt a box "Are you sure you want to delete the boundary?"
+            if (mf.bnd.tempBndList.Count == 0 && mf.bnd.bndList.Count > 0)
+            {
+                // Show custom confirmation dialog for boundary deletion
+                DialogResult result3 = FormDialog.Show(
+                    gStr.gsDeleteForSure,
+                    gStr.gsDeleteBoundaryMapping,
+                    MessageBoxButtons.YesNo);
+
+                if (result3 != DialogResult.OK)
+                {
+                    return;
+                }
+            }
+
+            //Exit and use the new boundary
+            BuildBnd();
             Close();
         }
 
@@ -933,9 +1025,9 @@ namespace AgOpenGPS
 
             if (cboxIsZoom.Checked)
             {
-                sX = ((halfWid - (double)ptt.X) / wid) * 1.1;
-                sY = ((halfWid - (double)ptt.Y) / -wid) * 1.1;
-                zoom = 0.1;
+                sX += ((halfWid - (double)ptt.X) / wid) * 1.1 * zoom;
+                sY += ((halfWid - (double)ptt.Y) / -wid) * 1.1 * zoom;
+                zoom = 0.125;
                 cboxIsZoom.Checked = false;
                 return;
             }
@@ -959,7 +1051,7 @@ namespace AgOpenGPS
             pint.easting = plotPt.easting;
             pint.northing = plotPt.northing;
 
-            if (mf.bnd.bndList.Count != 0)
+            if (mf.bnd.tempBndList.Count != 0)
             {
                 if (start != 99999 & end != 99999)
                 {
@@ -972,14 +1064,14 @@ namespace AgOpenGPS
             {
                 double minDistA = double.MaxValue;
                 start = 99999; end = 99999;
-                if (mf.bnd.bndList.Count != 0)
+                if (mf.bnd.tempBndList.Count != 0)
                 {
-                    for (int j = 0; j < mf.bnd.bndList.Count; j++)
+                    for (int j = 0; j < mf.bnd.tempBndList.Count; j++)
                     {
-                        for (int i = 0; i < mf.bnd.bndList[j].fenceLine.Count; i++)
+                        for (int i = 0; i < mf.bnd.tempBndList[j].fenceLine.Count; i++)
                         {
-                            double dist = ((pint.easting - mf.bnd.bndList[j].fenceLine[i].easting) * (pint.easting - mf.bnd.bndList[j].fenceLine[i].easting))
-                                            + ((pint.northing - mf.bnd.bndList[j].fenceLine[i].northing) * (pint.northing - mf.bnd.bndList[j].fenceLine[i].northing));
+                            double dist = ((pint.easting - mf.bnd.tempBndList[j].fenceLine[i].easting) * (pint.easting - mf.bnd.tempBndList[j].fenceLine[i].easting))
+                                            + ((pint.northing - mf.bnd.tempBndList[j].fenceLine[i].northing) * (pint.northing - mf.bnd.tempBndList[j].fenceLine[i].northing));
                             if (dist < minDistA)
                             {
                                 minDistA = dist;
@@ -1003,13 +1095,13 @@ namespace AgOpenGPS
                 double minDistA = double.MaxValue;
                 int j = bndSelect;
 
-                if (mf.bnd.bndList.Count != 0)
+                if (mf.bnd.tempBndList.Count != 0)
                 {
 
-                    for (int i = 0; i < mf.bnd.bndList[j].fenceLine.Count; i++)
+                    for (int i = 0; i < mf.bnd.tempBndList[j].fenceLine.Count; i++)
                     {
-                        double dist = ((pint.easting - mf.bnd.bndList[j].fenceLine[i].easting) * (pint.easting - mf.bnd.bndList[j].fenceLine[i].easting))
-                                        + ((pint.northing - mf.bnd.bndList[j].fenceLine[i].northing) * (pint.northing - mf.bnd.bndList[j].fenceLine[i].northing));
+                        double dist = ((pint.easting - mf.bnd.tempBndList[j].fenceLine[i].easting) * (pint.easting - mf.bnd.tempBndList[j].fenceLine[i].easting))
+                                        + ((pint.northing - mf.bnd.tempBndList[j].fenceLine[i].northing) * (pint.northing - mf.bnd.tempBndList[j].fenceLine[i].northing));
                         if (dist < minDistA)
                         {
                             minDistA = dist;
@@ -1061,22 +1153,37 @@ namespace AgOpenGPS
 
             GL.Color3(0.725f, 0.95f, 0.950f);
 
-            if (mf.bnd.bndList.Count > 0)
+            if (mf.bnd.tempBndList.Count > 0)
             {
                 GL.Begin(PrimitiveType.LineLoop);
-                for (int i = 0; i < mf.bnd.bndList[0].fenceLine.Count; i++)
+                for (int i = 0; i < mf.bnd.tempBndList[0].fenceLine.Count; i++)
                 {
-                    GL.Vertex3(mf.bnd.bndList[0].fenceLine[i].easting, mf.bnd.bndList[0].fenceLine[i].northing, 0);
+                    GL.Vertex3(mf.bnd.tempBndList[0].fenceLine[i].easting, mf.bnd.tempBndList[0].fenceLine[i].northing, 0);
                 }
                 GL.End();
 
                 GL.PointSize(4);
                 GL.Begin(PrimitiveType.Points);
-                for (int i = 0; i < mf.bnd.bndList[0].fenceLine.Count; i++)
+                for (int i = 0; i < mf.bnd.tempBndList[0].fenceLine.Count; i++)
                 {
-                    GL.Vertex3(mf.bnd.bndList[0].fenceLine[i].easting, mf.bnd.bndList[0].fenceLine[i].northing, 0);
+                    GL.Vertex3(mf.bnd.tempBndList[0].fenceLine[i].easting, mf.bnd.tempBndList[0].fenceLine[i].northing, 0);
                 }
                 GL.End();
+
+                if (mf.bnd.tempBndList.Count > 1)
+                {
+                    for (int i = 1; i < mf.bnd.tempBndList.Count; i++)
+                    {
+                        GL.Color3(0.95f, 0.95f, 0.35f);
+                        GL.Begin(PrimitiveType.LineLoop); //Todo: change color if possible
+                        for (int j = 0; j < mf.bnd.tempBndList[i].fenceLine.Count; j++)
+                        {
+                            GL.Vertex3(mf.bnd.tempBndList[i].fenceLine[j].easting, mf.bnd.tempBndList[i].fenceLine[j].northing, 0);
+                        }
+                        GL.End();
+                    }
+
+                }
             }
 
             //new boundary being made
@@ -1137,7 +1244,7 @@ namespace AgOpenGPS
             //draw the line building graphics
             if (start != 99999 || end != 99999) DrawABTouchPoints();
 
-            if (mf.bnd.bndList.Count != 0)
+            if (mf.bnd.tempBndList.Count != 0)
             {
                 //draw the actual built lines
                 if (start != 99999 && end != 99999)
@@ -1148,9 +1255,9 @@ namespace AgOpenGPS
                         GL.Color3(0.90f, 0.5f, 0.25f);
                         GL.Begin(PrimitiveType.LineStrip);
                         {
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[start].easting, mf.bnd.bndList[0].fenceLine[start].northing, 0);
+                            GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[start].easting, mf.bnd.tempBndList[bndSelect].fenceLine[start].northing, 0);
                             GL.Vertex3(pint.easting, pint.northing, 0);
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[end].easting, mf.bnd.bndList[0].fenceLine[end].northing, 0);
+                            GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[end].easting, mf.bnd.tempBndList[bndSelect].fenceLine[end].northing, 0);
                         }
                         GL.End();
                     }
@@ -1160,8 +1267,8 @@ namespace AgOpenGPS
                         GL.Color3(0.90f, 0.5f, 0.25f);
                         GL.Begin(PrimitiveType.Lines);
                         {
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[start].easting, mf.bnd.bndList[0].fenceLine[start].northing, 0);
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[end].easting, mf.bnd.bndList[0].fenceLine[end].northing, 0);
+                            GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[start].easting, mf.bnd.tempBndList[bndSelect].fenceLine[start].northing, 0);
+                            GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[end].easting, mf.bnd.tempBndList[bndSelect].fenceLine[end].northing, 0);
                         }
                         GL.End();
 
@@ -1178,21 +1285,21 @@ namespace AgOpenGPS
             GL.PointSize(24);
             GL.Begin(PrimitiveType.Points);
 
-            if (mf.bnd.bndList.Count != 0)
+            if (mf.bnd.tempBndList.Count != 0)
             {
                 GL.Color3(0, 0, 0);
-                if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-                if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+                if (start != 99999) GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[start].easting, mf.bnd.tempBndList[bndSelect].fenceLine[start].northing, 0);
+                if (end != 99999) GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[end].easting, mf.bnd.tempBndList[bndSelect].fenceLine[end].northing, 0);
                 GL.End();
 
                 GL.PointSize(16);
                 GL.Begin(PrimitiveType.Points);
 
                 GL.Color3(.950f, 0.75f, 0.50f);
-                if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
+                if (start != 99999) GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[start].easting, mf.bnd.tempBndList[bndSelect].fenceLine[start].northing, 0);
 
                 GL.Color3(0.5f, 0.5f, 0.935f);
-                if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+                if (end != 99999) GL.Vertex3(mf.bnd.tempBndList[bndSelect].fenceLine[end].easting, mf.bnd.tempBndList[bndSelect].fenceLine[end].northing, 0);
             }
             else
             {
@@ -1225,24 +1332,6 @@ namespace AgOpenGPS
         private void timer1_Tick(object sender, EventArgs e)
         {
             oglSelf.Refresh();
-
-            if (timer1.Interval == 500)
-            {
-                if (zoom == 0.1)
-                {
-                    btnMoveDn.Visible = true;
-                    btnMoveUp.Visible = true;
-                    btnMoveLeft.Visible = true;
-                    btnMoveRight.Visible = true;
-                }
-                else
-                {
-                    btnMoveDn.Visible = false;
-                    btnMoveUp.Visible = false;
-                    btnMoveLeft.Visible = false;
-                    btnMoveRight.Visible = false;
-                }
-            }
         }
 
         private void oglSelf_Resize(object sender, EventArgs e)
