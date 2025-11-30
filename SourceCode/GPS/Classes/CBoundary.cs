@@ -11,6 +11,7 @@ namespace AgOpenGPS
 
 
         public List<CBoundaryList> bndList = new List<CBoundaryList>();
+        public List<CBoundaryList> tempBndList = new List<CBoundaryList>();
 
         //constructor
         public CBoundary(FormGPS _f)
