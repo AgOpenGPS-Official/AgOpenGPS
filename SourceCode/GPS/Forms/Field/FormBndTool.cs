@@ -981,7 +981,7 @@ namespace AgOpenGPS
             DeleteTempBoundary();
             //Close();
         }
-        
+
         private void btnExit_Click(object sender, EventArgs e)
         {
             // if tempBunList is clear but bonList not, prompt a box "Are you sure you want to delete the boundary?"
