@@ -31,6 +31,7 @@ namespace AgOpenGPS
         private int bndSelect = 0, smPtsChoose = 1, smPts = 4;
 
         private double zoom = 1, sX = 0, sY = 0;
+        private const double panStep = 0.15;
 
         public List<vec3> secList = new List<vec3>();
         public List<vec3> bndList = new List<vec3>();
@@ -767,35 +768,35 @@ namespace AgOpenGPS
             if (zoom > 1) zoom = 1;
         }
 
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            zoom *= 0.5;
+            if (zoom < 0.015625) zoom = 0.015625;
+        }
+
         private void btnMoveDn_Click(object sender, EventArgs e)
         {
-            sY += 0.15 * zoom;
+            sY += panStep * zoom;
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-            sY -= 0.15 * zoom;
+            sY -= panStep * zoom;
+        }
+
+        private void btnMoveLeft_Click(object sender, EventArgs e)
+        {
+            sX += panStep * zoom;
+        }
+
+        private void btnMoveRight_Click(object sender, EventArgs e)
+        {
+            sX -= panStep * zoom;
         }
 
         private void btnResetReduce_Click_1(object sender, EventArgs e)
         {
             Reset();
-        }
-
-        private void btnMoveLeft_Click(object sender, EventArgs e)
-        {
-            sX += 0.15 * zoom;
-        }
-
-        private void btnMoveRight_Click(object sender, EventArgs e)
-        {
-            sX -= 0.15 * zoom;
-        }
-
-        private void btnZoomIn_Click(object sender, EventArgs e)
-        {
-            zoom *= 0.5;
-            if (zoom < 0.015625) zoom = 0.015625;
         }
 
         private void btnSlice_Click(object sender, EventArgs e)
