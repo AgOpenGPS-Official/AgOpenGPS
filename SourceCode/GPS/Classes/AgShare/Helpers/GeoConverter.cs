@@ -63,30 +63,6 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
             Northing = n;
         }
     }
-    public static class BoundaryHelper
-    {
-        /// <summary>
-        /// Calculate heading for each boundary point based on the direction to the next point (last → first is closed loop)
-        /// </summary>
-        public static List<LocalPoint> WithHeadings(List<LocalPoint> points)
-        {
-            var result = new List<LocalPoint>();
-            if (points == null || points.Count < 2) return result;
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                var curr = points[i];
-                var next = points[(i + 1) % points.Count]; // closed ring
-                double dx = next.Easting - curr.Easting;
-                double dy = next.Northing - curr.Northing;
-                double heading = Math.Atan2(dx, dy);
-                result.Add(new LocalPoint(curr.Easting, curr.Northing, heading));
-            }
-
-            return result;
-        }
-    }
-
     public static class CurveHelper
     {
         /// <summary>

@@ -200,7 +200,7 @@ namespace AgOpenGPS.Forms.Field
         #region OpenGL Rendering
 
         // Draws the field boundaries and AB lines in the OpenGL context
-        private void RenderField(LocalFieldModel field)
+        private void RenderField(ParsedField field)
         {
             glControl1.MakeCurrent();
 
@@ -213,7 +213,7 @@ namespace AgOpenGPS.Forms.Field
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             // Determine scaling based on boundary extents, or AB lines if no boundary
-            GeoBoundingBox fieldBb = GetBoundingBox(field.Boundaries, field.AbLines);
+            GeoBoundingBox fieldBb = GetBoundingBox(field.Boundaries, field.Tracks);
 
             // Ensure non-zero margins even for vertical/horizontal lines or single points
             GeoDelta bbMargin = new GeoDelta(
@@ -232,28 +232,28 @@ namespace AgOpenGPS.Forms.Field
 
             // Draw field boundaries in lime green
             GL.Color4(0f, 1f, 0f, 0.8f);
-            foreach (var ring in field.Boundaries)
+            foreach (var bnd in field.Boundaries)
             {
                 GL.Begin(PrimitiveType.LineLoop);
-                foreach (var pt in ring)
-                    GL.Vertex2(pt.Easting, pt.Northing);
+                foreach (var pt in bnd.fenceLine)
+                    GL.Vertex2(pt.easting, pt.northing);
                 GL.End();
             }
 
             // Draw AB lines and curves (dashed)
-            foreach (var ab in field.AbLines)
+            foreach (var trk in field.Tracks)
             {
                 GL.Enable(EnableCap.LineStipple);
                 GL.LineStipple(1, 0x0F0F);
                 GL.LineWidth(3.5f);
 
-                if (ab.CurvePoints != null && ab.CurvePoints.Count > 0)
+                if (trk.mode == TrackMode.Curve && trk.curvePts != null && trk.curvePts.Count > 0)
                 {
                     // Render curve (red dashed line)
                     GL.Color4(1f, 0f, 0f, 0.9f);
                     GL.Begin(PrimitiveType.LineStrip);
-                    foreach (var pt in ab.CurvePoints)
-                        GL.Vertex2(pt.Easting, pt.Northing);
+                    foreach (var pt in trk.curvePts)
+                        GL.Vertex2(pt.easting, pt.northing);
                     GL.End();
                 }
                 else
@@ -261,8 +261,8 @@ namespace AgOpenGPS.Forms.Field
                     // Render AB line (orange dashed line)
                     GL.Color4(1f, 0.65f, 0f, 0.9f);
                     GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex2(ab.PtA.Easting, ab.PtA.Northing);
-                    GL.Vertex2(ab.PtB.Easting, ab.PtB.Northing);
+                    GL.Vertex2(trk.ptA.easting, trk.ptA.northing);
+                    GL.Vertex2(trk.ptB.easting, trk.ptB.northing);
                     GL.End();
                 }
 
@@ -273,41 +273,42 @@ namespace AgOpenGPS.Forms.Field
             glControl1.SwapBuffers();
         }
 
-        private GeoBoundingBox GetBoundingBox(List<List<LocalPoint>> boundaries, List<AbLineLocal> abLines)
+        private GeoBoundingBox GetBoundingBox(List<CBoundaryList> boundaries, List<CTrk> tracks)
         {
             GeoBoundingBox bb = GeoBoundingBox.CreateEmpty();
+
             // Check boundaries first
             if (boundaries != null)
             {
-                foreach (var ring in boundaries)
+                foreach (var bnd in boundaries)
                 {
-                    foreach (var pt in ring)
+                    foreach (var pt in bnd.fenceLine)
                     {
-                        bb.Include(pt.ToGeoCoord());
+                        bb.Include(new GeoCoord(pt.northing, pt.easting));
                     }
                 }
             }
 
-            // If no boundary, use AB lines to calculate bounds
-            if (bb.IsEmpty && abLines != null)
+            // If no boundary, use tracks to calculate bounds
+            if (bb.IsEmpty && tracks != null)
             {
-                foreach (var ab in abLines)
+                foreach (var trk in tracks)
                 {
-                    if (ab.CurvePoints != null && ab.CurvePoints.Count > 0)
+                    if (trk.mode == TrackMode.Curve && trk.curvePts != null && trk.curvePts.Count > 0)
                     {
-                        foreach (var pt in ab.CurvePoints)
+                        foreach (var pt in trk.curvePts)
                         {
-                            bb.Include(pt.ToGeoCoord());
+                            bb.Include(new GeoCoord(pt.northing, pt.easting));
                         }
                     }
                     else
                     {
-                        // AB line (two points)
-                        bb.Include(ab.PtA.ToGeoCoord());
-                        bb.Include(ab.PtB.ToGeoCoord());
+                        bb.Include(new GeoCoord(trk.ptA.northing, trk.ptA.easting));
+                        bb.Include(new GeoCoord(trk.ptB.northing, trk.ptB.easting));
                     }
                 }
             }
+
             // Fallback to default bounds if no data
             if (bb.IsEmpty)
             {
