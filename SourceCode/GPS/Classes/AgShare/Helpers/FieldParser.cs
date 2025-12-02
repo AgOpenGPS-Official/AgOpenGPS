@@ -78,6 +78,9 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
 
                     if (bnd.fenceLine.Count >= 3)
                     {
+                        // First ring is outer boundary, subsequent rings are holes (drive-through)
+                        bnd.isDriveThru = boundaryIndex > 0;
+
                         // Normalize boundary (calculate area, fix spacing, compute headings)
                         bnd.CalculateFenceArea(boundaryIndex);
                         bnd.FixFenceLine(boundaryIndex);
