@@ -41,13 +41,6 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
             return new Vec2(easting, northing);
         }
 
-        // Calculate heading from two local coordinates (in radians, 0-2π)
-        public static double HeadingFromPoints(Vec2 a, Vec2 b)
-        {
-            double angle = Math.Atan2(b.Easting - a.Easting, b.Northing - a.Northing);
-            return (angle + 2 * Math.PI) % (2 * Math.PI);
-        }
-
         private static double DegToRad(double deg) => deg * Math.PI / 180.0;
     }
 

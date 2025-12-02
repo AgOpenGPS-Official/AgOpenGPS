@@ -284,7 +284,7 @@ namespace AgOpenGPS.Forms.Field
                 {
                     foreach (var pt in bnd.fenceLine)
                     {
-                        bb.Include(new GeoCoord(pt.northing, pt.easting));
+                        bb.Include(pt.ToGeoCoord());
                     }
                 }
             }
@@ -298,13 +298,13 @@ namespace AgOpenGPS.Forms.Field
                     {
                         foreach (var pt in trk.curvePts)
                         {
-                            bb.Include(new GeoCoord(pt.northing, pt.easting));
+                            bb.Include(pt.ToGeoCoord());
                         }
                     }
                     else
                     {
-                        bb.Include(new GeoCoord(trk.ptA.northing, trk.ptA.easting));
-                        bb.Include(new GeoCoord(trk.ptB.northing, trk.ptB.easting));
+                        bb.Include(trk.ptA.ToGeoCoord());
+                        bb.Include(trk.ptB.ToGeoCoord());
                     }
                 }
             }
