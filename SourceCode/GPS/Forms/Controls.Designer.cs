@@ -1586,6 +1586,7 @@ namespace AgOpenGPS
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Türkçe (Turkey)", "tr"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Yкраїнська (Ukraine)", "uk"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("中国人 (Chinese)", "zh-CHS"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("日本語 (Japanese)", "ja"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("한국인 (Korean)", "ko"));
         }
 

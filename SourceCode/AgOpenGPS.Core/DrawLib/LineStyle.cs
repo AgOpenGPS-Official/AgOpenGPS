@@ -4,13 +4,13 @@ namespace AgOpenGPS.Core.DrawLib
 {
     public class LineStyle
     {
-        public LineStyle(float width, ColorRgb colorRgb)
+        public LineStyle(float width, ColorRgba colorRgba)
         {
             Width = width;
-            Color = colorRgb;
+            Color = colorRgba;
         }
 
         public float Width { get; set; }
-        public ColorRgb Color { get; set; }
+        public ColorRgba Color { get; set; }
     }
 }

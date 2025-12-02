@@ -1947,22 +1947,25 @@ namespace AgOpenGPS
 
         private void DrawFlags()
         {
+            ColorRgb flagRedColor = new ColorRgb(255, 0, 0);
+            ColorRgb flagGreenColor = new ColorRgb(0, 255, 0);
+            ColorRgb flagYellowColor = new ColorRgb(255, 255, 0);
             try
             {
                 foreach (CFlag flag in flagPts)
                 {
                     GL.PointSize(8.0f);
                     GL.Begin(PrimitiveType.Points);
-                    ColorRgb flagColorRgb = Colors.FlagRedColor;
+                    ColorRgb flagColorRgb = flagRedColor;
                     string flagColor = "&";
                     if (flag.color == 1)
                     {
-                        flagColorRgb = Colors.FlagGreenColor;
+                        flagColorRgb = flagGreenColor;
                         flagColor = "|";
                     }
                     if (flag.color == 2)
                     {
-                        flagColorRgb = Colors.FlagYellowColor;
+                        flagColorRgb = flagYellowColor;
                         flagColor = "~";
                     }
                     flagColorRgb.Blue = (byte)flag.ID;

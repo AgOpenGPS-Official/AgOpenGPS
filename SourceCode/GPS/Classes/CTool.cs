@@ -368,8 +368,8 @@ namespace AgOpenGPS
                         GL.PointSize(12);
                     else GL.PointSize(8);
 
-                    ColorRgb rightMarkerColor = ((mf.tram.controlByte) & 1) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
-                    ColorRgb leftMarkerColor = ((mf.tram.controlByte) & 2) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
+                    ColorRgba rightMarkerColor = ((mf.tram.controlByte) & 1) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
+                    ColorRgba leftMarkerColor = ((mf.tram.controlByte) & 2) != 0 ? Colors.TramMarkerOnColor : Colors.Black;
                     double rightX = mf.tram.isOuter ? farRightPosition - mf.tram.halfWheelTrack : mf.tram.halfWheelTrack;
                     double leftX = mf.tram.isOuter ? farLeftPosition + mf.tram.halfWheelTrack : -mf.tram.halfWheelTrack;
                     // section markers

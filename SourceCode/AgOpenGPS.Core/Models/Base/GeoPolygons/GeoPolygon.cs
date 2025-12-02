@@ -1,7 +1,6 @@
 ﻿using Accord.Imaging.Filters;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace AgOpenGPS.Core.Models
 {
@@ -16,6 +15,12 @@ namespace AgOpenGPS.Core.Models
         public GeoPolygon()
         {
             _coords = new List<GeoCoord>();
+            Invalidate();
+        }
+
+        public GeoPolygon(int capacity = 16)
+        {
+            _coords = new List<GeoCoord>(capacity);
             Invalidate();
         }
 
@@ -142,12 +147,16 @@ namespace AgOpenGPS.Core.Models
 
         public int RemoveSelfIntersections()
         {
-            int intersections = 0;
+            int nIntersections = 0;
             while (RemoveFirstIntersection())
             {
-                intersections++;
+                nIntersections++;
             }
-            return intersections;
+            if (nIntersections > 0)
+            {
+                RemoveCloseNeighbours(0.001);
+            }
+            return nIntersections;
         }
 
         private bool RemoveFirstIntersection()
@@ -199,6 +208,30 @@ namespace AgOpenGPS.Core.Models
                 _coords.RemoveRange(0, endIndex + 1);
             }
             Invalidate();
+        }
+
+        // Returns the number of removed vertices
+        public int RemoveCloseNeighbours(double tooCloseDistance)
+        {
+            double tooCloseDistanceSquared = tooCloseDistance * tooCloseDistance;
+            GeoCoord prevVertex = Last;
+            int dstIndex = 0;
+            for (int srcIndex = 0; srcIndex < _coords.Count; srcIndex++)
+            {
+                GeoCoord srcVertex = _coords[srcIndex];
+                if (tooCloseDistanceSquared < prevVertex.DistanceSquared(srcVertex))
+                {
+                    prevVertex = _coords[srcIndex];
+                    _coords[dstIndex++] = _coords[srcIndex];
+                }
+            }
+            int nRemoved = Count - dstIndex;
+            if (nRemoved > 0)
+            {
+                _coords.RemoveRange(dstIndex, nRemoved);
+                Invalidate();
+            }
+            return nRemoved;
         }
 
         private void ReverseWinding()
