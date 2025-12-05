@@ -1,5 +1,6 @@
 ﻿using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
+using System.Linq;
 
 namespace AgOpenGPS.Core.DrawLib
 {
@@ -21,9 +22,22 @@ namespace AgOpenGPS.Core.DrawLib
 
         private static void DrawPrimitive(PrimitiveType primitiveType, GeoLineSegment[] lineSegments)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
-            GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
-            vertex2Array.Dispose();
+            if (2 * lineSegments.Length >= MinVerticesForArray)
+            {
+                Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
+                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                vertex2Array.Dispose();
+            }
+            else
+            {
+                GL.Begin(primitiveType);
+                foreach (var segment in lineSegments)
+                {
+                    Vertex2(segment.CoordA);
+                    Vertex2(segment.CoordB);
+                }
+                GL.End();
+            }
         }
 
         private static void DrawPrimitiveLayered(
@@ -31,13 +45,30 @@ namespace AgOpenGPS.Core.DrawLib
             LineStyle[] lineStyles,
             GeoLineSegment[] lineSegments)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
-            foreach (LineStyle lineStyle in lineStyles)
+            if (2 * lineStyles.Length * lineSegments.Length >= MinVerticesForArray)
             {
-                SetLineStyle(lineStyle);
-                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                }
+                vertex2Array.Dispose();
             }
-            vertex2Array.Dispose();
+            else
+            {
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.Begin(primitiveType);
+                    foreach (var segment in lineSegments)
+                    {
+                        Vertex2(segment.CoordA);
+                        Vertex2(segment.CoordB);
+                    }
+                    GL.End();
+                }
+            }
         }
 
     }

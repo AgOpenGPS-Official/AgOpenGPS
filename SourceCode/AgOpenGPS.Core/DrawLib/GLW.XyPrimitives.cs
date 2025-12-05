@@ -63,9 +63,21 @@ namespace AgOpenGPS.Core.DrawLib
 
         private static void DrawPrimitive(PrimitiveType primitiveType, XyCoord[] vertices)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(vertices);
-            GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
-            vertex2Array.Dispose();
+            if (vertices.Length >= MinVerticesForArray)
+            {
+                Vertex2Array vertex2Array = new Vertex2Array(vertices);
+                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                vertex2Array.Dispose();
+            }
+            else
+            {
+                GL.Begin(primitiveType);
+                foreach (XyCoord vertex in vertices)
+                {
+                    GL.Vertex2(vertex.X, vertex.Y);
+                }
+                GL.End();
+            }
         }
 
         private static void DrawPrimitiveLayered(
@@ -73,13 +85,29 @@ namespace AgOpenGPS.Core.DrawLib
             LineStyle[] lineStyles,
             XyCoord[] vertices)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(vertices);
-            foreach (LineStyle lineStyle in lineStyles)
+            if (vertices.Length * vertices.Length >= MinVerticesForArray)
             {
-                SetLineStyle(lineStyle);
-                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                Vertex2Array vertex2Array = new Vertex2Array(vertices);
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                }
+                vertex2Array.Dispose();
             }
-            vertex2Array.Dispose();
+            else
+            {
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.Begin(primitiveType);
+                    foreach (XyCoord vertex in vertices)
+                    {
+                        GL.Vertex2(vertex.X, vertex.Y);
+                    }
+                    GL.End();
+                }
+            }
         }
 
     }

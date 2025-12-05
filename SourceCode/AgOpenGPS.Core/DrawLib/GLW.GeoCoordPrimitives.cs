@@ -50,9 +50,21 @@ namespace AgOpenGPS.Core.DrawLib
 
         private static void DrawPrimitive(PrimitiveType primitiveType, GeoCoord[] vertices)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(vertices);
-            GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
-            vertex2Array.Dispose();
+            if (vertices.Length >= MinVerticesForArray)
+            {
+                Vertex2Array vertex2Array = new Vertex2Array(vertices);
+                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                vertex2Array.Dispose();
+            }
+            else
+            {
+                GL.Begin(primitiveType);
+                foreach (GeoCoord vertex in vertices)
+                {
+                    Vertex2(vertex);
+                }
+                GL.End();
+            }
         }
 
         private static void DrawPrimitiveLayered(
@@ -60,13 +72,29 @@ namespace AgOpenGPS.Core.DrawLib
             LineStyle[] lineStyles,
             GeoCoord[] vertices)
         {
-            Vertex2Array vertex2Array = new Vertex2Array(vertices);
-            foreach (LineStyle lineStyle in lineStyles)
+            if (lineStyles.Length * vertices.Length >= MinVerticesForArray)
             {
-                SetLineStyle(lineStyle);
-                GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                Vertex2Array vertex2Array = new Vertex2Array(vertices);
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.DrawArrays(primitiveType, 0, vertex2Array.Length);
+                }
+                vertex2Array.Dispose();
             }
-            vertex2Array.Dispose();
+            else
+            {
+                foreach (LineStyle lineStyle in lineStyles)
+                {
+                    SetLineStyle(lineStyle);
+                    GL.Begin(primitiveType);
+                    foreach (GeoCoord vertex in vertices)
+                    {
+                        Vertex2(vertex);
+                    }
+                    GL.End();
+                }
+            }
         }
 
         public static void Vertex2(GeoCoord geoCoord)
