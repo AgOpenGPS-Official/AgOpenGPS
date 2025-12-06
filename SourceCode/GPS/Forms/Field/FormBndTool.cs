@@ -1,17 +1,14 @@
+using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.DrawLib;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
-using AgOpenGPS.Properties;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AgOpenGPS
 {
@@ -19,6 +16,31 @@ namespace AgOpenGPS
     {
         //access to the main GPS form and all its variables
         private readonly FormGPS mf = null;
+
+        private static readonly ColorRgba boundaryColor = new ColorRgba(0.725f, 0.95f, 0.950f);
+
+        private static readonly ColorRgba newBoundaryStripColor = new ColorRgba(0.90f, 0.25f, 0.10f);
+        private static readonly ColorRgba newBoundaryPointsColor = new ColorRgba(0.90f, 0.25f, 0.910f);
+        private static readonly ColorRgba newBoundaryLoopColor = new ColorRgba(0.82f, 0.835f, 0.5f);
+
+        private static readonly ColorRgba stepSectionColor = new ColorRgba(0.64f, 0.64f, 0.6f);
+
+        private static readonly ColorRgb orange = new ColorRgb(0.90f, 0.5f, 0.25f);
+        private static readonly PointStyle[] pointAStyles = new PointStyle[]
+        {
+            new PointStyle(24, Colors.Black),
+            new PointStyle(16, new ColorRgba(0.950f, 0.75f, 0.50f))
+        };
+        private static readonly PointStyle[] pointBStyles = new PointStyle[]
+        {
+            new PointStyle(24, Colors.Black),
+            new PointStyle(16, new ColorRgba(0.5f, 0.5f, 0.935f))
+        };
+        private static readonly PointStyle[] pointCStyles = new PointStyle[]
+        {
+            new PointStyle(24, Colors.Black),
+            new PointStyle(16, new ColorRgba(0.95f, 0.95f, 0.35f))
+        };
 
         private Point fixPt;
         private vec3 ptA = new vec3();
@@ -1023,97 +1045,56 @@ namespace AgOpenGPS
             if (isStep)
             {
                 //back the camera up
-                GL.Translate(0, 0, -mf.maxFieldDistance * 0.5);
+                GLW.Translate(0, 0, -mf.maxFieldDistance * 0.5);
 
                 //translate to that spot in the world
-                GL.Translate(-secList[currentPoint].easting, -secList[currentPoint].northing, 0);
+                GLW.Translate(-secList[currentPoint].easting, -secList[currentPoint].northing, 0);
             }
             else
             {
                 //back the camera up
-                GL.Translate(0, 0, -mf.maxFieldDistance * zoom);
+                GLW.Translate(0, 0, -mf.maxFieldDistance * zoom);
 
                 //translate to that spot in the world
-                GL.Translate(-mf.fieldCenterX + sX * mf.maxFieldDistance, -mf.fieldCenterY + sY * mf.maxFieldDistance, 0);
+                GLW.Translate(-mf.fieldCenterX + sX * mf.maxFieldDistance, -mf.fieldCenterY + sY * mf.maxFieldDistance, 0);
             }
 
             //draw all the boundaries
 
-            GL.LineWidth(2);
-
-            GL.Color3(0.725f, 0.95f, 0.950f);
 
             if (mf.bnd.bndList.Count > 0)
             {
-                GL.Begin(PrimitiveType.LineLoop);
-                for (int i = 0; i < mf.bnd.bndList[0].fenceLine.Count; i++)
-                {
-                    GL.Vertex3(mf.bnd.bndList[0].fenceLine[i].easting, mf.bnd.bndList[0].fenceLine[i].northing, 0);
-                }
-                GL.End();
+                GLW.SetLineWidth(2.0f);
+                GLW.SetColor(boundaryColor);
+                GeoCoord[] fenceLineArray = GeoRefactorHelper.ToGeoCoordArray(mf.bnd.bndList[0].fenceLine);
+                GLW.DrawLineLoopPrimitive(fenceLineArray);
 
-                GL.PointSize(4);
-                GL.Begin(PrimitiveType.Points);
-                for (int i = 0; i < mf.bnd.bndList[0].fenceLine.Count; i++)
-                {
-                    GL.Vertex3(mf.bnd.bndList[0].fenceLine[i].easting, mf.bnd.bndList[0].fenceLine[i].northing, 0);
-                }
-                GL.End();
+                GLW.SetPointSize(4.0f);
+                GLW.DrawPointsPrimitive(fenceLineArray);
             }
 
             //new boundary being made
             if (bndList.Count > 0)
             {
-                GL.LineWidth(2);
-                GL.Color3(0.90f, 0.25f, 0.10f);
-                GL.Begin(PrimitiveType.LineStrip);
-                for (int i = 0; i < bndList.Count; i++)
-                {
-                    GL.Vertex3(bndList[i].easting, bndList[i].northing, 0);
-                }
-                GL.End();
+                GeoCoord[] boundaryArray = GeoRefactorHelper.ToGeoCoordArray(bndList);
+                GLW.SetLineWidth(2.0f);
+                GLW.SetColor(newBoundaryStripColor);
+                GLW.DrawLineStripPrimitive(boundaryArray);
 
-                GL.PointSize(4);
-                GL.Color3(0.90f, 0.25f, 0.910f);
-                GL.Begin(PrimitiveType.Points);
-                for (int i = 0; i < bndList.Count; i++)
-                {
-                    GL.Vertex3(bndList[i].easting, bndList[i].northing, 0);
-                }
-                GL.End();
+                GLW.SetPointSize(4.0f);
+                GLW.SetColor(newBoundaryPointsColor);
+                GLW.DrawPointsPrimitive(boundaryArray);
 
-
-                GL.Color3(0.82f, 0.835f, 0.5f);
-                GL.Begin(PrimitiveType.LineLoop);
-                for (int j = 0; j < smooList.Count; j++)
-                {
-                    GL.Vertex3(smooList[j].easting, smooList[j].northing, 0);
-                }
-                GL.End();
-
+                GLW.SetColor(newBoundaryLoopColor);
+                GLW.DrawLineLoopPrimitive(GeoRefactorHelper.ToGeoCoordArray(smooList));
             }
-
 
             //the section grid if loaded
             if (secList.Count > 0)
             {
-                GL.PointSize(2);
-                if (isStep)
-                    GL.Color3(0.64f, 0.64f, 0.6);
-                else
-                    GL.Color3(1.0f, 1.0f, 0);
-
-                GL.Begin(PrimitiveType.Points);
-
-                for (int j = 0; j < secList.Count; j++)
-                    GL.Vertex3(secList[j].easting, secList[j].northing, 0);
-                GL.End();
-
-                //GL.PointSize(24);
-                //GL.Color3(0.90f, 0.25f, 0.910f);
-                //GL.Begin(PrimitiveType.Points);
-                //    GL.Vertex3(0,0, 0);
-                //GL.End();
+                GLW.SetPointSize(2.0f);
+                GLW.SetColor(isStep ? stepSectionColor : Colors.Yellow);
+                GLW.DrawPointsPrimitive(GeoRefactorHelper.ToGeoCoordArray(secList));
             }
 
             //draw the line building graphics
@@ -1124,84 +1105,37 @@ namespace AgOpenGPS
                 //draw the actual built lines
                 if (start != 99999 && end != 99999)
                 {
-                    if (isC)
+                    GLW.SetLineWidth(4);
+                    GLW.SetColor(orange);
+                    List<GeoCoord> orangeLineStrip = new List<GeoCoord>
                     {
-                        GL.LineWidth(4);
-                        GL.Color3(0.90f, 0.5f, 0.25f);
-                        GL.Begin(PrimitiveType.LineStrip);
-                        {
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[start].easting, mf.bnd.bndList[0].fenceLine[start].northing, 0);
-                            GL.Vertex3(pint.easting, pint.northing, 0);
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[end].easting, mf.bnd.bndList[0].fenceLine[end].northing, 0);
-                        }
-                        GL.End();
-                    }
-                    else
-                    {
-                        GL.LineWidth(4);
-                        GL.Color3(0.90f, 0.5f, 0.25f);
-                        GL.Begin(PrimitiveType.Lines);
-                        {
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[start].easting, mf.bnd.bndList[0].fenceLine[start].northing, 0);
-                            GL.Vertex3(mf.bnd.bndList[0].fenceLine[end].easting, mf.bnd.bndList[0].fenceLine[end].northing, 0);
-                        }
-                        GL.End();
-
-                    }
+                        mf.bnd.bndList[0].fenceLine[start].ToGeoCoord()
+                    };
+                    if (isC) orangeLineStrip.Add(pint.ToGeoCoord());
+                    orangeLineStrip.Add(mf.bnd.bndList[0].fenceLine[end].ToGeoCoord());
+                    GLW.DrawLineStripPrimitive(orangeLineStrip.ToArray());
                 }
             }
-
             GL.Flush();
             oglSelf.SwapBuffers();
         }
 
         private void DrawABTouchPoints()
         {
-            GL.PointSize(24);
-            GL.Begin(PrimitiveType.Points);
-
-            if (mf.bnd.bndList.Count != 0)
+            if (start != 99999)
             {
-                GL.Color3(0, 0, 0);
-                if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-                if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
-                GL.End();
-
-                GL.PointSize(16);
-                GL.Begin(PrimitiveType.Points);
-
-                GL.Color3(.950f, 0.75f, 0.50f);
-                if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-
-                GL.Color3(0.5f, 0.5f, 0.935f);
-                if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+                GeoCoord coordA = ((mf.bnd.bndList.Count != 0) ? mf.bnd.bndList[bndSelect].fenceLine[start] : ptA).ToGeoCoord();
+                GLW.DrawPointLayered(pointAStyles, coordA);
             }
-            else
+            if (end != 99999)
             {
-                GL.Color3(0, 0, 0);
-                if (start != 99999) GL.Vertex3(ptA.easting, ptA.northing, 0);
-                if (end != 99999) GL.Vertex3(ptB.easting, ptB.northing, 0);
-                GL.End();
-
-                GL.PointSize(16);
-                GL.Begin(PrimitiveType.Points);
-
-                GL.Color3(.950f, 0.75f, 0.50f);
-                if (start != 99999) GL.Vertex3(ptA.easting, ptA.northing, 0);
-
-                GL.Color3(0.5f, 0.5f, 0.935f);
-                if (end != 99999) GL.Vertex3(ptB.easting, ptB.northing, 0);
+                GeoCoord coordB = ((mf.bnd.bndList.Count != 0) ? mf.bnd.bndList[bndSelect].fenceLine[end] : ptB).ToGeoCoord();
+                GLW.DrawPointLayered(pointBStyles, coordB);
             }
             if (isC)
             {
-                GL.Color3(0.95f, 0.95f, 0.35f);
-                GL.Vertex3(pint.easting, pint.northing, 0);
+                GLW.DrawPointLayered(pointCStyles, pint.ToGeoCoord());
             }
-
-            GL.End();
-
-
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)

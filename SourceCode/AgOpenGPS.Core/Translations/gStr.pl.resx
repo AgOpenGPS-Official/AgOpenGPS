@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -148,7 +148,7 @@
     <value>Aktualny</value>
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
-    <value>Utwórz zaawansowane linie tramwajowe</value>
+    <value>Utwórz zaaw. ścieżki technologiczne</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Zgadzam się na warunki i zasady</value>
@@ -172,7 +172,7 @@
     <value>Ukończono</value>
   </data>
   <data name="gsArea" xml:space="preserve">
-    <value>Powierzchnia</value>
+    <value>Areał</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
     <value>Dotknij przycisków po lewej stronie, które chcesz, aby pojawiły się w Menu (po prawej stronie).
@@ -384,10 +384,10 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Forum na:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
-    <value>Display</value>
+    <value>Wyświetlacz</value>
   </data>
   <data name="gsDistance" xml:space="preserve">
-    <value>Odległość</value>
+    <value>Dystans</value>
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Odległość do flagi</value>
@@ -399,7 +399,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Jedź przez</value>
   </data>
   <data name="gsDriving" xml:space="preserve">
-    <value>Prowadzenie</value>
+    <value>Jazda</value>
   </data>
   <data name="gsDualAntennaSetting" xml:space="preserve">
     <value>Ustawienia podwójnej anteny</value>
@@ -513,7 +513,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Z pliku KML</value>
   </data>
   <data name="gsGap" xml:space="preserve">
-    <value>Przerwa</value>
+    <value>Odstęp</value>
   </data>
   <data name="gsGrid" xml:space="preserve">
     <value>Siatka</value>
@@ -525,10 +525,10 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Komunikaty sprzętowe</value>
   </data>
   <data name="gsHeading" xml:space="preserve">
-    <value>Nagłówek</value>
+    <value>Heading</value>
   </data>
   <data name="gsHeadingChart" xml:space="preserve">
-    <value>Wykres Nagłówków</value>
+    <value>Heading wykres</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
     <value>Przesunięcie nagłówka</value>
@@ -549,10 +549,10 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Trzymaj</value>
   </data>
   <data name="gsHydraulicLift" xml:space="preserve">
-    <value>Podnośnik hydr.</value>
+    <value>Podnośnik hydrauliczny</value>
   </data>
   <data name="gsHydraulicLiftConfig" xml:space="preserve">
-    <value>Konfig. podnośnika hydr.</value>
+    <value>Ustawienia podnośnika hydraulicznego</value>
   </data>
   <data name="gsIMUAxis" xml:space="preserve">
     <value>Zamiana osi IMU</value>
@@ -648,7 +648,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Max Limit</value>
   </data>
   <data name="gsMaxSpeed" xml:space="preserve">
-    <value>Max Speed</value>
+    <value>Max Prędkość</value>
   </data>
   <data name="gsMaxSteerAngle" xml:space="preserve">
     <value>Max kąt skrętu</value>
@@ -657,7 +657,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Metry</value>
   </data>
   <data name="gsMinSpeed" xml:space="preserve">
-    <value>Min Speed</value>
+    <value>Min Prędkość</value>
   </data>
   <data name="gsMinToMove" xml:space="preserve">
     <value>Minimum by ruszyć</value>
@@ -726,10 +726,10 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Nic nie usunięto</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
-    <value>Odległość przesunięcia</value>
+    <value>Przyrost przes.</value>
   </data>
   <data name="gsNudgeRefTrack" xml:space="preserve">
-    <value>Przenieś ścieżkę odniesienia</value>
+    <value>Przesuń ścieżkę odniesienia</value>
   </data>
   <data name="gsOff" xml:space="preserve">
     <value>Off</value>
@@ -939,7 +939,7 @@ Kolejność, w jakiej je naciśniesz, będzie kolejnością, w jakiej pojawią s
     <value>Zamknij w:</value>
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
-    <value>Prosty kreator Ścieżek</value>
+    <value>Kreator ścieżek technologicznych</value>
   </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Włącz symulator</value>
@@ -1110,7 +1110,7 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value>Work Switch</value>
   </data>
   <data name="gsWorkWidth" xml:space="preserve">
-    <value>Width</value>
+    <value>Szerokość</value>
   </data>
   <data name="gsWorked" xml:space="preserve">
     <value>Worked</value>
@@ -1132,5 +1132,68 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Wył. nagrywanie ścieżki</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Przycisk autoprowadzenia</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Pobierz pola z AgShare</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Ścieżki</value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>Boczny</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Całkowity</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Prędkościomierz</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Pobierz wszystkie</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Wydajność</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Rozstaw ścieżek tech.:</value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value>Reaktywność prowadzenia</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Pasek naprowadzania</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Wybierz kolor domyślny</value>
+  </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>Całka</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Rozstaw kół</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Wielokąty</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Trwa pobieranie...Proszę czekać</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Wymuś nadpisanie</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Przes. ścieżki:</value>
+  </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Wył. z opóźn.</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Pobierz zaznaczone</value>
   </data>
 </root>

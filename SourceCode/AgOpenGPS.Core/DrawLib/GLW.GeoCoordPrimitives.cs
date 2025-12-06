@@ -18,7 +18,6 @@ namespace AgOpenGPS.Core.DrawLib
         {
             DrawPrimitive(PrimitiveType.Lines, vertices);
         }
-
         public static void DrawLineLoopPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.LineLoop, vertices);
@@ -29,9 +28,25 @@ namespace AgOpenGPS.Core.DrawLib
             DrawPrimitive(PrimitiveType.LineStrip, vertices);
         }
 
+        public static void DrawPointsPrimitive(GeoCoord[] vertices)
+        {
+            DrawPrimitive(PrimitiveType.Points, vertices);
+        }
+
         public static void DrawTriangleFanPrimitive(GeoCoord[] vertices)
         {
             DrawPrimitive(PrimitiveType.TriangleFan, vertices);
+        }
+
+        public static void DrawPointLayered(
+            PointStyle[] pointStyles,
+            GeoCoord coord)
+        {
+            foreach (PointStyle pointStyle in pointStyles)
+            {
+                SetPointStyle(pointStyle);
+                DrawPoint(coord);
+            }
         }
 
         public static void DrawLinesPrimitiveLayered(

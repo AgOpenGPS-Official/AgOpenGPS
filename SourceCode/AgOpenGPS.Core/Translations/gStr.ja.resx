@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -628,5 +628,194 @@
   </data>
   <data name="gsKMH" xml:space="preserve">
     <value>時速</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>キーボード</value>
+  </data>
+  <data name="gsLanguage" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>緯度+経度</value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>横方向</value>
+  </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>少ない</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>ライトバー</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>ラインスムース</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>ライン幅</value>
+  </data>
+  <data name="gsLongtitude" xml:space="preserve">
+    <value>経度</value>
+  </data>
+  <data name="gsLookAheadTiming" xml:space="preserve">
+    <value>先読み時間設定</value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value>先を見据えて：</value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value>低時間</value>
+  </data>
+  <data name="gsMPH" xml:space="preserve">
+    <value>マイル時</value>
+  </data>
+  <data name="gsMachinePort" xml:space="preserve">
+    <value>マシンポート</value>
+  </data>
+  <data name="gsManual" xml:space="preserve">
+    <value>マニュアル</value>
+  </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>マニュアルターン</value>
+  </data>
+  <data name="gsMapForBackground" xml:space="preserve">
+    <value>Bingマップを背景として追加</value>
+  </data>
+  <data name="gsMaxLimit" xml:space="preserve">
+    <value>最大値</value>
+  </data>
+  <data name="gsMaxSpeed" xml:space="preserve">
+    <value>最高速</value>
+  </data>
+  <data name="gsMaxSteerAngle" xml:space="preserve">
+    <value>ステア最大角</value>
+  </data>
+  <data name="gsMeters" xml:space="preserve">
+    <value>メートル</value>
+  </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value>最小速</value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value>稼働最小値</value>
+  </data>
+  <data name="gsMissingABLinesFile" xml:space="preserve">
+    <value>ABライン ファイルが見つかりません</value>
+  </data>
+  <data name="gsMissingBoundaryFile" xml:space="preserve">
+    <value>境界 ファイルが見つかりません</value>
+  </data>
+  <data name="gsMissingContourFile" xml:space="preserve">
+    <value>コンター ファイルが見つかりません</value>
+  </data>
+  <data name="gsMissingFlagsFile" xml:space="preserve">
+    <value>フラグ ファイルが見つかりません</value>
+  </data>
+  <data name="gsMissingSectionFile" xml:space="preserve">
+    <value>セクション ファイルが見つかりません</value>
+  </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>モード</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>さらに</value>
+  </data>
+  <data name="gsMotorDriver" xml:space="preserve">
+    <value>モーター ドライバ タイプ</value>
+  </data>
+  <data name="gsMultiColorSections" xml:space="preserve">
+    <value>マルチカラー</value>
+  </data>
+  <data name="gsN_East" xml:space="preserve">
+    <value>北東</value>
+  </data>
+  <data name="gsN_West" xml:space="preserve">
+    <value>北西</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>デフォルトから新規</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>次のガイダンスライン</value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value>夜間</value>
+  </data>
+  <data name="gsNoABLineActive" xml:space="preserve">
+    <value>ABラインがアクティブではありません</value>
+  </data>
+  <data name="gsNoBoundary" xml:space="preserve">
+    <value>境界なし</value>
+  </data>
+  <data name="gsNoFieldsFound" xml:space="preserve">
+    <value>フィールドが見つかりません</value>
+  </data>
+  <data name="gsNoGuidanceLines" xml:space="preserve">
+    <value>ガイダンスラインが見つかりません</value>
+  </data>
+  <data name="gsNone" xml:space="preserve">
+    <value>無し</value>
+  </data>
+  <data name="gsNorth" xml:space="preserve">
+    <value>北</value>
+  </data>
+  <data name="gsNothingDeleted" xml:space="preserve">
+    <value>何も削除されていません</value>
+  </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>ナッジ：</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>押し出し距離</value>
+  </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>参照トラックの移動</value>
+  </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>オフ</value>
+  </data>
+  <data name="gsOffset" xml:space="preserve">
+    <value>オフセット</value>
+  </data>
+  <data name="gsOffsetFix" xml:space="preserve">
+    <value>オフセット修正</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>オン</value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>オン遅延</value>
+  </data>
+  <data name="gsOnOff" xml:space="preserve">
+    <value>オン/オフ</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>不透明度:</value>
+  </data>
+  <data name="gsOpen" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="gsOuter" xml:space="preserve">
+    <value>外側</value>
+  </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>オーバーラップ:</value>
+  </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>オーバーラップ/間隔</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>上書き</value>
+  </data>
+  <data name="gsOvershootReduction" xml:space="preserve">
+    <value>オーバーシュート低減</value>
+  </data>
+  <data name="gsPasses" xml:space="preserve">
+    <value>パス</value>
   </data>
 </root>
