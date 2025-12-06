@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>線分ABを描画 - 境界線上の2点をクリックして開始</value>
+    <value>線分ABを描画</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>境界線上の2点をクリックして開始</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>ABライン</value>
@@ -662,11 +665,11 @@
   <data name="gsLongtitude" xml:space="preserve">
     <value>経度</value>
   </data>
-  <data name="gsLookAheadTiming" xml:space="preserve">
-    <value>先読み時間設定</value>
-  </data>
   <data name="gsLookAhead" xml:space="preserve">
     <value>先を見据えて：</value>
+  </data>
+  <data name="gsLookAheadTiming" xml:space="preserve">
+    <value>先読み時間設定</value>
   </data>
   <data name="gsLowerTime" xml:space="preserve">
     <value>低時間</value>

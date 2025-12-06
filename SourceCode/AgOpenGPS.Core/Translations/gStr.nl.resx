@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Maak AB - Klik 2 punten om te beginnen</value>
+    <value>Maak AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klik 2 punten om te beginnen</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB-lijn</value>

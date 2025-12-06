@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Nubrėžti AB. Pažymėkite 2 taškus ant ribos, kad pradėti</value>
+    <value>Nubrėžti AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Pažymėkite 2 taškus ant ribos, kad pradėti</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB linija</value>

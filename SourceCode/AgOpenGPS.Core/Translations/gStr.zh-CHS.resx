@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>绘制AB线段 - 在边界线上点击两个点开始</value>
+    <value>绘制AB线段</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>在边界线上点击两个点开始</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB 直线</value>

@@ -50,7 +50,7 @@ namespace AgOpenGPS
         private void FormABDraw_Load(object sender, EventArgs e)
         {
             //translate
-            this.Text = gStr.gsABDraw;
+            Text = $"{gStr.gsABDraw} - {gStr.gsABDrawHint}";
 
             originalLine = mf.trk.idx;
 
