@@ -169,7 +169,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I Agree to the Terms and Conditions.
+        ///   Looks up a localized string similar to Agree.
         /// </summary>
         public static string gsAgree {
             get {
@@ -900,11 +900,11 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discussions at.
+        ///   Looks up a localized string similar to Discourse Forum.
         /// </summary>
-        public static string gsDiscussions {
+        public static string gsDiscourseForum {
             get {
-                return ResourceManager.GetString("gsDiscussions", resourceCulture);
+                return ResourceManager.GetString("gsDiscourseForum", resourceCulture);
             }
         }
         
@@ -3015,24 +3015,6 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terms and Conditions for version.
-        /// </summary>
-        public static string gsTermsConditions {
-            get {
-                return ResourceManager.GetString("gsTermsConditions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to If you distribute copies of this FREE program, whether gratis or for a fee, improved, changed, you must pass on to the recipients the same freedoms that you received as Outlined in the GPLv3 License..
-        /// </summary>
-        public static string gsTermsOne {
-            get {
-                return ResourceManager.GetString("gsTermsOne", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to AgOpenGPS is strictly educational software to learn about guidance systems, GPS sentences, and theoretical application of machine control.
         ///
         ///It is in no way to be used on real equipment in any circumstance. A simulator is provided to allow the student to safely experience machine guidance.
@@ -3041,18 +3023,18 @@ namespace AgOpenGPS.Core.Translations {
         ///
         ///USE AT OWN RISK..
         /// </summary>
-        public static string gsTermsThree {
+        public static string gsTerms {
             get {
-                return ResourceManager.GetString("gsTermsThree", resourceCulture);
+                return ResourceManager.GetString("gsTerms", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must make sure that they, receive or can get the source code.  And you must show them these terms so they know their rights. Don&apos;t steal others work and call it your own..
+        ///   Looks up a localized string similar to Terms and Conditions.
         /// </summary>
-        public static string gsTermsTwo {
+        public static string gsTermsConditions {
             get {
-                return ResourceManager.GetString("gsTermsTwo", resourceCulture);
+                return ResourceManager.GetString("gsTermsConditions", resourceCulture);
             }
         }
         
@@ -3273,6 +3255,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string gsVersion {
+            get {
+                return ResourceManager.GetString("gsVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Was Zero.
         /// </summary>
         public static string gsWasZero {
@@ -3377,6 +3368,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsXTEChart {
             get {
                 return ResourceManager.GetString("gsXTEChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YouTube Tutorials.
+        /// </summary>
+        public static string gsYouTubeTutorials {
+            get {
+                return ResourceManager.GetString("gsYouTubeTutorials", resourceCulture);
             }
         }
         

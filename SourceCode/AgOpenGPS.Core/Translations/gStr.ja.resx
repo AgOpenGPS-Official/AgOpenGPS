@@ -159,9 +159,6 @@
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>AgShareからフィールドをダウンロード</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>利用規約に同意します</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>攻撃性</value>
   </data>
@@ -388,9 +385,6 @@
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>反対</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>議論は以下で行われています</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>表示</value>

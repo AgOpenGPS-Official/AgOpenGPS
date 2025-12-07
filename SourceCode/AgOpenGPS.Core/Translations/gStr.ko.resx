@@ -153,9 +153,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>고급트램라인만들기</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>이용약관에동의합니다</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>공격성</value>
   </data>
@@ -391,9 +388,6 @@
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>동의하지않음</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>토론장소</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>디스플레이</value>
@@ -1085,13 +1079,7 @@
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>켜기. 끄기</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>사용약관</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>이 무료 프로그램의 사본을 무료로 배포하는 경우, GPLv3 라이선스에 명시된 대로 받은 것과 동일하게 전달해야 합니다.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS 안내 시스템은, GPS/RTK 기계 제어의 이론적 응용에 대해 배우기 위한 엄격한 교육용 소프트웨어입니다
 
 농부들이 안전하게 조향보조를 경험할 수 있도록 시뮬레이터가 제공됩니다.
@@ -1100,8 +1088,8 @@
 
 위험을 감수하고 사용하세요.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>소스 코드를 받거나 받을 수 있는지 확인해야 합니다. 그리고 자신의 권리를 알 수 있도록 이 용어들을 보여줘야 합니다.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>사용약관</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>파일가기</value>

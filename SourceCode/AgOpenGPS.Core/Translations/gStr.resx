@@ -160,7 +160,7 @@
     <value>Download Fields From AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
-    <value>I Agree to the Terms and Conditions</value>
+    <value>Agree</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agressiveness</value>
@@ -398,8 +398,8 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsDisagree" xml:space="preserve">
     <value>Disagree</value>
   </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Discussions at</value>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Discourse Forum</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Display</value>
@@ -1103,13 +1103,7 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Pushed On, Release Off</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terms and Conditions for version</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>If you distribute copies of this FREE program, whether gratis or for a fee, improved, changed, you must pass on to the recipients the same freedoms that you received as Outlined in the GPLv3 License.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS is strictly educational software to learn about guidance systems, GPS sentences, and theoretical application of machine control.
 
 It is in no way to be used on real equipment in any circumstance. A simulator is provided to allow the student to safely experience machine guidance.
@@ -1118,8 +1112,8 @@ There are no safety systems in the software and none are implied.
 
 USE AT OWN RISK.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>You must make sure that they, receive or can get the source code.  And you must show them these terms so they know their rights. Don't steal others work and call it your own.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>To File</value>
@@ -1193,6 +1187,9 @@ USE AT OWN RISK.</value>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Vehicle Type</value>
   </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Was Zero</value>
   </data>
@@ -1228,6 +1225,9 @@ USE AT OWN RISK.</value>
   </data>
   <data name="gsXTEChart" xml:space="preserve">
     <value>XTE Chart</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>YouTube Tutorials</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Zero Roll</value>

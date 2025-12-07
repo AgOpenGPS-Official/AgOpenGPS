@@ -405,7 +405,7 @@ namespace AgOpenGPS
 
             if (!Properties.Settings.Default.setDisplay_isTermsAccepted)
             {
-                using (var form = new Form_First(this))
+                using (var form = new FormTermsAndConditions())
                 {
                     if (form.ShowDialog(this) != DialogResult.OK)
                     {

@@ -150,8 +150,9 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Lav avancerede sprøjtespor</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Jeg accepterer regler og vilkår</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="gsAgree" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivitet</value>
@@ -851,10 +852,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Stop Record Pause Af Kant</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Hvis du omdeler kopier af dette FRIE program, uanset om det er gratis eller mod betaling, forbedret, ændret, skal du give modtageren samme friheder som du modtog som det står i GPLv3 licensen.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS er udelukkende undervisnings software, til at lære om autostyrings systemer, GPS meddelelser, og teoretisk tildeling af maskin kontrol.
 
 Det må på ingen måde bruges på rigtige maskiner. En simulator er inkluderet for at tilbyde eleven, sikkert at opleve maskin styring.
@@ -862,9 +860,6 @@ Det må på ingen måde bruges på rigtige maskiner. En simulator er inkluderet 
 Der er ingen sikkerhedssystemer i softwaren, og ingen er underforstået.
 
 ANVENDELSE PÅ EGET RISIKO.</value>
-  </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Du skal sikre dig, at de modtager eller kan få kildekoden.  Og du skal vise dem disse vilkår, så de kender deres rettigheder. Stjæl ikke andres arbejde og kald det dit eget.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Gem fil</value>

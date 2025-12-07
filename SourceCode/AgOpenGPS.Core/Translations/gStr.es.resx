@@ -159,9 +159,6 @@
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>Descargar parcelas desde AgShare</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Estoy de acuerdo con los términos y condiciones</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresividad</value>
   </data>
@@ -397,9 +394,6 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>En desacuerdo</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Discusión en</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Mostrar</value>
@@ -1094,13 +1088,7 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Presiona On, Suelta Off</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Términos y Condiciones para versión</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Si distribuye copias de este programa GRATUITO, ya sea gratis o mediante pago, mejorado o modificado, debe transmitir a los destinatarios las mismas libertades que recibió, tal como se describe en la Licencia GPLv3.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS es un software estrictamente educativo para aprender sobre sistemas de guiado, sentencias GPS y la aplicación teórica del control de máquinas.
 
 No debe utilizarse en equipos reales bajo ninguna circunstancia. Se proporciona un simulador para que el estudiante experimente de forma segura el guiado de máquinas.
@@ -1109,8 +1097,8 @@ El software no incluye sistemas de seguridad, ni se implica ninguno.
 
 USAR BAJO SU PROPIA RESPONSABILIDAD.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Debe asegurarse de que reciban o puedan obtener el código fuente. Y debe mostrarles estos términos para que conozcan sus derechos. No robe el trabajo de otros para hacerlo suyo.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Términos y Condiciones</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Al fichero</value>
@@ -1183,6 +1171,9 @@ USAR BAJO SU PROPIA RESPONSABILIDAD.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Tipo de vehículo</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versión</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Calibrar WAS</value>

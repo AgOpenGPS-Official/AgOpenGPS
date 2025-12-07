@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>创建高级作业轨道线</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>我同意条款和条件</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>强烈</value>
   </data>
@@ -394,9 +391,6 @@
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>不同意</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>讨论</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>显示</value>
@@ -1088,13 +1082,7 @@
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>按下开启，松开关闭</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>版本的条款和条件</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>如果您分发此自由软件（无论无偿或有偿），必须向接收者传递您所获得的相同自由权利，该权利遵循GPLv3许可证的规定。</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS 严格仅限于教学用途，用于学习导航系统、GPS语句及机械控制的理论应用。
 
 严禁在任何情况下将其用于实际设备操作。软件提供模拟器功能，供学习者安全体验机械导航。
@@ -1103,8 +1091,8 @@
 
 使用风险完全自负。</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>您必须确保用户能够获取源代码，同时必须向其明示这些条款以保障其知情权。严禁盗用他人作品并宣称属于自己创作。</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>版本的条款和条件</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>到文件</value>

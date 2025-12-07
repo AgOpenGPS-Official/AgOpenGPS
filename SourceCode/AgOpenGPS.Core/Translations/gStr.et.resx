@@ -150,9 +150,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Loo täiustatud tehnorajad</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Ma nõustun tingimustega</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresiivsus</value>
   </data>
@@ -385,9 +382,6 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Ma ei nõustu tingimustega</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Arutelud aadressil</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Näita</value>
@@ -1064,10 +1058,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Vajuta sisse, vabasta välja</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Versiooni tingimused</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS on rangelt hariduslik tarkvara, mille abil saab õppida juhtimissüsteeme, GPS-lauseid ja masina juhtimise teoreetilisi rakendusi.
 
 Seda ei tohi mingil juhul kasutada päris sõidukitel. Simulaator võimaldab õpilasel masina juhtimist ohutult proovida.
@@ -1075,6 +1066,9 @@ Seda ei tohi mingil juhul kasutada päris sõidukitel. Simulaator võimaldab õp
 Tarkvaras puuduvad ohutussüsteemid.
 
 KASUTA OMAL RISKIL.</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Tingimused</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Failile</value>
@@ -1147,6 +1141,9 @@ KASUTA OMAL RISKIL.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Sõiduki tüüp</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versiooni</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS null</value>

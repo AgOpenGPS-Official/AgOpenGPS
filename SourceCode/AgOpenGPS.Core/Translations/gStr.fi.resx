@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Ajourat (edistynyt)</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Hyväksyn käyttöehdot</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agerssiivisuus</value>
   </data>
@@ -394,9 +391,6 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>En Hyväksy</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Foorumi</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Näytä</value>
@@ -1088,13 +1082,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Lukkiutuva</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Version ehdot</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Jos jaat tämän ILMAISEN ohjelman kopioita, joko ilmaiseksi tai maksua vastaan, parannettuna, muutettuna, sinun on siirrettävä vastaanottajille samat vapaudet, jotka olet saanut GPLv3-lisenssissä kuvatulla tavalla.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS on tiukasti koulutusohjelmisto, jonka avulla voi oppia ohjausjärjestelmistä, GPS-lauseista ja koneenhallinnan teoreettisesta soveltamisesta.
 
 Sitä ei saa missään tapauksessa käyttää todellisissa laitteissa. Mukana on simulaattori, jonka avulla opiskelija voi kokea koneen ohjauksen turvallisesti.
@@ -1103,8 +1091,8 @@ Ohjelmistossa ei ole turvajärjestelmiä.
 
 KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Sinun on varmistettava, että he vastaanottavat tai voivat saada lähdekoodin. Ja sinun on näytettävä heille nämä ehdot, jotta he tietävät oikeutensa. Älä varasta muiden töitä ja kutsu sitä omaksesi.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Ehdot</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Arkistoida</value>
@@ -1177,6 +1165,9 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Kulkuneuvon Tyyppi</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Version</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS nollaus</value>

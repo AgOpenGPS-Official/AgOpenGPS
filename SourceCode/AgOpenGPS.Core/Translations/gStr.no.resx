@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Lag avanserte sprøytespor</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Jeg godtar vilkårene</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivitet</value>
   </data>
@@ -1067,10 +1064,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Trykket på, slipp av</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Hvis du distribuerer kopier av dette GRATIS programmet, enten gratis eller mot betaling, forbedret, endret, må du gi mottakerne de samme frihetene som du mottok i henhold til GPLv3-lisensen.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS er strengt pedagogisk programvare for å lære om styringssystemer, GPS-setninger og teoretisk bruk av maskinstyring.
 
 Det skal på ingen måte brukes på ekte utstyr under noen omstendigheter. En simulator tilbys for å la studenten trygt oppleve maskinstyring.
@@ -1078,9 +1072,6 @@ Det skal på ingen måte brukes på ekte utstyr under noen omstendigheter. En si
 Det er ingen sikkerhetssystemer i programvaren, og ingen er implisert.
 
 BRUK PÅ EGEN RISIKO.</value>
-  </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Du må sørge for at de mottar eller kan få tilgang til kildekoden. Og du må vise dem disse vilkårene slik at de kjenner sine rettigheter. Stjel ikke andres arbeid og kall det ditt eget.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Til fil</value>

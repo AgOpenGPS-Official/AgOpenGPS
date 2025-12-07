@@ -156,9 +156,6 @@
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>AgShare'den Alanları İndirin</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>şartlar ve koşulları kabul ediyorum</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresif</value>
   </data>
@@ -394,9 +391,6 @@ Menüde aşağıdan yukarıya doğru seçtiğiniz sıraya göre görünecektir.<
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Katılmıyorum</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Tartışmalar</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Görüntüle</value>
@@ -1100,13 +1094,7 @@ Menüde aşağıdan yukarıya doğru seçtiğiniz sıraya göre görünecektir.<
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Basıldığında Aç, Bırakıldığında Kapat</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Sürüm için Şartlar ve Koşullar</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Bu ÜCRETSİZ programın kopyalarını, ister ücretsiz, ister ücretli, geliştirilmiş, değiştirilmiş olarak dağıtırsanız, GPLv3 Lisansı'nda belirtilen özgürlüklerin aynısını alıcılara da aktarmalısınız.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS, yönlendirme sistemleri, GPS cümleleri ve makine kontrolünün teorik uygulamaları hakkında bilgi edinmeyi amaçlayan tamamen eğitim amaçlı bir yazılımdır.
 
 Hiçbir koşulda gerçek ekipmanlarda kullanılmamalıdır. Öğrencinin makine yönlendirmesini güvenli bir şekilde deneyimleyebilmesi için bir simülatör sağlanmıştır.
@@ -1115,8 +1103,8 @@ Herhangi bir güvenlik sistemi bulunmamaktadır ve ima edilmemiştir.
 
 KULLANIM RİSKİNİZ KENDİ TARAFINIZCA YAPILMAKTADIR.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Kaynak kodu almalarını veya alabileceklerini garanti altına almalısınız. Ayrıca, haklarını bilmeleri için bu şartları onlara göstermelisiniz. Başkalarının eserlerini çalıp kendi eserinizmiş gibi göstermeyin.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Şartlar ve Koşullar</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Dosyalamak</value>
@@ -1189,6 +1177,9 @@ KULLANIM RİSKİNİZ KENDİ TARAFINIZCA YAPILMAKTADIR.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Araç Tipi</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Sürüm</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Was Sıfır</value>

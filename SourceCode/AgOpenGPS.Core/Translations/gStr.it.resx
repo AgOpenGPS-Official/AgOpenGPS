@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Crazione Avanzata Corsie di Passaggio</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Accetto I Termini e le Condizioni</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivita'</value>
   </data>
@@ -391,9 +388,6 @@ L'ordina sarà dal basso verso l'alto.</value>
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Rifiuto</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Forum</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Schermo</value>
@@ -1073,13 +1067,7 @@ L'ordina sarà dal basso verso l'alto.</value>
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Spingere per attivare, Rilasciare per disattivare</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Termini e Condizioni per la versione</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Se distribusci copie di questo PROGRAMMA GRATUITO, che tu lo faccia gratis o dietro pagamento, migliorato o modificato, devi trasmettere ai destinatari le stesse libertà a te concesse dalla Licenza GPLv3.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS è un software educativo sviluppato per conoscere i sistemi di guida, i messaggi GPS, e l'applicazione teorica del controllo macchine.
 
 Non deve essere mai utilizzato su veicoli e attrezzature reali. Nel software è presente un simulatore che permette di sperimentare in sicurezza la guida autonoma di un veicolo.
@@ -1088,8 +1076,8 @@ Non ci sono sistemi di sicurezza all'interno del software nè espliciti nè impl
 
 UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Devi garantire che loro ricevano o possano ottenere il codice sorgente. E devi mostrargli questi terminidi utilizzo in modo che possano sapere i loro diritti. Non rubare il lavoro degli altri e non dire che è tuo.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Termini e Condizioni</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Al File</value>
@@ -1162,6 +1150,9 @@ UTILIZZATELO A VOSTRO RISCHIO E PERICOLO.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Tipologia di Veicolo</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versione</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Azzeramento Sensore Sterzo</value>

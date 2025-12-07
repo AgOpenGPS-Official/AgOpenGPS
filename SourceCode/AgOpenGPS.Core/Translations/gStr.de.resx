@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Erweitertes Fahrgassenmenü</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Ich stimme den Geschäftsbedingungen zu</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivität</value>
   </data>
@@ -391,9 +388,6 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Ablehnen</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskussionen hier</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Display</value>
@@ -1076,13 +1070,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>rastend</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Nutzungsbedingungen für die Version</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Wenn Sie Kopien dieses KOSTENLOSEN Programms verteilen, sei es gratis oder gegen Gebühr, verbessert oder geändert, müssen Sie den Empfängern dieselben Freiheiten weitergeben, die Sie gemäß der GPLv3-Lizenz erhalten haben.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS ist eine reine Lernsoftware zum Erlernen von Leitsystemen, GPS-Sätzen und der theoretischen Anwendung der Maschinensteuerung.
 
 Es besteht unter keinen Umständen die Möglichkeit, es auf realen Geräten zu verwenden. Damit die Schüler die Maschinenführung auf sichere Weise erleben können, steht ihnen ein Simulator zur Verfügung.
@@ -1091,8 +1079,8 @@ Es sind keine Sicherheitssysteme in der Software vorhanden und auch keine impliz
 
 VERWENDUNG AUF EIGENES RISIKO.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Sie müssen sicherstellen, dass sie den Quellcode erhalten oder bekommen können. Und Sie müssen ihnen diese Bedingungen zeigen, damit sie ihre Rechte kennen. Stehlen Sie nicht die Arbeit anderer und geben Sie sie als Ihre eigene aus.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Nutzungsbedingungen</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>in Datei</value>
@@ -1165,6 +1153,9 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Fahrzeugtyp</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Version</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>LWS Nullen</value>

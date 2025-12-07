@@ -153,9 +153,6 @@
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>Download velden vanaf AgShare</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Ik stem in met de algemene voorwaarden</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agressiviteit</value>
   </data>
@@ -361,9 +358,6 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Afwijzen</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Discussies vindt je hier</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Activeer Knoppen</value>
@@ -1025,13 +1019,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Svenn Pijl</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Algemene Voorwaarden van versie</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Als u kopieën van dit GRATIS programma verspreidt, hetzij gratis of tegen betaling, verbeterd of gewijzigd, moet u aan de ontvangers dezelfde vrijheden doorgeven die u zelf hebt ontvangen, zoals uiteengezet in de GPLv3-licentie.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS is strikt educatieve software om te leren over geleidingssystemen, GPS-zinnen en theoretische toepassingen van machinebesturing.
 
 Het mag in geen geval op echte apparatuur worden gebruikt, in welke omstandigheid dan ook. Er is een simulator beschikbaar om de student veilig machinegeleiding te laten ervaren.
@@ -1040,8 +1028,8 @@ Er zijn geen veiligheidssystemen in de software en er zijn er geen geïmpliceerd
 
 GEBRUIK OP EIGEN RISICO.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Je moet ervoor zorgen dat ze de broncode ontvangen of kunnen krijgen. En je moet ze deze voorwaarden laten zien, zodat ze hun rechten kennen. Steel geen werk van anderen en noem het je eigen werk.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Algemene Voorwaarden</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Naar bestand</value>
@@ -1111,6 +1099,9 @@ GEBRUIK OP EIGEN RISICO.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Voertuig Type</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versie</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>0-stellen Stuurhoeksensor</value>

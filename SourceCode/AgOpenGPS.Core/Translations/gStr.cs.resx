@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Votvoř pokročilé kolejové řádky</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Souhlasím s podmínkami</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresivita</value>
   </data>
@@ -394,9 +391,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Nesouhlasím</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskuse</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Zobrazit</value>
@@ -1088,13 +1082,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>Sepnuto Zap., Uvolněno Vyp</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Podmínky pro verzi</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Pokud šíříte kopie tohoto BEZPLATNÉHO programu, ať už zdarma nebo za poplatek, vylepšené nebo pozměněné, musíte příjemcům předat stejnou svobodu, kterou jste obdrželi jak je uvedeno v licenci GPLv3.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS je přísně vzdělávací software, který se dozví o vedení systémů, GPS cvičení a teoretické aplikaci řízení stroje.
 
 Není to žádný způsob, jak používat na skutečném zařízení v jakékoliv okolnostech. Simulátor je určen k tomu, aby student mohl bezpečně zažít vedení stroje.
@@ -1103,8 +1091,8 @@ V softwaru nejsou k dispozici žádné bezpečnostní systémy.
 
 POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Musíte se ujistit, že obdrží nebo může získat zdrojový kód. A musíte ukázat tyto podmínky. Nekrást práci ostatních a zavolej mu.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Podmínky</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Do souboru</value>
@@ -1177,6 +1165,9 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Typ vozidla</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Verzi</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Byla Nula</value>

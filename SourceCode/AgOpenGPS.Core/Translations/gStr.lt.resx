@@ -156,9 +156,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Sukurti sudėtingas tech. vėžes</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Sutinku su sąlygomis</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresyvumas</value>
   </data>
@@ -388,9 +385,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Nesutikti</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskusijos</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Ekranas</value>
@@ -1052,13 +1046,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsSwitchDescription" xml:space="preserve">
     <value>įjungta/išjungta</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terminai ir sąlygos esamai versijai</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Jei platinate šios NEMOKAMOS programos kopijas, nesvarbu, ar tai būtų nemokama, ar už tam tikrą mokestį, patobulintas, pakeistas, turite perduoti gavėjams tas pačias laisves, kurias gavote kaip nurodyta GPLv3 licencijoje.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS yra griežtai mokomoji programinė įranga, skirta sužinoti apie valdymo sistemas, GPS sakinius ir teorinį mašinos valdymo taikymą.
 
 Jokiu būdu jokiu būdu negalima naudoti tikroje įrangoje. Suteikiamas treniruoklis, kad mokinys galėtų saugiai patirti mašinos valdymą.
@@ -1067,8 +1055,8 @@ Programinėje įrangoje nėra saugos sistemų ir jos nėra numanomos.
 
 NAUDOJIMAS SAVO RIZIKA.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Turite įsitikinti, kad jie gauna arba gali gauti šaltinio kodą. Ir jūs turite parodyti jiems šias sąlygas, kad jie žinotų savo teises. Nevokite kitų darbų ir vadinkite jį savo.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Terminai ir sąlygos esamai</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Į failą</value>
@@ -1141,6 +1129,9 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Technikos tipas</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versijai</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Vairo centras</value>

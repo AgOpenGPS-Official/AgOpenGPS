@@ -138,9 +138,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Создание тех.колеи</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Я согласен с условиями использования</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Агрессивность</value>
   </data>
@@ -326,9 +323,6 @@
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Не согласен</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Форум</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Отображать</value>
@@ -879,13 +873,7 @@
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Стрелка</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Условия и положения для версии</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Если вы распространяете копии этой БЕСПЛАТНОЙ программы бесплатно, за плату, улучшенные, измененные, вы должны передать получателям те же свободы, которые вы получили, как указано в Лицензии GPLv3.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS - это исключительно образовательное программное обеспечение, предназначенное для изучения систем наведения, данных GPS и теоретического применения управления машиной.
 
 Оно ни в коем случае не предназначено для использования на реальном оборудовании, ни при каких обстоятельствах. Для того, чтобы студент мог безопасно управлять машиной, предусмотрен симулятор.
@@ -894,8 +882,8 @@
 
 ИСПОЛЬЗУЙТЕ НА СВОЙ СТРАХ И РИСК.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Вы должны убедиться, что они смогут получить исходный код. И вы должны показать им эти условия, чтобы они знали свои права. Не воруйте чужую работу и не называйте ее своей.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Условия и положения</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>В файл</value>
@@ -947,6 +935,9 @@
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
     <value>Тип транспорта</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>версии</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Вебкамера</value>
