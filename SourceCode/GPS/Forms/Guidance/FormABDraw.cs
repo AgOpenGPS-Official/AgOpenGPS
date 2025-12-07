@@ -50,7 +50,7 @@ namespace AgOpenGPS
         private void FormABDraw_Load(object sender, EventArgs e)
         {
             //translate
-            this.Text = gStr.gsABDraw;
+            Text = $"{gStr.gsABDraw} - {gStr.gsABDrawHint}";
 
             originalLine = mf.trk.idx;
 
@@ -403,8 +403,8 @@ namespace AgOpenGPS
                     mf.curve.desList.Add(pt3);
 
                     //make sure point distance isn't too big 
-                    mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
-                    mf.curve.CalculateHeadings(ref mf.curve.desList);
+                    CABCurve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
+                    CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                     //create a name
                     gTemp[indx].name = "Boundary Curve";
@@ -490,8 +490,8 @@ namespace AgOpenGPS
             if (cnt > 3)
             {
                 //make sure point distance isn't too big 
-                mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 //calculate average heading of line
                 double x = 0, y = 0;
@@ -509,7 +509,7 @@ namespace AgOpenGPS
                 //build the tail extensions
                 mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                 //mf.curve.SmoothAB(2);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 //array number is 1 less since it starts at zero
                 indx = gTemp.Count - 1;

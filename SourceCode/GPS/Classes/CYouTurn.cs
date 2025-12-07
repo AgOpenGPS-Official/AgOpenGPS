@@ -148,9 +148,20 @@ namespace AgOpenGPS
         //Finds the point where an AB Curve crosses the turn line
         public bool BuildCurveDubinsYouTurn()
         {
-            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
+            //if mode is skip workedTracks -> mark current track as worked if sections were on, then find next
             if (skipMode == SkipMode.IgnoreWorkedTracks)
+            {
+                // Mark the current track as worked only if sections were actually on
+                if (mf.trk.idx >= 0 && mf.trk.idx < mf.trk.gArr.Count)
+                {
+                    if (mf.autoBtnState == btnStates.Auto || mf.manualBtnState == btnStates.On)
+                    {
+                        mf.trk.gArr[mf.trk.idx].workedTracks.Add(mf.curve.howManyPathsAway);
+                    }
+                }
+
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, false);
+            }
 
             //TODO: is calculated many taimes after the priveous turn is complete
             //grab the vehicle widths and offsets
@@ -182,9 +193,20 @@ namespace AgOpenGPS
 
         public bool BuildABLineDubinsYouTurn()
         {
-            //if mode is skip workedTracks -> next Track is an already worked track, find the next not worked track and use it.
+            //if mode is skip workedTracks -> mark current track as worked if sections were on, then find next
             if (skipMode == SkipMode.IgnoreWorkedTracks)
+            {
+                // Mark the current track as worked only if sections were actually on
+                if (mf.trk.idx >= 0 && mf.trk.idx < mf.trk.gArr.Count)
+                {
+                    if (mf.autoBtnState == btnStates.Auto || mf.manualBtnState == btnStates.On)
+                    {
+                        mf.trk.gArr[mf.trk.idx].workedTracks.Add(mf.ABLine.howManyPathsAway);
+                    }
+                }
+
                 rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, true);
+            }
 
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth
                 + (isTurnLeft ? -mf.tool.offset * 2.0 : mf.tool.offset * 2.0);

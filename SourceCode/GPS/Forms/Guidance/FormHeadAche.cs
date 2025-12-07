@@ -1,5 +1,6 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using OpenTK;
@@ -344,7 +345,7 @@ namespace AgOpenGPS
                     }
 
                     //who knows which way it actually goes
-                    mf.curve.CalculateHeadings(ref mf.hdl.tracksArr[mf.hdl.idx].trackPts);
+                    CABCurve.CalculateHeadings(ref mf.hdl.tracksArr[mf.hdl.idx].trackPts);
 
                     int ptCnt = mf.hdl.tracksArr[mf.hdl.idx].trackPts.Count - 1;
 
@@ -758,20 +759,12 @@ namespace AgOpenGPS
 
                 for (int i = 0; i < mf.hdl.tracksArr[lineNum].trackPts.Count - 2; i++)
                 {
+                    GeoLineSegment headPathSegment = mf.hdl.tracksArr[lineNum].GetHeadPathSegment(i);
                     for (int k = 0; k < mf.hdl.tracksArr[nextLine].trackPts.Count - 2; k++)
                     {
-                        int res = GetLineIntersection(
-                        mf.hdl.tracksArr[lineNum].trackPts[i].easting,
-                        mf.hdl.tracksArr[lineNum].trackPts[i].northing,
-                        mf.hdl.tracksArr[lineNum].trackPts[i + 1].easting,
-                        mf.hdl.tracksArr[lineNum].trackPts[i + 1].northing,
-
-                        mf.hdl.tracksArr[nextLine].trackPts[k].easting,
-                        mf.hdl.tracksArr[nextLine].trackPts[k].northing,
-                        mf.hdl.tracksArr[nextLine].trackPts[k + 1].easting,
-                        mf.hdl.tracksArr[nextLine].trackPts[k + 1].northing,
-                        ref iE, ref iN);
-                        if (res == 1)
+                        GeoLineSegment otherSegment = mf.hdl.tracksArr[nextLine].GetHeadPathSegment(k);
+                        GeoCoord? intersectionPoint = headPathSegment.IntersectionPoint(otherSegment);
+                        if (intersectionPoint.HasValue)
                         {
                             if (isStart == 0) i++;
                             crossings.Add(i);
@@ -956,35 +949,6 @@ namespace AgOpenGPS
         private void cboxIsZoom_CheckedChanged(object sender, EventArgs e)
         {
             zoomToggle = false;
-        }
-
-        public int GetLineIntersection(double p0x, double p0y, double p1x, double p1y,
-        double p2x, double p2y, double p3x, double p3y, ref double iEast, ref double iNorth)
-        {
-            double s1x, s1y, s2x, s2y;
-            s1x = p1x - p0x;
-            s1y = p1y - p0y;
-
-            s2x = p3x - p2x;
-            s2y = p3y - p2y;
-
-            double s, t;
-            s = (-s1y * (p0x - p2x) + s1x * (p0y - p2y)) / (-s2x * s1y + s1x * s2y);
-
-            if (s >= 0 && s <= 1)
-            {
-                //check oher side
-                t = (s2x * (p0y - p2y) - s2y * (p0x - p2x)) / (-s2x * s1y + s1x * s2y);
-                if (t >= 0 && t <= 1)
-                {
-                    // Collision detected
-                    iEast = p0x + (t * s1x);
-                    iNorth = p0y + (t * s1y);
-                    return 1;
-                }
-            }
-
-            return 0; // No collision
         }
 
         private void oglSelf_Load(object sender, EventArgs e)

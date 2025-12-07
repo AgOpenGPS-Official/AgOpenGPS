@@ -33,9 +33,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblArea = new System.Windows.Forms.Label();
             this.lblMetersInches = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.cboxIsRecBoundaryWhenSectionOn = new System.Windows.Forms.CheckBox();
             this.btnAntennaTool = new System.Windows.Forms.Button();
             this.btnAddPoint = new System.Windows.Forms.Button();
@@ -92,45 +89,6 @@
             this.lblMetersInches.TabIndex = 151;
             this.lblMetersInches.Text = "cm";
             this.lblMetersInches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(161, 270);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 23);
-            this.label3.TabIndex = 152;
-            this.label3.Text = "B";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Location = new System.Drawing.Point(161, 155);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(24, 23);
-            this.label4.TabIndex = 153;
-            this.label4.Text = "D";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(161, 389);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(24, 23);
-            this.label5.TabIndex = 154;
-            this.label5.Text = "R";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cboxIsRecBoundaryWhenSectionOn
             // 
@@ -315,9 +273,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cboxIsRecBoundaryWhenSectionOn);
             this.Controls.Add(this.btnAntennaTool);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnAddPoint);
             this.Controls.Add(this.btnLeftRight);
             this.Controls.Add(this.btnPausePlay);
@@ -360,9 +315,6 @@
         private NudlessNumericUpDown nudOffset;
         private System.Windows.Forms.Button btnLeftRight;
         private System.Windows.Forms.Label lblMetersInches;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnAntennaTool;
         private System.Windows.Forms.CheckBox cboxIsRecBoundaryWhenSectionOn;
         private System.Windows.Forms.Label lblPoints;

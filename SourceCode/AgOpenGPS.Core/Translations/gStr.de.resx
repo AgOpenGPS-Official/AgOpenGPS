@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Erstellen einer AB-Linie - Klicken Sie auf 2 Punkte auf der Grenze, um zu beginnen</value>
+    <value>Erstellen einer AB-Linie</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klicken Sie auf 2 Punkte auf der Grenze, um zu beginnen</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>A-B Linie</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Über...</value>
+    <value>Über</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Geometrieversatz</value>
@@ -219,7 +222,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Hintergrund</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Basierend auf Feld:</value>
+    <value>Basierend auf Feld</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Unteres Menü</value>
@@ -311,6 +314,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
     <value>Kein gültiger Pfad</value>
   </data>
+  <data name="gsCountsPerDegree" xml:space="preserve">
+    <value>Zählungen pro Grad</value>
+  </data>
   <data name="gsCoverage" xml:space="preserve">
     <value>% Deckung</value>
   </data>
@@ -387,7 +393,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Ablehnen</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskussionen hier:</value>
+    <value>Diskussionen hier</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Display</value>
@@ -397,6 +403,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Entfernung zur Flagge</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Herunterladen... Bitte warten</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Nahegelegende Felder</value>
@@ -459,7 +468,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Schließen</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Schließt in:</value>
+    <value>Schließt in</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Leitlinien</value>
@@ -512,6 +521,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   <data name="gsForNow" xml:space="preserve">
     <value>Für jetzt</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Überschreiben erzwingen</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Flaggen</value>
   </data>
@@ -523,6 +535,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Lücke</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Minimaler GPS-Schritt</value>
   </data>
   <data name="gsGrid" xml:space="preserve">
     <value>Raster</value>
@@ -564,7 +579,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Falsche Richtung? Fahrzeug antippen</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Kein Bild:</value>
+    <value>Kein Bild</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fusion</value>
@@ -605,6 +620,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   <data name="gsLanguage" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>Breitengrad+Längengrad</value>
+  </data>
   <data name="gsLateral" xml:space="preserve">
     <value>Lateral</value>
   </data>
@@ -617,6 +635,9 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
   <data name="gsLess" xml:space="preserve">
     <value>Weniger</value>
   </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Lichtleiste</value>
+  </data>
   <data name="gsLineSmooth" xml:space="preserve">
     <value>Linienglättung</value>
   </data>
@@ -627,7 +648,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Longtitude</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Look Ahead:</value>
+    <value>Look Ahead</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Ein-/Aus-Zeitkonfiguration</value>
@@ -729,7 +750,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Es wurde nichts gelöscht</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nudge:</value>
+    <value>Nudge</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nudge Abstand</value>
@@ -756,7 +777,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Ein / Aus</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Deckkraft:</value>
+    <value>Deckkraft</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Öffnen</value>
@@ -765,7 +786,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Äußere</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Überlappung:</value>
+    <value>Überlappung</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Überlappung / Lücke</value>
@@ -798,7 +819,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Bitte A-B Linie eingeben</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Bitte warten...</value>
+    <value>Bitte warten</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -909,10 +930,10 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Bis zum nächsten Mal!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Feld wird gespeichert..</value>
+    <value>Feld wird gespeichert</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Feldparameter werden gespeichert...</value>
+    <value>Feldparameter werden gespeichert</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Feldparameter gespeichert.</value>
@@ -921,10 +942,10 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Feld lokal gespeichert.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Herunterfahren wird abgeschlossen..</value>
+    <value>Herunterfahren wird abgeschlossen</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Einstellungen werden gespeichert...</value>
+    <value>Einstellungen werden gespeichert</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Einstellungen gespeichert.</value>
@@ -936,7 +957,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Hochladen fehlgeschlagen.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Hochladen zu AgShare...</value>
+    <value>Hochladen zu AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Bildschirmtasten</value>
@@ -948,7 +969,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Abschnitts Linien</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Reihen:</value>
+    <value>Reihen</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Auswahl Tasten</value>
@@ -972,7 +993,7 @@ Die Reihenfolge, in der Sie sie drücken, entspricht der Reihenfolge, in der sie
     <value>Herunterfahren</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Herunterfahren in:</value>
+    <value>Herunterfahren in</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Seitenzug</value>
@@ -1063,7 +1084,7 @@ Schalter - rastend</value>
     <value>Grenze aufzeichnen, pausieren, stoppen</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Nutzungsbedingungen für die Version: </value>
+    <value>Nutzungsbedingungen für die Version</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Wenn Sie Kopien dieses KOSTENLOSEN Programms verteilen, sei es gratis oder gegen Gebühr, verbessert oder geändert, müssen Sie den Empfängern dieselben Freiheiten weitergeben, die Sie gemäß der GPLv3-Lizenz erhalten haben.</value>
@@ -1111,7 +1132,7 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
     <value>Fahrgassen</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Fahrgassenbreite:</value>
+    <value>Fahrgassenbreite</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>A-B Kurve einschalten</value>
@@ -1127,9 +1148,6 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   </data>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Drehmelder</value>
-  </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Einheiten:</value>
   </data>
   <data name="gsUnits" xml:space="preserve">
     <value>Einheiten</value>
@@ -1162,7 +1180,7 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
     <value>Glättungsradius auf 3-4x einstellen</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Fahrzeugtyp:</value>
+    <value>Fahrzeugtyp</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>LWS Nullen</value>
@@ -1174,10 +1192,10 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
     <value>Westen</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Radstand:</value>
+    <value>Radstand</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Breite:</value>
+    <value>Breite</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Mindestens ein weiteres Fester ist noch geöffnet</value>
@@ -1215,5 +1233,4 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

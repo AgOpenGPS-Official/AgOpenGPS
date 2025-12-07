@@ -30,8 +30,8 @@ namespace AgOpenGPS
             labelTermsOne.Text = gStr.gsTermsOne;
             labelTerms2.Text = gStr.gsTermsTwo;
             labelTerms3.Text = gStr.gsTermsThree;
-            labelTermsAndVersion.Text = gStr.gsTermsConditions + Program.SemVer;
-            labelDiscussionsAt.Text = gStr.gsDiscussions;
+            labelTermsAndVersion.Text = $"{gStr.gsTermsConditions}: {Program.SemVer}";
+            labelDiscussionsAt.Text = gStr.gsDiscussions + ":";
             labelCheckForUpdates.Text = gStr.gsCheckForUpdates;
 
 

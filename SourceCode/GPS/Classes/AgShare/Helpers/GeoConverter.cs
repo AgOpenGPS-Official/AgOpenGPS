@@ -41,13 +41,6 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
             return new Vec2(easting, northing);
         }
 
-        // Calculate heading from two local coordinates (in radians, 0-2π)
-        public static double HeadingFromPoints(Vec2 a, Vec2 b)
-        {
-            double angle = Math.Atan2(b.Easting - a.Easting, b.Northing - a.Northing);
-            return (angle + 2 * Math.PI) % (2 * Math.PI);
-        }
-
         private static double DegToRad(double deg) => deg * Math.PI / 180.0;
     }
 
@@ -63,30 +56,6 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
             Northing = n;
         }
     }
-    public static class BoundaryHelper
-    {
-        /// <summary>
-        /// Calculate heading for each boundary point based on the direction to the next point (last → first is closed loop)
-        /// </summary>
-        public static List<LocalPoint> WithHeadings(List<LocalPoint> points)
-        {
-            var result = new List<LocalPoint>();
-            if (points == null || points.Count < 2) return result;
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                var curr = points[i];
-                var next = points[(i + 1) % points.Count]; // closed ring
-                double dx = next.Easting - curr.Easting;
-                double dy = next.Northing - curr.Northing;
-                double heading = Math.Atan2(dx, dy);
-                result.Add(new LocalPoint(curr.Easting, curr.Northing, heading));
-            }
-
-            return result;
-        }
-    }
-
     public static class CurveHelper
     {
         /// <summary>

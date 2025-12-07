@@ -27,6 +27,9 @@ namespace AgOpenGPS.Core.Models
         public double MaxNorthing => _maxCoord.Northing;
         public double MinEasting => _minCoord.Easting;
         public double MaxEasting => _maxCoord.Easting;
+        public GeoCoord MinCoord => _minCoord;
+        public GeoCoord MaxCoord => _maxCoord;
+        public GeoCoord CenterCoord => _minCoord.Average(_maxCoord);
 
         public void Include(GeoCoord geoCoord)
         {
@@ -40,6 +43,7 @@ namespace AgOpenGPS.Core.Models
                 _minCoord.Northing <= testCoord.Northing && testCoord.Northing <= _maxCoord.Northing &&
                 _minCoord.Easting <= testCoord.Easting && testCoord.Easting <= _maxCoord.Easting;
         }
+
     }
 
 }

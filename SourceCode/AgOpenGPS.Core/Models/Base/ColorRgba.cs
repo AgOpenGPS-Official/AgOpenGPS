@@ -4,7 +4,7 @@ namespace AgOpenGPS.Core.Models
 {
     public struct ColorRgba
     {
-        public ColorRgba(byte red, byte green, byte blue, byte alpha)
+        public ColorRgba(byte red, byte green, byte blue, byte alpha = 255)
         {
             Red = red;
             Green = green;
@@ -12,25 +12,25 @@ namespace AgOpenGPS.Core.Models
             Alpha = alpha;
         }
 
-        public ColorRgba(ColorRgb colorRgb, float alpha)
+        public ColorRgba(ColorRgb colorRgb, float alpha = 1.0f)
         {
             if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
             Red = colorRgb.Red;
             Green = colorRgb.Green;
             Blue = colorRgb.Blue;
-            Alpha = ColorRgba.FloatToByte(alpha);
+            Alpha = FloatToByte(alpha);
         }
 
-        public ColorRgba(float red, float green, float blue, float alpha)
+        public ColorRgba(float red, float green, float blue, float alpha = 1.0f)
         {
             if (red < 0.0f || 1.0f < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
             if (green < 0.0f || 1.0f < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
             if (blue < 0.0f || 1.0f < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
             if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
-            Red = ColorRgba.FloatToByte(red);
-            Green = ColorRgba.FloatToByte(green);
-            Blue = ColorRgba.FloatToByte(blue);
-            Alpha = ColorRgba.FloatToByte(alpha);
+            Red = FloatToByte(red);
+            Green = FloatToByte(green);
+            Blue = FloatToByte(blue);
+            Alpha = FloatToByte(alpha);
         }
 
         public byte Red { get; }

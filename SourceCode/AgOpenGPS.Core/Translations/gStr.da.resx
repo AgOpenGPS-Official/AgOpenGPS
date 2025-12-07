@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,13 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Tegn AB - Klik 2 punkter på grænsen for at begynde</value>
+    <value>Tegn AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klik 2 punkter på grænsen for at begynde</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linje</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Om…</value>
+    <value>Om</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -192,7 +195,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Baggrund</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Baseret På Mark:</value>
+    <value>Baseret På Mark</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Bund Menu</value>
@@ -510,7 +513,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Forkert retning? Tryk på Køretøj</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Intet billede:</value>
+    <value>Intet billede</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Tommer</value>
@@ -633,7 +636,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Intet Slettet</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nudge:</value>
+    <value>Nudge</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nudge afstand</value>
@@ -645,7 +648,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Offset Fix</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Gennemsigtighed:</value>
+    <value>Gennemsigtighed</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Åben</value>
@@ -666,7 +669,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Vælg AB Linie</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Vent venligst...</value>
+    <value>Vent venligst</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -738,10 +741,10 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Vi ses næste gang!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Gemmer felt..</value>
+    <value>Gemmer felt</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Gemmer feltparametre...</value>
+    <value>Gemmer feltparametre</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Feltparametre gemt.</value>
@@ -750,10 +753,10 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Felt gemt lokalt.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Afslutning af lukning..</value>
+    <value>Afslutning af lukning</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Gemmer indstillinger...</value>
+    <value>Gemmer indstillinger</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Indstillinger gemt.</value>
@@ -765,7 +768,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Upload mislykkedes.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Upload til AgShare...</value>
+    <value>Upload til AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Skærm knapper</value>
@@ -777,7 +780,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Sektion linjer</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sektioner:</value>
+    <value>Sektioner</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Vælg knapper</value>
@@ -897,7 +900,7 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Plejespor</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Plejespor bredde:</value>
+    <value>Plejespor bredde</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Tænd AB Kurve</value>
@@ -912,7 +915,7 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Sæt forlængelseslinjer til 2 eller 3 * radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Køretøj Type:</value>
+    <value>Køretøj Type</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Kamera</value>
@@ -921,10 +924,10 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Vest</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akselafstand:</value>
+    <value>Akselafstand</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Bredde:</value>
+    <value>Bredde</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows stadig åben</value>
@@ -938,5 +941,4 @@ ANVENDELSE PÅ EGET RISIKO.</value>
   <data name="gsWorked" xml:space="preserve">
     <value>Bearbejdet</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

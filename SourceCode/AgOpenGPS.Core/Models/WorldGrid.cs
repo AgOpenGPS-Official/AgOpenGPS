@@ -94,7 +94,7 @@ namespace AgOpenGPS.Core
             _bingMapVisual?.Draw();
         }
 
-        public void DrawWorldGrid(ColorRgb worldGridColor)
+        public void DrawWorldGrid(ColorRgba worldGridColor)
         {
             GLW.RotateZ(-gridRotation);
 

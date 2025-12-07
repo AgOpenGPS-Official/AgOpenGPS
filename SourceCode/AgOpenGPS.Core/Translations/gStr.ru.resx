@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Линия АВ - Поставьте 2 точки на границе поля</value>
+    <value>Линия АВ</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Поставьте 2 точки на границе поля</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Линия АВ</value>
@@ -127,7 +130,7 @@
     <value>Меню</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>О программе...</value>
+    <value>О программе</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Действие было отменено</value>
@@ -172,7 +175,7 @@
     <value>Фон</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Основа поля:</value>
+    <value>Основа поля</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Нижнее меню</value>
@@ -331,7 +334,7 @@
     <value>Не согласен</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Форум:</value>
+    <value>Форум</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Отображать</value>
@@ -397,7 +400,7 @@
     <value>Выход</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Выход в Windows:</value>
+    <value>Выход в Windows</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Дополнительные линии</value>
@@ -496,7 +499,7 @@
     <value>Если направление неправильное, коснитесь транспорта</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Без изображения:</value>
+    <value>Без изображения</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Выравнивание</value>
@@ -622,7 +625,7 @@
     <value>Ничего не удалено</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Сдвиг линии:</value>
+    <value>Сдвиг линии</value>
   </data>
   <data name="gsNudgeRefTrack" xml:space="preserve">
     <value>Сдвиг опорной линии</value>
@@ -640,7 +643,7 @@
     <value>Вкл.</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Прозрачность:</value>
+    <value>Прозрачность</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Открыть</value>
@@ -673,7 +676,7 @@
     <value>Пожалуйста, введите линию АВ</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Пожалуйста ждите...</value>
+    <value>Пожалуйста ждите</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Точка</value>
@@ -763,10 +766,10 @@
     <value>Увидимся в следующий раз!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Сохранение поля..</value>
+    <value>Сохранение поля</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Сохранение параметров поля...</value>
+    <value>Сохранение параметров поля</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Параметры поля сохранены.</value>
@@ -775,10 +778,10 @@
     <value>Поле сохранено локально.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Завершение завершения..</value>
+    <value>Завершение завершения</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Сохранение настроек...</value>
+    <value>Сохранение настроек</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Настройки сохранены.</value>
@@ -790,7 +793,7 @@
     <value>Ошибка загрузки.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Загрузка на AgShare...</value>
+    <value>Загрузка на AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Кнопки на экране</value>
@@ -802,7 +805,7 @@
     <value>Разделительные линии прохода</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Секции:</value>
+    <value>Секции</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Выберите кнопки</value>
@@ -826,7 +829,7 @@
     <value>Выключение</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Выключение:</value>
+    <value>Выключение</value>
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
     <value>Создание тех.колеи</value>
@@ -892,7 +895,7 @@
     <value>Стрелка</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Условия и положения для версии: </value>
+    <value>Условия и положения для версии</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Если вы распространяете копии этой БЕСПЛАТНОЙ программы бесплатно, за плату, улучшенные, измененные, вы должны передать получателям те же свободы, которые вы получили, как указано в Лицензии GPLv3.</value>
@@ -931,7 +934,7 @@
     <value>Технологическая колея</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Ширина тех.колеи:</value>
+    <value>Ширина тех.колеи</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Включите кривую AB</value>
@@ -958,7 +961,7 @@
     <value>Мин. сглаживание 3-4 радиуса</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Тип транспорта:</value>
+    <value>Тип транспорта</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Вебкамера</value>
@@ -967,10 +970,10 @@
     <value>Запад</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Колесная база:</value>
+    <value>Колесная база</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Ширина:</value>
+    <value>Ширина</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Окна еще открыты</value>
@@ -1002,5 +1005,4 @@
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

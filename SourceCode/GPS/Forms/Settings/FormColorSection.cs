@@ -29,7 +29,7 @@ namespace AgOpenGPS
             //Language keys
             this.Text = gStr.gsSectionColorsSet;
             groupBoxSelectPreset.Text = gStr.gsSelectPreset;
-            labelSectionColor.Text = gStr.gsSections + " " + gStr.gsColors;
+            labelSectionColor.Text = $"{gStr.gsSections}: {gStr.gsColors}";
             chkUse.Text = gStr.gsEditColor;
             cboxIsMulti.Text = gStr.gsMultiColorSections;
 

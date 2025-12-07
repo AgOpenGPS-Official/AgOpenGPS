@@ -41,7 +41,7 @@ namespace AgOpenGPS
             btnBuildFields.Enabled = false;
             labelFieldname.Text = gStr.gsEditFieldName;
             this.Text = gStr.gsCreateNewFromIsoXML;
-            labelField.Text = gStr.gsBasedOnField;
+            labelField.Text = gStr.gsBasedOnField + ":";
             tree.Nodes?.Clear();
 
             OpenFileDialog ofd = new OpenFileDialog

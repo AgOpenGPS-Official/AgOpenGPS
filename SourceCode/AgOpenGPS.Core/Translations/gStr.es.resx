@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Dibujar AB - Seleccione 2 puntos en el Lindero para empezar</value>
+    <value>Dibujar AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Seleccione 2 puntos en el Lindero para empezar</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Línea AB</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Acerca de...</value>
+    <value>Acerca de</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -150,11 +153,17 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Crea Línea de Carril avanzada</value>
   </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Descargar parcelas desde AgShare</value>
+  </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Estoy de acuerdo con los términos y condiciones</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresividad</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Ver Configuraciones</value>
   </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alfa</value>
@@ -206,8 +215,20 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsAutoSteerPort" xml:space="preserve">
     <value>Puerto de Autoguiado</value>
   </data>
+  <data name="gsAutoSwitchDualFix" xml:space="preserve">
+    <value>Auto Dual &lt;&gt; Fijo</value>
+  </data>
+  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
+    <value>Velocidad de cambio</value>
+  </data>
+  <data name="gsBackground" xml:space="preserve">
+    <value>Fondo</value>
+  </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Basado en parcela:</value>
+    <value>Basado en parcela</value>
+  </data>
+  <data name="gsBottomMenu" xml:space="preserve">
+    <value>Menu Inferior</value>
   </data>
   <data name="gsBoundary" xml:space="preserve">
     <value>Lindero</value>
@@ -317,11 +338,29 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsCurrent" xml:space="preserve">
     <value>Actual</value>
   </data>
+  <data name="gsCurrentTurnSensor" xml:space="preserve">
+    <value>Sensor de Corriente para Giro</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Curva</value>
+  </data>
   <data name="gsCurveLineFileIsCorrupt" xml:space="preserve">
     <value>Fichero de línea curva corrupto</value>
   </data>
   <data name="gsCurveNotOn" xml:space="preserve">
     <value>Curva no activada</value>
+  </data>
+  <data name="gsDay" xml:space="preserve">
+    <value>Día</value>
+  </data>
+  <data name="gsDeadzone" xml:space="preserve">
+    <value>---Zona Muerta---</value>
+  </data>
+  <data name="gsDefault" xml:space="preserve">
+    <value>Por defecto</value>
+  </data>
+  <data name="gsDelete" xml:space="preserve">
+    <value>Borrar</value>
   </data>
   <data name="gsDeleteAllContoursAndSections" xml:space="preserve">
     <value>Borra todas las secciones y contornos</value>
@@ -329,11 +368,26 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Borrar Area seleccionada</value>
   </data>
+  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
+    <value>Esta acción eliminará todos los linderos. ¿Desea continuar?</value>
+  </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Borrar rutas de Contorno</value>
   </data>
+  <data name="gsDeleteField" xml:space="preserve">
+    <value>Borrar Parcela</value>
+  </data>
   <data name="gsDeleteForSure" xml:space="preserve">
     <value>¿Seguro que quiere borrar?</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Diámetro</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Directo</value>
+  </data>
+  <data name="gsDirectionMarkers" xml:space="preserve">
+    <value>Marcadores de Dirección</value>
   </data>
   <data name="gsDirectories" xml:space="preserve">
     <value>Carpetas</value>
@@ -341,8 +395,26 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsDirectoryExists" xml:space="preserve">
     <value>Ya existe la carpeta</value>
   </data>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>En desacuerdo</value>
+  </data>
+  <data name="gsDiscussions" xml:space="preserve">
+    <value>Discusión en</value>
+  </data>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
   <data name="gsDistance" xml:space="preserve">
     <value>Distancia</value>
+  </data>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Distancia a Bandera</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Todo</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Descargando...Espere por favor</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Conducir en</value>
@@ -353,14 +425,29 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsDriving" xml:space="preserve">
     <value>Conducir</value>
   </data>
+  <data name="gsDualAntennaSetting" xml:space="preserve">
+    <value>Configuración de Antena Dual</value>
+  </data>
+  <data name="gsDualpositionAntennaRight" xml:space="preserve">
+    <value>Antena Dual está en el lado Derecho</value>
+  </data>
   <data name="gsEast" xml:space="preserve">
     <value>Este</value>
   </data>
   <data name="gsEditABLine" xml:space="preserve">
     <value>Editar linea AB</value>
   </data>
+  <data name="gsEditColor" xml:space="preserve">
+    <value>Editar Color</value>
+  </data>
   <data name="gsEditFieldName" xml:space="preserve">
     <value>Editar el nombre de la parcela</value>
+  </data>
+  <data name="gsElevationlog" xml:space="preserve">
+    <value>Registro de Elevación</value>
+  </data>
+  <data name="gsEnable" xml:space="preserve">
+    <value>Habilitar</value>
   </data>
   <data name="gsEncoderCounts" xml:space="preserve">
     <value>Recuentos</value>
@@ -371,6 +458,12 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsEnterFieldName" xml:space="preserve">
     <value>Introducir nombre de Parcela</value>
   </data>
+  <data name="gsEnterName" xml:space="preserve">
+    <value>Digitar Nombre</value>
+  </data>
+  <data name="gsEnterRecordName" xml:space="preserve">
+    <value>Digite el nombre de grabación</value>
+  </data>
   <data name="gsEnterSimCoords" xml:space="preserve">
     <value>Introducir coordenadas SIM</value>
   </data>
@@ -379,6 +472,18 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   </data>
   <data name="gsErrorreadingKML" xml:space="preserve">
     <value>Error lectura KML</value>
+  </data>
+  <data name="gsExit" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="gsExitToWindows" xml:space="preserve">
+    <value>Salir a Windows en</value>
+  </data>
+  <data name="gsExtraGuideLines" xml:space="preserve">
+    <value>Lineas Guía Extra</value>
+  </data>
+  <data name="gsFast" xml:space="preserve">
+    <value>Rápido</value>
   </data>
   <data name="gsField" xml:space="preserve">
     <value>Parcela</value>
@@ -389,11 +494,29 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsFieldIsOpen" xml:space="preserve">
     <value>Parcela abierta</value>
   </data>
+  <data name="gsFieldMenu" xml:space="preserve">
+    <value>Menú de Parcela</value>
+  </data>
   <data name="gsFieldNotOpen" xml:space="preserve">
     <value>Parcela no abierta</value>
   </data>
+  <data name="gsFieldPicker" xml:space="preserve">
+    <value>Cargar Archivo</value>
+  </data>
+  <data name="gsFieldTexture" xml:space="preserve">
+    <value>Textura de Parcela</value>
+  </data>
   <data name="gsFileError" xml:space="preserve">
     <value>Error de archivo</value>
+  </data>
+  <data name="gsFix2Fix" xml:space="preserve">
+    <value>Distancia Fijo a Fijo</value>
+  </data>
+  <data name="gsFixAlarm" xml:space="preserve">
+    <value>Alarma RTK Fijo</value>
+  </data>
+  <data name="gsFixAlarmStop" xml:space="preserve">
+    <value>Alarma Detiene Autopiloto</value>
   </data>
   <data name="gsFlagByLatLon" xml:space="preserve">
     <value>Bandera de Lat Lon</value>
@@ -401,8 +524,14 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsFlagFileIsCorrupt" xml:space="preserve">
     <value>Fichero de marcas corrupto</value>
   </data>
+  <data name="gsFlags" xml:space="preserve">
+    <value>Crear Banderas</value>
+  </data>
   <data name="gsForNow" xml:space="preserve">
     <value>Ahora</value>
+  </data>
+  <data name="gsFormFlag" xml:space="preserve">
+    <value>Banderas</value>
   </data>
   <data name="gsFromExisting" xml:space="preserve">
     <value>Desde existente</value>
@@ -410,8 +539,32 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsFromKml" xml:space="preserve">
     <value>Desde KML</value>
   </data>
+  <data name="gsGap" xml:space="preserve">
+    <value>Diferencia</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Seleccionado</value>
+  </data>
+  <data name="gsGpsStep" xml:space="preserve">
+    <value>Paso GPS mínimo</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Grilla</value>
+  </data>
+  <data name="gsGuidanceStopped" xml:space="preserve">
+    <value>Autoguía detenida</value>
+  </data>
+  <data name="gsHardwareMessages" xml:space="preserve">
+    <value>Mensajes de Hardware</value>
+  </data>
+  <data name="gsHeading" xml:space="preserve">
+    <value>Rumbo</value>
+  </data>
   <data name="gsHeadingChart" xml:space="preserve">
     <value>Gráfico de rumbo</value>
+  </data>
+  <data name="gsHeadingOffset" xml:space="preserve">
+    <value>Diferencia rumbo admitido (º)</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Cabecero</value>
@@ -422,8 +575,29 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsHelp" xml:space="preserve">
     <value>Ayuda</value>
   </data>
+  <data name="gsHitchLength" xml:space="preserve">
+    <value>Distancia al enganche</value>
+  </data>
+  <data name="gsHydraulicLift" xml:space="preserve">
+    <value>Levante Hidráulico</value>
+  </data>
+  <data name="gsHydraulicLiftConfig" xml:space="preserve">
+    <value>Config Levante Hidráulico</value>
+  </data>
+  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
+    <value>Anticipo</value>
+  </data>
+  <data name="gsIMUAxis" xml:space="preserve">
+    <value>Cambio de Eje IMU</value>
+  </data>
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Direccion incorrecta? Toque el vehiculo</value>
+  </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Sin imagen</value>
+  </data>
+  <data name="gsImuFusion" xml:space="preserve">
+    <value>Fusión</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Pulgadas</value>
@@ -431,11 +605,71 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsInner" xml:space="preserve">
     <value>Interno</value>
   </data>
+  <data name="gsIntegral" xml:space="preserve">
+    <value>Integral</value>
+  </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>Incrementa lentamente el ángulo de dirección para reducir error de trayectoria cruzada</value>
+  </data>
+  <data name="gsInvertHydraulicRelays" xml:space="preserve">
+    <value>Invertir Relé</value>
+  </data>
+  <data name="gsInvertMotor" xml:space="preserve">
+    <value>Invertir Dirección de Motor</value>
+  </data>
+  <data name="gsInvertRelays" xml:space="preserve">
+    <value>Invertir Relés</value>
+  </data>
+  <data name="gsInvertRoll" xml:space="preserve">
+    <value>Invertir Inclinación</value>
+  </data>
+  <data name="gsInvertWas" xml:space="preserve">
+    <value>Invertir WAS</value>
+  </data>
   <data name="gsKMH" xml:space="preserve">
     <value>km/h</value>
   </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Teclado</value>
+  </data>
   <data name="gsLanguage" xml:space="preserve">
     <value>Idioma</value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>Lat+Long</value>
+  </data>
+  <data name="gsLateral" xml:space="preserve">
+    <value>Lateral</value>
+  </data>
+  <data name="gsLatitude" xml:space="preserve">
+    <value>Latitud</value>
+  </data>
+  <data name="gsLeft" xml:space="preserve">
+    <value>Izquierda</value>
+  </data>
+  <data name="gsLess" xml:space="preserve">
+    <value>Menos</value>
+  </data>
+  <data name="gsLightbar" xml:space="preserve">
+    <value>Barra de luz</value>
+  </data>
+  <data name="gsLineSmooth" xml:space="preserve">
+    <value>Suavizar Línea</value>
+  </data>
+  <data name="gsLineWidth" xml:space="preserve">
+    <value>Ancho de Línea</value>
+  </data>
+  <data name="gsLongtitude" xml:space="preserve">
+    <value>Longitud</value>
+  </data>
+  <data name="gsLookAhead" xml:space="preserve">
+    <value>Anticipo</value>
+  </data>
+  <data name="gsLookAheadTiming" xml:space="preserve">
+    <value>Configuración Tiempo de Anticipo</value>
+  </data>
+  <data name="gsLowerTime" xml:space="preserve">
+    <value>Tiempo de Descenso</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
     <value>Mph</value>
@@ -446,8 +680,29 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsManual" xml:space="preserve">
     <value>Manual</value>
   </data>
+  <data name="gsManualTurns" xml:space="preserve">
+    <value>Giros Manuales</value>
+  </data>
+  <data name="gsMapForBackground" xml:space="preserve">
+    <value>Agregar Mapa Bing al Fondo</value>
+  </data>
+  <data name="gsMaxLimit" xml:space="preserve">
+    <value>Límite Máx</value>
+  </data>
+  <data name="gsMaxSpeed" xml:space="preserve">
+    <value>Velocidad Máx</value>
+  </data>
+  <data name="gsMaxSteerAngle" xml:space="preserve">
+    <value>Angulo de Dirección Máx</value>
+  </data>
   <data name="gsMeters" xml:space="preserve">
     <value>Metros</value>
+  </data>
+  <data name="gsMinSpeed" xml:space="preserve">
+    <value>Velocidad Mín</value>
+  </data>
+  <data name="gsMinToMove" xml:space="preserve">
+    <value>Mínimo para Mover</value>
   </data>
   <data name="gsMissingABLinesFile" xml:space="preserve">
     <value>Sin fichero Líneas AB</value>
@@ -464,6 +719,18 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsMissingSectionFile" xml:space="preserve">
     <value>Falta fichero de Sección</value>
   </data>
+  <data name="gsMode" xml:space="preserve">
+    <value>Modo</value>
+  </data>
+  <data name="gsMore" xml:space="preserve">
+    <value>Más</value>
+  </data>
+  <data name="gsMotorDriver" xml:space="preserve">
+    <value>Tipo de Controlador de Motor</value>
+  </data>
+  <data name="gsMultiColorSections" xml:space="preserve">
+    <value>Multi Color</value>
+  </data>
   <data name="gsN_East" xml:space="preserve">
     <value>Noreste</value>
   </data>
@@ -472,6 +739,12 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   </data>
   <data name="gsNew" xml:space="preserve">
     <value>Nuevo desde estándar</value>
+  </data>
+  <data name="gsNextGuidanceLine" xml:space="preserve">
+    <value>Suiguiente Línea de Guía</value>
+  </data>
+  <data name="gsNight" xml:space="preserve">
+    <value>Noche</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
     <value>Ninguna Línea AB activa</value>
@@ -494,11 +767,35 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsNothingDeleted" xml:space="preserve">
     <value>Nada borrado</value>
   </data>
+  <data name="gsNudge" xml:space="preserve">
+    <value>Ajuste</value>
+  </data>
+  <data name="gsNudgeDistance" xml:space="preserve">
+    <value>Distancia de Ajuste</value>
+  </data>
+  <data name="gsNudgeRefTrack" xml:space="preserve">
+    <value>Mover Pista de Referencia</value>
+  </data>
+  <data name="gsOff" xml:space="preserve">
+    <value>Apagado</value>
+  </data>
   <data name="gsOffset" xml:space="preserve">
     <value>Offset (desfase)</value>
   </data>
   <data name="gsOffsetFix" xml:space="preserve">
     <value>Corregir desfase</value>
+  </data>
+  <data name="gsOn" xml:space="preserve">
+    <value>Encendido</value>
+  </data>
+  <data name="gsOnDelay" xml:space="preserve">
+    <value>Retardo a la conexión</value>
+  </data>
+  <data name="gsOnOff" xml:space="preserve">
+    <value>Encendido/Apagado</value>
+  </data>
+  <data name="gsOpacity" xml:space="preserve">
+    <value>Opacidad</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Abrir</value>
@@ -506,23 +803,80 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsOuter" xml:space="preserve">
     <value>Externo</value>
   </data>
+  <data name="gsOverlap" xml:space="preserve">
+    <value>Traslape</value>
+  </data>
+  <data name="gsOverlapGap" xml:space="preserve">
+    <value>Traslape / Brecha</value>
+  </data>
+  <data name="gsOverride" xml:space="preserve">
+    <value>Anular</value>
+  </data>
   <data name="gsOvershootReduction" xml:space="preserve">
     <value>Reducción de sobreimpulso</value>
   </data>
   <data name="gsPasses" xml:space="preserve">
     <value>Pasadas</value>
   </data>
+  <data name="gsPastEndOfCurve" xml:space="preserve">
+    <value>Pasado final de la curva</value>
+  </data>
   <data name="gsPause" xml:space="preserve">
     <value>Pausa</value>
   </data>
+  <data name="gsPivot" xml:space="preserve">
+    <value>Pivote</value>
+  </data>
+  <data name="gsPivotDistance" xml:space="preserve">
+    <value>Distancia de Pivote</value>
+  </data>
   <data name="gsPleaseEnterABLine" xml:space="preserve">
     <value>Introducir una línea AB</value>
+  </data>
+  <data name="gsPleaseWait" xml:space="preserve">
+    <value>Espera por favor</value>
+  </data>
+  <data name="gsPoint" xml:space="preserve">
+    <value>Punto</value>
+  </data>
+  <data name="gsPoints" xml:space="preserve">
+    <value>Puntos</value>
+  </data>
+  <data name="gsPointsToProcess" xml:space="preserve">
+    <value>Puntos a Procesar</value>
+  </data>
+  <data name="gsPolygons" xml:space="preserve">
+    <value>Polígonos</value>
+  </data>
+  <data name="gsPowerLoss" xml:space="preserve">
+    <value>Apagado por Batería</value>
+  </data>
+  <data name="gsPresetColor" xml:space="preserve">
+    <value>Elija Color Predeterminado</value>
+  </data>
+  <data name="gsPressureTurnSensor" xml:space="preserve">
+    <value>Sensor de Presión para Giro</value>
+  </data>
+  <data name="gsPreview" xml:space="preserve">
+    <value>Vista previa</value>
   </data>
   <data name="gsProblemMakingPath" xml:space="preserve">
     <value>Problemas al crear una ruta</value>
   </data>
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>El programa se cerrará. Reinicie</value>
+  </data>
+  <data name="gsProportionalGain" xml:space="preserve">
+    <value>Ganancia Proporcional</value>
+  </data>
+  <data name="gsQuickAB" xml:space="preserve">
+    <value>Creador Línea AB ráoida</value>
+  </data>
+  <data name="gsRaiseTime" xml:space="preserve">
+    <value>Tiempo de Ascenso</value>
+  </data>
+  <data name="gsRate" xml:space="preserve">
+    <value>Capacidad</value>
   </data>
   <data name="gsReallyResetEverything" xml:space="preserve">
     <value>Necesario reiniciar todo?</value>
@@ -536,6 +890,21 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsRecordedPathMenu" xml:space="preserve">
     <value>Fichero de ruta</value>
   </data>
+  <data name="gsRecordedPathPicker" xml:space="preserve">
+    <value>Cargar Ruta de Recorrido</value>
+  </data>
+  <data name="gsReducedPoints" xml:space="preserve">
+    <value>Puntos Reducidos</value>
+  </data>
+  <data name="gsRemain" xml:space="preserve">
+    <value>Restante</value>
+  </data>
+  <data name="gsRemoveOffset" xml:space="preserve">
+    <value>Remover Desfase</value>
+  </data>
+  <data name="gsReset" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
   <data name="gsResetAll" xml:space="preserve">
     <value>Reiniciar Todo</value>
   </data>
@@ -544,6 +913,21 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   </data>
   <data name="gsResume" xml:space="preserve">
     <value>Continuar</value>
+  </data>
+  <data name="gsReverseDistance" xml:space="preserve">
+    <value>Distancia en Reversa</value>
+  </data>
+  <data name="gsReverseSteer" xml:space="preserve">
+    <value>Detección de Reversa</value>
+  </data>
+  <data name="gsRight" xml:space="preserve">
+    <value>Derecha</value>
+  </data>
+  <data name="gsRightMenu" xml:space="preserve">
+    <value>Menú Derecho</value>
+  </data>
+  <data name="gsRollFilter" xml:space="preserve">
+    <value>Filtro de Inclinación</value>
   </data>
   <data name="gsS_East" xml:space="preserve">
     <value>Este</value>
@@ -561,10 +945,10 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
     <value>¡Hasta la próxima!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Guardando campo..</value>
+    <value>Guardando campo</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Guardando parámetros del campo...</value>
+    <value>Guardando parámetros del campo</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Parámetros del campo guardados.</value>
@@ -573,10 +957,10 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
     <value>Campo guardado localmente.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Finalizando apagado..</value>
+    <value>Finalizando apagado</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Guardando configuración...</value>
+    <value>Guardando configuración</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Configuración guardada.</value>
@@ -588,7 +972,28 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
     <value>Error al cargar.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Cargando en AgShare...</value>
+    <value>Cargando en AgShare</value>
+  </data>
+  <data name="gsScreenButtons" xml:space="preserve">
+    <value>Botones de Pantalla</value>
+  </data>
+  <data name="gsSectionColorsSet" xml:space="preserve">
+    <value>Fijar Color de Secciones</value>
+  </data>
+  <data name="gsSectionLines" xml:space="preserve">
+    <value>Líneas de Sección</value>
+  </data>
+  <data name="gsSections" xml:space="preserve">
+    <value>Secciones</value>
+  </data>
+  <data name="gsSelectButtons" xml:space="preserve">
+    <value>Elegir Botones</value>
+  </data>
+  <data name="gsSelectPreset" xml:space="preserve">
+    <value>Elegir Color Predeterminado</value>
+  </data>
+  <data name="gsSendAndSave" xml:space="preserve">
+    <value>Enviar + Guardad</value>
   </data>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Enviar al módulo PCB</value>
@@ -599,11 +1004,32 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsShiftGPSPosition" xml:space="preserve">
     <value>Cambiar posición GPS(cm)</value>
   </data>
+  <data name="gsShutdown" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="gsShutdownIn" xml:space="preserve">
+    <value>Apagando en</value>
+  </data>
+  <data name="gsSideHillComp" xml:space="preserve">
+    <value>Compensación por º de inclinación</value>
+  </data>
+  <data name="gsSimpleTramLines" xml:space="preserve">
+    <value>Creador Tráfico Simple</value>
+  </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulador Activado</value>
   </data>
+  <data name="gsSingleAntennaSetting" xml:space="preserve">
+    <value>Configuración de una Antena</value>
+  </data>
+  <data name="gsSlow" xml:space="preserve">
+    <value>Lento</value>
+  </data>
   <data name="gsSlowDownBelow" xml:space="preserve">
     <value>Reduzca la velocidad por debajo</value>
+  </data>
+  <data name="gsSmooth" xml:space="preserve">
+    <value>Suave</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
     <value>Curva AB Suave</value>
@@ -611,17 +1037,60 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsSort" xml:space="preserve">
     <value>Ordenar</value>
   </data>
+  <data name="gsSound" xml:space="preserve">
+    <value>Sonidos</value>
+  </data>
   <data name="gsSouth" xml:space="preserve">
     <value>Sur</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
     <value>Espaciado (cm)</value>
   </data>
+  <data name="gsSpeedFactor" xml:space="preserve">
+    <value>Factor de Velocidad</value>
+  </data>
+  <data name="gsSpeedo" xml:space="preserve">
+    <value>Velocímetro</value>
+  </data>
+  <data name="gsStart" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Comience o borre un Lindero</value>
   </data>
+  <data name="gsStartFullscreen" xml:space="preserve">
+    <value>Iniciar en Pantalla Completa</value>
+  </data>
   <data name="gsStartNewField" xml:space="preserve">
     <value>Empezar nueva Parcela</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="gsSteerAngle" xml:space="preserve">
+    <value>Ángulo de Dirección</value>
+  </data>
+  <data name="gsSteerBar" xml:space="preserve">
+    <value>Barra de Dirección</value>
+  </data>
+  <data name="gsSteerChart" xml:space="preserve">
+    <value>Gráficos de Manejo</value>
+  </data>
+  <data name="gsSteerDescription" xml:space="preserve">
+    <value>Botón - Presiona On. Presiona Off
+Interruptor - Presiona On, Suelta Off</value>
+  </data>
+  <data name="gsSteerEnable" xml:space="preserve">
+    <value>Hibilitar Externo</value>
+  </data>
+  <data name="gsSteerInReverse" xml:space="preserve">
+    <value>Autopiloto en reversa</value>
+  </data>
+  <data name="gsSteerResponse" xml:space="preserve">
+    <value>Respuesta de Autopiloto</value>
+  </data>
+  <data name="gsSteerSwitch" xml:space="preserve">
+    <value>Interruptor de Autopiloto</value>
   </data>
   <data name="gsSteerWizard" xml:space="preserve">
     <value>Asistente de configuración de guiado</value>
@@ -629,26 +1098,107 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Parar Grabación pausa Linderos</value>
   </data>
+  <data name="gsSvennArrow" xml:space="preserve">
+    <value>Flecha Svenn</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Términos y Condiciones para versión</value>
+  </data>
+  <data name="gsTermsOne" xml:space="preserve">
+    <value>Si distribuye copias de este programa GRATUITO, ya sea gratis o mediante pago, mejorado o modificado, debe transmitir a los destinatarios las mismas libertades que recibió, tal como se describe en la Licencia GPLv3.</value>
+  </data>
+  <data name="gsTermsThree" xml:space="preserve">
+    <value>AgOpenGPS es un software estrictamente educativo para aprender sobre sistemas de guiado, sentencias GPS y la aplicación teórica del control de máquinas.
+
+No debe utilizarse en equipos reales bajo ninguna circunstancia. Se proporciona un simulador para que el estudiante experimente de forma segura el guiado de máquinas.
+
+El software no incluye sistemas de seguridad, ni se implica ninguno.
+
+USAR BAJO SU PROPIA RESPONSABILIDAD.</value>
+  </data>
+  <data name="gsTermsTwo" xml:space="preserve">
+    <value>Debe asegurarse de que reciban o puedan obtener el código fuente. Y debe mostrarles estos términos para que conozcan sus derechos. No robe el trabajo de otros para hacerlo suyo.</value>
+  </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Al fichero</value>
   </data>
   <data name="gsTooFast" xml:space="preserve">
     <value>Demasiado rápida</value>
   </data>
+  <data name="gsToolLeft" xml:space="preserve">
+    <value>Implemento a la Izquierda</value>
+  </data>
+  <data name="gsToolOffset" xml:space="preserve">
+    <value>Dirección Desfase de Implemento</value>
+  </data>
+  <data name="gsToolRight" xml:space="preserve">
+    <value>Implemento a la Derecha</value>
+  </data>
+  <data name="gsToolsMenu" xml:space="preserve">
+    <value>Menú de Implementos</value>
+  </data>
+  <data name="gsTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="gsTrack" xml:space="preserve">
+    <value>Carril</value>
+  </data>
+  <data name="gsTracks" xml:space="preserve">
+    <value>Carriles</value>
+  </data>
   <data name="gsTramLines" xml:space="preserve">
     <value>Lineas Paralelas</value>
+  </data>
+  <data name="gsTramWidth" xml:space="preserve">
+    <value>Ancho de Tráfico</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Activar Curva AB</value>
   </data>
+  <data name="gsTurnOffDelay" xml:space="preserve">
+    <value>Retardo a la desconexión</value>
+  </data>
+  <data name="gsTurnOffRecordedPath" xml:space="preserve">
+    <value>Apagar Grabado de Recorrido</value>
+  </data>
   <data name="gsTurnOnContourOrMakeABLine" xml:space="preserve">
     <value>Activar el contorno o crear Línea AB</value>
+  </data>
+  <data name="gsTurnSensor" xml:space="preserve">
+    <value>Sensor de Giro</value>
+  </data>
+  <data name="gsUnits" xml:space="preserve">
+    <value>Unidades</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Usar seleccionado</value>
   </data>
+  <data name="gsUser1" xml:space="preserve">
+    <value>Usuario 1</value>
+  </data>
+  <data name="gsUser2" xml:space="preserve">
+    <value>Usuario 2</value>
+  </data>
+  <data name="gsUser3" xml:space="preserve">
+    <value>Usuario 3</value>
+  </data>
+  <data name="gsUser4" xml:space="preserve">
+    <value>Usuario 4</value>
+  </data>
+  <data name="gsUturn" xml:space="preserve">
+    <value>Giro-U</value>
+  </data>
+  <data name="gsUturnCompensation" xml:space="preserve">
+    <value>Compensación Giro-U</value>
+  </data>
+  <data name="gsUturnExtension" xml:space="preserve">
+    <value>Fije longitude de extenxión a 2 o 3x el Radio</value>
+  </data>
+  <data name="gsUturnSmooth" xml:space="preserve">
+    <value>Fije el Suavizado a 3-4x el Radio</value>
+  </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Tipo de vehículo:</value>
+    <value>Tipo de vehículo</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Calibrar WAS</value>
@@ -660,10 +1210,10 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
     <value>Oeste</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Distancia entre ejes:</value>
+    <value>Distancia entre ejes</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Ancho:</value>
+    <value>Ancho</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Hay ventanas abiertas</value>
@@ -700,534 +1250,5 @@ El orden en que los presiones será el orden en que aparecerán en el menú de a
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Ver Configuraciones</value>
-  </data>
-  <data name="gsAutoSwitchDualFix" xml:space="preserve">
-    <value>Auto Dual &lt;&gt; Fijo</value>
-  </data>
-  <data name="gsBottomMenu" xml:space="preserve">
-    <value>Menu Inferior</value>
-  </data>
-  <data name="gsBackground" xml:space="preserve">
-    <value>Fondo</value>
-  </data>
-  <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Velocidad de cambio</value>
-  </data>
-  <data name="gsCurrentTurnSensor" xml:space="preserve">
-    <value>Sensor de Corriente para Giro</value>
-  </data>
-  <data name="gsCurve" xml:space="preserve">
-    <value>Curva</value>
-  </data>
-  <data name="gsDay" xml:space="preserve">
-    <value>Día</value>
-  </data>
-  <data name="gsDeadzone" xml:space="preserve">
-    <value>---Zona Muerta---</value>
-  </data>
-  <data name="gsDefault" xml:space="preserve">
-    <value>Por defecto</value>
-  </data>
-  <data name="gsDelete" xml:space="preserve">
-    <value>Borrar</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Esta acción eliminará todos los linderos. ¿Desea continuar?</value>
-  </data>
-  <data name="gsDeleteField" xml:space="preserve">
-    <value>Borrar Parcela</value>
-  </data>
-  <data name="gsDiameter" xml:space="preserve">
-    <value>Diámetro</value>
-  </data>
-  <data name="gsDirect" xml:space="preserve">
-    <value>Directo</value>
-  </data>
-  <data name="gsDirectionMarkers" xml:space="preserve">
-    <value>Marcadores de Dirección</value>
-  </data>
-  <data name="gsDisagree" xml:space="preserve">
-    <value>En desacuerdo</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Discusión en:</value>
-  </data>
-  <data name="gsDistanceToFlag" xml:space="preserve">
-    <value>Distancia a Bandera</value>
-  </data>
-  <data name="gsDualAntennaSetting" xml:space="preserve">
-    <value>Configuración de Antena Dual</value>
-  </data>
-  <data name="gsElevationlog" xml:space="preserve">
-    <value>Registro de Elevación</value>
-  </data>
-  <data name="gsEnable" xml:space="preserve">
-    <value>Habilitar</value>
-  </data>
-  <data name="gsEnterName" xml:space="preserve">
-    <value>Digitar Nombre</value>
-  </data>
-  <data name="gsEditColor" xml:space="preserve">
-    <value>Editar Color</value>
-  </data>
-  <data name="gsDisplay" xml:space="preserve">
-    <value>Mostrar</value>
-  </data>
-  <data name="gsDualpositionAntennaRight" xml:space="preserve">
-    <value>Antena Dual está en el lado Derecho</value>
-  </data>
-  <data name="gsEnterRecordName" xml:space="preserve">
-    <value>Digite el nombre de grabación</value>
-  </data>
-  <data name="gsExit" xml:space="preserve">
-    <value>Salir</value>
-  </data>
-  <data name="gsExitToWindows" xml:space="preserve">
-    <value>Salir a Windows en:</value>
-  </data>
-  <data name="gsExtraGuideLines" xml:space="preserve">
-    <value>Lineas Guía Extra</value>
-  </data>
-  <data name="gsFast" xml:space="preserve">
-    <value>Rápido</value>
-  </data>
-  <data name="gsFieldMenu" xml:space="preserve">
-    <value>Menú de Parcela</value>
-  </data>
-  <data name="gsFieldPicker" xml:space="preserve">
-    <value>Cargar Archivo</value>
-  </data>
-  <data name="gsFieldTexture" xml:space="preserve">
-    <value>Textura de Parcela</value>
-  </data>
-  <data name="gsFix2Fix" xml:space="preserve">
-    <value>Distancia Fijo a Fijo</value>
-  </data>
-  <data name="gsFixAlarm" xml:space="preserve">
-    <value>Alarma RTK Fijo</value>
-  </data>
-  <data name="gsFixAlarmStop" xml:space="preserve">
-    <value>Alarma Detiene Autopiloto</value>
-  </data>
-  <data name="gsFlags" xml:space="preserve">
-    <value>Crear Banderas</value>
-  </data>
-  <data name="gsFormFlag" xml:space="preserve">
-    <value>Banderas</value>
-  </data>
-  <data name="gsGpsStep" xml:space="preserve">
-    <value>Paso GPS mínimo</value>
-  </data>
-  <data name="gsGrid" xml:space="preserve">
-    <value>Grilla</value>
-  </data>
-  <data name="gsGuidanceStopped" xml:space="preserve">
-    <value>Autoguía detenida</value>
-  </data>
-  <data name="gsHardwareMessages" xml:space="preserve">
-    <value>Mensajes de Hardware</value>
-  </data>
-  <data name="gsHeading" xml:space="preserve">
-    <value>Rumbo</value>
-  </data>
-  <data name="gsGap" xml:space="preserve">
-    <value>Diferencia</value>
-  </data>
-  <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Diferencia rumbo admitido (º)</value>
-  </data>
-  <data name="gsHitchLength" xml:space="preserve">
-    <value>Distancia al enganche</value>
-  </data>
-  <data name="gsHydraulicLiftLookAhead" xml:space="preserve">
-    <value>Anticipo</value>
-  </data>
-  <data name="gsIMUAxis" xml:space="preserve">
-    <value>Cambio de Eje IMU</value>
-  </data>
-  <data name="gsImage" xml:space="preserve">
-    <value>Sin imagen:</value>
-  </data>
-  <data name="gsImuFusion" xml:space="preserve">
-    <value>Fusión</value>
-  </data>
-  <data name="gsIntegral" xml:space="preserve">
-    <value>Integral</value>
-  </data>
-  <data name="gsIntegralInfo" xml:space="preserve">
-    <value>Incrementa lentamente el ángulo de dirección para reducir error de trayectoria cruzada</value>
-  </data>
-  <data name="gsInvertHydraulicRelays" xml:space="preserve">
-    <value>Invertir Relé</value>
-  </data>
-  <data name="gsInvertMotor" xml:space="preserve">
-    <value>Invertir Dirección de Motor</value>
-  </data>
-  <data name="gsInvertRelays" xml:space="preserve">
-    <value>Invertir Relés</value>
-  </data>
-  <data name="gsInvertRoll" xml:space="preserve">
-    <value>Invertir Inclinación</value>
-  </data>
-  <data name="gsInvertWas" xml:space="preserve">
-    <value>Invertir WAS</value>
-  </data>
-  <data name="gsKeyboard" xml:space="preserve">
-    <value>Teclado</value>
-  </data>
-  <data name="gsLatLon" xml:space="preserve">
-    <value>Lat+Long</value>
-  </data>
-  <data name="gsLateral" xml:space="preserve">
-    <value>Lateral</value>
-  </data>
-  <data name="gsLatitude" xml:space="preserve">
-    <value>Latitud</value>
-  </data>
-  <data name="gsLeft" xml:space="preserve">
-    <value>Izquierda</value>
-  </data>
-  <data name="gsLess" xml:space="preserve">
-    <value>Menos</value>
-  </data>
-  <data name="gsLightbar" xml:space="preserve">
-    <value>Barra de luz</value>
-  </data>
-  <data name="gsLineSmooth" xml:space="preserve">
-    <value>Suavizar Línea</value>
-  </data>
-  <data name="gsLineWidth" xml:space="preserve">
-    <value>Ancho de Línea</value>
-  </data>
-  <data name="gsLongtitude" xml:space="preserve">
-    <value>Longitud</value>
-  </data>
-  <data name="gsLookAhead" xml:space="preserve">
-    <value>Anticipo:</value>
-  </data>
-  <data name="gsLookAheadTiming" xml:space="preserve">
-    <value>Configuración Tiempo de Anticipo</value>
-  </data>
-  <data name="gsLowerTime" xml:space="preserve">
-    <value>Tiempo de Descenso</value>
-  </data>
-  <data name="gsManualTurns" xml:space="preserve">
-    <value>Giros Manuales</value>
-  </data>
-  <data name="gsMapForBackground" xml:space="preserve">
-    <value>Agregar Mapa Bing al Fondo</value>
-  </data>
-  <data name="gsMaxLimit" xml:space="preserve">
-    <value>Límite Máx</value>
-  </data>
-  <data name="gsMaxSpeed" xml:space="preserve">
-    <value>Velocidad Máx</value>
-  </data>
-  <data name="gsMaxSteerAngle" xml:space="preserve">
-    <value>Angulo de Dirección Máx</value>
-  </data>
-  <data name="gsMinSpeed" xml:space="preserve">
-    <value>Velocidad Mín</value>
-  </data>
-  <data name="gsMinToMove" xml:space="preserve">
-    <value>Mínimo para Mover</value>
-  </data>
-  <data name="gsMode" xml:space="preserve">
-    <value>Modo</value>
-  </data>
-  <data name="gsMore" xml:space="preserve">
-    <value>Más</value>
-  </data>
-  <data name="gsMotorDriver" xml:space="preserve">
-    <value>Tipo de Controlador de Motor</value>
-  </data>
-  <data name="gsMultiColorSections" xml:space="preserve">
-    <value>Multi Color</value>
-  </data>
-  <data name="gsNextGuidanceLine" xml:space="preserve">
-    <value>Suiguiente Línea de Guía</value>
-  </data>
-  <data name="gsNight" xml:space="preserve">
-    <value>Noche</value>
-  </data>
-  <data name="gsNudge" xml:space="preserve">
-    <value>Ajuste:</value>
-  </data>
-  <data name="gsNudgeDistance" xml:space="preserve">
-    <value>Distancia de Ajuste</value>
-  </data>
-  <data name="gsNudgeRefTrack" xml:space="preserve">
-    <value>Mover Pista de Referencia</value>
-  </data>
-  <data name="gsOff" xml:space="preserve">
-    <value>Apagado</value>
-  </data>
-  <data name="gsOn" xml:space="preserve">
-    <value>Encendido</value>
-  </data>
-  <data name="gsOnDelay" xml:space="preserve">
-    <value>Retardo a la conexión</value>
-  </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>Encendido/Apagado</value>
-  </data>
-  <data name="gsOpacity" xml:space="preserve">
-    <value>Opacidad:</value>
-  </data>
-  <data name="gsOverlap" xml:space="preserve">
-    <value>Traslape:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Traslape / Brecha</value>
-  </data>
-  <data name="gsPivot" xml:space="preserve">
-    <value>Pivote</value>
-  </data>
-  <data name="gsPivotDistance" xml:space="preserve">
-    <value>Distancia de Pivote</value>
-  </data>
-  <data name="gsPleaseWait" xml:space="preserve">
-    <value>Espera por favor...</value>
-  </data>
-  <data name="gsPoint" xml:space="preserve">
-    <value>Punto</value>
-  </data>
-  <data name="gsRaiseTime" xml:space="preserve">
-    <value>Tiempo de Ascenso</value>
-  </data>
-  <data name="gsRecordedPathPicker" xml:space="preserve">
-    <value>Cargar Ruta de Recorrido</value>
-  </data>
-  <data name="gsRemain" xml:space="preserve">
-    <value>Restante</value>
-  </data>
-  <data name="gsRemoveOffset" xml:space="preserve">
-    <value>Remover Desfase</value>
-  </data>
-  <data name="gsReset" xml:space="preserve">
-    <value>Reiniciar</value>
-  </data>
-  <data name="gsReverseDistance" xml:space="preserve">
-    <value>Distancia en Reversa</value>
-  </data>
-  <data name="gsReverseSteer" xml:space="preserve">
-    <value>Detección de Reversa</value>
-  </data>
-  <data name="gsRight" xml:space="preserve">
-    <value>Derecha</value>
-  </data>
-  <data name="gsRightMenu" xml:space="preserve">
-    <value>Menú Derecho</value>
-  </data>
-  <data name="gsRollFilter" xml:space="preserve">
-    <value>Filtro de Inclinación</value>
-  </data>
-  <data name="gsScreenButtons" xml:space="preserve">
-    <value>Botones de Pantalla</value>
-  </data>
-  <data name="gsSectionColorsSet" xml:space="preserve">
-    <value>Fijar Color de Secciones</value>
-  </data>
-  <data name="gsSectionLines" xml:space="preserve">
-    <value>Líneas de Sección</value>
-  </data>
-  <data name="gsSections" xml:space="preserve">
-    <value>Secciones:</value>
-  </data>
-  <data name="gsSelectButtons" xml:space="preserve">
-    <value>Elegir Botones</value>
-  </data>
-  <data name="gsSelectPreset" xml:space="preserve">
-    <value>Elegir Color Predeterminado</value>
-  </data>
-  <data name="gsSendAndSave" xml:space="preserve">
-    <value>Enviar + Guardad</value>
-  </data>
-  <data name="gsShutdown" xml:space="preserve">
-    <value>Apagar</value>
-  </data>
-  <data name="gsShutdownIn" xml:space="preserve">
-    <value>Apagando en:</value>
-  </data>
-  <data name="gsSingleAntennaSetting" xml:space="preserve">
-    <value>Configuración de una Antena</value>
-  </data>
-  <data name="gsSlow" xml:space="preserve">
-    <value>Lento</value>
-  </data>
-  <data name="gsSmooth" xml:space="preserve">
-    <value>Suave</value>
-  </data>
-  <data name="gsSound" xml:space="preserve">
-    <value>Sonidos</value>
-  </data>
-  <data name="gsSpeedFactor" xml:space="preserve">
-    <value>Factor de Velocidad</value>
-  </data>
-  <data name="gsSpeedo" xml:space="preserve">
-    <value>Velocímetro</value>
-  </data>
-  <data name="gsStart" xml:space="preserve">
-    <value>Iniciar</value>
-  </data>
-  <data name="gsStartFullscreen" xml:space="preserve">
-    <value>Iniciar en Pantalla Completa</value>
-  </data>
-  <data name="gsStatus" xml:space="preserve">
-    <value>Estado</value>
-  </data>
-  <data name="gsSteerAngle" xml:space="preserve">
-    <value>Ángulo de Dirección</value>
-  </data>
-  <data name="gsSteerBar" xml:space="preserve">
-    <value>Barra de Dirección</value>
-  </data>
-  <data name="gsSteerChart" xml:space="preserve">
-    <value>Gráficos de Manejo</value>
-  </data>
-  <data name="gsToolOffset" xml:space="preserve">
-    <value>Dirección Desfase de Implemento</value>
-  </data>
-  <data name="gsToolRight" xml:space="preserve">
-    <value>Implemento a la Derecha</value>
-  </data>
-  <data name="gsToolsMenu" xml:space="preserve">
-    <value>Menú de Implementos</value>
-  </data>
-  <data name="gsTotal" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="gsTurnOffDelay" xml:space="preserve">
-    <value>Retardo a la desconexión</value>
-  </data>
-  <data name="gsTurnOffRecordedPath" xml:space="preserve">
-    <value>Apagar Grabado de Recorrido</value>
-  </data>
-  <data name="gsTurnSensor" xml:space="preserve">
-    <value>Sensor de Giro</value>
-  </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Unidades:</value>
-  </data>
-  <data name="gsUnits" xml:space="preserve">
-    <value>Unidades</value>
-  </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>Usuario 1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>Usuario 2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>Usuario 3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>Usuario 4</value>
-  </data>
-  <data name="gsUturn" xml:space="preserve">
-    <value>Giro-U</value>
-  </data>
-  <data name="gsUturnCompensation" xml:space="preserve">
-    <value>Compensación Giro-U</value>
-  </data>
-  <data name="gsUturnExtension" xml:space="preserve">
-    <value>Fije longitude de extenxión a 2 o 3x el Radio</value>
-  </data>
-  <data name="gsUturnSmooth" xml:space="preserve">
-    <value>Fije el Suavizado a 3-4x el Radio</value>
-  </data>
-  <data name="gsPoints" xml:space="preserve">
-    <value>Puntos</value>
-  </data>
-  <data name="gsPointsToProcess" xml:space="preserve">
-    <value>Puntos a Procesar</value>
-  </data>
-  <data name="gsPolygons" xml:space="preserve">
-    <value>Polígonos</value>
-  </data>
-  <data name="gsPowerLoss" xml:space="preserve">
-    <value>Apagado por Batería</value>
-  </data>
-  <data name="gsPresetColor" xml:space="preserve">
-    <value>Elija Color Predeterminado</value>
-  </data>
-  <data name="gsPressureTurnSensor" xml:space="preserve">
-    <value>Sensor de Presión para Giro</value>
-  </data>
-  <data name="gsPreview" xml:space="preserve">
-    <value>Vista previa</value>
-  </data>
-  <data name="gsHydraulicLift" xml:space="preserve">
-    <value>Levante Hidráulico</value>
-  </data>
-  <data name="gsHydraulicLiftConfig" xml:space="preserve">
-    <value>Config Levante Hidráulico</value>
-  </data>
-  <data name="gsProportionalGain" xml:space="preserve">
-    <value>Ganancia Proporcional</value>
-  </data>
-  <data name="gsQuickAB" xml:space="preserve">
-    <value>Creador Línea AB ráoida</value>
-  </data>
-  <data name="gsRate" xml:space="preserve">
-    <value>Capacidad</value>
-  </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Puntos Reducidos</value>
-  </data>
-  <data name="gsSimpleTramLines" xml:space="preserve">
-    <value>Creador Tráfico Simple</value>
-  </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Botón - Presiona On. Presiona Off
-Interruptor - Presiona On, Suelta Off</value>
-  </data>
-  <data name="gsSteerInReverse" xml:space="preserve">
-    <value>Autopiloto en reversa</value>
-  </data>
-  <data name="gsSteerResponse" xml:space="preserve">
-    <value>Respuesta de Autopiloto</value>
-  </data>
-  <data name="gsSteerSwitch" xml:space="preserve">
-    <value>Interruptor de Autopiloto</value>
-  </data>
-  <data name="gsSvennArrow" xml:space="preserve">
-    <value>Flecha Svenn</value>
-  </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Términos y Condiciones para versión: </value>
-  </data>
-  <data name="gsTramWidth" xml:space="preserve">
-    <value>Ancho de Tráfico:</value>
-  </data>
-  <data name="gsSteerEnable" xml:space="preserve">
-    <value>Hibilitar Externo</value>
-  </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Si distribuye copias de este programa GRATUITO, ya sea gratis o mediante pago, mejorado o modificado, debe transmitir a los destinatarios las mismas libertades que recibió, tal como se describe en la Licencia GPLv3.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
-    <value>AgOpenGPS es un software estrictamente educativo para aprender sobre sistemas de guiado, sentencias GPS y la aplicación teórica del control de máquinas.
-
-No debe utilizarse en equipos reales bajo ninguna circunstancia. Se proporciona un simulador para que el estudiante experimente de forma segura el guiado de máquinas.
-
-El software no incluye sistemas de seguridad, ni se implica ninguno.
-
-USAR BAJO SU PROPIA RESPONSABILIDAD.</value>
-  </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Debe asegurarse de que reciban o puedan obtener el código fuente. Y debe mostrarles estos términos para que conozcan sus derechos. No robe el trabajo de otros para hacerlo suyo.</value>
-  </data>
-  <data name="gsToolLeft" xml:space="preserve">
-    <value>Implemento a la Izquierda</value>
-  </data>
-  <data name="gsTrack" xml:space="preserve">
-    <value>Carril</value>
-  </data>
-  <data name="gsTracks" xml:space="preserve">
-    <value>Carriles</value>
   </data>
 </root>

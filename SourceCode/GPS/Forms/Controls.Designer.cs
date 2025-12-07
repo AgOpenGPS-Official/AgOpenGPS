@@ -619,7 +619,7 @@ namespace AgOpenGPS
             }
 
             // Start AgShare upload (if enabled)
-            Task agShareUploadTask = Task.CompletedTask;
+            agShareUploadTask = Task.CompletedTask;
             if (!isAgShareUploadStarted &&
                 Settings.Default.AgShareEnabled &&
                 Settings.Default.AgShareUploadActive)
@@ -636,15 +636,28 @@ namespace AgOpenGPS
                 }
             }
 
+            // Save field data with individual exception handling for each operation
             await Task.Run(() =>
             {
-                FileSaveBoundary();
-                FileSaveSections();
-                FileSaveContour();
-                FileSaveTracks();
-                ExportFieldAs_KML();
+                try { FileSaveBoundary(); }
+                catch (Exception ex) { Log.EventWriter($"CRITICAL: Boundary save failed: {ex}"); throw; }
+
+                try { FileSaveSections(); }
+                catch (Exception ex) { Log.EventWriter($"CRITICAL: Sections save failed: {ex}"); throw; }
+
+                try { FileSaveContour(); }
+                catch (Exception ex) { Log.EventWriter($"CRITICAL: Contour save failed: {ex}"); throw; }
+
+                try { FileSaveTracks(); }
+                catch (Exception ex) { Log.EventWriter($"CRITICAL: Tracks save failed: {ex}"); throw; }
+
+                try { ExportFieldAs_KML(); }
+                catch (Exception ex) { Log.EventWriter($"WARNING: KML export failed: {ex}"); }
+
                 //ExportFieldAs_ISOXMLv3(); NOTE: This is very very slow, commented out until we have a field exporter
-                ExportFieldAs_ISOXMLv4();
+
+                try { ExportFieldAs_ISOXMLv4(); }
+                catch (Exception ex) { Log.EventWriter($"WARNING: ISOXML export failed: {ex}"); }
             });
 
             if (Settings.Default.AgShareEnabled && Settings.Default.AgShareUploadActive)
@@ -968,6 +981,21 @@ namespace AgOpenGPS
                 {
                     FileLoadRecPath();
                     panelDrag.Visible = true;
+                }
+            }
+            else
+            {
+                TimedMessageBox(3000, gStr.gsFieldNotOpen, gStr.gsStartNewField);
+            }
+        }
+
+        private void copyTracksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isJobStarted)
+            {
+                using (Forms.Field.FormCopyTracks form = new Forms.Field.FormCopyTracks(this))
+                {
+                    form.ShowDialog(this);
                 }
             }
             else
@@ -1541,6 +1569,7 @@ namespace AgOpenGPS
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Eesti (Estonia)", "et"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Español (Spanish)", "es"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Français (France)", "fr"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Hrvatski (Croatia)", "hr"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Italiano (Italy)", "it"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Latviski (Latvia)", "lv"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Lietuvių (Lithuania)", "lt"));
@@ -1557,6 +1586,7 @@ namespace AgOpenGPS
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Türkçe (Turkey)", "tr"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Yкраїнська (Ukraine)", "uk"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("中国人 (Chinese)", "zh-CHS"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("日本語 (Japanese)", "ja"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("한국인 (Korean)", "ko"));
         }
 

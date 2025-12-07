@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Nubrėžti AB. Pažymėkite 2 taškus ant ribos, kad pradėti</value>
+    <value>Nubrėžti AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Pažymėkite 2 taškus ant ribos, kad pradėti</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB linija</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Apie...</value>
+    <value>Apie</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Akermanas</value>
@@ -216,7 +219,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Fonas</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Remiantis lauku:</value>
+    <value>Remiantis lauku</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Apatinis menu</value>
@@ -387,7 +390,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Nesutikti</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskusijos:</value>
+    <value>Diskusijos</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Ekranas</value>
@@ -459,7 +462,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Išeiti</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Išeiti į Windows:</value>
+    <value>Išeiti į Windows</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Ekstra gairės</value>
@@ -576,7 +579,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Jei neteisinga kryptis, palieskite transporto priemonę</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nėra paveikslėlio:</value>
+    <value>Nėra paveikslėlio</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Suderinimas</value>
@@ -645,7 +648,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Ilguma</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Žiūrėjima į priekį:</value>
+    <value>Žiūrėjima į priekį</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Žiūrėjimo į priekį nustatymai</value>
@@ -750,7 +753,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Niekas neištrinta</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Stumtelti:</value>
+    <value>Stumtelti</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Stumtelėjimo atstumas</value>
@@ -777,7 +780,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Įjungta/išjungta</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Permatomumas:</value>
+    <value>Permatomumas</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Atidaryti</value>
@@ -786,7 +789,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Išorinis</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Persidengimas:</value>
+    <value>Persidengimas</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Persidengimas/Tarpas</value>
@@ -819,7 +822,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Prašome įvesti į AB liniją</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Palaukite...</value>
+    <value>Palaukite</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Taškas</value>
@@ -933,7 +936,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Sekcijų linijos</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekcijos:</value>
+    <value>Sekcijos</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Pasirinkti mygtukus</value>
@@ -957,7 +960,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Išjingti</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Išjungti už:</value>
+    <value>Išjungti už</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Pakalnės posvyrio kompensacija</value>
@@ -1051,7 +1054,7 @@ Fiksuojantis mygtukas: įjungta/išjungta</value>
     <value>Svenn rodyklė</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terminai ir sąlygos esamai versijai: </value>
+    <value>Terminai ir sąlygos esamai versijai</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Jei platinate šios NEMOKAMOS programos kopijas, nesvarbu, ar tai būtų nemokama, ar už tam tikrą mokestį, patobulintas, pakeistas, turite perduoti gavėjams tas pačias laisves, kurias gavote kaip nurodyta GPLv3 licencijoje.</value>
@@ -1099,7 +1102,7 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Technologinės vėžės</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Technologinių v. plotis:</value>
+    <value>Technologinių v. plotis</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Įjunkite AB kreivę</value>
@@ -1116,11 +1119,8 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Impulsinis</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Vienetai:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Metrininė/Britų sistema</value>
+    <value>Vienetai</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Naudoti pasirinktą</value>
@@ -1150,7 +1150,7 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Nustatykite gludinimą 3/4x spindulio ilgiui</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Technikos tipas:</value>
+    <value>Technikos tipas</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Vairo centras</value>
@@ -1162,10 +1162,10 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Vakarai</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Ratū bazė:</value>
+    <value>Ratū bazė</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Plotis:</value>
+    <value>Plotis</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Langai vis dar atidaryti</value>
@@ -1203,5 +1203,4 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

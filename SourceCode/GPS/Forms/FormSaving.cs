@@ -21,7 +21,7 @@ namespace AgOpenGPS
             listViewSteps.Items.Add(new ListViewItem()
             {
                 Name = key,
-                Text = GetStepText(message, SavingStepState.Pending),
+                Text = GetStepText(message + "...", SavingStepState.Pending),
                 ForeColor = GetStepColor(SavingStepState.Pending)
             });
         }

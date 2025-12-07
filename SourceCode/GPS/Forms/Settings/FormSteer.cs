@@ -1048,7 +1048,6 @@ namespace AgOpenGPS
 
         #endregion
 
-
         private void btnSendSteerConfigPGN_Click(object sender, EventArgs e)
         {
             SaveSettings();

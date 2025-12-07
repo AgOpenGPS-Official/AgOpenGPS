@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Zīmējiet AB. Lai sāktu, atzīmējiet 2 punktus uz lauka robežas</value>
+    <value>Zīmējiet AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Lai sāktu, atzīmējiet 2 punktus uz lauka robežas</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Līnija</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Par...</value>
+    <value>Par</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -150,11 +153,17 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Izveidot uzlabotas tehnoloģiskās sliedes</value>
   </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Lejupielādēt laukus no AgShare</value>
+  </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Es piekrītu noteikumiem un nosacījumiem</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresivitāte</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Skatīt visus iestatījumus</value>
   </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Caurspīdīgums</value>
@@ -181,7 +190,9 @@
     <value>Platība</value>
   </data>
   <data name="gsArrangeText" xml:space="preserve">
-    <value>Pieskarieties pogām kreisajā pusē, kuras vēlaties lai parādās izvēlnē (labajā pusē).</value>
+    <value>Pieskarieties pogām kreisajā pusē, kuras vēlaties lai parādās izvēlnē (labajā pusē). 
+
+Secība, kādā tos nospiedīsiet, būs secība, kādā tie parādīsies izvēlnē no apakšas uz augšu.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Piekabināmās iekārtas veids</value>
@@ -214,7 +225,7 @@
     <value>Fons</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Pamatojoties uz lauku:</value>
+    <value>Pamatojoties uz lauku</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Apakšējā izvēlne</value>
@@ -388,7 +399,7 @@
     <value>Nepiekrītu</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskusijas:</value>
+    <value>Diskusijas</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Parādīt</value>
@@ -398,6 +409,12 @@
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Attālums līdz karogam</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Saņemt visu</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Notiek lejupielāde... Lūdzu, uzgaidiet</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Iebraukt</value>
@@ -460,7 +477,7 @@
     <value>Iziet</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Iziet uz Windows:</value>
+    <value>Iziet uz Windows</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Papildu vadlīnijas</value>
@@ -513,6 +530,9 @@
   <data name="gsForNow" xml:space="preserve">
     <value>Šobrīd</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Piespiedu pārrakstīšana</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Karogi</value>
   </data>
@@ -524,6 +544,9 @@
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Sprauga</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Saņemt izvēlēto</value>
   </data>
   <data name="gsGpsStep" xml:space="preserve">
     <value>Minimālais GPS solis</value>
@@ -577,7 +600,7 @@
     <value>Ja nepareizs virziens, pieskarieties transportlīdzeklim</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nav attēla:</value>
+    <value>Nav attēla</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Izlīdzināšana</value>
@@ -646,7 +669,7 @@
     <value>Garums</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Skatoties uz priekšu:</value>
+    <value>Skatoties uz priekšu</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Aizkaves laika iestatīšana</value>
@@ -751,7 +774,7 @@
     <value>Nekas nav izdzēsts</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Pabīdīt:</value>
+    <value>Pabīdīt</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nobīdes attālums</value>
@@ -778,7 +801,7 @@
     <value>Ieslēgt/izslēgt</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Caurspīdīgums:</value>
+    <value>Caurspīdīgums</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Atvērt</value>
@@ -787,7 +810,7 @@
     <value>Ārējais</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Pārklājums:</value>
+    <value>Pārklājums</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Pārklājums / sprauga</value>
@@ -813,11 +836,14 @@
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Attālums no aizmugurējās ass</value>
   </data>
+  <data name="gsPlantPop" xml:space="preserve">
+    <value>Augu blīvums</value>
+  </data>
   <data name="gsPleaseEnterABLine" xml:space="preserve">
     <value>Lūdzu, ievadiet AB Līniju</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Lūdzu, pagaidiet ...</value>
+    <value>Lūdzu, pagaidiet</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkts</value>
@@ -918,8 +944,44 @@
   <data name="gsS_West" xml:space="preserve">
     <value>DRietumi</value>
   </data>
+  <data name="gsSaveAllDone" xml:space="preserve">
+    <value>Viss gatavs. Tagad aizveram...</value>
+  </data>
   <data name="gsSaveAndReturn" xml:space="preserve">
     <value>Saglabāt un atgriezties</value>
+  </data>
+  <data name="gsSaveBeerTime" xml:space="preserve">
+    <value>Uz tikšanos nākamreiz!</value>
+  </data>
+  <data name="gsSaveField" xml:space="preserve">
+    <value>Saglabā lauku</value>
+  </data>
+  <data name="gsSaveFieldParam" xml:space="preserve">
+    <value>Saglabā lauka parametrus</value>
+  </data>
+  <data name="gsSaveFieldParamSaved" xml:space="preserve">
+    <value>Lauka parametri ir saglabāti.</value>
+  </data>
+  <data name="gsSaveFieldSavedLocal" xml:space="preserve">
+    <value>Lauks saglabāts lokāli.</value>
+  </data>
+  <data name="gsSaveFinalizeShutdown" xml:space="preserve">
+    <value>Tiek pabeigta izslēgšana</value>
+  </data>
+  <data name="gsSaveSettings" xml:space="preserve">
+    <value>Tiek saglabāti iestatījumi</value>
+  </data>
+  <data name="gsSaveSettingsSaved" xml:space="preserve">
+    <value>Iestatījumi saglabāti.</value>
+  </data>
+  <data name="gsSaveUploadCompleted" xml:space="preserve">
+    <value>Augšupielāde pabeigta.</value>
+  </data>
+  <data name="gsSaveUploadFailed" xml:space="preserve">
+    <value>Augšupielāde neizdevās.</value>
+  </data>
+  <data name="gsSaveUploadToAgshare" xml:space="preserve">
+    <value>Tiek augšupielādēts lauks uz AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Ekrāna pogas</value>
@@ -931,7 +993,7 @@
     <value>Sekciju līnijas</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekcijas:</value>
+    <value>Sekcijas</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Izvēlieties Pogas</value>
@@ -955,7 +1017,7 @@
     <value>Izslēgšana</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Izslēgšana:</value>
+    <value>Izslēgšana</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Nogāzes slīpuma kompensācija</value>
@@ -1049,7 +1111,7 @@
     <value>Svena bulta</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Versijas noteikumi un nosacījumi: </value>
+    <value>Versijas noteikumi un nosacījumi</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Ja izplatāt šīs BEZMAKSAS programmas kopijas, neatkarīgi no tā, vai tā ir bez maksas vai par maksu, uzlabotas, mainītas, jums ir jānodod saņēmējiem tās pašas brīvības, kuras saņēmāt saskaņā ar GPLv3 licenci.</value>
@@ -1097,7 +1159,7 @@ IZMANTOJIET UZ SAVU RISKU.</value>
     <value>Tehnoloģiskās sliedes</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Attālums starp tehnoloģiskajām sliedēm:</value>
+    <value>Attālums starp tehnoloģiskajām sliedēm</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Ieslēdziet AB līkni</value>
@@ -1114,11 +1176,8 @@ IZMANTOJIET UZ SAVU RISKU.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Stūres sensors</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Vienības:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Metriskā/Imperial</value>
+    <value>Vienības</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Izmantojiet atlasīto</value>
@@ -1148,7 +1207,7 @@ IZMANTOJIET UZ SAVU RISKU.</value>
     <value>Iestatiet izlīdzināšanu 3 līdz 4 rādiusa garumā</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Transportlīdzekļa tips:</value>
+    <value>Transportlīdzekļa tips</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS (stūres leņķa sensors) atiestatīts uz 0</value>
@@ -1160,10 +1219,10 @@ IZMANTOJIET UZ SAVU RISKU.</value>
     <value>Rietumi</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Riteņu bāze:</value>
+    <value>Riteņu bāze</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Platums:</value>
+    <value>Platums</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Logi joprojām ir atvērti</value>
@@ -1201,5 +1260,4 @@ IZMANTOJIET UZ SAVU RISKU.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

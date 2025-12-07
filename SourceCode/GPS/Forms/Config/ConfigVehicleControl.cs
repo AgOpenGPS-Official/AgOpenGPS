@@ -22,8 +22,8 @@ namespace AgOpenGPS.Forms.Config
             InitializeComponent();
 
             labelVehicleGroupBox.Text = gStr.gsVehiclegroupbox;
-            labelImage.Text = gStr.gsImage;
-            labelOpacity.Text = gStr.gsOpacity;
+            labelImage.Text = gStr.gsImage + ":";
+            labelOpacity.Text = gStr.gsOpacity + ":";
         }
 
         public TractorBrand TractorBrand

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>AB rajzolás - Válassz 2 pontot a határon a kezdéshez</value>
+    <value>AB rajzolás</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Válassz 2 pontot a határon a kezdéshez</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB egyenes</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>A programról...</value>
+    <value>A programról</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -219,7 +222,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Háttér</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>A következő terület alapján:</value>
+    <value>A következő terület alapján</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Alsó menü</value>
@@ -393,7 +396,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Elutasít</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Fórum:</value>
+    <value>Fórum</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Megjelenít</value>
@@ -466,7 +469,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Kilépés</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Kilépés a windowsba másodperc múlva:</value>
+    <value>Kilépés a windowsba másodperc múlva</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Extra irányvonalak</value>
@@ -585,7 +588,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Rossz irány? Koppintson a Járműre &gt;&gt;</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nincs kép:</value>
+    <value>Nincs kép</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fúzió</value>
@@ -655,7 +658,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Hosszúság</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Előretekintés:</value>
+    <value>Előretekintés</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Előretekintési idő beállítása</value>
@@ -760,7 +763,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Törlés megszakítva</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nyomvonalelhúzás:</value>
+    <value>Nyomvonalelhúzás</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nyonvonal elhúzás távolsága</value>
@@ -787,7 +790,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Be/Ki</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Átlátszóság:</value>
+    <value>Átlátszóság</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Megnyit</value>
@@ -796,7 +799,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Külső</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Átfedés:</value>
+    <value>Átfedés</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Átfedés / Kihagyás</value>
@@ -829,7 +832,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Adj meg AB vonalat</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Kérlek várj...</value>
+    <value>Kérlek várj</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Pont</value>
@@ -940,10 +943,10 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Viszlát legközelebb!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Tábla mentése..</value>
+    <value>Tábla mentése</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Tábla paramétereinek mentése...</value>
+    <value>Tábla paramétereinek mentése</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Tábla paraméterei elmentve.</value>
@@ -952,10 +955,10 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Tábla helyben elmentve.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Leállítás befejezése folyamatban..</value>
+    <value>Leállítás befejezése folyamatban</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Beállítások mentése...</value>
+    <value>Beállítások mentése</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Beállítások elmentve.</value>
@@ -967,7 +970,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>A feltöltés sikertelen.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Feltöltés az AgShare-re...</value>
+    <value>Feltöltés az AgShare-re</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Kijelző gombok</value>
@@ -979,7 +982,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Szakasz határvonalak</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Szakaszok:</value>
+    <value>Szakaszok</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Gombok választása</value>
@@ -1003,7 +1006,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Leállítás</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Leállítás másodperc múlva:</value>
+    <value>Leállítás másodperc múlva</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Extra kormányszög a dőlés arányában</value>
@@ -1097,7 +1100,7 @@ Kapcsoló - Benyom be, Elenged ki</value>
     <value>Svenn nyíl</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Felhasználási feltételk a verzióhoz: </value>
+    <value>Felhasználási feltételk a verzióhoz</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Ha ennek az INGYENES programnak a továbbfejlesztett vagy módosított példányait terjeszti, akár ingyenesen, akár térítés ellenében, akkor át kell adnia a címzetteknek ugyanazokat a szabadságjogokat, amelyeket a GPLv3 licencben leírtak szerint kapott.</value>
@@ -1145,7 +1148,7 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
     <value>Művelőút</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Művelőút szélessége:</value>
+    <value>Művelőút szélessége</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>AB görbe bekapcsolása</value>
@@ -1162,11 +1165,8 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Impulzus szenzor</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Egységek:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Metrikus/Imperiál</value>
+    <value>Egységek</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Kiválasztott használata</value>
@@ -1196,7 +1196,7 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
     <value>Omega forma simítása rádiusz 3x+</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Jármű típus:</value>
+    <value>Jármű típus</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Szögszenzor Nulla</value>
@@ -1208,10 +1208,10 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
     <value>Nyugat</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Tengelytáv:</value>
+    <value>Tengelytáv</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Szélesség:</value>
+    <value>Szélesség</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>A Windows továbbra is nyitva van</value>
@@ -1249,5 +1249,4 @@ HASZNÁLAT SAJÁT FELELŐSSÉGRE.</value>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

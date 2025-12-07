@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Draw AB - Click 2 points on the Boundary to Begin</value>
+    <value>Draw AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Click 2 points on the Boundary to Begin</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Line</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>About...</value>
+    <value>About</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -149,6 +152,9 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Create Advanced Tramlines</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Download Fields From AgShare</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>I Agree to the Terms and Conditions</value>
@@ -219,7 +225,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Background</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Based on Field:</value>
+    <value>Based on Field</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Bottom Menu</value>
@@ -372,7 +378,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Delete Field</value>
   </data>
   <data name="gsDeleteForSure" xml:space="preserve">
-    <value>Delete For Sure?</value>
+    <value>Are you sure you want to delete?</value>
   </data>
   <data name="gsDiameter" xml:space="preserve">
     <value>Diameter</value>
@@ -393,7 +399,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Disagree</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Discussions at:</value>
+    <value>Discussions at</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Display</value>
@@ -403,6 +409,12 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsDistanceToFlag" xml:space="preserve">
     <value>Distance to Flag</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Get All</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Downloading...Please Wait</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Drive In</value>
@@ -465,7 +477,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Exit</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Exit to Windows in:</value>
+    <value>Exit to Windows in</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Extra Guidelines</value>
@@ -518,6 +530,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsForNow" xml:space="preserve">
     <value>For Now</value>
   </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Force Overwrite</value>
+  </data>
   <data name="gsFormFlag" xml:space="preserve">
     <value>Flags</value>
   </data>
@@ -529,6 +544,9 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsGap" xml:space="preserve">
     <value>Gap</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Get Selected</value>
   </data>
   <data name="gsGpsStep" xml:space="preserve">
     <value>Minimum GPS Step</value>
@@ -582,7 +600,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>If Wrong Direction Tap Vehicle</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>No Image:</value>
+    <value>No Image</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fusion</value>
@@ -651,7 +669,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Longtitude</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Look Ahead:</value>
+    <value>Look Ahead</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Look Ahead Time Settings</value>
@@ -756,7 +774,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Nothing Deleted</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nudge:</value>
+    <value>Nudge</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nudge Distance</value>
@@ -783,7 +801,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>On/Off</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Opacity:</value>
+    <value>Opacity</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Open</value>
@@ -792,7 +810,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Outer</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Overlap:</value>
+    <value>Overlap</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Overlap / Gap</value>
@@ -825,7 +843,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Please Enter ABLine</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Please Wait...</value>
+    <value>Please Wait</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Point</value>
@@ -936,10 +954,10 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>See you next time!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Saving field..</value>
+    <value>Saving field</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Saving field parameters...</value>
+    <value>Saving field parameters</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Field parameters saved.</value>
@@ -948,10 +966,10 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Field saved locally.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Finalizing shutdown..</value>
+    <value>Finalizing shutdown</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Saving settings...</value>
+    <value>Saving settings</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Settings saved.</value>
@@ -963,7 +981,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Upload failed.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Uploading field to AgShare...</value>
+    <value>Uploading field to AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Screen Buttons</value>
@@ -975,7 +993,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Section Lines</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sections:</value>
+    <value>Sections</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Select Buttons</value>
@@ -999,7 +1017,7 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Shutdown</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Shutdown in:</value>
+    <value>Shutdown in</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Side Hill per Degree Compensation</value>
@@ -1093,7 +1111,7 @@ Switch - Pushed On, Release Off</value>
     <value>Svenn Arrow</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terms and Conditions for version: </value>
+    <value>Terms and Conditions for version</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>If you distribute copies of this FREE program, whether gratis or for a fee, improved, changed, you must pass on to the recipients the same freedoms that you received as Outlined in the GPLv3 License.</value>
@@ -1141,7 +1159,7 @@ USE AT OWN RISK.</value>
     <value>Tram Lines</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Tram Width:</value>
+    <value>Tram Width</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Turn AB Curve On</value>
@@ -1157,9 +1175,6 @@ USE AT OWN RISK.</value>
   </data>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Turn Sensor</value>
-  </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Units:</value>
   </data>
   <data name="gsUnits" xml:space="preserve">
     <value>Units</value>
@@ -1192,7 +1207,7 @@ USE AT OWN RISK.</value>
     <value>Set Smoothing 3-4x Radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Vehicle Type:</value>
+    <value>Vehicle Type</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Was Zero</value>
@@ -1204,10 +1219,10 @@ USE AT OWN RISK.</value>
     <value>West</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Wheelbase:</value>
+    <value>Wheelbase</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Width:</value>
+    <value>Width</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows Still Open</value>
@@ -1244,20 +1259,5 @@ USE AT OWN RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsForceOverwrite" xml:space="preserve">
-    <value>Force Overwrite</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Get All</value>
-  </data>
-  <data name="gsGetSelected" xml:space="preserve">
-    <value>Get Selected</value>
-  </data>
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Downloading...Please Wait</value>
-  </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Download Fields From AgShare</value>
   </data>
 </root>

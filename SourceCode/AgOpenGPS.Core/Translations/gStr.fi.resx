@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Piirrä AB, Valitse kaksi pistettä reunalinjalta</value>
+    <value>Piirrä AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Valitse kaksi pistettä reunalinjalta</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Ab -linja</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Tietoja...</value>
+    <value>Tietoja</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -156,6 +159,9 @@
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agerssiivisuus</value>
   </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Katso kaikki asetukset</value>
+  </data>
   <data name="gsAlpha" xml:space="preserve">
     <value>Alpha</value>
   </data>
@@ -167,6 +173,15 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Käsitelty</value>
+  </data>
+  <data name="gsAquire" xml:space="preserve">
+    <value>Hanki</value>
+  </data>
+  <data name="gsAquireDescription" xml:space="preserve">
+    <value>Hanki = Kerroin * Pidä</value>
+  </data>
+  <data name="gsAquireFactor" xml:space="preserve">
+    <value>Aquiren kerroin</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Alue</value>
@@ -207,7 +222,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Tausta</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Perustuen peltoon:</value>
+    <value>Perustuen peltoon</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Alavalikko</value>
@@ -381,7 +396,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>En Hyväksy</value>
   </data>
   <data name="gsDiscussions" xml:space="preserve">
-    <value>Foorumi:</value>
+    <value>Foorumi</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Näytä</value>
@@ -453,7 +468,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lopeta</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Poistuu Windowsiin:</value>
+    <value>Poistuu Windowsiin</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Lisä Linjat</value>
@@ -569,6 +584,9 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsIfWrongDirectionTapVehicle" xml:space="preserve">
     <value>Jos väärä suunta napauta ajoneuvoa</value>
   </data>
+  <data name="gsImage" xml:space="preserve">
+    <value>Ei kuvaa</value>
+  </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fuusio</value>
   </data>
@@ -636,7 +654,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Pituusaste</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Ennakointi:</value>
+    <value>Ennakointi</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Ennakoinnin ajastus</value>
@@ -741,7 +759,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Mitään ei poistettu</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Linjan Korjaus:</value>
+    <value>Linjan Korjaus</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Linjan korjauksen etäisyys</value>
@@ -768,7 +786,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Päälle/Pois</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Läpinäkyvyys:</value>
+    <value>Läpinäkyvyys</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Avaa</value>
@@ -777,7 +795,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Ulko</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Limitys:</value>
+    <value>Limitys</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Limitys / Väli</value>
@@ -810,7 +828,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Syötä AB-Linja</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Odota...</value>
+    <value>Odota</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Piste</value>
@@ -921,10 +939,10 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Nähdään ensi kerralla!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Tallennetaan peltoa..</value>
+    <value>Tallennetaan peltoa</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Tallennetaan peltoasetuksia...</value>
+    <value>Tallennetaan peltoasetuksia</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Peltoasetukset tallennettu.</value>
@@ -933,10 +951,10 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Pelto tallennettu paikallisesti.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Sammutus viimeistellään..</value>
+    <value>Sammutus viimeistellään</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Tallennetaan asetuksia...</value>
+    <value>Tallennetaan asetuksia</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Asetukset tallennettu.</value>
@@ -948,7 +966,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lataus epäonnistui.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Ladataan AgShareen...</value>
+    <value>Ladataan AgShareen</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Näytön Napit</value>
@@ -960,7 +978,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lohkojen Linjat</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Lohkoja:</value>
+    <value>Lohkoja</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Valitse Napit</value>
@@ -984,7 +1002,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Sammuta</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Sammuu:</value>
+    <value>Sammuu</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Sivuttaisen kallistuksen komepensointi / aste</value>
@@ -1078,7 +1096,7 @@ Kytkin = Lukkiutuva</value>
     <value>Svenn nuoli</value>
   </data>
   <data name="gsTermsConditions" xml:space="preserve">
-    <value>Version ehdot: </value>
+    <value>Version ehdot</value>
   </data>
   <data name="gsTermsOne" xml:space="preserve">
     <value>Jos jaat tämän ILMAISEN ohjelman kopioita, joko ilmaiseksi tai maksua vastaan, parannettuna, muutettuna, sinun on siirrettävä vastaanottajille samat vapaudet, jotka olet saanut GPLv3-lisenssissä kuvatulla tavalla.</value>
@@ -1126,7 +1144,7 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Ajourat</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Ajourien leveys:</value>
+    <value>Ajourien leveys</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Kytke AB -käyrä päälle</value>
@@ -1143,11 +1161,8 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Kääntöanturi</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Mitat:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Yksiköt (mm / in)</value>
+    <value>Yksiköt</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Käytä valittuja</value>
@@ -1177,7 +1192,7 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Pehmennys 3-4X Säde</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Kulkuneuvon Tyyppi:</value>
+    <value>Kulkuneuvon Tyyppi</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS nollaus</value>
@@ -1189,10 +1204,10 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Länsi</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akseliväli:</value>
+    <value>Akseliväli</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Leveys:</value>
+    <value>Leveys</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows on edelleen auki</value>
@@ -1229,20 +1244,5 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Katso kaikki asetukset</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Hanki</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Hanki = Kerroin * Pidä</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Aquiren kerroin</value>
-  </data>
-  <data name="gsImage" xml:space="preserve">
-    <value>Ei kuvaa:</value>
   </data>
 </root>

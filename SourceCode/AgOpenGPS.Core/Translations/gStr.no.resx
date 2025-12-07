@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Tegn AB - Klikk 2 punkter på grensen for å begynne</value>
+    <value>Tegn AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klikk 2 punkter på grensen for å begynne</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linje</value>
@@ -133,7 +136,7 @@
     <value>A+</value>
   </data>
   <data name="gsAbout" xml:space="preserve">
-    <value>Om...</value>
+    <value>Om</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -570,7 +573,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Hvis feil retning, trykk på kjøretøyet</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Ikke noe bilde:</value>
+    <value>Ikke noe bilde</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fusjon</value>
@@ -636,7 +639,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Lengdegrad</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Look Ahead:</value>
+    <value>Look Ahead</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Innstillinger for Look Ahead</value>
@@ -741,7 +744,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Ingenting slettet</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Flytt:</value>
+    <value>Flytt</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Flytt avstand</value>
@@ -768,7 +771,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>På/Av</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Gjennomsiktighet:</value>
+    <value>Gjennomsiktighet</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Åpne</value>
@@ -777,7 +780,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Ytre</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Overlapp:</value>
+    <value>Overlapp</value>
   </data>
   <data name="gsOverlapGap" xml:space="preserve">
     <value>Overlapp / Gap</value>
@@ -807,7 +810,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Vennligst skriv inn AB-linje</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Vennligst vent...</value>
+    <value>Vennligst vent</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -918,10 +921,10 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Vi ses neste gang!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Lagrer felt..</value>
+    <value>Lagrer felt</value>
   </data>
   <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Lagrer feltparametere...</value>
+    <value>Lagrer feltparametere</value>
   </data>
   <data name="gsSaveFieldParamSaved" xml:space="preserve">
     <value>Feltparametere lagret.</value>
@@ -930,10 +933,10 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Felt lagret lokalt.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Fullfører avslutning..</value>
+    <value>Fullfører avslutning</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Lagrer innstillinger...</value>
+    <value>Lagrer innstillinger</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Innstillinger lagret.</value>
@@ -945,7 +948,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Opplasting mislyktes.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Opplasting til AgShare...</value>
+    <value>Opplasting til AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Skjermknapper</value>
@@ -957,7 +960,7 @@ Rekkefølgen du trykker på dem, vil være rekkefølgen de vises i menyen fra bu
     <value>Seksjonslinjer</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Skesjoner:</value>
+    <value>Skesjoner</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Velg knapper</value>
@@ -1117,7 +1120,7 @@ BRUK PÅ EGEN RISIKO.</value>
     <value>Sprytespor</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Bredde sprøytespor:</value>
+    <value>Bredde sprøytespor</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Slå på AB-kurve</value>
@@ -1133,9 +1136,6 @@ BRUK PÅ EGEN RISIKO.</value>
   </data>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Slå på sensor</value>
-  </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Enheter:</value>
   </data>
   <data name="gsUnits" xml:space="preserve">
     <value>Enheter</value>
@@ -1168,7 +1168,7 @@ BRUK PÅ EGEN RISIKO.</value>
     <value>Sett utjevning 3-4x radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Kjøretøy type:</value>
+    <value>Kjøretøy type</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Nullstill vinkelsensor</value>
@@ -1180,10 +1180,10 @@ BRUK PÅ EGEN RISIKO.</value>
     <value>Vest</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akselavstand:</value>
+    <value>Akselavstand</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Bredde:</value>
+    <value>Bredde</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Vinduer er fortsatt åpne</value>
@@ -1218,5 +1218,4 @@ BRUK PÅ EGEN RISIKO.</value>
   <data name="gsZoomIn" xml:space="preserve">
     <value>Zoom inn</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
 </root>

@@ -115,11 +115,11 @@ namespace AgOpenGPS
             tab1.SelectedTab = tabSummary;
             //Label translations
             //configload-save
-            labelUnitsBottom.Text = gStr.gsUnit;
-            labelToolWidthBottom.Text = gStr.gsWidth;
+            labelUnitsBottom.Text = gStr.gsUnits + ":";
+            labelToolWidthBottom.Text = gStr.gsWidth + ":";
             //tractorconfig
             labelBoxAttachmentStyle.Text = gStr.gsAttachmentStyle;
-            labelTractorUnits.Text = gStr.gsUnit;
+            labelTractorUnits.Text = gStr.gsUnits + ":";
             labelHitchLength.Text = gStr.gsHitchLength;
             labelWheelBase2.Text = gStr.gsWheelbase;
             labelTrack.Text = gStr.gsTrack;

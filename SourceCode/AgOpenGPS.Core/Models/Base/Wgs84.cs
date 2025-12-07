@@ -15,6 +15,10 @@ namespace AgOpenGPS.Core.Models
         public double Latitude { get; }
         public double Longitude { get; }
 
+        public bool IsValid =>
+            Latitude >= -90 && Latitude <= 90 &&
+            Longitude >= -180 && Longitude <= 180;
+
         public double DistanceInMeters(Wgs84 b)
         {
             double aLatRad = Units.DegreesToRadians(Latitude);

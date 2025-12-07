@@ -18,15 +18,15 @@ namespace AgOpenGPS.Forms.Config
         {
             InitializeComponent();
 
-            labelUnits.Text = gStr.gsUnit;
-            labelWidth.Text = gStr.gsWidth;
-            labelSections.Text = gStr.gsSections;
-            labelOffset.Text = gStr.gsOffset;
-            labelOverlap.Text = gStr.gsOverlap;
-            labelLookAhead.Text = gStr.gsLookAhead;
-            labelNudge.Text = gStr.gsNudge;
-            labelTramW.Text = gStr.gsTramWidth;
-            labelWheelBase.Text = gStr.gsWheelbase;
+            labelUnits.Text = gStr.gsUnits + ":";
+            labelWidth.Text = gStr.gsWidth + ":";
+            labelSections.Text = gStr.gsSections + ":";
+            labelOffset.Text = gStr.gsOffset + ":";
+            labelOverlap.Text = gStr.gsOverlap + ":";
+            labelLookAhead.Text = gStr.gsLookAhead + ":";
+            labelNudge.Text = gStr.gsNudge + ":";
+            labelTramW.Text = gStr.gsTramWidth + ":";
+            labelWheelBase.Text = gStr.gsWheelbase + ":";
         }
 
         public void UpdateSummary(FormGPS mf)
