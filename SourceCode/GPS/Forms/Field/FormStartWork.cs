@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using AgLibrary.Logging;
@@ -10,13 +12,26 @@ using AgOpenGPS.IO;
 namespace AgOpenGPS
 {
     /// <summary>
-    /// Start Work Session form - entry point for starting or resuming jobs.
-    /// This form replaces FormJob with a job-based workflow.
+    /// Start Work Session form - all-in-one job management.
+    /// Contains main menu, wizard steps, and job list as switchable panels.
     /// </summary>
     public partial class FormStartWork : Form
     {
         private readonly FormGPS mf;
+
+        // Current view mode
+        private enum ViewMode { Main, WizardStep1, WizardStep2, WizardStep3, ResumeJobList }
+        private ViewMode currentView = ViewMode.Main;
+
+        // Job data
         private CJob lastJob;
+        private List<(CJob Job, string FieldDirectory)> allActiveJobs;
+
+        // Wizard selections
+        private string selectedProfile;
+        private string selectedFieldDir;
+        private string selectedFieldName;
+        private string selectedWorkType;
 
         public FormStartWork(Form callingForm)
         {
@@ -26,170 +41,141 @@ namespace AgOpenGPS
 
         private void FormStartWork_Load(object sender, EventArgs e)
         {
-            // Initialize WorkTypes with vehicles directory (used as settings location)
+            // Initialize WorkTypes
             WorkTypes.Initialize(RegistrySettings.vehiclesDirectory);
 
-            // Configure AgShare buttons based on settings
+            // Configure AgShare buttons
             btnAgShareDownload.Enabled = Properties.Settings.Default.AgShareEnabled;
             btnAgShareUpload.Enabled = Properties.Settings.Default.AgShareEnabled;
 
-            // Check for last active job
-            LoadLastJobInfo();
+            // Load job data
+            LoadJobData();
 
-            // Update UI based on current state
-            UpdateButtonStates();
+            // Show main view
+            ShowView(ViewMode.Main);
 
             // Center on screen
             if (!AgOpenGPS.Helpers.ScreenHelper.IsOnScreen(Bounds))
             {
-                Top = 0;
-                Left = 0;
+                CenterToScreen();
             }
 
             mf.CloseTopMosts();
         }
 
-        private void LoadLastJobInfo()
+        #region View Management
+
+        private void ShowView(ViewMode view)
+        {
+            currentView = view;
+
+            // Hide all panels
+            panelMain.Visible = false;
+            panelWizardStep1.Visible = false;
+            panelWizardStep2.Visible = false;
+            panelWizardStep3.Visible = false;
+            panelResumeList.Visible = false;
+
+            // Show the requested panel
+            switch (view)
+            {
+                case ViewMode.Main:
+                    panelMain.Visible = true;
+                    UpdateMainView();
+                    break;
+                case ViewMode.WizardStep1:
+                    panelWizardStep1.Visible = true;
+                    LoadWizardStep1();
+                    break;
+                case ViewMode.WizardStep2:
+                    panelWizardStep2.Visible = true;
+                    LoadWizardStep2();
+                    break;
+                case ViewMode.WizardStep3:
+                    panelWizardStep3.Visible = true;
+                    LoadWizardStep3();
+                    break;
+                case ViewMode.ResumeJobList:
+                    panelResumeList.Visible = true;
+                    LoadResumeJobList();
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Main View
+
+        private void LoadJobData()
         {
             lastJob = null;
-            lblLastJob.Text = "";
+            allActiveJobs = JobFiles.ListAllActiveJobs(RegistrySettings.fieldsDirectory);
 
-            // First check if there's an open field with jobs
-            if (!string.IsNullOrEmpty(mf.currentFieldDirectory))
+            if (allActiveJobs.Count > 0)
             {
-                string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
-                if (Directory.Exists(fieldDir))
-                {
-                    lastJob = JobFiles.GetLastActiveJob(fieldDir);
-                }
+                lastJob = allActiveJobs[0].Job;
             }
+        }
 
-            // If no job in current field, check all fields
-            if (lastJob == null)
-            {
-                var allJobs = JobFiles.ListAllActiveJobs(RegistrySettings.fieldsDirectory);
-                if (allJobs.Count > 0)
-                {
-                    lastJob = allJobs[0].Job;
-                }
-            }
-
-            // Update label
+        private void UpdateMainView()
+        {
+            // Update resume button and info
             if (lastJob != null)
             {
-                lblLastJob.Text = $"{lastJob.Name}\n{lastJob.FieldName} - {lastJob.WorkType}";
+                lblLastJobInfo.Text = $"{lastJob.Name}\n{lastJob.FieldName} - {lastJob.WorkType}";
                 btnResumeJob.Enabled = true;
             }
             else
             {
-                lblLastJob.Text = "No active jobs";
+                lblLastJobInfo.Text = "No active jobs";
                 btnResumeJob.Enabled = false;
             }
-        }
 
-        private void UpdateButtonStates()
-        {
-            // Close button only enabled if a job is running
-            btnCloseField.Enabled = mf.isJobStarted;
-
-            // If job is running, show current field info
+            // Update current field status
             if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
             {
                 lblCurrentField.Text = $"Current: {mf.displayFieldName}";
                 lblCurrentField.Visible = true;
+                btnCloseField.Enabled = true;
             }
             else
             {
                 lblCurrentField.Visible = false;
+                btnCloseField.Enabled = false;
             }
         }
 
         private void btnNewJob_Click(object sender, EventArgs e)
         {
-            // Save current field if open
-            if (mf.isJobStarted)
-            {
-                _ = mf.FileSaveEverythingBeforeClosingField();
-            }
-
-            // Open the job wizard
-            using (var wizard = new FormJobWizard(mf))
-            {
-                if (wizard.ShowDialog(this) == DialogResult.OK)
-                {
-                    // Job was created and field opened
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-            }
+            // Start wizard at step 1
+            selectedProfile = null;
+            selectedFieldDir = null;
+            selectedFieldName = null;
+            selectedWorkType = null;
+            ShowView(ViewMode.WizardStep1);
         }
 
         private void btnResumeJob_Click(object sender, EventArgs e)
         {
-            if (lastJob == null)
+            if (allActiveJobs.Count > 1)
             {
-                // Show job picker
-                using (var form = new FormResumeJob(mf))
-                {
-                    if (form.ShowDialog(this) == DialogResult.OK)
-                    {
-                        DialogResult = DialogResult.OK;
-                        Close();
-                    }
-                }
+                // Show job list to pick from
+                ShowView(ViewMode.ResumeJobList);
             }
-            else
+            else if (lastJob != null)
             {
-                // Resume the last job directly
-                ResumeJob(lastJob);
+                // Resume directly
+                ResumeJob(lastJob, allActiveJobs[0].FieldDirectory);
             }
-        }
-
-        private void ResumeJob(CJob job)
-        {
-            if (job == null) return;
-
-            // Save current field if open
-            if (mf.isJobStarted)
-            {
-                _ = mf.FileSaveEverythingBeforeClosingField();
-            }
-
-            // Find the field directory for this job
-            string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, job.FieldName);
-            string fieldFile = Path.Combine(fieldDir, "Field.txt");
-
-            if (!File.Exists(fieldFile))
-            {
-                mf.TimedMessageBox(2000, gStr.gsError, "Field not found");
-                return;
-            }
-
-            // Open the field
-            mf.FileOpenField(fieldFile);
-
-            // Update job timestamp
-            job.Touch();
-            JobFiles.Save(job, fieldDir);
-
-            // Set current job in FormGPS (will be implemented later)
-            // mf.currentJob = job;
-
-            Log.EventWriter($"Job resumed: {job.Name}");
-
-            DialogResult = DialogResult.OK;
-            Close();
         }
 
         private void btnOpenFieldOnly_Click(object sender, EventArgs e)
         {
-            // Save current field if open
             if (mf.isJobStarted)
             {
                 _ = mf.FileSaveEverythingBeforeClosingField();
             }
 
-            // Show field picker
             mf.filePickerFileAndDirectory = "";
             using (var form = new FormFilePicker(mf))
             {
@@ -252,11 +238,351 @@ namespace AgOpenGPS
             Close();
         }
 
+        #endregion
+
+        #region Wizard Step 1 - Profile Selection
+
+        private void LoadWizardStep1()
+        {
+            listProfiles.Items.Clear();
+
+            // Add current profile option
+            string currentProfile = RegistrySettings.vehicleFileName;
+            if (!string.IsNullOrEmpty(currentProfile))
+            {
+                listProfiles.Items.Add($"Current: {currentProfile}");
+            }
+
+            // Load available profiles
+            if (Directory.Exists(RegistrySettings.vehiclesDirectory))
+            {
+                foreach (string file in Directory.GetFiles(RegistrySettings.vehiclesDirectory, "*.XML"))
+                {
+                    string name = Path.GetFileNameWithoutExtension(file);
+                    if (name != currentProfile)
+                    {
+                        listProfiles.Items.Add(name);
+                    }
+                }
+            }
+
+            if (listProfiles.Items.Count > 0)
+                listProfiles.SelectedIndex = 0;
+        }
+
+        private void btnWizard1Next_Click(object sender, EventArgs e)
+        {
+            if (listProfiles.SelectedItem != null)
+            {
+                string selected = listProfiles.SelectedItem.ToString();
+                selectedProfile = selected.StartsWith("Current:")
+                    ? RegistrySettings.vehicleFileName
+                    : selected;
+            }
+            else
+            {
+                selectedProfile = RegistrySettings.vehicleFileName;
+            }
+
+            ShowView(ViewMode.WizardStep2);
+        }
+
+        private void btnWizard1Back_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.Main);
+        }
+
+        #endregion
+
+        #region Wizard Step 2 - Field Selection
+
+        private void LoadWizardStep2()
+        {
+            listFields.Items.Clear();
+
+            // Add current field if open
+            if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
+            {
+                listFields.Items.Add($"Current: {mf.displayFieldName}");
+            }
+
+            // Load available fields
+            if (Directory.Exists(RegistrySettings.fieldsDirectory))
+            {
+                foreach (string dir in Directory.GetDirectories(RegistrySettings.fieldsDirectory))
+                {
+                    string fieldFile = Path.Combine(dir, "Field.txt");
+                    if (File.Exists(fieldFile))
+                    {
+                        string name = Path.GetFileName(dir);
+                        if (name != mf.currentFieldDirectory)
+                        {
+                            listFields.Items.Add(name);
+                        }
+                    }
+                }
+            }
+
+            if (listFields.Items.Count > 0)
+                listFields.SelectedIndex = 0;
+        }
+
+        private void btnWizard2Next_Click(object sender, EventArgs e)
+        {
+            if (listFields.SelectedItem != null)
+            {
+                string selected = listFields.SelectedItem.ToString();
+                if (selected.StartsWith("Current:"))
+                {
+                    selectedFieldName = mf.displayFieldName;
+                    selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+                }
+                else
+                {
+                    selectedFieldName = selected;
+                    selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected);
+                }
+            }
+
+            if (string.IsNullOrEmpty(selectedFieldDir))
+            {
+                mf.TimedMessageBox(1500, "Select Field", "Please select a field");
+                return;
+            }
+
+            ShowView(ViewMode.WizardStep3);
+        }
+
+        private void btnWizard2Back_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.WizardStep1);
+        }
+
+        #endregion
+
+        #region Wizard Step 3 - Work Type & Job Name
+
+        private void LoadWizardStep3()
+        {
+            flpWorkTypes.Controls.Clear();
+
+            // Create work type buttons
+            foreach (var workType in WorkTypes.All)
+            {
+                var btn = new Button
+                {
+                    Text = workType.Name,
+                    Tag = workType.Id,
+                    Width = 150,
+                    Height = 60,
+                    Font = new Font("Tahoma", 12F, FontStyle.Bold),
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = Color.White,
+                    Margin = new Padding(5)
+                };
+                btn.FlatAppearance.BorderSize = 1;
+                btn.Click += WorkTypeButton_Click;
+                flpWorkTypes.Controls.Add(btn);
+            }
+
+            // Generate default job name
+            txtJobName.Text = $"{DateTime.Now:yyyy-MM-dd}_Work_{selectedProfile}";
+        }
+
+        private void WorkTypeButton_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Button;
+            selectedWorkType = btn.Tag.ToString();
+
+            // Highlight selected
+            foreach (Control c in flpWorkTypes.Controls)
+            {
+                if (c is Button b)
+                {
+                    b.BackColor = (b == btn) ? Color.FromArgb(0, 119, 190) : Color.White;
+                    b.ForeColor = (b == btn) ? Color.White : Color.Black;
+                }
+            }
+
+            // Update job name
+            txtJobName.Text = $"{DateTime.Now:yyyy-MM-dd}_{selectedWorkType}_{selectedProfile}";
+        }
+
+        private void btnWizard3Start_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtJobName.Text))
+            {
+                mf.TimedMessageBox(1500, "Job Name", "Please enter a job name");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(selectedWorkType))
+            {
+                selectedWorkType = "Other";
+            }
+
+            // Create the job
+            CreateAndStartJob();
+        }
+
+        private void btnWizard3Back_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.WizardStep2);
+        }
+
+        private void CreateAndStartJob()
+        {
+            // Save current field if open
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            // Create new job
+            var job = new CJob(
+                selectedFieldName,
+                selectedProfile,
+                selectedWorkType,
+                mf.tool.width,
+                txtJobName.Text
+            );
+
+            // Initialize job files
+            JobFiles.InitializeJobFiles(job, selectedFieldDir);
+
+            // Open the field
+            string fieldFile = Path.Combine(selectedFieldDir, "Field.txt");
+            mf.FileOpenField(fieldFile);
+
+            Log.EventWriter($"New job created: {job.Name}");
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        #endregion
+
+        #region Resume Job List
+
+        private void LoadResumeJobList()
+        {
+            flpJobList.Controls.Clear();
+
+            if (allActiveJobs.Count == 0)
+            {
+                var lbl = new Label
+                {
+                    Text = "No active jobs found",
+                    Font = new Font("Tahoma", 14F),
+                    ForeColor = Color.Gray,
+                    AutoSize = true,
+                    Margin = new Padding(20)
+                };
+                flpJobList.Controls.Add(lbl);
+                return;
+            }
+
+            foreach (var item in allActiveJobs)
+            {
+                var panel = CreateJobPanel(item.Job, item.FieldDirectory);
+                flpJobList.Controls.Add(panel);
+            }
+        }
+
+        private Panel CreateJobPanel(CJob job, string fieldDir)
+        {
+            var panel = new Panel
+            {
+                Width = flpJobList.Width - 30,
+                Height = 80,
+                BackColor = Color.White,
+                Margin = new Padding(5),
+                Cursor = Cursors.Hand,
+                Tag = new JobSelection { Job = job, FieldDirectory = fieldDir }
+            };
+
+            var lblName = new Label
+            {
+                Text = job.Name,
+                Font = new Font("Tahoma", 14F, FontStyle.Bold),
+                Location = new Point(15, 12),
+                AutoSize = true
+            };
+
+            var lblDetails = new Label
+            {
+                Text = $"{job.FieldName} - {job.WorkType} | Last: {job.LastOpenedAt:g}",
+                Font = new Font("Tahoma", 10F),
+                ForeColor = Color.DimGray,
+                Location = new Point(15, 42),
+                AutoSize = true
+            };
+
+            panel.Controls.Add(lblName);
+            panel.Controls.Add(lblDetails);
+
+            panel.Click += JobPanel_Click;
+            lblName.Click += (s, e) => JobPanel_Click(panel, e);
+            lblDetails.Click += (s, e) => JobPanel_Click(panel, e);
+
+            panel.MouseEnter += (s, e) => panel.BackColor = Color.FromArgb(230, 240, 250);
+            panel.MouseLeave += (s, e) => panel.BackColor = Color.White;
+
+            return panel;
+        }
+
+        private void JobPanel_Click(object sender, EventArgs e)
+        {
+            var panel = sender as Panel;
+            if (panel?.Tag is JobSelection selection)
+            {
+                ResumeJob(selection.Job, selection.FieldDirectory);
+            }
+        }
+
+        private void btnResumeListBack_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.Main);
+        }
+
+        private void ResumeJob(CJob job, string fieldDir)
+        {
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            string fieldFile = Path.Combine(fieldDir, "Field.txt");
+            if (!File.Exists(fieldFile))
+            {
+                mf.TimedMessageBox(2000, gStr.gsError, "Field not found");
+                return;
+            }
+
+            mf.FileOpenField(fieldFile);
+
+            job.Touch();
+            JobFiles.Save(job, fieldDir);
+
+            Log.EventWriter($"Job resumed: {job.Name}");
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        #endregion
+
         private void FormStartWork_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.setJobMenu_location = Location;
             Properties.Settings.Default.setJobMenu_size = Size;
             Properties.Settings.Default.Save();
+        }
+
+        private class JobSelection
+        {
+            public CJob Job { get; set; }
+            public string FieldDirectory { get; set; }
         }
     }
 }
