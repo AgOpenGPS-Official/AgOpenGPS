@@ -55,6 +55,22 @@ namespace AgOpenGPS
         }
 
         /// <summary>
+        /// Check if the field has legacy coverage data (Sections.txt in field root).
+        /// Returns true if legacy data exists and no Jobs folder is present.
+        /// </summary>
+        public bool HasLegacyCoverageData()
+        {
+            var fieldDir = GetFieldDir(false);
+            if (string.IsNullOrEmpty(fieldDir) || !Directory.Exists(fieldDir)) return false;
+
+            var sectionsFile = Path.Combine(fieldDir, "Sections.txt");
+            var jobsFolder = Path.Combine(fieldDir, "Jobs");
+
+            // Legacy data exists if Sections.txt is in field root and Jobs folder doesn't exist
+            return File.Exists(sectionsFile) && !Directory.Exists(jobsFolder);
+        }
+
+        /// <summary>
         /// Load job-specific coverage data (Sections, Contour, Flags, RecPath) from the current job directory.
         /// Call this after setting currentJob to load job-specific data.
         /// </summary>
