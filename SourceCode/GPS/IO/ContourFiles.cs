@@ -69,5 +69,13 @@ namespace AgOpenGPS.IO
                 writer.WriteLine("$Contour");
             }
         }
+
+        /// <summary>
+        /// Alias for CreateFile for consistency with other IO classes
+        /// </summary>
+        public static void CreateEmpty(string fieldDirectory)
+        {
+            CreateFile(fieldDirectory);
+        }
     }
 }

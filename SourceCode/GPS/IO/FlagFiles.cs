@@ -112,5 +112,24 @@ namespace AgOpenGPS.IO
                 }
             }
         }
+
+        /// <summary>
+        /// Create or overwrite an empty Flags.txt with header.
+        /// </summary>
+        public static void CreateEmpty(string fieldDirectory)
+        {
+            if (string.IsNullOrEmpty(fieldDirectory))
+                throw new ArgumentNullException(nameof(fieldDirectory));
+
+            if (!Directory.Exists(fieldDirectory))
+                Directory.CreateDirectory(fieldDirectory);
+
+            var path = Path.Combine(fieldDirectory, "Flags.txt");
+            using (var writer = new StreamWriter(path, false))
+            {
+                writer.WriteLine("$Flags");
+                writer.WriteLine("0");
+            }
+        }
     }
 }
