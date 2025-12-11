@@ -33,11 +33,44 @@ namespace AgOpenGPS
         private string selectedFieldName;
         private string selectedWorkType;
 
+        // For borderless form dragging
+        private bool isDragging = false;
+        private Point dragStartPoint;
+
         public FormStartWork(Form callingForm)
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
         }
+
+        #region Borderless Form Drag
+
+        private void panelHeader_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                dragStartPoint = e.Location;
+            }
+        }
+
+        private void panelHeader_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                Point currentScreenPos = PointToScreen(e.Location);
+                Location = new Point(
+                    currentScreenPos.X - dragStartPoint.X - panelHeader.Location.X,
+                    currentScreenPos.Y - dragStartPoint.Y - panelHeader.Location.Y);
+            }
+        }
+
+        private void panelHeader_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragging = false;
+        }
+
+        #endregion
 
         private void FormStartWork_Load(object sender, EventArgs e)
         {
