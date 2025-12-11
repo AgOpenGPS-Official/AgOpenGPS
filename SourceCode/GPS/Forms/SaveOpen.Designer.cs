@@ -35,6 +35,89 @@ namespace AgOpenGPS
             return dir;
         }
 
+        /// <summary>
+        /// Returns the job directory for job-specific files (Sections, Contour, Flags, RecPath).
+        /// When a job is active, returns the job folder. Otherwise, returns the field folder (backward compatibility).
+        /// </summary>
+        private string GetJobDir(bool ensureExists = false)
+        {
+            if (currentJob != null)
+            {
+                var jobDir = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Jobs", currentJob.FolderName);
+                if (ensureExists && !Directory.Exists(jobDir))
+                {
+                    Directory.CreateDirectory(jobDir);
+                }
+                return jobDir;
+            }
+            // No active job - use field directory for backward compatibility
+            return GetFieldDir(ensureExists);
+        }
+
+        /// <summary>
+        /// Load job-specific coverage data (Sections, Contour, Flags, RecPath) from the current job directory.
+        /// Call this after setting currentJob to load job-specific data.
+        /// </summary>
+        public void FileLoadJobData()
+        {
+            var jobDir = GetJobDir(false);
+            if (!Directory.Exists(jobDir)) return;
+
+            // --- Sections ---
+            if (TryLoad("Sections.txt", LoadCriticality.Optional, () => SectionsFiles.Load(jobDir), out var sections))
+            {
+                fd.workedAreaTotal = 0;
+                fd.distanceUser = 0;
+                if (triStrip != null && triStrip.Count > 0 && triStrip[0] != null)
+                {
+                    triStrip[0].patchList = new List<List<vec3>>();
+                    foreach (var patch in sections)
+                    {
+                        triStrip[0].triangleList = new List<vec3>(patch);
+                        triStrip[0].patchList.Add(triStrip[0].triangleList);
+
+                        int verts = patch.Count - 2;
+                        if (verts >= 2)
+                        {
+                            for (int j = 1; j < verts; j++)
+                            {
+                                double temp = patch[j].easting * (patch[j + 1].northing - patch[j + 2].northing)
+                                            + patch[j + 1].easting * (patch[j + 2].northing - patch[j].northing)
+                                            + patch[j + 2].easting * (patch[j].northing - patch[j + 1].northing);
+                                fd.workedAreaTotal += Math.Abs(temp * 0.5);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // --- Contour ---
+            if (TryLoad("Contour.txt", LoadCriticality.Optional, () => ContourFiles.Load(jobDir), out var contours))
+            {
+                ct.stripList.Clear();
+                foreach (var patch in contours)
+                {
+                    ct.ptList = new List<vec3>(patch);
+                    ct.stripList.Add(ct.ptList);
+                }
+            }
+
+            // --- Flags ---
+            if (TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(jobDir), out var flags))
+            {
+                flagPts.Clear();
+                flagPts.AddRange(flags);
+            }
+
+            // --- RecPath ---
+            if (TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(jobDir), out var recPathList))
+            {
+                recPath.recList.Clear();
+                recPath.recList.AddRange(recPathList);
+            }
+            panelDrag.Visible = recPath.recList.Count > 0;
+        }
+
         // Open a field with required precheck and per-file loaders.
         public void FileOpenField(string openType)
         {
@@ -250,20 +333,20 @@ namespace AgOpenGPS
             sbGrid.Clear();
         }
 
-        // Append pending sections.
+        // Append pending sections to job directory (or field directory if no job).
         public void FileSaveSections()
         {
             if (patchSaveList.Count > 0)
             {
-                SectionsFiles.Append(GetFieldDir(true), patchSaveList);
+                SectionsFiles.Append(GetJobDir(true), patchSaveList);
                 patchSaveList.Clear();
             }
         }
 
-        // Create empty Sections.txt.
+        // Create empty Sections.txt in job directory.
         public void FileCreateSections()
         {
-            SectionsFiles.CreateEmpty(GetFieldDir(true));
+            SectionsFiles.CreateEmpty(GetJobDir(true));
         }
 
         // Create Boundary.txt header.
@@ -274,24 +357,24 @@ namespace AgOpenGPS
         }
 
 
-        // Create Flags.txt header and zero count.
+        // Create Flags.txt header and zero count in job directory.
         public void FileCreateFlags()
         {
-            FlagsFiles.Save(GetFieldDir(true), new List<CFlag>(0));
+            FlagsFiles.Save(GetJobDir(true), new List<CFlag>(0));
         }
 
-        // Create Contour.txt with header.
+        // Create Contour.txt with header in job directory.
         public void FileCreateContour()
         {
-            ContourFiles.CreateFile(GetFieldDir(true));
+            ContourFiles.CreateFile(GetJobDir(true));
         }
 
-        // Append pending contour patches.
+        // Append pending contour patches to job directory.
         public void FileSaveContour()
         {
             if (contourSaveList.Count > 0)
             {
-                ContourFiles.Append(GetFieldDir(true), contourSaveList);
+                ContourFiles.Append(GetJobDir(true), contourSaveList);
                 contourSaveList.Clear();
             }
         }
@@ -314,24 +397,24 @@ namespace AgOpenGPS
             HeadlandFiles.Save(GetFieldDir(true), bnd.bndList);
         }
 
-        // Create RecPath header + zero count.
+        // Create RecPath header + zero count in job directory.
         public void FileCreateRecPath()
         {
-            var dir = GetFieldDir(true);
+            var dir = GetJobDir(true);
             RecPathFiles.CreateEmpty(dir);
         }
 
 
-        // Save recorded path.
+        // Save recorded path to job directory.
         public void FileSaveRecPath(string name = "RecPath.Txt")
         {
-            RecPathFiles.Save(GetFieldDir(true), recPath.recList, name);
+            RecPathFiles.Save(GetJobDir(true), recPath.recList, name);
         }
 
-        // Load RecPath.txt (message if missing).
+        // Load RecPath.txt from job directory (message if missing).
         public void FileLoadRecPath()
         {
-            var dir = GetFieldDir();
+            var dir = GetJobDir();
 
             List<CRecPathPt> rec;
             if (!TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir), out rec))
@@ -344,10 +427,10 @@ namespace AgOpenGPS
             panelDrag.Visible = recPath.recList.Count > 0;
         }
 
-        // Save flags.
+        // Save flags to job directory.
         public void FileSaveFlags()
         {
-            FlagsFiles.Save(GetFieldDir(true), flagPts);
+            FlagsFiles.Save(GetJobDir(true), flagPts);
         }
 
         private void SetButtons()
