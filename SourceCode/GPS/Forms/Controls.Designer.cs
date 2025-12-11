@@ -533,7 +533,7 @@ namespace AgOpenGPS
                 return;
             }
 
-            using (var form = new FormJob(this))
+            using (var form = new FormStartWork(this))
             {
                 var result = form.ShowDialog(this);
 
@@ -547,23 +547,6 @@ namespace AgOpenGPS
                 {
                     if (autoBtnState == btnStates.Auto) btnSectionMasterAuto.PerformClick();
                     if (manualBtnState == btnStates.On) btnSectionMasterManual.PerformClick();
-                }
-
-                if (result == DialogResult.Yes)
-                {
-                    using (var form2 = new FormFieldDir(this)) { form2.ShowDialog(this); }
-                }
-                else if (result == DialogResult.No)
-                {
-                    using (var form2 = new FormFieldKML(this)) { form2.ShowDialog(this); }
-                }
-                else if (result == DialogResult.Retry)
-                {
-                    using (var form2 = new FormFieldExisting(this)) { form2.ShowDialog(this); }
-                }
-                else if (result == DialogResult.Abort)
-                {
-                    using (var form2 = new FormFieldIsoXml(this)) { form2.ShowDialog(this); }
                 }
 
                 // ---- Only log "Opened" if a field was newly opened or changed ----
