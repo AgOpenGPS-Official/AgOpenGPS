@@ -75,6 +75,11 @@ namespace AgOpenGPS
 
         public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
+        /// <summary>
+        /// The currently active job, or null if no job is active.
+        /// Jobs track work sessions within a field.
+        /// </summary>
+        public CJob currentJob { get; set; }
 
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
