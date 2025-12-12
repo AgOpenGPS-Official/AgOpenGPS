@@ -33,44 +33,11 @@ namespace AgOpenGPS
         private string selectedFieldName;
         private string selectedWorkType;
 
-        // For borderless form dragging
-        private bool isDragging = false;
-        private Point dragStartPoint;
-
         public FormStartWork(Form callingForm)
         {
             mf = callingForm as FormGPS;
             InitializeComponent();
         }
-
-        #region Borderless Form Drag
-
-        private void panelHeader_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                isDragging = true;
-                dragStartPoint = e.Location;
-            }
-        }
-
-        private void panelHeader_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (isDragging)
-            {
-                Point currentScreenPos = PointToScreen(e.Location);
-                Location = new Point(
-                    currentScreenPos.X - dragStartPoint.X - panelHeader.Location.X,
-                    currentScreenPos.Y - dragStartPoint.Y - panelHeader.Location.Y);
-            }
-        }
-
-        private void panelHeader_MouseUp(object sender, MouseEventArgs e)
-        {
-            isDragging = false;
-        }
-
-        #endregion
 
         private void FormStartWork_Load(object sender, EventArgs e)
         {
@@ -176,16 +143,46 @@ namespace AgOpenGPS
                 lblCurrentField.Visible = false;
                 btnCloseField.Enabled = false;
             }
+
+            // Update Close Job and Finish Job buttons based on currentJob state
+            bool hasActiveJob = mf.currentJob != null;
+            btnCloseJob.Enabled = hasActiveJob;
+            btnFinishJob.Enabled = hasActiveJob;
+
+            // Disable Resume/New Job if a job is already open (can't have 2 jobs at once)
+            if (hasActiveJob)
+            {
+                btnResumeJob.Enabled = false;
+                btnNewJob.Enabled = false;
+            }
+            else
+            {
+                btnNewJob.Enabled = true;
+                // btnResumeJob already set above based on lastJob
+            }
         }
 
         private void btnNewJob_Click(object sender, EventArgs e)
         {
-            // Start wizard at step 1
+            // Reset wizard selections
             selectedProfile = null;
             selectedFieldDir = null;
             selectedFieldName = null;
             selectedWorkType = null;
-            ShowView(ViewMode.WizardStep1);
+
+            // If a field is already open, skip to step 3 (work type selection)
+            if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
+            {
+                selectedProfile = RegistrySettings.vehicleFileName;
+                selectedFieldName = mf.displayFieldName;
+                selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+                ShowView(ViewMode.WizardStep3);
+            }
+            else
+            {
+                // Start wizard at step 1
+                ShowView(ViewMode.WizardStep1);
+            }
         }
 
         private void btnResumeJob_Click(object sender, EventArgs e)
@@ -269,6 +266,62 @@ namespace AgOpenGPS
             mf.isCancelJobMenu = true;
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void btnCloseJob_Click(object sender, EventArgs e)
+        {
+            if (mf.currentJob == null)
+            {
+                mf.TimedMessageBox(1500, "No Job", "No active job to close");
+                return;
+            }
+
+            // Save current job data
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            // Clear the current job reference
+            var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+            JobFiles.Save(mf.currentJob, fieldDir);
+
+            Log.EventWriter($"Job closed: {mf.currentJob.Name}");
+            mf.currentJob = null;
+
+            // Reload job data and update view
+            LoadJobData();
+            UpdateMainView();
+        }
+
+        private void btnFinishJob_Click(object sender, EventArgs e)
+        {
+            if (mf.currentJob == null)
+            {
+                mf.TimedMessageBox(1500, "No Job", "No active job to finish");
+                return;
+            }
+
+            // Mark job as completed
+            mf.currentJob.IsCompleted = true;
+
+            // Save current job data
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+            JobFiles.Save(mf.currentJob, fieldDir);
+
+            Log.EventWriter($"Job finished: {mf.currentJob.Name}");
+            mf.currentJob = null;
+
+            // Reload job data and update view
+            LoadJobData();
+            UpdateMainView();
+
+            mf.TimedMessageBox(1500, "Job Completed", "Job has been marked as finished");
         }
 
         #endregion
@@ -460,13 +513,25 @@ namespace AgOpenGPS
 
         private void btnWizard3Back_Click(object sender, EventArgs e)
         {
-            ShowView(ViewMode.WizardStep2);
+            // If field was already open, we skipped steps 1 and 2, so go back to main
+            if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
+            {
+                ShowView(ViewMode.Main);
+            }
+            else
+            {
+                ShowView(ViewMode.WizardStep2);
+            }
         }
 
         private void CreateAndStartJob()
         {
-            // Save current field if open
-            if (mf.isJobStarted)
+            // Check if we're creating a job for the already open field
+            bool fieldAlreadyOpen = mf.isJobStarted &&
+                Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory) == selectedFieldDir;
+
+            // Save current field data if open (but don't close if it's the same field)
+            if (mf.isJobStarted && !fieldAlreadyOpen)
             {
                 _ = mf.FileSaveEverythingBeforeClosingField();
             }
@@ -483,9 +548,15 @@ namespace AgOpenGPS
             // Initialize job files
             JobFiles.InitializeJobFiles(job, selectedFieldDir);
 
-            // Open the field
-            string fieldFile = Path.Combine(selectedFieldDir, "Field.txt");
-            mf.FileOpenField(fieldFile);
+            // Set the current job
+            mf.currentJob = job;
+
+            // Only open the field if it's not already open
+            if (!fieldAlreadyOpen)
+            {
+                string fieldFile = Path.Combine(selectedFieldDir, "Field.txt");
+                mf.FileOpenField(fieldFile);
+            }
 
             Log.EventWriter($"New job created: {job.Name}");
 
@@ -527,35 +598,50 @@ namespace AgOpenGPS
             var panel = new Panel
             {
                 Width = flpJobList.Width - 30,
-                Height = 80,
+                Height = 70,
                 BackColor = Color.White,
                 Margin = new Padding(5),
                 Cursor = Cursors.Hand,
                 Tag = new JobSelection { Job = job, FieldDirectory = fieldDir }
             };
 
-            var lblName = new Label
+            // Field name on the left (prominent)
+            var lblField = new Label
             {
-                Text = job.Name,
-                Font = new Font("Tahoma", 14F, FontStyle.Bold),
-                Location = new Point(15, 12),
+                Text = job.FieldName,
+                Font = new Font("Tahoma", 16F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 119, 190),
+                Location = new Point(15, 10),
                 AutoSize = true
             };
 
+            // Job name next to field name
+            var lblJobName = new Label
+            {
+                Text = $"  -  {job.Name}",
+                Font = new Font("Tahoma", 14F),
+                ForeColor = Color.FromArgb(60, 60, 60),
+                Location = new Point(lblField.PreferredWidth + 15, 12),
+                AutoSize = true
+            };
+
+            // Work type and last opened on second line
             var lblDetails = new Label
             {
-                Text = $"{job.FieldName} - {job.WorkType} | Last: {job.LastOpenedAt:g}",
+                Text = $"{job.WorkType}  |  Last opened: {job.LastOpenedAt:g}",
                 Font = new Font("Tahoma", 10F),
                 ForeColor = Color.DimGray,
                 Location = new Point(15, 42),
                 AutoSize = true
             };
 
-            panel.Controls.Add(lblName);
+            panel.Controls.Add(lblField);
+            panel.Controls.Add(lblJobName);
             panel.Controls.Add(lblDetails);
 
             panel.Click += JobPanel_Click;
-            lblName.Click += (s, e) => JobPanel_Click(panel, e);
+            lblField.Click += (s, e) => JobPanel_Click(panel, e);
+            lblJobName.Click += (s, e) => JobPanel_Click(panel, e);
             lblDetails.Click += (s, e) => JobPanel_Click(panel, e);
 
             panel.MouseEnter += (s, e) => panel.BackColor = Color.FromArgb(230, 240, 250);
@@ -580,11 +666,6 @@ namespace AgOpenGPS
 
         private void ResumeJob(CJob job, string fieldDir)
         {
-            if (mf.isJobStarted)
-            {
-                _ = mf.FileSaveEverythingBeforeClosingField();
-            }
-
             string fieldFile = Path.Combine(fieldDir, "Field.txt");
             if (!File.Exists(fieldFile))
             {
@@ -592,7 +673,27 @@ namespace AgOpenGPS
                 return;
             }
 
+            // Check if we're resuming a job in the currently open field
+            bool sameField = mf.isJobStarted &&
+                Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory) == fieldDir;
+
+            // Close current field if open (save first)
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+
+                // If it's a different field, we need to properly close and reopen
+                if (!sameField)
+                {
+                    mf.AppModel.Fields.CloseField();
+                }
+            }
+
+            // Open the field (or refresh if same field)
             mf.FileOpenField(fieldFile);
+
+            // Set the current job
+            mf.currentJob = job;
 
             job.Touch();
             JobFiles.Save(job, fieldDir);
