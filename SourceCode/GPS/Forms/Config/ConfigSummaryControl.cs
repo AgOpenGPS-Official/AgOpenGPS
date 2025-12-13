@@ -18,6 +18,7 @@ namespace AgOpenGPS.Forms.Config
         {
             InitializeComponent();
 
+            labelProfileMenuHint.Text = gStr.gsProfileMenuHint;
             labelUnits.Text = gStr.gsUnits + ":";
             labelWidth.Text = gStr.gsWidth + ":";
             labelSections.Text = gStr.gsSections + ":";

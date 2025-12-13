@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -76,6 +135,12 @@
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
   </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Hämta</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Hämtningsfaktor</value>
+  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Åtgärd har avbrutits</value>
   </data>
@@ -87,6 +152,38 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Skapa avancerade körspår</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Ladda ner fält från AgShare</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Acceptera</value>
+  </data>
+  <data name="gsAgressiveness" xml:space="preserve">
+    <value>Aggressivitet</value>
+  </data>
+  <data name="gsAllSettings" xml:space="preserve">
+    <value>Visa alla inställningar</value>
+  </data>
+  <data name="gsAlpha" xml:space="preserve">
+    <value>Transparans</value>
+  </data>
+  <data name="gsAntennaHeight" xml:space="preserve">
+    <value>Antenn höjd</value>
+  </data>
+  <data name="gsAntennaOffset" xml:space="preserve">
+    <value>Antenn förskjutning</value>
+  </data>
+  <data name="gsApplied" xml:space="preserve">
+    <value>Bearbetad</value>
+  </data>
+  <data name="gsArea" xml:space="preserve">
+    <value>Areal</value>
+  </data>
+  <data name="gsArrangeText" xml:space="preserve">
+    <value>Tryck på knapparna på vänstersida som du vill ha i menyn(höger sida).
+
+Ordningen de trycks på är den ordningen de kommer visar i menyn uppifrån och ner.</value>
   </data>
   <data name="gsAttachmentStyle" xml:space="preserve">
     <value>Redskaps typ</value>
@@ -289,41 +386,35 @@
   <data name="gsDirectionMarkers" xml:space="preserve">
     <value>Riktningsvisare</value>
   </data>
-  <data name="gsAcquire" xml:space="preserve">
-    <value>Hämta</value>
+  <data name="gsDirectories" xml:space="preserve">
+    <value>Mappar</value>
   </data>
-  <data name="gsAcquireFactor" xml:space="preserve">
-    <value>Hämtningsfaktor</value>
+  <data name="gsDirectoryExists" xml:space="preserve">
+    <value>Mapp existerar</value>
   </data>
-  <data name="gsZones" xml:space="preserve">
-    <value>Zoner</value>
+  <data name="gsDisagree" xml:space="preserve">
+    <value>håller inte med</value>
   </data>
-  <data name="gsZoomIn" xml:space="preserve">
-    <value>Zooma in</value>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Discourse forum</value>
   </data>
-  <data name="v_AboutIntro" xml:space="preserve">
-    <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  <data name="gsDisplay" xml:space="preserve">
+    <value>Visa</value>
   </data>
-  <data name="gsAgressiveness" xml:space="preserve">
-    <value>Aggressivitet</value>
+  <data name="gsDistance" xml:space="preserve">
+    <value>Distans</value>
   </data>
-  <data name="gsAllSettings" xml:space="preserve">
-    <value>Visa alla inställningar</value>
+  <data name="gsDistanceToFlag" xml:space="preserve">
+    <value>Distans till flagga</value>
   </data>
-  <data name="gsAlpha" xml:space="preserve">
-    <value>Transparans</value>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Ladda ner alla</value>
   </data>
-  <data name="gsAntennaHeight" xml:space="preserve">
-    <value>Antenn höjd</value>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Laddar ner</value>
   </data>
-  <data name="gsAntennaOffset" xml:space="preserve">
-    <value>Antenn förskjutning</value>
-  </data>
-  <data name="gsApplied" xml:space="preserve">
-    <value>Bearbetad</value>
-  </data>
-  <data name="gsArea" xml:space="preserve">
-    <value>Areal</value>
+  <data name="gsDriveIn" xml:space="preserve">
+    <value>Kör in</value>
   </data>
   <data name="gsDriveThru" xml:space="preserve">
     <value>Genomkörning</value>
@@ -523,6 +614,9 @@
   <data name="gsIntegral" xml:space="preserve">
     <value>Integral</value>
   </data>
+  <data name="gsIntegralInfo" xml:space="preserve">
+    <value>Kommer sakta öka styrvinkel för att spår felet skall minska</value>
+  </data>
   <data name="gsInvertHydraulicRelays" xml:space="preserve">
     <value>Invertera relä</value>
   </data>
@@ -649,7 +743,7 @@
   <data name="gsN_West" xml:space="preserve">
     <value>NVest</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Ny från standard</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -694,6 +788,9 @@
   <data name="gsOffset" xml:space="preserve">
     <value>Förskjutning</value>
   </data>
+  <data name="gsOffsetFix" xml:space="preserve">
+    <value>Förskjutning Fix</value>
+  </data>
   <data name="gsOn" xml:space="preserve">
     <value>På</value>
   </data>
@@ -735,6 +832,9 @@
   </data>
   <data name="gsPixel" xml:space="preserve">
     <value>Pixel</value>
+  </data>
+  <data name="gsPleaseEnterABLine" xml:space="preserve">
+    <value>Välj AB linje</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
     <value>Var god dröj</value>
@@ -1129,54 +1229,13 @@ ANVÄNDS PÅ EGEN RISK.</value>
   <data name="gsZone" xml:space="preserve">
     <value>Zon</value>
   </data>
-  <data name="gsAgShareDownloader" xml:space="preserve">
-    <value>Ladda ner fält från AgShare</value>
+  <data name="gsZones" xml:space="preserve">
+    <value>Zoner</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Acceptera</value>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Zooma in</value>
   </data>
-  <data name="gsDirectories" xml:space="preserve">
-    <value>Mappar</value>
-  </data>
-  <data name="gsDirectoryExists" xml:space="preserve">
-    <value>Mapp existerar</value>
-  </data>
-  <data name="gsDiscourseForum" xml:space="preserve">
-    <value>Discourse forum</value>
-  </data>
-  <data name="gsDisagree" xml:space="preserve">
-    <value>håller inte med</value>
-  </data>
-  <data name="gsDisplay" xml:space="preserve">
-    <value>Visa</value>
-  </data>
-  <data name="gsDistance" xml:space="preserve">
-    <value>Distans</value>
-  </data>
-  <data name="gsDistanceToFlag" xml:space="preserve">
-    <value>Distans till flagga</value>
-  </data>
-  <data name="gsDownloadAll" xml:space="preserve">
-    <value>Ladda ner alla</value>
-  </data>
-  <data name="gsDownloading" xml:space="preserve">
-    <value>Laddar ner</value>
-  </data>
-  <data name="gsDriveIn" xml:space="preserve">
-    <value>Kör in</value>
-  </data>
-  <data name="gsIntegralInfo" xml:space="preserve">
-    <value>Kommer sakta öka styrvinkel för att spår felet skall minska</value>
-  </data>
-  <data name="gsOffsetFix" xml:space="preserve">
-    <value>Förskjutning Fix</value>
-  </data>
-  <data name="gsPleaseEnterABLine" xml:space="preserve">
-    <value>Välj AB linje</value>
-  </data>
-  <data name="gsArrangeText" xml:space="preserve">
-    <value>Tryck på knapparna på vänstersida som du vill ha i menyn(höger sida).
-
-Ordningen de trycks på är den ordningen de kommer visar i menyn uppifrån och ner.</value>
+  <data name="v_AboutIntro" xml:space="preserve">
+    <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
 </root>

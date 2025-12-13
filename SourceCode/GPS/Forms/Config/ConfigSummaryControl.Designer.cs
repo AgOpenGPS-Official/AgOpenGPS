@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelProfileMenuHint = new System.Windows.Forms.Label();
             this.labelWidth = new System.Windows.Forms.Label();
             this.labelOverlap = new System.Windows.Forms.Label();
             this.lblOverlap = new System.Windows.Forms.Label();
@@ -50,20 +50,20 @@
             this.lblSumWheelbase = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label2
+            // labelProfileMenuHint
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelProfileMenuHint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(184, 467);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(497, 84);
-            this.label2.TabIndex = 540;
-            this.label2.Text = "The vehicle settings are now called \"profiles\" and\r\ncan be created/loaded in the " +
+            this.labelProfileMenuHint.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.labelProfileMenuHint.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelProfileMenuHint.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelProfileMenuHint.Location = new System.Drawing.Point(184, 467);
+            this.labelProfileMenuHint.Name = "labelProfileMenuHint";
+            this.labelProfileMenuHint.Size = new System.Drawing.Size(497, 84);
+            this.labelProfileMenuHint.TabIndex = 540;
+            this.labelProfileMenuHint.Text = "The vehicle settings are now called \"profiles\" and\r\ncan be created/loaded in the " +
     "main menu (top left).";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelProfileMenuHint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelWidth
             // 
@@ -335,7 +335,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelProfileMenuHint);
             this.Controls.Add(this.labelWidth);
             this.Controls.Add(this.labelOverlap);
             this.Controls.Add(this.lblOverlap);
@@ -366,7 +366,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelProfileMenuHint;
         private System.Windows.Forms.Label labelWidth;
         private System.Windows.Forms.Label labelOverlap;
         private System.Windows.Forms.Label labelLookAhead;

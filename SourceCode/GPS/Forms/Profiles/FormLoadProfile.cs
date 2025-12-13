@@ -23,6 +23,12 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void FormLoadProfile_Load(object sender, EventArgs e)
         {
+            Text = gStr.gsLoadProfile;
+            labelLoadProfile.Text = gStr.gsLoadProfile;
+            buttonProfileDelete.Text = gStr.gsDelete;
+            buttonLoad.Text = gStr.gsLoad;
+            buttonCancel.Text = gStr.gsCancel;
+
             listViewProfiles.Items.Clear();
             listViewProfiles.Items.AddRange(LoadProfiles().Select(profile => new ListViewItem(profile)).ToArray());
             listViewProfiles.SelectedItems.Clear();
@@ -38,7 +44,7 @@ namespace AgOpenGPS.Forms.Profiles
         private void listViewProfiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool profileSelected = listViewProfiles.SelectedItems.Count > 0;
-            buttonOK.Enabled = profileSelected;
+            buttonLoad.Enabled = profileSelected;
             buttonProfileDelete.Enabled = profileSelected;
         }
 

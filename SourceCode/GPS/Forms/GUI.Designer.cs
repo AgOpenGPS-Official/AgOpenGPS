@@ -386,7 +386,11 @@ namespace AgOpenGPS
         {
             enterSimCoordsToolStripMenuItem.Text = gStr.gsEnterSimCoords;
             menustripLanguage.Text = gStr.gsLanguage;
+            profileToolStripMenuItem.Text = gStr.gsProfile;
             helpMenuItem.Text = gStr.gsHelp;
+
+            newProfileToolStripMenuItem.Text = gStr.gsNew + "...";
+            loadProfileToolStripMenuItem.Text = gStr.gsLoad + "...";
 
             simulatorOnToolStripMenuItem.Text = gStr.gsSimulatorOn;
             resetALLToolStripMenuItem.Text = gStr.gsResetAll;

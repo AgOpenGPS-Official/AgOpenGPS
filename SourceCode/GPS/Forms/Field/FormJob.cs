@@ -25,7 +25,7 @@ namespace AgOpenGPS
             InitializeComponent();
 
             btnJobOpen.Text = gStr.gsOpen;
-            btnJobNew.Text = gStr.gsNew;
+            btnJobNew.Text = gStr.gsNewFromDefault;
             btnJobResume.Text = gStr.gsResume;
             btnInField.Text = gStr.gsDriveIn;
             btnFromKML.Text = gStr.gsFromKml;

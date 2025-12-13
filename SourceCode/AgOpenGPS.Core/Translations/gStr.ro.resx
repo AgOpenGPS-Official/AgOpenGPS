@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -155,6 +155,9 @@
   </data>
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>Descărcați câmpurile din AgShare</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>De acord</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresivitate</value>
@@ -391,6 +394,9 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Nu sunt de acord</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Forumul de discuții</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Afişaj</value>
@@ -737,7 +743,7 @@ Ordinea în care le apăsați va fi ordinea în care apar în meniu de jos în s
   <data name="gsN_West" xml:space="preserve">
     <value>Nord-Vest</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Nou din implicit</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -1217,6 +1223,9 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
   <data name="gsXTEChart" xml:space="preserve">
     <value>Graficul XTE</value>
   </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>Tutoriale YouTube</value>
+  </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Ruliu zero</value>
   </data>
@@ -1231,14 +1240,5 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>De acord</value>
-  </data>
-  <data name="gsDiscourseForum" xml:space="preserve">
-    <value>Forumul de discuții</value>
-  </data>
-  <data name="gsYouTubeTutorials" xml:space="preserve">
-    <value>Tutoriale YouTube</value>
   </data>
 </root>

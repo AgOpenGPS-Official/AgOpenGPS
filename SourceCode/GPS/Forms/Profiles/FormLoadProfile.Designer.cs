@@ -31,7 +31,7 @@
             this.listViewProfiles = new System.Windows.Forms.ListView();
             this.columnHeaderProfile = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
             this.labelLoadProfile = new System.Windows.Forms.Label();
             this.buttonProfileDelete = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -85,25 +85,25 @@
             this.buttonCancel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.buttonCancel.UseVisualStyleBackColor = false;
             // 
-            // buttonOK
+            // buttonLoad
             // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Enabled = false;
-            this.buttonOK.FlatAppearance.BorderSize = 0;
-            this.buttonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonOK.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOK.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.buttonOK.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonOK.Location = new System.Drawing.Point(546, 333);
-            this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(80, 92);
-            this.buttonOK.TabIndex = 508;
-            this.buttonOK.Text = "Load";
-            this.buttonOK.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            this.buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonLoad.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonLoad.Enabled = false;
+            this.buttonLoad.FlatAppearance.BorderSize = 0;
+            this.buttonLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLoad.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLoad.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.buttonLoad.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonLoad.Location = new System.Drawing.Point(546, 333);
+            this.buttonLoad.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(80, 92);
+            this.buttonLoad.TabIndex = 508;
+            this.buttonLoad.Text = "Load";
+            this.buttonLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // labelLoadProfile
             // 
@@ -147,10 +147,10 @@
             this.Controls.Add(this.buttonProfileDelete);
             this.Controls.Add(this.labelLoadProfile);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.buttonLoad);
             this.Controls.Add(this.listViewProfiles);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimumSize = new System.Drawing.Size(650, 360);
             this.Name = "FormLoadProfile";
             this.ShowInTaskbar = false;
@@ -166,7 +166,7 @@
         private System.Windows.Forms.ListView listViewProfiles;
         private System.Windows.Forms.ColumnHeader columnHeaderProfile;
         private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Button buttonLoad;
         private System.Windows.Forms.Label labelLoadProfile;
         private System.Windows.Forms.Button buttonProfileDelete;
     }

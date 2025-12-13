@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -311,6 +311,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsContourOn" xml:space="preserve">
     <value>Contour On</value>
   </data>
+  <data name="gsCopyFrom" xml:space="preserve">
+    <value>Copy from</value>
+  </data>
   <data name="gsCouldntGenerateValidPath" xml:space="preserve">
     <value>No Valid Path</value>
   </data>
@@ -331,6 +334,9 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsCreateNewFromIsoXML" xml:space="preserve">
     <value>Create New Field From ISO-XML</value>
+  </data>
+  <data name="gsCreateNewProfile" xml:space="preserve">
+    <value>Create New Profile</value>
   </data>
   <data name="gsCurrent" xml:space="preserve">
     <value>Current</value>
@@ -442,6 +448,9 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsElevationlog" xml:space="preserve">
     <value>Elevation Log</value>
+  </data>
+  <data name="gsEmptyProfile" xml:space="preserve">
+    <value>Empty Profile</value>
   </data>
   <data name="gsEnable" xml:space="preserve">
     <value>Enable</value>
@@ -665,6 +674,12 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsLineWidth" xml:space="preserve">
     <value>Line Width</value>
   </data>
+  <data name="gsLoad" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="gsLoadProfile" xml:space="preserve">
+    <value>Load Profile</value>
+  </data>
   <data name="gsLongtitude" xml:space="preserve">
     <value>Longtitude</value>
   </data>
@@ -743,7 +758,13 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsN_West" xml:space="preserve">
     <value>NWest</value>
   </data>
+  <data name="gsName" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="gsNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>New From Default</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -868,6 +889,13 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsProblemMakingPath" xml:space="preserve">
     <value>Problem Making Path</value>
+  </data>
+  <data name="gsProfile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>The vehicle settings are now called "profiles" and
+can be created/loaded in the main menu (top left).</value>
   </data>
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>Program Will Exit Please Restart</value>

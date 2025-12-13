@@ -39,7 +39,7 @@ namespace AgOpenGPS
             InitializeComponent();
             //translate all the controls
             this.Text = gStr.gsMapForBackground;
-            labelNewBoundary.Text = gStr.gsNew + " " + gStr.gsBoundary;
+            labelNewBoundary.Text = gStr.gsNewFromDefault + " " + gStr.gsBoundary;
             labelBoundary.Text = gStr.gsBoundary;
             lblPoints.Text = gStr.gsPoints + ":";
             labelBackground.Text = gStr.gsBackground;

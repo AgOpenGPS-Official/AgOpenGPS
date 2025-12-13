@@ -639,6 +639,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy from.
+        /// </summary>
+        public static string gsCopyFrom {
+            get {
+                return ResourceManager.GetString("gsCopyFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Valid Path.
         /// </summary>
         public static string gsCouldntGenerateValidPath {
@@ -698,6 +707,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsCreateNewFromIsoXML {
             get {
                 return ResourceManager.GetString("gsCreateNewFromIsoXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Profile.
+        /// </summary>
+        public static string gsCreateNewProfile {
+            get {
+                return ResourceManager.GetString("gsCreateNewProfile", resourceCulture);
             }
         }
         
@@ -1031,6 +1049,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsElevationlog {
             get {
                 return ResourceManager.GetString("gsElevationlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty Profile.
+        /// </summary>
+        public static string gsEmptyProfile {
+            get {
+                return ResourceManager.GetString("gsEmptyProfile", resourceCulture);
             }
         }
         
@@ -1701,6 +1728,24 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string gsLoad {
+            get {
+                return ResourceManager.GetString("gsLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Profile.
+        /// </summary>
+        public static string gsLoadProfile {
+            get {
+                return ResourceManager.GetString("gsLoadProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Longtitude.
         /// </summary>
         public static string gsLongtitude {
@@ -1935,11 +1980,29 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New From Default.
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string gsName {
+            get {
+                return ResourceManager.GetString("gsName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
         /// </summary>
         public static string gsNew {
             get {
                 return ResourceManager.GetString("gsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New From Default.
+        /// </summary>
+        public static string gsNewFromDefault {
+            get {
+                return ResourceManager.GetString("gsNewFromDefault", resourceCulture);
             }
         }
         
@@ -2309,6 +2372,25 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsProblemMakingPath {
             get {
                 return ResourceManager.GetString("gsProblemMakingPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string gsProfile {
+            get {
+                return ResourceManager.GetString("gsProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vehicle settings are now called &quot;profiles&quot; and
+        ///can be created/loaded in the main menu (top left)..
+        /// </summary>
+        public static string gsProfileMenuHint {
+            get {
+                return ResourceManager.GetString("gsProfileMenuHint", resourceCulture);
             }
         }
         
