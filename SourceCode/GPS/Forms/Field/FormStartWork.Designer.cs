@@ -25,18 +25,25 @@ namespace AgOpenGPS
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.tableMain = new System.Windows.Forms.TableLayoutPanel();
+            this.tableJobs = new System.Windows.Forms.TableLayoutPanel();
             this.btnResumeJob = new System.Windows.Forms.Button();
             this.btnNewJob = new System.Windows.Forms.Button();
-            this.btnOpenFieldOnly = new System.Windows.Forms.Button();
-            this.btnCloseField = new System.Windows.Forms.Button();
             this.btnCloseJob = new System.Windows.Forms.Button();
             this.btnFinishJob = new System.Windows.Forms.Button();
+            this.lblFieldSection = new System.Windows.Forms.Label();
+            this.btnOpenField = new System.Windows.Forms.Button();
+            this.btnCloseField = new System.Windows.Forms.Button();
             this.lblLastJobInfo = new System.Windows.Forms.Label();
             this.lblCurrentField = new System.Windows.Forms.Label();
-            this.panelAgShare = new System.Windows.Forms.Panel();
-            this.btnAgShareDownload = new System.Windows.Forms.Button();
-            this.btnAgShareUpload = new System.Windows.Forms.Button();
+            this.panelOpenField = new System.Windows.Forms.Panel();
+            this.lblLocalStorageTitle = new System.Windows.Forms.Label();
+            this.tableLocalStorage = new System.Windows.Forms.TableLayoutPanel();
+            this.btnOpenFieldLocal = new System.Windows.Forms.Button();
+            this.lblAgShareCloudTitle = new System.Windows.Forms.Label();
+            this.tableAgShareCloud = new System.Windows.Forms.TableLayoutPanel();
+            this.btnOpenFromAgShare = new System.Windows.Forms.Button();
+            this.btnUploadToAgShare = new System.Windows.Forms.Button();
+            this.btnOpenFieldBack = new System.Windows.Forms.Button();
             this.panelWizardStep1 = new System.Windows.Forms.Panel();
             this.lblStep1Title = new System.Windows.Forms.Label();
             this.listProfiles = new System.Windows.Forms.ListBox();
@@ -62,8 +69,10 @@ namespace AgOpenGPS
             this.panelContainer.SuspendLayout();
             this.panelHeader.SuspendLayout();
             this.panelMain.SuspendLayout();
-            this.tableMain.SuspendLayout();
-            this.panelAgShare.SuspendLayout();
+            this.tableJobs.SuspendLayout();
+            this.panelOpenField.SuspendLayout();
+            this.tableLocalStorage.SuspendLayout();
+            this.tableAgShareCloud.SuspendLayout();
             this.panelWizardStep1.SuspendLayout();
             this.panelWizardStep2.SuspendLayout();
             this.panelWizardStep3.SuspendLayout();
@@ -75,6 +84,7 @@ namespace AgOpenGPS
             this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.panelContainer.Controls.Add(this.panelHeader);
             this.panelContainer.Controls.Add(this.panelMain);
+            this.panelContainer.Controls.Add(this.panelOpenField);
             this.panelContainer.Controls.Add(this.panelWizardStep1);
             this.panelContainer.Controls.Add(this.panelWizardStep2);
             this.panelContainer.Controls.Add(this.panelWizardStep3);
@@ -113,34 +123,33 @@ namespace AgOpenGPS
             this.panelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelMain.Controls.Add(this.tableMain);
+            this.panelMain.Controls.Add(this.tableJobs);
+            this.panelMain.Controls.Add(this.lblFieldSection);
+            this.panelMain.Controls.Add(this.btnOpenField);
+            this.panelMain.Controls.Add(this.btnCloseField);
             this.panelMain.Controls.Add(this.lblLastJobInfo);
             this.panelMain.Controls.Add(this.lblCurrentField);
-            this.panelMain.Controls.Add(this.panelAgShare);
             this.panelMain.Location = new System.Drawing.Point(15, 75);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(966, 601);
             this.panelMain.TabIndex = 0;
             // 
-            // tableMain
+            // tableJobs
             // 
-            this.tableMain.ColumnCount = 2;
-            this.tableMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableMain.Controls.Add(this.btnResumeJob, 0, 0);
-            this.tableMain.Controls.Add(this.btnNewJob, 1, 0);
-            this.tableMain.Controls.Add(this.btnOpenFieldOnly, 0, 1);
-            this.tableMain.Controls.Add(this.btnCloseField, 1, 1);
-            this.tableMain.Controls.Add(this.btnCloseJob, 0, 2);
-            this.tableMain.Controls.Add(this.btnFinishJob, 1, 2);
-            this.tableMain.Location = new System.Drawing.Point(0, 0);
-            this.tableMain.Name = "tableMain";
-            this.tableMain.RowCount = 3;
-            this.tableMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableMain.Size = new System.Drawing.Size(966, 330);
-            this.tableMain.TabIndex = 0;
+            this.tableJobs.ColumnCount = 2;
+            this.tableJobs.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableJobs.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableJobs.Controls.Add(this.btnResumeJob, 0, 0);
+            this.tableJobs.Controls.Add(this.btnNewJob, 1, 0);
+            this.tableJobs.Controls.Add(this.btnCloseJob, 0, 1);
+            this.tableJobs.Controls.Add(this.btnFinishJob, 1, 1);
+            this.tableJobs.Location = new System.Drawing.Point(0, 0);
+            this.tableJobs.Name = "tableJobs";
+            this.tableJobs.RowCount = 2;
+            this.tableJobs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableJobs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableJobs.Size = new System.Drawing.Size(966, 200);
+            this.tableJobs.TabIndex = 0;
             // 
             // btnResumeJob
             // 
@@ -159,7 +168,7 @@ namespace AgOpenGPS
             this.btnResumeJob.Margin = new System.Windows.Forms.Padding(12);
             this.btnResumeJob.Name = "btnResumeJob";
             this.btnResumeJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnResumeJob.Size = new System.Drawing.Size(459, 85);
+            this.btnResumeJob.Size = new System.Drawing.Size(459, 76);
             this.btnResumeJob.TabIndex = 0;
             this.btnResumeJob.Text = "  Resume Job";
             this.btnResumeJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -184,63 +193,13 @@ namespace AgOpenGPS
             this.btnNewJob.Margin = new System.Windows.Forms.Padding(12);
             this.btnNewJob.Name = "btnNewJob";
             this.btnNewJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnNewJob.Size = new System.Drawing.Size(459, 85);
+            this.btnNewJob.Size = new System.Drawing.Size(459, 76);
             this.btnNewJob.TabIndex = 1;
             this.btnNewJob.Text = "  New Job";
             this.btnNewJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNewJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnNewJob.UseVisualStyleBackColor = false;
             this.btnNewJob.Click += new System.EventHandler(this.btnNewJob_Click);
-            // 
-            // btnOpenFieldOnly
-            // 
-            this.btnOpenFieldOnly.BackColor = System.Drawing.Color.White;
-            this.btnOpenFieldOnly.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOpenFieldOnly.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOpenFieldOnly.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnOpenFieldOnly.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            this.btnOpenFieldOnly.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
-            this.btnOpenFieldOnly.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpenFieldOnly.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnOpenFieldOnly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnOpenFieldOnly.Image = global::AgOpenGPS.Properties.Resources.FileOpen;
-            this.btnOpenFieldOnly.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnOpenFieldOnly.Location = new System.Drawing.Point(12, 121);
-            this.btnOpenFieldOnly.Margin = new System.Windows.Forms.Padding(12);
-            this.btnOpenFieldOnly.Name = "btnOpenFieldOnly";
-            this.btnOpenFieldOnly.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnOpenFieldOnly.Size = new System.Drawing.Size(459, 85);
-            this.btnOpenFieldOnly.TabIndex = 2;
-            this.btnOpenFieldOnly.Text = "  Open Field";
-            this.btnOpenFieldOnly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnOpenFieldOnly.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnOpenFieldOnly.UseVisualStyleBackColor = false;
-            this.btnOpenFieldOnly.Click += new System.EventHandler(this.btnOpenFieldOnly_Click);
-            // 
-            // btnCloseField
-            // 
-            this.btnCloseField.BackColor = System.Drawing.Color.White;
-            this.btnCloseField.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCloseField.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCloseField.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnCloseField.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnCloseField.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.btnCloseField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCloseField.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnCloseField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnCloseField.Image = global::AgOpenGPS.Properties.Resources.FileClose;
-            this.btnCloseField.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseField.Location = new System.Drawing.Point(495, 121);
-            this.btnCloseField.Margin = new System.Windows.Forms.Padding(12);
-            this.btnCloseField.Name = "btnCloseField";
-            this.btnCloseField.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnCloseField.Size = new System.Drawing.Size(459, 85);
-            this.btnCloseField.TabIndex = 3;
-            this.btnCloseField.Text = "  Close Field";
-            this.btnCloseField.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseField.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCloseField.UseVisualStyleBackColor = false;
-            this.btnCloseField.Click += new System.EventHandler(this.btnCloseField_Click);
             // 
             // btnCloseJob
             // 
@@ -255,11 +214,11 @@ namespace AgOpenGPS
             this.btnCloseJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnCloseJob.Image = global::AgOpenGPS.Properties.Resources.FileClose;
             this.btnCloseJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseJob.Location = new System.Drawing.Point(12, 230);
+            this.btnCloseJob.Location = new System.Drawing.Point(12, 112);
             this.btnCloseJob.Margin = new System.Windows.Forms.Padding(12);
             this.btnCloseJob.Name = "btnCloseJob";
             this.btnCloseJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnCloseJob.Size = new System.Drawing.Size(459, 88);
+            this.btnCloseJob.Size = new System.Drawing.Size(459, 76);
             this.btnCloseJob.TabIndex = 4;
             this.btnCloseJob.Text = "  Close Job";
             this.btnCloseJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -280,11 +239,11 @@ namespace AgOpenGPS
             this.btnFinishJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnFinishJob.Image = global::AgOpenGPS.Properties.Resources.OK64;
             this.btnFinishJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFinishJob.Location = new System.Drawing.Point(495, 230);
+            this.btnFinishJob.Location = new System.Drawing.Point(495, 112);
             this.btnFinishJob.Margin = new System.Windows.Forms.Padding(12);
             this.btnFinishJob.Name = "btnFinishJob";
             this.btnFinishJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnFinishJob.Size = new System.Drawing.Size(459, 88);
+            this.btnFinishJob.Size = new System.Drawing.Size(459, 76);
             this.btnFinishJob.TabIndex = 5;
             this.btnFinishJob.Text = "  Finish Job";
             this.btnFinishJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -292,12 +251,72 @@ namespace AgOpenGPS
             this.btnFinishJob.UseVisualStyleBackColor = false;
             this.btnFinishJob.Click += new System.EventHandler(this.btnFinishJob_Click);
             // 
+            // lblFieldSection
+            // 
+            this.lblFieldSection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblFieldSection.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.lblFieldSection.ForeColor = System.Drawing.Color.White;
+            this.lblFieldSection.Location = new System.Drawing.Point(0, 296);
+            this.lblFieldSection.Name = "lblFieldSection";
+            this.lblFieldSection.Size = new System.Drawing.Size(966, 35);
+            this.lblFieldSection.TabIndex = 1;
+            this.lblFieldSection.Text = "  Field Management";
+            this.lblFieldSection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnOpenField
+            // 
+            this.btnOpenField.BackColor = System.Drawing.Color.White;
+            this.btnOpenField.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenField.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnOpenField.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnOpenField.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnOpenField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenField.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnOpenField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnOpenField.Image = global::AgOpenGPS.Properties.Resources.FileOpen;
+            this.btnOpenField.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenField.Location = new System.Drawing.Point(12, 341);
+            this.btnOpenField.Margin = new System.Windows.Forms.Padding(12);
+            this.btnOpenField.Name = "btnOpenField";
+            this.btnOpenField.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnOpenField.Size = new System.Drawing.Size(459, 75);
+            this.btnOpenField.TabIndex = 2;
+            this.btnOpenField.Text = "  Open Field";
+            this.btnOpenField.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenField.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOpenField.UseVisualStyleBackColor = false;
+            this.btnOpenField.Click += new System.EventHandler(this.btnOpenField_Click);
+            // 
+            // btnCloseField
+            // 
+            this.btnCloseField.BackColor = System.Drawing.Color.White;
+            this.btnCloseField.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCloseField.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnCloseField.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnCloseField.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.btnCloseField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCloseField.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnCloseField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnCloseField.Image = global::AgOpenGPS.Properties.Resources.FileClose;
+            this.btnCloseField.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseField.Location = new System.Drawing.Point(495, 341);
+            this.btnCloseField.Margin = new System.Windows.Forms.Padding(12);
+            this.btnCloseField.Name = "btnCloseField";
+            this.btnCloseField.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnCloseField.Size = new System.Drawing.Size(459, 75);
+            this.btnCloseField.TabIndex = 3;
+            this.btnCloseField.Text = "  Close Field";
+            this.btnCloseField.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseField.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCloseField.UseVisualStyleBackColor = false;
+            this.btnCloseField.Click += new System.EventHandler(this.btnCloseField_Click);
+            // 
             // lblLastJobInfo
             // 
             this.lblLastJobInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.lblLastJobInfo.Font = new System.Drawing.Font("Tahoma", 13F);
             this.lblLastJobInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.lblLastJobInfo.Location = new System.Drawing.Point(0, 340);
+            this.lblLastJobInfo.Location = new System.Drawing.Point(0, 436);
             this.lblLastJobInfo.Name = "lblLastJobInfo";
             this.lblLastJobInfo.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.lblLastJobInfo.Size = new System.Drawing.Size(966, 60);
@@ -310,7 +329,7 @@ namespace AgOpenGPS
             this.lblCurrentField.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
             this.lblCurrentField.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentField.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentField.Location = new System.Drawing.Point(0, 410);
+            this.lblCurrentField.Location = new System.Drawing.Point(0, 506);
             this.lblCurrentField.Name = "lblCurrentField";
             this.lblCurrentField.Padding = new System.Windows.Forms.Padding(10);
             this.lblCurrentField.Size = new System.Drawing.Size(966, 50);
@@ -318,61 +337,159 @@ namespace AgOpenGPS
             this.lblCurrentField.Text = "Current: FieldName";
             this.lblCurrentField.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCurrentField.Visible = false;
-            // 
-            // panelAgShare
-            // 
-            this.panelAgShare.Controls.Add(this.btnAgShareDownload);
-            this.panelAgShare.Controls.Add(this.btnAgShareUpload);
-            this.panelAgShare.Location = new System.Drawing.Point(0, 470);
-            this.panelAgShare.Name = "panelAgShare";
-            this.panelAgShare.Size = new System.Drawing.Size(966, 88);
-            this.panelAgShare.TabIndex = 3;
-            // 
-            // btnAgShareDownload
-            // 
-            this.btnAgShareDownload.BackColor = System.Drawing.Color.White;
-            this.btnAgShareDownload.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAgShareDownload.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
-            this.btnAgShareDownload.FlatAppearance.BorderSize = 2;
-            this.btnAgShareDownload.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(255)))));
-            this.btnAgShareDownload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgShareDownload.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
-            this.btnAgShareDownload.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
-            this.btnAgShareDownload.Image = global::AgOpenGPS.Properties.Resources.AgShare;
-            this.btnAgShareDownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAgShareDownload.Location = new System.Drawing.Point(12, 5);
-            this.btnAgShareDownload.Name = "btnAgShareDownload";
-            this.btnAgShareDownload.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnAgShareDownload.Size = new System.Drawing.Size(459, 80);
-            this.btnAgShareDownload.TabIndex = 0;
-            this.btnAgShareDownload.Text = "  AgShare Download";
-            this.btnAgShareDownload.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAgShareDownload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAgShareDownload.UseVisualStyleBackColor = false;
-            this.btnAgShareDownload.Click += new System.EventHandler(this.btnAgShareDownload_Click);
-            // 
-            // btnAgShareUpload
-            // 
-            this.btnAgShareUpload.BackColor = System.Drawing.Color.White;
-            this.btnAgShareUpload.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAgShareUpload.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
-            this.btnAgShareUpload.FlatAppearance.BorderSize = 2;
-            this.btnAgShareUpload.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(255)))));
-            this.btnAgShareUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgShareUpload.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
-            this.btnAgShareUpload.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
-            this.btnAgShareUpload.Image = global::AgOpenGPS.Properties.Resources.AgShare;
-            this.btnAgShareUpload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAgShareUpload.Location = new System.Drawing.Point(495, 5);
-            this.btnAgShareUpload.Name = "btnAgShareUpload";
-            this.btnAgShareUpload.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnAgShareUpload.Size = new System.Drawing.Size(459, 80);
-            this.btnAgShareUpload.TabIndex = 1;
-            this.btnAgShareUpload.Text = "  AgShare Upload";
-            this.btnAgShareUpload.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAgShareUpload.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAgShareUpload.UseVisualStyleBackColor = false;
-            this.btnAgShareUpload.Click += new System.EventHandler(this.btnAgShareUpload_Click);
+            //
+            // panelOpenField
+            //
+            this.panelOpenField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelOpenField.Controls.Add(this.lblLocalStorageTitle);
+            this.panelOpenField.Controls.Add(this.tableLocalStorage);
+            this.panelOpenField.Controls.Add(this.lblAgShareCloudTitle);
+            this.panelOpenField.Controls.Add(this.tableAgShareCloud);
+            this.panelOpenField.Controls.Add(this.btnOpenFieldBack);
+            this.panelOpenField.Location = new System.Drawing.Point(15, 75);
+            this.panelOpenField.Name = "panelOpenField";
+            this.panelOpenField.Size = new System.Drawing.Size(966, 595);
+            this.panelOpenField.TabIndex = 5;
+            this.panelOpenField.Visible = false;
+            //
+            // lblLocalStorageTitle
+            //
+            this.lblLocalStorageTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblLocalStorageTitle.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.lblLocalStorageTitle.ForeColor = System.Drawing.Color.White;
+            this.lblLocalStorageTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblLocalStorageTitle.Name = "lblLocalStorageTitle";
+            this.lblLocalStorageTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblLocalStorageTitle.Size = new System.Drawing.Size(966, 45);
+            this.lblLocalStorageTitle.TabIndex = 0;
+            this.lblLocalStorageTitle.Text = "Local Storage";
+            this.lblLocalStorageTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // tableLocalStorage
+            //
+            this.tableLocalStorage.ColumnCount = 1;
+            this.tableLocalStorage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLocalStorage.Controls.Add(this.btnOpenFieldLocal, 0, 0);
+            this.tableLocalStorage.Location = new System.Drawing.Point(0, 45);
+            this.tableLocalStorage.Name = "tableLocalStorage";
+            this.tableLocalStorage.RowCount = 1;
+            this.tableLocalStorage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLocalStorage.Size = new System.Drawing.Size(966, 100);
+            this.tableLocalStorage.TabIndex = 1;
+            //
+            // lblAgShareCloudTitle
+            //
+            this.lblAgShareCloudTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblAgShareCloudTitle.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.lblAgShareCloudTitle.ForeColor = System.Drawing.Color.White;
+            this.lblAgShareCloudTitle.Location = new System.Drawing.Point(0, 155);
+            this.lblAgShareCloudTitle.Name = "lblAgShareCloudTitle";
+            this.lblAgShareCloudTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAgShareCloudTitle.Size = new System.Drawing.Size(966, 45);
+            this.lblAgShareCloudTitle.TabIndex = 2;
+            this.lblAgShareCloudTitle.Text = "AgShare Cloud";
+            this.lblAgShareCloudTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // tableAgShareCloud
+            //
+            this.tableAgShareCloud.ColumnCount = 2;
+            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableAgShareCloud.Controls.Add(this.btnOpenFromAgShare, 0, 0);
+            this.tableAgShareCloud.Controls.Add(this.btnUploadToAgShare, 1, 0);
+            this.tableAgShareCloud.Location = new System.Drawing.Point(0, 200);
+            this.tableAgShareCloud.Name = "tableAgShareCloud";
+            this.tableAgShareCloud.RowCount = 1;
+            this.tableAgShareCloud.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableAgShareCloud.Size = new System.Drawing.Size(966, 100);
+            this.tableAgShareCloud.TabIndex = 3;
+            //
+            // btnOpenFieldLocal
+            //
+            this.btnOpenFieldLocal.BackColor = System.Drawing.Color.White;
+            this.btnOpenFieldLocal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenFieldLocal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOpenFieldLocal.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnOpenFieldLocal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnOpenFieldLocal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnOpenFieldLocal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenFieldLocal.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnOpenFieldLocal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnOpenFieldLocal.Image = global::AgOpenGPS.Properties.Resources.FileOpen;
+            this.btnOpenFieldLocal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFieldLocal.Margin = new System.Windows.Forms.Padding(12);
+            this.btnOpenFieldLocal.Name = "btnOpenFieldLocal";
+            this.btnOpenFieldLocal.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnOpenFieldLocal.TabIndex = 0;
+            this.btnOpenFieldLocal.Text = "  Open Local";
+            this.btnOpenFieldLocal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFieldLocal.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOpenFieldLocal.UseVisualStyleBackColor = false;
+            this.btnOpenFieldLocal.Click += new System.EventHandler(this.btnOpenFieldLocal_Click);
+            //
+            // btnOpenFromAgShare
+            //
+            this.btnOpenFromAgShare.BackColor = System.Drawing.Color.White;
+            this.btnOpenFromAgShare.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenFromAgShare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOpenFromAgShare.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
+            this.btnOpenFromAgShare.FlatAppearance.BorderSize = 2;
+            this.btnOpenFromAgShare.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(255)))));
+            this.btnOpenFromAgShare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenFromAgShare.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnOpenFromAgShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
+            this.btnOpenFromAgShare.Image = global::AgOpenGPS.Properties.Resources.AgShare;
+            this.btnOpenFromAgShare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFromAgShare.Margin = new System.Windows.Forms.Padding(12);
+            this.btnOpenFromAgShare.Name = "btnOpenFromAgShare";
+            this.btnOpenFromAgShare.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnOpenFromAgShare.TabIndex = 1;
+            this.btnOpenFromAgShare.Text = "  Download";
+            this.btnOpenFromAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFromAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnOpenFromAgShare.UseVisualStyleBackColor = false;
+            this.btnOpenFromAgShare.Click += new System.EventHandler(this.btnOpenFromAgShare_Click);
+            //
+            // btnUploadToAgShare
+            //
+            this.btnUploadToAgShare.BackColor = System.Drawing.Color.White;
+            this.btnUploadToAgShare.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUploadToAgShare.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnUploadToAgShare.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
+            this.btnUploadToAgShare.FlatAppearance.BorderSize = 2;
+            this.btnUploadToAgShare.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(255)))));
+            this.btnUploadToAgShare.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUploadToAgShare.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnUploadToAgShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
+            this.btnUploadToAgShare.Image = global::AgOpenGPS.Properties.Resources.AgShare;
+            this.btnUploadToAgShare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadToAgShare.Margin = new System.Windows.Forms.Padding(12);
+            this.btnUploadToAgShare.Name = "btnUploadToAgShare";
+            this.btnUploadToAgShare.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnUploadToAgShare.TabIndex = 2;
+            this.btnUploadToAgShare.Text = "  Upload";
+            this.btnUploadToAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadToAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUploadToAgShare.UseVisualStyleBackColor = false;
+            this.btnUploadToAgShare.Click += new System.EventHandler(this.btnUploadToAgShare_Click);
+            //
+            // btnOpenFieldBack
+            //
+            this.btnOpenFieldBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnOpenFieldBack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenFieldBack.FlatAppearance.BorderSize = 0;
+            this.btnOpenFieldBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenFieldBack.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
+            this.btnOpenFieldBack.ForeColor = System.Drawing.Color.White;
+            this.btnOpenFieldBack.Location = new System.Drawing.Point(30, 320);
+            this.btnOpenFieldBack.Name = "btnOpenFieldBack";
+            this.btnOpenFieldBack.Size = new System.Drawing.Size(140, 55);
+            this.btnOpenFieldBack.TabIndex = 4;
+            this.btnOpenFieldBack.Text = "< Back";
+            this.btnOpenFieldBack.UseVisualStyleBackColor = false;
+            this.btnOpenFieldBack.Click += new System.EventHandler(this.btnOpenFieldBack_Click);
             // 
             // panelWizardStep1
             // 
@@ -712,8 +829,10 @@ namespace AgOpenGPS
             this.panelContainer.ResumeLayout(false);
             this.panelHeader.ResumeLayout(false);
             this.panelMain.ResumeLayout(false);
-            this.tableMain.ResumeLayout(false);
-            this.panelAgShare.ResumeLayout(false);
+            this.tableJobs.ResumeLayout(false);
+            this.panelOpenField.ResumeLayout(false);
+            this.tableLocalStorage.ResumeLayout(false);
+            this.tableAgShareCloud.ResumeLayout(false);
             this.panelWizardStep1.ResumeLayout(false);
             this.panelWizardStep2.ResumeLayout(false);
             this.panelWizardStep3.ResumeLayout(false);
@@ -734,18 +853,27 @@ namespace AgOpenGPS
 
         // Main Menu
         private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.TableLayoutPanel tableMain;
+        private System.Windows.Forms.TableLayoutPanel tableJobs;
         private System.Windows.Forms.Button btnNewJob;
         private System.Windows.Forms.Button btnResumeJob;
-        private System.Windows.Forms.Button btnOpenFieldOnly;
-        private System.Windows.Forms.Button btnCloseField;
         private System.Windows.Forms.Button btnCloseJob;
         private System.Windows.Forms.Button btnFinishJob;
+        private System.Windows.Forms.Label lblFieldSection;
+        private System.Windows.Forms.Button btnOpenField;
+        private System.Windows.Forms.Button btnCloseField;
         private System.Windows.Forms.Label lblLastJobInfo;
         private System.Windows.Forms.Label lblCurrentField;
-        private System.Windows.Forms.Panel panelAgShare;
-        private System.Windows.Forms.Button btnAgShareDownload;
-        private System.Windows.Forms.Button btnAgShareUpload;
+
+        // Open Field Panel
+        private System.Windows.Forms.Panel panelOpenField;
+        private System.Windows.Forms.Label lblLocalStorageTitle;
+        private System.Windows.Forms.TableLayoutPanel tableLocalStorage;
+        private System.Windows.Forms.Button btnOpenFieldLocal;
+        private System.Windows.Forms.Label lblAgShareCloudTitle;
+        private System.Windows.Forms.TableLayoutPanel tableAgShareCloud;
+        private System.Windows.Forms.Button btnOpenFromAgShare;
+        private System.Windows.Forms.Button btnUploadToAgShare;
+        private System.Windows.Forms.Button btnOpenFieldBack;
 
         // Wizard Step 1
         private System.Windows.Forms.Panel panelWizardStep1;
