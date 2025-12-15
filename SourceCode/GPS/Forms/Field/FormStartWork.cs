@@ -20,7 +20,7 @@ namespace AgOpenGPS
         private readonly FormGPS mf;
 
         // Current view mode
-        private enum ViewMode { Main, WizardStep1, WizardStep2, WizardStep3, ResumeJobList }
+        private enum ViewMode { Main, OpenField, WizardStep1, WizardStep2, WizardStep3, ResumeJobList }
         private ViewMode currentView = ViewMode.Main;
 
         // Job data
@@ -33,6 +33,10 @@ namespace AgOpenGPS
         private string selectedFieldName;
         private string selectedWorkType;
 
+        // Coverage import
+        private bool shouldImportCoverage = false;
+        private string existingCoverageSource = null;
+
         public FormStartWork(Form callingForm)
         {
             mf = callingForm as FormGPS;
@@ -44,9 +48,9 @@ namespace AgOpenGPS
             // Initialize WorkTypes
             WorkTypes.Initialize(RegistrySettings.vehiclesDirectory);
 
-            // Configure AgShare buttons
-            btnAgShareDownload.Enabled = Properties.Settings.Default.AgShareEnabled;
-            btnAgShareUpload.Enabled = Properties.Settings.Default.AgShareEnabled;
+            // Configure AgShare buttons in Open Field panel
+            btnOpenFromAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
+            btnUploadToAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
 
             // Load job data
             LoadJobData();
@@ -71,6 +75,7 @@ namespace AgOpenGPS
 
             // Hide all panels
             panelMain.Visible = false;
+            panelOpenField.Visible = false;
             panelWizardStep1.Visible = false;
             panelWizardStep2.Visible = false;
             panelWizardStep3.Visible = false;
@@ -82,6 +87,9 @@ namespace AgOpenGPS
                 case ViewMode.Main:
                     panelMain.Visible = true;
                     UpdateMainView();
+                    break;
+                case ViewMode.OpenField:
+                    panelOpenField.Visible = true;
                     break;
                 case ViewMode.WizardStep1:
                     panelWizardStep1.Visible = true;
@@ -199,7 +207,33 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnOpenFieldOnly_Click(object sender, EventArgs e)
+        private void btnCloseField_Click(object sender, EventArgs e)
+        {
+            if (mf.isJobStarted)
+            {
+                _ = mf.FileSaveEverythingBeforeClosingField();
+            }
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            mf.isCancelJobMenu = true;
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void btnOpenField_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.OpenField);
+        }
+
+        #endregion
+
+        #region Open Field Panel
+
+        private void btnOpenFieldLocal_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
@@ -218,17 +252,7 @@ namespace AgOpenGPS
             }
         }
 
-        private void btnCloseField_Click(object sender, EventArgs e)
-        {
-            if (mf.isJobStarted)
-            {
-                _ = mf.FileSaveEverythingBeforeClosingField();
-            }
-            DialogResult = DialogResult.OK;
-            Close();
-        }
-
-        private async void btnAgShareDownload_Click(object sender, EventArgs e)
+        private async void btnOpenFromAgShare_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
@@ -244,7 +268,7 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnAgShareUpload_Click(object sender, EventArgs e)
+        private void btnUploadToAgShare_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
@@ -261,14 +285,12 @@ namespace AgOpenGPS
             Close();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnOpenFieldBack_Click(object sender, EventArgs e)
         {
-            mf.isCancelJobMenu = true;
-            DialogResult = DialogResult.Cancel;
-            Close();
+            ShowView(ViewMode.Main);
         }
 
-        private void btnCloseJob_Click(object sender, EventArgs e)
+        private async void btnCloseJob_Click(object sender, EventArgs e)
         {
             if (mf.currentJob == null)
             {
@@ -276,25 +298,27 @@ namespace AgOpenGPS
                 return;
             }
 
-            // Save current job data
+            // Save current job data BEFORE clearing currentJob - must await!
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
-            // Clear the current job reference
+            // Save job metadata
             var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
             JobFiles.Save(mf.currentJob, fieldDir);
 
             Log.EventWriter($"Job closed: {mf.currentJob.Name}");
             mf.currentJob = null;
 
-            // Reload job data and update view
-            LoadJobData();
-            UpdateMainView();
+            // Close the field as well
+            mf.JobClose();
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
-        private void btnFinishJob_Click(object sender, EventArgs e)
+        private async void btnFinishJob_Click(object sender, EventArgs e)
         {
             if (mf.currentJob == null)
             {
@@ -305,23 +329,24 @@ namespace AgOpenGPS
             // Mark job as completed
             mf.currentJob.IsCompleted = true;
 
-            // Save current job data
+            // Save current job data BEFORE clearing currentJob - must await!
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
+            // Save job metadata
             var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
             JobFiles.Save(mf.currentJob, fieldDir);
 
             Log.EventWriter($"Job finished: {mf.currentJob.Name}");
             mf.currentJob = null;
 
-            // Reload job data and update view
-            LoadJobData();
-            UpdateMainView();
+            // Close the field as well
+            mf.JobClose();
 
-            mf.TimedMessageBox(1500, "Job Completed", "Job has been marked as finished");
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         #endregion
@@ -386,9 +411,11 @@ namespace AgOpenGPS
         {
             listFields.Items.Clear();
 
-            // Add current field if open
+            // Add current field if one is open
+            string currentFieldDir = null;
             if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
             {
+                currentFieldDir = mf.currentFieldDirectory;
                 listFields.Items.Add($"Current: {mf.displayFieldName}");
             }
 
@@ -401,7 +428,8 @@ namespace AgOpenGPS
                     if (File.Exists(fieldFile))
                     {
                         string name = Path.GetFileName(dir);
-                        if (name != mf.currentFieldDirectory)
+                        // Skip if it's the current open field (already added above)
+                        if (currentFieldDir == null || name != currentFieldDir)
                         {
                             listFields.Items.Add(name);
                         }
@@ -473,6 +501,9 @@ namespace AgOpenGPS
 
             // Generate default job name
             txtJobName.Text = $"{DateTime.Now:yyyy-MM-dd}_Work_{selectedProfile}";
+
+            // Check for existing coverage that could be imported
+            CheckForExistingCoverage();
         }
 
         private void WorkTypeButton_Click(object sender, EventArgs e)
@@ -534,6 +565,22 @@ namespace AgOpenGPS
             if (mf.isJobStarted && !fieldAlreadyOpen)
             {
                 _ = mf.FileSaveEverythingBeforeClosingField();
+
+                // Save the current job metadata if there is one
+                if (mf.currentJob != null)
+                {
+                    var currentFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+                    JobFiles.Save(mf.currentJob, currentFieldDir);
+                    mf.currentJob = null;
+                }
+            }
+            else if (mf.currentJob != null)
+            {
+                // Same field but different job - save old job first
+                _ = mf.FileSaveEverythingBeforeClosingField();
+                var currentFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+                JobFiles.Save(mf.currentJob, currentFieldDir);
+                mf.currentJob = null;
             }
 
             // Create new job
@@ -548,6 +595,19 @@ namespace AgOpenGPS
             // Initialize job files
             JobFiles.InitializeJobFiles(job, selectedFieldDir);
 
+            // Handle coverage data based on user choice
+            if (shouldImportCoverage && !string.IsNullOrEmpty(existingCoverageSource))
+            {
+                // User chose to import - copy to job and then delete from field root
+                ImportCoverageToJob(job, selectedFieldDir);
+                DeleteLegacyCoverage(selectedFieldDir);
+            }
+            else if (!string.IsNullOrEmpty(existingCoverageSource))
+            {
+                // User chose NOT to import - delete the legacy coverage from field root
+                DeleteLegacyCoverage(selectedFieldDir);
+            }
+
             // Set the current job
             mf.currentJob = job;
 
@@ -558,10 +618,137 @@ namespace AgOpenGPS
                 mf.FileOpenField(fieldFile);
             }
 
+            // Load job-specific coverage data (after field is open and currentJob is set)
+            mf.FileLoadJobData();
+
             Log.EventWriter($"New job created: {job.Name}");
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void CheckForExistingCoverage()
+        {
+            // Reset coverage import flags
+            shouldImportCoverage = false;
+            existingCoverageSource = null;
+
+            // Check for coverage files in the field directory
+            string sectionsFile = Path.Combine(selectedFieldDir, "Sections.txt");
+            string tempSectionsFile = Path.Combine(selectedFieldDir, ".temp_Sections.txt");
+
+            // Coverage found if either file exists
+            bool coverageExists = File.Exists(sectionsFile) || File.Exists(tempSectionsFile);
+
+            if (coverageExists)
+            {
+                // Determine which source to use (prefer permanent over temp)
+                existingCoverageSource = File.Exists(sectionsFile) ? selectedFieldDir : selectedFieldDir;
+
+                // Show import dialog
+                ShowImportDialog();
+            }
+        }
+
+        private void ShowImportDialog()
+        {
+            string message = "Existing coverage data was found in this field.\n\n" +
+                           "Would you like to import it to the new job?";
+
+            DialogResult result = FormDialog.Show(
+                "Import Coverage Data",
+                message,
+                MessageBoxButtons.OKCancel
+            );
+
+            // OK = Yes (import), Cancel = No (don't import)
+            shouldImportCoverage = (result == DialogResult.OK);
+        }
+
+        private void ImportCoverageToJob(CJob job, string fieldDir)
+        {
+            try
+            {
+                string jobDir = Path.Combine(fieldDir, "Jobs", job.FolderName);
+
+                // Ensure job directory exists
+                if (!Directory.Exists(jobDir))
+                {
+                    Directory.CreateDirectory(jobDir);
+                }
+
+                int filesCopied = 0;
+
+                // Copy Sections.txt if it exists
+                string sourceSection = Path.Combine(existingCoverageSource, "Sections.txt");
+                if (File.Exists(sourceSection))
+                {
+                    string destSection = Path.Combine(jobDir, "Sections.txt");
+                    File.Copy(sourceSection, destSection, overwrite: true);
+                    filesCopied++;
+                }
+                else
+                {
+                    // Try temporary sections if permanent doesn't exist
+                    string tempSourceSection = Path.Combine(existingCoverageSource, ".temp_Sections.txt");
+                    if (File.Exists(tempSourceSection))
+                    {
+                        string destSection = Path.Combine(jobDir, "Sections.txt");
+                        File.Copy(tempSourceSection, destSection, overwrite: true);
+                        filesCopied++;
+                    }
+                }
+
+                // Copy Contour.txt if it exists (optional - may not exist)
+                string sourceContour = Path.Combine(existingCoverageSource, "Contour.txt");
+                if (File.Exists(sourceContour))
+                {
+                    string destContour = Path.Combine(jobDir, "Contour.txt");
+                    File.Copy(sourceContour, destContour, overwrite: true);
+                    filesCopied++;
+                }
+
+                // Copy RecPath.txt if it exists (optional - may not exist)
+                string sourceRecPath = Path.Combine(existingCoverageSource, "RecPath.txt");
+                if (File.Exists(sourceRecPath))
+                {
+                    string destRecPath = Path.Combine(jobDir, "RecPath.txt");
+                    File.Copy(sourceRecPath, destRecPath, overwrite: true);
+                    filesCopied++;
+                }
+
+                Log.EventWriter($"Coverage imported to job: {job.Name} ({filesCopied} files)");
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter($"Error importing coverage: {ex.Message}");
+                mf.TimedMessageBox(2000, "Import Error", $"Failed to import coverage: {ex.Message}");
+            }
+        }
+
+        private void DeleteLegacyCoverage(string fieldDir)
+        {
+            try
+            {
+                // Delete coverage files from field root (backward compatibility cleanup)
+                // These files will be picked up by FileOpenField() if not deleted
+                string[] filesToDelete = { "Sections.txt", ".temp_Sections.txt", "Contour.txt", "RecPath.txt" };
+
+                foreach (string fileName in filesToDelete)
+                {
+                    string filePath = Path.Combine(fieldDir, fileName);
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                        Log.EventWriter($"Deleted legacy coverage file: {fileName}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter($"Error deleting legacy coverage: {ex.Message}");
+                // Don't show error to user for cleanup operations
+            }
         }
 
         #endregion
@@ -680,7 +867,16 @@ namespace AgOpenGPS
             // Close current field if open (save first)
             if (mf.isJobStarted)
             {
+                // Save current job's data before switching
                 _ = mf.FileSaveEverythingBeforeClosingField();
+
+                // Save the current job metadata if there is one
+                if (mf.currentJob != null)
+                {
+                    var currentFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
+                    JobFiles.Save(mf.currentJob, currentFieldDir);
+                    mf.currentJob = null;
+                }
 
                 // If it's a different field, we need to properly close and reopen
                 if (!sameField)
@@ -692,8 +888,11 @@ namespace AgOpenGPS
             // Open the field (or refresh if same field)
             mf.FileOpenField(fieldFile);
 
-            // Set the current job
+            // Set the current job BEFORE loading job data
             mf.currentJob = job;
+
+            // Load job-specific coverage data (after field is open and currentJob is set)
+            mf.FileLoadJobData();
 
             job.Touch();
             JobFiles.Save(job, fieldDir);
