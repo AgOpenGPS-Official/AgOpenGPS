@@ -37,12 +37,14 @@ namespace AgOpenGPS
 
         /// <summary>
         /// Returns the job directory for job-specific files (Sections, Contour, Flags, RecPath).
-        /// When a job is active, returns the job folder. Otherwise, returns the field folder (backward compatibility).
+        /// When a job is active: returns job-specific folder
+        /// When no job (View-Only mode): returns temporary folder (.temp_* files)
         /// </summary>
         private string GetJobDir(bool ensureExists = false)
         {
             if (currentJob != null)
             {
+                // Job is active - use job directory
                 var jobDir = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Jobs", currentJob.FolderName);
                 if (ensureExists && !Directory.Exists(jobDir))
                 {
@@ -50,8 +52,12 @@ namespace AgOpenGPS
                 }
                 return jobDir;
             }
-            // No active job - use field directory for backward compatibility
-            return GetFieldDir(ensureExists);
+            else
+            {
+                // No job active (View-Only mode) - use field directory for temporary files
+                // Temporary coverage will be saved with .temp_ prefix
+                return GetFieldDir(ensureExists);
+            }
         }
 
         /// <summary>
@@ -118,8 +124,10 @@ namespace AgOpenGPS
                 }
             }
 
-            // --- Flags ---
-            if (TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(jobDir), out var flags))
+            // --- Flags (loaded from FIELD level, not job directory) ---
+            // Flags are field properties, shared across all jobs in the field
+            var fieldDir = GetFieldDir(false);
+            if (TryLoad("Flags.txt", LoadCriticality.Optional, () => FlagsFiles.Load(fieldDir), out var flags))
             {
                 flagPts.Clear();
                 flagPts.AddRange(flags);
@@ -349,12 +357,24 @@ namespace AgOpenGPS
             sbGrid.Clear();
         }
 
-        // Append pending sections to job directory (or field directory if no job).
+        // Append pending sections to job directory. Only saves if a job is active.
         public void FileSaveSections()
         {
+            System.Diagnostics.Debug.WriteLine($"FileSaveSections called - patchSaveList.Count: {patchSaveList.Count}, currentJob: {(currentJob != null ? currentJob.Name : "null")}");
+
             if (patchSaveList.Count > 0)
             {
-                SectionsFiles.Append(GetJobDir(true), patchSaveList);
+                // Only save if a job is active (not in View-Only mode)
+                if (currentJob != null)
+                {
+                    string saveDir = GetJobDir(true);
+                    SectionsFiles.Append(saveDir, patchSaveList);
+                    System.Diagnostics.Debug.WriteLine($"Sections Saved to: {saveDir}, patches: {patchSaveList.Count}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Sections NOT saved - no active job");
+                }
                 patchSaveList.Clear();
             }
         }
@@ -385,12 +405,17 @@ namespace AgOpenGPS
             ContourFiles.CreateFile(GetJobDir(true));
         }
 
-        // Append pending contour patches to job directory.
+        // Append pending contour patches to job directory. Only saves if a job is active.
         public void FileSaveContour()
         {
             if (contourSaveList.Count > 0)
             {
-                ContourFiles.Append(GetJobDir(true), contourSaveList);
+                // Only save if a job is active (not in View-Only mode)
+                if (currentJob != null)
+                {
+                    string saveDir = GetJobDir(true);
+                    ContourFiles.Append(saveDir, contourSaveList);
+                }
                 contourSaveList.Clear();
             }
         }
@@ -421,10 +446,14 @@ namespace AgOpenGPS
         }
 
 
-        // Save recorded path to job directory.
+        // Save recorded path to job directory. Only saves if a job is active.
         public void FileSaveRecPath(string name = "RecPath.Txt")
         {
-            RecPathFiles.Save(GetJobDir(true), recPath.recList, name);
+            // Only save if a job is active (not in View-Only mode)
+            if (currentJob != null)
+            {
+                RecPathFiles.Save(GetJobDir(true), recPath.recList, name);
+            }
         }
 
         // Load RecPath.txt from job directory (message if missing).
@@ -443,10 +472,12 @@ namespace AgOpenGPS
             panelDrag.Visible = recPath.recList.Count > 0;
         }
 
-        // Save flags to job directory.
+        // Save flags to FIELD directory (Flags are field-level, not job-specific).
         public void FileSaveFlags()
         {
-            FlagsFiles.Save(GetJobDir(true), flagPts);
+            // Flags always saved to field level, never to job directory
+            // Flags are field properties, not job products
+            FlagsFiles.Save(GetFieldDir(true), flagPts);
         }
 
         private void SetButtons()
