@@ -337,11 +337,11 @@ namespace AgOpenGPS
             this.lblCurrentField.Text = "Current: FieldName";
             this.lblCurrentField.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCurrentField.Visible = false;
-            //
+            // 
             // panelOpenField
-            //
-            this.panelOpenField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            // 
+            this.panelOpenField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelOpenField.Controls.Add(this.lblLocalStorageTitle);
             this.panelOpenField.Controls.Add(this.tableLocalStorage);
@@ -353,9 +353,9 @@ namespace AgOpenGPS
             this.panelOpenField.Size = new System.Drawing.Size(966, 595);
             this.panelOpenField.TabIndex = 5;
             this.panelOpenField.Visible = false;
-            //
+            // 
             // lblLocalStorageTitle
-            //
+            // 
             this.lblLocalStorageTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
             this.lblLocalStorageTitle.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
             this.lblLocalStorageTitle.ForeColor = System.Drawing.Color.White;
@@ -366,9 +366,9 @@ namespace AgOpenGPS
             this.lblLocalStorageTitle.TabIndex = 0;
             this.lblLocalStorageTitle.Text = "Local Storage";
             this.lblLocalStorageTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
             // tableLocalStorage
-            //
+            // 
             this.tableLocalStorage.ColumnCount = 1;
             this.tableLocalStorage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLocalStorage.Controls.Add(this.btnOpenFieldLocal, 0, 0);
@@ -378,36 +378,9 @@ namespace AgOpenGPS
             this.tableLocalStorage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLocalStorage.Size = new System.Drawing.Size(966, 100);
             this.tableLocalStorage.TabIndex = 1;
-            //
-            // lblAgShareCloudTitle
-            //
-            this.lblAgShareCloudTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
-            this.lblAgShareCloudTitle.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
-            this.lblAgShareCloudTitle.ForeColor = System.Drawing.Color.White;
-            this.lblAgShareCloudTitle.Location = new System.Drawing.Point(0, 155);
-            this.lblAgShareCloudTitle.Name = "lblAgShareCloudTitle";
-            this.lblAgShareCloudTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.lblAgShareCloudTitle.Size = new System.Drawing.Size(966, 45);
-            this.lblAgShareCloudTitle.TabIndex = 2;
-            this.lblAgShareCloudTitle.Text = "AgShare Cloud";
-            this.lblAgShareCloudTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // tableAgShareCloud
-            //
-            this.tableAgShareCloud.ColumnCount = 2;
-            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableAgShareCloud.Controls.Add(this.btnOpenFromAgShare, 0, 0);
-            this.tableAgShareCloud.Controls.Add(this.btnUploadToAgShare, 1, 0);
-            this.tableAgShareCloud.Location = new System.Drawing.Point(0, 200);
-            this.tableAgShareCloud.Name = "tableAgShareCloud";
-            this.tableAgShareCloud.RowCount = 1;
-            this.tableAgShareCloud.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableAgShareCloud.Size = new System.Drawing.Size(966, 100);
-            this.tableAgShareCloud.TabIndex = 3;
-            //
+            // 
             // btnOpenFieldLocal
-            //
+            // 
             this.btnOpenFieldLocal.BackColor = System.Drawing.Color.White;
             this.btnOpenFieldLocal.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenFieldLocal.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -419,18 +392,47 @@ namespace AgOpenGPS
             this.btnOpenFieldLocal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnOpenFieldLocal.Image = global::AgOpenGPS.Properties.Resources.FileOpen;
             this.btnOpenFieldLocal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFieldLocal.Location = new System.Drawing.Point(12, 12);
             this.btnOpenFieldLocal.Margin = new System.Windows.Forms.Padding(12);
             this.btnOpenFieldLocal.Name = "btnOpenFieldLocal";
             this.btnOpenFieldLocal.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnOpenFieldLocal.Size = new System.Drawing.Size(942, 76);
             this.btnOpenFieldLocal.TabIndex = 0;
             this.btnOpenFieldLocal.Text = "  Open Local";
             this.btnOpenFieldLocal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnOpenFieldLocal.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOpenFieldLocal.UseVisualStyleBackColor = false;
             this.btnOpenFieldLocal.Click += new System.EventHandler(this.btnOpenFieldLocal_Click);
-            //
+            // 
+            // lblAgShareCloudTitle
+            // 
+            this.lblAgShareCloudTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblAgShareCloudTitle.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.lblAgShareCloudTitle.ForeColor = System.Drawing.Color.White;
+            this.lblAgShareCloudTitle.Location = new System.Drawing.Point(0, 155);
+            this.lblAgShareCloudTitle.Name = "lblAgShareCloudTitle";
+            this.lblAgShareCloudTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAgShareCloudTitle.Size = new System.Drawing.Size(966, 45);
+            this.lblAgShareCloudTitle.TabIndex = 2;
+            this.lblAgShareCloudTitle.Text = "AgShare Cloud";
+            this.lblAgShareCloudTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableAgShareCloud
+            // 
+            this.tableAgShareCloud.ColumnCount = 2;
+            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableAgShareCloud.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableAgShareCloud.Controls.Add(this.btnOpenFromAgShare, 0, 0);
+            this.tableAgShareCloud.Controls.Add(this.btnUploadToAgShare, 1, 0);
+            this.tableAgShareCloud.Location = new System.Drawing.Point(0, 200);
+            this.tableAgShareCloud.Name = "tableAgShareCloud";
+            this.tableAgShareCloud.RowCount = 1;
+            this.tableAgShareCloud.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableAgShareCloud.Size = new System.Drawing.Size(966, 100);
+            this.tableAgShareCloud.TabIndex = 3;
+            // 
             // btnOpenFromAgShare
-            //
+            // 
             this.btnOpenFromAgShare.BackColor = System.Drawing.Color.White;
             this.btnOpenFromAgShare.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenFromAgShare.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -442,18 +444,20 @@ namespace AgOpenGPS
             this.btnOpenFromAgShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
             this.btnOpenFromAgShare.Image = global::AgOpenGPS.Properties.Resources.AgShare;
             this.btnOpenFromAgShare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnOpenFromAgShare.Location = new System.Drawing.Point(12, 12);
             this.btnOpenFromAgShare.Margin = new System.Windows.Forms.Padding(12);
             this.btnOpenFromAgShare.Name = "btnOpenFromAgShare";
             this.btnOpenFromAgShare.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnOpenFromAgShare.Size = new System.Drawing.Size(459, 76);
             this.btnOpenFromAgShare.TabIndex = 1;
             this.btnOpenFromAgShare.Text = "  Download";
             this.btnOpenFromAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnOpenFromAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnOpenFromAgShare.UseVisualStyleBackColor = false;
             this.btnOpenFromAgShare.Click += new System.EventHandler(this.btnOpenFromAgShare_Click);
-            //
+            // 
             // btnUploadToAgShare
-            //
+            // 
             this.btnUploadToAgShare.BackColor = System.Drawing.Color.White;
             this.btnUploadToAgShare.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUploadToAgShare.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -465,18 +469,20 @@ namespace AgOpenGPS
             this.btnUploadToAgShare.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
             this.btnUploadToAgShare.Image = global::AgOpenGPS.Properties.Resources.AgShare;
             this.btnUploadToAgShare.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadToAgShare.Location = new System.Drawing.Point(495, 12);
             this.btnUploadToAgShare.Margin = new System.Windows.Forms.Padding(12);
             this.btnUploadToAgShare.Name = "btnUploadToAgShare";
             this.btnUploadToAgShare.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnUploadToAgShare.Size = new System.Drawing.Size(459, 76);
             this.btnUploadToAgShare.TabIndex = 2;
             this.btnUploadToAgShare.Text = "  Upload";
             this.btnUploadToAgShare.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUploadToAgShare.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnUploadToAgShare.UseVisualStyleBackColor = false;
             this.btnUploadToAgShare.Click += new System.EventHandler(this.btnUploadToAgShare_Click);
-            //
+            // 
             // btnOpenFieldBack
-            //
+            // 
             this.btnOpenFieldBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
             this.btnOpenFieldBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnOpenFieldBack.FlatAppearance.BorderSize = 0;
@@ -739,7 +745,7 @@ namespace AgOpenGPS
             this.panelResumeList.Controls.Add(this.btnResumeListBack);
             this.panelResumeList.Location = new System.Drawing.Point(15, 75);
             this.panelResumeList.Name = "panelResumeList";
-            this.panelResumeList.Size = new System.Drawing.Size(966, 595);
+            this.panelResumeList.Size = new System.Drawing.Size(966, 557);
             this.panelResumeList.TabIndex = 4;
             this.panelResumeList.Visible = false;
             // 
@@ -796,7 +802,7 @@ namespace AgOpenGPS
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.btnCancel.Location = new System.Drawing.Point(920, 679);
+            this.btnCancel.Location = new System.Drawing.Point(917, 676);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(5, 0, 10, 0);
             this.btnCancel.Size = new System.Drawing.Size(64, 64);

@@ -31,8 +31,11 @@ namespace AgOpenGPS
             Guid fieldId;
             if (File.Exists(idPath))
             {
-                string raw = File.ReadAllText(idPath).Trim();
-                fieldId = Guid.Parse(raw);
+                string raw = File.ReadLines(idPath).FirstOrDefault()?.Trim() ?? "";
+                if (!Guid.TryParse(raw, out fieldId))
+                {
+                    throw new FormatException($"Invalid AgShare ID in {idPath}. Please check the agshare.txt file or delete it to create a new one.");
+                }
             }
             else
             {

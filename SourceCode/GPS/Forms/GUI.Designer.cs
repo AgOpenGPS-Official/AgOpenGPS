@@ -139,81 +139,50 @@ namespace AgOpenGPS
                 //reset the counter
                 fourSecondCounter = 0;
 
+                // Update Job Status in lblJobStatus (top line)
                 if (isJobStarted)
                 {
-                    switch (currentFieldTextCounter)
+                    if (currentJob != null)
                     {
-                        case 0:
-                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName;
-                            break;
+                        lblJobStatus.Text = "🔧 " + currentJob.Name;
+                        lblJobStatus.ForeColor = System.Drawing.Color.DarkGreen;
+                    }
+                    else
+                    {
+                        lblJobStatus.Text = "👁 VIEW ONLY";
+                        lblJobStatus.ForeColor = System.Drawing.Color.Orange;
+                    }
 
-                        case 1:
-                            if (bnd.bndList.Count > 0)
-                            {
-                                if (isMetric)
-                                {
-                                    lblCurrentField.Text = fd.AreaBoundaryLessInnersHectares
-                                        + "  App: " + fd.WorkedHectares
-                                        + "  Actual: " + fd.ActualAreaWorkedHectares
-                                        + "  " + fd.WorkedAreaRemainPercentage
-                                        + "  " + fd.WorkRateHectares;
-
-                                }
-                                else
-                                {
-                                    lblCurrentField.Text = fd.AreaBoundaryLessInnersAcres
-                                        + "  App: " + fd.WorkedAcres
-                                        + "  Actual: " + fd.ActualAreaWorkedAcres
-                                        + "  " + fd.WorkedAreaRemainPercentage
-                                        + "  " + fd.WorkRateAcres;
-                                }
-                            }
-                            else
-                            {
-                                if (isMetric)
-                                {
-                                    lblCurrentField.Text = "App: "
-                                + fd.WorkedHectares + " Actual: "
-                                + fd.ActualAreaWorkedHectares + "  "
-                                + fd.ActualOverlapPercent + "   "
-                                + fd.WorkRateHectares;
-                                }
-                                else
-                                {
-                                    lblCurrentField.Text = fieldData + "App: "
-                                + fd.WorkedAcres + "  Actual: "
-                                + fd.ActualAreaWorkedAcres + " *"
-                                + fd.ActualOverlapPercent + "   "
-                                + fd.WorkRateAcres;
-                                }
-                            }
-                            break;
-
-                        case 2:
-                            if (trk.idx > -1)
-                            {
-                                double oppositeAbAngle = glm.toDegrees(trk.gArr[trk.idx].heading) + 180;
-                                if (oppositeAbAngle > 360)
-                                {
-                                    oppositeAbAngle = oppositeAbAngle - 360;
-                                }
-
-                                GeoDir headingDir = new GeoDir(trk.gArr[trk.idx].heading);
-                                lblCurrentField.Text = gStr.gsABline + ": " + trk.gArr[trk.idx].name + "  " + headingDir.HeadingString("N3") + ", " + headingDir.Inverted.HeadingString("N3");
-                            }
-                            else
-                            {
-                                lblCurrentField.Text = gStr.gsABline + ": " + gStr.gsNoGuidanceLines;
-                            }
-                            break;
-
-                        case 3:
-                            lblCurrentField.Text = "";
-                            break;
-
-
-                        default:
-                            break;
+                    // Update Field info label (second line) - field name and stats
+                    if (bnd.bndList.Count > 0)
+                    {
+                        if (isMetric)
+                        {
+                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName + "  |  "
+                                + fd.AreaBoundaryLessInnersHectares
+                                + "  App: " + fd.WorkedHectares
+                                + "  " + fd.WorkedAreaRemainPercentage;
+                        }
+                        else
+                        {
+                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName + "  |  "
+                                + fd.AreaBoundaryLessInnersAcres
+                                + "  App: " + fd.WorkedAcres
+                                + "  " + fd.WorkedAreaRemainPercentage;
+                        }
+                    }
+                    else
+                    {
+                        if (isMetric)
+                        {
+                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName + "  |  "
+                                + "App: " + fd.WorkedHectares;
+                        }
+                        else
+                        {
+                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName + "  |  "
+                                + "App: " + fd.WorkedAcres;
+                        }
                     }
 
                     if (tram.displayMode == 0)
@@ -221,37 +190,9 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    switch (currentFieldTextCounter)
-                    {
-                        case 0:
-                            lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
-                            break;
-                        case 1:
-                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
-                            break;
-                        case 2:
-                            lblCurrentField.Text = "Lat: " +
-                                AppModel.CurrentLatLon.Latitude.ToString("N7") + "   Lon: " +
-                                AppModel.CurrentLatLon.Longitude.ToString("N7");
-                            break;
-                        case 3:
-                            lblCurrentField.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss ");
-                            break;
-                        case 4:
-                            lblCurrentField.Text = "";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                if (isPauseFieldTextCounter)
-                {
-                    lblCurrentField.Text = "\u23F8" + " " + lblCurrentField.Text;
-                }
-                else
-                {
-                    lblCurrentField.Text = "\u25B6" + " " + lblCurrentField.Text;
+                    // No field open
+                    lblJobStatus.Text = "";
+                    lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
                 }
 
                 //fix
@@ -292,21 +233,22 @@ namespace AgOpenGPS
                 trk.autoTrack3SecTimer++;
                 vehicle.deadZoneDelayCounter++;
 
-                lblFix.Text = FixQuality + "Age: " + pn.age.ToString("N1");
-
                 switch (pn.fixQuality)
                 {
                     case 4:
-                        btnGPSData.BackColor = Color.PaleGreen;
+                        btnGPSData.Image = Properties.Resources.FixQuality4;
                         break;
                     case 5:
-                        btnGPSData.BackColor = Color.Orange;
+                        btnGPSData.Image = Properties.Resources.FixQuality3;
                         break;
                     case 2:
-                        btnGPSData.BackColor = Color.Yellow;
+                        btnGPSData.Image = Properties.Resources.FixQuality2;
+                        break;
+                    case 8:
+                        btnGPSData.Image = Properties.Resources.FixQuality8;
                         break;
                     default:
-                        btnGPSData.BackColor = Color.Red;
+                        btnGPSData.Image = Properties.Resources.FixQuality1;
                         break;
                 }
 
@@ -1489,6 +1431,7 @@ namespace AgOpenGPS
         {
             //update main window
             sentenceCounter = 300;
+            btnGPSData.Image = Properties.Resources.FixQuality0;
             oglMain.MakeCurrent();
             oglMain.Refresh();
         }

@@ -8,6 +8,7 @@ using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Field;
 using AgOpenGPS.IO;
+using AgLibrary.Settings;
 
 namespace AgOpenGPS
 {
@@ -395,7 +396,35 @@ namespace AgOpenGPS
                 selectedProfile = RegistrySettings.vehicleFileName;
             }
 
+            // Load the profile if it's different from the current one
+            if (selectedProfile != RegistrySettings.vehicleFileName)
+            {
+                LoadProfile(selectedProfile);
+            }
+
             ShowView(ViewMode.WizardStep2);
+        }
+
+        private void LoadProfile(string profileName)
+        {
+            RegistrySettings.Save(RegKeys.vehicleFileName, profileName);
+
+            var result = Properties.Settings.Default.Load();
+            if (result != LoadResult.Ok)
+            {
+                Log.EventWriter($"Error loading profile {profileName}.xml ({result})");
+                mf.TimedMessageBox(2000, gStr.gsError, $"Error loading profile {profileName}.xml");
+                return;
+            }
+
+            Log.EventWriter($"Profile loaded: {profileName}.xml");
+
+            mf.vehicle = new CVehicle(mf);
+            mf.tool = new CTool(mf);
+
+            mf.LoadSettings();
+            mf.SendSettings();
+            mf.SendRelaySettingsToMachineModule();
         }
 
         private void btnWizard1Back_Click(object sender, EventArgs e)

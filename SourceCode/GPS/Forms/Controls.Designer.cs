@@ -533,6 +533,12 @@ namespace AgOpenGPS
                 return;
             }
 
+            // Create AgShare snapshot before opening dialog (if field is open and AgShare enabled)
+            if (isJobStarted && Settings.Default.AgShareEnabled)
+            {
+                AgShareSnapshot();
+            }
+
             using (var form = new FormStartWork(this))
             {
                 var result = form.ShowDialog(this);
@@ -602,11 +608,12 @@ namespace AgOpenGPS
                 if (triStrip[j].isDrawing) triStrip[j].TurnMappingOff();
             }
 
-            // Start AgShare upload (if enabled)
+            // Start AgShare upload (if enabled and snapshot exists)
             agShareUploadTask = Task.CompletedTask;
             if (!isAgShareUploadStarted &&
                 Settings.Default.AgShareEnabled &&
-                Settings.Default.AgShareUploadActive)
+                Settings.Default.AgShareUploadActive &&
+                snapshot != null)
             {
                 try
                 {

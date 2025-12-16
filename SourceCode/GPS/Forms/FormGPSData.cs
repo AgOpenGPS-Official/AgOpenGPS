@@ -34,6 +34,7 @@ namespace AgOpenGPS
             //other sat and GPS info
             lblSatsTracked.Text = mf.SatsTracked;
             lblHDOP.Text = mf.HDOP;
+            lblAge.Text = mf.pn.age.ToString("N1");
             //lblSpeed.Text = mf.avgSpeed.ToString("N2");
 
             //lblUturnByte.Text = Convert.ToString(mf.mc.machineData[mf.mc.mdUTurn], 2).PadLeft(6, '0');
@@ -60,7 +61,7 @@ namespace AgOpenGPS
         private void FormGPSData_Load(object sender, EventArgs e)
         {
             this.Width = 120;
-            this.Height = 330;
+            this.Height = 350;
         }
 
         private void FormGPSData_FormClosing(object sender, FormClosingEventArgs e)
