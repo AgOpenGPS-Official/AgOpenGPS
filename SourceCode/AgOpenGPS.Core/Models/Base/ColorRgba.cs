@@ -4,9 +4,26 @@ namespace AgOpenGPS.Core.Models
 {
     public struct ColorRgba
     {
+        // For performance, this is the preferred constructor, but that does not matter much.
+        // More important is that colors are only created once and not repeatedly for each individual frame.
+        // The nice thing is that colors in this notation '0xff00ff00' can be googled.
+
+        // Warning: the alpha component comes first. This helps to prevent bugs.
+        public ColorRgba(UInt32 colorArgb)
+        {
+            // Extract bytes
+            byte alphaByte = (byte)((colorArgb >> 24) & 0xFF);
+            if (alphaByte == 0) throw new ArgumentOutOfRangeException(nameof(colorArgb), "Argument out of range");
+            byte redByte = (byte)((colorArgb >> 16) & 0xFF);
+            byte greenByte = (byte)((colorArgb >> 8) & 0xFF);
+            byte blueByte = (byte)(colorArgb & 0xFF);
+            ByteArray = new byte[4] { redByte, greenByte, blueByte, alphaByte };
+        }
+
         public ColorRgba(byte red, byte green, byte blue, byte alpha = 255)
         {
             ByteArray = new byte[4] { red, green, blue, alpha };
+            // UInt32 valueForPrefferedConstructor = PreferredConstructorValue;
         }
 
         public ColorRgba(float red, float green, float blue, float alpha = 1.0f)
@@ -16,6 +33,7 @@ namespace AgOpenGPS.Core.Models
             if (blue < 0.0f || 1.0f < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
             if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
             ByteArray = new byte[4] { FloatToByte(red), FloatToByte(green), FloatToByte(blue), FloatToByte(alpha) };
+            // UInt32 valueForPrefferedConstructor = PreferredConstructorValue;
         }
 
         // For better performance in GLW.SetColor()
@@ -43,6 +61,12 @@ namespace AgOpenGPS.Core.Models
         {
             get { return ByteArray[3]; }
             set { ByteArray[3] = value; }
+        }
+
+        // Returns the value that can be used as argument to the preffered constructor
+        public UInt32 PreferredConstructorValue
+        {
+            get { return (UInt32)(Alpha << 24 | Red << 16 | Green << 8 | Blue); }
         }
 
         public static explicit operator System.Drawing.Color(ColorRgba color)

@@ -18,13 +18,13 @@ namespace AgOpenGPS
         private readonly FormGPS mf = null;
         private GeoViewport _viewport;
 
-        private static readonly ColorRgba boundaryColor = new ColorRgba(0.725f, 0.95f, 0.950f);
+        private static readonly ColorRgba boundaryColor = new ColorRgba(0xffb8f2f2);
 
-        private static readonly ColorRgba newBoundaryStripColor = new ColorRgba(0.90f, 0.25f, 0.10f);
-        private static readonly ColorRgba newBoundaryPointsColor = new ColorRgba(0.90f, 0.25f, 0.910f);
-        private static readonly ColorRgba newBoundaryLoopColor = new ColorRgba(0.82f, 0.835f, 0.5f);
+        private static readonly ColorRgba newBoundaryStripColor = new ColorRgba(0xffe53f19);
+        private static readonly ColorRgba newBoundaryPointsColor = new ColorRgba(0xffe53fe8);
+        private static readonly ColorRgba newBoundaryLoopColor = new ColorRgba(0xffd1d47f);
 
-        private static readonly ColorRgba stepSectionColor = new ColorRgba(0.64f, 0.64f, 0.6f);
+        private static readonly ColorRgba stepSectionColor = new ColorRgba(0xffa3a399);
 
         private vec3 ptA = new vec3();
         private vec3 ptB = new vec3();

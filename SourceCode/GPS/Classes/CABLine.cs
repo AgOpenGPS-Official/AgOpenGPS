@@ -8,16 +8,16 @@ namespace AgOpenGPS
 {
     public class CABLine
     {
-        private readonly ColorRgba newAbLineColor = new ColorRgba(0.95f, 0.70f, 0.50f);
-        private readonly ColorRgba pointsTextGreen = new ColorRgba(0.2f, 0.950f, 0.20f);
-        private readonly ColorRgba pointARed = new ColorRgba(0.95f, 0.0f, 0.0f);
-        private readonly ColorRgba pointBCyan = new ColorRgba(0.0f, 0.90f, 0.95f);
-        private readonly ColorRgba referenceLineRed = new ColorRgba(0.930f, 0.2f, 0.2f);
-        private readonly ColorRgba shadowAreaGray = new ColorRgba(0.5f, 0.5f, 0.5f, 0.2f);
-        private readonly ColorRgba shadowLinesGray = new ColorRgba(0.55f, 0.55f, 0.55f, 0.2f);
-        private readonly ColorRgba currentAbLinePurple = new ColorRgba(0.95f, 0.20f, 0.950f);
-        private readonly ColorRgba extraGuidelinesBlack = new ColorRgba(0.0f, 0.0f, 0.0f, 0.5f);
-        private readonly ColorRgba extraGuidelinesGreen = new ColorRgba(0.19907f, 0.6f, 0.19750f, 0.6f);
+        private readonly ColorRgba newAbLineLightOrange = new ColorRgba(0xfff2b27f);
+        private readonly ColorRgba pointsTextGreen = new ColorRgba(0xff33f233);
+        private readonly ColorRgba pointARed = new ColorRgba(0xfff20000);
+        private readonly ColorRgba pointBCyan = new ColorRgba(0xff00e5f2);
+        private readonly ColorRgba referenceLineRed = new ColorRgba(0xffed3333);
+        private readonly ColorRgba shadowAreaGray = new ColorRgba(0x337f7f7f);
+        private readonly ColorRgba shadowLinesGray = new ColorRgba(0x338c8c8c);
+        private readonly ColorRgba currentAbLineMagenta = new ColorRgba(0xfff233f2);
+        private readonly ColorRgba extraGuidelinesBlack = new ColorRgba(0x7f000000);
+        private readonly ColorRgba extraGuidelinesGreen = new ColorRgba(0x99329932);
 
         public double abHeading, abLength;
 
@@ -349,7 +349,7 @@ namespace AgOpenGPS
             GeoCoord[] desLineEndPoints = { desLineEndA.ToGeoCoord(), desLineEndB.ToGeoCoord() };
 
             GLW.SetLineWidth(lineWidth);
-            GLW.SetColor(newAbLineColor);
+            GLW.SetColor(newAbLineLightOrange);
             GLW.DrawLinesPrimitive(desLineEndPoints);
 
             GLW.SetColor(pointsTextGreen);
@@ -414,7 +414,7 @@ namespace AgOpenGPS
             //draw current AB Line
             GeoCoord[] currentAbLine = { currentLinePtA.ToGeoCoord(), currentLinePtB.ToGeoCoord() };
             LineStyle blackBackgroundStyle = new LineStyle(lineWidth * 3, Colors.Black);
-            LineStyle purpleForgroundStyle = new LineStyle(lineWidth, currentAbLinePurple);
+            LineStyle purpleForgroundStyle = new LineStyle(lineWidth, currentAbLineMagenta);
             GLW.DrawLinesPrimitiveLayered(
                 currentAbLine,
                 blackBackgroundStyle,
