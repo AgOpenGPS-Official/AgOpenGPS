@@ -210,6 +210,11 @@ namespace AgOpenGPS
         public CTool tool;
 
         /// <summary>
+        /// Job lifecycle manager
+        /// </summary>
+        public JobManager jobManager;
+
+        /// <summary>
         /// All the structs for recv and send of information out ports
         /// </summary>
         public CModuleComm mc;
@@ -334,6 +339,9 @@ namespace AgOpenGPS
             vehicle = new CVehicle(this);
 
             tool = new CTool(this);
+
+            // Job lifecycle manager
+            jobManager = new JobManager(this);
 
             //create a new section and set left and right positions
             //created whether used or not, saves restarting program

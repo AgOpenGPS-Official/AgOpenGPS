@@ -106,6 +106,7 @@
             this.MinimizeBox = false;
             this.Name = "FormKeyboard";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Keyboard";
             this.Load += new System.EventHandler(this.FormKeyboard_Load);
             this.ResumeLayout(false);
