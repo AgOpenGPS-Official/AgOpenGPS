@@ -76,10 +76,10 @@ namespace AgOpenGPS
         public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
         /// <summary>
-        /// The currently active job, or null if no job is active.
-        /// Jobs track work sessions within a field.
+        /// The currently active task, or null if no task is active.
+        /// Tasks track work sessions within a field.
         /// </summary>
-        public CJob currentJob { get; set; }
+        public CTask currentTask { get; set; }
 
         //To bring forward AgIO if running
         [System.Runtime.InteropServices.DllImport("User32.dll")]
@@ -210,9 +210,9 @@ namespace AgOpenGPS
         public CTool tool;
 
         /// <summary>
-        /// Job lifecycle manager
+        /// Task lifecycle manager
         /// </summary>
-        public JobManager jobManager;
+        public TaskManager taskManager;
 
         /// <summary>
         /// All the structs for recv and send of information out ports
@@ -340,8 +340,8 @@ namespace AgOpenGPS
 
             tool = new CTool(this);
 
-            // Job lifecycle manager
-            jobManager = new JobManager(this);
+            // Task lifecycle manager
+            taskManager = new TaskManager(this);
 
             //create a new section and set left and right positions
             //created whether used or not, saves restarting program

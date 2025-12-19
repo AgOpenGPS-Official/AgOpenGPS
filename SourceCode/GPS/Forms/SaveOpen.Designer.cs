@@ -36,25 +36,25 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Returns the job directory for job-specific files (Sections, Contour, Flags, RecPath).
-        /// When a job is active: returns job-specific folder
-        /// When no job (View-Only mode): returns temporary folder (.temp_* files)
+        /// Returns the task directory for task-specific files (Sections, Contour, Flags, RecPath).
+        /// When a task is active: returns task-specific folder
+        /// When no task (View-Only mode): returns temporary folder (.temp_* files)
         /// </summary>
-        private string GetJobDir(bool ensureExists = false)
+        private string GetTaskDir(bool ensureExists = false)
         {
-            if (currentJob != null)
+            if (currentTask != null)
             {
-                // Job is active - use job directory
-                var jobDir = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Jobs", currentJob.FolderName);
-                if (ensureExists && !Directory.Exists(jobDir))
+                // Task is active - use task directory
+                var taskDir = Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory, "Tasks", currentTask.FolderName);
+                if (ensureExists && !Directory.Exists(taskDir))
                 {
-                    Directory.CreateDirectory(jobDir);
+                    Directory.CreateDirectory(taskDir);
                 }
-                return jobDir;
+                return taskDir;
             }
             else
             {
-                // No job active (View-Only mode) - use field directory for temporary files
+                // No task active (View-Only mode) - use field directory for temporary files
                 // Temporary coverage will be saved with .temp_ prefix
                 return GetFieldDir(ensureExists);
             }
@@ -62,7 +62,7 @@ namespace AgOpenGPS
 
         /// <summary>
         /// Check if the field has legacy coverage data (Sections.txt in field root).
-        /// Returns true if legacy data exists and no Jobs folder is present.
+        /// Returns true if legacy data exists and no Tasks folder is present.
         /// </summary>
         public bool HasLegacyCoverageData()
         {
@@ -70,23 +70,23 @@ namespace AgOpenGPS
             if (string.IsNullOrEmpty(fieldDir) || !Directory.Exists(fieldDir)) return false;
 
             var sectionsFile = Path.Combine(fieldDir, "Sections.txt");
-            var jobsFolder = Path.Combine(fieldDir, "Jobs");
+            var tasksFolder = Path.Combine(fieldDir, "Tasks");
 
-            // Legacy data exists if Sections.txt is in field root and Jobs folder doesn't exist
-            return File.Exists(sectionsFile) && !Directory.Exists(jobsFolder);
+            // Legacy data exists if Sections.txt is in field root and Tasks folder doesn't exist
+            return File.Exists(sectionsFile) && !Directory.Exists(tasksFolder);
         }
 
         /// <summary>
-        /// Load job-specific coverage data (Sections, Contour, Flags, RecPath) from the current job directory.
-        /// Call this after setting currentJob to load job-specific data.
+        /// Load task-specific coverage data (Sections, Contour, Flags, RecPath) from the current task directory.
+        /// Call this after setting currentTask to load task-specific data.
         /// </summary>
-        public void FileLoadJobData()
+        public void FileLoadTaskData()
         {
-            var jobDir = GetJobDir(false);
-            if (!Directory.Exists(jobDir)) return;
+            var taskDir = GetTaskDir(false);
+            if (!Directory.Exists(taskDir)) return;
 
             // --- Sections ---
-            if (TryLoad("Sections.txt", LoadCriticality.Optional, () => SectionsFiles.Load(jobDir), out var sections))
+            if (TryLoad("Sections.txt", LoadCriticality.Optional, () => SectionsFiles.Load(taskDir), out var sections))
             {
                 fd.workedAreaTotal = 0;
                 fd.distanceUser = 0;
@@ -114,7 +114,7 @@ namespace AgOpenGPS
             }
 
             // --- Contour ---
-            if (TryLoad("Contour.txt", LoadCriticality.Optional, () => ContourFiles.Load(jobDir), out var contours))
+            if (TryLoad("Contour.txt", LoadCriticality.Optional, () => ContourFiles.Load(taskDir), out var contours))
             {
                 ct.stripList.Clear();
                 foreach (var patch in contours)
@@ -134,7 +134,7 @@ namespace AgOpenGPS
             }
 
             // --- RecPath ---
-            if (TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(jobDir), out var recPathList))
+            if (TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(taskDir), out var recPathList))
             {
                 recPath.recList.Clear();
                 recPath.recList.AddRange(recPathList);
@@ -360,14 +360,14 @@ namespace AgOpenGPS
         // Append pending sections to job directory. Only saves if a job is active.
         public void FileSaveSections()
         {
-            System.Diagnostics.Debug.WriteLine($"FileSaveSections called - patchSaveList.Count: {patchSaveList.Count}, currentJob: {(currentJob != null ? currentJob.Name : "null")}");
+            System.Diagnostics.Debug.WriteLine($"FileSaveSections called - patchSaveList.Count: {patchSaveList.Count}, currentTask: {(currentTask != null ? currentTask.Name : "null")}");
 
             if (patchSaveList.Count > 0)
             {
                 // Only save if a job is active (not in View-Only mode)
-                if (currentJob != null)
+                if (currentTask != null)
                 {
-                    string saveDir = GetJobDir(true);
+                    string saveDir = GetTaskDir(true);
                     SectionsFiles.Append(saveDir, patchSaveList);
                     System.Diagnostics.Debug.WriteLine($"Sections Saved to: {saveDir}, patches: {patchSaveList.Count}");
                 }
@@ -382,7 +382,7 @@ namespace AgOpenGPS
         // Create empty Sections.txt in job directory.
         public void FileCreateSections()
         {
-            SectionsFiles.CreateEmpty(GetJobDir(true));
+            SectionsFiles.CreateEmpty(GetTaskDir(true));
         }
 
         // Create Boundary.txt header.
@@ -396,13 +396,13 @@ namespace AgOpenGPS
         // Create Flags.txt header and zero count in job directory.
         public void FileCreateFlags()
         {
-            FlagsFiles.Save(GetJobDir(true), new List<CFlag>(0));
+            FlagsFiles.Save(GetTaskDir(true), new List<CFlag>(0));
         }
 
         // Create Contour.txt with header in job directory.
         public void FileCreateContour()
         {
-            ContourFiles.CreateFile(GetJobDir(true));
+            ContourFiles.CreateFile(GetTaskDir(true));
         }
 
         // Append pending contour patches to job directory. Only saves if a job is active.
@@ -411,9 +411,9 @@ namespace AgOpenGPS
             if (contourSaveList.Count > 0)
             {
                 // Only save if a job is active (not in View-Only mode)
-                if (currentJob != null)
+                if (currentTask != null)
                 {
-                    string saveDir = GetJobDir(true);
+                    string saveDir = GetTaskDir(true);
                     ContourFiles.Append(saveDir, contourSaveList);
                 }
                 contourSaveList.Clear();
@@ -441,7 +441,7 @@ namespace AgOpenGPS
         // Create RecPath header + zero count in job directory.
         public void FileCreateRecPath()
         {
-            var dir = GetJobDir(true);
+            var dir = GetTaskDir(true);
             RecPathFiles.CreateEmpty(dir);
         }
 
@@ -450,16 +450,16 @@ namespace AgOpenGPS
         public void FileSaveRecPath(string name = "RecPath.Txt")
         {
             // Only save if a job is active (not in View-Only mode)
-            if (currentJob != null)
+            if (currentTask != null)
             {
-                RecPathFiles.Save(GetJobDir(true), recPath.recList, name);
+                RecPathFiles.Save(GetTaskDir(true), recPath.recList, name);
             }
         }
 
         // Load RecPath.txt from job directory (message if missing).
         public void FileLoadRecPath()
         {
-            var dir = GetJobDir();
+            var dir = GetTaskDir();
 
             List<CRecPathPt> rec;
             if (!TryLoad("RecPath.txt", LoadCriticality.Optional, () => RecPathFiles.Load(dir), out rec))

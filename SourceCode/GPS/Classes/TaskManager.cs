@@ -8,63 +8,63 @@ using AgOpenGPS.IO;
 namespace AgOpenGPS
 {
     /// <summary>
-    /// Manages job lifecycle operations: create, resume, close, finish.
-    /// Handles coverage import/migration and job state transitions.
+    /// Manages task lifecycle operations: create, resume, close, finish.
+    /// Handles coverage import/migration and task state transitions.
     /// </summary>
-    public class JobManager
+    public class TaskManager
     {
         private readonly FormGPS mf;
 
-        public JobManager(FormGPS formGPS)
+        public TaskManager(FormGPS formGPS)
         {
             mf = formGPS;
         }
 
-        #region Job Lifecycle
+        #region Task Lifecycle
 
         /// <summary>
-        /// Creates and starts a new job for the specified field.
+        /// Creates and starts a new task for the specified field.
         /// </summary>
         /// <param name="fieldDir">Full path to the field directory</param>
         /// <param name="fieldName">Display name of the field</param>
         /// <param name="profileName">Name of the vehicle profile</param>
         /// <param name="workType">Type of work (e.g., Spraying, Seeding)</param>
-        /// <param name="jobName">Name for the new job</param>
+        /// <param name="taskName">Name for the new task</param>
         /// <param name="importCoverage">Whether to import existing coverage data</param>
-        /// <returns>The created job, or null on failure</returns>
-        public CJob CreateJob(string fieldDir, string fieldName, string profileName,
-            string workType, string jobName, bool importCoverage = false)
+        /// <returns>The created task, or null on failure</returns>
+        public CTask CreateTask(string fieldDir, string fieldName, string profileName,
+            string workType, string taskName, bool importCoverage = false)
         {
             // Check if field is already open and it's the same field
             bool fieldAlreadyOpen = mf.isJobStarted &&
                 Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory) == fieldDir;
 
-            // Save and close current job if needed
+            // Save and close current task if needed
             if (mf.isJobStarted)
             {
-                if (!fieldAlreadyOpen || mf.currentJob != null)
+                if (!fieldAlreadyOpen || mf.currentTask != null)
                 {
-                    SaveAndCloseCurrentJob();
+                    SaveAndCloseCurrentTask();
                 }
             }
 
-            // Create the new job
-            var job = new CJob(fieldName, profileName, workType, mf.tool.width, jobName);
+            // Create the new task
+            var task = new CTask(fieldName, profileName, workType, mf.tool.width, taskName);
 
-            // Initialize job files
-            JobFiles.InitializeJobFiles(job, fieldDir);
+            // Initialize task files
+            TaskFiles.InitializeTaskFiles(task, fieldDir);
 
             // Handle coverage import
             if (importCoverage)
             {
-                ImportCoverageToJob(job, fieldDir);
+                ImportCoverageToTask(task, fieldDir);
             }
 
-            // Always clean up legacy coverage when creating a new job
+            // Always clean up legacy coverage when creating a new task
             DeleteLegacyCoverage(fieldDir);
 
-            // Set the current job
-            mf.currentJob = job;
+            // Set the current task
+            mf.currentTask = task;
 
             // Open the field if not already open
             if (!fieldAlreadyOpen)
@@ -73,39 +73,39 @@ namespace AgOpenGPS
                 mf.FileOpenField(fieldFile);
             }
 
-            // Load job-specific coverage data
-            mf.FileLoadJobData();
+            // Load task-specific coverage data
+            mf.FileLoadTaskData();
 
-            Log.EventWriter($"Job created: {job.Name}");
-            return job;
+            Log.EventWriter($"Task created: {task.Name}");
+            return task;
         }
 
         /// <summary>
-        /// Resumes an existing job.
+        /// Resumes an existing task.
         /// </summary>
-        /// <param name="job">The job to resume</param>
+        /// <param name="task">The task to resume</param>
         /// <param name="fieldDir">Full path to the field directory</param>
         /// <returns>True if successful</returns>
-        public bool ResumeJob(CJob job, string fieldDir)
+        public bool ResumeTask(CTask task, string fieldDir)
         {
-            if (job == null || string.IsNullOrEmpty(fieldDir))
+            if (task == null || string.IsNullOrEmpty(fieldDir))
                 return false;
 
             string fieldFile = Path.Combine(fieldDir, "Field.txt");
             if (!File.Exists(fieldFile))
             {
-                Log.EventWriter($"Cannot resume job - field not found: {fieldDir}");
+                Log.EventWriter($"Cannot resume task - field not found: {fieldDir}");
                 return false;
             }
 
-            // Check if we're resuming a job in the currently open field
+            // Check if we're resuming a task in the currently open field
             bool sameField = mf.isJobStarted &&
                 Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory) == fieldDir;
 
-            // Save and close current job if needed
+            // Save and close current task if needed
             if (mf.isJobStarted)
             {
-                SaveAndCloseCurrentJob();
+                SaveAndCloseCurrentTask();
 
                 // Close field if different
                 if (!sameField)
@@ -117,67 +117,67 @@ namespace AgOpenGPS
             // Open the field
             mf.FileOpenField(fieldFile);
 
-            // Set the current job BEFORE loading job data
-            mf.currentJob = job;
+            // Set the current task BEFORE loading task data
+            mf.currentTask = task;
 
-            // Load job-specific coverage data
-            mf.FileLoadJobData();
+            // Load task-specific coverage data
+            mf.FileLoadTaskData();
 
-            // Update job timestamp
-            job.Touch();
-            JobFiles.Save(job, fieldDir);
+            // Update task timestamp
+            task.Touch();
+            TaskFiles.Save(task, fieldDir);
 
-            Log.EventWriter($"Job resumed: {job.Name}");
+            Log.EventWriter($"Task resumed: {task.Name}");
             return true;
         }
 
         /// <summary>
-        /// Closes the current job without marking it as completed.
-        /// Saves all data and clears the current job reference.
+        /// Closes the current task without marking it as completed.
+        /// Saves all data and clears the current task reference.
         /// </summary>
-        public void CloseCurrentJob()
+        public void CloseCurrentTask()
         {
-            if (mf.currentJob == null) return;
+            if (mf.currentTask == null) return;
 
             var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
 
-            // Save job metadata
-            JobFiles.Save(mf.currentJob, fieldDir);
+            // Save task metadata
+            TaskFiles.Save(mf.currentTask, fieldDir);
 
-            Log.EventWriter($"Job closed: {mf.currentJob.Name}");
-            mf.currentJob = null;
+            Log.EventWriter($"Task closed: {mf.currentTask.Name}");
+            mf.currentTask = null;
         }
 
         /// <summary>
-        /// Finishes (completes) the current job.
-        /// Marks as completed, saves all data, and clears the current job reference.
+        /// Finishes (completes) the current task.
+        /// Marks as completed, saves all data, and clears the current task reference.
         /// </summary>
-        public void FinishCurrentJob()
+        public void FinishCurrentTask()
         {
-            if (mf.currentJob == null) return;
+            if (mf.currentTask == null) return;
 
             // Mark as completed
-            mf.currentJob.Complete();
+            mf.currentTask.Complete();
 
             var fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
 
-            // Save job metadata
-            JobFiles.Save(mf.currentJob, fieldDir);
+            // Save task metadata
+            TaskFiles.Save(mf.currentTask, fieldDir);
 
-            Log.EventWriter($"Job finished: {mf.currentJob.Name}");
-            mf.currentJob = null;
+            Log.EventWriter($"Task finished: {mf.currentTask.Name}");
+            mf.currentTask = null;
         }
 
         /// <summary>
-        /// Saves current job data and metadata, then clears the job reference.
+        /// Saves current task data and metadata, then clears the task reference.
         /// </summary>
-        private void SaveAndCloseCurrentJob()
+        private void SaveAndCloseCurrentTask()
         {
-            if (mf.currentJob != null)
+            if (mf.currentTask != null)
             {
                 var currentFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
-                JobFiles.Save(mf.currentJob, currentFieldDir);
-                mf.currentJob = null;
+                TaskFiles.Save(mf.currentTask, currentFieldDir);
+                mf.currentTask = null;
             }
         }
 
@@ -202,19 +202,19 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Imports existing coverage data from field root to the job directory.
+        /// Imports existing coverage data from field root to the task directory.
         /// </summary>
-        /// <param name="job">The job to import coverage into</param>
+        /// <param name="task">The task to import coverage into</param>
         /// <param name="fieldDir">Full path to the field directory</param>
-        public void ImportCoverageToJob(CJob job, string fieldDir)
+        public void ImportCoverageToTask(CTask task, string fieldDir)
         {
             try
             {
-                string jobDir = Path.Combine(fieldDir, "Jobs", job.FolderName);
+                string taskDir = Path.Combine(fieldDir, "Tasks", task.FolderName);
 
-                if (!Directory.Exists(jobDir))
+                if (!Directory.Exists(taskDir))
                 {
-                    Directory.CreateDirectory(jobDir);
+                    Directory.CreateDirectory(taskDir);
                 }
 
                 int filesCopied = 0;
@@ -227,14 +227,14 @@ namespace AgOpenGPS
                     {
                         // For temp files, copy to non-temp destination
                         string destFileName = fileName.StartsWith(".temp_") ? fileName.Substring(6) : fileName;
-                        string destPath = Path.Combine(jobDir, destFileName);
+                        string destPath = Path.Combine(taskDir, destFileName);
 
                         File.Copy(sourcePath, destPath, overwrite: true);
                         filesCopied++;
                     }
                 }
 
-                Log.EventWriter($"Coverage imported to job: {job.Name} ({filesCopied} files)");
+                Log.EventWriter($"Coverage imported to task: {task.Name} ({filesCopied} files)");
             }
             catch (Exception ex)
             {
@@ -244,7 +244,7 @@ namespace AgOpenGPS
 
         /// <summary>
         /// Deletes legacy coverage files from field root.
-        /// Called after creating a new job to prevent old coverage from being loaded.
+        /// Called after creating a new task to prevent old coverage from being loaded.
         /// </summary>
         /// <param name="fieldDir">Full path to the field directory</param>
         public void DeleteLegacyCoverage(string fieldDir)
@@ -368,55 +368,55 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Creates a new field and immediately starts a new job in it.
+        /// Creates a new field and immediately starts a new task in it.
         /// </summary>
         /// <param name="fieldName">Name for the new field</param>
         /// <param name="profileName">Name of the vehicle profile</param>
         /// <param name="workType">Type of work</param>
-        /// <param name="jobName">Name for the new job</param>
-        /// <returns>The created job, or null on failure</returns>
-        public CJob CreateFieldAndJob(string fieldName, string profileName, string workType, string jobName)
+        /// <param name="taskName">Name for the new task</param>
+        /// <returns>The created task, or null on failure</returns>
+        public CTask CreateFieldAndTask(string fieldName, string profileName, string workType, string taskName)
         {
             // Create the field first
             string fieldDir = CreateField(fieldName);
             if (string.IsNullOrEmpty(fieldDir))
                 return null;
 
-            // Now create the job in the new field
-            var job = new CJob(fieldName.Trim(), profileName, workType, mf.tool.width, jobName);
+            // Now create the task in the new field
+            var task = new CTask(fieldName.Trim(), profileName, workType, mf.tool.width, taskName);
 
-            // Initialize job files
-            JobFiles.InitializeJobFiles(job, fieldDir);
+            // Initialize task files
+            TaskFiles.InitializeTaskFiles(task, fieldDir);
 
-            // Set the current job
-            mf.currentJob = job;
+            // Set the current task
+            mf.currentTask = task;
 
-            // Load job-specific coverage data (empty for new field)
-            mf.FileLoadJobData();
+            // Load task-specific coverage data (empty for new field)
+            mf.FileLoadTaskData();
 
-            Log.EventWriter($"Field and job created: {fieldName} / {job.Name}");
-            return job;
+            Log.EventWriter($"Field and task created: {fieldName} / {task.Name}");
+            return task;
         }
 
         #endregion
 
-        #region Job Queries
+        #region Task Queries
 
         /// <summary>
-        /// Gets all active (incomplete) jobs across all fields.
+        /// Gets all active (incomplete) tasks across all fields.
         /// </summary>
-        public List<(CJob Job, string FieldDirectory)> GetAllActiveJobs()
+        public List<(CTask Task, string FieldDirectory)> GetAllActiveTasks()
         {
-            return JobFiles.ListAllActiveJobs(RegistrySettings.fieldsDirectory);
+            return TaskFiles.ListAllActiveTasks(RegistrySettings.fieldsDirectory);
         }
 
         /// <summary>
-        /// Gets the most recently opened active job.
+        /// Gets the most recently opened active task.
         /// </summary>
-        public (CJob Job, string FieldDirectory) GetLastActiveJob()
+        public (CTask Task, string FieldDirectory) GetLastActiveTask()
         {
-            var jobs = GetAllActiveJobs();
-            return jobs.Count > 0 ? jobs[0] : (null, null);
+            var tasks = GetAllActiveTasks();
+            return tasks.Count > 0 ? tasks[0] : (null, null);
         }
 
         #endregion

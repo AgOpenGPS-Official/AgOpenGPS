@@ -4,18 +4,18 @@ using Newtonsoft.Json;
 namespace AgOpenGPS
 {
     /// <summary>
-    /// Represents a work session (job) for a field.
-    /// Jobs store coverage data separately, allowing multiple work sessions per field.
+    /// Represents a work session (task) for a field.
+    /// Tasks store coverage data separately, allowing multiple work sessions per field.
     /// </summary>
-    public class CJob
+    public class CTask
     {
-        /// <summary>Unique identifier for this job</summary>
+        /// <summary>Unique identifier for this task</summary>
         public Guid Id { get; set; }
 
-        /// <summary>Display name for this job (user-defined)</summary>
+        /// <summary>Display name for this task (user-defined)</summary>
         public string Name { get; set; }
 
-        /// <summary>Name of the field this job belongs to</summary>
+        /// <summary>Name of the field this task belongs to</summary>
         public string FieldName { get; set; }
 
         /// <summary>Name of the vehicle/implement profile used</summary>
@@ -24,16 +24,16 @@ namespace AgOpenGPS
         /// <summary>Type of work being performed (e.g., Spraying, Seeding, Tillage)</summary>
         public string WorkType { get; set; }
 
-        /// <summary>Implement width in meters at time of job creation</summary>
+        /// <summary>Implement width in meters at time of task creation</summary>
         public double ImplementWidth { get; set; }
 
-        /// <summary>When this job was created</summary>
+        /// <summary>When this task was created</summary>
         public DateTime CreatedAt { get; set; }
 
-        /// <summary>When this job was last opened/worked on</summary>
+        /// <summary>When this task was last opened/worked on</summary>
         public DateTime LastOpenedAt { get; set; }
 
-        /// <summary>Whether the job is marked as completed</summary>
+        /// <summary>Whether the task is marked as completed</summary>
         public bool IsCompleted { get; set; }
 
         /// <summary>Total worked area in square meters</summary>
@@ -43,9 +43,9 @@ namespace AgOpenGPS
         public Guid? AgShareSessionId { get; set; }
 
         /// <summary>
-        /// Creates a new job with default values
+        /// Creates a new task with default values
         /// </summary>
-        public CJob()
+        public CTask()
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
@@ -55,20 +55,20 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Creates a new job with the specified parameters
+        /// Creates a new task with the specified parameters
         /// </summary>
-        public CJob(string fieldName, string profileName, string workType, double implementWidth, string jobName = null)
+        public CTask(string fieldName, string profileName, string workType, double implementWidth, string taskName = null)
             : this()
         {
             FieldName = fieldName;
             ProfileName = profileName;
             WorkType = workType;
             ImplementWidth = implementWidth;
-            Name = jobName ?? GenerateDefaultName(workType, profileName);
+            Name = taskName ?? GenerateDefaultName(workType, profileName);
         }
 
         /// <summary>
-        /// Generates a default job name based on date, work type, and profile
+        /// Generates a default task name based on date, work type, and profile
         /// </summary>
         private static string GenerateDefaultName(string workType, string profileName)
         {
@@ -79,7 +79,7 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Gets the folder name for this job (sanitized for file system)
+        /// Gets the folder name for this task (sanitized for file system)
         /// </summary>
         [JsonIgnore]
         public string FolderName
@@ -105,7 +105,7 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Marks the job as completed
+        /// Marks the task as completed
         /// </summary>
         public void Complete()
         {
@@ -114,7 +114,7 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Serializes this job to JSON
+        /// Serializes this task to JSON
         /// </summary>
         public string ToJson()
         {
@@ -125,11 +125,11 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Deserializes a job from JSON
+        /// Deserializes a task from JSON
         /// </summary>
-        public static CJob FromJson(string json)
+        public static CTask FromJson(string json)
         {
-            return JsonConvert.DeserializeObject<CJob>(json);
+            return JsonConvert.DeserializeObject<CTask>(json);
         }
 
         public override string ToString()

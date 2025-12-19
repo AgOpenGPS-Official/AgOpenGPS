@@ -139,18 +139,18 @@ namespace AgOpenGPS
                 //reset the counter
                 fourSecondCounter = 0;
 
-                // Update Job Status in lblJobStatus (top line)
+                // Update Task Status in lblTaskStatus (top line)
                 if (isJobStarted)
                 {
-                    if (currentJob != null)
+                    if (currentTask != null)
                     {
-                        lblJobStatus.Text = "🔧 " + currentJob.Name;
-                        lblJobStatus.ForeColor = System.Drawing.Color.DarkGreen;
+                        lblTaskStatus.Text = "🔧 " + currentTask.Name;
+                        lblTaskStatus.ForeColor = System.Drawing.Color.DarkGreen;
                     }
                     else
                     {
-                        lblJobStatus.Text = "👁 VIEW ONLY";
-                        lblJobStatus.ForeColor = System.Drawing.Color.Orange;
+                        lblTaskStatus.Text = "👁 VIEW ONLY";
+                        lblTaskStatus.ForeColor = System.Drawing.Color.Orange;
                     }
 
                     // Update Field info label (second line) - field name and stats
@@ -191,7 +191,7 @@ namespace AgOpenGPS
                 else
                 {
                     // No field open
-                    lblJobStatus.Text = "";
+                    lblTaskStatus.Text = "";
                     lblCurrentField.Text = (tool.width * m2FtOrM).ToString("N2") + unitsFtM + " - " + RegistrySettings.vehicleFileName;
                 }
 

@@ -118,7 +118,7 @@ namespace AgOpenGPS
             this.btnGrid = new System.Windows.Forms.Button();
             this.btnN2D = new System.Windows.Forms.Button();
             this.lblSpeed = new System.Windows.Forms.Label();
-            this.lblJobStatus = new System.Windows.Forms.Label();
+            this.lblTaskStatus = new System.Windows.Forms.Label();
             this.btnZone1 = new System.Windows.Forms.Button();
             this.btnZone2 = new System.Windows.Forms.Button();
             this.btnZone3 = new System.Windows.Forms.Button();
@@ -1472,16 +1472,16 @@ namespace AgOpenGPS
             this.lblSpeed.Text = "88.88";
             this.lblSpeed.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // lblJobStatus
+            // lblTaskStatus
             // 
-            this.lblJobStatus.AutoSize = true;
-            this.lblJobStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblJobStatus.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblJobStatus.Location = new System.Drawing.Point(84, 3);
-            this.lblJobStatus.Name = "lblJobStatus";
-            this.lblJobStatus.Size = new System.Drawing.Size(0, 19);
-            this.lblJobStatus.TabIndex = 489;
-            this.lblJobStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTaskStatus.AutoSize = true;
+            this.lblTaskStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblTaskStatus.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTaskStatus.Location = new System.Drawing.Point(84, 3);
+            this.lblTaskStatus.Name = "lblTaskStatus";
+            this.lblTaskStatus.Size = new System.Drawing.Size(0, 19);
+            this.lblTaskStatus.TabIndex = 489;
+            this.lblTaskStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnZone1
             // 
@@ -2888,7 +2888,7 @@ namespace AgOpenGPS
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.flp1);
             this.Controls.Add(this.panelSim);
-            this.Controls.Add(this.lblJobStatus);
+            this.Controls.Add(this.lblTaskStatus);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.btnZone8);
             this.Controls.Add(this.btnZone7);
@@ -3043,7 +3043,7 @@ namespace AgOpenGPS
         private System.Windows.Forms.ToolStripMenuItem resetEverythingToolStripMenuItem;
         public System.Windows.Forms.Button btnTramDisplayMode;
         public System.Windows.Forms.Button btnYouSkipEnable;
-        private System.Windows.Forms.Label lblJobStatus;
+        private System.Windows.Forms.Label lblTaskStatus;
         private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
         private System.Windows.Forms.Button btnNudge;
         public System.Windows.Forms.Button btnResumePath;

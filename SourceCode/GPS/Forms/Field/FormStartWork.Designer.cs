@@ -25,19 +25,19 @@ namespace AgOpenGPS
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.tableJobs = new System.Windows.Forms.TableLayoutPanel();
-            this.btnResumeLastJob = new System.Windows.Forms.Button();
-            this.btnResumeJob = new System.Windows.Forms.Button();
-            this.btnFinishJob = new System.Windows.Forms.Button();
-            this.btnNewJob = new System.Windows.Forms.Button();
-            this.btnCloseJob = new System.Windows.Forms.Button();
-            this.btnExportJobs = new System.Windows.Forms.Button();
+            this.tableTasks = new System.Windows.Forms.TableLayoutPanel();
+            this.btnResumeLastTask = new System.Windows.Forms.Button();
+            this.btnResumeTask = new System.Windows.Forms.Button();
+            this.btnFinishTask = new System.Windows.Forms.Button();
+            this.btnNewTask = new System.Windows.Forms.Button();
+            this.btnCloseTask = new System.Windows.Forms.Button();
+            this.btnExportTasks = new System.Windows.Forms.Button();
             this.lblFieldSection = new System.Windows.Forms.Label();
             this.tableFields = new System.Windows.Forms.TableLayoutPanel();
             this.btnOpenField = new System.Windows.Forms.Button();
             this.btnNewField = new System.Windows.Forms.Button();
             this.btnCloseField = new System.Windows.Forms.Button();
-            this.lblLastJobInfo = new System.Windows.Forms.Label();
+            this.lblLastTaskInfo = new System.Windows.Forms.Label();
             this.lblCurrentField = new System.Windows.Forms.Label();
             this.panelOpenField = new System.Windows.Forms.Panel();
             this.lblLocalStorageTitle = new System.Windows.Forms.Label();
@@ -64,19 +64,19 @@ namespace AgOpenGPS
             this.lblFieldNameLabel = new System.Windows.Forms.Label();
             this.txtFieldName = new System.Windows.Forms.TextBox();
             this.flpWorkTypes = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblJobNameLabel = new System.Windows.Forms.Label();
-            this.txtJobName = new System.Windows.Forms.TextBox();
+            this.lblTaskNameLabel = new System.Windows.Forms.Label();
+            this.txtTaskName = new System.Windows.Forms.TextBox();
             this.btnWizard3Start = new System.Windows.Forms.Button();
             this.btnWizard3Back = new System.Windows.Forms.Button();
             this.panelResumeList = new System.Windows.Forms.Panel();
             this.lblResumeTitle = new System.Windows.Forms.Label();
-            this.flpJobList = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpTaskList = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResumeListBack = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.panelContainer.SuspendLayout();
             this.panelHeader.SuspendLayout();
             this.panelMain.SuspendLayout();
-            this.tableJobs.SuspendLayout();
+            this.tableTasks.SuspendLayout();
             this.tableFields.SuspendLayout();
             this.panelOpenField.SuspendLayout();
             this.tableLocalStorage.SuspendLayout();
@@ -131,185 +131,185 @@ namespace AgOpenGPS
             this.panelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelMain.Controls.Add(this.tableJobs);
+            this.panelMain.Controls.Add(this.tableTasks);
             this.panelMain.Controls.Add(this.lblFieldSection);
             this.panelMain.Controls.Add(this.tableFields);
-            this.panelMain.Controls.Add(this.lblLastJobInfo);
+            this.panelMain.Controls.Add(this.lblLastTaskInfo);
             this.panelMain.Controls.Add(this.lblCurrentField);
             this.panelMain.Location = new System.Drawing.Point(15, 75);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(966, 601);
             this.panelMain.TabIndex = 0;
             // 
-            // tableJobs
+            // tableTasks
             // 
-            this.tableJobs.ColumnCount = 2;
-            this.tableJobs.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableJobs.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableJobs.Controls.Add(this.btnResumeLastJob, 0, 0);
-            this.tableJobs.Controls.Add(this.btnResumeJob, 1, 0);
-            this.tableJobs.Controls.Add(this.btnFinishJob, 0, 1);
-            this.tableJobs.Controls.Add(this.btnNewJob, 1, 1);
-            this.tableJobs.Controls.Add(this.btnCloseJob, 0, 2);
-            this.tableJobs.Controls.Add(this.btnExportJobs, 1, 2);
-            this.tableJobs.Location = new System.Drawing.Point(0, 0);
-            this.tableJobs.Name = "tableJobs";
-            this.tableJobs.RowCount = 3;
-            this.tableJobs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableJobs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
-            this.tableJobs.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
-            this.tableJobs.Size = new System.Drawing.Size(966, 300);
-            this.tableJobs.TabIndex = 0;
+            this.tableTasks.ColumnCount = 2;
+            this.tableTasks.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableTasks.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableTasks.Controls.Add(this.btnResumeLastTask, 0, 0);
+            this.tableTasks.Controls.Add(this.btnResumeTask, 1, 0);
+            this.tableTasks.Controls.Add(this.btnFinishTask, 0, 1);
+            this.tableTasks.Controls.Add(this.btnNewTask, 1, 1);
+            this.tableTasks.Controls.Add(this.btnCloseTask, 0, 2);
+            this.tableTasks.Controls.Add(this.btnExportTasks, 1, 2);
+            this.tableTasks.Location = new System.Drawing.Point(0, 0);
+            this.tableTasks.Name = "tableTasks";
+            this.tableTasks.RowCount = 3;
+            this.tableTasks.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableTasks.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableTasks.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableTasks.Size = new System.Drawing.Size(966, 300);
+            this.tableTasks.TabIndex = 0;
             // 
-            // btnResumeLastJob
+            // btnResumeLastTask
             // 
-            this.btnResumeLastJob.BackColor = System.Drawing.Color.White;
-            this.btnResumeLastJob.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnResumeLastJob.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnResumeLastJob.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnResumeLastJob.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            this.btnResumeLastJob.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
-            this.btnResumeLastJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResumeLastJob.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnResumeLastJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnResumeLastJob.Image = global::AgOpenGPS.Properties.Resources.FilePrevious;
-            this.btnResumeLastJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResumeLastJob.Location = new System.Drawing.Point(12, 12);
-            this.btnResumeLastJob.Margin = new System.Windows.Forms.Padding(12);
-            this.btnResumeLastJob.Name = "btnResumeLastJob";
-            this.btnResumeLastJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnResumeLastJob.Size = new System.Drawing.Size(459, 75);
-            this.btnResumeLastJob.TabIndex = 0;
-            this.btnResumeLastJob.Text = "  Resume Last Job";
-            this.btnResumeLastJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResumeLastJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnResumeLastJob.UseVisualStyleBackColor = false;
-            this.btnResumeLastJob.Click += new System.EventHandler(this.btnResumeLastJob_Click);
+            this.btnResumeLastTask.BackColor = System.Drawing.Color.White;
+            this.btnResumeLastTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnResumeLastTask.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnResumeLastTask.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnResumeLastTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnResumeLastTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnResumeLastTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResumeLastTask.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnResumeLastTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnResumeLastTask.Image = global::AgOpenGPS.Properties.Resources.FilePrevious;
+            this.btnResumeLastTask.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResumeLastTask.Location = new System.Drawing.Point(12, 12);
+            this.btnResumeLastTask.Margin = new System.Windows.Forms.Padding(12);
+            this.btnResumeLastTask.Name = "btnResumeLastTask";
+            this.btnResumeLastTask.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnResumeLastTask.Size = new System.Drawing.Size(459, 75);
+            this.btnResumeLastTask.TabIndex = 0;
+            this.btnResumeLastTask.Text = "  Resume Last Task";
+            this.btnResumeLastTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResumeLastTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnResumeLastTask.UseVisualStyleBackColor = false;
+            this.btnResumeLastTask.Click += new System.EventHandler(this.btnResumeLastTask_Click);
             // 
-            // btnResumeJob
+            // btnResumeTask
             // 
-            this.btnResumeJob.BackColor = System.Drawing.Color.White;
-            this.btnResumeJob.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnResumeJob.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnResumeJob.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnResumeJob.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            this.btnResumeJob.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
-            this.btnResumeJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResumeJob.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnResumeJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnResumeJob.Image = global::AgOpenGPS.Properties.Resources.FileExisting;
-            this.btnResumeJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResumeJob.Location = new System.Drawing.Point(495, 12);
-            this.btnResumeJob.Margin = new System.Windows.Forms.Padding(12);
-            this.btnResumeJob.Name = "btnResumeJob";
-            this.btnResumeJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnResumeJob.Size = new System.Drawing.Size(459, 75);
-            this.btnResumeJob.TabIndex = 1;
-            this.btnResumeJob.Text = "  Resume Job (List)";
-            this.btnResumeJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnResumeJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnResumeJob.UseVisualStyleBackColor = false;
-            this.btnResumeJob.Click += new System.EventHandler(this.btnResumeJob_Click);
+            this.btnResumeTask.BackColor = System.Drawing.Color.White;
+            this.btnResumeTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnResumeTask.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnResumeTask.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnResumeTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnResumeTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnResumeTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResumeTask.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnResumeTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnResumeTask.Image = global::AgOpenGPS.Properties.Resources.FileExisting;
+            this.btnResumeTask.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResumeTask.Location = new System.Drawing.Point(495, 12);
+            this.btnResumeTask.Margin = new System.Windows.Forms.Padding(12);
+            this.btnResumeTask.Name = "btnResumeTask";
+            this.btnResumeTask.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnResumeTask.Size = new System.Drawing.Size(459, 75);
+            this.btnResumeTask.TabIndex = 1;
+            this.btnResumeTask.Text = "  Resume Task (List)";
+            this.btnResumeTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnResumeTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnResumeTask.UseVisualStyleBackColor = false;
+            this.btnResumeTask.Click += new System.EventHandler(this.btnResumeTask_Click);
             // 
-            // btnFinishJob
+            // btnFinishTask
             // 
-            this.btnFinishJob.BackColor = System.Drawing.Color.White;
-            this.btnFinishJob.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFinishJob.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnFinishJob.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnFinishJob.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(235)))), ((int)(((byte)(200)))));
-            this.btnFinishJob.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.btnFinishJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFinishJob.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnFinishJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnFinishJob.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnFinishJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFinishJob.Location = new System.Drawing.Point(12, 111);
-            this.btnFinishJob.Margin = new System.Windows.Forms.Padding(12);
-            this.btnFinishJob.Name = "btnFinishJob";
-            this.btnFinishJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnFinishJob.Size = new System.Drawing.Size(459, 75);
-            this.btnFinishJob.TabIndex = 5;
-            this.btnFinishJob.Text = "  Finish Job";
-            this.btnFinishJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFinishJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnFinishJob.UseVisualStyleBackColor = false;
-            this.btnFinishJob.Click += new System.EventHandler(this.btnFinishJob_Click);
+            this.btnFinishTask.BackColor = System.Drawing.Color.White;
+            this.btnFinishTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFinishTask.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnFinishTask.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnFinishTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(235)))), ((int)(((byte)(200)))));
+            this.btnFinishTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.btnFinishTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFinishTask.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnFinishTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnFinishTask.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.btnFinishTask.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnFinishTask.Location = new System.Drawing.Point(12, 111);
+            this.btnFinishTask.Margin = new System.Windows.Forms.Padding(12);
+            this.btnFinishTask.Name = "btnFinishTask";
+            this.btnFinishTask.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnFinishTask.Size = new System.Drawing.Size(459, 75);
+            this.btnFinishTask.TabIndex = 5;
+            this.btnFinishTask.Text = "  Finish Task";
+            this.btnFinishTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnFinishTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnFinishTask.UseVisualStyleBackColor = false;
+            this.btnFinishTask.Click += new System.EventHandler(this.btnFinishTask_Click);
             // 
-            // btnNewJob
+            // btnNewTask
             // 
-            this.btnNewJob.BackColor = System.Drawing.Color.White;
-            this.btnNewJob.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNewJob.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNewJob.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnNewJob.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            this.btnNewJob.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
-            this.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNewJob.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnNewJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnNewJob.Image = global::AgOpenGPS.Properties.Resources.FileNew;
-            this.btnNewJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewJob.Location = new System.Drawing.Point(495, 111);
-            this.btnNewJob.Margin = new System.Windows.Forms.Padding(12);
-            this.btnNewJob.Name = "btnNewJob";
-            this.btnNewJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnNewJob.Size = new System.Drawing.Size(459, 75);
-            this.btnNewJob.TabIndex = 1;
-            this.btnNewJob.Text = "  New Job";
-            this.btnNewJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNewJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnNewJob.UseVisualStyleBackColor = false;
-            this.btnNewJob.Click += new System.EventHandler(this.btnNewJob_Click);
+            this.btnNewTask.BackColor = System.Drawing.Color.White;
+            this.btnNewTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewTask.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnNewTask.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnNewTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnNewTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnNewTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewTask.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnNewTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnNewTask.Image = global::AgOpenGPS.Properties.Resources.FileNew;
+            this.btnNewTask.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewTask.Location = new System.Drawing.Point(495, 111);
+            this.btnNewTask.Margin = new System.Windows.Forms.Padding(12);
+            this.btnNewTask.Name = "btnNewTask";
+            this.btnNewTask.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnNewTask.Size = new System.Drawing.Size(459, 75);
+            this.btnNewTask.TabIndex = 1;
+            this.btnNewTask.Text = "  New Task";
+            this.btnNewTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnNewTask.UseVisualStyleBackColor = false;
+            this.btnNewTask.Click += new System.EventHandler(this.btnNewTask_Click);
             // 
-            // btnCloseJob
+            // btnCloseTask
             // 
-            this.btnCloseJob.BackColor = System.Drawing.Color.White;
-            this.btnCloseJob.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCloseJob.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCloseJob.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnCloseJob.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(235)))), ((int)(((byte)(200)))));
-            this.btnCloseJob.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(230)))));
-            this.btnCloseJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCloseJob.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnCloseJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnCloseJob.Image = global::AgOpenGPS.Properties.Resources.FileClose;
-            this.btnCloseJob.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseJob.Location = new System.Drawing.Point(12, 210);
-            this.btnCloseJob.Margin = new System.Windows.Forms.Padding(12);
-            this.btnCloseJob.Name = "btnCloseJob";
-            this.btnCloseJob.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnCloseJob.Size = new System.Drawing.Size(459, 78);
-            this.btnCloseJob.TabIndex = 4;
-            this.btnCloseJob.Text = "  Close Job";
-            this.btnCloseJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCloseJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnCloseJob.UseVisualStyleBackColor = false;
-            this.btnCloseJob.Click += new System.EventHandler(this.btnCloseJob_Click);
+            this.btnCloseTask.BackColor = System.Drawing.Color.White;
+            this.btnCloseTask.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCloseTask.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCloseTask.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnCloseTask.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(235)))), ((int)(((byte)(200)))));
+            this.btnCloseTask.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(230)))));
+            this.btnCloseTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCloseTask.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnCloseTask.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnCloseTask.Image = global::AgOpenGPS.Properties.Resources.FileClose;
+            this.btnCloseTask.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseTask.Location = new System.Drawing.Point(12, 210);
+            this.btnCloseTask.Margin = new System.Windows.Forms.Padding(12);
+            this.btnCloseTask.Name = "btnCloseTask";
+            this.btnCloseTask.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnCloseTask.Size = new System.Drawing.Size(459, 78);
+            this.btnCloseTask.TabIndex = 4;
+            this.btnCloseTask.Text = "  Close Task";
+            this.btnCloseTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCloseTask.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCloseTask.UseVisualStyleBackColor = false;
+            this.btnCloseTask.Click += new System.EventHandler(this.btnCloseTask_Click);
             // 
-            // btnExportJobs
+            // btnExportTasks
             // 
-            this.btnExportJobs.BackColor = System.Drawing.Color.White;
-            this.btnExportJobs.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExportJobs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExportJobs.Enabled = false;
-            this.btnExportJobs.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnExportJobs.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            this.btnExportJobs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
-            this.btnExportJobs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportJobs.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnExportJobs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.btnExportJobs.Image = global::AgOpenGPS.Properties.Resources.FileSaveAs;
-            this.btnExportJobs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportJobs.Location = new System.Drawing.Point(495, 210);
-            this.btnExportJobs.Margin = new System.Windows.Forms.Padding(12);
-            this.btnExportJobs.Name = "btnExportJobs";
-            this.btnExportJobs.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnExportJobs.Size = new System.Drawing.Size(459, 78);
-            this.btnExportJobs.TabIndex = 9;
-            this.btnExportJobs.Text = "  Export Jobs";
-            this.btnExportJobs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportJobs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnExportJobs.UseVisualStyleBackColor = false;
+            this.btnExportTasks.BackColor = System.Drawing.Color.White;
+            this.btnExportTasks.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExportTasks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExportTasks.Enabled = false;
+            this.btnExportTasks.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnExportTasks.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnExportTasks.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnExportTasks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportTasks.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnExportTasks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.btnExportTasks.Image = global::AgOpenGPS.Properties.Resources.FileSaveAs;
+            this.btnExportTasks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExportTasks.Location = new System.Drawing.Point(495, 210);
+            this.btnExportTasks.Margin = new System.Windows.Forms.Padding(12);
+            this.btnExportTasks.Name = "btnExportTasks";
+            this.btnExportTasks.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnExportTasks.Size = new System.Drawing.Size(459, 78);
+            this.btnExportTasks.TabIndex = 9;
+            this.btnExportTasks.Text = "  Export Tasks";
+            this.btnExportTasks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExportTasks.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnExportTasks.UseVisualStyleBackColor = false;
             // 
             // lblFieldSection
             // 
@@ -414,18 +414,18 @@ namespace AgOpenGPS
             this.btnCloseField.UseVisualStyleBackColor = false;
             this.btnCloseField.Click += new System.EventHandler(this.btnCloseField_Click);
             // 
-            // lblLastJobInfo
+            // lblLastTaskInfo
             // 
-            this.lblLastJobInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblLastJobInfo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLastJobInfo.ForeColor = System.Drawing.Color.White;
-            this.lblLastJobInfo.Location = new System.Drawing.Point(0, 300);
-            this.lblLastJobInfo.Name = "lblLastJobInfo";
-            this.lblLastJobInfo.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.lblLastJobInfo.Size = new System.Drawing.Size(966, 25);
-            this.lblLastJobInfo.TabIndex = 1;
-            this.lblLastJobInfo.Text = "Last Job: --";
-            this.lblLastJobInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLastTaskInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.lblLastTaskInfo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLastTaskInfo.ForeColor = System.Drawing.Color.White;
+            this.lblLastTaskInfo.Location = new System.Drawing.Point(0, 300);
+            this.lblLastTaskInfo.Name = "lblLastTaskInfo";
+            this.lblLastTaskInfo.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.lblLastTaskInfo.Size = new System.Drawing.Size(966, 25);
+            this.lblLastTaskInfo.TabIndex = 1;
+            this.lblLastTaskInfo.Text = "Last Task: --";
+            this.lblLastTaskInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblCurrentField
             // 
@@ -769,8 +769,8 @@ namespace AgOpenGPS
             this.panelWizardStep3.Controls.Add(this.lblFieldNameLabel);
             this.panelWizardStep3.Controls.Add(this.txtFieldName);
             this.panelWizardStep3.Controls.Add(this.flpWorkTypes);
-            this.panelWizardStep3.Controls.Add(this.lblJobNameLabel);
-            this.panelWizardStep3.Controls.Add(this.txtJobName);
+            this.panelWizardStep3.Controls.Add(this.lblTaskNameLabel);
+            this.panelWizardStep3.Controls.Add(this.txtTaskName);
             this.panelWizardStep3.Controls.Add(this.btnWizard3Start);
             this.panelWizardStep3.Controls.Add(this.btnWizard3Back);
             this.panelWizardStep3.Location = new System.Drawing.Point(15, 75);
@@ -827,27 +827,27 @@ namespace AgOpenGPS
             this.flpWorkTypes.Size = new System.Drawing.Size(906, 280);
             this.flpWorkTypes.TabIndex = 1;
             // 
-            // lblJobNameLabel
+            // lblTaskNameLabel
             // 
-            this.lblJobNameLabel.AutoSize = true;
-            this.lblJobNameLabel.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
-            this.lblJobNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.lblJobNameLabel.Location = new System.Drawing.Point(30, 375);
-            this.lblJobNameLabel.Name = "lblJobNameLabel";
-            this.lblJobNameLabel.Size = new System.Drawing.Size(106, 22);
-            this.lblJobNameLabel.TabIndex = 2;
-            this.lblJobNameLabel.Text = "Job Name:";
+            this.lblTaskNameLabel.AutoSize = true;
+            this.lblTaskNameLabel.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
+            this.lblTaskNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.lblTaskNameLabel.Location = new System.Drawing.Point(30, 375);
+            this.lblTaskNameLabel.Name = "lblTaskNameLabel";
+            this.lblTaskNameLabel.Size = new System.Drawing.Size(106, 22);
+            this.lblTaskNameLabel.TabIndex = 2;
+            this.lblTaskNameLabel.Text = "Task Name:";
             // 
-            // txtJobName
+            // txtTaskName
             // 
-            this.txtJobName.BackColor = System.Drawing.Color.White;
-            this.txtJobName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtJobName.Font = new System.Drawing.Font("Tahoma", 16F);
-            this.txtJobName.Location = new System.Drawing.Point(30, 405);
-            this.txtJobName.Name = "txtJobName";
-            this.txtJobName.Size = new System.Drawing.Size(906, 33);
-            this.txtJobName.TabIndex = 3;
-            this.txtJobName.Enter += new System.EventHandler(this.txtJobName_Enter);
+            this.txtTaskName.BackColor = System.Drawing.Color.White;
+            this.txtTaskName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTaskName.Font = new System.Drawing.Font("Tahoma", 16F);
+            this.txtTaskName.Location = new System.Drawing.Point(30, 405);
+            this.txtTaskName.Name = "txtTaskName";
+            this.txtTaskName.Size = new System.Drawing.Size(906, 33);
+            this.txtTaskName.TabIndex = 3;
+            this.txtTaskName.Enter += new System.EventHandler(this.txtTaskName_Enter);
             // 
             // btnWizard3Start
             // 
@@ -861,7 +861,7 @@ namespace AgOpenGPS
             this.btnWizard3Start.Name = "btnWizard3Start";
             this.btnWizard3Start.Size = new System.Drawing.Size(190, 55);
             this.btnWizard3Start.TabIndex = 5;
-            this.btnWizard3Start.Text = "START JOB";
+            this.btnWizard3Start.Text = "START TASK";
             this.btnWizard3Start.UseVisualStyleBackColor = false;
             this.btnWizard3Start.Click += new System.EventHandler(this.btnWizard3Start_Click);
             // 
@@ -887,7 +887,7 @@ namespace AgOpenGPS
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelResumeList.Controls.Add(this.lblResumeTitle);
-            this.panelResumeList.Controls.Add(this.flpJobList);
+            this.panelResumeList.Controls.Add(this.flpTaskList);
             this.panelResumeList.Controls.Add(this.btnResumeListBack);
             this.panelResumeList.Location = new System.Drawing.Point(15, 75);
             this.panelResumeList.Name = "panelResumeList";
@@ -905,21 +905,21 @@ namespace AgOpenGPS
             this.lblResumeTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.lblResumeTitle.Size = new System.Drawing.Size(966, 55);
             this.lblResumeTitle.TabIndex = 0;
-            this.lblResumeTitle.Text = "Select Job to Resume";
+            this.lblResumeTitle.Text = "Select Task to Resume";
             this.lblResumeTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // flpJobList
+            // flpTaskList
             // 
-            this.flpJobList.AutoScroll = true;
-            this.flpJobList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.flpJobList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flpJobList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpJobList.Location = new System.Drawing.Point(30, 75);
-            this.flpJobList.Name = "flpJobList";
-            this.flpJobList.Padding = new System.Windows.Forms.Padding(5);
-            this.flpJobList.Size = new System.Drawing.Size(906, 366);
-            this.flpJobList.TabIndex = 1;
-            this.flpJobList.WrapContents = false;
+            this.flpTaskList.AutoScroll = true;
+            this.flpTaskList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.flpTaskList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpTaskList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpTaskList.Location = new System.Drawing.Point(30, 75);
+            this.flpTaskList.Name = "flpTaskList";
+            this.flpTaskList.Padding = new System.Windows.Forms.Padding(5);
+            this.flpTaskList.Size = new System.Drawing.Size(906, 366);
+            this.flpTaskList.TabIndex = 1;
+            this.flpTaskList.WrapContents = false;
             // 
             // btnResumeListBack
             // 
@@ -981,7 +981,7 @@ namespace AgOpenGPS
             this.panelContainer.ResumeLayout(false);
             this.panelHeader.ResumeLayout(false);
             this.panelMain.ResumeLayout(false);
-            this.tableJobs.ResumeLayout(false);
+            this.tableTasks.ResumeLayout(false);
             this.tableFields.ResumeLayout(false);
             this.panelOpenField.ResumeLayout(false);
             this.tableLocalStorage.ResumeLayout(false);
@@ -1006,19 +1006,19 @@ namespace AgOpenGPS
 
         // Main Menu
         private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.TableLayoutPanel tableJobs;
-        private System.Windows.Forms.Button btnResumeLastJob;
-        private System.Windows.Forms.Button btnResumeJob;
-        private System.Windows.Forms.Button btnNewJob;
-        private System.Windows.Forms.Button btnCloseJob;
-        private System.Windows.Forms.Button btnFinishJob;
-        private System.Windows.Forms.Button btnExportJobs;
+        private System.Windows.Forms.TableLayoutPanel tableTasks;
+        private System.Windows.Forms.Button btnResumeLastTask;
+        private System.Windows.Forms.Button btnResumeTask;
+        private System.Windows.Forms.Button btnNewTask;
+        private System.Windows.Forms.Button btnCloseTask;
+        private System.Windows.Forms.Button btnFinishTask;
+        private System.Windows.Forms.Button btnExportTasks;
         private System.Windows.Forms.Label lblFieldSection;
         private System.Windows.Forms.TableLayoutPanel tableFields;
         private System.Windows.Forms.Button btnOpenField;
         private System.Windows.Forms.Button btnNewField;
         private System.Windows.Forms.Button btnCloseField;
-        private System.Windows.Forms.Label lblLastJobInfo;
+        private System.Windows.Forms.Label lblLastTaskInfo;
         private System.Windows.Forms.Label lblCurrentField;
 
         // Open Field Panel
@@ -1053,15 +1053,15 @@ namespace AgOpenGPS
         private System.Windows.Forms.Label lblFieldNameLabel;
         private System.Windows.Forms.TextBox txtFieldName;
         private System.Windows.Forms.FlowLayoutPanel flpWorkTypes;
-        private System.Windows.Forms.Label lblJobNameLabel;
-        private System.Windows.Forms.TextBox txtJobName;
+        private System.Windows.Forms.Label lblTaskNameLabel;
+        private System.Windows.Forms.TextBox txtTaskName;
         private System.Windows.Forms.Button btnWizard3Start;
         private System.Windows.Forms.Button btnWizard3Back;
 
-        // Resume Job List
+        // Resume Task List
         private System.Windows.Forms.Panel panelResumeList;
         private System.Windows.Forms.Label lblResumeTitle;
-        private System.Windows.Forms.FlowLayoutPanel flpJobList;
+        private System.Windows.Forms.FlowLayoutPanel flpTaskList;
         private System.Windows.Forms.Button btnResumeListBack;
 
         // Cancel
