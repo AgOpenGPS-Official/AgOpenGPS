@@ -649,6 +649,13 @@ namespace AgOpenGPS
                     try
                     {
                         await FileSaveEverythingBeforeClosingField();
+
+                        // Close the current task (if any) - saves task metadata
+                        if (currentTask != null)
+                        {
+                            taskManager.CloseCurrentTask();
+                        }
+
                         savingForm.UpdateStep("Field", gStr.gsSaveFieldSavedLocal, SavingStepState.Done);
 
                         // STEP 2: Update AgShare status (upload was completed in FileSaveEverythingBeforeClosingField)
