@@ -48,6 +48,13 @@ namespace AgOpenGPS
             this.btnOpenFromAgShare = new System.Windows.Forms.Button();
             this.btnUploadToAgShare = new System.Windows.Forms.Button();
             this.btnOpenFieldBack = new System.Windows.Forms.Button();
+            this.panelAddField = new System.Windows.Forms.Panel();
+            this.lblAddFieldTitle = new System.Windows.Forms.Label();
+            this.tableAddField = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddFieldNew = new System.Windows.Forms.Button();
+            this.btnAddFieldFromISOXML = new System.Windows.Forms.Button();
+            this.btnAddFieldFromKML = new System.Windows.Forms.Button();
+            this.btnAddFieldBack = new System.Windows.Forms.Button();
             this.panelWizardStep1 = new System.Windows.Forms.Panel();
             this.lblStep1Title = new System.Windows.Forms.Label();
             this.listProfiles = new System.Windows.Forms.ListBox();
@@ -55,7 +62,11 @@ namespace AgOpenGPS
             this.btnWizard1Back = new System.Windows.Forms.Button();
             this.panelWizardStep2 = new System.Windows.Forms.Panel();
             this.lblStep2Title = new System.Windows.Forms.Label();
-            this.listFields = new System.Windows.Forms.ListBox();
+            this.lvFields = new System.Windows.Forms.ListView();
+            this.chFieldName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chFieldDistance = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chFieldArea = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnSortFields = new System.Windows.Forms.Button();
             this.btnWizard2NewField = new System.Windows.Forms.Button();
             this.btnWizard2Next = new System.Windows.Forms.Button();
             this.btnWizard2Back = new System.Windows.Forms.Button();
@@ -73,6 +84,7 @@ namespace AgOpenGPS
             this.flpTaskList = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResumeListBack = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnGoMode = new System.Windows.Forms.Button();
             this.panelContainer.SuspendLayout();
             this.panelHeader.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -81,6 +93,8 @@ namespace AgOpenGPS
             this.panelOpenField.SuspendLayout();
             this.tableLocalStorage.SuspendLayout();
             this.tableAgShareCloud.SuspendLayout();
+            this.panelAddField.SuspendLayout();
+            this.tableAddField.SuspendLayout();
             this.panelWizardStep1.SuspendLayout();
             this.panelWizardStep2.SuspendLayout();
             this.panelWizardStep3.SuspendLayout();
@@ -93,6 +107,7 @@ namespace AgOpenGPS
             this.panelContainer.Controls.Add(this.panelHeader);
             this.panelContainer.Controls.Add(this.panelMain);
             this.panelContainer.Controls.Add(this.panelOpenField);
+            this.panelContainer.Controls.Add(this.panelAddField);
             this.panelContainer.Controls.Add(this.panelWizardStep1);
             this.panelContainer.Controls.Add(this.panelWizardStep2);
             this.panelContainer.Controls.Add(this.panelWizardStep3);
@@ -328,6 +343,7 @@ namespace AgOpenGPS
             this.tableFields.ColumnCount = 2;
             this.tableFields.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableFields.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableFields.Controls.Add(this.btnGoMode, 1, 1);
             this.tableFields.Controls.Add(this.btnOpenField, 0, 0);
             this.tableFields.Controls.Add(this.btnNewField, 1, 0);
             this.tableFields.Controls.Add(this.btnCloseField, 0, 1);
@@ -383,7 +399,7 @@ namespace AgOpenGPS
             this.btnNewField.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.btnNewField.Size = new System.Drawing.Size(459, 76);
             this.btnNewField.TabIndex = 7;
-            this.btnNewField.Text = "  New Field";
+            this.btnNewField.Text = "  Add Field";
             this.btnNewField.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNewField.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnNewField.UseVisualStyleBackColor = false;
@@ -599,6 +615,140 @@ namespace AgOpenGPS
             this.btnOpenFieldBack.UseVisualStyleBackColor = false;
             this.btnOpenFieldBack.Click += new System.EventHandler(this.btnOpenFieldBack_Click);
             // 
+            // panelAddField
+            // 
+            this.panelAddField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelAddField.Controls.Add(this.lblAddFieldTitle);
+            this.panelAddField.Controls.Add(this.tableAddField);
+            this.panelAddField.Controls.Add(this.btnAddFieldBack);
+            this.panelAddField.Location = new System.Drawing.Point(15, 75);
+            this.panelAddField.Name = "panelAddField";
+            this.panelAddField.Size = new System.Drawing.Size(966, 595);
+            this.panelAddField.TabIndex = 6;
+            this.panelAddField.Visible = false;
+            // 
+            // lblAddFieldTitle
+            // 
+            this.lblAddFieldTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblAddFieldTitle.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.lblAddFieldTitle.ForeColor = System.Drawing.Color.White;
+            this.lblAddFieldTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblAddFieldTitle.Name = "lblAddFieldTitle";
+            this.lblAddFieldTitle.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAddFieldTitle.Size = new System.Drawing.Size(966, 55);
+            this.lblAddFieldTitle.TabIndex = 0;
+            this.lblAddFieldTitle.Text = "Add Field";
+            this.lblAddFieldTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableAddField
+            // 
+            this.tableAddField.ColumnCount = 1;
+            this.tableAddField.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableAddField.Controls.Add(this.btnAddFieldNew, 0, 0);
+            this.tableAddField.Controls.Add(this.btnAddFieldFromISOXML, 0, 1);
+            this.tableAddField.Controls.Add(this.btnAddFieldFromKML, 0, 2);
+            this.tableAddField.Location = new System.Drawing.Point(0, 55);
+            this.tableAddField.Name = "tableAddField";
+            this.tableAddField.RowCount = 3;
+            this.tableAddField.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableAddField.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
+            this.tableAddField.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.34F));
+            this.tableAddField.Size = new System.Drawing.Size(966, 300);
+            this.tableAddField.TabIndex = 1;
+            // 
+            // btnAddFieldNew
+            // 
+            this.btnAddFieldNew.BackColor = System.Drawing.Color.White;
+            this.btnAddFieldNew.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddFieldNew.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddFieldNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnAddFieldNew.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(235)))), ((int)(((byte)(200)))));
+            this.btnAddFieldNew.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.btnAddFieldNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddFieldNew.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnAddFieldNew.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddFieldNew.Image = global::AgOpenGPS.Properties.Resources.FileNew;
+            this.btnAddFieldNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldNew.Location = new System.Drawing.Point(12, 12);
+            this.btnAddFieldNew.Margin = new System.Windows.Forms.Padding(12);
+            this.btnAddFieldNew.Name = "btnAddFieldNew";
+            this.btnAddFieldNew.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnAddFieldNew.Size = new System.Drawing.Size(942, 75);
+            this.btnAddFieldNew.TabIndex = 0;
+            this.btnAddFieldNew.Text = "  Create New Field";
+            this.btnAddFieldNew.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddFieldNew.UseVisualStyleBackColor = false;
+            this.btnAddFieldNew.Click += new System.EventHandler(this.btnAddFieldNew_Click);
+            // 
+            // btnAddFieldFromISOXML
+            // 
+            this.btnAddFieldFromISOXML.BackColor = System.Drawing.Color.White;
+            this.btnAddFieldFromISOXML.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddFieldFromISOXML.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddFieldFromISOXML.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnAddFieldFromISOXML.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnAddFieldFromISOXML.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnAddFieldFromISOXML.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddFieldFromISOXML.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnAddFieldFromISOXML.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddFieldFromISOXML.Image = global::AgOpenGPS.Properties.Resources.BoundaryLoadFromGE;
+            this.btnAddFieldFromISOXML.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldFromISOXML.Location = new System.Drawing.Point(12, 111);
+            this.btnAddFieldFromISOXML.Margin = new System.Windows.Forms.Padding(12);
+            this.btnAddFieldFromISOXML.Name = "btnAddFieldFromISOXML";
+            this.btnAddFieldFromISOXML.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnAddFieldFromISOXML.Size = new System.Drawing.Size(942, 75);
+            this.btnAddFieldFromISOXML.TabIndex = 1;
+            this.btnAddFieldFromISOXML.Text = "  From ISO-XML";
+            this.btnAddFieldFromISOXML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldFromISOXML.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddFieldFromISOXML.UseVisualStyleBackColor = false;
+            this.btnAddFieldFromISOXML.Click += new System.EventHandler(this.btnAddFieldFromISOXML_Click);
+            // 
+            // btnAddFieldFromKML
+            // 
+            this.btnAddFieldFromKML.BackColor = System.Drawing.Color.White;
+            this.btnAddFieldFromKML.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddFieldFromKML.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddFieldFromKML.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnAddFieldFromKML.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            this.btnAddFieldFromKML.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(248)))), ((int)(((byte)(255)))));
+            this.btnAddFieldFromKML.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddFieldFromKML.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnAddFieldFromKML.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddFieldFromKML.Image = global::AgOpenGPS.Properties.Resources.BoundaryLoadFromGE;
+            this.btnAddFieldFromKML.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldFromKML.Location = new System.Drawing.Point(12, 210);
+            this.btnAddFieldFromKML.Margin = new System.Windows.Forms.Padding(12);
+            this.btnAddFieldFromKML.Name = "btnAddFieldFromKML";
+            this.btnAddFieldFromKML.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnAddFieldFromKML.Size = new System.Drawing.Size(942, 78);
+            this.btnAddFieldFromKML.TabIndex = 2;
+            this.btnAddFieldFromKML.Text = "  From KML";
+            this.btnAddFieldFromKML.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFieldFromKML.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddFieldFromKML.UseVisualStyleBackColor = false;
+            this.btnAddFieldFromKML.Click += new System.EventHandler(this.btnAddFieldFromKML_Click);
+            // 
+            // btnAddFieldBack
+            // 
+            this.btnAddFieldBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnAddFieldBack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddFieldBack.FlatAppearance.BorderSize = 0;
+            this.btnAddFieldBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddFieldBack.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAddFieldBack.ForeColor = System.Drawing.Color.White;
+            this.btnAddFieldBack.Location = new System.Drawing.Point(30, 380);
+            this.btnAddFieldBack.Name = "btnAddFieldBack";
+            this.btnAddFieldBack.Size = new System.Drawing.Size(140, 55);
+            this.btnAddFieldBack.TabIndex = 3;
+            this.btnAddFieldBack.Text = "< Back";
+            this.btnAddFieldBack.UseVisualStyleBackColor = false;
+            this.btnAddFieldBack.Click += new System.EventHandler(this.btnAddFieldBack_Click);
+            // 
             // panelWizardStep1
             // 
             this.panelWizardStep1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -677,7 +827,8 @@ namespace AgOpenGPS
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelWizardStep2.Controls.Add(this.lblStep2Title);
-            this.panelWizardStep2.Controls.Add(this.listFields);
+            this.panelWizardStep2.Controls.Add(this.lvFields);
+            this.panelWizardStep2.Controls.Add(this.btnSortFields);
             this.panelWizardStep2.Controls.Add(this.btnWizard2NewField);
             this.panelWizardStep2.Controls.Add(this.btnWizard2Next);
             this.panelWizardStep2.Controls.Add(this.btnWizard2Back);
@@ -700,17 +851,56 @@ namespace AgOpenGPS
             this.lblStep2Title.Text = "Step 2: Select Field";
             this.lblStep2Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // listFields
+            // lvFields
             // 
-            this.listFields.BackColor = System.Drawing.Color.White;
-            this.listFields.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listFields.Font = new System.Drawing.Font("Tahoma", 20F);
-            this.listFields.FormattingEnabled = true;
-            this.listFields.ItemHeight = 33;
-            this.listFields.Location = new System.Drawing.Point(30, 75);
-            this.listFields.Name = "listFields";
-            this.listFields.Size = new System.Drawing.Size(906, 332);
-            this.listFields.TabIndex = 1;
+            this.lvFields.BackColor = System.Drawing.Color.White;
+            this.lvFields.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lvFields.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chFieldName,
+            this.chFieldDistance,
+            this.chFieldArea});
+            this.lvFields.Font = new System.Drawing.Font("Tahoma", 20F);
+            this.lvFields.FullRowSelect = true;
+            this.lvFields.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvFields.HideSelection = false;
+            this.lvFields.Location = new System.Drawing.Point(30, 75);
+            this.lvFields.MultiSelect = false;
+            this.lvFields.Name = "lvFields";
+            this.lvFields.Size = new System.Drawing.Size(906, 332);
+            this.lvFields.TabIndex = 1;
+            this.lvFields.UseCompatibleStateImageBehavior = false;
+            this.lvFields.View = System.Windows.Forms.View.Details;
+            //
+            // chFieldName
+            //
+            this.chFieldName.Text = "Field";
+            this.chFieldName.Width = 520;
+            //
+            // chFieldDistance
+            //
+            this.chFieldDistance.Text = "Distance";
+            this.chFieldDistance.Width = 200;
+            //
+            // chFieldArea
+            //
+            this.chFieldArea.Text = "Area";
+            this.chFieldArea.Width = 150;
+            // 
+            // btnSortFields
+            // 
+            this.btnSortFields.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnSortFields.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSortFields.FlatAppearance.BorderSize = 0;
+            this.btnSortFields.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSortFields.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Bold);
+            this.btnSortFields.ForeColor = System.Drawing.Color.White;
+            this.btnSortFields.Location = new System.Drawing.Point(736, 420);
+            this.btnSortFields.Name = "btnSortFields";
+            this.btnSortFields.Size = new System.Drawing.Size(200, 35);
+            this.btnSortFields.TabIndex = 5;
+            this.btnSortFields.Text = "Sort: Name";
+            this.btnSortFields.UseVisualStyleBackColor = false;
+            this.btnSortFields.Click += new System.EventHandler(this.btnSortFields_Click);
             // 
             // btnWizard2NewField
             // 
@@ -834,7 +1024,7 @@ namespace AgOpenGPS
             this.lblTaskNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblTaskNameLabel.Location = new System.Drawing.Point(30, 375);
             this.lblTaskNameLabel.Name = "lblTaskNameLabel";
-            this.lblTaskNameLabel.Size = new System.Drawing.Size(106, 22);
+            this.lblTaskNameLabel.Size = new System.Drawing.Size(117, 22);
             this.lblTaskNameLabel.TabIndex = 2;
             this.lblTaskNameLabel.Text = "Task Name:";
             // 
@@ -957,6 +1147,30 @@ namespace AgOpenGPS
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnGoMode
+            // 
+            this.btnGoMode.BackColor = System.Drawing.Color.White;
+            this.btnGoMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGoMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnGoMode.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnGoMode.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnGoMode.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.btnGoMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGoMode.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnGoMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnGoMode.Image = global::AgOpenGPS.Properties.Resources.AutoSteerOn;
+            this.btnGoMode.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGoMode.Location = new System.Drawing.Point(495, 112);
+            this.btnGoMode.Margin = new System.Windows.Forms.Padding(12);
+            this.btnGoMode.Name = "btnGoMode";
+            this.btnGoMode.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnGoMode.Size = new System.Drawing.Size(459, 76);
+            this.btnGoMode.TabIndex = 8;
+            this.btnGoMode.Text = "  Go Mode";
+            this.btnGoMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGoMode.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGoMode.UseVisualStyleBackColor = false;
+            // 
             // FormStartWork
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -986,6 +1200,8 @@ namespace AgOpenGPS
             this.panelOpenField.ResumeLayout(false);
             this.tableLocalStorage.ResumeLayout(false);
             this.tableAgShareCloud.ResumeLayout(false);
+            this.panelAddField.ResumeLayout(false);
+            this.tableAddField.ResumeLayout(false);
             this.panelWizardStep1.ResumeLayout(false);
             this.panelWizardStep2.ResumeLayout(false);
             this.panelWizardStep3.ResumeLayout(false);
@@ -1032,6 +1248,15 @@ namespace AgOpenGPS
         private System.Windows.Forms.Button btnUploadToAgShare;
         private System.Windows.Forms.Button btnOpenFieldBack;
 
+        // Add Field Panel
+        private System.Windows.Forms.Panel panelAddField;
+        private System.Windows.Forms.Label lblAddFieldTitle;
+        private System.Windows.Forms.TableLayoutPanel tableAddField;
+        private System.Windows.Forms.Button btnAddFieldNew;
+        private System.Windows.Forms.Button btnAddFieldFromISOXML;
+        private System.Windows.Forms.Button btnAddFieldFromKML;
+        private System.Windows.Forms.Button btnAddFieldBack;
+
         // Wizard Step 1
         private System.Windows.Forms.Panel panelWizardStep1;
         private System.Windows.Forms.Label lblStep1Title;
@@ -1042,7 +1267,11 @@ namespace AgOpenGPS
         // Wizard Step 2
         private System.Windows.Forms.Panel panelWizardStep2;
         private System.Windows.Forms.Label lblStep2Title;
-        private System.Windows.Forms.ListBox listFields;
+        private System.Windows.Forms.ListView lvFields;
+        private System.Windows.Forms.ColumnHeader chFieldName;
+        private System.Windows.Forms.ColumnHeader chFieldDistance;
+        private System.Windows.Forms.ColumnHeader chFieldArea;
+        private System.Windows.Forms.Button btnSortFields;
         private System.Windows.Forms.Button btnWizard2Next;
         private System.Windows.Forms.Button btnWizard2Back;
         private System.Windows.Forms.Button btnWizard2NewField;
@@ -1066,5 +1295,6 @@ namespace AgOpenGPS
 
         // Cancel
         private System.Windows.Forms.Button btnCancel;
+        private Button btnGoMode;
     }
 }

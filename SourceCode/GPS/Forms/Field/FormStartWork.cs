@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
 using AgOpenGPS.Forms.Field;
@@ -21,7 +24,7 @@ namespace AgOpenGPS
         private readonly FormGPS mf;
 
         // Current view mode
-        private enum ViewMode { Main, OpenField, WizardStep1, WizardStep2, WizardStep3, ResumeTaskList }
+        private enum ViewMode { Main, OpenField, AddField, WizardStep1, WizardStep2, WizardStep3, ResumeTaskList }
         private ViewMode currentView = ViewMode.Main;
 
         // Task data
@@ -39,6 +42,19 @@ namespace AgOpenGPS
 
         // New field creation
         private bool isCreatingNewField = false;
+
+        // Field list data
+        private readonly List<FieldInfo> fieldInfoList = new List<FieldInfo>();
+        private int fieldSortOrder = 0; // 0=Name, 1=Distance, 2=Area
+
+        private class FieldInfo
+        {
+            public string Name { get; set; }
+            public double Distance { get; set; } // in km, double.MaxValue if unknown
+            public double Area { get; set; } // in ha or acres, -1 if unknown
+            public string DistanceDisplay { get; set; }
+            public string AreaDisplay { get; set; }
+        }
 
         public FormStartWork(Form callingForm)
         {
@@ -79,6 +95,7 @@ namespace AgOpenGPS
             // Hide all panels
             panelMain.Visible = false;
             panelOpenField.Visible = false;
+            panelAddField.Visible = false;
             panelWizardStep1.Visible = false;
             panelWizardStep2.Visible = false;
             panelWizardStep3.Visible = false;
@@ -93,6 +110,9 @@ namespace AgOpenGPS
                     break;
                 case ViewMode.OpenField:
                     panelOpenField.Visible = true;
+                    break;
+                case ViewMode.AddField:
+                    panelAddField.Visible = true;
                     break;
                 case ViewMode.WizardStep1:
                     panelWizardStep1.Visible = true;
@@ -315,6 +335,20 @@ namespace AgOpenGPS
 
         private void btnNewField_Click(object sender, EventArgs e)
         {
+            ShowView(ViewMode.AddField);
+        }
+
+        #endregion
+
+        #region Add Field Panel
+
+        private void btnAddFieldBack_Click(object sender, EventArgs e)
+        {
+            ShowView(ViewMode.Main);
+        }
+
+        private void btnAddFieldNew_Click(object sender, EventArgs e)
+        {
             if (mf.isJobStarted)
             {
                 _ = mf.FileSaveEverythingBeforeClosingField();
@@ -329,6 +363,44 @@ namespace AgOpenGPS
                 }
             }
         }
+
+        private async void btnAddFieldFromISOXML_Click(object sender, EventArgs e)
+        {
+            if (mf.isJobStarted)
+            {
+                await mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            using (var form = new FormFieldIsoXml(mf))
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+            }
+        }
+
+        private async void btnAddFieldFromKML_Click(object sender, EventArgs e)
+        {
+            if (mf.isJobStarted)
+            {
+                await mf.FileSaveEverythingBeforeClosingField();
+            }
+
+            using (var form = new FormFieldKML(mf))
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Task Management
 
         private async void btnCloseTask_Click(object sender, EventArgs e)
         {
@@ -448,68 +520,306 @@ namespace AgOpenGPS
 
         private void LoadWizardStep2()
         {
-            listFields.Items.Clear();
+            LoadFieldList();
+            UpdateFieldListView();
+        }
+
+        private void LoadFieldList()
+        {
+            fieldInfoList.Clear();
+
+            string[] dirs;
+            try
+            {
+                dirs = Directory.GetDirectories(RegistrySettings.fieldsDirectory);
+            }
+            catch
+            {
+                dirs = Array.Empty<string>();
+            }
+
+            if (dirs == null || dirs.Length < 1)
+                return;
 
             string currentFieldDir = null;
             if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
             {
                 currentFieldDir = mf.currentFieldDirectory;
-                listFields.Items.Add($"Current: {mf.displayFieldName}");
             }
 
-            // Get last field from last task if available
-            string lastFieldName = lastTask?.FieldName;
-            int lastFieldIndex = -1;
-
-            if (Directory.Exists(RegistrySettings.fieldsDirectory))
+            foreach (string dir in dirs)
             {
-                foreach (string dir in Directory.GetDirectories(RegistrySettings.fieldsDirectory))
+                string fieldDirectory = Path.GetFileName(dir);
+                string fieldFile = Path.Combine(dir, "Field.txt");
+
+                // Skip current field and folders without Field.txt
+                if (!File.Exists(fieldFile))
+                    continue;
+                if (currentFieldDir != null && fieldDirectory == currentFieldDir)
+                    continue;
+
+                var info = new FieldInfo { Name = fieldDirectory };
+
+                // Get distance
+                GetFieldDistance(fieldFile, info);
+
+                // Get area
+                GetFieldArea(dir, info);
+
+                fieldInfoList.Add(info);
+            }
+        }
+
+        private void GetFieldDistance(string filename, FieldInfo info)
+        {
+            try
+            {
+                using (var reader = new GeoStreamReader(filename))
                 {
-                    string fieldFile = Path.Combine(dir, "Field.txt");
-                    if (File.Exists(fieldFile))
+                    // Skip 8 lines to get to position
+                    for (int i = 0; i < 8; i++) reader.ReadLine();
+
+                    if (!reader.EndOfStream)
                     {
-                        string name = Path.GetFileName(dir);
-                        if (currentFieldDir == null || name != currentFieldDir)
-                        {
-                            int index = listFields.Items.Add(name);
-                            // Track if this is the last opened field
-                            if (name == lastFieldName)
-                            {
-                                lastFieldIndex = index;
-                            }
-                        }
+                        var startLatLon = reader.ReadWgs84();
+                        double km = startLatLon.DistanceInKiloMeters(mf.AppModel.CurrentLatLon);
+                        info.Distance = km;
+                        info.DistanceDisplay = km.ToString("N2");
+                    }
+                    else
+                    {
+                        info.Distance = double.MaxValue;
+                        info.DistanceDisplay = "---";
                     }
                 }
             }
+            catch
+            {
+                info.Distance = double.MaxValue;
+                info.DistanceDisplay = "---";
+            }
+        }
 
-            // Select last opened field, or current field, or first item
+        private void GetFieldArea(string dir, FieldInfo info)
+        {
+            string filename = Path.Combine(dir, "Boundary.txt");
+
+            if (!File.Exists(filename))
+            {
+                info.Area = -1;
+                info.AreaDisplay = "---";
+                return;
+            }
+
+            try
+            {
+                double area = CalculateBoundaryArea(filename);
+                if (area == 0)
+                {
+                    info.Area = -1;
+                    info.AreaDisplay = "No Bndry";
+                }
+                else
+                {
+                    info.Area = area;
+                    info.AreaDisplay = area.ToString("N1");
+                }
+            }
+            catch
+            {
+                info.Area = -1;
+                info.AreaDisplay = "---";
+            }
+        }
+
+        private double CalculateBoundaryArea(string filename)
+        {
+            var pointList = new List<vec3>();
+            using (var reader = new StreamReader(filename))
+            {
+                string line = reader.ReadLine();
+                if (line == null) return 0;
+
+                line = reader.ReadLine();
+                if (line == null) return 0;
+
+                if (line == "True" || line == "False")
+                {
+                    line = reader.ReadLine();
+                    if (line == null) return 0;
+                }
+                if (line == "True" || line == "False")
+                {
+                    line = reader.ReadLine();
+                    if (line == null) return 0;
+                }
+
+                if (!int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out int numPoints))
+                    return 0;
+
+                if (numPoints <= 0) return 0;
+
+                for (int i = 0; i < numPoints; i++)
+                {
+                    line = reader.ReadLine();
+                    if (string.IsNullOrWhiteSpace(line)) return 0;
+
+                    var words = line.Split(',');
+                    if (words.Length < 3) return 0;
+
+                    if (!double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double e)) return 0;
+                    if (!double.TryParse(words[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double n)) return 0;
+                    if (!double.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double h)) return 0;
+
+                    pointList.Add(new vec3(e, n, h));
+                }
+            }
+
+            int ptCount = pointList.Count;
+            if (ptCount <= 5) return 0;
+
+            // Shoelace algorithm
+            double acc = 0;
+            int j = ptCount - 1;
+            for (int i = 0; i < ptCount; j = i++)
+            {
+                acc += (pointList[j].easting + pointList[i].easting) *
+                       (pointList[j].northing - pointList[i].northing);
+            }
+
+            double areaM2 = Math.Abs(acc / 2.0);
+            return mf.isMetric ? (areaM2 * 0.0001) : (areaM2 * 0.00024711);
+        }
+
+        private void UpdateFieldListView()
+        {
+            lvFields.Items.Clear();
+
+            // Sort the list
+            var sortedList = GetSortedFieldList();
+
+            // Add header row (bold)
+            string distanceUnit = mf.isMetric ? " (km)" : " (mi)";
+            string areaUnit = mf.isMetric ? " (ha)" : " (ac)";
+            var headerItem = new ListViewItem(new[] { gStr.gsField, gStr.gsDistance + distanceUnit, gStr.gsArea + areaUnit });
+            headerItem.Font = new Font(lvFields.Font, FontStyle.Bold);
+            headerItem.BackColor = Color.FromArgb(230, 230, 230);
+            headerItem.Tag = "header";
+            lvFields.Items.Add(headerItem);
+
+            // Add current field if open
+            if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
+            {
+                var currentItem = new ListViewItem(new[] { $"Current: {mf.displayFieldName}", "0.00", "---" });
+                currentItem.Tag = "current";
+                lvFields.Items.Add(currentItem);
+            }
+
+            // Get last field from last task for auto-selection
+            string lastFieldName = lastTask?.FieldName;
+            int lastFieldIndex = -1;
+
+            foreach (var info in sortedList)
+            {
+                var item = new ListViewItem(new[] { info.Name, info.DistanceDisplay, info.AreaDisplay });
+                item.Tag = info.Name;
+                lvFields.Items.Add(item);
+
+                if (info.Name == lastFieldName)
+                {
+                    lastFieldIndex = lvFields.Items.Count - 1;
+                }
+            }
+
+            UpdateFieldColumnHeaders();
+            UpdateSortButton();
+
+            // Select last opened field, or current field, or first item (skip header)
             if (lastFieldIndex >= 0)
             {
-                listFields.SelectedIndex = lastFieldIndex;
+                lvFields.Items[lastFieldIndex].Selected = true;
+                lvFields.Items[lastFieldIndex].EnsureVisible();
             }
-            else if (listFields.Items.Count > 0)
+            else if (lvFields.Items.Count > 1)
             {
-                listFields.SelectedIndex = 0;
+                lvFields.Items[1].Selected = true;
             }
+        }
+
+        private List<FieldInfo> GetSortedFieldList()
+        {
+            var sorted = new List<FieldInfo>(fieldInfoList);
+
+            switch (fieldSortOrder)
+            {
+                case 0: // Sort by Name (A-Z)
+                    sorted.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+                    break;
+                case 1: // Sort by Distance (nearest first)
+                    sorted.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+                    break;
+                case 2: // Sort by Area (largest first)
+                    sorted.Sort((a, b) => b.Area.CompareTo(a.Area));
+                    break;
+            }
+
+            return sorted;
+        }
+
+        private void UpdateFieldColumnHeaders()
+        {
+            chFieldName.Width = 520;
+            chFieldDistance.Width = 200;
+            chFieldArea.Width = 150;
+        }
+
+        private void UpdateSortButton()
+        {
+            switch (fieldSortOrder)
+            {
+                case 0:
+                    btnSortFields.Text = "Sort: Name";
+                    break;
+                case 1:
+                    btnSortFields.Text = "Sort: Distance";
+                    break;
+                case 2:
+                    btnSortFields.Text = "Sort: Area";
+                    break;
+            }
+        }
+
+        private void btnSortFields_Click(object sender, EventArgs e)
+        {
+            fieldSortOrder = (fieldSortOrder + 1) % 3;
+            UpdateFieldListView();
         }
 
         private void btnWizard2Next_Click(object sender, EventArgs e)
         {
-            if (listFields.SelectedItem != null)
+            if (lvFields.SelectedItems.Count > 0)
             {
-                string selected = listFields.SelectedItem.ToString();
+                var selectedItem = lvFields.SelectedItems[0];
+                string tag = selectedItem.Tag?.ToString();
+
+                // Ignore header row
+                if (tag == "header")
+                {
+                    mf.TimedMessageBox(1500, "Select Field", "Please select a field");
+                    return;
+                }
 
                 isCreatingNewField = false;
 
-                if (selected.StartsWith("Current:"))
+                if (tag == "current")
                 {
                     selectedFieldName = mf.displayFieldName;
                     selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
                 }
                 else
                 {
-                    selectedFieldName = selected;
-                    selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected);
+                    selectedFieldName = tag;
+                    selectedFieldDir = Path.Combine(RegistrySettings.fieldsDirectory, tag);
                 }
             }
 
