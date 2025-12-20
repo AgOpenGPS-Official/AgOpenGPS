@@ -276,11 +276,11 @@ namespace AgOpenGPS
 
         #region Open Field Panel
 
-        private void btnOpenFieldLocal_Click(object sender, EventArgs e)
+        private async void btnOpenFieldLocal_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             mf.filePickerFileAndDirectory = "";
@@ -347,11 +347,11 @@ namespace AgOpenGPS
             ShowView(ViewMode.Main);
         }
 
-        private void btnAddFieldNew_Click(object sender, EventArgs e)
+        private async void btnAddFieldNew_Click(object sender, EventArgs e)
         {
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             using (var form = new FormFieldDir(mf))
@@ -1135,12 +1135,12 @@ namespace AgOpenGPS
             ShowView(ViewMode.Main);
         }
 
-        private void DoResumeTask(CTask task, string fieldDir)
+        private async void DoResumeTask(CTask task, string fieldDir)
         {
             // Save current field if open
             if (mf.isJobStarted)
             {
-                _ = mf.FileSaveEverythingBeforeClosingField();
+                await mf.FileSaveEverythingBeforeClosingField();
             }
 
             if (mf.taskManager.ResumeTask(task, fieldDir))
