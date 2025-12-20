@@ -164,11 +164,22 @@ namespace AgOpenGPS.IO
         }
 
         /// <summary>
-        /// Creates the task directory structure and initializes empty coverage files
+        /// Creates the task directory structure and initializes empty coverage files.
+        /// Throws InvalidOperationException if a task with the same name already exists.
         /// </summary>
         public static void InitializeTaskFiles(CTask task, string fieldDirectory)
         {
             string taskDir = GetTaskDirectory(fieldDirectory, task.FolderName);
+            string taskFilePath = GetTaskFilePath(taskDir);
+
+            // Check if task already exists to prevent overwriting existing coverage data
+            if (Directory.Exists(taskDir) && File.Exists(taskFilePath))
+            {
+                throw new InvalidOperationException(
+                    $"A task with the name '{task.Name}' already exists in this field. " +
+                    "Please choose a different task name to avoid overwriting existing data.");
+            }
+
             Directory.CreateDirectory(taskDir);
 
             // Save the task metadata

@@ -51,8 +51,17 @@ namespace AgOpenGPS
             // Create the new task
             var task = new CTask(fieldName, profileName, workType, mf.tool.width, taskName);
 
-            // Initialize task files
-            TaskFiles.InitializeTaskFiles(task, fieldDir);
+            // Initialize task files (may throw if task name already exists)
+            try
+            {
+                TaskFiles.InitializeTaskFiles(task, fieldDir);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.EventWriter($"Failed to create task: {ex.Message}");
+                mf.TimedMessageBox(3000, "Task Already Exists", ex.Message);
+                return null;
+            }
 
             // Handle coverage import
             if (importCoverage)
@@ -385,8 +394,17 @@ namespace AgOpenGPS
             // Now create the task in the new field
             var task = new CTask(fieldName.Trim(), profileName, workType, mf.tool.width, taskName);
 
-            // Initialize task files
-            TaskFiles.InitializeTaskFiles(task, fieldDir);
+            // Initialize task files (may throw if task name already exists)
+            try
+            {
+                TaskFiles.InitializeTaskFiles(task, fieldDir);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.EventWriter($"Failed to create task: {ex.Message}");
+                mf.TimedMessageBox(3000, "Task Already Exists", ex.Message);
+                return null;
+            }
 
             // Set the current task
             mf.currentTask = task;
