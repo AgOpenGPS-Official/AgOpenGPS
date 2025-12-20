@@ -240,5 +240,24 @@ namespace AgOpenGPS.IO
 
             return result.OrderByDescending(x => x.Task.LastOpenedAt).ToList();
         }
+
+        /// <summary>
+        /// Gets all tasks (active + completed) for a specific field by field name.
+        /// Returns tasks sorted by created date (newest first).
+        /// </summary>
+        public static List<CTask> ListAllTasksForField(string fieldsDirectory, string fieldName)
+        {
+            if (string.IsNullOrEmpty(fieldsDirectory) || string.IsNullOrEmpty(fieldName))
+                return new List<CTask>();
+
+            string fieldDir = Path.Combine(fieldsDirectory, fieldName);
+            if (!Directory.Exists(fieldDir))
+                return new List<CTask>();
+
+            // Get all tasks (active + completed), sorted by created date descending
+            return ListTasks(fieldDir)
+                .OrderByDescending(t => t.CreatedAt)
+                .ToList();
+        }
     }
 }

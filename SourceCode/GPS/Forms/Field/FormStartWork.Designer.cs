@@ -75,6 +75,17 @@ namespace AgOpenGPS
             this.lblFieldNameLabel = new System.Windows.Forms.Label();
             this.txtFieldName = new System.Windows.Forms.TextBox();
             this.flpWorkTypes = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblSelectedWorkType = new System.Windows.Forms.Label();
+            this.btnChangeWorkType = new System.Windows.Forms.Button();
+            this.panelNotes = new System.Windows.Forms.Panel();
+            this.lblNotesTitle = new System.Windows.Forms.Label();
+            this.flpNoteFields = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelPreviousTasks = new System.Windows.Forms.Panel();
+            this.lblPreviousTasksTitle = new System.Windows.Forms.Label();
+            this.lvPreviousTasks = new System.Windows.Forms.ListView();
+            this.chPrevDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chPrevWorkType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chPrevNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblTaskNameLabel = new System.Windows.Forms.Label();
             this.txtTaskName = new System.Windows.Forms.TextBox();
             this.btnWizard3Start = new System.Windows.Forms.Button();
@@ -98,6 +109,8 @@ namespace AgOpenGPS
             this.panelWizardStep1.SuspendLayout();
             this.panelWizardStep2.SuspendLayout();
             this.panelWizardStep3.SuspendLayout();
+            this.panelNotes.SuspendLayout();
+            this.panelPreviousTasks.SuspendLayout();
             this.panelResumeList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -959,6 +972,10 @@ namespace AgOpenGPS
             this.panelWizardStep3.Controls.Add(this.lblFieldNameLabel);
             this.panelWizardStep3.Controls.Add(this.txtFieldName);
             this.panelWizardStep3.Controls.Add(this.flpWorkTypes);
+            this.panelWizardStep3.Controls.Add(this.lblSelectedWorkType);
+            this.panelWizardStep3.Controls.Add(this.btnChangeWorkType);
+            this.panelWizardStep3.Controls.Add(this.panelNotes);
+            this.panelWizardStep3.Controls.Add(this.panelPreviousTasks);
             this.panelWizardStep3.Controls.Add(this.lblTaskNameLabel);
             this.panelWizardStep3.Controls.Add(this.txtTaskName);
             this.panelWizardStep3.Controls.Add(this.btnWizard3Start);
@@ -1016,7 +1033,36 @@ namespace AgOpenGPS
             this.flpWorkTypes.Padding = new System.Windows.Forms.Padding(10);
             this.flpWorkTypes.Size = new System.Drawing.Size(906, 280);
             this.flpWorkTypes.TabIndex = 1;
-            // 
+            //
+            // lblSelectedWorkType
+            //
+            this.lblSelectedWorkType.AutoSize = true;
+            this.lblSelectedWorkType.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedWorkType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
+            this.lblSelectedWorkType.Location = new System.Drawing.Point(30, 75);
+            this.lblSelectedWorkType.Name = "lblSelectedWorkType";
+            this.lblSelectedWorkType.Size = new System.Drawing.Size(200, 23);
+            this.lblSelectedWorkType.TabIndex = 10;
+            this.lblSelectedWorkType.Text = "Work Type: Spraying";
+            this.lblSelectedWorkType.Visible = false;
+            //
+            // btnChangeWorkType
+            //
+            this.btnChangeWorkType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnChangeWorkType.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnChangeWorkType.FlatAppearance.BorderSize = 0;
+            this.btnChangeWorkType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangeWorkType.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Bold);
+            this.btnChangeWorkType.ForeColor = System.Drawing.Color.White;
+            this.btnChangeWorkType.Location = new System.Drawing.Point(800, 70);
+            this.btnChangeWorkType.Name = "btnChangeWorkType";
+            this.btnChangeWorkType.Size = new System.Drawing.Size(136, 35);
+            this.btnChangeWorkType.TabIndex = 11;
+            this.btnChangeWorkType.Text = "< Change Type";
+            this.btnChangeWorkType.UseVisualStyleBackColor = false;
+            this.btnChangeWorkType.Visible = false;
+            this.btnChangeWorkType.Click += new System.EventHandler(this.btnChangeWorkType_Click);
+            //
             // lblTaskNameLabel
             // 
             this.lblTaskNameLabel.AutoSize = true;
@@ -1070,7 +1116,97 @@ namespace AgOpenGPS
             this.btnWizard3Back.Text = "< Back";
             this.btnWizard3Back.UseVisualStyleBackColor = false;
             this.btnWizard3Back.Click += new System.EventHandler(this.btnWizard3Back_Click);
-            // 
+            //
+            // panelNotes
+            //
+            this.panelNotes.BackColor = System.Drawing.Color.White;
+            this.panelNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelNotes.Controls.Add(this.lblNotesTitle);
+            this.panelNotes.Controls.Add(this.flpNoteFields);
+            this.panelNotes.Location = new System.Drawing.Point(30, 115);
+            this.panelNotes.Name = "panelNotes";
+            this.panelNotes.Size = new System.Drawing.Size(440, 240);
+            this.panelNotes.TabIndex = 8;
+            this.panelNotes.Visible = false;
+            //
+            // lblNotesTitle
+            //
+            this.lblNotesTitle.AutoSize = true;
+            this.lblNotesTitle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.lblNotesTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.lblNotesTitle.Location = new System.Drawing.Point(10, 10);
+            this.lblNotesTitle.Name = "lblNotesTitle";
+            this.lblNotesTitle.Size = new System.Drawing.Size(57, 19);
+            this.lblNotesTitle.TabIndex = 0;
+            this.lblNotesTitle.Text = "Notes";
+            //
+            // flpNoteFields
+            //
+            this.flpNoteFields.AutoScroll = true;
+            this.flpNoteFields.BackColor = System.Drawing.Color.White;
+            this.flpNoteFields.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpNoteFields.Location = new System.Drawing.Point(10, 40);
+            this.flpNoteFields.Name = "flpNoteFields";
+            this.flpNoteFields.Size = new System.Drawing.Size(418, 190);
+            this.flpNoteFields.TabIndex = 2;
+            this.flpNoteFields.WrapContents = false;
+            //
+            // panelPreviousTasks
+            //
+            this.panelPreviousTasks.BackColor = System.Drawing.Color.White;
+            this.panelPreviousTasks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelPreviousTasks.Controls.Add(this.lblPreviousTasksTitle);
+            this.panelPreviousTasks.Controls.Add(this.lvPreviousTasks);
+            this.panelPreviousTasks.Location = new System.Drawing.Point(480, 115);
+            this.panelPreviousTasks.Name = "panelPreviousTasks";
+            this.panelPreviousTasks.Size = new System.Drawing.Size(456, 240);
+            this.panelPreviousTasks.TabIndex = 9;
+            this.panelPreviousTasks.Visible = false;
+            //
+            // lblPreviousTasksTitle
+            //
+            this.lblPreviousTasksTitle.AutoSize = true;
+            this.lblPreviousTasksTitle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.lblPreviousTasksTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.lblPreviousTasksTitle.Location = new System.Drawing.Point(10, 10);
+            this.lblPreviousTasksTitle.Name = "lblPreviousTasksTitle";
+            this.lblPreviousTasksTitle.Size = new System.Drawing.Size(201, 19);
+            this.lblPreviousTasksTitle.TabIndex = 0;
+            this.lblPreviousTasksTitle.Text = "Previous Operations";
+            //
+            // lvPreviousTasks
+            //
+            this.lvPreviousTasks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chPrevDate,
+            this.chPrevWorkType,
+            this.chPrevNotes});
+            this.lvPreviousTasks.Font = new System.Drawing.Font("Tahoma", 11F);
+            this.lvPreviousTasks.FullRowSelect = true;
+            this.lvPreviousTasks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvPreviousTasks.HideSelection = false;
+            this.lvPreviousTasks.Location = new System.Drawing.Point(10, 40);
+            this.lvPreviousTasks.Name = "lvPreviousTasks";
+            this.lvPreviousTasks.Size = new System.Drawing.Size(434, 190);
+            this.lvPreviousTasks.TabIndex = 1;
+            this.lvPreviousTasks.UseCompatibleStateImageBehavior = false;
+            this.lvPreviousTasks.View = System.Windows.Forms.View.Details;
+            this.lvPreviousTasks.SelectedIndexChanged += new System.EventHandler(this.lvPreviousTasks_SelectedIndexChanged);
+            //
+            // chPrevDate
+            //
+            this.chPrevDate.Text = "Date";
+            this.chPrevDate.Width = 110;
+            //
+            // chPrevWorkType
+            //
+            this.chPrevWorkType.Text = "Type";
+            this.chPrevWorkType.Width = 110;
+            //
+            // chPrevNotes
+            //
+            this.chPrevNotes.Text = "Notes";
+            this.chPrevNotes.Width = 210;
+            //
             // panelResumeList
             // 
             this.panelResumeList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1206,6 +1342,10 @@ namespace AgOpenGPS
             this.panelWizardStep2.ResumeLayout(false);
             this.panelWizardStep3.ResumeLayout(false);
             this.panelWizardStep3.PerformLayout();
+            this.panelNotes.ResumeLayout(false);
+            this.panelNotes.PerformLayout();
+            this.panelPreviousTasks.ResumeLayout(false);
+            this.panelPreviousTasks.PerformLayout();
             this.panelResumeList.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1286,6 +1426,23 @@ namespace AgOpenGPS
         private System.Windows.Forms.TextBox txtTaskName;
         private System.Windows.Forms.Button btnWizard3Start;
         private System.Windows.Forms.Button btnWizard3Back;
+
+        // Wizard Step 3 - WorkType Selection
+        private System.Windows.Forms.Label lblSelectedWorkType;
+        private System.Windows.Forms.Button btnChangeWorkType;
+
+        // Wizard Step 3 - Notes
+        private System.Windows.Forms.Panel panelNotes;
+        private System.Windows.Forms.Label lblNotesTitle;
+        private System.Windows.Forms.FlowLayoutPanel flpNoteFields;
+
+        // Wizard Step 3 - Previous Tasks
+        private System.Windows.Forms.Panel panelPreviousTasks;
+        private System.Windows.Forms.Label lblPreviousTasksTitle;
+        private System.Windows.Forms.ListView lvPreviousTasks;
+        private System.Windows.Forms.ColumnHeader chPrevDate;
+        private System.Windows.Forms.ColumnHeader chPrevWorkType;
+        private System.Windows.Forms.ColumnHeader chPrevNotes;
 
         // Resume Task List
         private System.Windows.Forms.Panel panelResumeList;

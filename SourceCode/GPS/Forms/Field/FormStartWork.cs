@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
@@ -37,6 +38,9 @@ namespace AgOpenGPS
         private string selectedFieldName;
         private string selectedWorkType;
 
+        // Previous tasks for current field
+        private List<CTask> previousTasksForField;
+
         // Coverage import
         private bool shouldImportCoverage = false;
 
@@ -66,6 +70,9 @@ namespace AgOpenGPS
         {
             // Initialize WorkTypes
             WorkTypes.Initialize(RegistrySettings.vehiclesDirectory);
+
+            // Initialize WorkTypeTemplates
+            WorkTypeTemplates.Initialize(RegistrySettings.fieldsDirectory);
 
             // Configure AgShare buttons
             btnOpenFromAgShare.Enabled = Properties.Settings.Default.AgShareEnabled;
@@ -148,7 +155,12 @@ namespace AgOpenGPS
             // Update last task info label (below tableTasks)
             if (lastTask != null)
             {
-                lblLastTaskInfo.Text = $"Last Task: {lastTask.Name} ({lastTask.FieldName} - {lastTask.WorkType})";
+                string taskInfo = $"Last Task: {lastTask.Name} ({lastTask.FieldName} - {lastTask.WorkType})";
+                if (!string.IsNullOrEmpty(lastTask.Notes))
+                {
+                    taskInfo += $" - {TruncateNotes(lastTask.Notes, 40)}";
+                }
+                lblLastTaskInfo.Text = taskInfo;
                 btnResumeTask.Enabled = true;
                 btnResumeLastTask.Enabled = true;
             }
@@ -918,16 +930,39 @@ namespace AgOpenGPS
             var btn = sender as Button;
             selectedWorkType = btn.Tag.ToString();
 
-            foreach (Control c in flpWorkTypes.Controls)
-            {
-                if (c is Button b)
-                {
-                    b.BackColor = (b == btn) ? Color.FromArgb(0, 119, 190) : Color.White;
-                    b.ForeColor = (b == btn) ? Color.White : Color.Black;
-                }
-            }
+            // Hide the work type buttons panel
+            flpWorkTypes.Visible = false;
 
+            // Show selected work type label and change button
+            lblSelectedWorkType.Text = $"Work Type: {selectedWorkType}";
+            lblSelectedWorkType.Visible = true;
+            btnChangeWorkType.Visible = true;
+
+            // Update task name
             txtTaskName.Text = $"{DateTime.Now:yyyy-MM-dd}_{selectedWorkType}_{selectedProfile}";
+
+            // Load notes template for this work type
+            LoadNotesTemplate(selectedWorkType);
+
+            // Load previous tasks for this field
+            LoadPreviousTasks();
+        }
+
+        private void btnChangeWorkType_Click(object sender, EventArgs e)
+        {
+            // Hide the selected label and change button
+            lblSelectedWorkType.Visible = false;
+            btnChangeWorkType.Visible = false;
+
+            // Hide notes and previous tasks panels
+            panelNotes.Visible = false;
+            panelPreviousTasks.Visible = false;
+
+            // Show work type buttons again
+            flpWorkTypes.Visible = true;
+
+            // Clear selected work type
+            selectedWorkType = null;
         }
 
         private void btnWizard3Start_Click(object sender, EventArgs e)
@@ -989,6 +1024,17 @@ namespace AgOpenGPS
                 );
             }
 
+            // Save notes to task
+            if (task != null)
+            {
+                SaveNotesToTask(task);
+
+                // Save the updated task with notes
+                TaskFiles.Save(task, isCreatingNewField
+                    ? Path.Combine(RegistrySettings.fieldsDirectory, txtFieldName.Text.Trim())
+                    : selectedFieldDir);
+            }
+
             if (task != null)
             {
                 DialogResult = DialogResult.OK;
@@ -1040,6 +1086,281 @@ namespace AgOpenGPS
 
         #endregion
 
+        #region Notes and Previous Tasks
+
+        /// <summary>
+        /// Loads the notes template for the selected work type
+        /// </summary>
+        private void LoadNotesTemplate(string workType)
+        {
+            if (string.IsNullOrEmpty(workType))
+            {
+                panelNotes.Visible = false;
+                return;
+            }
+
+            // Get the template for this work type
+            var template = WorkTypeTemplates.GetTemplate(workType);
+
+            // Clear existing note fields
+            flpNoteFields.Controls.Clear();
+
+            // Create UI controls for each template field
+            foreach (var field in template.Fields)
+            {
+                CreateNoteField(field);
+            }
+
+            // Show the notes panel
+            panelNotes.Visible = true;
+
+            // Load last used values if available
+            LoadLastUsedNotes(workType);
+        }
+
+        /// <summary>
+        /// Creates a UI control for a template field
+        /// </summary>
+        private void CreateNoteField(TemplateField field)
+        {
+            var panel = new Panel
+            {
+                Width = 400,
+                Height = 40,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
+            var label = new Label
+            {
+                Text = field.Label + ":",
+                Font = new Font("Tahoma", 11F),
+                ForeColor = Color.FromArgb(60, 60, 60),
+                AutoSize = true,
+                Location = new Point(0, 7)
+            };
+            panel.Controls.Add(label);
+
+            if (field.FieldType == "dropdown")
+            {
+                var combo = new ComboBox
+                {
+                    Name = "note_" + field.Name,
+                    Font = new Font("Tahoma", 11F),
+                    Width = 250,
+                    Location = new Point(150, 3),
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    Tag = field.Name
+                };
+
+                if (!string.IsNullOrEmpty(field.Options))
+                {
+                    string[] options = field.Options.Split(',');
+                    combo.Items.AddRange(options);
+                    if (combo.Items.Count > 0)
+                        combo.SelectedIndex = 0;
+                }
+
+                panel.Controls.Add(combo);
+            }
+            else // text
+            {
+                var textBox = new TextBox
+                {
+                    Name = "note_" + field.Name,
+                    Font = new Font("Tahoma", 11F),
+                    Width = 250,
+                    Location = new Point(150, 5),
+                    Tag = field.Name
+                };
+
+                if (!string.IsNullOrEmpty(field.DefaultValue))
+                    textBox.Text = field.DefaultValue;
+
+                panel.Controls.Add(textBox);
+            }
+
+            flpNoteFields.Controls.Add(panel);
+        }
+
+        /// <summary>
+        /// Loads last used note values for a work type
+        /// </summary>
+        private void LoadLastUsedNotes(string workType)
+        {
+            var lastValues = WorkTypeTemplates.GetLastUsedValues(workType);
+            if (lastValues.Count == 0)
+                return;
+
+            foreach (Control panelCtrl in flpNoteFields.Controls)
+            {
+                if (panelCtrl is Panel panel)
+                {
+                    foreach (Control ctrl in panel.Controls)
+                    {
+                        string fieldName = ctrl.Tag?.ToString();
+                        if (string.IsNullOrEmpty(fieldName))
+                            continue;
+
+                        if (lastValues.ContainsKey(fieldName))
+                        {
+                            if (ctrl is TextBox tb)
+                                tb.Text = lastValues[fieldName];
+                            else if (ctrl is ComboBox cb)
+                            {
+                                int index = cb.Items.IndexOf(lastValues[fieldName]);
+                                if (index >= 0)
+                                    cb.SelectedIndex = index;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves note field values to the task
+        /// </summary>
+        private void SaveNotesToTask(CTask task)
+        {
+            if (task == null)
+                return;
+
+            task.NoteFields = new Dictionary<string, string>();
+            var notesParts = new List<string>();
+
+            foreach (Control panelCtrl in flpNoteFields.Controls)
+            {
+                if (panelCtrl is Panel panel)
+                {
+                    foreach (Control ctrl in panel.Controls)
+                    {
+                        string fieldName = ctrl.Tag?.ToString();
+                        if (string.IsNullOrEmpty(fieldName))
+                            continue;
+
+                        string value = "";
+                        if (ctrl is TextBox tb)
+                            value = tb.Text;
+                        else if (ctrl is ComboBox cb)
+                            value = cb.Text;
+
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            task.NoteFields[fieldName] = value;
+                            notesParts.Add(value);
+                        }
+                    }
+                }
+            }
+
+            // Create formatted notes string
+            task.Notes = string.Join(" ", notesParts);
+
+            // Save as last used values for this work type
+            if (task.NoteFields.Count > 0)
+            {
+                WorkTypeTemplates.SaveLastUsedValues(task.WorkType, task.NoteFields);
+            }
+        }
+
+        /// <summary>
+        /// Loads previous tasks for the selected field
+        /// </summary>
+        private void LoadPreviousTasks()
+        {
+            lvPreviousTasks.Items.Clear();
+            previousTasksForField = null;
+
+            if (string.IsNullOrEmpty(selectedFieldName))
+            {
+                panelPreviousTasks.Visible = false;
+                return;
+            }
+
+            var tasks = TaskFiles.ListAllTasksForField(RegistrySettings.fieldsDirectory, selectedFieldName);
+
+            if (tasks.Count == 0)
+            {
+                panelPreviousTasks.Visible = false;
+                return;
+            }
+
+            // Store the tasks list for later reference
+            previousTasksForField = tasks.Take(10).ToList();
+
+            // Show up to 10 most recent tasks
+            foreach (var task in previousTasksForField)
+            {
+                var item = new ListViewItem(new[] {
+                    task.CreatedAt.ToString("dd-MM-yyyy"),
+                    task.WorkType,
+                    TruncateNotes(task.Notes, 30)
+                });
+                lvPreviousTasks.Items.Add(item);
+            }
+
+            panelPreviousTasks.Visible = true;
+        }
+
+        /// <summary>
+        /// Truncates notes to a maximum length
+        /// </summary>
+        private string TruncateNotes(string notes, int maxLength)
+        {
+            if (string.IsNullOrEmpty(notes))
+                return "-";
+
+            if (notes.Length <= maxLength)
+                return notes;
+
+            return notes.Substring(0, maxLength - 3) + "...";
+        }
+
+        /// <summary>
+        /// Event handler for Previous Tasks list selection change - auto-loads selected task's notes
+        /// </summary>
+        private void lvPreviousTasks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvPreviousTasks.SelectedIndices.Count == 0 || previousTasksForField == null)
+                return;
+
+            int selectedIndex = lvPreviousTasks.SelectedIndices[0];
+            if (selectedIndex < 0 || selectedIndex >= previousTasksForField.Count)
+                return;
+
+            var selectedTask = previousTasksForField[selectedIndex];
+            if (selectedTask.NoteFields == null || selectedTask.NoteFields.Count == 0)
+                return;
+
+            // Auto-load notes from the selected task
+            foreach (Control panelCtrl in flpNoteFields.Controls)
+            {
+                if (panelCtrl is Panel panel)
+                {
+                    foreach (Control ctrl in panel.Controls)
+                    {
+                        string fieldName = ctrl.Tag?.ToString();
+                        if (string.IsNullOrEmpty(fieldName))
+                            continue;
+
+                        if (selectedTask.NoteFields.ContainsKey(fieldName))
+                        {
+                            if (ctrl is TextBox tb)
+                                tb.Text = selectedTask.NoteFields[fieldName];
+                            else if (ctrl is ComboBox cb)
+                            {
+                                int index = cb.Items.IndexOf(selectedTask.NoteFields[fieldName]);
+                                if (index >= 0)
+                                    cb.SelectedIndex = index;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region Resume Task List
 
         private void LoadResumeTaskList()
@@ -1072,7 +1393,7 @@ namespace AgOpenGPS
             var panel = new Panel
             {
                 Width = flpTaskList.Width - 30,
-                Height = 70,
+                Height = string.IsNullOrEmpty(task.Notes) ? 70 : 95,
                 BackColor = Color.White,
                 Margin = new Padding(5),
                 Cursor = Cursors.Hand,
@@ -1109,6 +1430,22 @@ namespace AgOpenGPS
             panel.Controls.Add(lblField);
             panel.Controls.Add(lblTaskName);
             panel.Controls.Add(lblDetails);
+
+            // Add notes if available
+            if (!string.IsNullOrEmpty(task.Notes))
+            {
+                var lblNotes = new Label
+                {
+                    Text = $"Notes: {TruncateNotes(task.Notes, 80)}",
+                    Font = new Font("Tahoma", 9F, FontStyle.Italic),
+                    ForeColor = Color.FromArgb(100, 100, 100),
+                    Location = new Point(15, 62),
+                    AutoSize = true,
+                    MaximumSize = new Size(panel.Width - 30, 0)
+                };
+                panel.Controls.Add(lblNotes);
+                lblNotes.Click += (s, ev) => TaskPanel_Click(panel, ev);
+            }
 
             panel.Click += TaskPanel_Click;
             lblField.Click += (s, ev) => TaskPanel_Click(panel, ev);

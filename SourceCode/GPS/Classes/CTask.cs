@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace AgOpenGPS
@@ -42,6 +43,12 @@ namespace AgOpenGPS
         /// <summary>AgShare session ID for real-time sync (null if not connected)</summary>
         public Guid? AgShareSessionId { get; set; }
 
+        /// <summary>Task notes as formatted display string</summary>
+        public string Notes { get; set; } = "";
+
+        /// <summary>Structured note fields (e.g., Product, Rate, Unit)</summary>
+        public Dictionary<string, string> NoteFields { get; set; }
+
         /// <summary>
         /// Creates a new task with default values
         /// </summary>
@@ -52,6 +59,8 @@ namespace AgOpenGPS
             LastOpenedAt = DateTime.UtcNow;
             IsCompleted = false;
             WorkedArea = 0;
+            Notes = "";
+            NoteFields = new Dictionary<string, string>();
         }
 
         /// <summary>
