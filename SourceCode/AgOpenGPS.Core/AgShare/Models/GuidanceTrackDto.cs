@@ -2,7 +2,7 @@
 
 namespace AgOpenGPS.Core.AgShare.Models
 {
-    public class AbLineDto
+    public class GuidanceTrackDto
     {
         public string Name { get; set; }
         public string Type { get; set; }

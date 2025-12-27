@@ -92,7 +92,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                List<AbLineDto> abLines = ConvertAbLines(snapshot.Tracks, snapshot.Converter);
+                List<GuidanceTrackDto> abLines = ConvertGuidanceTracks(snapshot.Tracks, snapshot.Converter);
 
                 bool isPublic = false;
                 try
@@ -162,9 +162,9 @@ namespace AgOpenGPS
         }
 
         // Convert track lines from local NE to WGS84 format
-        private static List<AbLineDto> ConvertAbLines(List<CTrk> tracks, LocalPlane converter)
+        private static List<GuidanceTrackDto> ConvertGuidanceTracks(List<CTrk> tracks, LocalPlane converter)
         {
-            List<AbLineDto> result = new List<AbLineDto>();
+            List<GuidanceTrackDto> result = new List<GuidanceTrackDto>();
 
             foreach (CTrk ab in tracks)
             {
@@ -175,7 +175,7 @@ namespace AgOpenGPS
                     Wgs84 wgsA = converter.ConvertGeoCoordToWgs84(a);
                     Wgs84 wgsB = converter.ConvertGeoCoordToWgs84(b);
 
-                    result.Add(new AbLineDto
+                    result.Add(new GuidanceTrackDto
                     {
                         Name = ab.name,
                         Type = "AB",
@@ -196,7 +196,7 @@ namespace AgOpenGPS
                         coords.Add(new CoordinateDto { Latitude = wgs.Latitude, Longitude = wgs.Longitude });
                     }
 
-                    result.Add(new AbLineDto
+                    result.Add(new GuidanceTrackDto
                     {
                         Name = ab.name,
                         Type = "Curve",

@@ -14,6 +14,6 @@ namespace AgOpenGPS.Core.AgShare.Models
         public double Longitude { get; set; }
 
         public List<List<CoordinateDto>> Boundaries { get; set; }
-        public List<AbLineDto> AbLines { get; set; }
+        public List<GuidanceTrackDto> AbLines { get; set; }
     }
 }
