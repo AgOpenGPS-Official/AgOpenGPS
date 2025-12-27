@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using AgLibrary.Logging;
 using AgOpenGPS.Classes.AgShare.Helpers;
 using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Core.AgShare.Models;
 using AgOpenGPS.IO;
-using Newtonsoft.Json;
 
 namespace AgOpenGPS
 {
@@ -27,16 +27,7 @@ namespace AgOpenGPS
         {
             try
             {
-                string json = await _client.DownloadFieldAsync(fieldId);
-
-                // Validate JSON response
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Empty response from server");
-                    return false;
-                }
-
-                var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+                var dto = await _client.DownloadFieldAsync(fieldId);
 
                 // Validate DTO
                 if (dto == null)
@@ -61,25 +52,17 @@ namespace AgOpenGPS
         }
 
         // Retrieves a list of user-owned fields
-        public async Task<List<AgShareGetOwnFieldDto>> GetOwnFieldsAsync()
+        public async Task<List<GetOwnFieldDto>> GetOwnFieldsAsync()
         {
             return await _client.GetOwnFieldsAsync();
         }
 
         // Downloads a field DTO for preview only
-        public async Task<AgShareFieldDto> DownloadFieldPreviewAsync(Guid fieldId)
+        public async Task<GetFieldDto> DownloadFieldPreviewAsync(Guid fieldId)
         {
             try
             {
-                string json = await _client.DownloadFieldAsync(fieldId);
-
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Empty response from server");
-                    return null;
-                }
-
-                var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+                var dto = await _client.DownloadFieldAsync(fieldId);
 
                 if (dto == null)
                 {

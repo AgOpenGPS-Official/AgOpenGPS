@@ -2,6 +2,7 @@ using AgOpenGPS.Core.Models;
 using System;
 using System.Collections.Generic;
 using AgLibrary.Logging;
+using AgOpenGPS.Core.AgShare.Models;
 
 namespace AgOpenGPS.Classes.AgShare.Helpers
 {
@@ -11,7 +12,7 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
     public static class AgShareFieldParser
     {
         // Parses an AgShare field DTO into domain types
-        public static ParsedField Parse(AgShareFieldDto dto)
+        public static ParsedField Parse(GetFieldDto dto)
         {
             if (dto == null)
             {

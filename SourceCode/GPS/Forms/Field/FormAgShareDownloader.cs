@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using AgOpenGPS.Classes.AgShare.Helpers;
-using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Core.AgShare.Models;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using OpenTK.Graphics.OpenGL;
@@ -74,7 +74,7 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0) return;
 
-            var dto = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;
+            var dto = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (dto == null) return;
 
             lblSelectedField.Text = "Selected Field: " + dto.Name;
@@ -104,7 +104,7 @@ namespace AgOpenGPS.Forms.Field
                 return;
             }
 
-            var selected = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;
+            var selected = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (selected == null)
             {
                 gps.TimedMessageBox(1000, "AgShare", "Invalid selection.");

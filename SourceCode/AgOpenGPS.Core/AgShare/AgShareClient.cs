@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using AgOpenGPS.Core.AgShare.Models;
 using Newtonsoft.Json;
 
 namespace AgOpenGPS.Core.AgShare
@@ -16,7 +17,9 @@ namespace AgOpenGPS.Core.AgShare
     {
         private readonly HttpClient _client;
 
-        // Constructs client with base URL and API key
+        /// <summary>
+        /// Constructs client with base URL and API key
+        /// </summary>
         public AgShareClient(string serverUrl, string apiKey)
         {
             _client = new HttpClient();
@@ -28,19 +31,25 @@ namespace AgOpenGPS.Core.AgShare
             SetServerUrl(serverUrl);
         }
 
-        // Updates the API key
-        public void SetApiKey(string key)
+        /// <summary>
+        /// Updates the API key
+        /// </summary>
+        public void SetApiKey(string apiKey)
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", key);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
         }
 
-        // Updates the server URL
-        public void SetServerUrl(string url)
+        /// <summary>
+        /// Updates the server URL
+        /// </summary>
+        public void SetServerUrl(string serverUrl)
         {
-            _client.BaseAddress = new Uri(url);
+            _client.BaseAddress = new Uri(serverUrl);
         }
 
-        // Checks if the API key and connection are valid
+        /// <summary>
+        /// Checks if the API key and connection are valid
+        /// </summary>
         public static async Task<(bool ok, string message)> CheckApiAsync(string baseUrl, string apiKey)
         {
             try
@@ -68,8 +77,10 @@ namespace AgOpenGPS.Core.AgShare
             }
         }
 
-        // Uploads a field by ID with JSON payload
-        public async Task<(bool ok, string message)> UploadFieldAsync(Guid fieldId, object fieldPayload)
+        /// <summary>
+        /// Uploads a field by ID
+        /// </summary>
+        public async Task<(bool ok, string message)> UploadFieldAsync(Guid fieldId, UploadFieldDto fieldPayload)
         {
             try
             {
@@ -88,26 +99,34 @@ namespace AgOpenGPS.Core.AgShare
             }
         }
 
-        // Retrieves a list of fields owned by the current user
-        public async Task<List<AgShareGetOwnFieldDto>> GetOwnFieldsAsync()
+        /// <summary>
+        /// Retrieves a list of fields owned by the current user
+        /// </summary>
+        public async Task<List<GetOwnFieldDto>> GetOwnFieldsAsync()
         {
             var response = await _client.GetAsync("/api/fields");
             response.EnsureSuccessStatusCode();
 
             string json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<AgShareGetOwnFieldDto>>(json);
+            return JsonConvert.DeserializeObject<List<GetOwnFieldDto>>(json);
         }
 
-        // Downloads a specific field as raw JSON string
-        public async Task<string> DownloadFieldAsync(Guid fieldId)
+        /// <summary>
+        /// Downloads a specific field
+        /// </summary>
+        public async Task<GetFieldDto> DownloadFieldAsync(Guid fieldId)
         {
             var response = await _client.GetAsync($"/api/fields/{fieldId}");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+
+            string json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<GetFieldDto>(json);
         }
 
-        // Queries public fields within a given radius around a lat/lon
         // !!! This is not implemented yet !!!
+        /// <summary>
+        /// Queries public fields within a given radius around a lat/lon
+        /// </summary>
         public async Task<string> GetPublicFieldsAsync(double lat, double lon, double radius = 50)
         {
             var response = await _client.GetAsync($"/api/fields/public?lat={lat}&lon={lon}&radius={radius}");

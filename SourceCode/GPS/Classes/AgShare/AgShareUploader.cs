@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AgLibrary.Logging;
 using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Core.AgShare.Models;
 using AgOpenGPS.Core.Models;
-using Newtonsoft.Json;
 
 namespace AgOpenGPS
 {
@@ -92,13 +92,12 @@ namespace AgOpenGPS
                     }
                 }
 
-                List<AbLineUploadDto> abLines = ConvertAbLines(snapshot.Tracks, snapshot.Converter);
+                List<AbLineDto> abLines = ConvertAbLines(snapshot.Tracks, snapshot.Converter);
 
                 bool isPublic = false;
                 try
                 {
-                    string json = await _client.DownloadFieldAsync(snapshot.FieldId);
-                    AgShareFieldDto field = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
+                    var field = await _client.DownloadFieldAsync(snapshot.FieldId);
                     if (field != null) isPublic = field.IsPublic;
                 }
                 catch (Exception)
@@ -106,21 +105,19 @@ namespace AgOpenGPS
                     Log.EventWriter("Failed to check field visibility on AgShare, defaulting to private.");
                 }
 
-                var boundary = new
+                var boundary = new PolygonDto
                 {
-                    outer = outer,
-                    holes = holes
+                    Outer = outer,
+                    Holes = holes
                 };
 
-                var payload = new
+                var payload = new UploadFieldDto
                 {
-                    name = snapshot.FieldName,
-                    isPublic = isPublic,
-                    origin = new { latitude = snapshot.OriginLat, longitude = snapshot.OriginLon },
-                    boundary = boundary,
-                    abLines = abLines,
-                    convergence = snapshot.Convergence,
-                    sourceId = (string)null
+                    Name = snapshot.FieldName,
+                    IsPublic = isPublic,
+                    Origin = new CoordinateDto { Latitude = snapshot.OriginLat, Longitude = snapshot.OriginLon },
+                    Boundary = boundary,
+                    AbLines = abLines
                 };
 
                 var uploadResult = await _client.UploadFieldAsync(snapshot.FieldId, payload);
@@ -165,9 +162,9 @@ namespace AgOpenGPS
         }
 
         // Convert track lines from local NE to WGS84 format
-        private static List<AbLineUploadDto> ConvertAbLines(List<CTrk> tracks, LocalPlane converter)
+        private static List<AbLineDto> ConvertAbLines(List<CTrk> tracks, LocalPlane converter)
         {
-            List<AbLineUploadDto> result = new List<AbLineUploadDto>();
+            List<AbLineDto> result = new List<AbLineDto>();
 
             foreach (CTrk ab in tracks)
             {
@@ -178,7 +175,7 @@ namespace AgOpenGPS
                     Wgs84 wgsA = converter.ConvertGeoCoordToWgs84(a);
                     Wgs84 wgsB = converter.ConvertGeoCoordToWgs84(b);
 
-                    result.Add(new AbLineUploadDto
+                    result.Add(new AbLineDto
                     {
                         Name = ab.name,
                         Type = "AB",
@@ -199,7 +196,7 @@ namespace AgOpenGPS
                         coords.Add(new CoordinateDto { Latitude = wgs.Latitude, Longitude = wgs.Longitude });
                     }
 
-                    result.Add(new AbLineUploadDto
+                    result.Add(new AbLineDto
                     {
                         Name = ab.name,
                         Type = "Curve",
