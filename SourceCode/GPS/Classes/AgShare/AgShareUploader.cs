@@ -97,8 +97,12 @@ namespace AgOpenGPS
                 bool isPublic = false;
                 try
                 {
-                    var field = await _client.DownloadFieldAsync(snapshot.FieldId);
-                    if (field != null) isPublic = field.IsPublic;
+                    var downloadResult = await _client.DownloadFieldAsync(snapshot.FieldId);
+                    if (downloadResult.IsSuccessful)
+                    {
+                        var field = downloadResult.Data;
+                        isPublic = field.IsPublic;
+                    }
                 }
                 catch (Exception)
                 {

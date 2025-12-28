@@ -27,17 +27,16 @@ namespace AgOpenGPS
         {
             try
             {
-                var dto = await _client.DownloadFieldAsync(fieldId);
+                var result = await _client.DownloadFieldAsync(fieldId);
 
-                // Validate DTO
-                if (dto == null)
+                if (!result.IsSuccessful)
                 {
                     Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Failed to deserialize field data");
                     return false;
                 }
 
                 // Parse DTO - validation is now done inside Parse method
-                var model = AgShareFieldParser.Parse(dto);
+                var model = AgShareFieldParser.Parse(result.Data);
 
                 string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, model.Name);
                 FieldFileWriter.WriteAllFiles(model, fieldDir);
@@ -54,7 +53,15 @@ namespace AgOpenGPS
         // Retrieves a list of user-owned fields
         public async Task<List<GetOwnFieldDto>> GetOwnFieldsAsync()
         {
-            return await _client.GetOwnFieldsAsync();
+            var result = await _client.GetOwnFieldsAsync();
+
+            if (!result.IsSuccessful)
+            {
+                Log.EventWriter($"[AgShare] Download own fields failed");
+                return new List<GetOwnFieldDto>();
+            }
+
+            return result.Data;
         }
 
         // Downloads a field DTO for preview only
@@ -62,9 +69,9 @@ namespace AgOpenGPS
         {
             try
             {
-                var dto = await _client.DownloadFieldAsync(fieldId);
+                var result = await _client.DownloadFieldAsync(fieldId);
 
-                if (dto == null)
+                if (!result.IsSuccessful)
                 {
                     Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Failed to deserialize field data");
                     return null;
@@ -72,9 +79,9 @@ namespace AgOpenGPS
 
                 // Validation is done in Parse method
                 // If validation fails, the outer catch will handle it
-                AgShareFieldParser.Parse(dto);
+                AgShareFieldParser.Parse(result.Data);
 
-                return dto;
+                return result.Data;
             }
             catch (Exception ex)
             {

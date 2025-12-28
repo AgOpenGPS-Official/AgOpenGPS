@@ -113,25 +113,61 @@ namespace AgOpenGPS.Core.AgShare
         /// <summary>
         /// Retrieves a list of fields owned by the current user
         /// </summary>
-        public async Task<List<GetOwnFieldDto>> GetOwnFieldsAsync()
+        public async Task<AgShareResult<List<GetOwnFieldDto>>> GetOwnFieldsAsync()
         {
-            var response = await _client.GetAsync("/api/fields");
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                var response = await _client.GetAsync("/api/fields");
+                string json = await response.Content.ReadAsStringAsync();
 
-            string json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<GetOwnFieldDto>>(json);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = JsonConvert.DeserializeObject<List<GetOwnFieldDto>>(json);
+                    return AgShareResult<List<GetOwnFieldDto>>.Success(data);
+                }
+                else
+                {
+                    return AgShareResult<List<GetOwnFieldDto>>.Failure(AgShareError.WrongStatusCode(response.StatusCode, json));
+                }
+            }
+            catch (JsonException ex)
+            {
+                return AgShareResult<List<GetOwnFieldDto>>.Failure(AgShareError.JsonException(ex));
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult<List<GetOwnFieldDto>>.Failure(AgShareError.HttpRequestException(ex));
+            }
         }
 
         /// <summary>
         /// Downloads a specific field
         /// </summary>
-        public async Task<GetFieldDto> DownloadFieldAsync(Guid fieldId)
+        public async Task<AgShareResult<GetFieldDto>> DownloadFieldAsync(Guid fieldId)
         {
-            var response = await _client.GetAsync($"/api/fields/{fieldId}");
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                var response = await _client.GetAsync($"/api/fields/{fieldId}");
+                string json = await response.Content.ReadAsStringAsync();
 
-            string json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<GetFieldDto>(json);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = JsonConvert.DeserializeObject<GetFieldDto>(json);
+                    return AgShareResult<GetFieldDto>.Success(data);
+                }
+                else
+                {
+                    return AgShareResult<GetFieldDto>.Failure(AgShareError.WrongStatusCode(response.StatusCode, json));
+                }
+            }
+            catch (JsonException ex)
+            {
+                return AgShareResult<GetFieldDto>.Failure(AgShareError.JsonException(ex));
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult<GetFieldDto>.Failure(AgShareError.HttpRequestException(ex));
+            }
         }
 
         // !!! This is not implemented yet !!!
