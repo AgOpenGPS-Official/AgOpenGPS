@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using AgOpenGPS.Properties;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -74,9 +74,9 @@ namespace AgOpenGPS
             var baseUrl = textBoxServer.Text;
             var apiKey = textBoxApiKey.Text;
 
-            (bool success, string message) = await AgShareClient.CheckApiAsync(baseUrl, apiKey);
+            var result = await AgShareClient.CheckApiAsync(baseUrl, apiKey);
 
-            if (success)
+            if (result.IsSuccessful)
             {
                 labelStatus.Text = "✔ Connection successful";
                 labelStatus.ForeColor = Color.Green;
@@ -84,8 +84,24 @@ namespace AgOpenGPS
             }
             else
             {
-                labelStatus.Text = $"❌ {message}";
+                string error = ConvertError(result.Error);
+                labelStatus.Text = $"❌ {error}";
                 labelStatus.ForeColor = Color.Red;
+            }
+        }
+
+        private string ConvertError(AgShareError error)
+        {
+            switch (error)
+            {
+                case InvalidApiKeyError _:
+                    return "Invalid API key";
+                case StatusCodeError statusCodeError:
+                    return $"Status {statusCodeError.StatusCode}: {statusCodeError.Body}";
+                case HttpRequestError httpRequestError:
+                    return $"Error: {httpRequestError.Exception.Message}";
+                default:
+                    throw new InvalidOperationException($"Unknown {nameof(AgShareError)}: {error.GetType()}");
             }
         }
 

@@ -50,7 +50,7 @@ namespace AgOpenGPS.Core.AgShare
         /// <summary>
         /// Checks if the API key and connection are valid
         /// </summary>
-        public static async Task<(bool ok, string message)> CheckApiAsync(string baseUrl, string apiKey)
+        public static async Task<AgShareResult> CheckApiAsync(string baseUrl, string apiKey)
         {
             try
             {
@@ -61,41 +61,52 @@ namespace AgOpenGPS.Core.AgShare
                     tempClient.BaseAddress = new Uri(baseUrl);
 
                     var response = await tempClient.GetAsync("/api/fields");
-                    string responseBody = await response.Content.ReadAsStringAsync();
 
                     if (response.IsSuccessStatusCode)
-                        return (true, "Connection OK");
+                    {
+                        return AgShareResult.Success();
+                    }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                        return (false, "Invalid API key");
+                    {
+                        return AgShareResult.Failure(AgShareError.InvalidApiKey());
+                    }
                     else
-                        return (false, $"Status {response.StatusCode}: {responseBody}");
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                return (false, $"Error: {ex.Message}");
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
             }
         }
 
         /// <summary>
         /// Uploads a field by ID
         /// </summary>
-        public async Task<(bool ok, string message)> UploadFieldAsync(Guid fieldId, UploadFieldDto fieldPayload)
+        public async Task<AgShareResult> UploadFieldAsync(Guid fieldId, UploadFieldDto fieldPayload)
         {
             try
             {
-                var json = JsonConvert.SerializeObject(fieldPayload, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(fieldPayload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _client.PutAsync($"/api/fields/{fieldId}", content);
 
                 if (response.IsSuccessStatusCode)
-                    return (true, "Upload successful");
+                {
+                    return AgShareResult.Success();
+                }
                 else
-                    return (false, $"Upload failed: {response.StatusCode}");
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                return (false, $"Exception: {ex.Message}");
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
             }
         }
 

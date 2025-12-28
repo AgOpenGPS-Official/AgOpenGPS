@@ -120,11 +120,9 @@ namespace AgOpenGPS
                     AbLines = abLines
                 };
 
-                var uploadResult = await _client.UploadFieldAsync(snapshot.FieldId, payload);
-                bool ok = uploadResult.ok;
-                string message = uploadResult.message;
+                var result = await _client.UploadFieldAsync(snapshot.FieldId, payload);
 
-                if (ok)
+                if (result.IsSuccessful)
                 {
                     string txtPath = Path.Combine(snapshot.FieldDirectory, "agshare.txt");
                     File.WriteAllText(txtPath, snapshot.FieldId.ToString());
