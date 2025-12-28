@@ -21,8 +21,15 @@ namespace AgOpenGPS.Core.AgShare
         /// Constructs client with base URL and API key
         /// </summary>
         public AgShareClient(string serverUrl, string apiKey)
+            : this(new HttpClient(), serverUrl, apiKey)
         {
-            _client = new HttpClient();
+        }
+
+        // Only for testing
+        internal AgShareClient(HttpClient client, string serverUrl, string apiKey)
+        {
+            _client = client;
+
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _client.Timeout = TimeSpan.FromSeconds(5);
