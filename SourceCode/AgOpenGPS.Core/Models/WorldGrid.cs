@@ -96,6 +96,7 @@ namespace AgOpenGPS.Core
 
         public void DrawWorldGrid(ColorRgba worldGridColor, GeoBoundingBox fieldBoundingBox)
         {
+            if (fieldBoundingBox.IsEmpty) return;
             GeoCoord origin = new GeoCoord(0.0, 0.0);
             // Simply use the max distance from origin to a boundingbox corner, so it will work for any grid rotation
             double bbMaxMaxDist = origin.Distance(fieldBoundingBox.MaxCoord);
@@ -125,10 +126,10 @@ namespace AgOpenGPS.Core
                 vertices.Add(new GeoCoord(-offset, -maxDist));
                 vertices.Add(new GeoCoord(-offset, +maxDist));
 
-                vertices.Add(new GeoCoord(+offset, -maxDist));
-                vertices.Add(new GeoCoord(+offset, +maxDist));
-                vertices.Add(new GeoCoord(-offset, -maxDist));
-                vertices.Add(new GeoCoord(-offset, +maxDist));
+                vertices.Add(new GeoCoord(-maxDist, +offset));
+                vertices.Add(new GeoCoord(+maxDist, +offset));
+                vertices.Add(new GeoCoord(-maxDist, -offset));
+                vertices.Add(new GeoCoord(+maxDist, -offset));
             }
             GLW.DrawLinesPrimitive(vertices.ToArray());
             GLW.RotateZ(gridRotation);
