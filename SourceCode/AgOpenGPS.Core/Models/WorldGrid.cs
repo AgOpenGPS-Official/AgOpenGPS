@@ -19,17 +19,17 @@ namespace AgOpenGPS.Core
         private GeoTexture2D _floorTexture;
 
         //Y
-        public double northingMax;
+        private double northingMax;
 
-        public double northingMin;
+        private double northingMin;
 
         //X
-        public double eastingMax;
+        private double eastingMax;
 
-        public double eastingMin;
+        private double eastingMin;
 
-        public double GridSize = 6000;
-        public double Count = 40;
+        private double GridSize = 6000;
+        private double Count = 40;
 
         public double gridRotation = 0.0;
 
@@ -94,24 +94,41 @@ namespace AgOpenGPS.Core
             _bingMapVisual?.Draw();
         }
 
-        public void DrawWorldGrid(ColorRgba worldGridColor)
+        public void DrawWorldGrid(ColorRgba worldGridColor, GeoBoundingBox fieldBoundingBox)
         {
+            GeoCoord origin = new GeoCoord(0.0, 0.0);
+            // Simply use the max distance from origin to a boundingbox corner, so it will work for any grid rotation
+            double bbMaxMaxDist = origin.Distance(fieldBoundingBox.MaxCoord);
+            double bbMinMinDist = origin.Distance(fieldBoundingBox.MinCoord);
+            double bbMaxMinDist = origin.Distance(new GeoCoord(fieldBoundingBox.MaxNorthing, fieldBoundingBox.MinEasting));
+            double bbMinMaxDist = origin.Distance(new GeoCoord(fieldBoundingBox.MinNorthing, fieldBoundingBox.MaxEasting));
+            double maxDist = Math.Max(
+                Math.Max(bbMaxMaxDist, bbMinMinDist),
+                Math.Max(bbMaxMinDist, bbMinMaxDist));
+
             GLW.RotateZ(-gridRotation);
 
             GLW.SetLineWidth(1.0f);
             GLW.SetColor(worldGridColor);
-            List<XyCoord> vertices = new List<XyCoord>();
-            for (double num = Math.Round(eastingMin / GridStep, MidpointRounding.AwayFromZero) * GridStep; num < eastingMax; num += GridStep)
+            // Start with the two perpendicular lines through the origin
+            List<GeoCoord> vertices = new List<GeoCoord>
             {
-                if (num < eastingMin) continue;
-                vertices.Add(new XyCoord(num, northingMax));
-                vertices.Add(new XyCoord(num, northingMin));
-            }
-            for (double num2 = Math.Round(northingMin / GridStep, MidpointRounding.AwayFromZero) * GridStep; num2 < northingMax; num2 += GridStep)
+                new GeoCoord(0.0, -maxDist),
+                new GeoCoord(0.0, +maxDist),
+                new GeoCoord(-maxDist, 0.0),
+                new GeoCoord(+maxDist, 0.0)
+            };
+            for (double offset = GridStep; offset < maxDist; offset += GridStep)
             {
-                if (num2 < northingMin) continue;
-                vertices.Add(new XyCoord(eastingMax, num2));
-                vertices.Add(new XyCoord(eastingMin, num2));
+                vertices.Add(new GeoCoord(+offset, -maxDist));
+                vertices.Add(new GeoCoord(+offset, +maxDist));
+                vertices.Add(new GeoCoord(-offset, -maxDist));
+                vertices.Add(new GeoCoord(-offset, +maxDist));
+
+                vertices.Add(new GeoCoord(+offset, -maxDist));
+                vertices.Add(new GeoCoord(+offset, +maxDist));
+                vertices.Add(new GeoCoord(-offset, -maxDist));
+                vertices.Add(new GeoCoord(-offset, +maxDist));
             }
             GLW.DrawLinesPrimitive(vertices.ToArray());
             GLW.RotateZ(gridRotation);
