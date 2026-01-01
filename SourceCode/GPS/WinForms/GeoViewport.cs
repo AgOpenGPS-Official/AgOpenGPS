@@ -24,6 +24,11 @@ namespace AgOpenGPS.WinForms
             _glControl.MakeCurrent();
         }
 
+        public override void Refresh()
+        {
+            _glControl?.Refresh();
+        }
+
         public override XyDelta ViewportSize
         {
             get
