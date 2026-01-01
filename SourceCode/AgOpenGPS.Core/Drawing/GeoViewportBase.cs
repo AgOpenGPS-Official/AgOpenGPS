@@ -20,6 +20,8 @@ namespace AgOpenGPS.Core.Drawing
         private const double MinZoom = 0.015625;
         private const double MaxZoom = 1.0;
 
+        public event EventHandler<GeoCoord> MouseDownEventHandler;
+
         public GeoViewportBase(GeoBoundingBox boundingBox)
         {
             SetBoundingBox(boundingBox);
@@ -138,6 +140,12 @@ namespace AgOpenGPS.Core.Drawing
         {
             ViewportCenter = newViewportCenter;
             Zoom = zoom;
+            Refresh();
+        }
+
+        protected void OnMouseDown(GeoCoord mouseDownCoord)
+        {
+            MouseDownEventHandler?.Invoke(this, mouseDownCoord);
             Refresh();
         }
     }

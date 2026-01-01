@@ -75,12 +75,8 @@ namespace AgOpenGPS
             btnExit.Focus();
         }
 
-        private void oglSelf_MouseDown(object sender, MouseEventArgs e)
+        private void OnViewportMouseDown(object sender, GeoCoord mouseDownCoord)
         {
-            Point pt = oglSelf.PointToClient(Cursor.Position);
-            XyCoord xyClient = new XyCoord(pt.X, pt.Y);
-            GeoCoord mouseDownCoord = _viewport.GetGeoCoord(xyClient);
-
             if (!_coordA.HasValue)
             {
                 _coordA = mouseDownCoord;
@@ -91,7 +87,6 @@ namespace AgOpenGPS
                 GeoDir abDir = new GeoDir(_coordA.Value, _coordB.Value);
                 mf.worldGrid.gridRotation = abDir.AngleInDegrees;
             }
-            oglSelf.Refresh();
         }
 
         private void oglSelf_Paint(object sender, PaintEventArgs e)
@@ -160,6 +155,7 @@ namespace AgOpenGPS
             if (_viewport == null)
             {
                 _viewport = new GeoViewport(mf.FieldBoundingBox, oglSelf);
+                _viewport.MouseDownEventHandler += OnViewportMouseDown;
             }
         }
 

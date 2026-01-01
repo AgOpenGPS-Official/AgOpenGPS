@@ -2,6 +2,7 @@
 using AgOpenGPS.Core.Models;
 using OpenTK;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace AgOpenGPS.WinForms
 {
@@ -17,6 +18,7 @@ namespace AgOpenGPS.WinForms
             _glControl = glControl;
             _glControl.MakeCurrent();
             Initialize();
+            _glControl.MouseDown += ViewportControlMouseDown;
         }
 
         protected override void MakeCurrent()
@@ -42,6 +44,15 @@ namespace AgOpenGPS.WinForms
         {
             base.EndPaint();
             _glControl.SwapBuffers();
+        }
+
+        private void ViewportControlMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            Point pt = _glControl.PointToClient(Cursor.Position);
+            XyCoord xyClient = new XyCoord(pt.X, pt.Y);
+            GeoCoord mouseDownCoord = GetGeoCoord(xyClient);
+
+            OnMouseDown(mouseDownCoord);
         }
 
     }
