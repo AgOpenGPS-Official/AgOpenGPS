@@ -48,6 +48,12 @@ namespace AgOpenGPS.Forms.Field
                 // Get user's own fields from the AgShare server
                 var fields = await downloader.GetOwnFieldsAsync();
 
+                if (fields == null)
+                {
+                    gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.");
+                    return;
+                }
+
                 lbFields.BeginUpdate();
                 lbFields.Items.Clear();
 

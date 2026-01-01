@@ -108,8 +108,7 @@ namespace AgOpenGPS
         // Save current values to settings
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            _agShareClient.SetServerUrl(textBoxServer.Text);
-            _agShareClient.SetApiKey(textBoxApiKey.Text);
+            _agShareClient.UpdateSettings(textBoxServer.Text, textBoxApiKey.Text);
 
             Settings.Default.AgShareServer = textBoxServer.Text;
             Settings.Default.AgShareApiKey = textBoxApiKey.Text;

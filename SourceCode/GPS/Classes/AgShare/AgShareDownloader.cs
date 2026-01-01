@@ -58,7 +58,7 @@ namespace AgOpenGPS
             if (!result.IsSuccessful)
             {
                 Log.EventWriter($"[AgShare] Download own fields failed");
-                return new List<GetOwnFieldDto>();
+                return null;
             }
 
             return result.Data;

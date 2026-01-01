@@ -15,36 +15,33 @@ namespace AgOpenGPS.Core.AgShare
     /// </summary>
     public class AgShareClient
     {
-        private readonly HttpClient _client;
+        private HttpClient _client;
 
         /// <summary>
         /// Constructs client with base URL and API key
         /// </summary>
         public AgShareClient(string serverUrl, string apiKey)
         {
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _client.Timeout = TimeSpan.FromSeconds(5);
-
-            SetApiKey(apiKey);
-            SetServerUrl(serverUrl);
+            _client = CreateHttpClient(serverUrl, apiKey);
         }
 
         /// <summary>
-        /// Updates the API key
+        /// Updates the server URL and the API key
         /// </summary>
-        public void SetApiKey(string apiKey)
+        public void UpdateSettings(string serverUrl, string apiKey)
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
+            _client = CreateHttpClient(serverUrl, apiKey);
         }
 
-        /// <summary>
-        /// Updates the server URL
-        /// </summary>
-        public void SetServerUrl(string serverUrl)
+        private static HttpClient CreateHttpClient(string serverUrl, string apiKey)
         {
-            _client.BaseAddress = new Uri(serverUrl);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", apiKey);
+            client.Timeout = TimeSpan.FromSeconds(5);
+            client.BaseAddress = new Uri(serverUrl);
+            return client;
         }
 
         /// <summary>
