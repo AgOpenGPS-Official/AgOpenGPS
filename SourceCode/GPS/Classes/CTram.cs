@@ -130,7 +130,6 @@ namespace AgOpenGPS
                     }
                     GL.End();
                     GL.Begin(PrimitiveType.LineStrip);
-                    DrawTramInner();
                     for (int h = 0; h < tramBndInnerArr.Count; h++)
                     {
                         GL.Vertex2(tramBndInnerArr[h].easting, tramBndInnerArr[h].northing);
@@ -213,14 +212,6 @@ namespace AgOpenGPS
                 }
             }
             return newTrack;
-        }
-
-        private void DrawTramInner()
-        {
-            for (int h = 0; h < tramBndInnerArr.Count; h++)
-            {
-                GL.Vertex2(tramBndInnerArr[h].easting, tramBndInnerArr[h].northing);
-            }
         }
 
     }
