@@ -67,7 +67,7 @@ namespace AgOpenGPS
 
             if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = TramMode.FillTracks;
 
-            btnMode.BackgroundImage = GetGenerateModeBitmap(mf.tram.generateMode);
+            btnMode.BackgroundImage = CTram.GetModeBitmap(mf.tram.generateMode);
 
             if (mf.bnd.bndList.Count == 0) btnMode.Enabled = false;
 
@@ -87,27 +87,6 @@ namespace AgOpenGPS
                 Top = 0;
                 Left = 0;
             }
-        }
-
-        private static Bitmap GetGenerateModeBitmap(TramMode mode)
-        {
-            Bitmap modeBitMap;
-            switch (mode)
-            {
-                case TramMode.All:
-                    modeBitMap = Properties.Resources.TramAll;
-                    break;
-                case TramMode.FillTracks:
-                    modeBitMap = Properties.Resources.TramLines;
-                    break;
-                case TramMode.BoundaryTracks:
-                    modeBitMap = Properties.Resources.TramOuter;
-                    break;
-                default:
-                    modeBitMap = Properties.Resources.TramAll;
-                    break;
-            }
-            return modeBitMap;
         }
 
         private void FormTram_FormClosing(object sender, FormClosingEventArgs e)
@@ -265,7 +244,7 @@ namespace AgOpenGPS
                 default:
                     break;
             }
-            btnMode.BackgroundImage = GetGenerateModeBitmap(mf.tram.generateMode);
+            btnMode.BackgroundImage = CTram.GetModeBitmap(mf.tram.generateMode);
             MoveBuildTramLine(0);
         }
 

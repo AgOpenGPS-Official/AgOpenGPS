@@ -1670,7 +1670,7 @@ namespace AgOpenGPS
             tram.isRightManualOn = false;
 
             tram.displayMode = GetNextDisplayMode(tram.displayMode);
-            btnTramDisplayMode.Image = GetDisplayModeBitmap(tram.displayMode);
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
 
         private TramMode GetNextDisplayMode(TramMode currentMode)
@@ -2215,31 +2215,7 @@ namespace AgOpenGPS
             {
                 tram.displayMode = TramMode.FillTracks;
             }
-            btnTramDisplayMode.Image = GetDisplayModeBitmap(tram.displayMode);
-        }
-
-        private Bitmap GetDisplayModeBitmap(TramMode displayMode)
-        {
-            Bitmap modeBitmap;
-            switch (displayMode)
-            {
-                case TramMode.None:
-                    modeBitmap = Properties.Resources.TramOff;
-                    break;
-                case TramMode.All:
-                    modeBitmap = Properties.Resources.TramAll;
-                    break;
-                case TramMode.FillTracks:
-                    modeBitmap = Properties.Resources.TramLines;
-                    break;
-                case TramMode.BoundaryTracks:
-                    modeBitmap = Properties.Resources.TramOuter;
-                    break;
-                default:
-                    modeBitmap = Properties.Resources.TramAll;
-                    break;
-            }
-            return modeBitmap;
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
 
         private ToolStripMenuItem steerChartToolStripMenuItem;

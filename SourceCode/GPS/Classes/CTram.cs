@@ -1,7 +1,9 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using Accord.Imaging.Filters;
+using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace AgOpenGPS
 {
@@ -49,6 +51,31 @@ namespace AgOpenGPS
 
             alpha = Properties.Settings.Default.setTram_alpha;
         }
+
+
+        public static Bitmap GetModeBitmap(TramMode mode)
+        {
+            Bitmap modeBitMap;
+            switch (mode)
+            {
+                case TramMode.None:
+                    modeBitMap = Properties.Resources.TramOff;
+                    break;
+                case TramMode.All:
+                    modeBitMap = Properties.Resources.TramAll;
+                    break;
+                case TramMode.FillTracks:
+                    modeBitMap = Properties.Resources.TramLines;
+                    break;
+                case TramMode.BoundaryTracks:
+                    modeBitMap = Properties.Resources.TramOuter;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), "TramMode argument out of range");
+            }
+            return modeBitMap;
+        }
+
 
         public void IsTramOuterOrInner()
         {
