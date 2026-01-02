@@ -12,6 +12,7 @@ using AgOpenGPS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1662,43 +1663,51 @@ namespace AgOpenGPS
             toolPivotPos.easting = tankPos.easting + (Math.Sin(toolPivotPos.heading) * (tool.trailingHitchLength));
             toolPivotPos.northing = tankPos.northing + (Math.Cos(toolPivotPos.heading) * (tool.trailingHitchLength));
         }
+
         private void btnTramDisplayMode_Click(object sender, EventArgs e)
         {
             tram.isLeftManualOn = false;
             tram.isRightManualOn = false;
 
-            //if only lines cycle on off
-            if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count == 0)
-            {
-                if (tram.displayMode != 0) tram.displayMode = 0;
-                else tram.displayMode = 2;
-            }
-            else
-            {
-                tram.displayMode++;
-                if (tram.displayMode > 3) tram.displayMode = 0;
-            }
-
-            switch (tram.displayMode)
-            {
-                case 0:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOff;
-                    break;
-                case 1:
-                    btnTramDisplayMode.Image = Properties.Resources.TramAll;
-                    break;
-                case 2:
-                    btnTramDisplayMode.Image = Properties.Resources.TramLines;
-                    break;
-                case 3:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            tram.displayMode = GetNextDisplayMode(tram.displayMode);
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
+
+        private TramMode GetNextDisplayMode(TramMode currentMode)
+        {
+            TramMode nextMode;
+
+            switch (currentMode)
+            {
+                case TramMode.None:
+                    nextMode = TramMode.All;
+                    break;
+                case TramMode.All:
+                    nextMode = TramMode.FillTracks;
+                    break;
+                case TramMode.FillTracks:
+                    nextMode = TramMode.BoundaryTracks;
+                    break;
+                case TramMode.BoundaryTracks:
+                    nextMode = TramMode.None;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(currentMode), "TramMode argument out of range");
+            }
+            // Skip inapplicable modes
+            if (nextMode.IncludesBoundaryTracks() && tram.tramBndOuterArr.Count == 0)
+            {
+                nextMode = GetNextDisplayMode(nextMode);
+            }
+            if (nextMode.IncludesFillTracks() && tram.tramList.Count == 0)
+            {
+                nextMode = GetNextDisplayMode(nextMode);
+            }
+            return nextMode;
+        }
+
         public bool isPatchesChangingColor = false;
+
         private void btnChangeMappingColor_Click(object sender, EventArgs e)
         {
             using (var form = new FormColorPicker(this, sectionColorDay))
@@ -2199,37 +2208,21 @@ namespace AgOpenGPS
         {
             if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = 1;
+                tram.displayMode = TramMode.All;
             }
             else if (tram.tramList.Count == 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = 3;
+                tram.displayMode = TramMode.BoundaryTracks;
             }
             else if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count == 0)
             {
-                tram.displayMode = 2;
+                tram.displayMode = TramMode.FillTracks;
             }
-
-            switch (tram.displayMode)
-            {
-                case 1:
-                    btnTramDisplayMode.Image = Properties.Resources.TramAll;
-                    break;
-                case 2:
-                    btnTramDisplayMode.Image = Properties.Resources.TramLines;
-                    break;
-                case 3:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
 
         private ToolStripMenuItem steerChartToolStripMenuItem;
         private ToolStripMenuItem headingChartToolStripMenuItem;
         private ToolStripMenuItem xTEChartToolStripMenuItem;
-    }//end class
-
-}//end namespace
+    }
+}

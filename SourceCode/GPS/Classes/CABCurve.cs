@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -1187,7 +1188,7 @@ namespace AgOpenGPS
         public void BuildTram()
         {
             //if all or bnd only then make outer loop pass
-            if (mf.tram.generateMode != 1)
+            if (mf.tram.generateMode.IncludesBoundaryTracks())
             {
                 mf.tram.BuildTramBnd();
             }
@@ -1200,24 +1201,21 @@ namespace AgOpenGPS
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
 
-            if (mf.tram.generateMode == 2) return;
+            if (!mf.tram.generateMode.IncludesFillTracks())
+            {
+                return;
+            }
 
             bool isBndExist = mf.bnd.bndList.Count != 0;
 
             int refCount = mf.trk.gArr[mf.trk.idx].curvePts.Count;
 
-            int cntr = 0;
-            if (isBndExist)
-            {
-                if (mf.tram.generateMode == 1)
-                    cntr = 0;
-                else
-                    cntr = 1;
-            }
+            bool skipFirstPass = isBndExist && mf.tram.generateMode.IncludesBoundaryTracks();
+            int startPass = skipFirstPass ? 1 : 0;
 
             double widd;
 
-            for (int i = cntr; i <= mf.tram.passes; i++)
+            for (int i = startPass; i <= mf.tram.passes; i++)
             {
                 mf.tram.tramArr = new List<vec2>
                 {
@@ -1269,7 +1267,7 @@ namespace AgOpenGPS
                 }
             }
 
-            for (int i = cntr; i <= mf.tram.passes; i++)
+            for (int i = startPass; i <= mf.tram.passes; i++)
             {
                 mf.tram.tramArr = new List<vec2>
                 {
