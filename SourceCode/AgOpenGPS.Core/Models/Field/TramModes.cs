@@ -1,51 +1,27 @@
 ﻿namespace AgOpenGPS.Core.Models
 {
-    public enum TramDisplayMode
+    public enum TramMode
     {
-        Hide,
-        DisplayAll,
-        DisplayFillTracks,
-        DisplayBoundaryTracks
+        None,
+        All,
+        FillTracks,
+        BoundaryTracks
     }
 
-    public enum TramGenerateMode
+    public static class TramModeExtensions
     {
-        GenerateAll,
-        GenerateFillTracks,
-        GenerateBoundaryTracks
-    }
-
-    public static class TramDisplayModeExt
-    {
-        public static bool MustDisplayFillTracks(this TramDisplayMode displayMode)
+        public static bool IncludesFillTracks(this TramMode mode)
         {
             return
-                displayMode == TramDisplayMode.DisplayAll ||
-                displayMode == TramDisplayMode.DisplayFillTracks;
+                mode == TramMode.All ||
+                mode == TramMode.FillTracks;
         }
 
-        public static bool MustDisplayBoundaryTracks(this TramDisplayMode displayMode)
+        public static bool IncludesBoundaryTracks(this TramMode mode)
         {
             return
-                displayMode == TramDisplayMode.DisplayAll ||
-                displayMode == TramDisplayMode.DisplayBoundaryTracks;
-        }
-    }
-
-    public static class TramGenerateModeExt
-    {
-        public static bool MustGenerateFillTracks(this TramGenerateMode generateMode)
-        {
-            return
-                generateMode == TramGenerateMode.GenerateAll ||
-                generateMode == TramGenerateMode.GenerateFillTracks;
-        }
-
-        public static bool MustGenerateBoundaryTracks(TramGenerateMode generateMode)
-        {
-            return
-                generateMode == TramGenerateMode.GenerateAll ||
-                generateMode == TramGenerateMode.GenerateBoundaryTracks;
+                mode == TramMode.All ||
+                mode == TramMode.BoundaryTracks;
         }
     }
 }

@@ -1188,7 +1188,7 @@ namespace AgOpenGPS
         public void BuildTram()
         {
             //if all or bnd only then make outer loop pass
-            if (TramGenerateModeExt.MustGenerateBoundaryTracks(mf.tram.generateMode))
+            if (mf.tram.generateMode.IncludesBoundaryTracks())
             {
                 mf.tram.BuildTramBnd();
             }
@@ -1201,7 +1201,7 @@ namespace AgOpenGPS
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
 
-            if (!TramGenerateModeExt.MustGenerateFillTracks(mf.tram.generateMode))
+            if (!mf.tram.generateMode.IncludesFillTracks())
             {
                 return;
             }
@@ -1210,8 +1210,7 @@ namespace AgOpenGPS
 
             int refCount = mf.trk.gArr[mf.trk.idx].curvePts.Count;
 
-            bool skipFirstPass =
-                isBndExist && TramGenerateModeExt.MustGenerateBoundaryTracks(mf.tram.generateMode);
+            bool skipFirstPass = isBndExist && mf.tram.generateMode.IncludesBoundaryTracks();
             int startPass = skipFirstPass ? 1 : 0;
 
             double widd;

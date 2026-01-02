@@ -55,17 +55,17 @@ namespace AgOpenGPS
             mf.tool.halfWidth = (mf.tool.width - mf.tool.overlap) / 2.0;
 
             //if off, turn it on because they obviously want a tram.
-            mf.tram.generateMode = TramGenerateMode.GenerateAll;
+            mf.tram.generateMode = TramMode.All;
 
             if (mf.tram.tramList.Count > 0 && mf.tram.tramBndOuterArr.Count > 0)
-                mf.tram.generateMode = TramGenerateMode.GenerateAll;
+                mf.tram.generateMode = TramMode.All;
             else if (mf.tram.tramBndOuterArr.Count == 0)
-                mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
+                mf.tram.generateMode = TramMode.FillTracks;
             else if (mf.tram.tramList.Count == 0)
-                mf.tram.generateMode = TramGenerateMode.GenerateBoundaryTracks;
-            else mf.tram.generateMode = TramGenerateMode.GenerateAll;
+                mf.tram.generateMode = TramMode.BoundaryTracks;
+            else mf.tram.generateMode = TramMode.All;
 
-            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
+            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = TramMode.FillTracks;
 
             btnMode.BackgroundImage = GetGenerateModeBitmap(mf.tram.generateMode);
 
@@ -89,18 +89,18 @@ namespace AgOpenGPS
             }
         }
 
-        private static Bitmap GetGenerateModeBitmap(TramGenerateMode mode)
+        private static Bitmap GetGenerateModeBitmap(TramMode mode)
         {
             Bitmap modeBitMap;
             switch (mode)
             {
-                case TramGenerateMode.GenerateAll:
+                case TramMode.All:
                     modeBitMap = Properties.Resources.TramAll;
                     break;
-                case TramGenerateMode.GenerateFillTracks:
+                case TramMode.FillTracks:
                     modeBitMap = Properties.Resources.TramLines;
                     break;
-                case TramGenerateMode.GenerateBoundaryTracks:
+                case TramMode.BoundaryTracks:
                     modeBitMap = Properties.Resources.TramOuter;
                     break;
                 default:
@@ -135,7 +135,7 @@ namespace AgOpenGPS
 
         private void MoveBuildTramLine(double Dist)
         {
-            mf.tram.displayMode = TramDisplayMode.DisplayAll;
+            mf.tram.displayMode = TramMode.All;
 
             if (isCurve)
             {
@@ -250,16 +250,16 @@ namespace AgOpenGPS
         {
             switch (mf.tram.generateMode)
             {
-                case TramGenerateMode.GenerateAll:
-                    mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
+                case TramMode.All:
+                    mf.tram.generateMode = TramMode.FillTracks;
                     break;
 
-                case TramGenerateMode.GenerateFillTracks:
-                    mf.tram.generateMode = TramGenerateMode.GenerateBoundaryTracks;
+                case TramMode.FillTracks:
+                    mf.tram.generateMode = TramMode.BoundaryTracks;
                     break;
 
-                case TramGenerateMode.GenerateBoundaryTracks:
-                    mf.tram.generateMode = TramGenerateMode.GenerateAll;
+                case TramMode.BoundaryTracks:
+                    mf.tram.generateMode = TramMode.All;
                     break;
 
                 default:

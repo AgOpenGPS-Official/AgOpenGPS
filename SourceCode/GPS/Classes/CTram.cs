@@ -27,8 +27,8 @@ namespace AgOpenGPS
 
         public List<List<vec2>> tramList = new List<List<vec2>>();
 
-        public TramDisplayMode displayMode;
-        public TramGenerateMode generateMode = TramGenerateMode.GenerateAll;
+        public TramMode displayMode;
+        public TramMode generateMode = TramMode.All;
 
         internal int controlByte;
 
@@ -63,7 +63,7 @@ namespace AgOpenGPS
 
             GL.Color4(0, 0, 0, alpha);
 
-            if (TramDisplayModeExt.MustDisplayFillTracks(mf.tram.displayMode))
+            if (mf.tram.displayMode.IncludesFillTracks())
             {
                 if (tramList.Count > 0)
                 {
@@ -79,7 +79,7 @@ namespace AgOpenGPS
                 }
             }
 
-            if (TramDisplayModeExt.MustDisplayBoundaryTracks(mf.tram.displayMode))
+            if (mf.tram.displayMode.IncludesBoundaryTracks())
             {
                 if (tramBndOuterArr.Count > 0)
                 {
@@ -103,7 +103,7 @@ namespace AgOpenGPS
 
             GL.Color4(0.930f, 0.72f, 0.73530f, alpha);
 
-            if (TramDisplayModeExt.MustDisplayFillTracks(mf.tram.displayMode))
+            if (mf.tram.displayMode.IncludesFillTracks())
             {
                 if (tramList.Count > 0)
                 {
@@ -118,7 +118,7 @@ namespace AgOpenGPS
                     }
                 }
             }
-            if (TramDisplayModeExt.MustDisplayBoundaryTracks(mf.tram.displayMode))
+            if (mf.tram.displayMode.IncludesBoundaryTracks())
             {
                 if (tramBndOuterArr.Count > 0)
                 {

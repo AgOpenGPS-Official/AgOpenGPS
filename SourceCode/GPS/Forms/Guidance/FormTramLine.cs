@@ -909,7 +909,7 @@ namespace AgOpenGPS
 
         private void BuildTramBnd()
         {
-            mf.tram.displayMode = TramDisplayMode.DisplayAll;
+            mf.tram.displayMode = TramMode.All;
             mf.tram.CreateBoundaryOuterTrack();
             mf.tram.CreateBoundaryInnerTrack();
         }

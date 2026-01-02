@@ -458,7 +458,7 @@ namespace AgOpenGPS
 
         public void BuildTram()
         {
-            if (TramGenerateModeExt.MustGenerateBoundaryTracks(mf.tram.generateMode))
+            if (mf.tram.generateMode.IncludesBoundaryTracks())
             {
                 mf.tram.BuildTramBnd();
             }
@@ -471,7 +471,7 @@ namespace AgOpenGPS
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
 
-            if (!TramGenerateModeExt.MustGenerateFillTracks(mf.tram.generateMode))
+            if (!mf.tram.generateMode.IncludesFillTracks())
             {
                 return;
             }
@@ -505,8 +505,7 @@ namespace AgOpenGPS
             mf.tram.tramArr?.Clear();
 
             //no boundary starts on first pass
-            bool skipFirstPass =
-                isBndExist && TramGenerateModeExt.MustGenerateBoundaryTracks(mf.tram.generateMode);
+            bool skipFirstPass = isBndExist && mf.tram.generateMode.IncludesBoundaryTracks();
             int startPass = skipFirstPass ? 1 : 0;
 
             double widd;

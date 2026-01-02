@@ -1673,30 +1673,30 @@ namespace AgOpenGPS
             btnTramDisplayMode.Image = GetDisplayModeBitmap(tram.displayMode);
         }
 
-        private TramDisplayMode GetNextDisplayMode(TramDisplayMode currentMode)
+        private TramMode GetNextDisplayMode(TramMode currentMode)
         {
-            TramDisplayMode nextMode;
+            TramMode nextMode;
 
             switch (currentMode)
             {
-                case TramDisplayMode.Hide:
-                    nextMode = TramDisplayMode.DisplayAll;
+                case TramMode.None:
+                    nextMode = TramMode.All;
                     break;
-                case TramDisplayMode.DisplayAll:
-                    nextMode = TramDisplayMode.DisplayFillTracks;
+                case TramMode.All:
+                    nextMode = TramMode.FillTracks;
                     break;
-                case TramDisplayMode.DisplayFillTracks:
-                    nextMode = TramDisplayMode.DisplayBoundaryTracks;
+                case TramMode.FillTracks:
+                    nextMode = TramMode.BoundaryTracks;
                     break;
-                case TramDisplayMode.DisplayBoundaryTracks:
-                    nextMode = TramDisplayMode.Hide;
+                case TramMode.BoundaryTracks:
+                    nextMode = TramMode.None;
                     break;
                 default:
-                    nextMode = TramDisplayMode.DisplayAll;
+                    nextMode = TramMode.All;
                     break;
             }
             // Skip inapplicable modes
-            if (TramDisplayModeExt.MustDisplayBoundaryTracks(nextMode) && tram.tramBndOuterArr.Count == 0)
+            if (nextMode.IncludesBoundaryTracks() && tram.tramBndOuterArr.Count == 0)
             {
                 nextMode = GetNextDisplayMode(nextMode);
             }
@@ -2205,34 +2205,34 @@ namespace AgOpenGPS
         {
             if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = TramDisplayMode.DisplayAll;
+                tram.displayMode = TramMode.All;
             }
             else if (tram.tramList.Count == 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = TramDisplayMode.DisplayBoundaryTracks;
+                tram.displayMode = TramMode.BoundaryTracks;
             }
             else if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count == 0)
             {
-                tram.displayMode = TramDisplayMode.DisplayFillTracks;
+                tram.displayMode = TramMode.FillTracks;
             }
             btnTramDisplayMode.Image = GetDisplayModeBitmap(tram.displayMode);
         }
 
-        private Bitmap GetDisplayModeBitmap(TramDisplayMode displayMode)
+        private Bitmap GetDisplayModeBitmap(TramMode displayMode)
         {
             Bitmap modeBitmap;
             switch (displayMode)
             {
-                case TramDisplayMode.Hide:
+                case TramMode.None:
                     modeBitmap = Properties.Resources.TramOff;
                     break;
-                case TramDisplayMode.DisplayAll:
+                case TramMode.All:
                     modeBitmap = Properties.Resources.TramAll;
                     break;
-                case TramDisplayMode.DisplayFillTracks:
+                case TramMode.FillTracks:
                     modeBitmap = Properties.Resources.TramLines;
                     break;
-                case TramDisplayMode.DisplayBoundaryTracks:
+                case TramMode.BoundaryTracks:
                     modeBitmap = Properties.Resources.TramOuter;
                     break;
                 default:
