@@ -33,7 +33,5 @@ namespace AgOpenGPS.Core.Drawing
         static public readonly ColorRgba TramDotAutomaticControlBitOnColor = new ColorRgba(0.29f, 0.990f, 0.290f, 0.983f);
         static public readonly ColorRgba TramMarkerOnColor = new ColorRgba(0.0f, 0.900f, 0.39630f);
 
-        static public readonly ColorRgba WorldGridDayColor = Gray012;
-        static public readonly ColorRgba WorldGridNightColor = Gray025;
     }
 }

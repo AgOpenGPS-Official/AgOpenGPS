@@ -1,7 +1,6 @@
 //Please, if you use this, share the improvements
 
 using AgLibrary.Logging;
-using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
@@ -1623,35 +1622,31 @@ namespace AgOpenGPS
         public void CloseTopMosts()
         {
             Form fc = Application.OpenForms["FormSteer"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
             fc = Application.OpenForms["FormSteerGraph"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
             fc = Application.OpenForms["FormGPSData"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
         }
+
         private void btnAutoTrack_Click(object sender, EventArgs e)
         {
             trk.isAutoTrack = !trk.isAutoTrack;
             btnAutoTrack.Image = trk.isAutoTrack ? Resources.AutoTrack : Resources.AutoTrackOff;
         }
+
         private void btnResetToolHeading_Click(object sender, EventArgs e)
         {
             tankPos.heading = fixHeading;
@@ -1662,6 +1657,7 @@ namespace AgOpenGPS
             toolPivotPos.easting = tankPos.easting + (Math.Sin(toolPivotPos.heading) * (tool.trailingHitchLength));
             toolPivotPos.northing = tankPos.northing + (Math.Cos(toolPivotPos.heading) * (tool.trailingHitchLength));
         }
+
         private void btnTramDisplayMode_Click(object sender, EventArgs e)
         {
             tram.isLeftManualOn = false;
@@ -1698,6 +1694,7 @@ namespace AgOpenGPS
                     break;
             }
         }
+
         public bool isPatchesChangingColor = false;
         private void btnChangeMappingColor_Click(object sender, EventArgs e)
         {
@@ -1714,6 +1711,7 @@ namespace AgOpenGPS
 
             isPatchesChangingColor = true;
         }
+
         private void btnYouSkipEnable_Click(object sender, EventArgs e)
         {
             yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
@@ -1745,11 +1743,8 @@ namespace AgOpenGPS
                     yt.skipMode = SkipMode.Normal;
                     break;
             }
-
             yt.ResetCreatedYouTurn();
-
         }
-
 
         private void cboxpRowWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1759,6 +1754,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.set_youSkipWidth = yt.rowSkipsWidth;
             Properties.Settings.Default.Save();
         }
+
         private void btnHeadlandOnOff_Click(object sender, EventArgs e)
         {
             bnd.isHeadlandOn = !bnd.isHeadlandOn;
@@ -1789,6 +1785,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
             Properties.Settings.Default.Save();
         }
+
         private void btnHydLift_Click(object sender, EventArgs e)
         {
             if (bnd.isHeadlandOn)
@@ -2052,7 +2049,7 @@ namespace AgOpenGPS
 
         private void btnGrid_Click(object sender, EventArgs e)
         {
-            var form = new FormGrid(this);
+            var form = new FormGrid(this, worldGrid.FieldGrid);
             form.Show(this);
             navPanelCounter = 0;
         }
