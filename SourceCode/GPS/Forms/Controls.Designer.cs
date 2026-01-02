@@ -1692,11 +1692,14 @@ namespace AgOpenGPS
                     nextMode = TramMode.None;
                     break;
                 default:
-                    nextMode = TramMode.All;
-                    break;
+                    throw new ArgumentOutOfRangeException(nameof(currentMode), "TramMode argument out of range");
             }
             // Skip inapplicable modes
             if (nextMode.IncludesBoundaryTracks() && tram.tramBndOuterArr.Count == 0)
+            {
+                nextMode = GetNextDisplayMode(nextMode);
+            }
+            if (nextMode.IncludesFillTracks() && tram.tramList.Count == 0)
             {
                 nextMode = GetNextDisplayMode(nextMode);
             }
