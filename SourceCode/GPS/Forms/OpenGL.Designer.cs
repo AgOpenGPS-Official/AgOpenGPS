@@ -888,7 +888,7 @@ namespace AgOpenGPS
                 GL.Color3((byte)0, (byte)245, (byte)0);
                 GL.LineWidth(4);
 
-                if ((tram.displayMode == 1 || tram.displayMode == 2))
+                if (TramDisplayModeExt.MustDisplayFillTracks(tram.displayMode))
                 {
                     for (int i = 0; i < tram.tramList.Count; i++)
                     {
@@ -901,7 +901,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                if (tram.displayMode == 1 || tram.displayMode == 3)
+                if (TramDisplayModeExt.MustDisplayBoundaryTracks(tram.displayMode))
                 {
                     //boundary tram list
                     GL.Begin(PrimitiveType.LineStrip);

@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using AgOpenGPS.Core.Models;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -21,14 +22,13 @@ namespace AgOpenGPS
 
         public bool isLeftManualOn, isRightManualOn;
 
-
         //tramlines
         public List<vec2> tramArr = new List<vec2>();
 
         public List<List<vec2>> tramList = new List<List<vec2>>();
 
-        // 0 off, 1 All, 2, Lines, 3 Outer
-        public int displayMode, generateMode = 0;
+        public TramDisplayMode displayMode;
+        public TramGenerateMode generateMode = TramGenerateMode.GenerateAll;
 
         internal int controlByte;
 
@@ -63,7 +63,7 @@ namespace AgOpenGPS
 
             GL.Color4(0, 0, 0, alpha);
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
+            if (TramDisplayModeExt.MustDisplayFillTracks(mf.tram.displayMode))
             {
                 if (tramList.Count > 0)
                 {
@@ -79,7 +79,7 @@ namespace AgOpenGPS
                 }
             }
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 3)
+            if (TramDisplayModeExt.MustDisplayBoundaryTracks(mf.tram.displayMode))
             {
                 if (tramBndOuterArr.Count > 0)
                 {
@@ -103,7 +103,7 @@ namespace AgOpenGPS
 
             GL.Color4(0.930f, 0.72f, 0.73530f, alpha);
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
+            if (TramDisplayModeExt.MustDisplayFillTracks(mf.tram.displayMode))
             {
                 if (tramList.Count > 0)
                 {
@@ -118,8 +118,7 @@ namespace AgOpenGPS
                     }
                 }
             }
-
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 3)
+            if (TramDisplayModeExt.MustDisplayBoundaryTracks(mf.tram.displayMode))
             {
                 if (tramBndOuterArr.Count > 0)
                 {

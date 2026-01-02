@@ -1,7 +1,9 @@
 ﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -53,35 +55,19 @@ namespace AgOpenGPS
             mf.tool.halfWidth = (mf.tool.width - mf.tool.overlap) / 2.0;
 
             //if off, turn it on because they obviously want a tram.
-            mf.tram.generateMode = 0;
+            mf.tram.generateMode = TramGenerateMode.GenerateAll;
 
             if (mf.tram.tramList.Count > 0 && mf.tram.tramBndOuterArr.Count > 0)
-                mf.tram.generateMode = 0;
+                mf.tram.generateMode = TramGenerateMode.GenerateAll;
             else if (mf.tram.tramBndOuterArr.Count == 0)
-                mf.tram.generateMode = 1;
+                mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
             else if (mf.tram.tramList.Count == 0)
-                mf.tram.generateMode = 2;
-            else mf.tram.generateMode = 0;
+                mf.tram.generateMode = TramGenerateMode.GenerateBoundaryTracks;
+            else mf.tram.generateMode = TramGenerateMode.GenerateAll;
 
-            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = 1;
+            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
 
-            switch (mf.tram.generateMode)
-            {
-                case 0:
-                    btnMode.BackgroundImage = Properties.Resources.TramAll;
-                    break;
-
-                case 1:
-                    btnMode.BackgroundImage = Properties.Resources.TramLines;
-                    break;
-
-                case 2:
-                    btnMode.BackgroundImage = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            btnMode.BackgroundImage = GetGenerateModeBitmap(mf.tram.generateMode);
 
             if (mf.bnd.bndList.Count == 0) btnMode.Enabled = false;
 
@@ -101,6 +87,27 @@ namespace AgOpenGPS
                 Top = 0;
                 Left = 0;
             }
+        }
+
+        private static Bitmap GetGenerateModeBitmap(TramGenerateMode mode)
+        {
+            Bitmap modeBitMap;
+            switch (mode)
+            {
+                case TramGenerateMode.GenerateAll:
+                    modeBitMap = Properties.Resources.TramAll;
+                    break;
+                case TramGenerateMode.GenerateFillTracks:
+                    modeBitMap = Properties.Resources.TramLines;
+                    break;
+                case TramGenerateMode.GenerateBoundaryTracks:
+                    modeBitMap = Properties.Resources.TramOuter;
+                    break;
+                default:
+                    modeBitMap = Properties.Resources.TramAll;
+                    break;
+            }
+            return modeBitMap;
         }
 
         private void FormTram_FormClosing(object sender, FormClosingEventArgs e)
@@ -128,7 +135,7 @@ namespace AgOpenGPS
 
         private void MoveBuildTramLine(double Dist)
         {
-            mf.tram.displayMode = 1;
+            mf.tram.displayMode = TramDisplayMode.DisplayAll;
 
             if (isCurve)
             {
@@ -236,33 +243,29 @@ namespace AgOpenGPS
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
             Close();
         }
 
         private void btnMode_Click(object sender, EventArgs e)
         {
-            mf.tram.generateMode++;
-            if (mf.tram.generateMode > 2) mf.tram.generateMode = 0;
-
             switch (mf.tram.generateMode)
             {
-                case 0:
-                    btnMode.BackgroundImage = Properties.Resources.TramAll;
+                case TramGenerateMode.GenerateAll:
+                    mf.tram.generateMode = TramGenerateMode.GenerateFillTracks;
                     break;
 
-                case 1:
-                    btnMode.BackgroundImage = Properties.Resources.TramLines;
+                case TramGenerateMode.GenerateFillTracks:
+                    mf.tram.generateMode = TramGenerateMode.GenerateBoundaryTracks;
                     break;
 
-                case 2:
-                    btnMode.BackgroundImage = Properties.Resources.TramOuter;
+                case TramGenerateMode.GenerateBoundaryTracks:
+                    mf.tram.generateMode = TramGenerateMode.GenerateAll;
                     break;
 
                 default:
                     break;
             }
-
+            btnMode.BackgroundImage = GetGenerateModeBitmap(mf.tram.generateMode);
             MoveBuildTramLine(0);
         }
 
