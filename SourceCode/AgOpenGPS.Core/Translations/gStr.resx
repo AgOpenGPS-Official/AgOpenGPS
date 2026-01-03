@@ -254,6 +254,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="gsCalibrationDataReset" xml:space="preserve">
+    <value>Calibration data reset</value>
+  </data>
   <data name="gsCenter" xml:space="preserve">
     <value>Center</value>
   </data>
@@ -304,6 +307,12 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsConfiguration" xml:space="preserve">
     <value>Configuration</value>
+  </data>
+  <data name="gsCollectingData" xml:space="preserve">
+    <value>Collecting Data</value>
+  </data>
+  <data name="gsConfidence" xml:space="preserve">
+    <value>Confidence</value>
   </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Contour File Corrupt</value>
@@ -485,6 +494,12 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsExitToWindows" xml:space="preserve">
     <value>Exit to Windows in</value>
   </data>
+  <data name="gsExceededRange" xml:space="preserve">
+    <value>Exceeded Range</value>
+  </data>
+  <data name="gsExceededRangeMsg" xml:space="preserve">
+    <value>Recommended adjustment {0} exceeds safe range (±50). Please check WAS sensor alignment.</value>
+  </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Extra Guidelines</value>
   </data>
@@ -641,6 +656,12 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsInvertWas" xml:space="preserve">
     <value>Invert WAS</value>
   </data>
+  <data name="gsInsufficientData" xml:space="preserve">
+    <value>Insufficient Data</value>
+  </data>
+  <data name="gsInsufficientDataMsg" xml:space="preserve">
+    <value>Need at least 200 samples for calibration. Current samples: {0}. Drive on guidance lines to collect more data.</value>
+  </data>
   <data name="gsKmH" xml:space="preserve">
     <value>km/h</value>
   </data>
@@ -691,6 +712,12 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsLowerTime" xml:space="preserve">
     <value>Lower Time</value>
+  </data>
+  <data name="gsLowConfidence" xml:space="preserve">
+    <value>Low Confidence</value>
+  </data>
+  <data name="gsLowConfidenceMsg" xml:space="preserve">
+    <value>Calibration confidence is {0}%. Need at least 70% confidence. Drive more consistently on guidance lines.</value>
   </data>
   <data name="gsMPH" xml:space="preserve">
     <value>mph</value>
@@ -915,6 +942,9 @@ can be created/loaded in the main menu (top left).</value>
   <data name="gsReallyResetEverything" xml:space="preserve">
     <value>Really Reset Everything?</value>
   </data>
+  <data name="gsReadyForCalibration" xml:space="preserve">
+    <value>Ready for Calibration</value>
+  </data>
   <data name="gsRecord" xml:space="preserve">
     <value>Record</value>
   </data>
@@ -942,6 +972,9 @@ can be created/loaded in the main menu (top left).</value>
   <data name="gsResetAllForSure" xml:space="preserve">
     <value>Reset All For Sure?</value>
   </data>
+  <data name="gsResetToDefault" xml:space="preserve">
+    <value>Reset to Default</value>
+  </data>
   <data name="gsResume" xml:space="preserve">
     <value>Resume</value>
   </data>
@@ -965,6 +998,9 @@ can be created/loaded in the main menu (top left).</value>
   </data>
   <data name="gsS_West" xml:space="preserve">
     <value>SW</value>
+  </data>
+  <data name="gsSamples" xml:space="preserve">
+    <value>Samples</value>
   </data>
   <data name="gsSaveAllDone" xml:space="preserve">
     <value>All done. Closing now..</value>
@@ -1023,6 +1059,9 @@ can be created/loaded in the main menu (top left).</value>
   <data name="gsSentToMachineModule" xml:space="preserve">
     <value>Sent To Machine Module</value>
   </data>
+  <data name="gsSettingsSent" xml:space="preserve">
+    <value>Settings Sent</value>
+  </data>
   <data name="gsSetPoint" xml:space="preserve">
     <value>SetPoint</value>
   </data>
@@ -1058,6 +1097,24 @@ can be created/loaded in the main menu (top left).</value>
   </data>
   <data name="gsSmoothABCurve" xml:space="preserve">
     <value>Smooth AB Curve</value>
+  </data>
+  <data name="gsSmartWASCalibration" xml:space="preserve">
+    <value>Smart WAS Calibration</value>
+  </data>
+  <data name="gsSmartZero" xml:space="preserve">
+    <value>Smart Zero</value>
+  </data>
+  <data name="gsSmartZeroApplied" xml:space="preserve">
+    <value>Smart Zero Applied</value>
+  </data>
+  <data name="gsSmartZeroAppliedMsg" xml:space="preserve">
+    <value>WAS zero adjusted by {0}° ({1} counts). Continue driving to refine calibration.</value>
+  </data>
+  <data name="gsSmartCalibrationError" xml:space="preserve">
+    <value>Calibration Error</value>
+  </data>
+  <data name="gsSmartWASNotAvailable" xml:space="preserve">
+    <value>Smart WAS calibration not available. Check autosteer module connection.</value>
   </data>
   <data name="gsSort" xml:space="preserve">
     <value>Sort</value>

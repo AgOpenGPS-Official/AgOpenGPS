@@ -329,11 +329,25 @@ namespace AgOpenGPS
 
             if (mf.isLightBarNotSteerBar) rbtnLightBar.Checked = true;
             else rbtnSteerBar.Checked = true;
+
+            // Start Smart WAS Calibration data collection
+            if (mf.smartWASCalibration != null)
+            {
+                mf.smartWASCalibration.ResetData();
+                mf.smartWASCalibration.StartDataCollection();
+                UpdateSmartCalibrationStatus();
+            }
         }
 
         private void FormSteer_FormClosing(object sender, FormClosingEventArgs e)
         {
             mf.vehicle.isInFreeDriveMode = false;
+
+            // Stop Smart WAS Calibration data collection
+            if (mf.smartWASCalibration != null)
+            {
+                mf.smartWASCalibration.StopDataCollection();
+            }
 
             Properties.Settings.Default.setVehicle_goalPointLookAheadHold = mf.vehicle.goalPointLookAheadHold;
             Properties.Settings.Default.setVehicle_goalPointLookAheadMult = mf.vehicle.goalPointLookAheadMult;
@@ -478,6 +492,9 @@ namespace AgOpenGPS
                 else
                     lblPercentFS.Text = mf.mc.sensorData.ToString();
             }
+
+            // Update Smart WAS Calibration status
+            UpdateSmartCalibrationStatus();
         }
 
         #region Tab Sensors
@@ -1265,5 +1282,114 @@ namespace AgOpenGPS
                 tabSteerSettings.SelectTab(0);
             }
         }
+
+        #region Smart WAS Calibration
+
+        private void btnSmartZeroWAS_Click(object sender, EventArgs e)
+        {
+            if (mf.smartWASCalibration == null)
+            {
+                mf.TimedMessageBox(2000, gStr.gsSmartCalibrationError, gStr.gsSmartWASNotAvailable);
+                return;
+            }
+
+            // Check if we have a valid recommendation
+            if (!mf.smartWASCalibration.HasValidRecommendation)
+            {
+                // Check why we don't have a valid recommendation
+                if (mf.smartWASCalibration.SampleCount < 200)
+                {
+                    string msg = string.Format(gStr.gsInsufficientDataMsg, mf.smartWASCalibration.SampleCount);
+                    mf.TimedMessageBox(3000, gStr.gsInsufficientData, msg);
+                }
+                else if (mf.smartWASCalibration.ConfidenceLevel < 70)
+                {
+                    string msg = string.Format(gStr.gsLowConfidenceMsg, mf.smartWASCalibration.ConfidenceLevel.ToString("F0"));
+                    mf.TimedMessageBox(3000, gStr.gsLowConfidence, msg);
+                }
+                return;
+            }
+
+            // Check if the recommended adjustment is within safe range
+            double recommendedOffset = mf.smartWASCalibration.RecommendedWASZero;
+            int offsetCounts = (int)Math.Round(recommendedOffset * hsbarCountsPerDegree.Value);
+
+            if (Math.Abs(offsetCounts) > 50)
+            {
+                string msg = string.Format(gStr.gsExceededRangeMsg, offsetCounts);
+                mf.TimedMessageBox(3000, gStr.gsExceededRange, msg);
+                return;
+            }
+
+            // Apply the offset
+            hsbarWasOffset.Value += offsetCounts;
+
+            // Update the collected data to account for the applied offset
+            mf.smartWASCalibration.ApplyOffsetToCollectedData(recommendedOffset);
+
+            // Show confirmation message
+            string confirmMsg = string.Format(gStr.gsSmartZeroAppliedMsg,
+                recommendedOffset.ToString("F2"), offsetCounts);
+            mf.TimedMessageBox(2500, gStr.gsSmartZeroApplied, confirmMsg);
+
+            // Log the adjustment
+            Log.EventWriter($"Smart WAS Zero applied: {recommendedOffset:F2}° ({offsetCounts} counts)");
+
+            toSend = true;
+            counter = 6;
+        }
+
+        private void UpdateSmartCalibrationStatus()
+        {
+            if (mf.smartWASCalibration == null)
+            {
+                btnSmartZeroWAS.Enabled = false;
+                return;
+            }
+
+            // Update sample count
+            lblSmartCalSamples.Text = $"{gStr.gsSamples}: {mf.smartWASCalibration.SampleCount}";
+
+            // Update confidence level
+            lblSmartCalConfidence.Text = $"{gStr.gsConfidence}: {mf.smartWASCalibration.ConfidenceLevel:F0}%";
+
+            // Update status and button state
+            if (mf.smartWASCalibration.IsCollectingData)
+            {
+                lblSmartCalStatus.Text = gStr.gsCollectingData;
+                lblSmartCalStatus.ForeColor = Color.DarkGreen;
+
+                // Enable button only when we have valid recommendation
+                if (mf.smartWASCalibration.HasValidRecommendation)
+                {
+                    double offset = mf.smartWASCalibration.RecommendedWASZero;
+                    btnSmartZeroWAS.Text = $"{offset:+0.0;-0.0}°";
+                    btnSmartZeroWAS.Enabled = true;
+                }
+                else
+                {
+                    btnSmartZeroWAS.Text = "";
+                    btnSmartZeroWAS.Enabled = false;
+                }
+            }
+            else
+            {
+                lblSmartCalStatus.Text = gStr.gsReadyForCalibration;
+                lblSmartCalStatus.ForeColor = Color.DarkSlateGray;
+                btnSmartZeroWAS.Text = "";
+                btnSmartZeroWAS.Enabled = false;
+            }
+        }
+
+        private void SmartCalLabel_Click(object sender, EventArgs e)
+        {
+            if (mf.smartWASCalibration == null) return;
+
+            // Show detailed analysis report in a message box
+            string report = mf.smartWASCalibration.GetAnalysisReport();
+            mf.TimedMessageBox(5000, gStr.gsSmartWASCalibration, report);
+        }
+
+        #endregion
     }
 }
