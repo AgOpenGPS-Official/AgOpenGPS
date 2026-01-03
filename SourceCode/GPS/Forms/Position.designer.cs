@@ -1000,7 +1000,7 @@ namespace AgOpenGPS
             SendPgnToLoop(p_254.pgn);
 
             // Smart WAS Calibration data collection
-            if (smartWASCalibration != null && Math.Abs(guidanceLineDistanceOff) < 500) // Within 50cm of guidance line
+            if (Math.Abs(guidanceLineDistanceOff) < SmartWASCalibration.MAX_DISTANCE_OFF_LINE)
             {
                 // Convert guidanceLineSteerAngle from centidegrees to degrees and collect data
                 smartWASCalibration.AddSteerAngleSample(guidanceLineSteerAngle * 0.01, Math.Abs(avgSpeed));

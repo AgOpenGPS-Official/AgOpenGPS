@@ -270,7 +270,7 @@ namespace AgOpenGPS
         /// <summary>
         /// Smart WAS Calibration system for intelligent WAS zero point determination
         /// </summary>
-        public CSmartWASCalibration smartWASCalibration;
+        public SmartWASCalibration smartWASCalibration;
 
         #endregion // Class Props and instances
 
@@ -403,7 +403,7 @@ namespace AgOpenGPS
             isobus = new CISOBUS(this);
 
             //Smart WAS Calibration system
-            smartWASCalibration = new CSmartWASCalibration(this);
+            smartWASCalibration = new SmartWASCalibration(this);
         }
 
         private void FormGPS_Load(object sender, EventArgs e)
