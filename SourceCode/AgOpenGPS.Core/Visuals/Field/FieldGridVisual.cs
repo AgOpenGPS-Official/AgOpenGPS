@@ -8,8 +8,8 @@ namespace AgOpenGPS.Core.Visuals
 {
     public class FieldGridVisual
     {
-        static public readonly ColorRgba FieldGridDayColor = Colors.Gray012;
-        static public readonly ColorRgba FieldGridNightColor = Colors.Gray025;
+        public static readonly ColorRgba FieldGridDayColor = Colors.Gray012;
+        public static readonly ColorRgba FieldGridNightColor = Colors.Gray025;
 
         private readonly FieldGrid _fieldGrid;
 
