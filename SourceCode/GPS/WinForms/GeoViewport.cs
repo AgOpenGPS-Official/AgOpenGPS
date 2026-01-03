@@ -13,9 +13,10 @@ namespace AgOpenGPS.WinForms
             GeoBoundingBox boundingBox,
             GLControl glControl
         )
-            : base(boundingBox)
+            : base()
         {
             _glControl = glControl;
+            SetBoundingBox(boundingBox);
             _glControl.MakeCurrent();
             Initialize();
             _glControl.MouseDown += ViewportControlMouseDown;

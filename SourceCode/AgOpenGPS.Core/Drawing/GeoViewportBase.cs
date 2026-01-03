@@ -6,7 +6,6 @@ namespace AgOpenGPS.Core.Drawing
 {
     // This is a rudimentary version that only support an orthogonal view.
     // Possible future improvements:
-    // - replace the perspective field of view with orthogonal projection
     // - also support perspective view
     // - embed this viewport in a reusable ViewportControl that takes care of creation,
     //   initialization, resizing,etc of the viewport
@@ -15,16 +14,15 @@ namespace AgOpenGPS.Core.Drawing
 
     public abstract class GeoViewportBase
     {
-        private const double PanStep = 0.15;
-        private const double ZoomStep = 2.0;
+        private const double PanStep = 0.15;        // Fraction of viewport size
+        private const double ZoomStep = 1.4;
         private const double MinZoom = 0.015625;
         private const double MaxZoom = 1.0;
 
         public event EventHandler<GeoCoord> MouseDownEventHandler;
 
-        public GeoViewportBase(GeoBoundingBox boundingBox)
+        public GeoViewportBase()
         {
-            SetBoundingBox(boundingBox);
             ResetZoomPan();
         }
 
@@ -35,11 +33,10 @@ namespace AgOpenGPS.Core.Drawing
             GLW.SetClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
-        public void Resize(int width, int height)
+        public void SizeChanged()
         {
             MakeCurrent();
-            GLW.Viewport(width, height);
-            GLW.CreatePerspectiveFieldOfView();
+            UpdateProjection();
         }
 
         public abstract void Refresh();
@@ -55,12 +52,13 @@ namespace AgOpenGPS.Core.Drawing
 
         public abstract XyDelta ViewportSize { get; }
 
-        private double scaleBoundingBoxToViewport;
+        private double projectedRectToViewportFactor;
 
         public void SetBoundingBox(GeoBoundingBox boundingBox)
         {
             BoundingBox = boundingBox;
             ViewportCenter = BoundingBox.CenterCoord;
+            UpdateProjection();
         }
 
         public void BeginPaint()
@@ -69,14 +67,13 @@ namespace AgOpenGPS.Core.Drawing
             GLW.ClearColorAndDepthBuffer();
             GLW.LoadIdentity();
 
-            XyDelta viewportSize = ViewportSize;
-            GeoDelta boundingBoxSize = BoundingBox.MaxCoord - BoundingBox.MinCoord;
-            double scaleEastingToX = viewportSize.DeltaX / boundingBoxSize.EastingDelta;
-            double scaleNorthingToY = viewportSize.DeltaY / boundingBoxSize.NorthingDelta;
-            scaleBoundingBoxToViewport = Math.Min(scaleEastingToX, scaleNorthingToY);
+            UpdateProjection();
 
-            GLW.Translate(0, 0, -BoundingBoxDistance * Zoom);
-            GLW.Translate(-ViewportCenter.Easting, -ViewportCenter.Northing, 0);
+            GLW.Translate(0, 0, -100.0);
+            // Without translation, the center of the bounding box is already at
+            // the center of the viewport. See UpdateProjection()
+            GeoDelta translation = ViewportCenter - BoundingBox.CenterCoord;
+            GLW.Translate(-translation);
         }
 
         public virtual void EndPaint()
@@ -86,10 +83,9 @@ namespace AgOpenGPS.Core.Drawing
 
         public GeoCoord GetGeoCoord(XyCoord xyClientCoord)
         {
-            double scaleViewportToBoundingBox = 1.0 / scaleBoundingBoxToViewport;
+            double viewportToProjectedRectFactor = 1.0 / projectedRectToViewportFactor;
             XyCoord xyCenteredCoord = xyClientCoord - 0.5 * ViewportSize;
-            // Magic number 0.903
-            GeoDelta delta = (scaleViewportToBoundingBox / Zoom / 0.903) * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
+            GeoDelta delta = viewportToProjectedRectFactor * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
             return ViewportCenter + delta;
         }
 
@@ -147,6 +143,30 @@ namespace AgOpenGPS.Core.Drawing
         {
             MouseDownEventHandler?.Invoke(this, mouseDownCoord);
             Refresh();
+        }
+
+        private void UpdateProjection()
+        {
+            if (BoundingBox.IsEmpty) return;
+            XyDelta viewportSize = ViewportSize;
+            GeoDelta boundingBoxSize = BoundingBox.MaxCoord - BoundingBox.MinCoord;
+            double scaleEastingToX = viewportSize.DeltaX / boundingBoxSize.EastingDelta;
+            double scaleNorthingToY = viewportSize.DeltaY / boundingBoxSize.NorthingDelta;
+            // Compute a rectangle with an aspect ratio that equals the viewport aspect ratio,
+            // otherwise the content will be stretched
+            GeoBoundingBox projectedRect;
+            if (scaleEastingToX < scaleNorthingToY)
+            {
+                double resizeNorthingFactor = scaleNorthingToY / scaleEastingToX;
+                projectedRect = BoundingBox.Resized(Zoom * resizeNorthingFactor, Zoom);
+            }
+            else
+            {
+                double resizeEastingFactor = scaleEastingToX / scaleNorthingToY;
+                projectedRect = BoundingBox.Resized(Zoom, Zoom * resizeEastingFactor);
+            }
+            GLW.CreateOrthoProjection((int)ViewportSize.DeltaX, (int)ViewportSize.DeltaY, projectedRect);
+            projectedRectToViewportFactor = Math.Min(scaleEastingToX, scaleNorthingToY) / Zoom;
         }
     }
 

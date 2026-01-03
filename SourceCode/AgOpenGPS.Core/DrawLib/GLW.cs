@@ -26,6 +26,11 @@ namespace AgOpenGPS.Core.DrawLib
             GL.PointSize(pointSize);
         }
 
+        public static void Translate(GeoDelta delta)
+        {
+            GL.Translate(delta.EastingDelta, delta.NorthingDelta, 0.0);
+        }
+
         public static void Translate(double x, double y, double z)
         {
             GL.Translate(x, y, z);
