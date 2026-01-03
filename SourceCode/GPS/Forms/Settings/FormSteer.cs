@@ -1352,7 +1352,27 @@ namespace AgOpenGPS
 
         private void SmartCalLabel_Click(object sender, EventArgs e)
         {
-            // Log and show detailed analysis report
+            // Get calibration stats
+            var stats = mf.smartWASCalibration.GetCalibrationStats();
+
+            if (stats.SampleCount == 0)
+            {
+                mf.TimedMessageBox(2000, gStr.gsCalibrationDetails, "No data collected yet.");
+                return;
+            }
+
+            // Build translatable message
+            string message = $"{gStr.gsSamples}: {stats.SampleCount}\n" +
+                           $"{gStr.gsMean}: {stats.Mean:F3}°\n" +
+                           $"{gStr.gsMedian}: {stats.Median:F3}°\n" +
+                           $"{gStr.gsStandardDeviation}: {stats.StandardDeviation:F3}°\n" +
+                           $"{gStr.gsRecommendedOffset}: {stats.RecommendedWASZero:F3}°\n" +
+                           $"{gStr.gsConfidence}: {stats.ConfidenceLevel:F1}%\n\n" +
+                           (stats.HasValidRecommendation ? "✓" : "✗");
+
+            mf.TimedMessageBox(5000, gStr.gsCalibrationDetails, message);
+
+            // Also log to file
             mf.smartWASCalibration.LogAnalysisReport();
         }
 

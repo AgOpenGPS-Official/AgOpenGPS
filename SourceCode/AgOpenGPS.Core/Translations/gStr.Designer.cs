@@ -450,6 +450,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration Details.
+        /// </summary>
+        public static string gsCalibrationDetails {
+            get {
+                return ResourceManager.GetString("gsCalibrationDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Camera Behavior.
         /// </summary>
         public static string gsCameraBehavior {
@@ -1602,6 +1611,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string for the Recommended WAS 0 offset.
+        /// </summary>
+        public static string gsRecommendedOffset {
+            get {
+                return ResourceManager.GetString("gsRecommendedOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insufficient Data.
         /// </summary>
         public static string gsInsufficientData {
@@ -1922,6 +1940,24 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsMaxSteerAngle {
             get {
                 return ResourceManager.GetString("gsMaxSteerAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mean.
+        /// </summary>
+        public static string gsMean {
+            get {
+                return ResourceManager.GetString("gsMean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Median.
+        /// </summary>
+        public static string gsMedian {
+            get {
+                return ResourceManager.GetString("gsMedian", resourceCulture);
             }
         }
         
@@ -3102,6 +3138,15 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsSpeedo {
             get {
                 return ResourceManager.GetString("gsSpeedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Std Dev.
+        /// </summary>
+        public static string gsStandardDeviation {
+            get {
+                return ResourceManager.GetString("gsStandardDeviation", resourceCulture);
             }
         }
         
