@@ -1,18 +1,17 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Visuals;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace AgOpenGPS.Core
 {
     public class WorldGrid
     {
+        private readonly FieldGridVisual _fieldGridVisual;
         private BingMap _bingMap;
         private BingMapVisual _bingMapVisual;
         private Bitmap _floorBitmap;
@@ -31,14 +30,15 @@ namespace AgOpenGPS.Core
         private double GridSize = 6000;
         private double Count = 40;
 
-        public double gridRotation = 0.0;
-
         public WorldGrid(Bitmap floorBitmap)
         {
             _floorBitmap = floorBitmap;
+            FieldGrid = new FieldGrid();
+            _fieldGridVisual = new FieldGridVisual(FieldGrid);
         }
 
-        public double GridStep { private get; set; }
+        public FieldGrid FieldGrid { get; }
+
         public BingMap BingMap
         {
             private get
@@ -94,45 +94,9 @@ namespace AgOpenGPS.Core
             _bingMapVisual?.Draw();
         }
 
-        public void DrawWorldGrid(ColorRgba worldGridColor, GeoBoundingBox fieldBoundingBox)
+        public void DrawFieldGrid(bool isDay, GeoBoundingBox fieldBoundingBox)
         {
-            if (fieldBoundingBox.IsEmpty) return;
-            GeoCoord origin = new GeoCoord(0.0, 0.0);
-            // Simply use the max distance from origin to a boundingbox corner, so it will work for any grid rotation
-            double bbMaxMaxDist = origin.Distance(fieldBoundingBox.MaxCoord);
-            double bbMinMinDist = origin.Distance(fieldBoundingBox.MinCoord);
-            double bbMaxMinDist = origin.Distance(new GeoCoord(fieldBoundingBox.MaxNorthing, fieldBoundingBox.MinEasting));
-            double bbMinMaxDist = origin.Distance(new GeoCoord(fieldBoundingBox.MinNorthing, fieldBoundingBox.MaxEasting));
-            double maxDist = Math.Max(
-                Math.Max(bbMaxMaxDist, bbMinMinDist),
-                Math.Max(bbMaxMinDist, bbMinMaxDist));
-
-            GLW.RotateZ(-gridRotation);
-
-            GLW.SetLineWidth(1.0f);
-            GLW.SetColor(worldGridColor);
-            // Start with the two perpendicular lines through the origin
-            List<GeoCoord> vertices = new List<GeoCoord>
-            {
-                new GeoCoord(0.0, -maxDist),
-                new GeoCoord(0.0, +maxDist),
-                new GeoCoord(-maxDist, 0.0),
-                new GeoCoord(+maxDist, 0.0)
-            };
-            for (double offset = GridStep; offset < maxDist; offset += GridStep)
-            {
-                vertices.Add(new GeoCoord(+offset, -maxDist));
-                vertices.Add(new GeoCoord(+offset, +maxDist));
-                vertices.Add(new GeoCoord(-offset, -maxDist));
-                vertices.Add(new GeoCoord(-offset, +maxDist));
-
-                vertices.Add(new GeoCoord(-maxDist, +offset));
-                vertices.Add(new GeoCoord(+maxDist, +offset));
-                vertices.Add(new GeoCoord(-maxDist, -offset));
-                vertices.Add(new GeoCoord(+maxDist, -offset));
-            }
-            GLW.DrawLinesPrimitive(vertices.ToArray());
-            GLW.RotateZ(gridRotation);
+            _fieldGridVisual.Draw(isDay, fieldBoundingBox);
         }
 
         public void checkZoomWorldGrid(GeoCoord geoCoord)

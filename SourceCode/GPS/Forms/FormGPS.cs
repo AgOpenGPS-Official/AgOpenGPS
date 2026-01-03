@@ -1223,7 +1223,7 @@ namespace AgOpenGPS
 
             gridToolSpacing = (int)(gridStep / tool.width + 0.5);
             if (gridToolSpacing < 1) gridToolSpacing = 1;
-            worldGrid.GridStep = gridToolSpacing * tool.width;
+            worldGrid.FieldGrid.GridStep = gridToolSpacing * tool.width;
 
             oglMain.MakeCurrent();
             GL.MatrixMode(MatrixMode.Projection);
