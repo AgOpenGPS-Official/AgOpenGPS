@@ -331,12 +331,9 @@ namespace AgOpenGPS
             else rbtnSteerBar.Checked = true;
 
             // Start Smart WAS Calibration data collection
-            if (mf.smartWASCalibration != null)
-            {
-                mf.smartWASCalibration.ResetData();
-                mf.smartWASCalibration.StartDataCollection();
-                UpdateSmartCalibrationStatus();
-            }
+            mf.smartWASCalibration.ResetData();
+            mf.smartWASCalibration.StartDataCollection();
+            UpdateSmartCalibrationStatus();
         }
 
         private void FormSteer_FormClosing(object sender, FormClosingEventArgs e)
@@ -344,10 +341,7 @@ namespace AgOpenGPS
             mf.vehicle.isInFreeDriveMode = false;
 
             // Stop Smart WAS Calibration data collection
-            if (mf.smartWASCalibration != null)
-            {
-                mf.smartWASCalibration.StopDataCollection();
-            }
+            mf.smartWASCalibration.StopDataCollection();
 
             Properties.Settings.Default.setVehicle_goalPointLookAheadHold = mf.vehicle.goalPointLookAheadHold;
             Properties.Settings.Default.setVehicle_goalPointLookAheadMult = mf.vehicle.goalPointLookAheadMult;
@@ -1287,28 +1281,8 @@ namespace AgOpenGPS
 
         private void btnSmartZeroWAS_Click(object sender, EventArgs e)
         {
-            if (mf.smartWASCalibration == null)
-            {
-                mf.TimedMessageBox(2000, gStr.gsSmartCalibrationError, gStr.gsSmartWASNotAvailable);
-                return;
-            }
-
-            // Check if we have a valid recommendation
-            if (!mf.smartWASCalibration.HasValidRecommendation)
-            {
-                // Check why we don't have a valid recommendation
-                if (mf.smartWASCalibration.SampleCount < 200)
-                {
-                    string msg = string.Format(gStr.gsInsufficientDataMsg, mf.smartWASCalibration.SampleCount);
-                    mf.TimedMessageBox(3000, gStr.gsInsufficientData, msg);
-                }
-                else if (mf.smartWASCalibration.ConfidenceLevel < 70)
-                {
-                    string msg = string.Format(gStr.gsLowConfidenceMsg, mf.smartWASCalibration.ConfidenceLevel.ToString("F0"));
-                    mf.TimedMessageBox(3000, gStr.gsLowConfidence, msg);
-                }
-                return;
-            }
+            // Button is only enabled when HasValidRecommendation is true,
+            // so we can proceed directly with the adjustment
 
             // Check if the recommended adjustment is within safe range
             double recommendedOffset = mf.smartWASCalibration.RecommendedWASZero;
@@ -1341,12 +1315,6 @@ namespace AgOpenGPS
 
         private void UpdateSmartCalibrationStatus()
         {
-            if (mf.smartWASCalibration == null)
-            {
-                btnSmartZeroWAS.Enabled = false;
-                return;
-            }
-
             // Update sample count
             lblSmartCalSamples.Text = $"{gStr.gsSamples}: {mf.smartWASCalibration.SampleCount}";
 
@@ -1383,11 +1351,8 @@ namespace AgOpenGPS
 
         private void SmartCalLabel_Click(object sender, EventArgs e)
         {
-            if (mf.smartWASCalibration == null) return;
-
-            // Show detailed analysis report in a message box
-            string report = mf.smartWASCalibration.GetAnalysisReport();
-            mf.TimedMessageBox(5000, gStr.gsSmartWASCalibration, report);
+            // Log and show detailed analysis report
+            mf.smartWASCalibration.LogAnalysisReport();
         }
 
         #endregion

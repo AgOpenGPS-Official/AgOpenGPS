@@ -1,3 +1,5 @@
+using AgLibrary.Logging;
+using AgOpenGPS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ namespace AgOpenGPS
     /// Smart WAS Calibration system that collects and analyzes guidance line steer angle data
     /// to determine the optimal WAS zero point based on statistical distribution analysis
     /// </summary>
-    public class CSmartWASCalibration
+    public class SmartWASCalibration
     {
         #region Properties and Fields
 
@@ -21,17 +23,17 @@ namespace AgOpenGPS
         private const int MIN_SAMPLES_FOR_ANALYSIS = 200;  // Minimum samples for reliable analysis
         private const double MIN_SPEED_THRESHOLD = 2.0;  // km/h - minimum speed for data collection
         private const double MAX_ANGLE_THRESHOLD = 15.0;  // degrees - maximum angle to consider valid
+        public const double MAX_DISTANCE_OFF_LINE = 500.0;  // millimeters - maximum distance from guidance line (50cm)
 
         // Analysis parameters
         private const double NORMAL_DISTRIBUTION_THRESHOLD = 0.8;  // How much of data should be within 1 std dev
 
         // Public properties for UI updates
         public bool IsCollectingData { get; private set; }
-        public int SampleCount { get; private set; }
+        public int SampleCount => steerAngleHistory.Count;
         public double RecommendedWASZero { get; private set; }
         public double ConfidenceLevel { get; private set; }
         public bool HasValidRecommendation { get; private set; }
-        public DateTime LastCollectionTime { get; private set; }
 
         // Statistics
         public double Mean { get; private set; }
@@ -42,7 +44,7 @@ namespace AgOpenGPS
 
         #region Constructor
 
-        public CSmartWASCalibration(FormGPS formGPS)
+        public SmartWASCalibration(FormGPS formGPS)
         {
             mf = formGPS;
             steerAngleHistory = new List<double>();
@@ -61,7 +63,6 @@ namespace AgOpenGPS
             lock (lockObject)
             {
                 IsCollectingData = true;
-                LastCollectionTime = DateTime.Now;
             }
         }
 
@@ -84,7 +85,6 @@ namespace AgOpenGPS
             lock (lockObject)
             {
                 steerAngleHistory.Clear();
-                SampleCount = 0;
                 RecommendedWASZero = 0;
                 ConfidenceLevel = 0;
                 HasValidRecommendation = false;
@@ -112,12 +112,9 @@ namespace AgOpenGPS
                 }
 
                 // Recalculate statistics with the adjusted data
-                if (SampleCount >= MIN_SAMPLES_FOR_ANALYSIS)
-                {
-                    PerformStatisticalAnalysis();
-                }
+                PerformStatisticalAnalysis();
 
-                AgLibrary.Logging.Log.EventWriter($"Smart WAS: Applied {appliedOffsetDegrees:F2}° offset to {steerAngleHistory.Count} collected samples");
+                Log.EventWriter($"Smart WAS: Applied {appliedOffsetDegrees:F2}° offset to {steerAngleHistory.Count} collected samples");
             }
         }
 
@@ -129,8 +126,6 @@ namespace AgOpenGPS
         /// <param name="currentSpeed">Current vehicle speed in km/h</param>
         public void AddSteerAngleSample(double guidanceSteerAngle, double currentSpeed)
         {
-            if (!IsCollectingData) return;
-
             // Check if we should collect this sample
             if (!ShouldCollectSample(guidanceSteerAngle, currentSpeed)) return;
 
@@ -138,7 +133,6 @@ namespace AgOpenGPS
             {
                 // Add the sample
                 steerAngleHistory.Add(guidanceSteerAngle);
-                LastCollectionTime = DateTime.Now;
 
                 // Limit the number of samples to prevent memory issues
                 if (steerAngleHistory.Count > MAX_SAMPLES)
@@ -146,13 +140,8 @@ namespace AgOpenGPS
                     steerAngleHistory.RemoveAt(0);  // Remove oldest sample
                 }
 
-                SampleCount = steerAngleHistory.Count;
-
                 // Perform analysis if we have enough samples
-                if (SampleCount >= MIN_SAMPLES_FOR_ANALYSIS)
-                {
-                    PerformStatisticalAnalysis();
-                }
+                PerformStatisticalAnalysis();
             }
         }
 
@@ -170,23 +159,41 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Get a detailed analysis report for debugging/logging
+        /// Get statistics and analysis results for UI display
         /// </summary>
-        /// <returns>String containing analysis details</returns>
-        public string GetAnalysisReport()
+        public CalibrationStats GetCalibrationStats()
         {
-            if (SampleCount == 0) return "No data collected yet.";
+            return new CalibrationStats
+            {
+                SampleCount = SampleCount,
+                Mean = Mean,
+                Median = Median,
+                StandardDeviation = StandardDeviation,
+                RecommendedWASZero = RecommendedWASZero,
+                ConfidenceLevel = ConfidenceLevel,
+                HasValidRecommendation = HasValidRecommendation
+            };
+        }
 
-            var report = $"Smart WAS Calibration Analysis Report:\n" +
-                        $"Samples Collected: {SampleCount}\n" +
-                        $"Mean Angle: {Mean:F3}°\n" +
-                        $"Median Angle: {Median:F3}°\n" +
-                        $"Std Deviation: {StandardDeviation:F3}°\n" +
-                        $"Recommended WAS Zero: {RecommendedWASZero:F3}°\n" +
-                        $"Confidence Level: {ConfidenceLevel:F1}%\n" +
-                        $"Valid Recommendation: {HasValidRecommendation}";
+        /// <summary>
+        /// Log the current analysis report
+        /// </summary>
+        public void LogAnalysisReport()
+        {
+            if (SampleCount == 0)
+            {
+                Log.EventWriter("Smart WAS: No data collected yet.");
+                return;
+            }
 
-            return report;
+            Log.EventWriter($"Smart WAS Calibration Analysis Report:");
+            Log.EventWriter($"  Samples Collected: {SampleCount}");
+            Log.EventWriter($"  Mean Angle: {Mean:F3}°");
+            Log.EventWriter($"  Median Angle: {Median:F3}°");
+            Log.EventWriter($"  Std Deviation: {StandardDeviation:F3}°");
+            Log.EventWriter($"  Recommended WAS Zero: {RecommendedWASZero:F3}°");
+            Log.EventWriter($"  Confidence Level: {ConfidenceLevel:F1}%");
+            Log.EventWriter($"  Valid Recommendation: {HasValidRecommendation}");
         }
 
         #endregion
@@ -198,6 +205,9 @@ namespace AgOpenGPS
         /// </summary>
         private bool ShouldCollectSample(double steerAngle, double speed)
         {
+            // Check if collection is active
+            if (!IsCollectingData) return false;
+
             // Only collect data when moving at reasonable speed
             if (speed < MIN_SPEED_THRESHOLD) return false;
 
@@ -206,7 +216,7 @@ namespace AgOpenGPS
 
             // Only collect when autosteer is active and we have valid guidance
             if (!mf.isBtnAutoSteerOn) return false;
-            if (Math.Abs(mf.guidanceLineDistanceOff) > 15000) return false;  // > 15m off line
+            if (Math.Abs(mf.guidanceLineDistanceOff) > MAX_DISTANCE_OFF_LINE) return false;
 
             return true;
         }
@@ -223,8 +233,8 @@ namespace AgOpenGPS
                 // Calculate basic statistics
                 var sortedData = steerAngleHistory.OrderBy(x => x).ToList();
                 Mean = steerAngleHistory.Average();
-                Median = CalculateMedian(sortedData);
-                StandardDeviation = CalculateStandardDeviation(steerAngleHistory, Mean);
+                Median = MathHelpers.CalculateMedian(steerAngleHistory);
+                StandardDeviation = MathHelpers.CalculateStandardDeviation(steerAngleHistory, Mean);
 
                 // Determine the recommended zero point
                 // For a well-calibrated system, the distribution should be centered around zero
@@ -232,7 +242,7 @@ namespace AgOpenGPS
                 RecommendedWASZero = -Median;  // Negative because we want to adjust to center at zero
 
                 // Calculate confidence level based on data distribution
-                CalculateConfidenceLevel(sortedData);
+                ConfidenceLevel = CalculateConfidenceLevel(sortedData, StandardDeviation);
 
                 // Determine if we have a valid recommendation
                 HasValidRecommendation = ConfidenceLevel > 50.0 && SampleCount >= MIN_SAMPLES_FOR_ANALYSIS;
@@ -240,55 +250,25 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 // Log error but don't crash
-                AgLibrary.Logging.Log.EventWriter($"Error in Smart WAS analysis: {ex.Message}");
+                Log.EventWriter($"Error in Smart WAS analysis: {ex.Message}");
                 HasValidRecommendation = false;
             }
-        }
-
-        /// <summary>
-        /// Calculate median value from sorted data
-        /// </summary>
-        private double CalculateMedian(List<double> sortedData)
-        {
-            int count = sortedData.Count;
-            if (count == 0) return 0;
-
-            if (count % 2 == 0)
-            {
-                return (sortedData[count / 2 - 1] + sortedData[count / 2]) / 2.0;
-            }
-            else
-            {
-                return sortedData[count / 2];
-            }
-        }
-
-        /// <summary>
-        /// Calculate standard deviation
-        /// </summary>
-        private double CalculateStandardDeviation(List<double> data, double mean)
-        {
-            if (data.Count < 2) return 0;
-
-            double sumSquaredDifferences = data.Sum(x => Math.Pow(x - mean, 2));
-            return Math.Sqrt(sumSquaredDifferences / (data.Count - 1));
         }
 
         /// <summary>
         /// Calculate confidence level based on how well the data fits a normal distribution
         /// centered around the guidance line
         /// </summary>
-        private void CalculateConfidenceLevel(List<double> sortedData)
+        private double CalculateConfidenceLevel(List<double> sortedData, double standardDeviation)
         {
             if (sortedData.Count < MIN_SAMPLES_FOR_ANALYSIS)
             {
-                ConfidenceLevel = 0;
-                return;
+                return 0;
             }
 
             // Check how much of the data falls within reasonable bounds
-            double oneStdDevRange = StandardDeviation;
-            double twoStdDevRange = 2 * StandardDeviation;
+            double oneStdDevRange = standardDeviation;
+            double twoStdDevRange = 2 * standardDeviation;
 
             // Count samples within 1 and 2 standard deviations of the median
             int withinOneStdDev = 0;
@@ -320,10 +300,24 @@ namespace AgOpenGPS
             double sampleSizeFactor = Math.Min(1.0, (double)sortedData.Count / (MIN_SAMPLES_FOR_ANALYSIS * 3));
 
             // Combine factors for overall confidence
-            ConfidenceLevel = ((oneStdDevScore * 0.3 + twoStdDevScore * 0.3 + magnitudeScore * 0.2 + sampleSizeFactor * 0.2) * 100);
-            ConfidenceLevel = Math.Max(0, Math.Min(100, ConfidenceLevel));
+            double confidenceLevel = ((oneStdDevScore * 0.3 + twoStdDevScore * 0.3 + magnitudeScore * 0.2 + sampleSizeFactor * 0.2) * 100);
+            return Math.Max(0, Math.Min(100, confidenceLevel));
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Statistics data structure for UI display
+    /// </summary>
+    public struct CalibrationStats
+    {
+        public int SampleCount { get; set; }
+        public double Mean { get; set; }
+        public double Median { get; set; }
+        public double StandardDeviation { get; set; }
+        public double RecommendedWASZero { get; set; }
+        public double ConfidenceLevel { get; set; }
+        public bool HasValidRecommendation { get; set; }
     }
 }
