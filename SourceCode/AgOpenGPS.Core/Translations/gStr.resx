@@ -314,6 +314,21 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsConfidence" xml:space="preserve">
     <value>Confidence</value>
   </data>
+  <data name="gsMean" xml:space="preserve">
+    <value>Mean</value>
+  </data>
+  <data name="gsMedian" xml:space="preserve">
+    <value>Median</value>
+  </data>
+  <data name="gsStandardDeviation" xml:space="preserve">
+    <value>Std Dev</value>
+  </data>
+  <data name="gsRecommendedOffset" xml:space="preserve">
+    <value>Recommended Offset</value>
+  </data>
+  <data name="gsCalibrationDetails" xml:space="preserve">
+    <value>Calibration Details</value>
+  </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Contour File Corrupt</value>
   </data>
