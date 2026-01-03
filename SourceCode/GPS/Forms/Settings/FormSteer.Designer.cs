@@ -89,6 +89,10 @@
             this.pbarLeft = new System.Windows.Forms.ProgressBar();
             this.lblActualSteerAngleUpper = new System.Windows.Forms.Label();
             this.btnZeroWAS = new System.Windows.Forms.Button();
+            this.btnSmartZeroWAS = new System.Windows.Forms.Button();
+            this.lblSmartCalStatus = new System.Windows.Forms.Label();
+            this.lblSmartCalSamples = new System.Windows.Forms.Label();
+            this.lblSmartCalConfidence = new System.Windows.Forms.Label();
             this.hsbarCountsPerDegree = new System.Windows.Forms.HScrollBar();
             this.labelWasZero = new System.Windows.Forms.Label();
             this.lblCountsPerDegree = new System.Windows.Forms.Label();
@@ -829,6 +833,10 @@
             this.tabSteer.Controls.Add(this.pbarLeft);
             this.tabSteer.Controls.Add(this.lblActualSteerAngleUpper);
             this.tabSteer.Controls.Add(this.btnZeroWAS);
+            this.tabSteer.Controls.Add(this.btnSmartZeroWAS);
+            this.tabSteer.Controls.Add(this.lblSmartCalStatus);
+            this.tabSteer.Controls.Add(this.lblSmartCalSamples);
+            this.tabSteer.Controls.Add(this.lblSmartCalConfidence);
             this.tabSteer.Controls.Add(this.hsbarCountsPerDegree);
             this.tabSteer.Controls.Add(this.labelWasZero);
             this.tabSteer.Controls.Add(this.lblCountsPerDegree);
@@ -1013,6 +1021,60 @@
             this.btnZeroWAS.TabIndex = 323;
             this.btnZeroWAS.UseVisualStyleBackColor = true;
             this.btnZeroWAS.Click += new System.EventHandler(this.btnZeroWAS_Click);
+            // 
+            // btnSmartZeroWAS
+            // 
+            this.btnSmartZeroWAS.BackColor = System.Drawing.Color.Transparent;
+            this.btnSmartZeroWAS.FlatAppearance.BorderSize = 0;
+            this.btnSmartZeroWAS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSmartZeroWAS.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSmartZeroWAS.ForeColor = System.Drawing.Color.Black;
+            this.btnSmartZeroWAS.Image = global::AgOpenGPS.Properties.Resources.SteerZeroSmart;
+            this.btnSmartZeroWAS.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSmartZeroWAS.Location = new System.Drawing.Point(227, 15);
+            this.btnSmartZeroWAS.Name = "btnSmartZeroWAS";
+            this.btnSmartZeroWAS.Size = new System.Drawing.Size(106, 30);
+            this.btnSmartZeroWAS.TabIndex = 324;
+            this.btnSmartZeroWAS.Text = "+0.0";
+            this.btnSmartZeroWAS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSmartZeroWAS.UseVisualStyleBackColor = false;
+            this.btnSmartZeroWAS.Click += new System.EventHandler(this.btnSmartZeroWAS_Click);
+            // 
+            // lblSmartCalStatus
+            // 
+            this.lblSmartCalStatus.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSmartCalStatus.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.lblSmartCalStatus.Location = new System.Drawing.Point(11, 48);
+            this.lblSmartCalStatus.Name = "lblSmartCalStatus";
+            this.lblSmartCalStatus.Size = new System.Drawing.Size(319, 16);
+            this.lblSmartCalStatus.TabIndex = 325;
+            this.lblSmartCalStatus.Text = "Ready";
+            this.lblSmartCalStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSmartCalStatus.Click += new System.EventHandler(this.SmartCalLabel_Click);
+            // 
+            // lblSmartCalSamples
+            // 
+            this.lblSmartCalSamples.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSmartCalSamples.ForeColor = System.Drawing.Color.Gray;
+            this.lblSmartCalSamples.Location = new System.Drawing.Point(11, 118);
+            this.lblSmartCalSamples.Name = "lblSmartCalSamples";
+            this.lblSmartCalSamples.Size = new System.Drawing.Size(160, 14);
+            this.lblSmartCalSamples.TabIndex = 326;
+            this.lblSmartCalSamples.Text = "Samples: 0";
+            this.lblSmartCalSamples.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSmartCalSamples.Click += new System.EventHandler(this.SmartCalLabel_Click);
+            // 
+            // lblSmartCalConfidence
+            // 
+            this.lblSmartCalConfidence.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSmartCalConfidence.ForeColor = System.Drawing.Color.Gray;
+            this.lblSmartCalConfidence.Location = new System.Drawing.Point(171, 118);
+            this.lblSmartCalConfidence.Name = "lblSmartCalConfidence";
+            this.lblSmartCalConfidence.Size = new System.Drawing.Size(160, 14);
+            this.lblSmartCalConfidence.TabIndex = 327;
+            this.lblSmartCalConfidence.Text = "Confidence: 0%";
+            this.lblSmartCalConfidence.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblSmartCalConfidence.Click += new System.EventHandler(this.SmartCalLabel_Click);
             // 
             // hsbarCountsPerDegree
             // 
@@ -3250,6 +3312,10 @@
         private System.Windows.Forms.Label labelAcquire;
         private System.Windows.Forms.Label lblAcquirePP;
         private System.Windows.Forms.Label labelWasZero;
+        private System.Windows.Forms.Button btnSmartZeroWAS;
+        private System.Windows.Forms.Label lblSmartCalStatus;
+        private System.Windows.Forms.Label lblSmartCalSamples;
+        private System.Windows.Forms.Label lblSmartCalConfidence;
         private System.Windows.Forms.Button btnClose;
     }
 }
