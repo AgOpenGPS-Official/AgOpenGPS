@@ -2158,7 +2158,18 @@ namespace AgOpenGPS.Core.Translations {
                 return ResourceManager.GetString("gsNoBoundary", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to No Data Collected.
+        /// </summary>
+        public static string gsNoDataCollected
+        {
+            get
+            {
+                return ResourceManager.GetString("gsNoDataCollected", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to No Fields Found.
         /// </summary>

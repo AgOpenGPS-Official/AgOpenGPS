@@ -1356,7 +1356,7 @@ namespace AgOpenGPS
 
             if (stats.SampleCount == 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsCalibrationDetails, "No data collected yet.");
+                mf.TimedMessageBox(2000, gStr.gsCalibrationDetails, gStr.gsNoDataCollected);
                 return;
             }
 
@@ -1369,7 +1369,7 @@ namespace AgOpenGPS
                            $"{gStr.gsConfidence}: {stats.ConfidenceLevel:F1}%\n\n" +
                            (stats.HasValidRecommendation ? "✓" : "✗");
 
-            mf.TimedMessageBox(5000, gStr.gsCalibrationDetails, message);
+            FormDialog.Show(gStr.gsCalibrationDetails, message, MessageBoxButtons.OK);
 
             // Also log to file
             mf.smartWASCalibration.LogAnalysisReport();

@@ -329,6 +329,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsCalibrationDetails" xml:space="preserve">
     <value>Calibration Details</value>
   </data>
+  <data name="gsNoDataCollected" xml:space="preserve">
+    <value>No data collected yet.</value>
+  </data>
   <data name="gsContourFileIsCorrupt" xml:space="preserve">
     <value>Contour File Corrupt</value>
   </data>
