@@ -158,12 +158,12 @@ namespace AgOpenGPS.Core.Drawing
             if (scaleEastingToX < scaleNorthingToY)
             {
                 double resizeNorthingFactor = scaleNorthingToY / scaleEastingToX;
-                projectedRect = BoundingBox.Resized(Zoom * resizeNorthingFactor, Zoom);
+                projectedRect = BoundingBox.Scaled(Zoom * resizeNorthingFactor, Zoom);
             }
             else
             {
                 double resizeEastingFactor = scaleEastingToX / scaleNorthingToY;
-                projectedRect = BoundingBox.Resized(Zoom, Zoom * resizeEastingFactor);
+                projectedRect = BoundingBox.Scaled(Zoom, Zoom * resizeEastingFactor);
             }
             GLW.CreateOrthoProjection((int)ViewportSize.DeltaX, (int)ViewportSize.DeltaY, projectedRect);
             projectedRectToViewportFactor = Math.Min(scaleEastingToX, scaleNorthingToY) / Zoom;

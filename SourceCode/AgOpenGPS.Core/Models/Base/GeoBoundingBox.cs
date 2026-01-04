@@ -48,15 +48,13 @@
                 _minCoord.Easting <= testCoord.Easting && testCoord.Easting <= _maxCoord.Easting;
         }
 
-        public GeoBoundingBox Resized(double northingFactor, double eastingFactor)
+        public GeoBoundingBox Scaled(double northingFactor, double eastingFactor)
         {
             GeoCoord center = CenterCoord;
             GeoDelta maxCornerDelta = new GeoDelta(center, MaxCoord);
             GeoDelta resizedMaxCornerDelta = new GeoDelta(
                 maxCornerDelta.NorthingDelta * northingFactor,
                 maxCornerDelta.EastingDelta * eastingFactor);
-            GeoCoord resizedMaxCorner = center + resizedMaxCornerDelta;
-            GeoCoord resizedMinCorner = center - resizedMaxCornerDelta;
             return new GeoBoundingBox(center - resizedMaxCornerDelta, center + resizedMaxCornerDelta);
         }
 
