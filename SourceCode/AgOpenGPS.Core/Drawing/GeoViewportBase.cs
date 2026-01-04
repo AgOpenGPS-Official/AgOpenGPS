@@ -27,8 +27,9 @@ namespace AgOpenGPS.Core.Drawing
 
         public void Initialize(GeoBoundingBox boundingBox)
         {
+            GeoBoundingBox marginBB = boundingBox.Scaled(1.1, 1.1);
             MakeCurrent();
-            SetBoundingBox(boundingBox);
+            SetBoundingBox(marginBB);
             ResetZoomPan();
             GLW.EnableCullFace();
             GLW.SetCullFaceModeBack();
