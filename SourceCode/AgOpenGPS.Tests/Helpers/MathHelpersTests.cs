@@ -66,26 +66,13 @@ namespace AgOpenGPS.Tests.Helpers
         public void CalculateMedian_EvenNumberOfValues_ReturnsAverage()
         {
             // Arrange
-            var data = new List<double> { 1.0, 2.0, 3.0, 4.0 };
+            var data = new List<double> { 2.6, 4.2, 4.9, 2.1, 2.2, 2.4 };
 
             // Act
             double result = MathHelpers.CalculateMedian(data);
 
             // Assert
             Assert.That(result, Is.EqualTo(2.5));
-        }
-
-        [Test]
-        public void CalculateMedian_UnsortedData_ReturnCorrectMedian()
-        {
-            // Arrange
-            var data = new List<double> { 9.0, 1.0, 7.0, 5.0, 3.0 };
-
-            // Act
-            double result = MathHelpers.CalculateMedian(data);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(5.0));
         }
 
         [Test]
