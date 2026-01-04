@@ -175,27 +175,6 @@ namespace AgOpenGPS
             };
         }
 
-        /// <summary>
-        /// Log the current analysis report
-        /// </summary>
-        public void LogAnalysisReport()
-        {
-            if (SampleCount == 0)
-            {
-                Log.EventWriter("Smart WAS: No data collected yet.");
-                return;
-            }
-
-            Log.EventWriter($"Smart WAS Calibration Analysis Report:");
-            Log.EventWriter($"  Samples Collected: {SampleCount}");
-            Log.EventWriter($"  Mean Angle: {Mean:F3}°");
-            Log.EventWriter($"  Median Angle: {Median:F3}°");
-            Log.EventWriter($"  Std Deviation: {StandardDeviation:F3}°");
-            Log.EventWriter($"  Recommended WAS Zero: {RecommendedWASZero:F3}°");
-            Log.EventWriter($"  Confidence Level: {ConfidenceLevel:F1}%");
-            Log.EventWriter($"  Valid Recommendation: {HasValidRecommendation}");
-        }
-
         #endregion
 
         #region Private Methods

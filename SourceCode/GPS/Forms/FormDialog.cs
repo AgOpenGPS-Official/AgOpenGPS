@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using AgLibrary.Logging;
 
 namespace AgOpenGPS.Forms
 {
@@ -23,6 +24,9 @@ namespace AgOpenGPS.Forms
 
         public static DialogResult Show(string title, string message, MessageBoxButtons buttons = MessageBoxButtons.OKCancel)
         {
+            // Log to event writer
+            Log.EventWriter($"[{title}] {message}");
+
             bool showCancel = (buttons == MessageBoxButtons.OKCancel || buttons == MessageBoxButtons.YesNo || buttons == MessageBoxButtons.YesNoCancel);
             return new FormDialog(message, title, showCancel).ShowDialog();
         }

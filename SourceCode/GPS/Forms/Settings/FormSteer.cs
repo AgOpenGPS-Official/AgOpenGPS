@@ -1371,9 +1371,6 @@ namespace AgOpenGPS
                            (stats.HasValidRecommendation ? "✓" : "✗");
 
             FormDialog.Show(gStr.gsCalibrationDetails, message, MessageBoxButtons.OK);
-
-            // Also log to file
-            mf.smartWASCalibration.LogAnalysisReport();
         }
 
         #endregion

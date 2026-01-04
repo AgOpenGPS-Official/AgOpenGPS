@@ -1357,6 +1357,9 @@ namespace AgOpenGPS
         //message box pops up with info then goes away
         public void TimedMessageBox(int timeout, string s1, string s2)
         {
+            // Log to event writer
+            AgLibrary.Logging.Log.EventWriter($"[{s1}] {s2}");
+
             FormTimedMessage form = new FormTimedMessage(timeout, s1, s2);
             form.Show(this);
             this.Activate();
