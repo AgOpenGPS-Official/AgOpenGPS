@@ -52,7 +52,7 @@ namespace AgOpenGPS.Core.Drawing
         public double Zoom { get; private set; }
         public GeoCoord ViewportCenter { get; set; }
 
-        public abstract XyDelta ViewportSize { get; }
+        public abstract XyDeltaInt ViewportSize { get; }
 
         private GeoDelta DefaultDisplayedSize { get; set; }
         private double DefaultBoundingBoxToViewportScale { get; set; }
@@ -154,7 +154,7 @@ namespace AgOpenGPS.Core.Drawing
         private void UpdateDefaultDisplayedSize()
         {
             //if (BoundingBox.IsEmpty) return;
-            XyDelta viewportSize = ViewportSize;
+            XyDeltaInt viewportSize = ViewportSize;
             GeoDelta boundingBoxSize = BoundingBox.MaxCoord - BoundingBox.MinCoord;
             double scaleEastingToX = viewportSize.DeltaX / boundingBoxSize.EastingDelta;
             double scaleNorthingToY = viewportSize.DeltaY / boundingBoxSize.NorthingDelta;
@@ -184,7 +184,7 @@ namespace AgOpenGPS.Core.Drawing
                 ViewportCenter - halfZoomedSize,
                 ViewportCenter + halfZoomedSize);
             MakeCurrent();
-            GLW.CreateOrthoProjection((int)ViewportSize.DeltaX, (int)ViewportSize.DeltaY, ZoomedPannedBoundingBox);
+            GLW.CreateOrthoProjection(ViewportSize, ZoomedPannedBoundingBox);
             Refresh();
         }
     }
