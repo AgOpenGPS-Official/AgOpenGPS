@@ -262,13 +262,16 @@ namespace AgOpenGPS
                             //{ 0x80, 0x81, 0x7f, 221, number bytes, seconds to display, mystery byte, 98,99,100,101, CRC };
                             if (data.Length < 9) break;
 
+                            string message = System.Text.Encoding.UTF8.GetString(data, 7, data[4] - 2);
+
+                            //Always write to logs even if it's not spammed to the user
+                            Log.EventWriter(message);
+
                             if (isHardwareMessages)
                             {
-                                lblHardwareMessage.Text = System.Text.Encoding.UTF8.GetString(data, 7, data[4] - 2);
+                                lblHardwareMessage.Text = message;
                                 lblHardwareMessage.Visible = true;
                                 hardwareLineCounter = data[5] * 10;
-
-                                Log.EventWriter(lblHardwareMessage.Text);
 
                                 //color based on byte 6
                                 lblHardwareMessage.BackColor = data[6] == 0 ? Color.Salmon : Color.Bisque;
