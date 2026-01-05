@@ -34,5 +34,8 @@ namespace AgOpenGPS.Core.Models
         {
             return new GeoDelta(factor * delta.NorthingDelta, factor * delta.EastingDelta);
         }
+
+        public static GeoDelta operator -(GeoDelta operand) => new GeoDelta(-operand.NorthingDelta, -operand.EastingDelta);
+
     }
 }
