@@ -1,5 +1,4 @@
-﻿using AgOpenGPS.Core.Models;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace AgOpenGPS.Core.DrawLib
@@ -7,19 +6,16 @@ namespace AgOpenGPS.Core.DrawLib
     public abstract class VertexArrayBase : IDisposable
     {
         private int _bufId;
-        private bool isDisposed;
+        private bool _isDisposed;
 
-        public VertexArrayBase(int nDimensions)
+        public VertexArrayBase()
         {
             _bufId = GL.GenBuffer();
-            Bind();
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, nDimensions, VertexAttribPointerType.Double, false, 0, 0);
         }
 
         public int Length { get; protected set; }
 
-        public void Bind()
+        public void BindBuffer()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, _bufId);
         }
@@ -35,10 +31,10 @@ namespace AgOpenGPS.Core.DrawLib
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!isDisposed)
+            if (!_isDisposed)
             {
                 DeleteBuffer();
-                isDisposed = true;
+                _isDisposed = true;
             }
         }
 
