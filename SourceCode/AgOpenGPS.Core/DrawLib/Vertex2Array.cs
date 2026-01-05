@@ -5,23 +5,49 @@ namespace AgOpenGPS.Core.DrawLib
 {
     public class Vertex2Array : VertexArrayBase
     {
-        public Vertex2Array(XyCoord[] vertices) : base(2)
+        public Vertex2Array()
         {
-            Length = vertices.Length;
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 2 * sizeof(double), vertices, BufferUsageHint.StaticDraw);
         }
 
-        public Vertex2Array(GeoCoord[] vertices) : base(2)
+        public Vertex2Array(XyCoord[] vertices)
         {
-            Length = vertices.Length;
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 2 * sizeof(double), vertices, BufferUsageHint.StaticDraw);
+            SetBufferData(vertices);
         }
 
-        public Vertex2Array(GeoLineSegment[] lineSegments) : base(2)
+        public Vertex2Array(GeoCoord[] vertices)
         {
+            SetBufferData(vertices);
+        }
+
+        public Vertex2Array(GeoLineSegment[] lineSegments)
+        {
+            SetBufferData(lineSegments);
+        }
+
+        public void SetBufferData(XyCoord[] vertices)
+        {
+            BindBuffer();
+            Length = vertices.Length;
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 2 * sizeof(double), vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
+
+        public void SetBufferData(GeoCoord[] vertices)
+        {
+            BindBuffer();
+            Length = vertices.Length;
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 2 * sizeof(double), vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
+
+        public void SetBufferData(GeoLineSegment[] lineSegments)
+        {
+            BindBuffer();
             Length = 2 * lineSegments.Length;
             GL.BufferData(BufferTarget.ArrayBuffer, lineSegments.Length * 4 * sizeof(double), lineSegments, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
+
     }
 
 }
