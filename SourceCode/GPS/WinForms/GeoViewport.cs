@@ -30,7 +30,7 @@ namespace AgOpenGPS.WinForms
             _glControl?.Refresh();
         }
 
-        public override ViewportSize2D ViewportSize
+        protected override ViewportSize2D ViewportSize
         {
             get
             {

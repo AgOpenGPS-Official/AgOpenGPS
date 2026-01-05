@@ -14,7 +14,7 @@ namespace AgOpenGPS.Core.Drawing
 
     public abstract class GeoViewportBase
     {
-        public struct ViewportSize2D
+        protected struct ViewportSize2D
         {
             public int SizeX;
             public int SizeY;
@@ -27,6 +27,10 @@ namespace AgOpenGPS.Core.Drawing
         private const double ZoomStep = 1.4;
         private const double MinZoom = 0.015625;
         private const double MaxZoom = 1.0;
+
+        private GeoDelta _defaultDisplayedSize;
+        private double _defaultBoundingBoxToViewportScale;
+
 
         public event EventHandler<GeoCoord> MouseDownEventHandler;
 
@@ -62,10 +66,8 @@ namespace AgOpenGPS.Core.Drawing
         public double Zoom { get; private set; }
         public GeoCoord ViewportCenter { get; set; }
 
-        public abstract ViewportSize2D ViewportSize { get; }
+        protected abstract ViewportSize2D ViewportSize { get; }
 
-        private GeoDelta DefaultDisplayedSize { get; set; }
-        private double DefaultBoundingBoxToViewportScale { get; set; }
 
         public void SetBoundingBox(GeoBoundingBox boundingBox)
         {
@@ -89,7 +91,7 @@ namespace AgOpenGPS.Core.Drawing
 
         public GeoCoord GetGeoCoord(XyCoord xyClientCoord)
         {
-            double viewportToZoomedPannedBoundingBox = Zoom / DefaultBoundingBoxToViewportScale;
+            double viewportToZoomedPannedBoundingBox = Zoom / _defaultBoundingBoxToViewportScale;
             XyDelta centerOffset = new XyDelta(0.5 * ViewportSize.SizeX, 0.5 * ViewportSize.SizeY);
             XyCoord xyCenteredCoord = xyClientCoord - centerOffset;
             GeoDelta delta = viewportToZoomedPannedBoundingBox * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
@@ -174,23 +176,23 @@ namespace AgOpenGPS.Core.Drawing
             if (scaleEastingToX < scaleNorthingToY)
             {
                 double extendNorthingFactor = scaleNorthingToY / scaleEastingToX;
-                DefaultDisplayedSize = new GeoDelta(
+                _defaultDisplayedSize = new GeoDelta(
                     boundingBoxSize.NorthingDelta * extendNorthingFactor,
                     boundingBoxSize.EastingDelta);
             }
             else
             {
                 double extendEastingFactor = scaleEastingToX / scaleNorthingToY;
-                DefaultDisplayedSize = new GeoDelta(
+                _defaultDisplayedSize = new GeoDelta(
                     boundingBoxSize.NorthingDelta,
                     boundingBoxSize.EastingDelta * extendEastingFactor);
             }
-            DefaultBoundingBoxToViewportScale = Math.Min(scaleEastingToX, scaleNorthingToY);
+            _defaultBoundingBoxToViewportScale = Math.Min(scaleEastingToX, scaleNorthingToY);
         }
 
         private void UpdateProjectionForZoomPan()
         {
-            GeoDelta halfZoomedSize = 0.5 * Zoom * DefaultDisplayedSize;
+            GeoDelta halfZoomedSize = 0.5 * Zoom * _defaultDisplayedSize;
             GeoBoundingBox ZoomedPannedBoundingBox = new GeoBoundingBox(
                 ViewportCenter - halfZoomedSize,
                 ViewportCenter + halfZoomedSize);
