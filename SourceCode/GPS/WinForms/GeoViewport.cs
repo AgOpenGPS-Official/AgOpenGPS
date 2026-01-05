@@ -30,12 +30,16 @@ namespace AgOpenGPS.WinForms
             _glControl?.Refresh();
         }
 
-        public override XyDeltaInt ViewportSize
+        public override ViewportSize2D ViewportSize
         {
             get
             {
                 Size size = _glControl.Size;
-                return new XyDeltaInt(size.Width, size.Height);
+                return new ViewportSize2D
+                {
+                    SizeX = size.Width,
+                    SizeY = size.Height
+                };
             }
         }
 

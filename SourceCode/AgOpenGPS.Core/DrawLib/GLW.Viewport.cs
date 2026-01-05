@@ -36,9 +36,9 @@ namespace AgOpenGPS.Core.DrawLib
             GL.MatrixMode(MatrixMode.Modelview);
         }
 
-        public static void CreateOrthoProjection(XyDeltaInt viewportSize, GeoBoundingBox geoBb)
+        public static void CreateOrthoProjection(int widthInPixels, int heightInPixels, GeoBoundingBox geoBb)
         {
-            GL.Viewport(0, 0, viewportSize.DeltaX, viewportSize.DeltaY);
+            GL.Viewport(0, 0, widthInPixels, heightInPixels);
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();

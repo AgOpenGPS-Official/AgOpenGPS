@@ -14,6 +14,15 @@ namespace AgOpenGPS.Core.Drawing
 
     public abstract class GeoViewportBase
     {
+        public struct ViewportSize2D
+        {
+            public int SizeX;
+            public int SizeY;
+        }
+
+        // Do not change the order of Easting and Northing. Vertex2Array expects Easting before Northing
+        public double Easting { get; }
+        public double Northing { get; }
         private const double PanStep = 0.15;        // Fraction of viewport size
         private const double ZoomStep = 1.4;
         private const double MinZoom = 0.015625;
@@ -53,7 +62,7 @@ namespace AgOpenGPS.Core.Drawing
         public double Zoom { get; private set; }
         public GeoCoord ViewportCenter { get; set; }
 
-        public abstract XyDeltaInt ViewportSize { get; }
+        public abstract ViewportSize2D ViewportSize { get; }
 
         private GeoDelta DefaultDisplayedSize { get; set; }
         private double DefaultBoundingBoxToViewportScale { get; set; }
@@ -81,7 +90,8 @@ namespace AgOpenGPS.Core.Drawing
         public GeoCoord GetGeoCoord(XyCoord xyClientCoord)
         {
             double viewportToZoomedPannedBoundingBox = Zoom / DefaultBoundingBoxToViewportScale;
-            XyCoord xyCenteredCoord = xyClientCoord - 0.5 * ViewportSize;
+            XyDelta centerOffset = new XyDelta(0.5 * ViewportSize.SizeX, 0.5 * ViewportSize.SizeY);
+            XyCoord xyCenteredCoord = xyClientCoord - centerOffset;
             GeoDelta delta = viewportToZoomedPannedBoundingBox * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
             return ViewportCenter + delta;
         }
@@ -155,10 +165,10 @@ namespace AgOpenGPS.Core.Drawing
         private void UpdateDefaultDisplayedSize()
         {
             //if (BoundingBox.IsEmpty) return;
-            XyDeltaInt viewportSize = ViewportSize;
+            ViewportSize2D viewportSize = ViewportSize;
             GeoDelta boundingBoxSize = BoundingBox.MaxCoord - BoundingBox.MinCoord;
-            double scaleEastingToX = viewportSize.DeltaX / boundingBoxSize.EastingDelta;
-            double scaleNorthingToY = viewportSize.DeltaY / boundingBoxSize.NorthingDelta;
+            double scaleEastingToX = viewportSize.SizeX / boundingBoxSize.EastingDelta;
+            double scaleNorthingToY = viewportSize.SizeY / boundingBoxSize.NorthingDelta;
             // Compute a rectangle with an aspect ratio that equals the viewport aspect ratio,
             // otherwise the content will be stretched
             if (scaleEastingToX < scaleNorthingToY)
@@ -185,7 +195,7 @@ namespace AgOpenGPS.Core.Drawing
                 ViewportCenter - halfZoomedSize,
                 ViewportCenter + halfZoomedSize);
             MakeCurrent();
-            GLW.CreateOrthoProjection(ViewportSize, ZoomedPannedBoundingBox);
+            GLW.CreateOrthoProjection(ViewportSize.SizeX, ViewportSize.SizeY, ZoomedPannedBoundingBox);
             Refresh();
         }
     }
