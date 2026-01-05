@@ -19,12 +19,21 @@ namespace AgOpenGPS.Core.DrawLib
             DrawArrays(PrimitiveType.LineStrip, vertexBuffer);
         }
 
-        private static void DrawArrays(PrimitiveType primitiveType, VertexBuffer vertexBuffer)
+        private static void DrawArrays(
+            PrimitiveType primitiveType,
+            VertexBuffer vertexBuffer)
         {
-            if (vertexBuffer == null) return;
+            if (vertexBuffer == null || !vertexBuffer.VertexBufferInfo.HasValue) return;
+            VertexBufferInfo info = vertexBuffer.VertexBufferInfo.Value;
             vertexBuffer.BindBuffer();
 
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Double, false, 0, 0);
+            GL.VertexAttribPointer(
+                0,
+                info.elementsPerVertex,
+                info.type,
+                false,
+                info.strideInBytes,
+                info.offsetInBytes);
             GL.EnableVertexAttribArray(0);
 
             GL.DrawArrays(primitiveType, 0, vertexBuffer.Length);
