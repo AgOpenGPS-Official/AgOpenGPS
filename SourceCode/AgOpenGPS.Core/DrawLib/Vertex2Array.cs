@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS.Core.DrawLib
 {
-    public class Vertex2Array : VertexArrayBase
+    public class Vertex2Array : VertexBuffer
     {
         public Vertex2Array()
         {

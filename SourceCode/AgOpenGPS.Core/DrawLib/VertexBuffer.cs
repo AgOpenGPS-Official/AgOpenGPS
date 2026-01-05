@@ -3,12 +3,12 @@ using System;
 
 namespace AgOpenGPS.Core.DrawLib
 {
-    public abstract class VertexArrayBase : IDisposable
+    public abstract class VertexBuffer : IDisposable
     {
         private int _bufId;
         private bool _isDisposed;
 
-        public VertexArrayBase()
+        public VertexBuffer()
         {
             _bufId = GL.GenBuffer();
         }
@@ -38,7 +38,7 @@ namespace AgOpenGPS.Core.DrawLib
             }
         }
 
-        ~VertexArrayBase()
+        ~VertexBuffer()
         {
             Dispose(disposing: false);
         }
