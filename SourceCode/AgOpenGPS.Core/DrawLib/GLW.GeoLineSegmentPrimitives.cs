@@ -25,9 +25,9 @@ namespace AgOpenGPS.Core.DrawLib
             const int nVerticesPerSegment = 2;
             if (nVerticesPerSegment * lineSegments.Length >= MinVerticesForArray)
             {
-                Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
-                DrawArrays(primitiveType, vertex2Array);
-                vertex2Array.Dispose();
+                VertexBuffer vertexBuffer = new VertexBuffer(lineSegments);
+                DrawArrays(primitiveType, vertexBuffer);
+                vertexBuffer.Dispose();
             }
             else
             {
@@ -51,16 +51,16 @@ namespace AgOpenGPS.Core.DrawLib
             const int nVerticesPerSegment = 2;
             if (nLayers * nVerticesPerSegment * lineSegments.Length >= MinVerticesForArray)
             {
-                Vertex2Array vertex2Array = new Vertex2Array(lineSegments);
+                VertexBuffer vertexBuffer = new VertexBuffer(lineSegments);
                 // background layer
                 SetLineWidth(backgroundStyle.Width);
                 SetColor(backgroundStyle.Color);
-                DrawArrays(primitiveType, vertex2Array);
+                DrawArrays(primitiveType, vertexBuffer);
                 // foreground layer
                 SetLineWidth(foregroundStyle.Width);
                 SetColor(foregroundStyle.Color);
-                DrawArrays(primitiveType, vertex2Array);
-                vertex2Array.Dispose();
+                DrawArrays(primitiveType, vertexBuffer);
+                vertexBuffer.Dispose();
             }
             else
             {

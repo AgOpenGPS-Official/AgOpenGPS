@@ -59,9 +59,9 @@ namespace AgOpenGPS.Core.DrawLib
         {
             if (vertices.Length >= MinVerticesForArray)
             {
-                Vertex2Array vertex2Array = new Vertex2Array(vertices);
-                DrawArrays(primitiveType, vertex2Array);
-                vertex2Array.Dispose();
+                VertexBuffer vertexBuffer = new VertexBuffer(vertices);
+                DrawArrays(primitiveType, vertexBuffer);
+                vertexBuffer.Dispose();
             }
             else
             {
@@ -83,18 +83,18 @@ namespace AgOpenGPS.Core.DrawLib
             const int nLayers = 2;
             if (nLayers * vertices.Length >= MinVerticesForArray)
             {
-                Vertex2Array vertex2Array = new Vertex2Array(vertices);
+                VertexBuffer vertexBuffer = new VertexBuffer(vertices);
 
                 // background layer
                 SetLineWidth(backgroundStyle.Width);
                 SetColor(backgroundStyle.Color);
-                DrawArrays(primitiveType, vertex2Array);
+                DrawArrays(primitiveType, vertexBuffer);
                 // foreground layer
                 SetLineWidth(foregroundStyle.Width);
                 SetColor(foregroundStyle.Color);
-                DrawArrays(primitiveType, vertex2Array);
+                DrawArrays(primitiveType, vertexBuffer);
 
-                vertex2Array.Dispose();
+                vertexBuffer.Dispose();
             }
             else
             {
