@@ -1,15 +1,16 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -478,7 +479,7 @@ namespace AgOpenGPS
                 UpdateTable();
                 flp.Focus();
 
-                mf.TimedMessageBox(1500, "A B Swapped", "Curve is Reversed");
+                FormDialog.Show("A B Swapped", "Curve is Reversed", MessageBoxButtons.OK);
             }
         }
 
@@ -1205,7 +1206,7 @@ namespace AgOpenGPS
                     }
                     else
                     {
-                        mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile);
+                        FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile, MessageBoxButtons.OK);
                     }
                 }
             }

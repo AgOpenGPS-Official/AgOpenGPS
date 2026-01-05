@@ -11,6 +11,7 @@ using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 using AgOpenGPS.IO;
 using AgOpenGPS.Protocols.ISOBUS;
 
@@ -227,7 +228,7 @@ namespace AgOpenGPS
         {
             if (!isJobStarted)
             {
-                TimedMessageBox(3000, gStr.gsFieldNotOpen, gStr.gsCreateNewField);
+                FormDialog.Show(gStr.gsFieldNotOpen, gStr.gsCreateNewField, MessageBoxButtons.OK);
                 return;
             }
 
@@ -895,7 +896,7 @@ namespace AgOpenGPS
             }
             catch (Exception e)
             {
-                TimedMessageBox(2000, "ISOXML Exception ", e.ToString());
+                FormDialog.Show("ISOXML Exception ", e.ToString(), MessageBoxButtons.OK);
                 Log.EventWriter("Export field as ISOXML Exception" + e);
             }
         }
@@ -946,11 +947,11 @@ namespace AgOpenGPS
                 Log.EventWriter($"[Load:{fileLabel}] failed");
                 if (criticality == LoadCriticality.Required)
                 {
-                    TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be loaded.");
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be loaded.", MessageBoxButtons.OK);
                 }
                 else
                 {
-                    TimedMessageBox(2000, "Optional file problem", $"{fileLabel} is missing or corrupt but Field is Loaded");
+                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt but Field is Loaded", MessageBoxButtons.OK);
                 }
                 result = default(T);
                 return false;
@@ -970,11 +971,11 @@ namespace AgOpenGPS
                 Log.EventWriter($"[Load:{fileLabel}] failed: {ex}");
                 if (criticality == LoadCriticality.Required)
                 {
-                    TimedMessageBox(2500, gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be processed.");
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be processed.", MessageBoxButtons.OK);
                 }
                 else
                 {
-                    TimedMessageBox(2000, "Optional file problem", $"{fileLabel} is missing or corrupt; it will be recreated on save.");
+                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt; it will be recreated on save.", MessageBoxButtons.OK);
                 }
                 return false;
             }

@@ -884,7 +884,7 @@ namespace AgOpenGPS
             int offset = (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees + hsbarWasOffset.Value);
             if (Math.Abs(offset) > 3900)
             {
-                mf.TimedMessageBox(2000, "Exceeded Range", "Excessive Steer Angle - Cannot Zero");
+                FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", MessageBoxButtons.OK);
                 Log.EventWriter("Excessive Steer Angle, No Zero " + offset);
             }
             else

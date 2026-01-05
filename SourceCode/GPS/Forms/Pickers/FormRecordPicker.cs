@@ -113,7 +113,7 @@ namespace AgOpenGPS.Forms.Pickers
                         }
                         catch (Exception ex)
                         {
-                            mf.TimedMessageBox(2000, gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded);
+                            FormDialog.Show(gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded, MessageBoxButtons.OK);
                             Log.EventWriter("Load Recorded Path" + ex.ToString());
                         }
                     }
