@@ -144,7 +144,7 @@ namespace AgOpenGPS
             oglSelf.Left = 1;
             oglSelf.Top = 0;
 
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
 
             tlp1.Width = Width - oglSelf.Width - 10;
             tlp1.Left = oglSelf.Width - 2;
@@ -153,7 +153,7 @@ namespace AgOpenGPS
         private void oglSelf_Resize(object sender, EventArgs e)
         {
             CreateViewport();
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
         }
 
         private void oglSelf_Load(object sender, EventArgs e)

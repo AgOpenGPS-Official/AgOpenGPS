@@ -108,5 +108,22 @@ namespace AgOpenGPS.Core.Tests.Models
             Assert.That(bbA.IsEmpty, Is.True);
         }
 
+        [Test]
+        public void Test_Scaled()
+        {
+            // Arrange
+            GeoBoundingBox bb = GeoBoundingBox.CreateEmpty();
+            bb.Include(new GeoCoord(5.0, -3.0));
+            bb.Include(new GeoCoord(9.0, -5.0));
+
+            // Act
+            GeoBoundingBox scaledBb = bb.Scaled(1.3, 1.5);
+
+            // Assert
+            Assert.That(scaledBb.MinNorthing, Is.EqualTo(4.4));
+            Assert.That(scaledBb.MaxNorthing, Is.EqualTo(9.60));
+            Assert.That(scaledBb.MinEasting, Is.EqualTo(-5.5));
+            Assert.That(scaledBb.MaxEasting, Is.EqualTo(-2.5));
+        }
     }
 }
