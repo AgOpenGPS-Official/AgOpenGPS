@@ -456,13 +456,9 @@ namespace AgOpenGPS
         #endregion
 
         #region OpenGL and Drawing
-        private void oglSelf_MouseDown(object sender, MouseEventArgs e)
+        private void OnViewportMouseDown(object sender, GeoCoord mouseDownCoord)
         {
             step++;
-
-            Point ptt = oglSelf.PointToClient(Cursor.Position);
-            XyCoord xyClient = new XyCoord(ptt.X, ptt.Y);
-            GeoCoord mouseDownCoord = _viewport.GetGeoCoord(xyClient);
 
             if (step == 1)
             {
@@ -760,6 +756,7 @@ namespace AgOpenGPS
             if (_viewport == null)
             {
                 _viewport = new GeoViewport(mf.FieldBoundingBox, oglSelf);
+                _viewport.MouseDownEventHandler += OnViewportMouseDown;
             }
         }
 
@@ -912,7 +909,7 @@ namespace AgOpenGPS
 
         private void BuildTramBnd()
         {
-            mf.tram.displayMode = 1;
+            mf.tram.displayMode = TramMode.All;
             mf.tram.CreateBoundaryOuterTrack();
             mf.tram.CreateBoundaryInnerTrack();
         }

@@ -1,6 +1,9 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using Accord.Imaging.Filters;
+using AgOpenGPS.Core.Models;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace AgOpenGPS
 {
@@ -21,14 +24,13 @@ namespace AgOpenGPS
 
         public bool isLeftManualOn, isRightManualOn;
 
-
         //tramlines
         public List<vec2> tramArr = new List<vec2>();
 
         public List<List<vec2>> tramList = new List<List<vec2>>();
 
-        // 0 off, 1 All, 2, Lines, 3 Outer
-        public int displayMode, generateMode = 0;
+        public TramMode displayMode;
+        public TramMode generateMode = TramMode.All;
 
         internal int controlByte;
 
@@ -50,6 +52,31 @@ namespace AgOpenGPS
             alpha = Properties.Settings.Default.setTram_alpha;
         }
 
+
+        public static Bitmap GetModeBitmap(TramMode mode)
+        {
+            Bitmap modeBitMap;
+            switch (mode)
+            {
+                case TramMode.None:
+                    modeBitMap = Properties.Resources.TramOff;
+                    break;
+                case TramMode.All:
+                    modeBitMap = Properties.Resources.TramAll;
+                    break;
+                case TramMode.FillTracks:
+                    modeBitMap = Properties.Resources.TramLines;
+                    break;
+                case TramMode.BoundaryTracks:
+                    modeBitMap = Properties.Resources.TramOuter;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), "TramMode argument out of range");
+            }
+            return modeBitMap;
+        }
+
+
         public void IsTramOuterOrInner()
         {
             isOuter = ((int)(tramWidth / mf.tool.width + 0.5)) % 2 == 0;
@@ -63,7 +90,7 @@ namespace AgOpenGPS
 
             GL.Color4(0, 0, 0, alpha);
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
+            if (mf.tram.displayMode.IncludesFillTracks())
             {
                 if (tramList.Count > 0)
                 {
@@ -79,7 +106,7 @@ namespace AgOpenGPS
                 }
             }
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 3)
+            if (mf.tram.displayMode.IncludesBoundaryTracks())
             {
                 if (tramBndOuterArr.Count > 0)
                 {
@@ -103,7 +130,7 @@ namespace AgOpenGPS
 
             GL.Color4(0.930f, 0.72f, 0.73530f, alpha);
 
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 2)
+            if (mf.tram.displayMode.IncludesFillTracks())
             {
                 if (tramList.Count > 0)
                 {
@@ -118,8 +145,7 @@ namespace AgOpenGPS
                     }
                 }
             }
-
-            if (mf.tram.displayMode == 1 || mf.tram.displayMode == 3)
+            if (mf.tram.displayMode.IncludesBoundaryTracks())
             {
                 if (tramBndOuterArr.Count > 0)
                 {

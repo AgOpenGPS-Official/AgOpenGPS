@@ -872,6 +872,7 @@ namespace AgOpenGPS
             start = 99999; end = 99999;
             isA = true;
             isC = false;
+            _viewport.Refresh();
         }
 
         private void btnCenterOGL_Click(object sender, EventArgs e)
@@ -892,14 +893,11 @@ namespace AgOpenGPS
             isA = true;
 
             btnAddPoints.Enabled = false;
+            _viewport.Refresh();
         }
 
-        private void oglSelf_MouseDown(object sender, MouseEventArgs e)
+        private void OnViewportMouseDown(object sender, GeoCoord mouseDownCoord)
         {
-            Point ptt = oglSelf.PointToClient(Cursor.Position);
-            XyCoord xyClient = new XyCoord(ptt.X, ptt.Y);
-            GeoCoord mouseDownCoord = _viewport.GetGeoCoord(xyClient);
-
             if (cboxIsZoom.Checked)
             {
                 _viewport.PointZoom(mouseDownCoord, 0.125);
@@ -1086,6 +1084,7 @@ namespace AgOpenGPS
         private void CreateViewport()
         {
             _viewport = new GeoViewport(mf.FieldBoundingBox, oglSelf);
+            _viewport.MouseDownEventHandler += OnViewportMouseDown;
         }
 
         private void EndStep()

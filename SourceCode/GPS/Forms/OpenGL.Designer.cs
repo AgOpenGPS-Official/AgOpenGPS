@@ -107,7 +107,7 @@ namespace AgOpenGPS
 
                     worldGrid.DrawFieldSurface(fieldColor, camera.ZoomValue, isTextureOn);
 
-                    if (isGridOn) worldGrid.DrawWorldGrid(worldGridColor, FieldBoundingBox);
+                    if (isGridOn) worldGrid.DrawFieldGrid(isDay, FieldBoundingBox);
 
                     if (isDrawPolygons) GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
 
@@ -888,7 +888,7 @@ namespace AgOpenGPS
                 GL.Color3((byte)0, (byte)245, (byte)0);
                 GL.LineWidth(4);
 
-                if ((tram.displayMode == 1 || tram.displayMode == 2))
+                if (tram.displayMode.IncludesFillTracks())
                 {
                     for (int i = 0; i < tram.tramList.Count; i++)
                     {
@@ -901,7 +901,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                if (tram.displayMode == 1 || tram.displayMode == 3)
+                if (tram.displayMode.IncludesBoundaryTracks())
                 {
                     //boundary tram list
                     GL.Begin(PrimitiveType.LineStrip);

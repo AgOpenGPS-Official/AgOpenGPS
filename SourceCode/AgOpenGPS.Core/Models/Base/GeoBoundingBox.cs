@@ -5,7 +5,7 @@
         private GeoCoord _minCoord;
         private GeoCoord _maxCoord;
 
-        static public GeoBoundingBox CreateEmpty()
+        public static GeoBoundingBox CreateEmpty()
         {
             GeoCoord minCoord = new GeoCoord(double.MaxValue, double.MaxValue);
             GeoCoord maxCoord = new GeoCoord(double.MinValue, double.MinValue);

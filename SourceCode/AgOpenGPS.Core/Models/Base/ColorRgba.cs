@@ -79,7 +79,7 @@ namespace AgOpenGPS.Core.Models
             return new ColorRgba(color.R, color.G, color.B, color.A);
         }
 
-        static private byte FloatToByte(float fraction)
+        private static byte FloatToByte(float fraction)
         {
             return (byte)(255 * fraction);
         }
