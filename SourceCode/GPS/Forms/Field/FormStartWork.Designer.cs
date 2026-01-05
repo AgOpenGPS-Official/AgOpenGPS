@@ -34,6 +34,7 @@ namespace AgOpenGPS
             this.btnExportTasks = new System.Windows.Forms.Button();
             this.lblFieldSection = new System.Windows.Forms.Label();
             this.tableFields = new System.Windows.Forms.TableLayoutPanel();
+            this.btnGoMode = new System.Windows.Forms.Button();
             this.btnOpenField = new System.Windows.Forms.Button();
             this.btnNewField = new System.Windows.Forms.Button();
             this.btnCloseField = new System.Windows.Forms.Button();
@@ -95,7 +96,6 @@ namespace AgOpenGPS
             this.flpTaskList = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResumeListBack = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnGoMode = new System.Windows.Forms.Button();
             this.panelContainer.SuspendLayout();
             this.panelHeader.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -367,6 +367,30 @@ namespace AgOpenGPS
             this.tableFields.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableFields.Size = new System.Drawing.Size(966, 200);
             this.tableFields.TabIndex = 6;
+            // 
+            // btnGoMode
+            // 
+            this.btnGoMode.BackColor = System.Drawing.Color.White;
+            this.btnGoMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGoMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnGoMode.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnGoMode.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.btnGoMode.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.btnGoMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGoMode.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
+            this.btnGoMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnGoMode.Image = global::AgOpenGPS.Properties.Resources.AutoSteerOn;
+            this.btnGoMode.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGoMode.Location = new System.Drawing.Point(495, 112);
+            this.btnGoMode.Margin = new System.Windows.Forms.Padding(12);
+            this.btnGoMode.Name = "btnGoMode";
+            this.btnGoMode.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnGoMode.Size = new System.Drawing.Size(459, 76);
+            this.btnGoMode.TabIndex = 8;
+            this.btnGoMode.Text = "  Go Mode";
+            this.btnGoMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGoMode.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnGoMode.UseVisualStyleBackColor = false;
             // 
             // btnOpenField
             // 
@@ -883,19 +907,19 @@ namespace AgOpenGPS
             this.lvFields.TabIndex = 1;
             this.lvFields.UseCompatibleStateImageBehavior = false;
             this.lvFields.View = System.Windows.Forms.View.Details;
-            //
+            // 
             // chFieldName
-            //
+            // 
             this.chFieldName.Text = "Field";
             this.chFieldName.Width = 520;
-            //
+            // 
             // chFieldDistance
-            //
+            // 
             this.chFieldDistance.Text = "Distance";
             this.chFieldDistance.Width = 200;
-            //
+            // 
             // chFieldArea
-            //
+            // 
             this.chFieldArea.Text = "Area";
             this.chFieldArea.Width = 150;
             // 
@@ -982,7 +1006,7 @@ namespace AgOpenGPS
             this.panelWizardStep3.Controls.Add(this.btnWizard3Back);
             this.panelWizardStep3.Location = new System.Drawing.Point(15, 75);
             this.panelWizardStep3.Name = "panelWizardStep3";
-            this.panelWizardStep3.Size = new System.Drawing.Size(966, 595);
+            this.panelWizardStep3.Size = new System.Drawing.Size(966, 665);
             this.panelWizardStep3.TabIndex = 3;
             this.panelWizardStep3.Visible = false;
             // 
@@ -1024,30 +1048,30 @@ namespace AgOpenGPS
             this.txtFieldName.Enter += new System.EventHandler(this.txtFieldName_Enter);
             // 
             // flpWorkTypes
-            // 
+            //
             this.flpWorkTypes.AutoScroll = true;
             this.flpWorkTypes.BackColor = System.Drawing.Color.White;
             this.flpWorkTypes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpWorkTypes.Location = new System.Drawing.Point(30, 75);
             this.flpWorkTypes.Name = "flpWorkTypes";
             this.flpWorkTypes.Padding = new System.Windows.Forms.Padding(10);
-            this.flpWorkTypes.Size = new System.Drawing.Size(906, 280);
+            this.flpWorkTypes.Size = new System.Drawing.Size(906, 430);
             this.flpWorkTypes.TabIndex = 1;
-            //
+            // 
             // lblSelectedWorkType
-            //
+            // 
             this.lblSelectedWorkType.AutoSize = true;
             this.lblSelectedWorkType.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
             this.lblSelectedWorkType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(119)))), ((int)(((byte)(190)))));
             this.lblSelectedWorkType.Location = new System.Drawing.Point(30, 75);
             this.lblSelectedWorkType.Name = "lblSelectedWorkType";
-            this.lblSelectedWorkType.Size = new System.Drawing.Size(200, 23);
+            this.lblSelectedWorkType.Size = new System.Drawing.Size(210, 23);
             this.lblSelectedWorkType.TabIndex = 10;
             this.lblSelectedWorkType.Text = "Work Type: Spraying";
             this.lblSelectedWorkType.Visible = false;
-            //
+            // 
             // btnChangeWorkType
-            //
+            // 
             this.btnChangeWorkType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
             this.btnChangeWorkType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnChangeWorkType.FlatAppearance.BorderSize = 0;
@@ -1062,63 +1086,9 @@ namespace AgOpenGPS
             this.btnChangeWorkType.UseVisualStyleBackColor = false;
             this.btnChangeWorkType.Visible = false;
             this.btnChangeWorkType.Click += new System.EventHandler(this.btnChangeWorkType_Click);
-            //
-            // lblTaskNameLabel
             // 
-            this.lblTaskNameLabel.AutoSize = true;
-            this.lblTaskNameLabel.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
-            this.lblTaskNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.lblTaskNameLabel.Location = new System.Drawing.Point(30, 375);
-            this.lblTaskNameLabel.Name = "lblTaskNameLabel";
-            this.lblTaskNameLabel.Size = new System.Drawing.Size(117, 22);
-            this.lblTaskNameLabel.TabIndex = 2;
-            this.lblTaskNameLabel.Text = "Task Name:";
-            // 
-            // txtTaskName
-            // 
-            this.txtTaskName.BackColor = System.Drawing.Color.White;
-            this.txtTaskName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTaskName.Font = new System.Drawing.Font("Tahoma", 16F);
-            this.txtTaskName.Location = new System.Drawing.Point(30, 405);
-            this.txtTaskName.Name = "txtTaskName";
-            this.txtTaskName.Size = new System.Drawing.Size(906, 33);
-            this.txtTaskName.TabIndex = 3;
-            this.txtTaskName.Enter += new System.EventHandler(this.txtTaskName_Enter);
-            // 
-            // btnWizard3Start
-            // 
-            this.btnWizard3Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnWizard3Start.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnWizard3Start.FlatAppearance.BorderSize = 0;
-            this.btnWizard3Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnWizard3Start.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
-            this.btnWizard3Start.ForeColor = System.Drawing.Color.White;
-            this.btnWizard3Start.Location = new System.Drawing.Point(746, 460);
-            this.btnWizard3Start.Name = "btnWizard3Start";
-            this.btnWizard3Start.Size = new System.Drawing.Size(190, 55);
-            this.btnWizard3Start.TabIndex = 5;
-            this.btnWizard3Start.Text = "START TASK";
-            this.btnWizard3Start.UseVisualStyleBackColor = false;
-            this.btnWizard3Start.Click += new System.EventHandler(this.btnWizard3Start_Click);
-            // 
-            // btnWizard3Back
-            // 
-            this.btnWizard3Back.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnWizard3Back.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnWizard3Back.FlatAppearance.BorderSize = 0;
-            this.btnWizard3Back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnWizard3Back.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
-            this.btnWizard3Back.ForeColor = System.Drawing.Color.White;
-            this.btnWizard3Back.Location = new System.Drawing.Point(30, 460);
-            this.btnWizard3Back.Name = "btnWizard3Back";
-            this.btnWizard3Back.Size = new System.Drawing.Size(140, 55);
-            this.btnWizard3Back.TabIndex = 4;
-            this.btnWizard3Back.Text = "< Back";
-            this.btnWizard3Back.UseVisualStyleBackColor = false;
-            this.btnWizard3Back.Click += new System.EventHandler(this.btnWizard3Back_Click);
-            //
             // panelNotes
-            //
+            // 
             this.panelNotes.BackColor = System.Drawing.Color.White;
             this.panelNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelNotes.Controls.Add(this.lblNotesTitle);
@@ -1128,20 +1098,20 @@ namespace AgOpenGPS
             this.panelNotes.Size = new System.Drawing.Size(440, 240);
             this.panelNotes.TabIndex = 8;
             this.panelNotes.Visible = false;
-            //
+            // 
             // lblNotesTitle
-            //
+            // 
             this.lblNotesTitle.AutoSize = true;
             this.lblNotesTitle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblNotesTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblNotesTitle.Location = new System.Drawing.Point(10, 10);
             this.lblNotesTitle.Name = "lblNotesTitle";
-            this.lblNotesTitle.Size = new System.Drawing.Size(57, 19);
+            this.lblNotesTitle.Size = new System.Drawing.Size(56, 19);
             this.lblNotesTitle.TabIndex = 0;
             this.lblNotesTitle.Text = "Notes";
-            //
+            // 
             // flpNoteFields
-            //
+            // 
             this.flpNoteFields.AutoScroll = true;
             this.flpNoteFields.BackColor = System.Drawing.Color.White;
             this.flpNoteFields.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -1150,9 +1120,9 @@ namespace AgOpenGPS
             this.flpNoteFields.Size = new System.Drawing.Size(418, 190);
             this.flpNoteFields.TabIndex = 2;
             this.flpNoteFields.WrapContents = false;
-            //
+            // 
             // panelPreviousTasks
-            //
+            // 
             this.panelPreviousTasks.BackColor = System.Drawing.Color.White;
             this.panelPreviousTasks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelPreviousTasks.Controls.Add(this.lblPreviousTasksTitle);
@@ -1162,20 +1132,20 @@ namespace AgOpenGPS
             this.panelPreviousTasks.Size = new System.Drawing.Size(456, 240);
             this.panelPreviousTasks.TabIndex = 9;
             this.panelPreviousTasks.Visible = false;
-            //
+            // 
             // lblPreviousTasksTitle
-            //
+            // 
             this.lblPreviousTasksTitle.AutoSize = true;
             this.lblPreviousTasksTitle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.lblPreviousTasksTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblPreviousTasksTitle.Location = new System.Drawing.Point(10, 10);
             this.lblPreviousTasksTitle.Name = "lblPreviousTasksTitle";
-            this.lblPreviousTasksTitle.Size = new System.Drawing.Size(201, 19);
+            this.lblPreviousTasksTitle.Size = new System.Drawing.Size(173, 19);
             this.lblPreviousTasksTitle.TabIndex = 0;
             this.lblPreviousTasksTitle.Text = "Previous Operations";
-            //
+            // 
             // lvPreviousTasks
-            //
+            // 
             this.lvPreviousTasks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chPrevDate,
             this.chPrevWorkType,
@@ -1191,22 +1161,76 @@ namespace AgOpenGPS
             this.lvPreviousTasks.UseCompatibleStateImageBehavior = false;
             this.lvPreviousTasks.View = System.Windows.Forms.View.Details;
             this.lvPreviousTasks.SelectedIndexChanged += new System.EventHandler(this.lvPreviousTasks_SelectedIndexChanged);
-            //
+            // 
             // chPrevDate
-            //
+            // 
             this.chPrevDate.Text = "Date";
             this.chPrevDate.Width = 110;
-            //
+            // 
             // chPrevWorkType
-            //
+            // 
             this.chPrevWorkType.Text = "Type";
             this.chPrevWorkType.Width = 110;
-            //
+            // 
             // chPrevNotes
-            //
+            // 
             this.chPrevNotes.Text = "Notes";
             this.chPrevNotes.Width = 210;
-            //
+            // 
+            // lblTaskNameLabel
+            // 
+            this.lblTaskNameLabel.AutoSize = true;
+            this.lblTaskNameLabel.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
+            this.lblTaskNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.lblTaskNameLabel.Location = new System.Drawing.Point(30, 515);
+            this.lblTaskNameLabel.Name = "lblTaskNameLabel";
+            this.lblTaskNameLabel.Size = new System.Drawing.Size(117, 22);
+            this.lblTaskNameLabel.TabIndex = 2;
+            this.lblTaskNameLabel.Text = "Task Name:";
+            // 
+            // txtTaskName
+            // 
+            this.txtTaskName.BackColor = System.Drawing.Color.White;
+            this.txtTaskName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTaskName.Font = new System.Drawing.Font("Tahoma", 16F);
+            this.txtTaskName.Location = new System.Drawing.Point(30, 545);
+            this.txtTaskName.Name = "txtTaskName";
+            this.txtTaskName.Size = new System.Drawing.Size(906, 33);
+            this.txtTaskName.TabIndex = 3;
+            this.txtTaskName.Enter += new System.EventHandler(this.txtTaskName_Enter);
+            // 
+            // btnWizard3Start
+            // 
+            this.btnWizard3Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnWizard3Start.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnWizard3Start.FlatAppearance.BorderSize = 0;
+            this.btnWizard3Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWizard3Start.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
+            this.btnWizard3Start.ForeColor = System.Drawing.Color.White;
+            this.btnWizard3Start.Location = new System.Drawing.Point(746, 590);
+            this.btnWizard3Start.Name = "btnWizard3Start";
+            this.btnWizard3Start.Size = new System.Drawing.Size(190, 55);
+            this.btnWizard3Start.TabIndex = 5;
+            this.btnWizard3Start.Text = "START TASK";
+            this.btnWizard3Start.UseVisualStyleBackColor = false;
+            this.btnWizard3Start.Click += new System.EventHandler(this.btnWizard3Start_Click);
+            // 
+            // btnWizard3Back
+            // 
+            this.btnWizard3Back.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnWizard3Back.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnWizard3Back.FlatAppearance.BorderSize = 0;
+            this.btnWizard3Back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWizard3Back.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Bold);
+            this.btnWizard3Back.ForeColor = System.Drawing.Color.White;
+            this.btnWizard3Back.Location = new System.Drawing.Point(30, 590);
+            this.btnWizard3Back.Name = "btnWizard3Back";
+            this.btnWizard3Back.Size = new System.Drawing.Size(140, 55);
+            this.btnWizard3Back.TabIndex = 4;
+            this.btnWizard3Back.Text = "< Back";
+            this.btnWizard3Back.UseVisualStyleBackColor = false;
+            this.btnWizard3Back.Click += new System.EventHandler(this.btnWizard3Back_Click);
+            // 
             // panelResumeList
             // 
             this.panelResumeList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1282,30 +1306,6 @@ namespace AgOpenGPS
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnGoMode
-            // 
-            this.btnGoMode.BackColor = System.Drawing.Color.White;
-            this.btnGoMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGoMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGoMode.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnGoMode.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.btnGoMode.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.btnGoMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGoMode.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.btnGoMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnGoMode.Image = global::AgOpenGPS.Properties.Resources.AutoSteerOn;
-            this.btnGoMode.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGoMode.Location = new System.Drawing.Point(495, 112);
-            this.btnGoMode.Margin = new System.Windows.Forms.Padding(12);
-            this.btnGoMode.Name = "btnGoMode";
-            this.btnGoMode.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnGoMode.Size = new System.Drawing.Size(459, 76);
-            this.btnGoMode.TabIndex = 8;
-            this.btnGoMode.Text = "  Go Mode";
-            this.btnGoMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGoMode.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnGoMode.UseVisualStyleBackColor = false;
             // 
             // FormStartWork
             // 

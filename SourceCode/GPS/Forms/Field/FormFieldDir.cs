@@ -106,7 +106,7 @@ namespace AgOpenGPS
 
                     //create the field file header info
                     mf.FileCreateField();
-                    mf.FileCreateSections();
+                    //mf.FileCreateSections();
                     mf.FileCreateRecPath();
                     mf.FileCreateContour();
                     mf.FileCreateElevation();
@@ -126,7 +126,6 @@ namespace AgOpenGPS
             }
 
             DialogResult = DialogResult.OK;
-            Close();
         }
 
         private void tboxFieldName_Click(object sender, EventArgs e)

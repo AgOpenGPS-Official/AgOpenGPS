@@ -370,6 +370,19 @@ namespace AgOpenGPS
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
+                    // Field was created and should now be loaded in mf
+                    // Ask if user wants to create a task for the new field
+                    if (AskCreateTaskAfterField())
+                    {
+                        // Reload task data to get the new field info
+                        LoadTaskData();
+
+                        // Start the task wizard
+                        btnNewTask_Click(null, EventArgs.Empty);
+                        return; // Don't close the form - wizard is active
+                    }
+
+                    // User chose No, close the form
                     DialogResult = DialogResult.OK;
                     Close();
                 }
@@ -387,6 +400,19 @@ namespace AgOpenGPS
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
+                    // Field was created and should now be loaded in mf
+                    // Ask if user wants to create a task for the new field
+                    if (AskCreateTaskAfterField())
+                    {
+                        // Reload task data to get the new field info
+                        LoadTaskData();
+
+                        // Start the task wizard
+                        btnNewTask_Click(null, EventArgs.Empty);
+                        return; // Don't close the form - wizard is active
+                    }
+
+                    // User chose No, close the form
                     DialogResult = DialogResult.OK;
                     Close();
                 }
@@ -404,10 +430,34 @@ namespace AgOpenGPS
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
+                    // Field was created and should now be loaded in mf
+                    // Ask if user wants to create a task for the new field
+                    if (AskCreateTaskAfterField())
+                    {
+                        // Reload task data to get the new field info
+                        LoadTaskData();
+
+                        // Start the task wizard
+                        btnNewTask_Click(null, EventArgs.Empty);
+                        return; // Don't close the form - wizard is active
+                    }
+
+                    // User chose No, close the form
                     DialogResult = DialogResult.OK;
                     Close();
                 }
             }
+        }
+
+        private bool AskCreateTaskAfterField()
+        {
+            DialogResult result = FormDialog.Show(
+                "Create Task",
+                "Field created successfully!\n\nWould you like to create a task for this field now?",
+                MessageBoxButtons.OKCancel
+            );
+
+            return result == DialogResult.OK;
         }
 
         #endregion
@@ -871,14 +921,25 @@ namespace AgOpenGPS
                 {
                     Text = workType.Name,
                     Tag = workType.Id,
-                    Width = 150,
-                    Height = 60,
-                    Font = new Font("Tahoma", 12F, FontStyle.Bold),
+                    Width = 180,
+                    Height = 90,
+                    Font = new Font("Tahoma", 11F, FontStyle.Bold),
                     FlatStyle = FlatStyle.Flat,
                     BackColor = Color.White,
-                    Margin = new Padding(5)
+                    Margin = new Padding(5),
+                    TextImageRelation = TextImageRelation.ImageAboveText,
+                    ImageAlign = ContentAlignment.MiddleCenter,
+                    TextAlign = ContentAlignment.BottomCenter
                 };
                 btn.FlatAppearance.BorderSize = 1;
+
+                // Load icon for this work type from resources
+                var icon = GetWorkTypeIcon(workType.Id);
+                if (icon != null)
+                {
+                    btn.Image = icon;
+                }
+
                 btn.Click += WorkTypeButton_Click;
                 flpWorkTypes.Controls.Add(btn);
             }
@@ -892,9 +953,9 @@ namespace AgOpenGPS
 
                 // Move work types panel down and make smaller to fit field name input
                 flpWorkTypes.Location = new Point(30, 135);
-                flpWorkTypes.Size = new Size(906, 220);
-                lblTaskNameLabel.Location = new Point(30, 365);
-                txtTaskName.Location = new Point(30, 395);
+                flpWorkTypes.Size = new Size(906, 340);
+                lblTaskNameLabel.Location = new Point(30, 485);
+                txtTaskName.Location = new Point(30, 515);
 
                 lblStep3Title.Text = "Step 3: Create New Field + Task";
 
@@ -908,9 +969,9 @@ namespace AgOpenGPS
 
                 // Reset work types panel position and size
                 flpWorkTypes.Location = new Point(30, 75);
-                flpWorkTypes.Size = new Size(906, 280);
-                lblTaskNameLabel.Location = new Point(30, 375);
-                txtTaskName.Location = new Point(30, 405);
+                flpWorkTypes.Size = new Size(906, 430);
+                lblTaskNameLabel.Location = new Point(30, 515);
+                txtTaskName.Location = new Point(30, 545);
 
                 lblStep3Title.Text = "Step 3: Select Work Type";
             }
@@ -946,6 +1007,9 @@ namespace AgOpenGPS
 
             // Load previous tasks for this field
             LoadPreviousTasks();
+
+            // Prevent automatic focus on note textboxes - set focus to a safe control
+            btnChangeWorkType.Focus();
         }
 
         private void btnChangeWorkType_Click(object sender, EventArgs e)
@@ -1044,6 +1108,10 @@ namespace AgOpenGPS
 
         private void btnWizard3Back_Click(object sender, EventArgs e)
         {
+            // Remove focus from all textboxes to prevent keyboard from appearing
+            // by setting the active control to null before switching views
+            this.ActiveControl = null;
+
             if (mf.isJobStarted && !string.IsNullOrEmpty(mf.currentFieldDirectory))
             {
                 ShowView(ViewMode.Main);
@@ -1081,6 +1149,51 @@ namespace AgOpenGPS
             if (mf.isKeyboardOn)
             {
                 ((TextBox)sender).ShowKeyboard(this);
+            }
+        }
+
+        private void NoteField_Enter(object sender, EventArgs e)
+        {
+            if (mf.isKeyboardOn)
+            {
+                ((TextBox)sender).ShowKeyboard(this);
+            }
+        }
+
+        /// <summary>
+        /// Gets the icon for a given WorkType from resources
+        /// </summary>
+        private Image GetWorkTypeIcon(string workTypeId)
+        {
+            try
+            {
+                // Map WorkType IDs (lowercase) to resource names
+                string resourceName;
+
+                if (workTypeId == "spraying")
+                    resourceName = "WorkType_Spraying";
+                else if (workTypeId == "fertilizing")
+                    resourceName = "WorkType_Fertilizer";
+                else if (workTypeId == "seeding" || workTypeId == "planting")
+                    resourceName = "WorkType_Seeding";
+                else if (workTypeId == "mowing" || workTypeId == "harvest")
+                    resourceName = "WorkType_Mowing";
+                else if (workTypeId == "cultivating" || workTypeId == "tillage")
+                    resourceName = "WorkType_Tillage";
+                else
+                    resourceName = "WorkType_Other";
+
+                // Load image from resources using ResourceManager
+                var rm = Properties.Resources.ResourceManager;
+                var icon = rm.GetObject(resourceName) as Image;
+
+                return icon;
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't fail - just show button without icon
+                System.Diagnostics.Debug.WriteLine($"Error loading icon for {workTypeId}: {ex.Message}");
+                return null;
             }
         }
 
@@ -1175,6 +1288,9 @@ namespace AgOpenGPS
 
                 if (!string.IsNullOrEmpty(field.DefaultValue))
                     textBox.Text = field.DefaultValue;
+
+                // Add keyboard support for note fields
+                textBox.Enter += NoteField_Enter;
 
                 panel.Controls.Add(textBox);
             }
