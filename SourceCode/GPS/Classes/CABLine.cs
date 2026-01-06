@@ -458,15 +458,7 @@ namespace AgOpenGPS
 
         public void BuildTram()
         {
-            if (mf.tram.generateMode.IncludesBoundaryTracks())
-            {
-                mf.tram.BuildTramBnd();
-            }
-            else
-            {
-                mf.tram.tramBndOuterArr?.Clear();
-                mf.tram.tramBndInnerArr?.Clear();
-            }
+            mf.tram.BuildBoundaryTracks();
 
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
@@ -558,12 +550,6 @@ namespace AgOpenGPS
             }
 
             tramRef?.Clear();
-            //outside tram
-
-            if (mf.bnd.bndList.Count == 0 || mf.tram.passes != 0)
-            {
-                //return;
-            }
         }
     }
 }

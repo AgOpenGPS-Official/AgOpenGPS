@@ -897,21 +897,17 @@ namespace AgOpenGPS
         #region Outer Tram
         private void cboxIsOuter_Click(object sender, EventArgs e)
         {
-            mf.tram.tramBndOuterArr?.Clear();
-            mf.tram.tramBndInnerArr?.Clear();
             if (cboxIsOuter.Checked)
             {
-                BuildTramBnd();
+                mf.tram.displayMode = TramMode.All;
+                mf.tram.BuildBoundaryTracks();
+            }
+            else
+            {
+                mf.tram.ClearBoundaryTracks();
             }
             ResetStartNumLabels();
             BuildTram();
-        }
-
-        private void BuildTramBnd()
-        {
-            mf.tram.displayMode = TramMode.All;
-            mf.tram.CreateBoundaryOuterTrack();
-            mf.tram.CreateBoundaryInnerTrack();
         }
 
         #endregion

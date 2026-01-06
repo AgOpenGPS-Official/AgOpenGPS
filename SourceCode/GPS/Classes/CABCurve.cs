@@ -1187,16 +1187,7 @@ namespace AgOpenGPS
 
         public void BuildTram()
         {
-            //if all or bnd only then make outer loop pass
-            if (mf.tram.generateMode.IncludesBoundaryTracks())
-            {
-                mf.tram.BuildTramBnd();
-            }
-            else
-            {
-                mf.tram.tramBndOuterArr?.Clear();
-                mf.tram.tramBndInnerArr?.Clear();
-            }
+            mf.tram.BuildBoundaryTracks();
 
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
