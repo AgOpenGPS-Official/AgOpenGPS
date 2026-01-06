@@ -25,6 +25,32 @@ namespace AgOpenGPS.Core.Visuals
             _innerBoundaryRenderer.UpdateVertices(innerBoundaryVertices);
         }
 
+        public void UpdateFillTracks(
+            List<GeoCoord[]> fillTracks)
+        {
+            // Remove and dispose excess renderers
+            int nTracks = fillTracks != null ? fillTracks.Count : 0;
+            if (nTracks < _fillTrackRenderers.Count)
+            {
+                for (int i = nTracks; i < _fillTrackRenderers.Count; i++)
+                {
+                    _fillTrackRenderers[i].Dispose();
+                }
+                _fillTrackRenderers.RemoveRange(nTracks, _fillTrackRenderers.Count - nTracks);
+            }
+            // Update renderers
+            if (fillTracks != null)
+            {
+                for (int i = 0; i < fillTracks.Count; i++)
+                {
+                    if (i >= _fillTrackRenderers.Count)
+                    {
+                        _fillTrackRenderers.Add(new LineStripRenderer());
+                    }
+                    _fillTrackRenderers[i].UpdateVertices(fillTracks[i]);
+                }
+            }
+        }
 
         public void DrawTramLinesLayered(
             bool drawFillLines,

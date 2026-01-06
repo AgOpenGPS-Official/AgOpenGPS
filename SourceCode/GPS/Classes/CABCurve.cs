@@ -1,6 +1,7 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Helpers;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -1194,6 +1195,7 @@ namespace AgOpenGPS
 
             if (!mf.tram.generateMode.IncludesFillTracks())
             {
+                mf.tram.UpdateFillTracks(null);
                 return;
             }
 
@@ -1308,6 +1310,8 @@ namespace AgOpenGPS
                     }
                 }
             }
+            List<GeoCoord[]> fillTrakcs = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
+            mf.tram.UpdateFillTracks(fillTrakcs);
         }
 
         //for calculating for display the averaged new line

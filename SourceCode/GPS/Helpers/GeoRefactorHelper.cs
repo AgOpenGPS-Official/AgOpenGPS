@@ -42,6 +42,16 @@ namespace AgOpenGPS.Helpers
             return array;
         }
 
+        public static List<GeoCoord[]> ToGeoCoordArrays(List<List<vec2>> listOfPaths)
+        {
+            List<GeoCoord[]> convertedList = new List<GeoCoord[]>(listOfPaths.Count);
+            foreach (var path in listOfPaths)
+            {
+                convertedList.Add(ToGeoCoordArray(path));
+            }
+            return convertedList;
+        }
+
         public static GeoCoord[] ToGeoCoordArray(List<vec3> list)
         {
             GeoCoord[] array = new GeoCoord[list.Count];

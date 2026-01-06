@@ -12,7 +12,7 @@ namespace AgOpenGPS
     public class CTram
     {
         private readonly FormGPS mf;
-        private readonly TramLinesVisual _visual;
+        private readonly TramLinesVisual _tramLinesVisual;
 
         public List<vec2> tramBndOuterArr = new List<vec2>();
         public List<vec2> tramBndInnerArr = new List<vec2>();
@@ -41,7 +41,7 @@ namespace AgOpenGPS
         {
             //constructor
             mf = _f;
-            _visual = new TramLinesVisual();
+            _tramLinesVisual = new TramLinesVisual();
 
             tramWidth = Properties.Settings.Default.setTram_tramWidth;
             //halfTramWidth = (Math.Round((Properties.Settings.Default.setTram_tramWidth) / 2.0, 3));
@@ -89,55 +89,19 @@ namespace AgOpenGPS
 
         public void DrawTram()
         {
-            if (mf.camera.camSetDistance > -500) GL.LineWidth(10);
-            else GL.LineWidth(6);
-
-            GL.Color4(0, 0, 0, alpha);
             LineStyle backgroundLineStyle = new LineStyle(
                 mf.camera.camSetDistance > -500 ? 10 : 6,
                 new ColorRgba(0.0f, 0.0f, 0.0f, (float)alpha));
 
-            if (mf.tram.displayMode.IncludesFillTracks())
-            {
-                if (tramList.Count > 0)
-                {
-                    for (int i = 0; i < tramList.Count; i++)
-                    {
-                        GL.Begin(PrimitiveType.LineStrip);
-                        for (int h = 0; h < tramList[i].Count; h++)
-                        {
-                            GL.Vertex2(tramList[i][h].easting, tramList[i][h].northing);
-                        }
-                        GL.End();
-                    }
-                }
-            }
-            _visual.DrawTramLines(false, displayMode.IncludesBoundaryTracks(), backgroundLineStyle);
-
-            if (mf.camera.camSetDistance > -500) GL.LineWidth(4);
-            else GL.LineWidth(2);
-
-            GL.Color4(0.930f, 0.72f, 0.73530f, alpha);
-
-            if (mf.tram.displayMode.IncludesFillTracks())
-            {
-                if (tramList.Count > 0)
-                {
-                    for (int i = 0; i < tramList.Count; i++)
-                    {
-                        GL.Begin(PrimitiveType.LineStrip);
-                        for (int h = 0; h < tramList[i].Count; h++)
-                        {
-                            GL.Vertex2(tramList[i][h].easting, tramList[i][h].northing);
-                        }
-                        GL.End();
-                    }
-                }
-            }
             LineStyle foregroundLineStyle = new LineStyle(
                 mf.camera.camSetDistance > -500 ? 4 : 2,
                 new ColorRgba(0.930f, 0.72f, 0.735f, (float)alpha));
-            _visual.DrawTramLines(false, displayMode.IncludesBoundaryTracks(), foregroundLineStyle);
+
+            _tramLinesVisual.DrawTramLinesLayered(
+                displayMode.IncludesFillTracks(),
+                displayMode.IncludesBoundaryTracks(),
+                backgroundLineStyle,
+                foregroundLineStyle);
         }
 
         public void BuildBoundaryTracks()
@@ -148,7 +112,7 @@ namespace AgOpenGPS
             {
                 tramBndOuterArr = CreateBoundaryTrack(0.5 * tramWidth - halfWheelTrack);
                 tramBndInnerArr = CreateBoundaryTrack(0.5 * tramWidth + halfWheelTrack);
-                _visual.UpdateBoundaryTracks(
+                _tramLinesVisual.UpdateBoundaryTracks(
                     GeoRefactorHelper.ToGeoCoordArray(tramBndOuterArr),
                     GeoRefactorHelper.ToGeoCoordArray(tramBndInnerArr));
             }
@@ -162,7 +126,12 @@ namespace AgOpenGPS
         {
             tramBndOuterArr?.Clear();
             tramBndInnerArr?.Clear();
-            _visual.UpdateBoundaryTracks(null, null);
+            _tramLinesVisual.UpdateBoundaryTracks(null, null);
+        }
+
+        public void UpdateFillTracks(List<GeoCoord[]> fillTracks)
+        {
+            _tramLinesVisual.UpdateFillTracks(fillTracks);
         }
 
         private List<vec2> CreateBoundaryTrack(double distance)

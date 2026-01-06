@@ -1,6 +1,7 @@
 using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -465,6 +466,7 @@ namespace AgOpenGPS
 
             if (!mf.tram.generateMode.IncludesFillTracks())
             {
+                mf.tram.UpdateFillTracks(null);
                 return;
             }
 
@@ -550,6 +552,8 @@ namespace AgOpenGPS
             }
 
             tramRef?.Clear();
+            List<GeoCoord[]> fillTrakcs = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
+            mf.tram.UpdateFillTracks(fillTrakcs);
         }
     }
 }
