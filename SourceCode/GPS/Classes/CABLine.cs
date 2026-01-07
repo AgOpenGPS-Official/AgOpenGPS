@@ -552,8 +552,8 @@ namespace AgOpenGPS
             }
 
             tramRef?.Clear();
-            List<GeoCoord[]> fillTrakcs = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
-            mf.tram.UpdateFillTracks(fillTrakcs);
+            List<GeoCoord[]> fillTracks = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
+            mf.tram.UpdateFillTracks(fillTracks);
         }
     }
 }

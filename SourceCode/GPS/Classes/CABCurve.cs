@@ -1310,8 +1310,8 @@ namespace AgOpenGPS
                     }
                 }
             }
-            List<GeoCoord[]> fillTrakcs = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
-            mf.tram.UpdateFillTracks(fillTrakcs);
+            List<GeoCoord[]> fillTracks = GeoRefactorHelper.ToGeoCoordArrays(mf.tram.tramList);
+            mf.tram.UpdateFillTracks(fillTracks);
         }
 
         //for calculating for display the averaged new line
