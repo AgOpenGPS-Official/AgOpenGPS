@@ -6,23 +6,23 @@ namespace AgOpenGPS.Core.Models
     {
         public TramLines()
         {
-            TramList = new List<GeoCoord[]>();
+            FillTracks = new List<GeoCoord[]>();
         }
 
         public GeoCoord[] OuterTrack { get; set; }
 
         public GeoCoord[] InnerTrack { get; set; }
 
-        public List<GeoCoord[]> TramList { get; set; }
+        public List<GeoCoord[]> FillTracks { get; set; }
 
         public void Clear()
         {
             OuterTrack = null;
             InnerTrack = null;
-            TramList.Clear();
+            FillTracks.Clear();
         }
 
-        public bool IsEmpty => 0 == TramList.Count && null == OuterTrack;
+        public bool IsEmpty => 0 == FillTracks.Count && null == OuterTrack;
 
     }
 

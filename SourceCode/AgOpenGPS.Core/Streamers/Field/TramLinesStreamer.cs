@@ -52,7 +52,7 @@ namespace AgOpenGPS.Core.Streamers
                         for (int i = 0; i < nTramLines; i++)
                         {
                             GeoCoord[] tramLine = reader.ReadGeoCoordArray();
-                            tramLines.TramList.Add(tramLine);
+                            tramLines.FillTracks.Add(tramLine);
                         }
                     }
                 }
@@ -71,10 +71,10 @@ namespace AgOpenGPS.Core.Streamers
                     writer.WriteGeoCoordArray(tramLines.OuterTrack);
                     writer.WriteGeoCoordArray(tramLines.InnerTrack);
 
-                    if (0 < tramLines.TramList.Count)
+                    if (0 < tramLines.FillTracks.Count)
                     {
-                        writer.WriteInt(tramLines.TramList.Count);
-                        foreach (var tramLine in tramLines.TramList)
+                        writer.WriteInt(tramLines.FillTracks.Count);
+                        foreach (var tramLine in tramLines.FillTracks)
                         {
                             writer.WriteGeoCoordArray(tramLine);
                         }
