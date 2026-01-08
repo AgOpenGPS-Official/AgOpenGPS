@@ -43,16 +43,16 @@ namespace AgOpenGPS.Core.Streamers
                 reader.ReadLine(); // skip header: $Tram
                 if (reader.Peek() != -1)
                 {
-                    tramLines.OuterTrack = reader.ReadGeoPolygon();
-                    tramLines.InnerTrack = reader.ReadGeoPolygon();
+                    tramLines.OuterTrack = reader.ReadGeoCoordArray();
+                    tramLines.InnerTrack = reader.ReadGeoCoordArray();
 
                     if (-1 != reader.Peek())
                     {
                         int nTramLines = reader.ReadInt();
                         for (int i = 0; i < nTramLines; i++)
                         {
-                            GeoPath tramLne = reader.ReadGeoPath();
-                            tramLines.TramList.Add(tramLne);
+                            GeoCoord[] tramLine = reader.ReadGeoCoordArray();
+                            tramLines.TramList.Add(tramLine);
                         }
                     }
                 }
@@ -68,15 +68,15 @@ namespace AgOpenGPS.Core.Streamers
                 writer.WriteLine("$Tram");
                 if (null != tramLines)
                 {
-                    writer.WriteGeoPolygon(tramLines.OuterTrack);
-                    writer.WriteGeoPolygon(tramLines.InnerTrack);
+                    writer.WriteGeoCoordArray(tramLines.OuterTrack);
+                    writer.WriteGeoCoordArray(tramLines.InnerTrack);
 
                     if (0 < tramLines.TramList.Count)
                     {
                         writer.WriteInt(tramLines.TramList.Count);
                         foreach (var tramLine in tramLines.TramList)
                         {
-                            writer.WriteGeoPath(tramLine);
+                            writer.WriteGeoCoordArray(tramLine);
                         }
                     }
                 }

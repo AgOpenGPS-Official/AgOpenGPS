@@ -146,6 +146,19 @@ namespace AgOpenGPS.Core.Streamers
             return result;
         }
 
+        // Returns null, (not an empty array) when the number of points equals zero.
+        public GeoCoord[] ReadGeoCoordArray()
+        {
+            GeoCoord[] result = null;
+            int count = ReadInt();
+            if (0 < count) result = new GeoCoord[count];
+            for (int i = 0; i < count; i++)
+            {
+                result[i] = ReadGeoCoord();
+            }
+            return result;
+        }
+
         public void ReadGeoPolygonWithHeading(GeoPolygonWithHeading polygon)
         {
             int count = ReadInt();

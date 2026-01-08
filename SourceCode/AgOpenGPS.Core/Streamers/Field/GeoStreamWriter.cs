@@ -148,6 +148,20 @@ namespace AgOpenGPS.Core.Streamers
             }
         }
 
+        public void WriteGeoCoordArray(GeoCoord[] coordArray)
+        {
+            if (null == coordArray)
+            {
+                WriteInt(0);
+                return;
+            }
+            WriteInt(coordArray.Length);
+            for (int i = 0; i < coordArray.Length; i++)
+            {
+                WriteGeoCoordEN(coordArray[i]);
+            }
+        }
+
         public void WriteGeoPolygonWithHeading(GeoPolygonWithHeading polygon)
         {
             if (null == polygon)
