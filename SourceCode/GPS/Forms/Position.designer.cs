@@ -126,6 +126,7 @@ namespace AgOpenGPS
 
         public void UpdateFixPosition()
         {
+            _updateFixTimer?.Start();
             //Measure the frequency of the GPS updates
             timeSliceOfLastFix = (double)(swFrame.ElapsedTicks) / (double)System.Diagnostics.Stopwatch.Frequency;
 
@@ -1141,6 +1142,7 @@ namespace AgOpenGPS
 
             if (frameTimeRough > 80) frameTimeRough = 80;
             frameTime = frameTime * 0.90 + frameTimeRough * 0.1;
+            _updateFixTimer?.Stop();
 
             //update main window
             oglMain.MakeCurrent();
