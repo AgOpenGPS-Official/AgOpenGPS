@@ -122,6 +122,7 @@ namespace AgOpenGPS
             //every 3 second update status
             if (fourSecondCounter >= 3)
             {
+                _performanceTool?.StartStop();
                 if (!isPauseFieldTextCounter)
                 {
                     if (++currentFieldTextCounter > 3) currentFieldTextCounter = 0;

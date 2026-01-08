@@ -315,6 +315,8 @@ namespace AgOpenGPS
                 new DirectoryInfo(RegistrySettings.baseDirectory),
                 null,
                 null);
+            // Uncomment next line for Performance analysis
+            // InitializePerformanceTool(AppCore);
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
