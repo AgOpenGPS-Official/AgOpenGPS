@@ -702,7 +702,7 @@ Secība, kādā tos nospiedīsiet, būs secība, kādā tie parādīsies izvēln
     <value>Minimālais ātrums</value>
   </data>
   <data name="gsMinToMove" xml:space="preserve">
-    <value>Minimums lai pagrieztos</value>
+    <value>Minimums lai pakustētos</value>
   </data>
   <data name="gsMissingABLinesFile" xml:space="preserve">
     <value>Trūkst AB Līnijas fails</value>
@@ -738,7 +738,7 @@ Secība, kādā tos nospiedīsiet, būs secība, kādā tie parādīsies izvēln
     <value>Z Rietumi</value>
   </data>
   <data name="gsNewFromDefault" xml:space="preserve">
-    <value>Jauns Nu nūklusājuma</value>
+    <value>Jauns No Noklusējuma</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Nākamā navigācijas līnija</value>
@@ -1231,5 +1231,42 @@ IZMANTOJIET UZ SAVU RISKU.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Piekrist</value>
+  </data>
+  <data name="gsCopyFrom" xml:space="preserve">
+    <value>Kopēt no</value>
+  </data>
+  <data name="gsCreateNewProfile" xml:space="preserve">
+    <value>Izveidot Jaunu Profilu</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Discourse Forums</value>
+  </data>
+  <data name="gsEmptyProfile" xml:space="preserve">
+    <value>Tukšs profils</value>
+  </data>
+  <data name="gsLoad" xml:space="preserve">
+    <value>Ielādēt</value>
+  </data>
+  <data name="gsLoadProfile" xml:space="preserve">
+    <value>Ielādēt Profilu</value>
+  </data>
+  <data name="gsName" xml:space="preserve">
+    <value>Nosaukums</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Jauns</value>
+  </data>
+  <data name="gsProfile" xml:space="preserve">
+    <value>Profils</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>Mašīnas iestatījumi tagad tiek saukti par "profiliem" un
+tie var tikt ielādēti galvenajā izvēlnē (augšpusē, kreisajā stūrī).</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>YouTube Pamācības</value>
   </data>
 </root>
