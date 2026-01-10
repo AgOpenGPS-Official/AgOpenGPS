@@ -6,6 +6,12 @@ namespace AgOpenGPS.Helpers
     public class GeoRefactorHelper
     {
 
+        public static GeoLineSegment GetLineSegment(List<vec2> list, int index)
+        {
+            int nextIndex = (index + 1) % list.Count;
+            return new GeoLineSegment(list[index].ToGeoCoord(), list[nextIndex].ToGeoCoord());
+        }
+
         public static GeoLineSegment GetLineSegment(List<vec3> list, int index)
         {
             int nextIndex = (index + 1) % list.Count;
@@ -40,6 +46,26 @@ namespace AgOpenGPS.Helpers
                 array[i] = list[i].ToGeoCoord();
             }
             return array;
+        }
+
+        public static List<GeoCoord> ToGeoCoordList(List<vec2> list)
+        {
+            List<GeoCoord> geoList = new List<GeoCoord>(list.Count);
+            for (int i = 0; i < list.Count; i++)
+            {
+                geoList.Add(list[i].ToGeoCoord());
+            }
+            return geoList;
+        }
+
+        public static List<vec2> ToVec2List(List<GeoCoord> geoList)
+        {
+            List<vec2> list = new List<vec2>(geoList.Count);
+            for (int i = 0; i < geoList.Count; i++)
+            {
+                list.Add(new vec2(geoList[i]));
+            }
+            return list;
         }
 
         public static GeoCoord[] ToGeoCoordArray(List<vec3> list)

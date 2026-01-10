@@ -1,4 +1,6 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.DrawLib;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Core.Visuals;
 using AgOpenGPS.Helpers;
@@ -21,11 +23,9 @@ namespace AgOpenGPS
 
         private int indx = -1;
 
-        private vec2 ptA = new vec2(9999999, 9999999);
-        private vec2 ptB = new vec2(9999999, 9999999);
-        private vec2 ptCut = new vec2(9999999, 9999999);
-
-        private int step = 0;
+        GeoCoord? _coordA; // Start of cut line
+        GeoCoord? _coordB; // End of cut line
+        GeoCoord? _coordC; // indicates left or right side of cut line
 
         //tramTrams
         private List<vec2> tramArr = new List<vec2>();
@@ -443,14 +443,7 @@ namespace AgOpenGPS
                     }
                 }
             }
-
             tramRef?.Clear();
-            //outside tram
-
-            if (mf.bnd.bndList.Count == 0 || passes != 0)
-            {
-                //return;
-            }
         }
 
         #endregion
@@ -458,103 +451,55 @@ namespace AgOpenGPS
         #region OpenGL and Drawing
         private void OnViewportMouseDown(object sender, GeoCoord mouseDownCoord)
         {
-            step++;
-
-            if (step == 1)
+            if (!_coordA.HasValue)
             {
-                ptA = new vec2(mouseDownCoord);
+                _coordA = mouseDownCoord;
             }
-            else if (step == 2)
+            else if (!_coordB.HasValue)
             {
-                ptB = new vec2(mouseDownCoord);
+                _coordB = mouseDownCoord;
             }
             else
             {
-                ptCut = new vec2(mouseDownCoord);
+                _coordC = mouseDownCoord;
 
-                bool isLeft = (ptB.easting - ptA.easting) * (ptCut.northing - ptA.northing)
-                    > (ptB.northing - ptA.northing) * (ptCut.easting - ptA.easting);
+                GeoDelta abDelta = new GeoDelta(_coordA.Value, _coordB.Value);
+                GeoDelta acDelta = new GeoDelta(_coordA.Value, _coordC.Value);
+                GeoLineSegment abSegment = new GeoLineSegment(_coordA.Value, _coordB.Value);
 
-                bool isIntersect = false;
-
-                if (tramList.Count > 0)
+                double abcCrossZ = abDelta.CrossProductZ(acDelta);
+                for (int t = 0; t < tramList.Count; t++)
                 {
-                    for (int i = 0; i < tramList.Count; i++)
+                    // Check for interection
+                    List<GeoCoord> tramLine = GeoRefactorHelper.ToGeoCoordList(tramList[t]);
+                    GeoCoord? intersectionPoint = null;
+                    for (int s = 0; s < tramLine.Count - 1; s++)
                     {
-                        ////check for line intersection
-                        for (int j = 0; j < tramList[i].Count - 1; j++)
+                        GeoLineSegment tramLineSegment = new GeoLineSegment(tramLine[s], tramLine[s + 1]);
+                        intersectionPoint = abSegment.IntersectionPoint(tramLineSegment);
+                        if (intersectionPoint.HasValue)
                         {
-                            if (GetLineIntersection(
-                                tramList[i][j].easting, tramList[i][j].northing,
-                                tramList[i][j + 1].easting, tramList[i][j + 1].northing,
-                                ptA.easting, ptA.northing, ptB.easting, ptB.northing))
+                            break;
+                        }
+                    }
+                    if (intersectionPoint.HasValue)
+                    {
+                        for (int h = 0; h < tramLine.Count; h++)
+                        {
+                            GeoDelta atDelta = new GeoDelta(_coordA.Value, tramLine[h]);
+                            double abTramCrossZ = abDelta.CrossProductZ(atDelta);
+                            // if C and Tram line point are on the same side....
+                            if (abcCrossZ * abTramCrossZ > 0)
                             {
-                                isIntersect = true;
-                                break;
+                                tramLine.RemoveAt(h);
+                                h = -1;
                             }
                         }
-
-                        if (isIntersect)
-                        {
-                            for (int h = 0; h < tramList[i].Count; h++)
-                            {
-                                if (isLeft)
-                                {
-                                    if ((ptB.easting - ptA.easting) * (tramList[i][h].northing - ptA.northing)
-                                        > (ptB.northing - ptA.northing) * (tramList[i][h].easting - ptA.easting))
-                                    {
-                                        tramList[i].RemoveAt(h);
-                                        h = -1;
-                                    }
-                                }
-                                else
-                                {
-                                    if ((ptB.easting - ptA.easting) * (tramList[i][h].northing - ptA.northing)
-                                        < (ptB.northing - ptA.northing) * (tramList[i][h].easting - ptA.easting))
-                                    {
-                                        tramList[i].RemoveAt(h);
-                                        h = -1;
-                                    }
-                                }
-                            }
-                        }
-                        isIntersect = false;
+                        tramList[t] = GeoRefactorHelper.ToVec2List(tramLine);
                     }
                 }
-
-                ptB.easting = 9999999;
-                ptB.northing = 9999999;
-                ptA.easting = 9999999;
-                ptA.northing = 9999999;
-                step = 0;
+                ResetTouchPoints();
             }
-        }
-
-        private bool GetLineIntersection(double p0x, double p0y, double p1x, double p1y,
-        double p2x, double p2y, double p3x, double p3y)
-        {
-            double s1x, s1y, s2x, s2y;
-            s1x = p1x - p0x;
-            s1y = p1y - p0y;
-
-            s2x = p3x - p2x;
-            s2y = p3y - p2y;
-
-            double s, t;
-            s = (-s1y * (p0x - p2x) + s1x * (p0y - p2y)) / (-s2x * s1y + s1x * s2y);
-
-            if (s >= 0 && s <= 1)
-            {
-                //check oher side
-                t = (s2x * (p0y - p2y) - s2y * (p0x - p2x)) / (-s2x * s1y + s1x * s2y);
-                if (t >= 0 && t <= 1)
-                {
-                    // Collision detected
-                    return true;
-                }
-            }
-
-            return false; // No collision
         }
 
         private void oglSelf_Paint(object sender, PaintEventArgs e)
@@ -571,28 +516,24 @@ namespace AgOpenGPS
             DrawTrams();
             DrawNewTrams();
 
-            GL.PointSize(18);
-
-            GL.Begin(PrimitiveType.Points);
-            GL.Color3(1.0, 0, 0);
-            GL.Vertex2(ptA.easting, ptA.northing);
-            GL.End();
-
-            GL.Begin(PrimitiveType.Points);
-            GL.Color3(0, 1.0, 0);
-            GL.Vertex2(ptB.easting, ptB.northing);
-            GL.End();
-
-            if (step == 2)
+            if (_coordA.HasValue)
             {
-                GL.LineWidth(6);
+                GLW.SetPointSize(18.0f);
+                GLW.SetColor(Colors.Red);
+                GLW.DrawPoint(_coordA.Value);
+                if (_coordB.HasValue)
+                {
+                    GLW.SetColor(Colors.Green);
+                    GLW.DrawPoint(_coordB.Value);
 
-                GL.Begin(PrimitiveType.Lines);
-                GL.Color3(1.0, 0, 0);
-                GL.Vertex2(ptA.easting, ptA.northing);
-                GL.Color3(0, 1.0, 0);
-                GL.Vertex2(ptB.easting, ptB.northing);
-                GL.End();
+                    GL.LineWidth(6.0f);
+                    GL.Begin(PrimitiveType.Lines);
+                    GLW.SetColor(Colors.Red);
+                    GLW.Vertex2(_coordA.Value);
+                    GLW.SetColor(Colors.Green);
+                    GLW.Vertex2(_coordB.Value);
+                    GL.End();
+                }
             }
             _viewport.EndPaint();
         }
@@ -844,11 +785,14 @@ namespace AgOpenGPS
 
         private void btnCancelTouch_Click(object sender, EventArgs e)
         {
-            ptB.easting = 9999999;
-            ptB.northing = 9999999;
-            ptA.easting = 9999999;
-            ptA.northing = 9999999;
-            step = 0;
+            ResetTouchPoints();
+        }
+
+        private void ResetTouchPoints()
+        {
+            _coordA = null;
+            _coordB = null;
+            _coordC = null;
         }
 
         private void FixLabelsCurve()
@@ -953,7 +897,6 @@ namespace AgOpenGPS
         }
 
         #endregion
-
 
     }
 }
