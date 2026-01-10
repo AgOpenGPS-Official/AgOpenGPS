@@ -804,7 +804,7 @@ namespace AgOpenGPS
 
             if (crossings.Count != mf.hdl.tracksArr.Count * 2)
             {
-                FormDialog.Show("Crosings Error", "Make sure all ends cross and only once", MessageBoxButtons.OK);
+                FormDialog.Show("Crossings Error", "Make sure all ends cross and only once", MessageBoxButtons.OK);
                 Log.EventWriter("Headache, All ends cross and only once");
                 mf.bnd.bndList[0].hdLine?.Clear();
                 return;
