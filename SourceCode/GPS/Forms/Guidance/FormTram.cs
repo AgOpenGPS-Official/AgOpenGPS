@@ -1,7 +1,9 @@
 ﻿using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Helpers;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -53,35 +55,19 @@ namespace AgOpenGPS
             mf.tool.halfWidth = (mf.tool.width - mf.tool.overlap) / 2.0;
 
             //if off, turn it on because they obviously want a tram.
-            mf.tram.generateMode = 0;
+            mf.tram.generateMode = TramMode.All;
 
             if (mf.tram.tramList.Count > 0 && mf.tram.tramBndOuterArr.Count > 0)
-                mf.tram.generateMode = 0;
+                mf.tram.generateMode = TramMode.All;
             else if (mf.tram.tramBndOuterArr.Count == 0)
-                mf.tram.generateMode = 1;
+                mf.tram.generateMode = TramMode.FillTracks;
             else if (mf.tram.tramList.Count == 0)
-                mf.tram.generateMode = 2;
-            else mf.tram.generateMode = 0;
+                mf.tram.generateMode = TramMode.BoundaryTracks;
+            else mf.tram.generateMode = TramMode.All;
 
-            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = 1;
+            if (mf.bnd.bndList.Count == 0) mf.tram.generateMode = TramMode.FillTracks;
 
-            switch (mf.tram.generateMode)
-            {
-                case 0:
-                    btnMode.BackgroundImage = Properties.Resources.TramAll;
-                    break;
-
-                case 1:
-                    btnMode.BackgroundImage = Properties.Resources.TramLines;
-                    break;
-
-                case 2:
-                    btnMode.BackgroundImage = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            btnMode.BackgroundImage = CTram.GetModeBitmap(mf.tram.generateMode);
 
             if (mf.bnd.bndList.Count == 0) btnMode.Enabled = false;
 
@@ -128,7 +114,7 @@ namespace AgOpenGPS
 
         private void MoveBuildTramLine(double Dist)
         {
-            mf.tram.displayMode = 1;
+            mf.tram.displayMode = TramMode.All;
 
             if (isCurve)
             {
@@ -236,33 +222,29 @@ namespace AgOpenGPS
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
             Close();
         }
 
         private void btnMode_Click(object sender, EventArgs e)
         {
-            mf.tram.generateMode++;
-            if (mf.tram.generateMode > 2) mf.tram.generateMode = 0;
-
             switch (mf.tram.generateMode)
             {
-                case 0:
-                    btnMode.BackgroundImage = Properties.Resources.TramAll;
+                case TramMode.All:
+                    mf.tram.generateMode = TramMode.FillTracks;
                     break;
 
-                case 1:
-                    btnMode.BackgroundImage = Properties.Resources.TramLines;
+                case TramMode.FillTracks:
+                    mf.tram.generateMode = TramMode.BoundaryTracks;
                     break;
 
-                case 2:
-                    btnMode.BackgroundImage = Properties.Resources.TramOuter;
+                case TramMode.BoundaryTracks:
+                    mf.tram.generateMode = TramMode.All;
                     break;
 
                 default:
                     break;
             }
-
+            btnMode.BackgroundImage = CTram.GetModeBitmap(mf.tram.generateMode);
             MoveBuildTramLine(0);
         }
 

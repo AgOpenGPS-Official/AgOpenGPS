@@ -1,10 +1,10 @@
-﻿using AgOpenGPS.Core.Models;
+﻿using AgOpenGPS.Core.Drawing;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Visuals;
 using AgOpenGPS.Helpers;
 using AgOpenGPS.Visuals;
 using AgOpenGPS.WinForms;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace AgOpenGPS
@@ -13,13 +13,23 @@ namespace AgOpenGPS
     {
         //access to the main GPS form and all its variables
         private readonly FormGPS mf = null;
+        private readonly FieldGrid _fieldGrid;
+        private readonly FieldGrid _fieldGridCopy;
+        private readonly FieldGridVisual _fieldGridVisual;
+        private readonly FieldGridVisual _fieldGridCopyVisual;
+
         private GeoViewport _viewport;
 
         public GeoCoord? _coordA;
         public GeoCoord? _coordB;
 
-        public FormGrid(Form callingForm)
+        public FormGrid(Form callingForm, FieldGrid fieldGrid)
         {
+            _fieldGrid = fieldGrid;
+            _fieldGridCopy = fieldGrid.DeepCopy();
+            _fieldGridVisual = new FieldGridVisual(_fieldGrid);
+            _fieldGridCopyVisual = new FieldGridVisual(_fieldGridCopy);
+
             //get copy of the calling main form
             mf = callingForm as FormGPS;
 
@@ -55,12 +65,13 @@ namespace AgOpenGPS
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            _fieldGrid.GridAlignment = _fieldGridCopy.GridAlignment;
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            mf.worldGrid.gridRotation = 0;
+            _fieldGridCopy.GridAlignment = _fieldGrid.GridAlignment;
             Close();
         }
 
@@ -85,7 +96,7 @@ namespace AgOpenGPS
             {
                 _coordB = mouseDownCoord;
                 GeoDir abDir = new GeoDir(_coordA.Value, _coordB.Value);
-                mf.worldGrid.gridRotation = abDir.AngleInDegrees;
+                _fieldGridCopy.GridAlignment = abDir;
             }
         }
 
@@ -101,6 +112,8 @@ namespace AgOpenGPS
                 bool isSelected = j == 0;
                 FenceLineVisual.DrawFenceLine(fenceLineEar, isSelected);
             }
+            _fieldGridVisual.Draw(Colors.White, mf.FieldBoundingBox);
+            _fieldGridCopyVisual.Draw(Colors.Yellow, mf.FieldBoundingBox);
             VehicleDotVisual.DrawVehicleDot(mf.pivotAxlePos.ToGeoCoord());
             TouchPointsLineVisual.DrawTouchPoints(_coordA, _coordB);
 
@@ -116,11 +129,9 @@ namespace AgOpenGPS
         {
             if (mf.trk.idx > -1)
             {
-                mf.worldGrid.gridRotation = Math.Atan2(
-                    mf.trk.gArr[mf.trk.idx].ptB.easting - mf.trk.gArr[mf.trk.idx].ptA.easting,
-                    mf.trk.gArr[mf.trk.idx].ptB.northing - mf.trk.gArr[mf.trk.idx].ptA.northing);
-                if (mf.worldGrid.gridRotation < 0) mf.worldGrid.gridRotation += glm.twoPI;
-                mf.worldGrid.gridRotation = glm.toDegrees(mf.worldGrid.gridRotation);
+                GeoCoord coordA = mf.trk.gArr[mf.trk.idx].ptA.ToGeoCoord();
+                GeoCoord coordB = mf.trk.gArr[mf.trk.idx].ptB.ToGeoCoord();
+                _fieldGridCopy.GridAlignment = new GeoDir(coordA, coordB);
             }
             Close();
         }
@@ -133,7 +144,7 @@ namespace AgOpenGPS
             oglSelf.Left = 1;
             oglSelf.Top = 0;
 
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
 
             tlp1.Width = Width - oglSelf.Width - 10;
             tlp1.Left = oglSelf.Width - 2;
@@ -142,7 +153,7 @@ namespace AgOpenGPS
         private void oglSelf_Resize(object sender, EventArgs e)
         {
             CreateViewport();
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
         }
 
         private void oglSelf_Load(object sender, EventArgs e)

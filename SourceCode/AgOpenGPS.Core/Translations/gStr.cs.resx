@@ -924,7 +924,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Uložit a vrátit</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Čas na pivo! Čeština!</value>
+    <value>Uvidíme se příště!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
     <value>Ukládám pole</value>
@@ -1216,5 +1216,57 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Stáhnout pole z AgShare</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Získat vše</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Získat vybrané</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Vynucené přepsání</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Příjmout</value>
+  </data>
+  <data name="gsCopyFrom" xml:space="preserve">
+    <value>Kopírovat z</value>
+  </data>
+  <data name="gsCreateNewProfile" xml:space="preserve">
+    <value>Vytvořit nový profil</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Diskusní fórum</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Nový</value>
+  </data>
+  <data name="gsProfile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>Nastavení vozidla se nyní nazývají „profily“ a lze
+je vytvářet/načítat v hlavním menu (vlevo nahoře).</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>Návody na YouTube</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Stahování</value>
+  </data>
+  <data name="gsEmptyProfile" xml:space="preserve">
+    <value>Prázdný profil</value>
+  </data>
+  <data name="gsLoad" xml:space="preserve">
+    <value>Načíst</value>
+  </data>
+  <data name="gsLoadProfile" xml:space="preserve">
+    <value>Načíst profil</value>
+  </data>
+  <data name="gsName" xml:space="preserve">
+    <value>Jméno</value>
   </data>
 </root>

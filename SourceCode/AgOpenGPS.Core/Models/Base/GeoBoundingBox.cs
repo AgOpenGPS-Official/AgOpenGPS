@@ -5,7 +5,7 @@
         private GeoCoord _minCoord;
         private GeoCoord _maxCoord;
 
-        static public GeoBoundingBox CreateEmpty()
+        public static GeoBoundingBox CreateEmpty()
         {
             GeoCoord minCoord = new GeoCoord(double.MaxValue, double.MaxValue);
             GeoCoord maxCoord = new GeoCoord(double.MinValue, double.MinValue);
@@ -46,6 +46,16 @@
             return
                 _minCoord.Northing <= testCoord.Northing && testCoord.Northing <= _maxCoord.Northing &&
                 _minCoord.Easting <= testCoord.Easting && testCoord.Easting <= _maxCoord.Easting;
+        }
+
+        public GeoBoundingBox Scaled(double northingFactor, double eastingFactor)
+        {
+            GeoCoord center = CenterCoord;
+            GeoDelta maxCornerDelta = new GeoDelta(center, MaxCoord);
+            GeoDelta resizedMaxCornerDelta = new GeoDelta(
+                maxCornerDelta.NorthingDelta * northingFactor,
+                maxCornerDelta.EastingDelta * eastingFactor);
+            return new GeoBoundingBox(center - resizedMaxCornerDelta, center + resizedMaxCornerDelta);
         }
 
     }

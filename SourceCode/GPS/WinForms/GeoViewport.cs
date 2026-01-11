@@ -13,11 +13,10 @@ namespace AgOpenGPS.WinForms
             GeoBoundingBox boundingBox,
             GLControl glControl
         )
-            : base(boundingBox)
+            : base()
         {
             _glControl = glControl;
-            _glControl.MakeCurrent();
-            Initialize();
+            Initialize(boundingBox);
             _glControl.MouseDown += ViewportControlMouseDown;
         }
 
@@ -31,12 +30,16 @@ namespace AgOpenGPS.WinForms
             _glControl?.Refresh();
         }
 
-        public override XyDelta ViewportSize
+        protected override ViewportSize2D ViewportSize
         {
             get
             {
                 Size size = _glControl.Size;
-                return new XyDelta(size.Width, size.Height);
+                return new ViewportSize2D
+                {
+                    SizeX = size.Width,
+                    SizeY = size.Height
+                };
             }
         }
 

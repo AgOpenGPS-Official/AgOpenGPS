@@ -1,8 +1,10 @@
 ﻿using AgLibrary.Logging;
 using AgOpenGPS;
+using AgOpenGPS.Core;
 using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Performance;
 using AgOpenGPS.Properties;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -46,6 +48,21 @@ namespace AgOpenGPS
         vec2 right = new vec2();
         vec2 ptTip = new vec2();
 
+        private PerformanceTool _performanceTool;
+        private PerformanceTimer _updateFixTimer;
+        private PerformanceTimer _paintTimer;
+        private PerformanceTimer _drawTramTimer;
+        private PerformanceTimer _drawSectionsTimer;
+
+        private void InitializePerformanceTool(ApplicationCore appCore)
+        {
+            _performanceTool = new PerformanceTool(appCore.AppModel.FieldsDirectory);
+            _updateFixTimer = new PerformanceTimer(_performanceTool, "UpdateFix");
+            _paintTimer = new PerformanceTimer(_performanceTool, "Paint");
+            _drawTramTimer = new PerformanceTimer(_performanceTool, "DrawTram");
+            _drawSectionsTimer = new PerformanceTimer(_performanceTool, "DrawSections");
+        }
+
         private void oglMain_Load(object sender, EventArgs e)
         {
             oglMain.MakeCurrent();
@@ -73,6 +90,7 @@ namespace AgOpenGPS
 
         private void oglMain_Paint(object sender, PaintEventArgs e)
         {
+            _paintTimer?.Start();
             if (sentenceCounter < 299)
             {
                 if (isGPSPositionInitialized)
@@ -107,7 +125,7 @@ namespace AgOpenGPS
 
                     worldGrid.DrawFieldSurface(fieldColor, camera.ZoomValue, isTextureOn);
 
-                    if (isGridOn) worldGrid.DrawWorldGrid(worldGridColor, FieldBoundingBox);
+                    if (isGridOn) worldGrid.DrawFieldGrid(isDay, FieldBoundingBox);
 
                     if (isDrawPolygons) GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
 
@@ -115,6 +133,7 @@ namespace AgOpenGPS
 
                     #region Triangle section patches
 
+                    _drawSectionsTimer?.Start();
                     GL.Enable(EnableCap.Blend);
                     //draw patches of sections
 
@@ -335,8 +354,11 @@ namespace AgOpenGPS
                             }
                         }
                     }
+                    _drawSectionsTimer?.Stop();
 
+                    _drawTramTimer?.Start();
                     if (tram.displayMode != 0) tram.DrawTram();
+                    _drawTramTimer?.Stop();
 
                     GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
 
@@ -785,6 +807,7 @@ namespace AgOpenGPS
                 //calc overlap
                 oglZoom.Refresh();
             }
+            _paintTimer?.Stop();
         }
 
         private void oglBack_Load(object sender, EventArgs e)
@@ -888,7 +911,7 @@ namespace AgOpenGPS
                 GL.Color3((byte)0, (byte)245, (byte)0);
                 GL.LineWidth(4);
 
-                if ((tram.displayMode == 1 || tram.displayMode == 2))
+                if (tram.displayMode.IncludesFillTracks())
                 {
                     for (int i = 0; i < tram.tramList.Count; i++)
                     {
@@ -901,7 +924,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                if (tram.displayMode == 1 || tram.displayMode == 3)
+                if (tram.displayMode.IncludesBoundaryTracks())
                 {
                     //boundary tram list
                     GL.Begin(PrimitiveType.LineStrip);

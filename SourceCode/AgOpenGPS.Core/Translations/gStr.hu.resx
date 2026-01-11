@@ -934,7 +934,7 @@ A választott sorrend alapján fognak megjelenni alulról felfelé.</value>
     <value>Tábla mentése</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
-    <value>Tábla helyben elmentve.</value>
+    <value>Tábla mentve a gépen.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
     <value>Leállítás befejezése folyamatban</value>

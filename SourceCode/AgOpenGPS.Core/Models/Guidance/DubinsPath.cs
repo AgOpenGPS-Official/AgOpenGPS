@@ -117,7 +117,7 @@ namespace AgOpenGPS.Core.Models
             Debug.Assert(goalTurnType != TurnType.Straight);
         }
 
-        static public bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
+        public static bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
         {
             bool isPossible =
                 startCircle.Center.Easting != goalCircle.Center.Easting ||
@@ -154,7 +154,7 @@ namespace AgOpenGPS.Core.Models
             Debug.Assert(goalTurnType != TurnType.Straight);
         }
 
-        static public bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
+        public static bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
         {
             //RSL and LSR is only working of the circles don't intersect
             return startCircle.Center.Distance(goalCircle.Center) > startCircle.Radius + goalCircle.Radius;
@@ -193,7 +193,7 @@ namespace AgOpenGPS.Core.Models
             Debug.Assert(middleTurnType != TurnType.Straight);
         }
 
-        static public bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
+        public static bool PathIsPossible(GeoCircle startCircle, GeoCircle goalCircle)
         {
             // With the LRL and RLR paths, the distance between the circles has to be less than 4 * r
             return

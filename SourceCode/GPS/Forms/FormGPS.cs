@@ -320,6 +320,8 @@ namespace AgOpenGPS
                 new DirectoryInfo(RegistrySettings.baseDirectory),
                 null,
                 null);
+            // Uncomment next line for Performance analysis
+            // InitializePerformanceTool(AppCore);
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
@@ -1231,7 +1233,7 @@ namespace AgOpenGPS
 
             gridToolSpacing = (int)(gridStep / tool.width + 0.5);
             if (gridToolSpacing < 1) gridToolSpacing = 1;
-            worldGrid.GridStep = gridToolSpacing * tool.width;
+            worldGrid.FieldGrid.GridStep = gridToolSpacing * tool.width;
 
             oglMain.MakeCurrent();
             GL.MatrixMode(MatrixMode.Projection);
