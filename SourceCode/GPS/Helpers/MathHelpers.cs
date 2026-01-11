@@ -32,17 +32,19 @@ namespace AgOpenGPS.Helpers
         }
 
         /// <summary>
-        /// Calculate standard deviation using sample standard deviation formula
+        /// Calculate mean and standard deviation using sample standard deviation formula
         /// </summary>
-        /// <param name="data">Data to calculate standard deviation from</param>
-        /// <param name="mean">Pre-calculated mean value</param>
-        /// <returns>Standard deviation</returns>
-        public static double CalculateStandardDeviation(List<double> data, double mean)
+        /// <param name="data">Data to calculate statistics from</param>
+        /// <returns>Tuple of (mean, standardDeviation)</returns>
+        public static (double mean, double standardDeviation) CalculateMeanAndStandardDeviation(List<double> data)
         {
-            if (data == null || data.Count < 2) return 0;
+            if (data == null || data.Count < 2) return (0, 0);
 
+            double mean = data.Average();
             double sumSquaredDifferences = data.Sum(x => Math.Pow(x - mean, 2));
-            return Math.Sqrt(sumSquaredDifferences / (data.Count - 1));
+            double standardDeviation = Math.Sqrt(sumSquaredDifferences / (data.Count - 1));
+
+            return (mean, standardDeviation);
         }
     }
 }

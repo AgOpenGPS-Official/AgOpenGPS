@@ -103,124 +103,124 @@ namespace AgOpenGPS.Tests.Helpers
 
         #endregion
 
-        #region CalculateStandardDeviation Tests
+        #region CalculateMeanAndStandardDeviation Tests
 
         [Test]
-        public void CalculateStandardDeviation_EmptyList_ReturnsZero()
+        public void CalculateMeanAndStandardDeviation_EmptyList_ReturnsZeros()
         {
             // Arrange
             var data = new List<double>();
-            double mean = 0.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
-            Assert.That(result, Is.EqualTo(0.0));
+            Assert.That(mean, Is.EqualTo(0.0));
+            Assert.That(stdDev, Is.EqualTo(0.0));
         }
 
         [Test]
-        public void CalculateStandardDeviation_NullList_ReturnsZero()
+        public void CalculateMeanAndStandardDeviation_NullList_ReturnsZeros()
         {
             // Arrange
             List<double> data = null;
-            double mean = 0.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
-            Assert.That(result, Is.EqualTo(0.0));
+            Assert.That(mean, Is.EqualTo(0.0));
+            Assert.That(stdDev, Is.EqualTo(0.0));
         }
 
         [Test]
-        public void CalculateStandardDeviation_SingleValue_ReturnsZero()
+        public void CalculateMeanAndStandardDeviation_SingleValue_ReturnsZeros()
         {
             // Arrange
             var data = new List<double> { 5.0 };
-            double mean = 5.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
-            Assert.That(result, Is.EqualTo(0.0));
+            Assert.That(mean, Is.EqualTo(0.0));
+            Assert.That(stdDev, Is.EqualTo(0.0));
         }
 
         [Test]
-        public void CalculateStandardDeviation_IdenticalValues_ReturnsZero()
+        public void CalculateMeanAndStandardDeviation_IdenticalValues_ReturnsZeroStdDev()
         {
             // Arrange
             var data = new List<double> { 5.0, 5.0, 5.0, 5.0 };
-            double mean = 5.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
-            Assert.That(result, Is.EqualTo(0.0));
+            Assert.That(mean, Is.EqualTo(5.0));
+            Assert.That(stdDev, Is.EqualTo(0.0));
         }
 
         [Test]
-        public void CalculateStandardDeviation_SimpleDataSet_ReturnsCorrectValue()
+        public void CalculateMeanAndStandardDeviation_SimpleDataSet_ReturnsCorrectValues()
         {
             // Arrange
             var data = new List<double> { 2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0 };
-            double mean = 5.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
+            Assert.That(mean, Is.EqualTo(5.0));
             // Expected std dev = sqrt(sum((x-mean)^2)/(n-1))
             // = sqrt((9+1+1+1+0+0+4+16)/7) = sqrt(32/7) ≈ 2.138
-            Assert.That(result, Is.EqualTo(2.138).Within(0.001));
+            Assert.That(stdDev, Is.EqualTo(2.138).Within(0.001));
         }
 
         [Test]
-        public void CalculateStandardDeviation_NegativeValues_ReturnsCorrectValue()
+        public void CalculateMeanAndStandardDeviation_NegativeValues_ReturnsCorrectValues()
         {
             // Arrange
             var data = new List<double> { -2.0, -1.0, 0.0, 1.0, 2.0 };
-            double mean = 0.0;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
+            Assert.That(mean, Is.EqualTo(0.0));
             // Expected std dev = sqrt((4+1+0+1+4)/4) = sqrt(10/4) ≈ 1.581
-            Assert.That(result, Is.EqualTo(1.581).Within(0.001));
+            Assert.That(stdDev, Is.EqualTo(1.581).Within(0.001));
         }
 
         [Test]
-        public void CalculateStandardDeviation_LargeSpread_ReturnsCorrectValue()
+        public void CalculateMeanAndStandardDeviation_LargeSpread_ReturnsCorrectValues()
         {
             // Arrange
             var data = new List<double> { 1.0, 100.0 };
-            double mean = 50.5;
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
+            Assert.That(mean, Is.EqualTo(50.5));
             // Expected std dev = sqrt((2450.25+2450.25)/1) = sqrt(4900.5) ≈ 70.0
-            Assert.That(result, Is.EqualTo(70.0).Within(0.1));
+            Assert.That(stdDev, Is.EqualTo(70.0).Within(0.1));
         }
 
         [Test]
-        public void CalculateStandardDeviation_RealWorldWASData_ReturnsCorrectValue()
+        public void CalculateMeanAndStandardDeviation_RealWorldWASData_ReturnsCorrectValues()
         {
             // Arrange - Simulated WAS calibration data (steering angles in degrees)
             var data = new List<double> { -2.1, -1.8, -2.0, -1.9, -2.2, -2.0, -1.7, -2.1, -1.9, -2.0 };
-            double mean = -1.97; // Approximately
 
             // Act
-            double result = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
+            Assert.That(mean, Is.EqualTo(-1.97).Within(0.01)); // Mean should be close to -1.97
             // Small standard deviation indicates consistent steering
-            Assert.That(result, Is.LessThan(0.2)); // Should be ~0.15
-            Assert.That(result, Is.GreaterThan(0.0));
+            Assert.That(stdDev, Is.LessThan(0.2)); // Should be ~0.15
+            Assert.That(stdDev, Is.GreaterThan(0.0));
         }
 
         #endregion
@@ -235,8 +235,7 @@ namespace AgOpenGPS.Tests.Helpers
 
             // Act
             double median = MathHelpers.CalculateMedian(steerAngles);
-            double mean = steerAngles.Sum() / steerAngles.Count;
-            double stdDev = MathHelpers.CalculateStandardDeviation(steerAngles, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(steerAngles);
 
             // Assert
             Assert.That(median, Is.EqualTo(-2.0));
@@ -252,8 +251,7 @@ namespace AgOpenGPS.Tests.Helpers
 
             // Act
             double median = MathHelpers.CalculateMedian(data);
-            double mean = data.Sum() / data.Count;
-            double stdDev = MathHelpers.CalculateStandardDeviation(data, mean);
+            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
 
             // Assert
             // Median should be less affected by outlier than mean
