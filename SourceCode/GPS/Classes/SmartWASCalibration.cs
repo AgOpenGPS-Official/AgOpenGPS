@@ -232,9 +232,8 @@ namespace AgOpenGPS
             {
                 // Calculate basic statistics
                 var sortedData = steerAngleHistory.OrderBy(x => x).ToList();
-                Mean = steerAngleHistory.Average();
+                (Mean, StandardDeviation) = MathHelpers.CalculateMeanAndStandardDeviation(steerAngleHistory);
                 Median = MathHelpers.CalculateMedian(steerAngleHistory);
-                StandardDeviation = MathHelpers.CalculateStandardDeviation(steerAngleHistory, Mean);
 
                 // Determine the recommended zero point
                 // For a well-calibrated system, the distribution should be centered around zero
