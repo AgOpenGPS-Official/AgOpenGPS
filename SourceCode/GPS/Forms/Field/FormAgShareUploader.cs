@@ -135,7 +135,7 @@ namespace AgOpenGPS.Forms
         {
             if (isUploading)
             {
-                FormDialog.Show("Please Wait", "Upload already in progress", MessageBoxButtons.OK);
+                FormDialog.Show("Please Wait", "Upload already in progress", DialogSeverity.Info);
                 return;
             }
 
@@ -151,15 +151,14 @@ namespace AgOpenGPS.Forms
 
             if (selectedFields.Count == 0)
             {
-                FormDialog.Show("No Selection", "Please select at least one field to upload", MessageBoxButtons.OK);
+                FormDialog.Show("No Selection", "Please select at least one field to upload", DialogSeverity.Info);
                 return;
             }
 
             // Confirm upload
-            DialogResult result = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 "Confirm Upload",
-                $"Upload {selectedFields.Count} field(s) to AgShare?",
-                MessageBoxButtons.YesNo);
+                $"Upload {selectedFields.Count} field(s) to AgShare?");
 
             if (result != DialogResult.OK)
                 return;
@@ -211,7 +210,7 @@ namespace AgOpenGPS.Forms
                 FormDialog.Show(
                     "Upload Complete",
                     $"Upload Complete\n\nSuccessful: {successCount}\nFailed: {failCount}",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Info);
             }
             finally
             {
@@ -305,7 +304,7 @@ namespace AgOpenGPS.Forms
         {
             if (isUploading)
             {
-                FormDialog.Show("Upload in Progress", "Please wait for upload to complete", MessageBoxButtons.OK);
+                FormDialog.Show("Upload in Progress", "Please wait for upload to complete", DialogSeverity.Warning);
                 return;
             }
 

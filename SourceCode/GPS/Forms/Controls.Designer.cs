@@ -1398,7 +1398,7 @@ namespace AgOpenGPS
                 // Inform user that app needs to restart
                 FormDialog.Show("Restart Required",
                     gStr.gsProgramWillExitPleaseRestart,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Info);
 
                 // Close the app
                 Close();
@@ -1456,20 +1456,20 @@ namespace AgOpenGPS
             if (isJobStarted)
             {
                 // Show message if field is still open
-                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
+                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, DialogSeverity.Warning);
             }
             else
             {
                 // Ask user for confirmation before resetting everything
-                DialogResult result2 = FormDialog.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
+                DialogResult result = FormDialog.ShowQuestion(gStr.gsResetAll, gStr.gsReallyResetEverything);
 
-                if (result2 == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     // Reset registry settings
                     RegistrySettings.Reset();
 
                     // Notify user and close app
-                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, MessageBoxButtons.OK);
+                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, DialogSeverity.Info);
                     Close();
                 }
             }
@@ -1864,13 +1864,11 @@ namespace AgOpenGPS
             {
                 if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
                 {
-                    DialogResult result3 = FormDialog.Show(
+                    DialogResult result = FormDialog.ShowQuestion(
                         gStr.gsDeleteAllContoursAndSections,
-                        gStr.gsDeleteForSure,
-                        MessageBoxButtons.YesNo
-                    );
+                        gStr.gsDeleteForSure);
 
-                    if (result3 == DialogResult.OK)
+                    if (result == DialogResult.OK)
                     {
                         //FileCreateElevation();
 

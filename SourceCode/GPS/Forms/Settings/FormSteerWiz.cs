@@ -964,7 +964,10 @@ namespace AgOpenGPS
         private void btnZeroWAS_Click(object sender, EventArgs e)
         {
             int offset = (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees + hsbarWasOffset.Value);
-            if (Math.Abs(offset) > 3900) FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", MessageBoxButtons.OK);
+            if (Math.Abs(offset) > 3900)
+            {
+                FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", DialogSeverity.Error);
+            }
             else
             {
                 hsbarWasOffset.Value += (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees);
@@ -1078,7 +1081,7 @@ namespace AgOpenGPS
         {
             if (Math.Abs((int)mf.mc.actualSteerAngleDegrees) < 5)
             {
-                FormDialog.Show("Steer Angle Too Low", "Must be Greater than 5 degrees", MessageBoxButtons.OK);
+                FormDialog.Show("Steer Angle Too Low", "Must be Greater than 5 degrees", DialogSeverity.Error);
                 return;
             }
 
@@ -1100,7 +1103,7 @@ namespace AgOpenGPS
             if (CheckSteerSwitch())
                 mf.vehicle.driveFreeSteerAngle -= 2;
             else
-                FormDialog.Show("Steering Disabled", "Enable Steer Switch", MessageBoxButtons.OK);
+                FormDialog.Show("Steering Disabled", "Enable Steer Switch", DialogSeverity.Error);
         }
 
         private void btnMinGainRight_Click(object sender, EventArgs e)
@@ -1108,7 +1111,7 @@ namespace AgOpenGPS
             if (CheckSteerSwitch())
                 mf.vehicle.driveFreeSteerAngle += 2;
             else
-                FormDialog.Show("Steering Disabled", "Enable Steer Switch", MessageBoxButtons.OK);
+                FormDialog.Show("Steering Disabled", "Enable Steer Switch", DialogSeverity.Error);
         }
 
         private void btnZeroMinMovementSetting_Click(object sender, EventArgs e)
@@ -1116,7 +1119,7 @@ namespace AgOpenGPS
             if (CheckSteerSwitch())
                 mf.vehicle.driveFreeSteerAngle = 0;
             else
-                FormDialog.Show("Steering Disabled", "Enable Steer Switch", MessageBoxButtons.OK);
+                FormDialog.Show("Steering Disabled", "Enable Steer Switch", DialogSeverity.Error);
         }
 
         private void tab_MinimumGain_Enter(object sender, EventArgs e)

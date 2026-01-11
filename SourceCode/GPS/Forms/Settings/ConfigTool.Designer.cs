@@ -1170,7 +1170,7 @@ namespace AgOpenGPS
                     if (numberOfSections * wide > 5000)
                     {
                         wide = 99;
-                        FormDialog.Show("Too Wide", "Max 50 Meters", MessageBoxButtons.OK);
+                        FormDialog.Show("Too Wide", "Max 50 Meters", DialogSeverity.Error);
                         Log.EventWriter("Sections, Tool Set Too Wide");
 
                     }
@@ -1180,7 +1180,7 @@ namespace AgOpenGPS
                     if (numberOfSections * wide > 1900)
                     {
                         wide = 19;
-                        FormDialog.Show("Too Wide", "Max 164 Feet", MessageBoxButtons.OK);
+                        FormDialog.Show("Too Wide", "Max 164 Feet", DialogSeverity.Error);
                         Log.EventWriter("Sections, Tool Set Too Wide");
                     }
                 }
@@ -1269,7 +1269,7 @@ namespace AgOpenGPS
                             {
                                 if (toolWidth > 5000)
                                 {
-                                    FormDialog.Show("Too Wide", "Set to 99, Max 50 Meters", MessageBoxButtons.OK);
+                                    FormDialog.Show("Too Wide", "Set to 99, Max 50 Meters", DialogSeverity.Error);
                                     Log.EventWriter("Sections, Tool Set Too Wide");
                                     toolWidth = 0;
                                     nudSection01.Value = 99;
@@ -1294,7 +1294,7 @@ namespace AgOpenGPS
                             {
                                 if (toolWidth > 1900)
                                 {
-                                    FormDialog.Show("Too Wide", "Set to 99, Max 164 Feet", MessageBoxButtons.OK);
+                                    FormDialog.Show("Too Wide", "Set to 99, Max 164 Feet", DialogSeverity.Error);
                                     Log.EventWriter("Sections, Tool Set Too Wide");
                                     toolWidth = 0;
                                     nudSection01.Value = 99;

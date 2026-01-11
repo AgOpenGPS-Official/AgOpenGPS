@@ -95,7 +95,7 @@ namespace AgOpenGPS
                 //create it for first save
                 if (dirNewField.Exists)
                 {
-                    FormDialog.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, MessageBoxButtons.OK);
+                    FormDialog.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, DialogSeverity.Error);
                     return;
                 }
                 else
@@ -121,7 +121,7 @@ namespace AgOpenGPS
             {
                 Log.EventWriter("Creating new field " + ex);
 
-                FormDialog.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsError, ex.ToString(), DialogSeverity.Error);
                 mf.currentFieldDirectory = "";
             }
 

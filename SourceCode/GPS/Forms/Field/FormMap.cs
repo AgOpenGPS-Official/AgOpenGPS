@@ -219,17 +219,16 @@ namespace AgOpenGPS
 
             if (mf.bnd.bndList == null || mf.bnd.bndList.Count == 0)
             {
-                FormDialog.Show(gStr.gsBoundary, gStr.gsNoBoundary, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsBoundary, gStr.gsNoBoundary, DialogSeverity.Error);
                 return;
             }
 
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 gStr.gsDeleteForSure,
-                "Delete Last Field Boundary Made?",
-                MessageBoxButtons.YesNo);
+                "Delete Last Field Boundary Made?");
 
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 int cnt = mf.bnd.bndList.Count;
                 mf.bnd.bndList[cnt - 1].hdLine?.Clear();
@@ -254,7 +253,7 @@ namespace AgOpenGPS
         {
             if (cboxEnableLineDraw.Checked)
             {
-                FormDialog.Show("Boundary Create Mode", "Touch Map to Create The Boundary", MessageBoxButtons.OK);
+                FormDialog.Show("Boundary Create Mode", "Touch Map to Create The Boundary", DialogSeverity.Info);
                 btnAddFence.Enabled = true;
                 btnDeletePoint.Enabled = true;
                 Log.EventWriter("Bing Touch Boundary started");
@@ -315,7 +314,7 @@ namespace AgOpenGPS
         {
             if (polygon.Points.Count > 0)
             {
-                FormDialog.Show(gStr.gsBoundary, "Finish Making Boundary", MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsBoundary, "Finish Making Boundary", DialogSeverity.Info);
                 cboxDrawMap.Checked = !cboxDrawMap.Checked;
                 return;
             }
@@ -326,7 +325,7 @@ namespace AgOpenGPS
                 BingMap bingMap = CreateBingMap();
                 if (bingMap == null)
                 {
-                    FormDialog.Show("BingMap Error", "Map Too Large", MessageBoxButtons.OK);
+                    FormDialog.Show("BingMap Error", "Map Too Large", DialogSeverity.Error);
                     Log.EventWriter("BingMap, Map Too Large");
                 }
                 SetAndSaveBingMap(bingMap);

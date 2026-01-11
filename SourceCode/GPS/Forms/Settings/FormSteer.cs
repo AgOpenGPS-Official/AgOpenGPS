@@ -884,7 +884,7 @@ namespace AgOpenGPS
             int offset = (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees + hsbarWasOffset.Value);
             if (Math.Abs(offset) > 3900)
             {
-                FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", MessageBoxButtons.OK);
+                FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", DialogSeverity.Error);
                 Log.EventWriter("Excessive Steer Angle, No Zero " + offset);
             }
             else
@@ -1187,12 +1187,11 @@ namespace AgOpenGPS
 
         private void btnVehicleReset_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 "Reset This Page to Defaults",
-                "Are you Sure",
-                MessageBoxButtons.YesNo);
+                "Are you Sure");
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 Log.EventWriter("Steer Form - Steer Settings Set to Default");
 

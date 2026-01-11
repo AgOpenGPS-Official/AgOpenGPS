@@ -271,7 +271,7 @@ namespace AgOpenGPS
                 if (start == end)
                 {
                     start = 99999; end = 99999;
-                    FormDialog.Show("Line Error", "Start Point = End Point ", MessageBoxButtons.OK);
+                    FormDialog.Show("Line Error", "Start Point = End Point ", DialogSeverity.Error);
                     return;
                 }
 
@@ -772,7 +772,7 @@ namespace AgOpenGPS
 
                 if (nextLine == lineNum)
                 {
-                    FormDialog.Show("Create Error", "Is there maybe only 1 line?", MessageBoxButtons.OK);
+                    FormDialog.Show("Create Error", "Is there maybe only 1 line?", DialogSeverity.Error);
                     Log.EventWriter("Headache, Only 1 Line");
 
                     return;
@@ -804,7 +804,7 @@ namespace AgOpenGPS
 
             if (crossings.Count != mf.hdl.tracksArr.Count * 2)
             {
-                FormDialog.Show("Crossings Error", "Make sure all ends cross and only once", MessageBoxButtons.OK);
+                FormDialog.Show("Crossings Error", "Make sure all ends cross and only once", DialogSeverity.Error);
                 Log.EventWriter("Headache, All ends cross and only once");
                 mf.bnd.bndList[0].hdLine?.Clear();
                 return;

@@ -161,7 +161,7 @@ namespace AgOpenGPS
             Bitmap bm = new Bitmap(this.Width, this.Height);
             this.DrawToBitmap(bm, new Rectangle(0, 0, this.Width, this.Height));
             Clipboard.SetImage(bm);
-            FormDialog.Show("Captured", "Copied to Clipboard, Paste (CTRL-V) in Telegram", MessageBoxButtons.OK);
+            FormDialog.Show("Captured", "Copied to Clipboard, Paste (CTRL-V) in Telegram", DialogSeverity.Info);
             Log.EventWriter("View All Settings to Clipboard");
         }
 

@@ -50,7 +50,7 @@ namespace AgOpenGPS.Forms.Field
 
                 if (fields == null)
                 {
-                    FormDialog.Show("AgShare", "Failed to load field list.", MessageBoxButtons.OK);
+                    FormDialog.Show("AgShare", "Failed to load field list.", DialogSeverity.Error);
                     return;
                 }
 
@@ -70,7 +70,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                FormDialog.Show("AgShare", "Failed to load field list.\n" + ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "Failed to load field list.\n" + ex.Message, DialogSeverity.Error);
             }
         }
 
@@ -91,7 +91,7 @@ namespace AgOpenGPS.Forms.Field
 
             if (previewDto == null)
             {
-                FormDialog.Show("AgShare", "Failed to download field preview. Check logs for details.", MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "Failed to download field preview. Check logs for details.", DialogSeverity.Error);
                 return;
             }
 
@@ -106,14 +106,14 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0)
             {
-                FormDialog.Show("AgShare", "No field selected.", MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "No field selected.", DialogSeverity.Error);
                 return;
             }
 
             var selected = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (selected == null)
             {
-                FormDialog.Show("AgShare", "Invalid selection.", MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "Invalid selection.", DialogSeverity.Error);
                 return;
             }
 
@@ -121,7 +121,7 @@ namespace AgOpenGPS.Forms.Field
             bool success = await downloader.DownloadAndSaveAsync(selected.Id);
             if (!success)
             {
-                FormDialog.Show("AgShare", "Failed to download field.", MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "Failed to download field.", DialogSeverity.Error);
                 return;
             }
 
@@ -131,7 +131,7 @@ namespace AgOpenGPS.Forms.Field
 
             if (!File.Exists(fieldFile))
             {
-                FormDialog.Show("AgShare", "Field saved but could not be opened (missing Field.txt).", MessageBoxButtons.OK);
+                FormDialog.Show("AgShare", "Field saved but could not be opened (missing Field.txt).", DialogSeverity.Error);
                 return;
             }
 
@@ -193,7 +193,7 @@ namespace AgOpenGPS.Forms.Field
             {
                 message += $"\nFailed {result.Failed} field(s).";
             }
-            FormDialog.Show("AgShare", message, MessageBoxButtons.OK);
+            FormDialog.Show("AgShare", message, DialogSeverity.Info);
         }
 
 

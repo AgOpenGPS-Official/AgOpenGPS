@@ -511,7 +511,7 @@ namespace AgOpenGPS
             if (mf.isBtnAutoSteerOn)
             {
                 mf.btnAutoSteer.PerformClick();
-                FormDialog.Show(gStr.gsGuidanceStopped, "Return From Editing", MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsGuidanceStopped, "Return From Editing", DialogSeverity.Info);
 
             }
             if (mf.yt.isYouTurnBtnOn) mf.btnAutoYouTurn.PerformClick();

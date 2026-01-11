@@ -283,7 +283,7 @@ namespace AgOpenGPS
 
         private void ShowNoFieldsMessage()
         {
-            FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
+            FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, DialogSeverity.Error);
             Log.EventWriter("File Picker, No Fields");
             Close();
         }
@@ -345,7 +345,7 @@ namespace AgOpenGPS
                 }
             }
             // Keep this dialog here; it is a user action (delete confirmation), not loader validation.
-            if (FormDialog.Show(gStr.gsDeleteForSure, multiLineDir, MessageBoxButtons.YesNo) != DialogResult.OK)
+            if (FormDialog.ShowQuestion(gStr.gsDeleteForSure, multiLineDir) != DialogResult.OK)
                 return;
 
             try

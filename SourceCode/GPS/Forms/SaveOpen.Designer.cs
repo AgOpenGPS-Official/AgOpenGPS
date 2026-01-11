@@ -228,7 +228,7 @@ namespace AgOpenGPS
         {
             if (!isJobStarted)
             {
-                FormDialog.Show(gStr.gsFieldNotOpen, gStr.gsCreateNewField, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsFieldNotOpen, gStr.gsCreateNewField, DialogSeverity.Error);
                 return;
             }
 
@@ -896,7 +896,7 @@ namespace AgOpenGPS
             }
             catch (Exception e)
             {
-                FormDialog.Show("ISOXML Exception ", e.ToString(), MessageBoxButtons.OK);
+                FormDialog.Show("ISOXML Exception ", e.ToString(), DialogSeverity.Error);
                 Log.EventWriter("Export field as ISOXML Exception" + e);
             }
         }
@@ -947,11 +947,11 @@ namespace AgOpenGPS
                 Log.EventWriter($"[Load:{fileLabel}] failed");
                 if (criticality == LoadCriticality.Required)
                 {
-                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be loaded.", MessageBoxButtons.OK);
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be loaded.", DialogSeverity.Error);
                 }
                 else
                 {
-                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt but Field is Loaded", MessageBoxButtons.OK);
+                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt but Field is Loaded", DialogSeverity.Warning);
                 }
                 result = default(T);
                 return false;
@@ -971,11 +971,11 @@ namespace AgOpenGPS
                 Log.EventWriter($"[Load:{fileLabel}] failed: {ex}");
                 if (criticality == LoadCriticality.Required)
                 {
-                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be processed.", MessageBoxButtons.OK);
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, $"{fileLabel} is required and could not be processed.", DialogSeverity.Error);
                 }
                 else
                 {
-                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt; it will be recreated on save.", MessageBoxButtons.OK);
+                    FormDialog.Show("Optional file problem", $"{fileLabel} is missing or corrupt; it will be recreated on save.", DialogSeverity.Warning);
                 }
                 return false;
             }

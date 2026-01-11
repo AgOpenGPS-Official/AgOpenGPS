@@ -206,7 +206,7 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 Log.EventWriter("Failed to create new field: " + ex);
-                FormDialog.Show(gStr.gsError, ex.ToString(), MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsError, ex.ToString(), DialogSeverity.Error);
                 return;
             }
 
@@ -254,7 +254,7 @@ namespace AgOpenGPS
 
             if (Directory.Exists(directoryPath))
             {
-                FormDialog.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsDirectoryExists, gStr.gsChooseADifferentName, DialogSeverity.Error);
                 mf.currentFieldDirectory = "";
                 return;
             }
