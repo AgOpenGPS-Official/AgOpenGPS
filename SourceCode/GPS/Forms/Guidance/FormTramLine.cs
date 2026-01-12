@@ -85,7 +85,7 @@ namespace AgOpenGPS
             oglSelf.Left = 1;
             oglSelf.Top = 1;
 
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
 
             tlp1.Width = Width - oglSelf.Width - 4;
             tlp1.Left = oglSelf.Width;
@@ -740,7 +740,7 @@ namespace AgOpenGPS
             {
                 CreateViewport();
             }
-            _viewport.Resize(oglSelf.Width, oglSelf.Height);
+            _viewport.SizeChanged();
         }
 
         private void oglSelf_Load(object sender, EventArgs e)
@@ -909,7 +909,7 @@ namespace AgOpenGPS
 
         private void BuildTramBnd()
         {
-            mf.tram.displayMode = 1;
+            mf.tram.displayMode = TramMode.All;
             mf.tram.CreateBoundaryOuterTrack();
             mf.tram.CreateBoundaryInnerTrack();
         }

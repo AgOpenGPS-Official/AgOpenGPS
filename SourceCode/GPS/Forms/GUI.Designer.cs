@@ -40,7 +40,6 @@ namespace AgOpenGPS
         public Color fieldColorDay;
         public Color fieldColorNight;
         public ColorRgba fieldColor => (ColorRgba)(isDay ? fieldColorDay : fieldColorNight);
-        public ColorRgba worldGridColor => isDay ? Colors.WorldGridDayColor : Colors.WorldGridNightColor;
 
         public Color textColorDay;
         public Color textColorNight;
@@ -123,6 +122,7 @@ namespace AgOpenGPS
             //every 3 second update status
             if (fourSecondCounter >= 3)
             {
+                _performanceTool?.StartStop();
                 if (!isPauseFieldTextCounter)
                 {
                     if (++currentFieldTextCounter > 3) currentFieldTextCounter = 0;

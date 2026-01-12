@@ -21,6 +21,11 @@ namespace AgOpenGPS.Core.Streamers
             return intValue.ToString(CultureInfo.InvariantCulture);
         }
 
+        public string DoubleString(double doubleValue)
+        {
+            return doubleValue.ToString(CultureInfo.InvariantCulture);
+        }
+
         public string DoubleString(double value, string formatString)
         {
             return value.ToString(formatString, CultureInfo.InvariantCulture);

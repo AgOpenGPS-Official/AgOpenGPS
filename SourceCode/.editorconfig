@@ -44,6 +44,8 @@ dotnet_naming_rule.private_event_handler_method_none.severity = none
 # CS1690: Accessing a member on a field of a marshal-by-reference class may cause a runtime exception
 dotnet_diagnostic.CS1690.severity = silent
 
+# IDE0036: Order modifiers
+dotnet_diagnostic.IDE0036.severity = warning
 # IDE0055: Fix formatting
 dotnet_diagnostic.IDE0055.severity = warning
 
