@@ -1,5 +1,6 @@
 using AgOpenGPS.Helpers;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,16 +25,13 @@ namespace AgOpenGPS.Tests.Helpers
         }
 
         [Test]
-        public void CalculateMedian_NullList_ReturnsZero()
+        public void CalculateMedian_NullList_ThrowsArgumentNullException()
         {
             // Arrange
             List<double> data = null;
 
-            // Act
-            double result = MathHelpers.CalculateMedian(data);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(0.0));
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => MathHelpers.CalculateMedian(data));
         }
 
         [Test]
@@ -120,17 +118,13 @@ namespace AgOpenGPS.Tests.Helpers
         }
 
         [Test]
-        public void CalculateMeanAndStandardDeviation_NullList_ReturnsZeros()
+        public void CalculateMeanAndStandardDeviation_NullList_ThrowsArgumentNullException()
         {
             // Arrange
             List<double> data = null;
 
-            // Act
-            var (mean, stdDev) = MathHelpers.CalculateMeanAndStandardDeviation(data);
-
-            // Assert
-            Assert.That(mean, Is.EqualTo(0.0));
-            Assert.That(stdDev, Is.EqualTo(0.0));
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => MathHelpers.CalculateMeanAndStandardDeviation(data));
         }
 
         [Test]

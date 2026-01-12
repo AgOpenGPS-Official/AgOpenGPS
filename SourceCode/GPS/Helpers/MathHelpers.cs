@@ -14,9 +14,11 @@ namespace AgOpenGPS.Helpers
         /// </summary>
         /// <param name="data">Data to calculate median from (will be sorted)</param>
         /// <returns>Median value</returns>
+        /// <exception cref="ArgumentNullException">Thrown when data is null</exception>
         public static double CalculateMedian(List<double> data)
         {
-            if (data == null || data.Count == 0) return 0;
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data.Count == 0) return 0;
 
             var sortedData = data.OrderBy(x => x).ToList();
             int count = sortedData.Count;
@@ -36,9 +38,11 @@ namespace AgOpenGPS.Helpers
         /// </summary>
         /// <param name="data">Data to calculate statistics from</param>
         /// <returns>Tuple of (mean, standardDeviation)</returns>
+        /// <exception cref="ArgumentNullException">Thrown when data is null</exception>
         public static (double mean, double standardDeviation) CalculateMeanAndStandardDeviation(List<double> data)
         {
-            if (data == null || data.Count < 2) return (0, 0);
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (data.Count < 2) return (0, 0);
 
             double mean = data.Average();
             double sumSquaredDifferences = data.Sum(x => Math.Pow(x - mean, 2));
