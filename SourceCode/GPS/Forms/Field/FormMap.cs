@@ -219,7 +219,7 @@ namespace AgOpenGPS
 
             if (mf.bnd.bndList == null || mf.bnd.bndList.Count == 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, gStr.gsNoBoundary);
+                FormDialog.Show(gStr.gsBoundary, gStr.gsNoBoundary, MessageBoxButtons.OK);
                 return;
             }
 
@@ -240,10 +240,7 @@ namespace AgOpenGPS
                 mf.fd.UpdateFieldBoundaryGUIAreas();
                 mf.btnABDraw.Visible = false;
             }
-            else
-            {
-                mf.TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
-            }
+
             cboxEnableLineDraw.Checked = false;
 
             //clean up line
@@ -257,7 +254,7 @@ namespace AgOpenGPS
         {
             if (cboxEnableLineDraw.Checked)
             {
-                mf.TimedMessageBox(3000, "Boundary Create Mode", "Touch Map to Create The Boundary");
+                FormDialog.Show("Boundary Create Mode", "Touch Map to Create The Boundary", MessageBoxButtons.OK);
                 btnAddFence.Enabled = true;
                 btnDeletePoint.Enabled = true;
                 Log.EventWriter("Bing Touch Boundary started");
@@ -318,7 +315,7 @@ namespace AgOpenGPS
         {
             if (polygon.Points.Count > 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, "Finish Making Boundary");
+                FormDialog.Show(gStr.gsBoundary, "Finish Making Boundary", MessageBoxButtons.OK);
                 cboxDrawMap.Checked = !cboxDrawMap.Checked;
                 return;
             }
@@ -329,7 +326,7 @@ namespace AgOpenGPS
                 BingMap bingMap = CreateBingMap();
                 if (bingMap == null)
                 {
-                    mf.TimedMessageBox(2000, "BingMap Error", "Map Too Large");
+                    FormDialog.Show("BingMap Error", "Map Too Large", MessageBoxButtons.OK);
                     Log.EventWriter("BingMap, Map Too Large");
                 }
                 SetAndSaveBingMap(bingMap);

@@ -232,11 +232,6 @@ namespace AgOpenGPS
                 mf.bnd.BuildTurnLines();
                 UpdateChart();
             }
-            else
-            {
-                // Show brief message if action was cancelled
-                mf.TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
-            }
         }
 
 
@@ -280,7 +275,7 @@ namespace AgOpenGPS
         {
             if (mf.tool.width < 0.2)
             {
-                mf.TimedMessageBox(2000, "Tool Error", "Your tool is too small");
+                FormDialog.Show("Tool Error", "Your tool is too small", MessageBoxButtons.OK);
                 Log.EventWriter("Boundary, Tool is too narrow");
 
                 return;
@@ -383,10 +378,10 @@ namespace AgOpenGPS
                                 }
                                 else
                                 {
-                                    mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone);
+                                    FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone, MessageBoxButtons.OK);
                                     Log.EventWriter("KML Read Error to make new field");
-
                                 }
+
                                 if (button.Name == "btnLoadBoundaryFromGE")
                                 {
                                     break;

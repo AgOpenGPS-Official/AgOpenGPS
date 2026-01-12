@@ -1,15 +1,16 @@
-﻿using AgLibrary.Logging;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using AgLibrary.Logging;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Core.Visuals;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace AgOpenGPS
 {
@@ -155,7 +156,7 @@ namespace AgOpenGPS
 
             if (nudSetDistance.Value == 0 && rbtnCurve.Checked)
             {
-                mf.TimedMessageBox(3000, "Distance Error", "Distance Set to 0, Nothing to Move");
+                FormDialog.Show("Distance Error", "Distance Set to 0, Nothing to Move", MessageBoxButtons.OK);
                 Log.EventWriter("Headland, Distance=0, Can't Move");
                 return;
             }
@@ -845,7 +846,7 @@ namespace AgOpenGPS
 
             if (isStart < 2)
             {
-                mf.TimedMessageBox(2000, "Error", "Crossings not Found");
+                FormDialog.Show("Error", "Crossings not Found", MessageBoxButtons.OK);
                 Log.EventWriter("Headland, Crossings Not Found");
 
                 return;

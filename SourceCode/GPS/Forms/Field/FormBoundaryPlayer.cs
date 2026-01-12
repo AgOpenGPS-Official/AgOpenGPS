@@ -152,8 +152,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    // Show quick message that nothing was saved
-                    mf.TimedMessageBox(2000, gStr.gsNoBoundary, gStr.gsExit);
+                    FormDialog.Show(gStr.gsNoBoundary, gStr.gsExit, MessageBoxButtons.OK);
                 }
 
                 // Stop adding points and reset state

@@ -1,9 +1,10 @@
-﻿using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Translations;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
 
 namespace AgOpenGPS
 {
@@ -189,7 +190,7 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.Save();
 
-            mf.TimedMessageBox(2000, gStr.gsMachinePort, gStr.gsSentToMachineModule);
+            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, MessageBoxButtons.OK);
 
             pboxSendMachine.Visible = false;
         }
@@ -275,7 +276,7 @@ namespace AgOpenGPS
             SaveSettingsRelay();
             mf.SendRelaySettingsToMachineModule();
 
-            mf.TimedMessageBox(2000, gStr.gsMachinePort, gStr.gsSentToMachineModule);
+            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, MessageBoxButtons.OK);
 
             pboxSendRelay.Visible = false;
         }

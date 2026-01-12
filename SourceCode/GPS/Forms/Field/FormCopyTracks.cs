@@ -72,7 +72,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                mf.TimedMessageBox(2000, "Import Tracks", "Failed to load field list: " + ex.Message);
+                FormDialog.Show("Import Tracks", "Failed to load field list: " + ex.Message, MessageBoxButtons.OK);
                 lblStatus.Text = "Error loading fields";
             }
         }
@@ -117,7 +117,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                mf.TimedMessageBox(2000, "Import Tracks", "Failed to load tracks: " + ex.Message);
+                FormDialog.Show("Import Tracks", "Failed to load tracks: " + ex.Message, MessageBoxButtons.OK);
                 lblStatus.Text = "Error loading tracks";
             }
         }
@@ -184,7 +184,7 @@ namespace AgOpenGPS.Forms.Field
                 // Check if a field is selected
                 if (string.IsNullOrEmpty(selectedFieldDirectory))
                 {
-                    mf.TimedMessageBox(2000, "Import Tracks", "Please select a field first.");
+                    FormDialog.Show("Import Tracks", "Please select a field first.", MessageBoxButtons.OK);
                     return;
                 }
 
@@ -200,14 +200,14 @@ namespace AgOpenGPS.Forms.Field
 
                 if (selectedTracks.Count == 0)
                 {
-                    mf.TimedMessageBox(2000, "Import Tracks", "Please select at least one track to import.");
+                    FormDialog.Show("Import Tracks", "Please select at least one track to import.", MessageBoxButtons.OK);
                     return;
                 }
 
                 // Verify current field is open
                 if (string.IsNullOrEmpty(mf.currentFieldDirectory))
                 {
-                    mf.TimedMessageBox(2000, "Import Tracks", "No field is currently open.");
+                    FormDialog.Show("Import Tracks", "No field is currently open.", MessageBoxButtons.OK);
                     return;
                 }
 
@@ -254,13 +254,12 @@ namespace AgOpenGPS.Forms.Field
 
                 lblStatus.Text = $"Successfully imported {copiedCount} track(s)";
 
-                mf.TimedMessageBox(2000, "Import Tracks",
-                    $"Successfully imported {copiedCount} track(s) to current field.");
+                FormDialog.Show("Import Tracks", $"Successfully imported {copiedCount} track(s) to current field.", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
                 lblStatus.Text = "Error: " + ex.Message;
-                mf.TimedMessageBox(3000, "Import Tracks", "Error importing tracks: " + ex.Message);
+                FormDialog.Show("Import Tracks", "Error importing tracks: " + ex.Message, MessageBoxButtons.OK);
             }
         }
 

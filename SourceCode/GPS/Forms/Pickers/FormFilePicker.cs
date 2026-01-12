@@ -283,7 +283,7 @@ namespace AgOpenGPS
 
         private void ShowNoFieldsMessage()
         {
-            mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
+            FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
             Log.EventWriter("File Picker, No Fields");
             Close();
         }

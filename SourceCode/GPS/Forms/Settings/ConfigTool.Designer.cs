@@ -1,9 +1,4 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
@@ -12,6 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -1169,7 +1170,7 @@ namespace AgOpenGPS
                     if (numberOfSections * wide > 5000)
                     {
                         wide = 99;
-                        mf.TimedMessageBox(3000, "Too Wide", "Max 50 Meters");
+                        FormDialog.Show("Too Wide", "Max 50 Meters", MessageBoxButtons.OK);
                         Log.EventWriter("Sections, Tool Set Too Wide");
 
                     }
@@ -1179,7 +1180,7 @@ namespace AgOpenGPS
                     if (numberOfSections * wide > 1900)
                     {
                         wide = 19;
-                        mf.TimedMessageBox(3000, "Too Wide", "Max 164 Feet");
+                        FormDialog.Show("Too Wide", "Max 164 Feet", MessageBoxButtons.OK);
                         Log.EventWriter("Sections, Tool Set Too Wide");
                     }
                 }
@@ -1268,7 +1269,7 @@ namespace AgOpenGPS
                             {
                                 if (toolWidth > 5000)
                                 {
-                                    mf.TimedMessageBox(3000, "Too Wide", "Set to 99, Max 50 Meters");
+                                    FormDialog.Show("Too Wide", "Set to 99, Max 50 Meters", MessageBoxButtons.OK);
                                     Log.EventWriter("Sections, Tool Set Too Wide");
                                     toolWidth = 0;
                                     nudSection01.Value = 99;
@@ -1293,7 +1294,7 @@ namespace AgOpenGPS
                             {
                                 if (toolWidth > 1900)
                                 {
-                                    mf.TimedMessageBox(3000, "Too Wide", "Set to 99, Max 164 Feet");
+                                    FormDialog.Show("Too Wide", "Set to 99, Max 164 Feet", MessageBoxButtons.OK);
                                     Log.EventWriter("Sections, Tool Set Too Wide");
                                     toolWidth = 0;
                                     nudSection01.Value = 99;
