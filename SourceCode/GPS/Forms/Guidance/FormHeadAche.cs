@@ -1,15 +1,16 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS
 {
@@ -270,7 +271,7 @@ namespace AgOpenGPS
                 if (start == end)
                 {
                     start = 99999; end = 99999;
-                    mf.TimedMessageBox(2000, "Line Error", "Start Point = End Point ");
+                    FormDialog.Show("Line Error", "Start Point = End Point ", MessageBoxButtons.OK);
                     return;
                 }
 
@@ -771,7 +772,7 @@ namespace AgOpenGPS
 
                 if (nextLine == lineNum)
                 {
-                    mf.TimedMessageBox(2000, "Create Error", "Is there maybe only 1 line?");
+                    FormDialog.Show("Create Error", "Is there maybe only 1 line?", MessageBoxButtons.OK);
                     Log.EventWriter("Headache, Only 1 Line");
 
                     return;
@@ -803,7 +804,7 @@ namespace AgOpenGPS
 
             if (crossings.Count != mf.hdl.tracksArr.Count * 2)
             {
-                mf.TimedMessageBox(2000, "Crosings Error", "Make sure all ends cross and only once");
+                FormDialog.Show("Crossings Error", "Make sure all ends cross and only once", MessageBoxButtons.OK);
                 Log.EventWriter("Headache, All ends cross and only once");
                 mf.bnd.bndList[0].hdLine?.Clear();
                 return;

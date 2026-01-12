@@ -69,7 +69,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
             else
             {
-                _formGPS.TimedMessageBox(2000, "Profile currently in use", "Select different profile");
+                FormDialog.Show("Profile currently in use", "Select different profile", MessageBoxButtons.OK);
             }
 
             listViewProfiles.Items.Clear();

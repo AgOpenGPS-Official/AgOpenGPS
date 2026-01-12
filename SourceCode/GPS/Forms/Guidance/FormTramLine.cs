@@ -1,15 +1,16 @@
 ﻿using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Core.Visuals;
-using AgOpenGPS.Helpers;
-using AgOpenGPS.WinForms;
-using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Core.Visuals;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
+using AgOpenGPS.WinForms;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS
 {
@@ -229,7 +230,7 @@ namespace AgOpenGPS
             }
             else
             {
-                mf.TimedMessageBox(2000, "Invalid Line", "Use AB LIne or Curve Only");
+                FormDialog.Show("Invalid Line", "Use AB LIne or Curve Only", MessageBoxButtons.OK);
             }
         }
 

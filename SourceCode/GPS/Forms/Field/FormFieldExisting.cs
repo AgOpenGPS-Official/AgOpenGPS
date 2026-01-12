@@ -48,7 +48,7 @@ namespace AgOpenGPS
 
             if (dirs == null || dirs.Length < 1)
             {
-                mf.TimedMessageBox(2000, gStr.gsCreateNewField, gStr.gsFileError);
+                FormDialog.Show(gStr.gsCreateNewField, gStr.gsFileError, MessageBoxButtons.OK);
                 Log.EventWriter("File Error Load Existing Field");
 
                 Close();
@@ -215,7 +215,7 @@ namespace AgOpenGPS
 
             if (fileList == null || fileList.Count < 1)
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
                 Log.EventWriter("Create New Field, No Fields Found");
 
                 Close();
@@ -243,7 +243,7 @@ namespace AgOpenGPS
             }
             else
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsCreateNewField);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
                 Log.EventWriter("Field Existing, No Fields to List");
 
                 Close();
@@ -292,7 +292,7 @@ namespace AgOpenGPS
 
             if (!File.Exists(fileStr))
             {
-                mf.TimedMessageBox(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
+                FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, MessageBoxButtons.OK);
                 return;
             }
 
@@ -345,7 +345,7 @@ namespace AgOpenGPS
                 {
                     Log.EventWriter("While Opening Field" + ex);
 
-                    mf.TimedMessageBox(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, MessageBoxButtons.OK);
                     mf.JobClose();
                     return;
                 }

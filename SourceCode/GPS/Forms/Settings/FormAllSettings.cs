@@ -1,7 +1,5 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgLibrary.Logging;
-using AgOpenGPS.Properties;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,6 +7,9 @@ using System.Globalization;
 using System.IO;
 using System.Reflection.Emit;
 using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -160,7 +161,7 @@ namespace AgOpenGPS
             Bitmap bm = new Bitmap(this.Width, this.Height);
             this.DrawToBitmap(bm, new Rectangle(0, 0, this.Width, this.Height));
             Clipboard.SetImage(bm);
-            mf.TimedMessageBox(2000, "Captured", "Copied to Clipboard, Paste (CTRL-V) in Telegram");
+            FormDialog.Show("Captured", "Copied to Clipboard, Paste (CTRL-V) in Telegram", MessageBoxButtons.OK);
             Log.EventWriter("View All Settings to Clipboard");
         }
 

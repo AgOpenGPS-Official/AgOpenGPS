@@ -399,7 +399,6 @@ namespace AgOpenGPS
 
         private void rbtnDisplayImperial_Click(object sender, EventArgs e)
         {
-            mf.TimedMessageBox(2000, "Units Set", "Imperial");
             Log.EventWriter("Units To Imperial");
 
             mf.isMetric = false;
@@ -410,7 +409,6 @@ namespace AgOpenGPS
 
         private void rbtnDisplayMetric_Click(object sender, EventArgs e)
         {
-            mf.TimedMessageBox(2000, "Units Set", "Metric");
             Log.EventWriter("Units to Metric");
 
             mf.isMetric = true;

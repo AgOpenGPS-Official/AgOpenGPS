@@ -4,8 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using AgLibrary.Logging;
-using AgOpenGPS.Helpers;
 using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -170,7 +171,7 @@ namespace AgOpenGPS
         {
             if (mf.buttonOrder.Count < 2)
             {
-                mf.TimedMessageBox(2000, "Button Error", "Not Enough Buttons Added");
+                FormDialog.Show("Button Error", "Not Enough Buttons Added", MessageBoxButtons.OK);
                 Log.EventWriter("Button Picker, Not Enough Buttons");
                 return;
             }
