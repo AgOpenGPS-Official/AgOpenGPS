@@ -156,7 +156,7 @@ namespace AgOpenGPS
 
             if (nudSetDistance.Value == 0 && rbtnCurve.Checked)
             {
-                FormDialog.Show("Distance Error", "Distance Set to 0, Nothing to Move", MessageBoxButtons.OK);
+                FormDialog.Show("Distance Error", "Distance Set to 0, Nothing to Move", DialogSeverity.Error);
                 Log.EventWriter("Headland, Distance=0, Can't Move");
                 return;
             }
@@ -846,7 +846,7 @@ namespace AgOpenGPS
 
             if (isStart < 2)
             {
-                FormDialog.Show("Error", "Crossings not Found", MessageBoxButtons.OK);
+                FormDialog.Show("Error", "Crossings not Found", DialogSeverity.Error);
                 Log.EventWriter("Headland, Crossings Not Found");
 
                 return;

@@ -190,7 +190,7 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.Save();
 
-            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, MessageBoxButtons.OK);
+            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, DialogSeverity.Info);
 
             pboxSendMachine.Visible = false;
         }
@@ -276,7 +276,7 @@ namespace AgOpenGPS
             SaveSettingsRelay();
             mf.SendRelaySettingsToMachineModule();
 
-            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, MessageBoxButtons.OK);
+            FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, DialogSeverity.Info);
 
             pboxSendRelay.Visible = false;
         }

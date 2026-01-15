@@ -171,7 +171,7 @@ namespace AgOpenGPS
         {
             if (mf.buttonOrder.Count < 2)
             {
-                FormDialog.Show("Button Error", "Not Enough Buttons Added", MessageBoxButtons.OK);
+                FormDialog.Show("Button Error", "Not Enough Buttons Added", DialogSeverity.Error);
                 Log.EventWriter("Button Picker, Not Enough Buttons");
                 return;
             }

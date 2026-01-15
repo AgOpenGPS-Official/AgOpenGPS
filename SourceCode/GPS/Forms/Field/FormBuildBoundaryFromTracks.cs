@@ -72,14 +72,14 @@ namespace AgOpenGPS.Forms.Field
 
                 if (tempTrackList.Count == 0)
                 {
-                    FormDialog.Show("Track Info", "No tracks found.", MessageBoxButtons.OK);
+                    FormDialog.Show("Track Info", "No tracks found.", DialogSeverity.Info);
                     return;
                 }
                 _trackList.AddRange(tempTrackList);
             }
             catch (Exception ex)
             {
-                FormDialog.Show("Track Load Error", ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Track Load Error", ex.Message, DialogSeverity.Error);
             }
             finally
             {
@@ -240,7 +240,7 @@ namespace AgOpenGPS.Forms.Field
             catch (Exception ex)
             {
                 Log.EventWriter($"Track adjustment failed: {ex}");
-                FormDialog.Show("Error", "Track adjustment failed: " + ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Error", "Track adjustment failed: " + ex.Message, DialogSeverity.Error);
             }
         }
 
@@ -657,7 +657,7 @@ namespace AgOpenGPS.Forms.Field
 
                 if (result.Count < 3 || finalized == null)
                 {
-                    FormDialog.Show("Error", "No valid boundary could be generated", MessageBoxButtons.OK);
+                    FormDialog.Show("Error", "No valid boundary could be generated", DialogSeverity.Error);
                     btnSave.Enabled = false;
                     return;
                 }
@@ -666,14 +666,14 @@ namespace AgOpenGPS.Forms.Field
                 UpdateMainApplicationBoundary(finalized);
                 RequestRedraw();
 
-                FormDialog.Show("Succes!", $"Boundary built with {result.Count} points", MessageBoxButtons.OK);
+                FormDialog.Show("Succes!", $"Boundary built with {result.Count} points", DialogSeverity.Info);
                 btnSave.Enabled = true;
 
             }
             catch (Exception ex)
             {
                 Log.EventWriter($"Boundary build failed: {ex}");
-                FormDialog.Show("Error", "Build failed" + ex.ToString(), MessageBoxButtons.OK);
+                FormDialog.Show("Error", "Build failed" + ex.ToString(), DialogSeverity.Error);
             }
         }
 
@@ -696,9 +696,7 @@ namespace AgOpenGPS.Forms.Field
         {
             _builder.ExtendAllTracks(50.0);
             InitializeBuilderAndRebuild();
-            FormDialog.Show("Finding Intersections...", $"All green? Press Build or manually correct!", MessageBoxButtons.OK);
-
-
+            FormDialog.Show("Finding Intersections...", $"All green? Press Build or manually correct!", DialogSeverity.Info);
         }
 
         private void SaveBoundary()
@@ -711,7 +709,7 @@ namespace AgOpenGPS.Forms.Field
             catch (Exception ex)
             {
                 Log.EventWriter($"Save failed: {ex}");
-                FormDialog.Show("Error", ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Error", ex.Message, DialogSeverity.Error);
             }
         }
 
@@ -719,13 +717,13 @@ namespace AgOpenGPS.Forms.Field
         {
             if (string.IsNullOrEmpty(_mf.currentFieldDirectory))
             {
-                FormDialog.Show("Save Error", "Please select a field before saving.", MessageBoxButtons.OK);
+                FormDialog.Show("Save Error", "Please select a field before saving.", DialogSeverity.Error);
                 return false;
             }
 
             if (_builder?.FinalizedBoundary == null || _builder.FinalizedBoundary.fenceLine.Count < 3)
             {
-                FormDialog.Show("Save Error", "No valid boundary to save", MessageBoxButtons.OK);
+                FormDialog.Show("Save Error", "No valid boundary to save", DialogSeverity.Error);
                 return false;
             }
 

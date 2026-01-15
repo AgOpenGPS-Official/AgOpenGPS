@@ -337,7 +337,7 @@ namespace AgOpenGPS
                 FormDialog.Show(
                     "UDP Server",
                     "Load Error: " + ex.Message,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
                 Log.EventWriter("Catch -> Load UDP Loopback Error: " + ex.ToString());
             }
         }

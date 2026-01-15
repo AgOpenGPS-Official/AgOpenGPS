@@ -230,7 +230,7 @@ namespace AgOpenGPS
             }
             else
             {
-                FormDialog.Show("Invalid Line", "Use AB LIne or Curve Only", MessageBoxButtons.OK);
+                FormDialog.Show("Invalid Line", "Use AB LIne or Curve Only", DialogSeverity.Error);
             }
         }
 

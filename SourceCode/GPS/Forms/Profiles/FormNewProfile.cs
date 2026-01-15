@@ -94,10 +94,9 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (File.Exists(newProfilePath))
             {
-                var overwrite = FormDialog.Show(
+                var overwrite = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?",
-                    MessageBoxButtons.OKCancel);
+                    $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?");
 
                 if (overwrite != DialogResult.OK)
                     return;
@@ -110,10 +109,10 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (existingProfileName.Equals(EmptyProfile))
             {
-                var confirmReset = FormDialog.Show(
+                var confirmReset = FormDialog.ShowQuestion(
                     "!! WARNING !!",
                     "This will reset all Tractor measurements and control, Are you Sure??",
-                    MessageBoxButtons.OKCancel);
+                    DialogSeverity.Warning);
 
                 if (confirmReset != DialogResult.OK)
                     return;
@@ -170,7 +169,7 @@ namespace AgOpenGPS.Forms.Profiles
                 FormDialog.Show(
                     gStr.gsError,
                     "Error loading profile " + existingProfileName + ".xml\n\nResult: " + result,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
             }
 
             Log.EventWriter($"Profile loaded: {existingProfileName}.xml");

@@ -184,7 +184,7 @@ namespace AgOpenGPS
                         }
                         catch (Exception)
                         {
-                            FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, MessageBoxButtons.OK);
+                            FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, DialogSeverity.Error);
                         }
                     }
                 }
@@ -219,7 +219,7 @@ namespace AgOpenGPS
             }
             else //no fields found
             {
-                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsFieldNotOpen, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsFieldNotOpen, DialogSeverity.Error);
             }
         }
 
@@ -294,7 +294,7 @@ namespace AgOpenGPS
         {
             if (mf.isJobStarted)
             {
-                FormDialog.Show(gStr.gsError, gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsError, gStr.gsCloseFieldFirst, DialogSeverity.Error);
                 return;
             }
 

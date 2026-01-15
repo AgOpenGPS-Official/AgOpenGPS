@@ -48,7 +48,7 @@ namespace AgOpenGPS
 
             if (dirs == null || dirs.Length < 1)
             {
-                FormDialog.Show(gStr.gsCreateNewField, gStr.gsFileError, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsCreateNewField, gStr.gsFileError, DialogSeverity.Error);
                 Log.EventWriter("File Error Load Existing Field");
 
                 Close();
@@ -88,7 +88,7 @@ namespace AgOpenGPS
                                 // Show error for incomplete file
                                 FormDialog.Show(gStr.gsFileError,
                                     fieldDirectory + " is Damaged, Please Delete This Field",
-                                    MessageBoxButtons.OK);
+                                    DialogSeverity.Error);
 
                                 fileList.Add(fieldDirectory);
                                 fileList.Add("Error");
@@ -99,7 +99,7 @@ namespace AgOpenGPS
                             // Show error for invalid file content
                             FormDialog.Show(gStr.gsFileError,
                                 fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken",
-                                MessageBoxButtons.OK);
+                                DialogSeverity.Error);
 
                             // Log the exception for diagnostics
                             Log.EventWriter(fieldDirectory + " is Damaged, Please Delete, Field.txt is Broken\n" + ex.ToString());
@@ -203,7 +203,7 @@ namespace AgOpenGPS
                     // Show error about missing Boundary.txt
                     FormDialog.Show(gStr.gsFileError,
                         fieldDirectory + " is Damaged, Missing Boundary.Txt \r\n Delete Field or Fix",
-                        MessageBoxButtons.OK);
+                        DialogSeverity.Error);
 
                     // Log the missing boundary file
                     Log.EventWriter(fieldDirectory + " is Damaged, Missing Boundary.Txt");
@@ -215,7 +215,7 @@ namespace AgOpenGPS
 
             if (fileList == null || fileList.Count < 1)
             {
-                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, DialogSeverity.Error);
                 Log.EventWriter("Create New Field, No Fields Found");
 
                 Close();
@@ -243,7 +243,7 @@ namespace AgOpenGPS
             }
             else
             {
-                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsCreateNewField, DialogSeverity.Error);
                 Log.EventWriter("Field Existing, No Fields to List");
 
                 Close();
@@ -292,7 +292,7 @@ namespace AgOpenGPS
 
             if (!File.Exists(fileStr))
             {
-                FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, MessageBoxButtons.OK);
+                FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, DialogSeverity.Error);
                 return;
             }
 
@@ -308,7 +308,7 @@ namespace AgOpenGPS
                 // Show message that the directory already exists
                 FormDialog.Show(gStr.gsDirectoryExists,
                     gStr.gsChooseADifferentName,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
 
                 return;
             }
@@ -345,7 +345,7 @@ namespace AgOpenGPS
                 {
                     Log.EventWriter("While Opening Field" + ex);
 
-                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, MessageBoxButtons.OK);
+                    FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, DialogSeverity.Error);
                     mf.JobClose();
                     return;
                 }
@@ -608,7 +608,7 @@ namespace AgOpenGPS
                     // Show a custom dialog for damaged field warning
                     FormDialog.Show(gStr.gsFileError,
                         "This Field is Damaged, Please Delete \r\n ALREADY TOLD YOU THAT :)",
-                        MessageBoxButtons.OK);
+                        DialogSeverity.Error);
                 }
                 else
                 {

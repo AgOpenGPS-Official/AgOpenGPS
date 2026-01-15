@@ -1,41 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS.Forms
 {
+    public enum DialogSeverity
+    {
+        Error,
+        Warning,
+        Info
+    }
+
     public partial class FormDialog : Form
     {
-        private FormDialog(string message, string title, bool showCancel)
+        private static readonly Color ErrorBorderColor = Color.FromArgb(192, 0, 0);
+        private static readonly Color ErrorBackgroundColor = Color.FromArgb(255, 192, 192);
+        private static readonly Color WarningBorderColor = Color.FromArgb(192, 145, 0);
+        private static readonly Color WarningBackgroundColor = Color.FromArgb(227, 217, 152);
+        private static readonly Color InfoBorderColor = Color.FromArgb(0, 0, 192);
+        private static readonly Color InfoBackgroundColor = Color.FromArgb(192, 192, 255);
+
+        private Color _borderColor = Color.CornflowerBlue;
+
+        private FormDialog(string title, string message, bool showCancel, DialogSeverity? severity)
         {
             InitializeComponent();
-            lblMessage.Text = message;
-            lblTitle.Text = title;
-            btnCancel.Visible = showCancel;
+
+            if (severity.HasValue)
+            {
+                SetSeverity(severity.Value);
+            }
+
+            labelTitle.Text = title;
+            labelMessage.Text = message;
+            buttonCancel.Visible = showCancel;
         }
 
-        public static DialogResult Show(string title, string message, MessageBoxButtons buttons = MessageBoxButtons.OKCancel)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            bool showCancel = (buttons == MessageBoxButtons.OKCancel || buttons == MessageBoxButtons.YesNo || buttons == MessageBoxButtons.YesNoCancel);
-            return new FormDialog(message, title, showCancel).ShowDialog();
+            base.OnPaintBackground(e);
+
+            var borderPen = new Pen(_borderColor, 20);
+            e.Graphics.DrawRectangle(borderPen, 0, 0, Width, Height);
         }
 
-
-        private void btnOK_Click(object sender, EventArgs e)
+        private void SetSeverity(DialogSeverity severity)
         {
-            // Not used, but here for future compatibility
+            switch (severity)
+            {
+                case DialogSeverity.Error:
+                    _borderColor = ErrorBorderColor;
+                    BackColor = ErrorBackgroundColor;
+                    pictureBoxIcon.Image = Resources.Error;
+                    break;
+                case DialogSeverity.Warning:
+                    _borderColor = WarningBorderColor;
+                    BackColor = WarningBackgroundColor;
+                    pictureBoxIcon.Image = Resources.Warning;
+                    break;
+                case DialogSeverity.Info:
+                    _borderColor = InfoBorderColor;
+                    BackColor = InfoBackgroundColor;
+                    pictureBoxIcon.Image = Resources.Info;
+                    break;
+                default:
+                    throw new InvalidEnumArgumentException(nameof(severity), (int)severity, typeof(DialogSeverity));
+            }
+
+            pictureBoxIcon.Visible = true;
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        public static void Show(string title, string message, DialogSeverity? severity = null)
         {
-            // Not used, but here for future compatibility
+            using (var form = new FormDialog(title, message, showCancel: false, severity))
+            {
+                form.ShowDialog();
+            }
+        }
+
+        public static DialogResult ShowQuestion(string title, string message, DialogSeverity? severity = null)
+        {
+            using (var form = new FormDialog(title, message, showCancel: true, severity))
+            {
+                return form.ShowDialog();
+            }
         }
     }
 }

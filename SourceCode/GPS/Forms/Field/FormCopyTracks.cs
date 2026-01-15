@@ -72,7 +72,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                FormDialog.Show("Import Tracks", "Failed to load field list: " + ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Import Tracks", "Failed to load field list: " + ex.Message, DialogSeverity.Error);
                 lblStatus.Text = "Error loading fields";
             }
         }
@@ -117,7 +117,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                FormDialog.Show("Import Tracks", "Failed to load tracks: " + ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Import Tracks", "Failed to load tracks: " + ex.Message, DialogSeverity.Error);
                 lblStatus.Text = "Error loading tracks";
             }
         }
@@ -184,7 +184,7 @@ namespace AgOpenGPS.Forms.Field
                 // Check if a field is selected
                 if (string.IsNullOrEmpty(selectedFieldDirectory))
                 {
-                    FormDialog.Show("Import Tracks", "Please select a field first.", MessageBoxButtons.OK);
+                    FormDialog.Show("Import Tracks", "Please select a field first.", DialogSeverity.Error);
                     return;
                 }
 
@@ -200,14 +200,14 @@ namespace AgOpenGPS.Forms.Field
 
                 if (selectedTracks.Count == 0)
                 {
-                    FormDialog.Show("Import Tracks", "Please select at least one track to import.", MessageBoxButtons.OK);
+                    FormDialog.Show("Import Tracks", "Please select at least one track to import.", DialogSeverity.Error);
                     return;
                 }
 
                 // Verify current field is open
                 if (string.IsNullOrEmpty(mf.currentFieldDirectory))
                 {
-                    FormDialog.Show("Import Tracks", "No field is currently open.", MessageBoxButtons.OK);
+                    FormDialog.Show("Import Tracks", "No field is currently open.", DialogSeverity.Error);
                     return;
                 }
 
@@ -254,12 +254,12 @@ namespace AgOpenGPS.Forms.Field
 
                 lblStatus.Text = $"Successfully imported {copiedCount} track(s)";
 
-                FormDialog.Show("Import Tracks", $"Successfully imported {copiedCount} track(s) to current field.", MessageBoxButtons.OK);
+                FormDialog.Show("Import Tracks", $"Successfully imported {copiedCount} track(s) to current field.", DialogSeverity.Info);
             }
             catch (Exception ex)
             {
                 lblStatus.Text = "Error: " + ex.Message;
-                FormDialog.Show("Import Tracks", "Error importing tracks: " + ex.Message, MessageBoxButtons.OK);
+                FormDialog.Show("Import Tracks", "Error importing tracks: " + ex.Message, DialogSeverity.Error);
             }
         }
 

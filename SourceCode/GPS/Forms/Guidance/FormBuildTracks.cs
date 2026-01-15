@@ -479,7 +479,7 @@ namespace AgOpenGPS
                 UpdateTable();
                 flp.Focus();
 
-                FormDialog.Show("A B Swapped", "Curve is Reversed", MessageBoxButtons.OK);
+                FormDialog.Show("A B Swapped", "Curve is Reversed", DialogSeverity.Info);
             }
         }
 
@@ -1206,7 +1206,7 @@ namespace AgOpenGPS
                     }
                     else
                     {
-                        FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile, MessageBoxButtons.OK);
+                        FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile, DialogSeverity.Error);
                     }
                 }
             }

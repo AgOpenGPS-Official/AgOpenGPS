@@ -72,7 +72,7 @@ namespace AgOpenGPS
             }
             else
             {
-                FormDialog.Show("Alphanumeric Only", "A to Z and 0 to 9", MessageBoxButtons.OK);
+                FormDialog.Show("Alphanumeric Only", "A to Z and 0 to 9", DialogSeverity.Error);
             }
             tboxKey.TextChanged += tboxKey_TextChanged;
         }
@@ -157,7 +157,7 @@ namespace AgOpenGPS
             (btnSection7.Text == "...") ||
             (btnSection8.Text == "..."))
             {
-                FormDialog.Show("HoyKey Incomplete", "Finish Setting All, or Reset to Default", MessageBoxButtons.OK);
+                FormDialog.Show("HoyKey Incomplete", "Finish Setting All, or Reset to Default", DialogSeverity.Error);
             }
 
             else Close();

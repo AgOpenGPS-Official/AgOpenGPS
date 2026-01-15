@@ -57,10 +57,9 @@ namespace AgOpenGPS.Forms.Profiles
             string profileName = listViewProfiles.SelectedItems[0].Text;
             if (RegistrySettings.vehicleFileName != profileName)
             {
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Delete {profileName}.xml ?",
-                    MessageBoxButtons.YesNo);
+                    $"Delete {profileName}.xml ?");
 
                 if (result == DialogResult.OK)
                 {
@@ -69,7 +68,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
             else
             {
-                FormDialog.Show("Profile currently in use", "Select different profile", MessageBoxButtons.OK);
+                FormDialog.Show("Profile currently in use", "Select different profile", DialogSeverity.Error);
             }
 
             listViewProfiles.Items.Clear();
@@ -84,10 +83,9 @@ namespace AgOpenGPS.Forms.Profiles
                 if (listViewProfiles.SelectedItems.Count <= 0) return;
 
                 string profileName = listViewProfiles.SelectedItems[0].Text;
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Load {profileName}.xml ?",
-                    MessageBoxButtons.YesNo);
+                    $"Load {profileName}.xml ?");
 
                 if (result == DialogResult.OK)
                 {
@@ -112,7 +110,7 @@ namespace AgOpenGPS.Forms.Profiles
                 FormDialog.Show(
                     gStr.gsError,
                     $"Error loading profile {profileName}.xml\n\nResult: {result}",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
             }
 
             Log.EventWriter($"Profile loaded: {profileName}.xml");
