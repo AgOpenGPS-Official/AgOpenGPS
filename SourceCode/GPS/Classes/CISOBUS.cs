@@ -51,21 +51,25 @@ namespace AgOpenGPS
             mf.SendPgnToLoop(data);
         }
 
-        private void SendProcessData(ushort identifier, int data)
+        private void SendProcessData(ushort command, ushort elementNumber, ushort identifier, int data)
         {
             byte[] dataBytes = BitConverter.GetBytes(data);
-            byte[] message = new byte[12];
+            byte[] message = new byte[14];
             message[0] = 0x80; // standard AIO header
             message[1] = 0x81; // PGN header
             message[2] = 0x7F; // SRC address
             message[3] = 0xF2; // PGN
-            message[4] = 6; // Length
-            message[5] = (byte)(identifier & 0xFF);
-            message[6] = (byte)(identifier >> 8);
-            message[7] = dataBytes[0];
-            message[8] = dataBytes[1];
-            message[9] = dataBytes[2];
-            message[10] = dataBytes[3];
+            message[4] = 8; // Length
+            byte temp = (byte)(elementNumber << 4);
+            temp += (byte)command;
+            message[5] = temp;
+            message[6] = (byte)(elementNumber >> 4);
+            message[7] = (byte)(identifier & 0xFF);
+            message[8] = (byte)(identifier >> 8);
+            message[9] = dataBytes[0];
+            message[10] = dataBytes[1];
+            message[11] = dataBytes[2];
+            message[12] = dataBytes[3];
             mf.SendPgnToLoop(message);
         }
 
@@ -81,7 +85,7 @@ namespace AgOpenGPS
             }
             lastGuidanceLineDeviation = deviation;
             guidanceLineDeviationTime = DateTimeOffset.Now;
-            SendProcessData(513, deviation);
+            SendProcessData(0, 0, 513, deviation);
         }
 
         public void SetActualSpeed(int speed)
@@ -96,7 +100,7 @@ namespace AgOpenGPS
             }
             lastActualSpeed = speed;
             actualSpeedTime = DateTimeOffset.Now;
-            SendProcessData(397, speed);
+            SendProcessData(0, 0, 397, speed);
         }
 
         public void SetTotalDistance(int distance)
@@ -111,7 +115,7 @@ namespace AgOpenGPS
             }
             lastTotalDistance = distance;
             totalDistanceTime = DateTimeOffset.Now;
-            SendProcessData(597, distance);
+            SendProcessData(0, 0, 597, distance);
         }
 
         public bool SectionControlEnabled
