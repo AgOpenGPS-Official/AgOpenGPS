@@ -861,14 +861,17 @@ namespace AgOpenGPS
 
                 //save distance for display
                 lightbarDistance = guidanceLineDistanceOff;
-                isobus.SetGuidanceLineDeviation(guidanceLineDistanceOff * 100);
                 int currentSpeed = (int)(avgSpeed * 1000 / 3.6);  // convert from km/h to mm/s
                 if (isReverse)
                 {
                     currentSpeed = -currentSpeed;
                 }
+                if (isobus.IsAlive()) 
+                { 
+                isobus.SetGuidanceLineDeviation(guidanceLineDistanceOff * 100);
                 isobus.SetActualSpeed(currentSpeed);
                 isobus.SetTotalDistance((int)(fd.distanceUser * 1000)); // convert from meter to mm
+                }
 
                 if (!isBtnAutoSteerOn) //32020 means auto steer is off
                 {

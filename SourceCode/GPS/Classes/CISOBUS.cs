@@ -22,6 +22,13 @@ namespace AgOpenGPS
         private int lastTotalDistance;
         private DateTimeOffset totalDistanceTime;
 
+        //const for the CANBUS sending
+        private const int pdPGN = 0xCB00; //the acronim PD is used for the ISOBUS "Process Data message"
+        private const byte priority = 5;
+        private const byte sourceAddress = 0x7F; //for now we send the AOG address
+        private const byte allDest = 255;
+        private const byte notDefinedCommand = 0x0F;
+        private const ushort notDefinedElementNumber = 0xFFFF;
 
         public CISOBUS(FormGPS _f)
         {
@@ -51,22 +58,45 @@ namespace AgOpenGPS
             mf.SendPgnToLoop(data);
         }
 
-        private void SendProcessData(ushort identifier, int data)
+        private void SendCanbusMessage(int pgn, byte priority, byte scr_addr, byte dest_addr, byte[] data)
         {
-            byte[] dataBytes = BitConverter.GetBytes(data);
-            byte[] message = new byte[12];
+            byte[] pgnBytes = BitConverter.GetBytes(pgn);
+            byte[] message = new byte[19];
             message[0] = 0x80; // standard AIO header
             message[1] = 0x81; // PGN header
-            message[2] = 0x7F; // SRC address
+            message[2] = scr_addr; // SRC address
             message[3] = 0xF2; // PGN
-            message[4] = 6; // Length
-            message[5] = (byte)(identifier & 0xFF);
-            message[6] = (byte)(identifier >> 8);
-            message[7] = dataBytes[0];
-            message[8] = dataBytes[1];
-            message[9] = dataBytes[2];
-            message[10] = dataBytes[3];
+            message[4] = 13; // Length
+            message[5] = pgnBytes[0];
+            message[6] = pgnBytes[1];
+            message[7] = pgnBytes[2]; //we need only the first 2 bytes and one bit, other stuff could be added eventualy in the remaning 7.
+            message[8] = priority;
+            message[9] = dest_addr;
+            for (int i = 0; i < 8; i++)
+            {
+                message[i + 10] = data[i];
+            }
+
             mf.SendPgnToLoop(message);
+        }
+
+        //the acronim PD is used for the ISOBUS "Process Data message", the PGN 0xCB00 (51968)
+        private byte[] PDdata(byte command, ushort elementNumber, ushort identifier, int data)
+        {
+            byte[] dataBytes = BitConverter.GetBytes(data);
+            byte[] message = new byte[8];
+            byte temp = (byte)(elementNumber << 4);
+            temp += (byte)command;
+            message[0] = temp;
+            message[1] = (byte)(elementNumber >> 4);
+            message[2] = (byte)(identifier & 0xFF);
+            message[3] = (byte)(identifier >> 8);
+            message[4] = dataBytes[0];
+            message[5] = dataBytes[1];
+            message[6] = dataBytes[2];
+            message[7] = dataBytes[3];
+
+            return message;
         }
 
         public void SetGuidanceLineDeviation(int deviation)
@@ -81,7 +111,7 @@ namespace AgOpenGPS
             }
             lastGuidanceLineDeviation = deviation;
             guidanceLineDeviationTime = DateTimeOffset.Now;
-            SendProcessData(513, deviation);
+            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 513, deviation));
         }
 
         public void SetActualSpeed(int speed)
@@ -96,7 +126,7 @@ namespace AgOpenGPS
             }
             lastActualSpeed = speed;
             actualSpeedTime = DateTimeOffset.Now;
-            SendProcessData(397, speed);
+            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 397, speed));
         }
 
         public void SetTotalDistance(int distance)
@@ -111,7 +141,7 @@ namespace AgOpenGPS
             }
             lastTotalDistance = distance;
             totalDistanceTime = DateTimeOffset.Now;
-            SendProcessData(597, distance);
+            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 597, distance));
         }
 
         public bool SectionControlEnabled
