@@ -58,35 +58,53 @@ namespace AgOpenGPS
             mf.SendPgnToLoop(data);
         }
 
-        private void SendCanbusMessage(int pgn, byte priority, byte scr_addr, byte dest_addr, byte[] data)
+        private void SendCanbusMessage(int id, byte[] data)
         {
-            byte[] pgnBytes = BitConverter.GetBytes(pgn);
-            byte[] message = new byte[19];
+            byte[] idBytes = BitConverter.GetBytes(id);
+            byte[] message = new byte[18];
             message[0] = 0x80; // standard AIO header
             message[1] = 0x81; // PGN header
-            message[2] = scr_addr; // SRC address
+            message[2] = 0x7F; // SRC address
             message[3] = 0xF2; // PGN
-            message[4] = 13; // Length
-            message[5] = pgnBytes[0];
-            message[6] = pgnBytes[1];
-            message[7] = pgnBytes[2]; //we need only the first 2 bytes and one bit, other stuff could be added eventualy in the remaning 7.
-            message[8] = priority;
-            message[9] = dest_addr;
+            message[4] = 12; // Length
+            message[5] = idBytes[0];
+            message[6] = idBytes[1];
+            message[7] = idBytes[2];
+            message[8] = idBytes[3];
             for (int i = 0; i < 8; i++)
             {
-                message[i + 10] = data[i];
+                message[i + 9] = data[i];
             }
 
             mf.SendPgnToLoop(message);
         }
 
+        int buildCanFrameIdentifier(int pgn, byte priority, byte src_addr, byte dest_addr)
+        {
+            int id;
+            id = (int)(priority & 0x07) << 26; //shifted 26 like the real CAN message with the 2 reserved bit at position 24 and 25
+                                               //so visually the first byte will not show correctly
+                                               //ex: identifier 0x0CCBF782 will be shown 0x30CBF782 in the AOG PGN data
+
+            /* if a peer to peer message, encode dest_addr */
+            if ((pgn > 0 && pgn <= 0xEFFF) || (pgn > 0x10000 && pgn <= 0x1EFFF))
+            {
+                pgn = pgn & 0x01FF00;
+                pgn = pgn | dest_addr;
+            }
+            id = id | (pgn << 8);
+            id = id | src_addr;
+
+            return id;
+        }
+
         //the acronim PD is used for the ISOBUS "Process Data message", the PGN 0xCB00 (51968)
-        private byte[] PDdata(byte command, ushort elementNumber, ushort identifier, int data)
+        private byte[] buildPDdata(byte command, ushort elementNumber, ushort identifier, int data)
         {
             byte[] dataBytes = BitConverter.GetBytes(data);
             byte[] message = new byte[8];
             byte temp = (byte)(elementNumber << 4);
-            temp += (byte)command;
+            temp += (byte)(command & 0x0F);
             message[0] = temp;
             message[1] = (byte)(elementNumber >> 4);
             message[2] = (byte)(identifier & 0xFF);
@@ -111,7 +129,7 @@ namespace AgOpenGPS
             }
             lastGuidanceLineDeviation = deviation;
             guidanceLineDeviationTime = DateTimeOffset.Now;
-            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 513, deviation));
+            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 513, deviation));
         }
 
         public void SetActualSpeed(int speed)
@@ -126,7 +144,7 @@ namespace AgOpenGPS
             }
             lastActualSpeed = speed;
             actualSpeedTime = DateTimeOffset.Now;
-            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 397, speed));
+            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 397, speed));
         }
 
         public void SetTotalDistance(int distance)
@@ -141,7 +159,7 @@ namespace AgOpenGPS
             }
             lastTotalDistance = distance;
             totalDistanceTime = DateTimeOffset.Now;
-            SendCanbusMessage(pdPGN, priority, sourceAddress, allDest, PDdata(notDefinedCommand, notDefinedElementNumber, 597, distance));
+            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 597, distance));
         }
 
         public bool SectionControlEnabled
