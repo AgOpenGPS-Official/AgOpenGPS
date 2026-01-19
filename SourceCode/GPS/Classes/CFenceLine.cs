@@ -16,6 +16,8 @@ namespace AgOpenGPS
         {
             //to calc heading based on next and previous points to give an average heading.
             int cnt = fenceLine.Count;
+            if (cnt < 2) return; // Need at least 2 points to calculate headings
+
             vec3[] arr = new vec3[cnt];
             cnt--;
             fenceLine.CopyTo(arr);
@@ -45,6 +47,9 @@ namespace AgOpenGPS
 
         public void FixFenceLine(int bndNum)
         {
+            // Cannot fix a fence line with insufficient points
+            if (fenceLine.Count < 2) return;
+
             double spacing;
             //close if less then 20 ha, 40ha, more
             if (area < 200000) spacing = 1.1;
@@ -134,6 +139,8 @@ namespace AgOpenGPS
         {
             //reverse the boundary
             int cnt = fenceLine.Count;
+            if (cnt < 2) return; // Need at least 2 points to reverse
+
             vec3[] arr = new vec3[cnt];
             cnt--;
             fenceLine.CopyTo(arr);
@@ -152,7 +159,7 @@ namespace AgOpenGPS
             Debug.WriteLine("CalculateFenceArea is Called");
             RemoveSelfIntersections();
             int ptCount = fenceLine.Count;
-            if (ptCount < 1) return false;
+            if (ptCount < 3) return false; // Need at least 3 points for a valid boundary
 
             area = 0;         // Accumulates area in the loop
             int j = ptCount - 1;  // The last vertex is the 'previous' one to the first

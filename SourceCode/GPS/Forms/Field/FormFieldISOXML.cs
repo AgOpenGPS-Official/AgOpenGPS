@@ -272,6 +272,16 @@ namespace AgOpenGPS
             mf.pn.DefineLocalPlane(_origin, true);
 
             List<CBoundaryList> boundaries = importer.GetBoundaries();
+
+            // Calculate area for all boundaries first to enable sorting
+            foreach (var bnd in boundaries)
+            {
+                bnd.CalculateFenceArea(0); // Calculate area with temporary index
+            }
+
+            // Sort by area descending (largest first)
+            boundaries.Sort((a, b) => b.area.CompareTo(a.area));
+
             foreach (var bnd in boundaries)
             {
                 mf.bnd.bndList.Add(bnd);
