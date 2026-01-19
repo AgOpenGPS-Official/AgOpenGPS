@@ -14,6 +14,7 @@ using AgLibrary.Logging;
 using AgOpenGPS.Classes;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Core;
+using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Core.ViewModels;
@@ -258,7 +259,7 @@ namespace AgOpenGPS
         /// <summary>
         /// AgShare client for uploading fields
         /// </summary>
-        private AgShareClient agShareClient;
+        public AgShareClient agShareClient;
 
 
         /// <summary>
@@ -314,6 +315,8 @@ namespace AgOpenGPS
                 new DirectoryInfo(RegistrySettings.baseDirectory),
                 null,
                 null);
+            // Uncomment next line for Performance analysis
+            // InitializePerformanceTool(AppCore);
 
             //time keeper
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
@@ -349,14 +352,12 @@ namespace AgOpenGPS
             //new instance of contour mode
             ct = new CContour(this);
 
-            //new instance of contour mode
             curve = new CABCurve(this);
 
             //new track instance
             trk = new CTrack(this);
 
-            //new instance of contour mode
-            hdl = new CHeadLine(this);
+            hdl = new CHeadLine();
 
             ////new instance of auto headland turn
             yt = new CYouTurn(this);
@@ -407,7 +408,7 @@ namespace AgOpenGPS
 
             if (!Properties.Settings.Default.setDisplay_isTermsAccepted)
             {
-                using (var form = new Form_First(this))
+                using (var form = new FormTermsAndConditions())
                 {
                     if (form.ShowDialog(this) != DialogResult.OK)
                     {
@@ -1224,7 +1225,7 @@ namespace AgOpenGPS
 
             gridToolSpacing = (int)(gridStep / tool.width + 0.5);
             if (gridToolSpacing < 1) gridToolSpacing = 1;
-            worldGrid.GridStep = gridToolSpacing * tool.width;
+            worldGrid.FieldGrid.GridStep = gridToolSpacing * tool.width;
 
             oglMain.MakeCurrent();
             GL.MatrixMode(MatrixMode.Projection);

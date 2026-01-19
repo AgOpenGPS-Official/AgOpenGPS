@@ -65,7 +65,7 @@ namespace AgOpenGPS.Core.Streamers
                 foreach (var quadStrip in workedArea.UnsavedWork)
                 {
                     writer.WriteInt(1 + 2 * quadStrip.NumberOfPairs);
-                    writer.WriteColorRgb(quadStrip.ColorRgb);
+                    writer.WriteColorRgb(quadStrip.ColorRgba);
                     for (int i = 0; i < quadStrip.NumberOfPairs; i++)
                     {
                         // Add ", 0.0" to end of each line to stay backwards compatible

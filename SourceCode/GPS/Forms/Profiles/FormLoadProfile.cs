@@ -23,6 +23,12 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void FormLoadProfile_Load(object sender, EventArgs e)
         {
+            Text = gStr.gsLoadProfile;
+            labelLoadProfile.Text = gStr.gsLoadProfile;
+            buttonProfileDelete.Text = gStr.gsDelete;
+            buttonLoad.Text = gStr.gsLoad;
+            buttonCancel.Text = gStr.gsCancel;
+
             listViewProfiles.Items.Clear();
             listViewProfiles.Items.AddRange(LoadProfiles().Select(profile => new ListViewItem(profile)).ToArray());
             listViewProfiles.SelectedItems.Clear();
@@ -38,7 +44,7 @@ namespace AgOpenGPS.Forms.Profiles
         private void listViewProfiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool profileSelected = listViewProfiles.SelectedItems.Count > 0;
-            buttonOK.Enabled = profileSelected;
+            buttonLoad.Enabled = profileSelected;
             buttonProfileDelete.Enabled = profileSelected;
         }
 
@@ -51,10 +57,9 @@ namespace AgOpenGPS.Forms.Profiles
             string profileName = listViewProfiles.SelectedItems[0].Text;
             if (RegistrySettings.vehicleFileName != profileName)
             {
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Delete {profileName}.xml ?",
-                    MessageBoxButtons.YesNo);
+                    $"Delete {profileName}.xml ?");
 
                 if (result == DialogResult.OK)
                 {
@@ -63,7 +68,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
             else
             {
-                _formGPS.TimedMessageBox(2000, "Profile currently in use", "Select different profile");
+                FormDialog.Show("Profile currently in use", "Select different profile", DialogSeverity.Error);
             }
 
             listViewProfiles.Items.Clear();
@@ -78,10 +83,9 @@ namespace AgOpenGPS.Forms.Profiles
                 if (listViewProfiles.SelectedItems.Count <= 0) return;
 
                 string profileName = listViewProfiles.SelectedItems[0].Text;
-                DialogResult result = FormDialog.Show(
+                DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Load {profileName}.xml ?",
-                    MessageBoxButtons.YesNo);
+                    $"Load {profileName}.xml ?");
 
                 if (result == DialogResult.OK)
                 {
@@ -106,7 +110,7 @@ namespace AgOpenGPS.Forms.Profiles
                 FormDialog.Show(
                     gStr.gsError,
                     $"Error loading profile {profileName}.xml\n\nResult: {result}",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
             }
 
             Log.EventWriter($"Profile loaded: {profileName}.xml");

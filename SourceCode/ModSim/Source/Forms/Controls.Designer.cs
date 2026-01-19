@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
+using System.Text;
 
 namespace ModSim
 {
@@ -394,8 +388,8 @@ namespace ModSim
             sbKSXT.Append("$KSXT,"); //1
 
             sbKSXT.Append(TimeNow);
-            sbKSXT.Append(Math.Abs(longitude).ToString("0000.0000000", CultureInfo.InvariantCulture)).Append(',');
-            sbKSXT.Append(Math.Abs(latitude).ToString("0000.0000000", CultureInfo.InvariantCulture)).Append(',');
+            sbKSXT.Append(longitude.ToString("0000.0000000", CultureInfo.InvariantCulture)).Append(',');
+            sbKSXT.Append(latitude.ToString("0000.0000000", CultureInfo.InvariantCulture)).Append(',');
 
             sbKSXT.Append(altitude.ToString(CultureInfo.InvariantCulture)).Append(',') //altitude
                 .Append(degrees.ToString("N5", CultureInfo.InvariantCulture)) //true heading

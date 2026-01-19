@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using AgOpenGPS.Properties;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -15,9 +16,9 @@ namespace AgOpenGPS
         private readonly AgShareClient _agShareClient;
         private Timer clipboardCheckTimer;
 
-        public FormAgShareSettings()
+        public FormAgShareSettings(AgShareClient agShareClient)
         {
-            _agShareClient = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
+            _agShareClient = agShareClient;
             InitializeComponent();
         }
 
@@ -70,12 +71,12 @@ namespace AgOpenGPS
             labelStatus.Text = "Connecting...";
             labelStatus.ForeColor = Color.Gray;
 
-            _agShareClient.SetBaseUrl(textBoxServer.Text);
-            _agShareClient.SetApiKey(textBoxApiKey.Text);
+            var baseUrl = textBoxServer.Text;
+            var apiKey = textBoxApiKey.Text;
 
-            (bool success, string message) = await _agShareClient.CheckApiAsync();
+            var result = await AgShareClient.CheckApiAsync(baseUrl, apiKey);
 
-            if (success)
+            if (result.IsSuccessful)
             {
                 labelStatus.Text = "✔ Connection successful";
                 labelStatus.ForeColor = Color.Green;
@@ -83,16 +84,31 @@ namespace AgOpenGPS
             }
             else
             {
-                labelStatus.Text = $"❌ {message}";
+                string error = ConvertError(result.Error);
+                labelStatus.Text = $"❌ {error}";
                 labelStatus.ForeColor = Color.Red;
+            }
+        }
+
+        private string ConvertError(AgShareError error)
+        {
+            switch (error)
+            {
+                case InvalidApiKeyError _:
+                    return "Invalid API key";
+                case StatusCodeError statusCodeError:
+                    return $"Status {statusCodeError.StatusCode}: {statusCodeError.Body}";
+                case HttpRequestError httpRequestError:
+                    return $"Error: {httpRequestError.Exception.Message}";
+                default:
+                    throw new InvalidOperationException($"Unknown {nameof(AgShareError)}: {error.GetType()}");
             }
         }
 
         // Save current values to settings
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            _agShareClient.SetBaseUrl(textBoxServer.Text);
-            _agShareClient.SetApiKey(textBoxApiKey.Text);
+            _agShareClient.UpdateSettings(textBoxServer.Text, textBoxApiKey.Text);
 
             Settings.Default.AgShareServer = textBoxServer.Text;
             Settings.Default.AgShareApiKey = textBoxApiKey.Text;

@@ -6,7 +6,7 @@ namespace AgOpenGPS.Core.Tests.Models
     public class GeoCoordTests
     {
         [Test]
-        public void DistanceSquared_ShouldBeCorrect()
+        public void Test_DistanceSquared()
         {
             // Arrange
             GeoCoord coord1 = new GeoCoord(0.0, 3.0);
@@ -20,7 +20,49 @@ namespace AgOpenGPS.Core.Tests.Models
         }
 
         [Test]
-        public void Distance_ShouldBeCorrect()
+        public void Test_Minimum()
+        {
+            // Arrange
+            GeoCoord coord1 = new GeoCoord(3.14, 1.596);
+            GeoCoord coord2 = new GeoCoord(-314, 1596);
+
+            // Act
+            GeoCoord minCoord = coord1.Min(coord2);
+
+            // Assert
+            Assert.That(minCoord, Is.EqualTo(new GeoCoord(-314, 1.596)));
+        }
+
+        [Test]
+        public void Test_Maximum()
+        {
+            // Arrange
+            GeoCoord coord1 = new GeoCoord(3.14, 1.596);
+            GeoCoord coord2 = new GeoCoord(-314, 1596);
+
+            // Act
+            GeoCoord maxCoord = coord1.Max(coord2);
+
+            // Assert
+            Assert.That(maxCoord, Is.EqualTo(new GeoCoord(3.14, 1596)));
+        }
+
+        [Test]
+        public void Test_Average()
+        {
+            // Arrange
+            GeoCoord coord1 = new GeoCoord(3.14, 1.596);
+            GeoCoord coord2 = new GeoCoord(-314, 1596);
+
+            // Act
+            GeoCoord middleCoord = coord1.Average(coord2);
+
+            // Assert
+            Assert.That(middleCoord, Is.EqualTo(new GeoCoord(-155.43, 798.798)));
+        }
+
+        [Test]
+        public void Test_Distance()
         {
             // Arrange
             GeoCoord coord1 = new GeoCoord(0.0, 3.0);

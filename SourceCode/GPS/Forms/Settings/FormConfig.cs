@@ -115,11 +115,11 @@ namespace AgOpenGPS
             tab1.SelectedTab = tabSummary;
             //Label translations
             //configload-save
-            labelUnitsBottom.Text = gStr.gsUnit;
-            labelToolWidthBottom.Text = gStr.gsWidth;
+            labelUnitsBottom.Text = gStr.gsUnits + ":";
+            labelToolWidthBottom.Text = gStr.gsWidth + ":";
             //tractorconfig
             labelBoxAttachmentStyle.Text = gStr.gsAttachmentStyle;
-            labelTractorUnits.Text = gStr.gsUnit;
+            labelTractorUnits.Text = gStr.gsUnits + ":";
             labelHitchLength.Text = gStr.gsHitchLength;
             labelWheelBase2.Text = gStr.gsWheelbase;
             labelTrack.Text = gStr.gsTrack;
@@ -133,7 +133,7 @@ namespace AgOpenGPS
             labelDualPositionOnRight.Text = gStr.gsDualpositionAntennaRight;
             //toolconfig
             labelToolOffset.Text = gStr.gsToolOffset;
-            labelOverlapGap.Text = gStr.gsOverlapGap;
+            labelOverlapGap.Text = $"{gStr.gsOverlap} / {gStr.gsGap}";
             labelToolLeft.Text = gStr.gsToolLeft;
             labelToolRight.Text = gStr.gsToolRight;
             labelOverlap2.Text = gStr.gsOverlap;
@@ -152,16 +152,16 @@ namespace AgOpenGPS
             labelNumOfSections.Text = gStr.gsSections;
             labelChoose.Text = gStr.gsChoose;
             labelBoundary.Text = gStr.gsBoundary;
-            labelCoverage.Text = gStr.gsCoverage;
+            labelCoverage.Text = $"% {gStr.gsCoverage}";
             //sectionswitches
             labelGroupWorkSwitch.Text = gStr.gsWorkSwitch;
             labelGroupSteerSwitch.Text = gStr.gsSteerSwitch;
             chkSelectWorkSwitch.Text = gStr.gsActive;
             chkSelectSteerSwitch.Text = gStr.gsActive;
-            chkSetManualSections.Text = gStr.gsManual + gStr.gsSections;
-            chkSetManualSectionsSteer.Text = gStr.gsManual + gStr.gsSections;
-            chkSetAutoSections.Text = gStr.gsAuto + gStr.gsSections;
-            chkSetAutoSectionsSteer.Text = gStr.gsAuto + gStr.gsSections;
+            chkSetManualSections.Text = $"{gStr.gsSections}: {gStr.gsManual}";
+            chkSetManualSectionsSteer.Text = $"{gStr.gsSections}: {gStr.gsManual}";
+            chkSetAutoSections.Text = $"{gStr.gsSections}: {gStr.gsAuto}";
+            chkSetAutoSectionsSteer.Text = $"{gStr.gsSections}: {gStr.gsAuto}";
             //sectiontiming
             labelLookAheadTiming.Text = gStr.gsLookAheadTiming;
             labelOnTime.Text = gStr.gsOn + "(secs)";
@@ -170,7 +170,7 @@ namespace AgOpenGPS
             //antenna-imu configuration
             labelGboxDual.Text = gStr.gsDualAntennaSetting;
             labelGboxSingle.Text = gStr.gsSingleAntennaSetting;
-            labelHeadingOffset.Text = gStr.gsHeadingOffset;
+            labelHeadingOffset.Text = $"{gStr.gsHeadingOffset} ({gStr.gsDegree})";
             labelReverseDistance.Text = gStr.gsReverseDistance;
             labelGpsStep.Text = gStr.gsGpsStep;
             labelFixAlarm.Text = gStr.gsFixAlarm;
@@ -196,10 +196,10 @@ namespace AgOpenGPS
             labelLowTime.Text = gStr.gsLowerTime;
             labelPlantPop.Text = gStr.gsPlantPop;
             labelHydLiftSec.Text = gStr.gsHydraulicLiftLookAhead;
-            labelUser1.Text = gStr.gsUser1;
-            labelUser2.Text = gStr.gsUser2;
-            labelUser3.Text = gStr.gsUser3;
-            labelUser4.Text = gStr.gsUser4;
+            labelUser1.Text = string.Format(gStr.gsUserNo, 1);
+            labelUser2.Text = string.Format(gStr.gsUserNo, 2);
+            labelUser3.Text = string.Format(gStr.gsUserNo, 3);
+            labelUser4.Text = string.Format(gStr.gsUserNo, 4);
             labelHydLiftInvert.Text = gStr.gsInvertHydraulicRelays;
             labelSendSaveHydraulicLift.Text = gStr.gsSendAndSave;
             //tramsconfig
@@ -399,7 +399,6 @@ namespace AgOpenGPS
 
         private void rbtnDisplayImperial_Click(object sender, EventArgs e)
         {
-            mf.TimedMessageBox(2000, "Units Set", "Imperial");
             Log.EventWriter("Units To Imperial");
 
             mf.isMetric = false;
@@ -410,7 +409,6 @@ namespace AgOpenGPS
 
         private void rbtnDisplayMetric_Click(object sender, EventArgs e)
         {
-            mf.TimedMessageBox(2000, "Units Set", "Metric");
             Log.EventWriter("Units to Metric");
 
             mf.isMetric = true;

@@ -1,13 +1,16 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Core.Visuals;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS
 {
@@ -72,8 +75,8 @@ namespace AgOpenGPS
             else
             {
                 //make sure point distance isn't too big 
-                mf.curve.MakePointMinimumSpacing(ref mf.bnd.bndList[0].hdLine, 1.2);
-                mf.curve.CalculateHeadings(ref mf.bnd.bndList[0].hdLine);
+                CABCurve.MakePointMinimumSpacing(ref mf.bnd.bndList[0].hdLine, 1.2);
+                CABCurve.CalculateHeadings(ref mf.bnd.bndList[0].hdLine);
             }
 
             cboxIsSectionControlled.Checked = Properties.Settings.Default.setHeadland_isSectionControlled;
@@ -153,7 +156,7 @@ namespace AgOpenGPS
 
             if (nudSetDistance.Value == 0 && rbtnCurve.Checked)
             {
-                mf.TimedMessageBox(3000, "Distance Error", "Distance Set to 0, Nothing to Move");
+                FormDialog.Show("Distance Error", "Distance Set to 0, Nothing to Move", DialogSeverity.Error);
                 Log.EventWriter("Headland, Distance=0, Can't Move");
                 return;
             }
@@ -310,7 +313,7 @@ namespace AgOpenGPS
                     if (ptCnt > 0)
                     {
                         //who knows which way it actually goes
-                        mf.curve.CalculateHeadings(ref sliceArr);
+                        CABCurve.CalculateHeadings(ref sliceArr);
 
                         for (int i = 1; i < 30; i++)
                         {
@@ -444,18 +447,11 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.LineStrip);
                 for (int i = 0; i < mf.bnd.bndList[j].fenceLine.Count; i++)
                 {
-                    GL.Vertex3(mf.bnd.bndList[j].fenceLine[i].easting, mf.bnd.bndList[j].fenceLine[i].northing, 0);
+                    GL.Vertex2(mf.bnd.bndList[j].fenceLine[i].easting, mf.bnd.bndList[j].fenceLine[i].northing);
                 }
                 GL.End();
             }
-
-            //the vehicle
-            GL.PointSize(16.0f);
-            GL.Begin(PrimitiveType.Points);
-            GL.Color3(0.95f, 0.190f, 0.20f);
-            GL.Vertex3(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, 0.0);
-            GL.End();
-
+            VehicleDotVisual.DrawVehicleDot(mf.pivotAxlePos.ToGeoCoord());
             //draw the line building graphics
             if (start != 99999 || end != 99999) DrawABTouchLine();
 
@@ -472,23 +468,13 @@ namespace AgOpenGPS
         }
         private void DrawBuiltLines()
         {
-            //GL.LineWidth(8);
-            //GL.Color3(0.03f, 0.0f, 0.150f);
-            //GL.Begin(PrimitiveType.LineLoop);
-
-            //for (int i = 0; i < mf.bnd.bndList[0].hdLine.Count; i++)
-            //{
-            //    GL.Vertex3(mf.bnd.bndList[0].hdLine[i].easting, mf.bnd.bndList[0].hdLine[i].northing, 0);
-            //}
-            //GL.End();
-
             GL.LineWidth(8);
             GL.Color3(0.943f, 0.9083f, 0.09150f);
             GL.Begin(PrimitiveType.LineLoop);
 
             for (int i = 0; i < mf.bnd.bndList[0].hdLine.Count; i++)
             {
-                GL.Vertex3(mf.bnd.bndList[0].hdLine[i].easting, mf.bnd.bndList[0].hdLine[i].northing, 0);
+                GL.Vertex2(mf.bnd.bndList[0].hdLine[i].easting, mf.bnd.bndList[0].hdLine[i].northing);
             }
             GL.End();
 
@@ -510,7 +496,7 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.LineStrip);
                 foreach (vec3 item in sliceArr)
                 {
-                    GL.Vertex3(item.easting, item.northing, 0);
+                    GL.Vertex2(item.easting, item.northing);
                 }
                 GL.End();
 
@@ -518,9 +504,9 @@ namespace AgOpenGPS
                 GL.PointSize(24);
                 GL.Color3(1.0f, 0.6f, 0.3f);
                 GL.Begin(PrimitiveType.Points);
-                GL.Vertex3(sliceArr[0].easting, sliceArr[0].northing, 0);
+                GL.Vertex2(sliceArr[0].easting, sliceArr[0].northing);
                 GL.Color3(0.5f, 0.73f, 0.99f);
-                GL.Vertex3(sliceArr[cnt].easting, sliceArr[cnt].northing, 0);
+                GL.Vertex2(sliceArr[cnt].easting, sliceArr[cnt].northing);
                 GL.End();
             }
         }
@@ -531,18 +517,37 @@ namespace AgOpenGPS
             GL.Begin(PrimitiveType.Points);
 
             GL.Color3(0, 0, 0);
-            if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-            if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+            if (start != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[start].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[start].northing);
+            }
+            if (end != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[end].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[end].northing);
+            }
             GL.End();
 
             GL.PointSize(18);
             GL.Begin(PrimitiveType.Points);
 
             GL.Color3(1.0f, 0.75f, 0.350f);
-            if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-
+            if (start != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[start].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[start].northing);
+            }
             GL.Color3(0.5f, 0.75f, 1.0f);
-            if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+            if (end != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[end].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[end].northing);
+            }
             GL.End();
         }
 
@@ -784,8 +789,8 @@ namespace AgOpenGPS
                     mf.hdl.desList.Add(pt3);
 
                     //make sure point distance isn't too big 
-                    mf.curve.MakePointMinimumSpacing(ref mf.hdl.desList, 1.2);
-                    mf.curve.CalculateHeadings(ref mf.hdl.desList);
+                    CABCurve.MakePointMinimumSpacing(ref mf.hdl.desList, 1.2);
+                    CABCurve.CalculateHeadings(ref mf.hdl.desList);
 
                     mf.bnd.bndList[0].hdLine.Clear();
 
@@ -818,18 +823,11 @@ namespace AgOpenGPS
             {
                 for (int k = 0; k < mf.bnd.bndList[0].hdLine.Count - 2; k++)
                 {
-                    int res = GetLineIntersection(
-                    sliceArr[i].easting,
-                    sliceArr[i].northing,
-                    sliceArr[i + 1].easting,
-                    sliceArr[i + 1].northing,
+                    GeoLineSegment sliceSegment = GeoRefactorHelper.GetLineSegment(sliceArr, i);
+                    GeoLineSegment headLineSegment = mf.bnd.bndList[0].GetHeadLineSegment(k);
+                    GeoCoord? intersectionPoint = sliceSegment.IntersectionPoint(headLineSegment);
 
-                    mf.bnd.bndList[0].hdLine[k].easting,
-                    mf.bnd.bndList[0].hdLine[k].northing,
-                    mf.bnd.bndList[0].hdLine[k + 1].easting,
-                    mf.bnd.bndList[0].hdLine[k + 1].northing,
-                    ref iE, ref iN);
-                    if (res == 1)
+                    if (intersectionPoint.HasValue)
                     {
                         if (isStart == 0)
                         {
@@ -848,7 +846,7 @@ namespace AgOpenGPS
 
             if (isStart < 2)
             {
-                mf.TimedMessageBox(2000, "Error", "Crossings not Found");
+                FormDialog.Show("Error", "Crossings not Found", DialogSeverity.Error);
                 Log.EventWriter("Headland, Crossings Not Found");
 
                 return;
@@ -1019,35 +1017,6 @@ namespace AgOpenGPS
             mf.bnd.isHeadlandOn = false;
             mf.vehicle.isHydLiftOn = false;
             Close();
-        }
-
-        public int GetLineIntersection(double p0x, double p0y, double p1x, double p1y,
-        double p2x, double p2y, double p3x, double p3y, ref double iEast, ref double iNorth)
-        {
-            double s1x, s1y, s2x, s2y;
-            s1x = p1x - p0x;
-            s1y = p1y - p0y;
-
-            s2x = p3x - p2x;
-            s2y = p3y - p2y;
-
-            double s, t;
-            s = (-s1y * (p0x - p2x) + s1x * (p0y - p2y)) / (-s2x * s1y + s1x * s2y);
-
-            if (s >= 0 && s <= 1)
-            {
-                //check oher side
-                t = (s2x * (p0y - p2y) - s2y * (p0x - p2x)) / (-s2x * s1y + s1x * s2y);
-                if (t >= 0 && t <= 1)
-                {
-                    // Collision detected
-                    iEast = p0x + (t * s1x);
-                    iNorth = p0y + (t * s1y);
-                    return 1;
-                }
-            }
-
-            return 0; // No collision
         }
 
     }

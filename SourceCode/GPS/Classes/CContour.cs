@@ -603,14 +603,20 @@ namespace AgOpenGPS
             GL.LineWidth(mf.ABLine.lineWidth);
             GL.Color3(0.98f, 0.2f, 0.980f);
             GL.Begin(PrimitiveType.LineStrip);
-            for (int h = 0; h < ptCount; h++) GL.Vertex3(ctList[h].easting, ctList[h].northing, 0);
+            for (int h = 0; h < ptCount; h++)
+            {
+                GL.Vertex2(ctList[h].easting, ctList[h].northing);
+            }
             GL.End();
 
             GL.PointSize(mf.ABLine.lineWidth);
             GL.Begin(PrimitiveType.Points);
 
             GL.Color3(0.87f, 08.7f, 0.25f);
-            for (int h = 0; h < ptCount; h++) GL.Vertex3(ctList[h].easting, ctList[h].northing, 0);
+            for (int h = 0; h < ptCount; h++)
+            {
+                GL.Vertex2(ctList[h].easting, ctList[h].northing);
+            }
 
             GL.End();
 
@@ -629,14 +635,17 @@ namespace AgOpenGPS
             if (stripNum > -1)
             {
                 GL.Begin(PrimitiveType.Points);
-                for (int h = 0; h < stripList[stripNum].Count; h++) GL.Vertex3(stripList[stripNum][h].easting, stripList[stripNum][h].northing, 0);
+                for (int h = 0; h < stripList[stripNum].Count; h++)
+                {
+                    GL.Vertex2(stripList[stripNum][h].easting, stripList[stripNum][h].northing);
+                }
                 GL.End();
             }
 
             GL.Color3(0.35f, 0.30f, 0.90f);
             GL.PointSize(6.0f);
             GL.Begin(PrimitiveType.Points);
-            GL.Vertex3(stripList[stripNum][pt].easting, stripList[stripNum][pt].northing, 0);
+            GL.Vertex2(stripList[stripNum][pt].easting, stripList[stripNum][pt].northing);
             GL.End();
 
             if (mf.isPureDisplayOn && distanceFromCurrentLinePivot != 32000 && !mf.isStanleyUsed)
@@ -646,7 +655,7 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.Points);
 
                 GL.Color3(1.0f, 0.95f, 0.095f);
-                GL.Vertex3(goalPointCT.easting, goalPointCT.northing, 0.0);
+                GL.Vertex2(goalPointCT.easting, goalPointCT.northing);
                 GL.End();
                 GL.PointSize(1.0f);
             }
@@ -659,5 +668,5 @@ namespace AgOpenGPS
             ptList?.Clear();
             ctList?.Clear();
         }
-    }//class
-}//namespace
+    }
+}

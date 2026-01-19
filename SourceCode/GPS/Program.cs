@@ -36,7 +36,7 @@ namespace AgOpenGPS
                 FormDialog.Show(
                     "Warning",
                     "AgOpenGPS is Already Running",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Warning);
             }
         }
     }

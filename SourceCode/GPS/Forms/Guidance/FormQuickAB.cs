@@ -1,10 +1,11 @@
-﻿using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -166,8 +167,8 @@ namespace AgOpenGPS
             if (cnt > 3)
             {
                 //make sure point distance isn't too big 
-                mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 mf.trk.gArr.Add(new CTrk());
                 //array number is 1 less since it starts at zero
@@ -195,7 +196,7 @@ namespace AgOpenGPS
                 //build the tail extensions
                 mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                 SmoothAB(4);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 //write out the Curve Points
                 foreach (vec3 item in mf.curve.desList)
@@ -510,7 +511,7 @@ namespace AgOpenGPS
             if (mf.isBtnAutoSteerOn)
             {
                 mf.btnAutoSteer.PerformClick();
-                mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, "Return From Editing");
+                FormDialog.Show(gStr.gsGuidanceStopped, "Return From Editing", DialogSeverity.Info);
 
             }
             if (mf.yt.isYouTurnBtnOn) mf.btnAutoYouTurn.PerformClick();

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Joonesta AB - Alustamiseks klõpsa piiril kahel punktil</value>
+    <value>Joonesta AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Alustamiseks klõpsa piiril kahel punktil</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB-joon</value>
@@ -126,14 +129,8 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD-muundur</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG menüü</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
-  </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>Tarkvara kohta...</value>
   </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
@@ -149,9 +146,6 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Loo täiustatud tehnorajad</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Ma nõustun tingimustega</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresiivsus</value>
@@ -210,7 +204,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Taust</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Põllu põhjal:</value>
+    <value>Põllu põhjal</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Alumine menüü</value>
@@ -232,6 +226,12 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Aga põld on avatud</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Nupp</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>Vajuta sisse. Vajuta välja</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>Nupuvalija</value>
@@ -278,8 +278,8 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Kõigepealt sulge põld</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Piksel</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Värvivalija</value>
@@ -303,7 +303,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Kehtiv töökäik on puudu</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% Töödeldud</value>
+    <value>Töödeldud</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Loo</value>
@@ -336,10 +336,13 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Päev</value>
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value>---Surnud tsoon---</value>
+    <value>Surnud tsoon</value>
   </data>
   <data name="gsDefault" xml:space="preserve">
     <value>Vaikimisi</value>
+  </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>kraad</value>
   </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Kustuta</value>
@@ -349,9 +352,6 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Kustuta töödeldud pindala</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>See toiming kustutab kõik põllupiirid. Kas te soovite jätkata?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Kustuta kontuuri rajad</value>
@@ -379,9 +379,6 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Ma ei nõustu tingimustega</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Arutelud aadressil:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Näita</value>
@@ -453,7 +450,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Sulge</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Windowsi väljumine:</value>
+    <value>Windowsi väljumine</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Lisa töökäike</value>
@@ -537,7 +534,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Suuna graafik</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Suuna nihe (kraad)</value>
+    <value>Suuna nihe</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Põllu ots</value>
@@ -567,7 +564,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Kui vale suund siis vajuta sõidukit</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Pilt on puudu:</value>
+    <value>Pilt on puudu</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fusioon</value>
@@ -599,8 +596,8 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsInvertWas" xml:space="preserve">
     <value>Pööra WAS ümber</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
-    <value>kmh</value>
+  <data name="gsKmH" xml:space="preserve">
+    <value>km/h</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
     <value>Klaviatuur</value>
@@ -636,7 +633,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Pikkuskraad</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Vaata ette:</value>
+    <value>Vaata ette</value>
   </data>
   <data name="gsLowerTime" xml:space="preserve">
     <value>Langetamisaeg</value>
@@ -707,7 +704,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsN_West" xml:space="preserve">
     <value>Loe</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Uus vaikimisist</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -738,7 +735,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Mitte midagi ei kustutatud</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nihe:</value>
+    <value>Nihe</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nihutamise distants</value>
@@ -761,11 +758,8 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsOnDelay" xml:space="preserve">
     <value>Sisselülitusviivitus</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>Sees/väljas</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Läbipaistvus:</value>
+    <value>Läbipaistvus</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Ava</value>
@@ -774,10 +768,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Välimine</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Ülekatte:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Ülekatte / vahe</value>
+    <value>Ülekatte</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>Ülevõtt</value>
@@ -800,6 +791,9 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Pöördekaugus</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Piksel</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>Taimepop</value>
   </data>
@@ -807,7 +801,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Palun sisestage AB-joon</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Palun oodake...</value>
+    <value>Palun oodake</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -863,9 +857,6 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsRecordedPathMenu" xml:space="preserve">
     <value>Salvestatud töökäik</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Vähendatud punktid</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>Jäänud</value>
   </data>
@@ -912,22 +903,16 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Näeme järgmisel korral!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Põllu salvestamine..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Põllu parameetrite salvestamine...</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>Põllu parameetrid salvestatud.</value>
+    <value>Põllu salvestamine</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>Põld salvestatud kohalikult.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Sulgemise lõpetamine..</value>
+    <value>Sulgemise lõpetamine</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Sätete salvestamine...</value>
+    <value>Sätete salvestamine</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Sätted salvestatud.</value>
@@ -939,7 +924,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Üleslaadimine ebaõnnestus.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Põllu üleslaadimine AgShare'i...</value>
+    <value>Põllu üleslaadimine AgShare'i</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Ekraani nupud</value>
@@ -951,7 +936,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Sektsiooni jooned</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sektsioone:</value>
+    <value>Sektsioone</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Vali nupud</value>
@@ -969,13 +954,13 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Seadepunkt</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Nihuta GPS-positsiooni (cm)</value>
+    <value>Nihuta GPS-positsiooni</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>Lülita välja</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Väljalülitamine:</value>
+    <value>Väljalülitamine</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Külgkalde kompenseerimine / kraad</value>
@@ -1011,7 +996,7 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
     <value>Lõuna</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Vahe (cm)</value>
+    <value>Vahe</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>Kiirustegur</value>
@@ -1043,10 +1028,6 @@ Nende vajutamise järjekord on menüüs kuvamise järjekord alt ülespoole.</val
   <data name="gsSteerChart" xml:space="preserve">
     <value>Rooli graafik</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Nupp - Vajuta sisse. Vajuta välja
-Lüliti - Vajuta sisse, vabasta välja</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Väline lülitus</value>
   </data>
@@ -1068,10 +1049,13 @@ Lüliti - Vajuta sisse, vabasta välja</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Svenni nool</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Versiooni tingimused: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Lüliti</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>Vajuta sisse, vabasta välja</value>
+  </data>
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS on rangelt hariduslik tarkvara, mille abil saab õppida juhtimissüsteeme, GPS-lauseid ja masina juhtimise teoreetilisi rakendusi.
 
 Seda ei tohi mingil juhul kasutada päris sõidukitel. Simulaator võimaldab õpilasel masina juhtimist ohutult proovida.
@@ -1079,6 +1063,9 @@ Seda ei tohi mingil juhul kasutada päris sõidukitel. Simulaator võimaldab õp
 Tarkvaras puuduvad ohutussüsteemid.
 
 KASUTA OMAL RISKIL.</value>
+  </data>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Tingimused</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Failile</value>
@@ -1111,7 +1098,7 @@ KASUTA OMAL RISKIL.</value>
     <value>Tehnorajad</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Tehnoraja laius:</value>
+    <value>Tehnoraja laius</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Lülita AB-kurv sisse</value>
@@ -1128,26 +1115,14 @@ KASUTA OMAL RISKIL.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Pöördeandur</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Ühikud:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
     <value>Ühikud</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Kasuta valitud</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>Kasutaja 1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>Kasutaja 2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>Kasutaja 3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>Kasutaja 4</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>Kasutaja {0}</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>U-pööre</value>
@@ -1162,7 +1137,10 @@ KASUTA OMAL RISKIL.</value>
     <value>Määra silumine 3-4x raadiusega</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Sõiduki tüüp:</value>
+    <value>Sõiduki tüüp</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versiooni</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS null</value>
@@ -1174,10 +1152,10 @@ KASUTA OMAL RISKIL.</value>
     <value>Lääs</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Teljevahe:</value>
+    <value>Teljevahe</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Laius:</value>
+    <value>Laius</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Aknad on veel avatud</value>

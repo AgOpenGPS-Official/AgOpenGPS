@@ -39,8 +39,7 @@ namespace AgOpenGPS
         public Color sectionColorDay;
         public Color fieldColorDay;
         public Color fieldColorNight;
-        public ColorRgb fieldColor => (ColorRgb)(isDay ? fieldColorDay : fieldColorNight);
-        public ColorRgb worldGridColor => (ColorRgb)(isDay ? Colors.WorldGridDayColor : Colors.WorldGridNightColor);
+        public ColorRgba fieldColor => (ColorRgba)(isDay ? fieldColorDay : fieldColorNight);
 
         public Color textColorDay;
         public Color textColorNight;
@@ -123,6 +122,7 @@ namespace AgOpenGPS
             //every 3 second update status
             if (fourSecondCounter >= 3)
             {
+                _performanceTool?.StartStop();
                 if (!isPauseFieldTextCounter)
                 {
                     if (++currentFieldTextCounter > 3) currentFieldTextCounter = 0;
@@ -385,8 +385,12 @@ namespace AgOpenGPS
         public void LoadText()
         {
             enterSimCoordsToolStripMenuItem.Text = gStr.gsEnterSimCoords;
-            aboutToolStripMenuItem.Text = gStr.gsAbout;
             menustripLanguage.Text = gStr.gsLanguage;
+            profileToolStripMenuItem.Text = gStr.gsProfile;
+            helpMenuItem.Text = gStr.gsHelp;
+
+            newProfileToolStripMenuItem.Text = gStr.gsNew + "...";
+            loadProfileToolStripMenuItem.Text = gStr.gsLoad + "...";
 
             simulatorOnToolStripMenuItem.Text = gStr.gsSimulatorOn;
             resetALLToolStripMenuItem.Text = gStr.gsResetAll;
@@ -541,6 +545,9 @@ namespace AgOpenGPS
             panelDrag.Location = new System.Drawing.Point(87, 268);
 
             vehicle.VehicleConfig.Opacity = ((double)(Properties.Settings.Default.setDisplay_vehicleOpacity) * 0.01);
+            vehicle.VehicleConfig.Color = (ColorRgba)Settings.Default.setDisplay_colorVehicle.CheckColorFor255();
+
+
             vehicle.VehicleConfig.IsImage = Properties.Settings.Default.setDisplay_isVehicleImage;
 
             string directoryName = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -562,7 +569,6 @@ namespace AgOpenGPS
             //set the flag mark button to red dot
             btnFlag.Image = Properties.Resources.FlagRed;
 
-            vehicle.VehicleConfig.Color = (ColorRgb)Settings.Default.setDisplay_colorVehicle.CheckColorFor255();
 
             isLightbarOn = Settings.Default.setMenu_isLightbarOn;
             isLightBarNotSteerBar = Settings.Default.setMenu_isLightbarNotSteerBar;
@@ -1429,7 +1435,7 @@ namespace AgOpenGPS
             if (isMetric)
             {
                 TimedMessageBox(2000, gStr.gsTooFast, gStr.gsSlowDownBelow + " "
-                    + vehicle.functionSpeedLimit.ToString("N0") + " " + gStr.gsKMH);
+                    + vehicle.functionSpeedLimit.ToString("N0") + " " + gStr.gsKmH);
             }
             else
             {

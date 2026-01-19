@@ -67,12 +67,12 @@ namespace AgOpenGPS.Core.Streamers
             return double.Parse(ReadLine(), CultureInfo.InvariantCulture);
         }
 
-        public ColorRgb ReadColorRgb()
+        public ColorRgba ReadColorRgb()
         {
             string line = ReadLine();
             string[] words = line.Split(',');
 
-            return new ColorRgb(ParseByte(words[0]), ParseByte(words[1]), ParseByte(words[2]));
+            return new ColorRgba(ParseByte(words[0]), ParseByte(words[1]), ParseByte(words[2]));
         }
 
         public Wgs84 ReadWgs84()

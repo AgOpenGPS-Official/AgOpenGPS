@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Piirrä AB, Valitse kaksi pistettä reunalinjalta</value>
+    <value>Piirrä AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Valitse kaksi pistettä rajalta aloittaaksesi</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>Ab -linja</value>
@@ -126,17 +129,17 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD-muunnin</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG Valikko</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>Tietoja...</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Hanki</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Aquiren kerroin</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Toiminto on peruttu</value>
@@ -150,11 +153,8 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Ajourat (edistynyt)</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Hyväksyn käyttöehdot</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
-    <value>Agerssiivisuus</value>
+    <value>Aggressiivisuus</value>
   </data>
   <data name="gsAllSettings" xml:space="preserve">
     <value>Katso kaikki asetukset</value>
@@ -170,15 +170,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Käsitelty</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Hanki</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Hanki = Kerroin * Pidä</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Aquiren kerroin</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Alue</value>
@@ -213,13 +204,13 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Auto Dual &lt;&gt; Fix</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Dual&lt;&gt;Fix</value>
+    <value>Vaihda nopeutta</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Tausta</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Perustuen peltoon:</value>
+    <value>Perustuen peltoon</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Alavalikko</value>
@@ -241,6 +232,12 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Mutta pelto on ladattu</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Nappi</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>Hetkellinen</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>Napin valitsin</value>
@@ -287,8 +284,8 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Sulje ensin pelto</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Pixel</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Värin Valitsin</value>
@@ -315,7 +312,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Pulssia / Asteelle</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% Peitto</value>
+    <value>Peitto</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Luo</value>
@@ -348,10 +345,13 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Päivä</value>
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value>--Kuollut Alue--</value>
+    <value>Kuollut Alue</value>
   </data>
   <data name="gsDefault" xml:space="preserve">
     <value>Oletus</value>
+  </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>aste</value>
   </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Poista</value>
@@ -361,9 +361,6 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Poista käsitelty alue</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Tämä toiminto poistaa kaikki rajat. Haluatko jatkaa?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Poista ääriviivat</value>
@@ -391,9 +388,6 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>En Hyväksy</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Foorumi:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Näytä</value>
@@ -465,10 +459,13 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lopeta</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Poistuu Windowsiin:</value>
+    <value>Poistuu Windowsiin</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Lisä Linjat</value>
+  </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>Kerroin</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>Nopea</value>
@@ -549,7 +546,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Suunta kaavio</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Suuntapoikkeama (aste)</value>
+    <value>Suuntapoikkeama</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Päiste</value>
@@ -582,7 +579,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Jos väärä suunta napauta ajoneuvoa</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Ei kuvaa:</value>
+    <value>Ei kuvaa</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Fuusio</value>
@@ -614,8 +611,8 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsInvertWas" xml:space="preserve">
     <value>Vaihda WAS suunta (pyöränkulmaanturi)</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
-    <value>kmh</value>
+  <data name="gsKmH" xml:space="preserve">
+    <value>km/h</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
     <value>Näppäimistö</value>
@@ -651,7 +648,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Pituusaste</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Ennakointi:</value>
+    <value>Ennakointi</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Ennakoinnin ajastus</value>
@@ -725,7 +722,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsN_West" xml:space="preserve">
     <value>Luode</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Uusi oletusarvosta</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -756,7 +753,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Mitään ei poistettu</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Linjan Korjaus:</value>
+    <value>Linjan Korjaus</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Linjan korjauksen etäisyys</value>
@@ -779,11 +776,8 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsOnDelay" xml:space="preserve">
     <value>Päällekytkennän viive</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>Päälle/Pois</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Läpinäkyvyys:</value>
+    <value>Läpinäkyvyys</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Avaa</value>
@@ -792,10 +786,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Ulko</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Limitys:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Limitys / Väli</value>
+    <value>Limitys</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>Ylikirjoita</value>
@@ -818,6 +809,9 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Pivot Etäisyys</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>Kasvitiheys</value>
   </data>
@@ -825,7 +819,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Syötä AB-Linja</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Odota...</value>
+    <value>Odota</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Piste</value>
@@ -884,9 +878,6 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsRecordedPathPicker" xml:space="preserve">
     <value>Tallenetun polun avaus</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Vähennä Pisteitä</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>Jäljellä</value>
   </data>
@@ -936,22 +927,16 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Nähdään ensi kerralla!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Tallennetaan peltoa..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Tallennetaan peltoasetuksia...</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>Peltoasetukset tallennettu.</value>
+    <value>Tallennetaan peltoa</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>Pelto tallennettu paikallisesti.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Sammutus viimeistellään..</value>
+    <value>Sammutus viimeistellään</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Tallennetaan asetuksia...</value>
+    <value>Tallennetaan asetuksia</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Asetukset tallennettu.</value>
@@ -963,7 +948,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lataus epäonnistui.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Ladataan AgShareen...</value>
+    <value>Ladataan AgShareen</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Näytön Napit</value>
@@ -975,7 +960,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Lohkojen Linjat</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Lohkoja:</value>
+    <value>Lohkoja</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Valitse Napit</value>
@@ -993,13 +978,13 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Asetuspiste</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Siirrä GPS -sijainti (CM)</value>
+    <value>Siirrä GPS -sijainti</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>Sammuta</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Sammuu:</value>
+    <value>Sammuu</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Sivuttaisen kallistuksen komepensointi / aste</value>
@@ -1035,7 +1020,7 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
     <value>Etelä</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Etäisyys (cm)</value>
+    <value>Etäisyys</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>Nopeuden kerroin</value>
@@ -1067,10 +1052,6 @@ Kuvakkeet näkyvät alhaalta ylöspäin siinä järjestyksessä jossa ne ovat va
   <data name="gsSteerChart" xml:space="preserve">
     <value>Ohjauskaavio</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Nappi = Hetkellinen
-Kytkin = Lukkiutuva</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Ulkoinen Aktivointi</value>
   </data>
@@ -1092,13 +1073,13 @@ Kytkin = Lukkiutuva</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Svenn nuoli</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Version ehdot: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Kytkin</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Jos jaat tämän ILMAISEN ohjelman kopioita, joko ilmaiseksi tai maksua vastaan, parannettuna, muutettuna, sinun on siirrettävä vastaanottajille samat vapaudet, jotka olet saanut GPLv3-lisenssissä kuvatulla tavalla.</value>
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>Lukkiutuva</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS on tiukasti koulutusohjelmisto, jonka avulla voi oppia ohjausjärjestelmistä, GPS-lauseista ja koneenhallinnan teoreettisesta soveltamisesta.
 
 Sitä ei saa missään tapauksessa käyttää todellisissa laitteissa. Mukana on simulaattori, jonka avulla opiskelija voi kokea koneen ohjauksen turvallisesti.
@@ -1107,8 +1088,8 @@ Ohjelmistossa ei ole turvajärjestelmiä.
 
 KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Sinun on varmistettava, että he vastaanottavat tai voivat saada lähdekoodin. Ja sinun on näytettävä heille nämä ehdot, jotta he tietävät oikeutensa. Älä varasta muiden töitä ja kutsu sitä omaksesi.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Ehdot</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Arkistoida</value>
@@ -1141,7 +1122,7 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Ajourat</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Ajourien leveys:</value>
+    <value>Ajourien leveys</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Kytke AB -käyrä päälle</value>
@@ -1158,26 +1139,14 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Kääntöanturi</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Mitat:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Yksiköt (mm / in)</value>
+    <value>Yksiköt</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Käytä valittuja</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>Käyttäjä 1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>Käyttäjä 2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>Käyttäjä 3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>Käyttäjä 4</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>Käyttäjä {0}</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>U-käännös</value>
@@ -1192,7 +1161,10 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Pehmennys 3-4X Säde</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Kulkuneuvon Tyyppi:</value>
+    <value>Kulkuneuvon Tyyppi</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Version</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>WAS nollaus</value>
@@ -1204,10 +1176,10 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Länsi</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akseliväli:</value>
+    <value>Akseliväli</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Leveys:</value>
+    <value>Leveys</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows on edelleen auki</value>
@@ -1244,5 +1216,57 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Lataa pellot AgSharesta</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Hae kaikki</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Hae valitut</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Pakota ylikirjoitus</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Hyväksy</value>
+  </data>
+  <data name="gsCopyFrom" xml:space="preserve">
+    <value>Kopioi kohteesta</value>
+  </data>
+  <data name="gsCreateNewProfile" xml:space="preserve">
+    <value>Luo uusi profiili</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Discourse foorumi</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Ladataan</value>
+  </data>
+  <data name="gsEmptyProfile" xml:space="preserve">
+    <value>Tyhjä profiili</value>
+  </data>
+  <data name="gsLoad" xml:space="preserve">
+    <value>Lataa</value>
+  </data>
+  <data name="gsLoadProfile" xml:space="preserve">
+    <value>Lataa profiili</value>
+  </data>
+  <data name="gsName" xml:space="preserve">
+    <value>Nimi</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Uusi</value>
+  </data>
+  <data name="gsProfile" xml:space="preserve">
+    <value>Profiili</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>Ajoneuvoasetuksia kutsutaan nyt "profiileiksi" ja niitä 
+voidaan luoda/ladata päävalikosta(ylhällä vasemmalla).</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>Youtube tutoriaalit</value>
   </data>
 </root>

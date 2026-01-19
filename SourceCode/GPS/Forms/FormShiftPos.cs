@@ -21,7 +21,7 @@ namespace AgOpenGPS
             label2.Text = gStr.gsWest;
             label3.Text = gStr.gsEast;
             label4.Text = gStr.gsSouth;
-            this.Text = gStr.gsShiftGPSPosition;
+            Text = $"{gStr.gsShiftGPSPosition} ({gStr.gsCm})";
             nudEast.Controls[0].Enabled = false;
             nudNorth.Controls[0].Enabled = false;
         }

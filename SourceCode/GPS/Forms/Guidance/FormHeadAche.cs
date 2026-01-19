@@ -1,14 +1,16 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS
 {
@@ -269,7 +271,7 @@ namespace AgOpenGPS
                 if (start == end)
                 {
                     start = 99999; end = 99999;
-                    mf.TimedMessageBox(2000, "Line Error", "Start Point = End Point ");
+                    FormDialog.Show("Line Error", "Start Point = End Point ", DialogSeverity.Error);
                     return;
                 }
 
@@ -344,7 +346,7 @@ namespace AgOpenGPS
                     }
 
                     //who knows which way it actually goes
-                    mf.curve.CalculateHeadings(ref mf.hdl.tracksArr[mf.hdl.idx].trackPts);
+                    CABCurve.CalculateHeadings(ref mf.hdl.tracksArr[mf.hdl.idx].trackPts);
 
                     int ptCnt = mf.hdl.tracksArr[mf.hdl.idx].trackPts.Count - 1;
 
@@ -548,20 +550,13 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.Lines);
                 for (int i = 0; i < mf.bnd.bndList[j].fenceLine.Count; i++)
                 {
-                    GL.Vertex3(mf.bnd.bndList[j].fenceLine[i].easting, mf.bnd.bndList[j].fenceLine[i].northing, 0);
+                    GL.Vertex2(
+                        mf.bnd.bndList[j].fenceLine[i].easting,
+                        mf.bnd.bndList[j].fenceLine[i].northing);
                 }
                 GL.End();
             }
 
-            //the vehicle
-            //GL.PointSize(8.0f);
-            //GL.Begin(PrimitiveType.Points);
-            //GL.Color3(0.95f, 0.90f, 0.0f);
-            //GL.Vertex3(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, 0.0);
-            //GL.End();
-
-            //draw the line building graphics
-            //if (start != 99999 || end != 99999)
             //draw the actual built lines
             //if (start == 99999 && end == 99999)
             {
@@ -613,7 +608,7 @@ namespace AgOpenGPS
                     GL.Begin(PrimitiveType.Points);
                     foreach (vec3 item in mf.hdl.tracksArr[i].trackPts)
                     {
-                        GL.Vertex3(item.easting, item.northing, 0);
+                        GL.Vertex2(item.easting, item.northing);
                     }
                     GL.End();
                 }
@@ -628,7 +623,7 @@ namespace AgOpenGPS
                     GL.Begin(PrimitiveType.LineStrip);
                     foreach (vec3 item in mf.hdl.tracksArr[mf.hdl.idx].trackPts)
                     {
-                        GL.Vertex3(item.easting, item.northing, 0);
+                        GL.Vertex2(item.easting, item.northing);
                     }
                     GL.End();
 
@@ -636,17 +631,25 @@ namespace AgOpenGPS
                     GL.PointSize(28);
                     GL.Color3(0, 0, 0);
                     GL.Begin(PrimitiveType.Points);
-                    GL.Vertex3(mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].easting, mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].northing, 0);
+                    GL.Vertex2(
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].easting,
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].northing);
                     GL.Color3(0, 0, 0);
-                    GL.Vertex3(mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].easting, mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].northing, 0);
+                    GL.Vertex2(
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].easting,
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].northing);
                     GL.End();
 
                     GL.PointSize(20);
                     GL.Color3(1.0f, 0.7f, 0.35f);
                     GL.Begin(PrimitiveType.Points);
-                    GL.Vertex3(mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].easting, mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].northing, 0);
+                    GL.Vertex2(
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].easting,
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[0].northing);
                     GL.Color3(0.6f, 0.75f, 0.99f);
-                    GL.Vertex3(mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].easting, mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].northing, 0);
+                    GL.Vertex2(
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].easting,
+                        mf.hdl.tracksArr[mf.hdl.idx].trackPts[cnt].northing);
                     GL.End();
                 }
             }
@@ -657,7 +660,7 @@ namespace AgOpenGPS
 
             for (int i = 0; i < mf.bnd.bndList[0].hdLine.Count; i++)
             {
-                GL.Vertex3(mf.bnd.bndList[0].hdLine[i].easting, mf.bnd.bndList[0].hdLine[i].northing, 0);
+                GL.Vertex2(mf.bnd.bndList[0].hdLine[i].easting, mf.bnd.bndList[0].hdLine[i].northing);
             }
             GL.End();
         }
@@ -669,18 +672,37 @@ namespace AgOpenGPS
             GL.Begin(PrimitiveType.Points);
 
             GL.Color3(0, 0, 0);
-            if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-            if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+            if (start != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[start].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[start].northing);
+            }
+            if (end != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[end].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[end].northing);
+            }
             GL.End();
 
             GL.PointSize(16);
             GL.Begin(PrimitiveType.Points);
 
             GL.Color3(1.0f, 0.75f, 0.350f);
-            if (start != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[start].easting, mf.bnd.bndList[bndSelect].fenceLine[start].northing, 0);
-
+            if (start != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[start].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[start].northing);
+            }
             GL.Color3(0.5f, 0.75f, 1.0f);
-            if (end != 99999) GL.Vertex3(mf.bnd.bndList[bndSelect].fenceLine[end].easting, mf.bnd.bndList[bndSelect].fenceLine[end].northing, 0);
+            if (end != 99999)
+            {
+                GL.Vertex2(
+                    mf.bnd.bndList[bndSelect].fenceLine[end].easting,
+                    mf.bnd.bndList[bndSelect].fenceLine[end].northing);
+            }
             GL.End();
         }
 
@@ -750,7 +772,7 @@ namespace AgOpenGPS
 
                 if (nextLine == lineNum)
                 {
-                    mf.TimedMessageBox(2000, "Create Error", "Is there maybe only 1 line?");
+                    FormDialog.Show("Create Error", "Is there maybe only 1 line?", DialogSeverity.Error);
                     Log.EventWriter("Headache, Only 1 Line");
 
                     return;
@@ -758,20 +780,12 @@ namespace AgOpenGPS
 
                 for (int i = 0; i < mf.hdl.tracksArr[lineNum].trackPts.Count - 2; i++)
                 {
+                    GeoLineSegment headPathSegment = mf.hdl.tracksArr[lineNum].GetHeadPathSegment(i);
                     for (int k = 0; k < mf.hdl.tracksArr[nextLine].trackPts.Count - 2; k++)
                     {
-                        int res = GetLineIntersection(
-                        mf.hdl.tracksArr[lineNum].trackPts[i].easting,
-                        mf.hdl.tracksArr[lineNum].trackPts[i].northing,
-                        mf.hdl.tracksArr[lineNum].trackPts[i + 1].easting,
-                        mf.hdl.tracksArr[lineNum].trackPts[i + 1].northing,
-
-                        mf.hdl.tracksArr[nextLine].trackPts[k].easting,
-                        mf.hdl.tracksArr[nextLine].trackPts[k].northing,
-                        mf.hdl.tracksArr[nextLine].trackPts[k + 1].easting,
-                        mf.hdl.tracksArr[nextLine].trackPts[k + 1].northing,
-                        ref iE, ref iN);
-                        if (res == 1)
+                        GeoLineSegment otherSegment = mf.hdl.tracksArr[nextLine].GetHeadPathSegment(k);
+                        GeoCoord? intersectionPoint = headPathSegment.IntersectionPoint(otherSegment);
+                        if (intersectionPoint.HasValue)
                         {
                             if (isStart == 0) i++;
                             crossings.Add(i);
@@ -790,7 +804,7 @@ namespace AgOpenGPS
 
             if (crossings.Count != mf.hdl.tracksArr.Count * 2)
             {
-                mf.TimedMessageBox(2000, "Crosings Error", "Make sure all ends cross and only once");
+                FormDialog.Show("Crossings Error", "Make sure all ends cross and only once", DialogSeverity.Error);
                 Log.EventWriter("Headache, All ends cross and only once");
                 mf.bnd.bndList[0].hdLine?.Clear();
                 return;
@@ -956,35 +970,6 @@ namespace AgOpenGPS
         private void cboxIsZoom_CheckedChanged(object sender, EventArgs e)
         {
             zoomToggle = false;
-        }
-
-        public int GetLineIntersection(double p0x, double p0y, double p1x, double p1y,
-        double p2x, double p2y, double p3x, double p3y, ref double iEast, ref double iNorth)
-        {
-            double s1x, s1y, s2x, s2y;
-            s1x = p1x - p0x;
-            s1y = p1y - p0y;
-
-            s2x = p3x - p2x;
-            s2y = p3y - p2y;
-
-            double s, t;
-            s = (-s1y * (p0x - p2x) + s1x * (p0y - p2y)) / (-s2x * s1y + s1x * s2y);
-
-            if (s >= 0 && s <= 1)
-            {
-                //check oher side
-                t = (s2x * (p0y - p2y) - s2y * (p0x - p2x)) / (-s2x * s1y + s1x * s2y);
-                if (t >= 0 && t <= 1)
-                {
-                    // Collision detected
-                    iEast = p0x + (t * s1x);
-                    iNorth = p0y + (t * s1y);
-                    return 1;
-                }
-            }
-
-            return 0; // No collision
         }
 
         private void oglSelf_Load(object sender, EventArgs e)

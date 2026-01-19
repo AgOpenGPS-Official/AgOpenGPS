@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -120,9 +120,6 @@
   <data name="gsABline" xml:space="preserve">
     <value>AB línia</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>O programe...</value>
-  </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Akcia bola ukončená</value>
   </data>
@@ -145,7 +142,7 @@
     <value>Autopilot Port</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Použiť pole:</value>
+    <value>Použiť pole</value>
   </data>
   <data name="gsBoundary" xml:space="preserve">
     <value>Hranica</value>
@@ -318,7 +315,7 @@
   <data name="gsInner" xml:space="preserve">
     <value>Vnútorná</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
+  <data name="gsKmH" xml:space="preserve">
     <value>km/h</value>
   </data>
   <data name="gsLanguage" xml:space="preserve">
@@ -357,7 +354,7 @@
   <data name="gsN_West" xml:space="preserve">
     <value>Severo-Západ</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Novinka od štandardu</value>
   </data>
   <data name="gsNoABLineActive" xml:space="preserve">
@@ -448,7 +445,7 @@
     <value>Požadovaný</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Posun GPS pozície (cm)</value>
+    <value>Posun GPS pozície</value>
   </data>
   <data name="gsSimulatorOn" xml:space="preserve">
     <value>Simulátor zapnutý</value>
@@ -466,7 +463,7 @@
     <value>Juh</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Rozostup (cm)</value>
+    <value>Rozostup</value>
   </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Vytvoriť alebo vymazať hranicu</value>

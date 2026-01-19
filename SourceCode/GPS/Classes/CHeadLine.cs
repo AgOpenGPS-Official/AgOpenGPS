@@ -1,26 +1,19 @@
-﻿using System;
+﻿using AgOpenGPS.Core.Models;
 using System.Collections.Generic;
 
 namespace AgOpenGPS
 {
     public class CHeadLine
     {
-        //pointers to mainform controls
-        private readonly FormGPS mf;
-
         public List<CHeadPath> tracksArr = new List<CHeadPath>();
 
         public int idx;
 
         public List<vec3> desList = new List<vec3>();
 
-        public CHeadLine(FormGPS _f)
+        public CHeadLine()
         {
-            //constructor
-            mf = _f;
         }
-
-        //for calculating for display the averaged new line
 
     }
 
@@ -31,5 +24,11 @@ namespace AgOpenGPS
         public double moveDistance = 0;
         public int mode = 0;
         public int a_point = 0;
+
+        public GeoLineSegment GetHeadPathSegment(int index)
+        {
+            int nextIndex = (index + 1) % trackPts.Count;
+            return new GeoLineSegment(trackPts[index].ToGeoCoord(), trackPts[nextIndex].ToGeoCoord());
+        }
     }
 }

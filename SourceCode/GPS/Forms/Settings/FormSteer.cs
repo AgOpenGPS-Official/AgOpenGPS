@@ -66,10 +66,10 @@ namespace AgOpenGPS
             labelHeadingDegree.Text = gStr.gsHeading;
             labelOnDelay.Text = gStr.gsOnDelay;
             labelSpeedFactor.Text = gStr.gsSpeedFactor;
-            labelAquireFactor.Text = gStr.gsAquireFactor;
-            labelAquireDescription.Text = gStr.gsAquireDescription;
+            labelAcquireFactor.Text = gStr.gsAcquireFactor;
+            labelAcquireDescription.Text = $"{gStr.gsAcquire} = {gStr.gsFactor} * {gStr.gsHold}";
             labelDist.Text = gStr.gsDistance;
-            labelAquire2.Text = gStr.gsAquire;
+            labelAcquire2.Text = gStr.gsAcquire;
             labelHold.Text = gStr.gsHold;
 
             //translate pop-out
@@ -84,7 +84,7 @@ namespace AgOpenGPS
             labelADConverter.Text = gStr.gsADConverter;
             labelIMUAxis.Text = gStr.gsIMUAxis;
             labelSteerEnable.Text = gStr.gsSteerEnable;
-            labelSteerDescription.Text = gStr.gsSteerDescription;
+            labelSteerDescription.Text = $"{gStr.gsButton} - {gStr.gsButtonDescription}\n{gStr.gsSwitch} - {gStr.gsSwitchDescription}";
             labelUturnCompensation.Text = gStr.gsUturnCompensation;
             labelSideHill.Text = gStr.gsSideHillComp;
             labelSteerInReverse.Text = gStr.gsSteerInReverse;
@@ -94,8 +94,8 @@ namespace AgOpenGPS
             labelLineWidth.Text = gStr.gsLineWidth;
             labelNudgeDistance.Text = gStr.gsNudgeDistance;
             labelNextGuidanceLine.Text = gStr.gsNextGuidanceLine;
-            labelCmPix.Text = gStr.gsCmPix;
-            labelOnOff.Text = gStr.gsOnOff;
+            labelCmPix.Text = $"{gStr.gsCm} -> {gStr.gsPixel}";
+            labelOnOff.Text = $"{gStr.gsOn}/{gStr.gsOff}";
             labelLightbar.Text = gStr.gsLightbar;
             labelSteerBar.Text = gStr.gsSteerBar;
             labelWizard.Text = gStr.gsWizard;
@@ -884,7 +884,7 @@ namespace AgOpenGPS
             int offset = (int)(hsbarCountsPerDegree.Value * -mf.mc.actualSteerAngleDegrees + hsbarWasOffset.Value);
             if (Math.Abs(offset) > 3900)
             {
-                mf.TimedMessageBox(2000, "Exceeded Range", "Excessive Steer Angle - Cannot Zero");
+                FormDialog.Show("Exceeded Range", "Excessive Steer Angle - Cannot Zero", DialogSeverity.Error);
                 Log.EventWriter("Excessive Steer Angle, No Zero " + offset);
             }
             else
@@ -1048,7 +1048,6 @@ namespace AgOpenGPS
 
         #endregion
 
-
         private void btnSendSteerConfigPGN_Click(object sender, EventArgs e)
         {
             SaveSettings();
@@ -1188,12 +1187,11 @@ namespace AgOpenGPS
 
         private void btnVehicleReset_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 "Reset This Page to Defaults",
-                "Are you Sure",
-                MessageBoxButtons.YesNo);
+                "Are you Sure");
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 Log.EventWriter("Steer Form - Steer Settings Set to Default");
 

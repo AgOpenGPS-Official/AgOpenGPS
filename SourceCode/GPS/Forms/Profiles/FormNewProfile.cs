@@ -14,7 +14,7 @@ namespace AgOpenGPS.Forms.Profiles
 {
     public partial class FormNewProfile : Form
     {
-        private const string EmptyProfile = "<Empty Profile>";
+        private static readonly string EmptyProfile = $"<{gStr.gsEmptyProfile}>";
         private static readonly Regex InvalidFileRegex = new Regex(string.Format("[{0}]", Regex.Escape(@"<>:""/\|?*")));
         private readonly FormGPS _formGPS;
 
@@ -27,6 +27,12 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void FormNewProfile_Load(object sender, EventArgs e)
         {
+            Text = gStr.gsCreateNewProfile;
+            labelName.Text = gStr.gsName + ":";
+            labelCopyFrom.Text = gStr.gsCopyFrom + ":";
+            buttonCreate.Text = gStr.gsCreate;
+            buttonCancel.Text = gStr.gsCancel;
+
             listViewProfiles.Items.Clear();
             listViewProfiles.Items.Add(new ListViewItem(EmptyProfile) { Name = EmptyProfile });
             listViewProfiles.Items.AddRange(LoadProfiles().Select(profile => new ListViewItem(profile) { Name = profile }).ToArray());
@@ -35,7 +41,7 @@ namespace AgOpenGPS.Forms.Profiles
             ListViewItem currentProfile = listViewProfiles.Items[RegistrySettings.vehicleFileName];
             if (currentProfile != null)
             {
-                currentProfile.SubItems.Add("(Current)");
+                currentProfile.SubItems.Add($"({gStr.gsCurrent})");
                 currentProfile.Selected = true;
             }
             else
@@ -75,7 +81,7 @@ namespace AgOpenGPS.Forms.Profiles
             textBoxName.Text = Regex.Replace(textBoxName.Text, glm.fileRegex, "");
             textBoxName.SelectionStart = cursorPosition;
 
-            buttonOK.Enabled = !string.IsNullOrEmpty(textBoxName.Text);
+            buttonCreate.Enabled = !string.IsNullOrEmpty(textBoxName.Text);
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -88,10 +94,9 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (File.Exists(newProfilePath))
             {
-                var overwrite = FormDialog.Show(
+                var overwrite = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
-                    $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?",
-                    MessageBoxButtons.OKCancel);
+                    $"Profile '{newProfileName}' already exists.\r\n\r\nOverwrite?");
 
                 if (overwrite != DialogResult.OK)
                     return;
@@ -104,10 +109,10 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (existingProfileName.Equals(EmptyProfile))
             {
-                var confirmReset = FormDialog.Show(
+                var confirmReset = FormDialog.ShowQuestion(
                     "!! WARNING !!",
                     "This will reset all Tractor measurements and control, Are you Sure??",
-                    MessageBoxButtons.OKCancel);
+                    DialogSeverity.Warning);
 
                 if (confirmReset != DialogResult.OK)
                     return;
@@ -164,7 +169,7 @@ namespace AgOpenGPS.Forms.Profiles
                 FormDialog.Show(
                     gStr.gsError,
                     "Error loading profile " + existingProfileName + ".xml\n\nResult: " + result,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
             }
 
             Log.EventWriter($"Profile loaded: {existingProfileName}.xml");

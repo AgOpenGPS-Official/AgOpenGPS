@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AgOpenGPS.Core.Models
+﻿namespace AgOpenGPS.Core.Models
 {
     public struct XyDelta
     {
@@ -18,6 +16,11 @@ namespace AgOpenGPS.Core.Models
 
         public double DeltaX { get; }
         public double DeltaY { get; }
+
+        public static XyDelta operator *(double factor, XyDelta delta)
+        {
+            return new XyDelta(factor * delta.DeltaX, factor * delta.DeltaY);
+        }
 
     }
 }

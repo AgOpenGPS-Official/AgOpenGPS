@@ -1,44 +1,44 @@
 ﻿//Please, if you use this, share the improvements
 
-using AgOpenGPS.Core.Drawing;
 using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Visuals;
 using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace AgOpenGPS.Core
 {
     public class WorldGrid
     {
+        private readonly FieldGridVisual _fieldGridVisual;
         private BingMap _bingMap;
         private BingMapVisual _bingMapVisual;
         private Bitmap _floorBitmap;
         private GeoTexture2D _floorTexture;
 
         //Y
-        public double northingMax;
+        private double northingMax;
 
-        public double northingMin;
+        private double northingMin;
 
         //X
-        public double eastingMax;
+        private double eastingMax;
 
-        public double eastingMin;
+        private double eastingMin;
 
-        public double GridSize = 6000;
-        public double Count = 40;
-
-        public double gridRotation = 0.0;
+        private double GridSize = 6000;
+        private double Count = 40;
 
         public WorldGrid(Bitmap floorBitmap)
         {
             _floorBitmap = floorBitmap;
+            FieldGrid = new FieldGrid();
+            _fieldGridVisual = new FieldGridVisual(FieldGrid);
         }
 
-        public double GridStep { private get; set; }
+        public FieldGrid FieldGrid { get; }
+
         public BingMap BingMap
         {
             private get
@@ -63,7 +63,7 @@ namespace AgOpenGPS.Core
             }
         }
 
-        public void DrawFieldSurface(ColorRgb fieldColor, double cameraZoom, bool mustDrawFieldTexture)
+        public void DrawFieldSurface(ColorRgba fieldColor, double cameraZoom, bool mustDrawFieldTexture)
         {
             //adjust bitmap zoom based on cam zoom
             if (cameraZoom > 100) Count = 4;
@@ -94,27 +94,9 @@ namespace AgOpenGPS.Core
             _bingMapVisual?.Draw();
         }
 
-        public void DrawWorldGrid(ColorRgb worldGridColor)
+        public void DrawFieldGrid(bool isDay, GeoBoundingBox fieldBoundingBox)
         {
-            GLW.RotateZ(-gridRotation);
-
-            LineStyle worldGridLineStyle = new LineStyle(1.0f, worldGridColor);
-            GLW.SetLineStyle(worldGridLineStyle);
-            List<XyCoord> vertices = new List<XyCoord>();
-            for (double num = Math.Round(eastingMin / GridStep, MidpointRounding.AwayFromZero) * GridStep; num < eastingMax; num += GridStep)
-            {
-                if (num < eastingMin) continue;
-                vertices.Add(new XyCoord(num, northingMax));
-                vertices.Add(new XyCoord(num, northingMin));
-            }
-            for (double num2 = Math.Round(northingMin / GridStep, MidpointRounding.AwayFromZero) * GridStep; num2 < northingMax; num2 += GridStep)
-            {
-                if (num2 < northingMin) continue;
-                vertices.Add(new XyCoord(eastingMax, num2));
-                vertices.Add(new XyCoord(eastingMin, num2));
-            }
-            GLW.DrawLinesPrimitive(vertices.ToArray());
-            GLW.RotateZ(gridRotation);
+            _fieldGridVisual.Draw(isDay, fieldBoundingBox);
         }
 
         public void checkZoomWorldGrid(GeoCoord geoCoord)

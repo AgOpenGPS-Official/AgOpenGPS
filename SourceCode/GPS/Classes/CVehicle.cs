@@ -176,8 +176,7 @@ namespace AgOpenGPS
                 }
                 LineStyle backgroundLineStyle = new LineStyle(4, Colors.Black);
                 LineStyle foregroundLineStyle = new LineStyle(1, Colors.HitchRigidColor);
-                LineStyle[] layerStyles = { backgroundLineStyle, foregroundLineStyle };
-                GLW.DrawLinesPrimitiveLayered(layerStyles, vertices);
+                GLW.DrawLinesPrimitiveLayered(vertices, backgroundLineStyle, foregroundLineStyle);
             }
 
             //draw the vehicle Body
@@ -188,7 +187,12 @@ namespace AgOpenGPS
             }
 
             //3 vehicle types  tractor=0 harvestor=1 Articulated=2
-            ColorRgba vehicleColor = new ColorRgba(VehicleConfig.Color, (float)VehicleConfig.Opacity);
+            ColorRgba vehicleColor = new ColorRgba(
+                VehicleConfig.Color.Red,
+                VehicleConfig.Color.Green,
+                VehicleConfig.Color.Blue,
+                (byte)(255.0 * VehicleConfig.Opacity));
+
             if (VehicleConfig.IsImage)
             {
                 if (VehicleConfig.Type == VehicleType.Tractor)
@@ -234,7 +238,11 @@ namespace AgOpenGPS
                         mf.timerSim.Enabled ? mf.sim.steerAngle : mf.mc.actualSteerAngleDegrees,
                         out double leftAckermannAngle,
                         out double rightAckermannAngle);
-                    ColorRgba harvesterWheelColor = new ColorRgba(Colors.HarvesterWheelColor, (float)VehicleConfig.Opacity);
+                    ColorRgba harvesterWheelColor = new ColorRgba(
+                        Colors.HarvesterWheelColor.Red,
+                        Colors.HarvesterWheelColor.Green,
+                        Colors.HarvesterWheelColor.Blue,
+                        (byte)(255.0 * VehicleConfig.Opacity));
                     GLW.SetColor(harvesterWheelColor);
                     //right wheel
                     GL.PushMatrix();
@@ -279,32 +287,36 @@ namespace AgOpenGPS
             {
                 GL.Color4(1.2, 1.20, 0.0, VehicleConfig.Opacity);
                 GL.Begin(PrimitiveType.TriangleFan);
-                GL.Vertex3(0, VehicleConfig.AntennaPivot, -0.0);
-                GL.Vertex3(1.0, -0, 0.0);
+                GL.Vertex2(0, VehicleConfig.AntennaPivot);
+                GL.Vertex2(1.0, -0);
                 GL.Color4(0.0, 1.20, 1.22, VehicleConfig.Opacity);
-                GL.Vertex3(0, VehicleConfig.Wheelbase, 0.0);
+                GL.Vertex2(0, VehicleConfig.Wheelbase);
                 GL.Color4(1.220, 0.0, 1.2, VehicleConfig.Opacity);
-                GL.Vertex3(-1.0, -0, 0.0);
-                GL.Vertex3(1.0, -0, 0.0);
+                GL.Vertex2(-1.0, -0);
+                GL.Vertex2(1.0, -0);
                 GL.End();
 
                 GL.LineWidth(3);
                 GL.Color3(0.12, 0.12, 0.12);
                 GL.Begin(PrimitiveType.LineLoop);
                 {
-                    GL.Vertex3(-1.0, 0, 0);
-                    GL.Vertex3(1.0, 0, 0);
-                    GL.Vertex3(0, VehicleConfig.Wheelbase, 0);
+                    GL.Vertex2(-1.0, 0);
+                    GL.Vertex2(1.0, 0);
+                    GL.Vertex2(0, VehicleConfig.Wheelbase);
                 }
                 GL.End();
             }
             if (mf.camera.camSetDistance > -75 && mf.isFirstHeadingSet)
             {
                 //draw the bright antenna dot
-                PointStyle antennaBackgroundStyle = new PointStyle(16, Colors.Black);
-                PointStyle antennaForegroundStyle = new PointStyle(10, Colors.AntennaColor);
-                PointStyle[] layerStyles = { antennaBackgroundStyle, antennaForegroundStyle };
-                GLW.DrawPointLayered(layerStyles, -VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
+                // background layer
+                GLW.SetPointSize(16.0f);
+                GLW.SetColor(Colors.Black);
+                GLW.DrawPoint(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
+                // foreground layer
+                GLW.SetPointSize(10.0f);
+                GLW.SetColor(Colors.AntennaColor);
+                GLW.DrawPoint(-VehicleConfig.AntennaOffset, VehicleConfig.AntennaPivot, 0.1);
             }
 
             if (mf.bnd.isBndBeingMade && mf.bnd.isDrawAtPivot)
@@ -315,10 +327,10 @@ namespace AgOpenGPS
                     GL.Color3(0.0, 1.270, 0.0);
                     GL.Begin(PrimitiveType.LineStrip);
                     {
-                        GL.Vertex3(0.0, 0, 0);
+                        GL.Vertex2(0.0, 0.0);
                         GL.Color3(1.270, 1.220, 0.20);
-                        GL.Vertex3(mf.bnd.createBndOffset, 0, 0);
-                        GL.Vertex3(mf.bnd.createBndOffset * 0.75, 0.25, 0);
+                        GL.Vertex2(mf.bnd.createBndOffset, 0);
+                        GL.Vertex2(mf.bnd.createBndOffset * 0.75, 0.25);
                     }
                     GL.End();
                 }
@@ -329,10 +341,10 @@ namespace AgOpenGPS
                     GL.Color3(0.0, 1.270, 0.0);
                     GL.Begin(PrimitiveType.LineStrip);
                     {
-                        GL.Vertex3(0.0, 0, 0);
+                        GL.Vertex2(0.0, 0.0);
                         GL.Color3(1.270, 1.220, 0.20);
-                        GL.Vertex3(-mf.bnd.createBndOffset, 0, 0);
-                        GL.Vertex3(-mf.bnd.createBndOffset * 0.75, 0.25, 0);
+                        GL.Vertex2(-mf.bnd.createBndOffset, 0);
+                        GL.Vertex2(-mf.bnd.createBndOffset * 0.75, 0.25);
                     }
                     GL.End();
                 }
@@ -344,8 +356,8 @@ namespace AgOpenGPS
                 //double offs = mf.curve.distanceFromCurrentLinePivot * 0.3;
                 double svennDist = mf.camera.camSetDistance * -0.07;
                 double svennWidth = svennDist * 0.22;
-                LineStyle svenArrowLineStyle = new LineStyle(mf.ABLine.lineWidth, Colors.SvenArrowColor);
-                GLW.SetLineStyle(svenArrowLineStyle);
+                GLW.SetLineWidth(mf.ABLine.lineWidth);
+                GLW.SetColor(Colors.SvenArrowColor);
                 XyCoord[] vertices = {
                     new XyCoord(svennWidth, VehicleConfig.Wheelbase + svennDist),
                     new XyCoord(0, VehicleConfig.Wheelbase + svennWidth + 0.5 + svennDist),

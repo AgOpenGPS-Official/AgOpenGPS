@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Nubrėžti AB. Pažymėkite 2 taškus ant ribos, kad pradėti</value>
+    <value>Nubrėžti AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Pažymėkite 2 taškus ant ribos, kad pradėti</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB linija</value>
@@ -126,17 +129,17 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD keitiklis</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG Meniu</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>Apie...</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Akermanas</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Pasiekti</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Pasiekimo faktorius</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Veiksmas atšauktas</value>
@@ -149,9 +152,6 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Sukurti sudėtingas tech. vėžes</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Sutinku su sąlygomis</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresyvumas</value>
@@ -167,15 +167,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Apdirbta</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Pasiekti</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Pasiekti = Faktorius * Išlaikymas</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Pasiekimo faktorius</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Plotas</value>
@@ -216,7 +207,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Fonas</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Remiantis lauku:</value>
+    <value>Remiantis lauku</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Apatinis menu</value>
@@ -238,6 +229,12 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Laukas užkrautas</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Nefiksuojantis mygtukas</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>įjungta/išjungta</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>Mygtuko parinkimas</value>
@@ -284,8 +281,8 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Pirmiausia uždaryti lauką</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Pixel'is</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Spalvo parinkimas</value>
@@ -312,7 +309,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Laipsniai per volta</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% Padengta</value>
+    <value>Padengta</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Sukurti</value>
@@ -347,6 +344,9 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsDefault" xml:space="preserve">
     <value>Numatytasis</value>
   </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>laipsniais</value>
+  </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Ištrinti</value>
   </data>
@@ -355,9 +355,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Ištrinti apdirbtą plotą</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Ar tikrai norite ištrinti visas ribas???</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Ištrinkite kontūro kelius</value>
@@ -385,9 +382,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Nesutikti</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskusijos:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Ekranas</value>
@@ -459,10 +453,13 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Išeiti</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Išeiti į Windows:</value>
+    <value>Išeiti į Windows</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Ekstra gairės</value>
+  </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>Faktorius</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>Greitai</value>
@@ -543,7 +540,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Važiavimo krypties diagrama</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Krypties kompensavimas (laipsniais)</value>
+    <value>Krypties kompensavimas</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Galulaukės</value>
@@ -576,7 +573,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Jei neteisinga kryptis, palieskite transporto priemonę</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nėra paveikslėlio:</value>
+    <value>Nėra paveikslėlio</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Suderinimas</value>
@@ -608,7 +605,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsInvertWas" xml:space="preserve">
     <value>Invertuoti WAS</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
+  <data name="gsKmH" xml:space="preserve">
     <value>km/h</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
@@ -645,7 +642,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Ilguma</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Žiūrėjima į priekį:</value>
+    <value>Žiūrėjima į priekį</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Žiūrėjimo į priekį nustatymai</value>
@@ -719,7 +716,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsN_West" xml:space="preserve">
     <value>Šiaurės vakarai</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Naujas</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -750,7 +747,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Niekas neištrinta</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Stumtelti:</value>
+    <value>Stumtelti</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Stumtelėjimo atstumas</value>
@@ -773,11 +770,8 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsOnDelay" xml:space="preserve">
     <value>Įjungimo uždelsimas</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>Įjungta/išjungta</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Permatomumas:</value>
+    <value>Permatomumas</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Atidaryti</value>
@@ -786,10 +780,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Išorinis</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Persidengimas:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Persidengimas/Tarpas</value>
+    <value>Persidengimas</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>Nepaisyti</value>
@@ -812,6 +803,9 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Atstumas nuo galinės ašies</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Pixel'is</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>Padargo pop</value>
   </data>
@@ -819,7 +813,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Prašome įvesti į AB liniją</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Palaukite...</value>
+    <value>Palaukite</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Taškas</value>
@@ -878,9 +872,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsRecordedPathPicker" xml:space="preserve">
     <value>Įkelti įrašytą kelią</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Sumažintas taškų skaičius</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>Liko</value>
   </data>
@@ -933,7 +924,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Sekcijų linijos</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekcijos:</value>
+    <value>Sekcijos</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Pasirinkti mygtukus</value>
@@ -951,13 +942,13 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Nustatytas taškas</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Paslinkti GPS padėtį (cm)</value>
+    <value>Paslinkti GPS padėtį</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>Išjingti</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Išjungti už:</value>
+    <value>Išjungti už</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Pakalnės posvyrio kompensacija</value>
@@ -993,7 +984,7 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
     <value>Pietūs</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Tarpai (cm)</value>
+    <value>Tarpai</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>Greičio faktorius</value>
@@ -1025,10 +1016,6 @@ Kokia tvarka juos paspausite, tokia tvarka atsiras Menu.</value>
   <data name="gsSteerChart" xml:space="preserve">
     <value>Vairavimo diagrama</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Nefiksuojantis mygtukas: įjungta/išjungta
-Fiksuojantis mygtukas: įjungta/išjungta</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Vairavimo paleidimas nuotoliu</value>
   </data>
@@ -1050,13 +1037,13 @@ Fiksuojantis mygtukas: įjungta/išjungta</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Svenn rodyklė</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Terminai ir sąlygos esamai versijai: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Fiksuojantis mygtukas</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Jei platinate šios NEMOKAMOS programos kopijas, nesvarbu, ar tai būtų nemokama, ar už tam tikrą mokestį, patobulintas, pakeistas, turite perduoti gavėjams tas pačias laisves, kurias gavote kaip nurodyta GPLv3 licencijoje.</value>
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>įjungta/išjungta</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS yra griežtai mokomoji programinė įranga, skirta sužinoti apie valdymo sistemas, GPS sakinius ir teorinį mašinos valdymo taikymą.
 
 Jokiu būdu jokiu būdu negalima naudoti tikroje įrangoje. Suteikiamas treniruoklis, kad mokinys galėtų saugiai patirti mašinos valdymą.
@@ -1065,8 +1052,8 @@ Programinėje įrangoje nėra saugos sistemų ir jos nėra numanomos.
 
 NAUDOJIMAS SAVO RIZIKA.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Turite įsitikinti, kad jie gauna arba gali gauti šaltinio kodą. Ir jūs turite parodyti jiems šias sąlygas, kad jie žinotų savo teises. Nevokite kitų darbų ir vadinkite jį savo.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Terminai ir sąlygos esamai</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Į failą</value>
@@ -1099,7 +1086,7 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Technologinės vėžės</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Technologinių v. plotis:</value>
+    <value>Technologinių v. plotis</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Įjunkite AB kreivę</value>
@@ -1116,26 +1103,14 @@ NAUDOJIMAS SAVO RIZIKA.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Impulsinis</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Vienetai:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Metrininė/Britų sistema</value>
+    <value>Vienetai</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Naudoti pasirinktą</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>1 Baitas</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>2 Baitas</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>3 Baitas</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>4 Baitas</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>{0} Baitas</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>U apsisukimas</value>
@@ -1150,7 +1125,10 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Nustatykite gludinimą 3/4x spindulio ilgiui</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Technikos tipas:</value>
+    <value>Technikos tipas</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Versijai</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Vairo centras</value>
@@ -1162,10 +1140,10 @@ NAUDOJIMAS SAVO RIZIKA.</value>
     <value>Vakarai</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Ratū bazė:</value>
+    <value>Ratū bazė</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Plotis:</value>
+    <value>Plotis</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Langai vis dar atidaryti</value>

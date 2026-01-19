@@ -6,12 +6,13 @@ namespace AgOpenGPS.Core.Models
     {
         public GeoCoord(double northing, double easting)
         {
-            Northing = northing;
             Easting = easting;
+            Northing = northing;
         }
 
-        public double Northing { get; }
+        // Do not change the order of Easting and Northing. Vertex2Array expects Easting before Northing
         public double Easting { get; }
+        public double Northing { get; }
 
         public double DistanceSquared(GeoCoord coord2)
         {
@@ -25,12 +26,17 @@ namespace AgOpenGPS.Core.Models
 
         public GeoCoord Min(GeoCoord bCoord)
         {
-            return new GeoCoord(Math.Min(this.Northing, bCoord.Northing), Math.Min(this.Easting, bCoord.Easting));
+            return new GeoCoord(Math.Min(Northing, bCoord.Northing), Math.Min(Easting, bCoord.Easting));
         }
 
         public GeoCoord Max(GeoCoord bCoord)
         {
-            return new GeoCoord(Math.Max(this.Northing, bCoord.Northing), Math.Max(this.Easting, bCoord.Easting));
+            return new GeoCoord(Math.Max(Northing, bCoord.Northing), Math.Max(Easting, bCoord.Easting));
+        }
+
+        public GeoCoord Average(GeoCoord bCoord)
+        {
+            return new GeoCoord(0.5 * (Northing + bCoord.Northing), 0.5 * (Easting + bCoord.Easting));
         }
 
         public GeoArea TriangleArea(GeoCoord b, GeoCoord c)

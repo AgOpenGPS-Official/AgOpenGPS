@@ -30,12 +30,12 @@
         {
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.labelName = new System.Windows.Forms.Label();
-            this.buttonOK = new System.Windows.Forms.Button();
+            this.buttonCreate = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.listViewProfiles = new System.Windows.Forms.ListView();
             this.columnHeaderProfile = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderCurrent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelCopyFrom = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -65,25 +65,25 @@
             this.labelName.Text = "Name:";
             this.labelName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // buttonOK
+            // buttonCreate
             // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Enabled = false;
-            this.buttonOK.FlatAppearance.BorderSize = 0;
-            this.buttonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonOK.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOK.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.buttonOK.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonOK.Location = new System.Drawing.Point(546, 268);
-            this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(80, 92);
-            this.buttonOK.TabIndex = 500;
-            this.buttonOK.Text = "Create";
-            this.buttonOK.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            this.buttonCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCreate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonCreate.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonCreate.Enabled = false;
+            this.buttonCreate.FlatAppearance.BorderSize = 0;
+            this.buttonCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCreate.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCreate.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.buttonCreate.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonCreate.Location = new System.Drawing.Point(546, 268);
+            this.buttonCreate.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.buttonCreate.Name = "buttonCreate";
+            this.buttonCreate.Size = new System.Drawing.Size(80, 92);
+            this.buttonCreate.TabIndex = 500;
+            this.buttonCreate.Text = "Create";
+            this.buttonCreate.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.buttonCreate.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // buttonCancel
             // 
@@ -138,18 +138,18 @@
             // 
             this.columnHeaderCurrent.Width = 150;
             // 
-            // label1
+            // labelCopyFrom
             // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(15, 68);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(135, 23);
-            this.label1.TabIndex = 507;
-            this.label1.Text = "Copy from:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelCopyFrom.BackColor = System.Drawing.Color.Transparent;
+            this.labelCopyFrom.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCopyFrom.ForeColor = System.Drawing.Color.Black;
+            this.labelCopyFrom.Location = new System.Drawing.Point(15, 68);
+            this.labelCopyFrom.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelCopyFrom.Name = "labelCopyFrom";
+            this.labelCopyFrom.Size = new System.Drawing.Size(135, 23);
+            this.labelCopyFrom.TabIndex = 507;
+            this.labelCopyFrom.Text = "Copy from:";
+            this.labelCopyFrom.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FormNewProfile
             // 
@@ -158,10 +158,10 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(637, 390);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelCopyFrom);
             this.Controls.Add(this.listViewProfiles);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.buttonCreate);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.labelName);
             this.Font = new System.Drawing.Font("Tahoma", 14.25F);
@@ -180,11 +180,11 @@
         #endregion
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label labelName;
-        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Button buttonCreate;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.ListView listViewProfiles;
         private System.Windows.Forms.ColumnHeader columnHeaderProfile;
         private System.Windows.Forms.ColumnHeader columnHeaderCurrent;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelCopyFrom;
     }
 }

@@ -25,7 +25,7 @@ namespace AgOpenGPS
             InitializeComponent();
 
             btnJobOpen.Text = gStr.gsOpen;
-            btnJobNew.Text = gStr.gsNew;
+            btnJobNew.Text = gStr.gsNewFromDefault;
             btnJobResume.Text = gStr.gsResume;
             btnInField.Text = gStr.gsDriveIn;
             btnFromKML.Text = gStr.gsFromKml;
@@ -184,7 +184,7 @@ namespace AgOpenGPS
                         }
                         catch (Exception)
                         {
-                            mf.TimedMessageBox(2000, gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField);
+                            FormDialog.Show(gStr.gsFieldFileIsCorrupt, gStr.gsChooseADifferentField, DialogSeverity.Error);
                         }
                     }
                 }
@@ -219,7 +219,7 @@ namespace AgOpenGPS
             }
             else //no fields found
             {
-                mf.TimedMessageBox(2000, gStr.gsNoFieldsFound, gStr.gsFieldNotOpen);
+                FormDialog.Show(gStr.gsNoFieldsFound, gStr.gsFieldNotOpen, DialogSeverity.Error);
             }
         }
 
@@ -294,11 +294,11 @@ namespace AgOpenGPS
         {
             if (mf.isJobStarted)
             {
-                mf.TimedMessageBox(2000, gStr.gsError, gStr.gsCloseFieldFirst);
+                FormDialog.Show(gStr.gsError, gStr.gsCloseFieldFirst, DialogSeverity.Error);
                 return;
             }
 
-            using (var form = new FormAgShareUploader())
+            using (var form = new FormAgShareUploader(mf.agShareClient))
             {
                 form.ShowDialog(this);
             }

@@ -47,7 +47,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.labelPanicStop = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.labelAquireFactor = new System.Windows.Forms.Label();
+            this.labelAcquireFactor = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.labelLookAhead = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -523,18 +523,18 @@
             this.label20.Text = "0";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // labelAquireFactor
+            // labelAcquireFactor
             // 
-            this.labelAquireFactor.AutoSize = true;
-            this.labelAquireFactor.BackColor = System.Drawing.Color.Transparent;
-            this.labelAquireFactor.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAquireFactor.ForeColor = System.Drawing.Color.DimGray;
-            this.labelAquireFactor.Location = new System.Drawing.Point(811, 282);
-            this.labelAquireFactor.Name = "labelAquireFactor";
-            this.labelAquireFactor.Size = new System.Drawing.Size(147, 22);
-            this.labelAquireFactor.TabIndex = 616;
-            this.labelAquireFactor.Text = "Acquire Factor";
-            this.labelAquireFactor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAcquireFactor.AutoSize = true;
+            this.labelAcquireFactor.BackColor = System.Drawing.Color.Transparent;
+            this.labelAcquireFactor.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAcquireFactor.ForeColor = System.Drawing.Color.DimGray;
+            this.labelAcquireFactor.Location = new System.Drawing.Point(811, 282);
+            this.labelAcquireFactor.Name = "labelAcquireFactor";
+            this.labelAcquireFactor.Size = new System.Drawing.Size(147, 22);
+            this.labelAcquireFactor.TabIndex = 616;
+            this.labelAcquireFactor.Text = "Acquire Factor";
+            this.labelAcquireFactor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label22
             // 
@@ -3779,7 +3779,7 @@
             this.Controls.Add(this.labelDistanceError);
             this.Controls.Add(this.labelHeadingError);
             this.Controls.Add(this.labelLookAhead);
-            this.Controls.Add(this.labelAquireFactor);
+            this.Controls.Add(this.labelAcquireFactor);
             this.Controls.Add(this.labelPanicStop);
             this.Controls.Add(this.labelKP);
             this.Controls.Add(this.labelMinPWM);
@@ -3899,7 +3899,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label labelPanicStop;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label labelAquireFactor;
+        private System.Windows.Forms.Label labelAcquireFactor;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label labelLookAhead;
         private System.Windows.Forms.Label label24;

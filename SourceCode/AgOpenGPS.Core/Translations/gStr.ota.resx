@@ -58,8 +58,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="gsAbout" xml:space="preserve">
-    <value>…حقندە</value>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>ایدنمك</value>
   </data>
   <data name="gsActive" xml:space="preserve">
     <value>آقتیفلشدر</value>
@@ -69,9 +69,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>اویغولاندی</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>ایدنمك</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>آلان</value>

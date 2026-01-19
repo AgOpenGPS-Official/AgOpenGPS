@@ -1,12 +1,13 @@
-﻿using OpenTK.Graphics.OpenGL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using AgOpenGPS.Classes.AgShare.Helpers;
-using System.Threading.Tasks;
-using System.IO;
+using AgOpenGPS.Core.AgShare.Models;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
+using OpenTK.Graphics.OpenGL;
 
 namespace AgOpenGPS.Forms.Field
 {
@@ -14,23 +15,22 @@ namespace AgOpenGPS.Forms.Field
     /// Form that allows the user to preview and download their own AgShare fields,
     /// with OpenGL rendering of boundaries and AB lines.
     /// </summary>
-    public partial class FormAgShareDownloader : System.Windows.Forms.Form
+    public partial class FormAgShareDownloader : Form
     {
         private readonly FormGPS gps;
-        private readonly CAgShareDownloader downloader;
-
+        private readonly AgShareDownloader downloader;
 
         public FormAgShareDownloader(FormGPS gpsContext)
         {
             InitializeComponent();
             gps = gpsContext;
-            downloader = new CAgShareDownloader();
+            downloader = new AgShareDownloader(gps.agShareClient);
             progressBarDownloadAll.Visible = false;
             lblDownloading.Visible = false;
             chkForceOverwrite.Text = gStr.gsForceOverwrite;
             btnSaveAll.Text = gStr.gsDownloadAll;
             btnGetSelected.Text = gStr.gsGetSelected;
-            lblDownloading.Text = gStr.gsDownloading;
+            lblDownloading.Text = $"{gStr.gsDownloading}... {gStr.gsPleaseWait}";
             this.Text = gStr.gsAgShareDownloader;
 
         }
@@ -48,6 +48,12 @@ namespace AgOpenGPS.Forms.Field
                 // Get user's own fields from the AgShare server
                 var fields = await downloader.GetOwnFieldsAsync();
 
+                if (fields == null)
+                {
+                    FormDialog.Show("AgShare", "Failed to load field list.", DialogSeverity.Error);
+                    return;
+                }
+
                 lbFields.BeginUpdate();
                 lbFields.Items.Clear();
 
@@ -64,7 +70,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.\n" + ex.Message);
+                FormDialog.Show("AgShare", "Failed to load field list.\n" + ex.Message, DialogSeverity.Error);
             }
         }
 
@@ -74,7 +80,7 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0) return;
 
-            var dto = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;
+            var dto = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (dto == null) return;
 
             lblSelectedField.Text = "Selected Field: " + dto.Name;
@@ -85,7 +91,7 @@ namespace AgOpenGPS.Forms.Field
 
             if (previewDto == null)
             {
-                gps.TimedMessageBox(2000, "AgShare", "Failed to download field preview. Check logs for details.");
+                FormDialog.Show("AgShare", "Failed to download field preview. Check logs for details.", DialogSeverity.Error);
                 return;
             }
 
@@ -100,43 +106,43 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0)
             {
-                gps.TimedMessageBox(1000, "AgShare", "No field selected.");
+                FormDialog.Show("AgShare", "No field selected.", DialogSeverity.Error);
                 return;
             }
 
-            var selected = lbFields.SelectedItems[0].Tag as AgShareGetOwnFieldDto;
+            var selected = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (selected == null)
             {
-                gps.TimedMessageBox(1000, "AgShare", "Invalid selection.");
+                FormDialog.Show("AgShare", "Invalid selection.", DialogSeverity.Error);
                 return;
             }
 
             // Attempt to download and save field locally
             bool success = await downloader.DownloadAndSaveAsync(selected.Id);
-
-            if (success)
+            if (!success)
             {
-                gps.TimedMessageBox(2000, "AgShare", "Field downloaded and saved.");
-
-                // Build full path to Field.txt
-                string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected.Name);
-                string fieldFile = Path.Combine(fieldDir, "Field.txt");
-
-                if (!File.Exists(fieldFile))
-                {
-                    gps.TimedMessageBox(2000, "AgShare", "Field saved but could not be opened (missing Field.txt).");
-                    return;
-                }
-
-                // Close Current Field if necessary
-                if (gps.isJobStarted)
-                {
-                    await gps.FileSaveEverythingBeforeClosingField();
-                }
-
-                gps.FileOpenField(fieldFile);
-                Close();
+                FormDialog.Show("AgShare", "Failed to download field.", DialogSeverity.Error);
+                return;
             }
+
+            // Build full path to Field.txt
+            string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected.Name);
+            string fieldFile = Path.Combine(fieldDir, "Field.txt");
+
+            if (!File.Exists(fieldFile))
+            {
+                FormDialog.Show("AgShare", "Field saved but could not be opened (missing Field.txt).", DialogSeverity.Error);
+                return;
+            }
+
+            // Close Current Field if necessary
+            if (gps.isJobStarted)
+            {
+                await gps.FileSaveEverythingBeforeClosingField();
+            }
+
+            gps.FileOpenField(fieldFile);
+            Close();
         }
 
         // Called when the "Download All" button is clicked
@@ -187,7 +193,7 @@ namespace AgOpenGPS.Forms.Field
             {
                 message += $"\nFailed {result.Failed} field(s).";
             }
-            gps.TimedMessageBox(3000, "AgShare", message);
+            FormDialog.Show("AgShare", message, DialogSeverity.Info);
         }
 
 
@@ -201,7 +207,7 @@ namespace AgOpenGPS.Forms.Field
         #region OpenGL Rendering
 
         // Draws the field boundaries and AB lines in the OpenGL context
-        private void RenderField(LocalFieldModel field)
+        private void RenderField(ParsedField field)
         {
             glControl1.MakeCurrent();
 
@@ -214,45 +220,47 @@ namespace AgOpenGPS.Forms.Field
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             // Determine scaling based on boundary extents, or AB lines if no boundary
-            double minX, minY, maxX, maxY;
-            GetBounds(field.Boundaries, field.AbLines, out minX, out minY, out maxX, out maxY);
+            GeoBoundingBox fieldBb = GetBoundingBox(field.Boundaries, field.Tracks);
 
             // Ensure non-zero margins even for vertical/horizontal lines or single points
-            double marginX = Math.Max((maxX - minX) * 0.05, 50);
-            double marginY = Math.Max((maxY - minY) * 0.05, 50);
+            GeoDelta bbMargin = new GeoDelta(
+                Math.Max(0.05 * (fieldBb.MaxNorthing - fieldBb.MinNorthing), 50),
+                Math.Max(0.05 * (fieldBb.MaxEasting - fieldBb.MinEasting), 50));
+            GeoBoundingBox bbWithMargin = new GeoBoundingBox(fieldBb.MinCoord - bbMargin, fieldBb.MaxCoord + bbMargin);
 
             // Configure orthographic projection
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(minX - marginX, maxX + marginX, minY - marginY, maxY + marginY, -1, 1);
-
+            GL.Ortho(
+                bbWithMargin.MinEasting, bbWithMargin.MaxEasting,
+                bbWithMargin.MinNorthing, bbWithMargin.MaxNorthing, -1, 1);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
             // Draw field boundaries in lime green
             GL.Color4(0f, 1f, 0f, 0.8f);
-            foreach (var ring in field.Boundaries)
+            foreach (var bnd in field.Boundaries)
             {
                 GL.Begin(PrimitiveType.LineLoop);
-                foreach (var pt in ring)
-                    GL.Vertex2(pt.Easting, pt.Northing);
+                foreach (var pt in bnd.fenceLine)
+                    GL.Vertex2(pt.easting, pt.northing);
                 GL.End();
             }
 
             // Draw AB lines and curves (dashed)
-            foreach (var ab in field.AbLines)
+            foreach (var trk in field.Tracks)
             {
                 GL.Enable(EnableCap.LineStipple);
                 GL.LineStipple(1, 0x0F0F);
                 GL.LineWidth(3.5f);
 
-                if (ab.CurvePoints != null && ab.CurvePoints.Count > 0)
+                if (trk.mode == TrackMode.Curve && trk.curvePts != null && trk.curvePts.Count > 0)
                 {
                     // Render curve (red dashed line)
                     GL.Color4(1f, 0f, 0f, 0.9f);
                     GL.Begin(PrimitiveType.LineStrip);
-                    foreach (var pt in ab.CurvePoints)
-                        GL.Vertex2(pt.Easting, pt.Northing);
+                    foreach (var pt in trk.curvePts)
+                        GL.Vertex2(pt.easting, pt.northing);
                     GL.End();
                 }
                 else
@@ -260,8 +268,8 @@ namespace AgOpenGPS.Forms.Field
                     // Render AB line (orange dashed line)
                     GL.Color4(1f, 0.65f, 0f, 0.9f);
                     GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex2(ab.PtA.Easting, ab.PtA.Northing);
-                    GL.Vertex2(ab.PtB.Easting, ab.PtB.Northing);
+                    GL.Vertex2(trk.ptA.easting, trk.ptA.northing);
+                    GL.Vertex2(trk.ptB.easting, trk.ptB.northing);
                     GL.End();
                 }
 
@@ -272,77 +280,55 @@ namespace AgOpenGPS.Forms.Field
             glControl1.SwapBuffers();
         }
 
-        // Calculates min and max coordinate extents for given field boundaries and AB lines
-        private void GetBounds(List<List<LocalPoint>> boundaries, List<AbLineLocal> abLines,
-            out double minX, out double minY, out double maxX, out double maxY)
+        private GeoBoundingBox GetBoundingBox(List<CBoundaryList> boundaries, List<CTrk> tracks)
         {
-            minX = minY = double.MaxValue;
-            maxX = maxY = double.MinValue;
-
-            bool hasPoints = false;
+            GeoBoundingBox bb = GeoBoundingBox.CreateEmpty();
 
             // Check boundaries first
             if (boundaries != null)
             {
-                foreach (var ring in boundaries)
+                foreach (var bnd in boundaries)
                 {
-                    foreach (var pt in ring)
+                    foreach (var pt in bnd.fenceLine)
                     {
-                        if (pt.Easting < minX) minX = pt.Easting;
-                        if (pt.Easting > maxX) maxX = pt.Easting;
-                        if (pt.Northing < minY) minY = pt.Northing;
-                        if (pt.Northing > maxY) maxY = pt.Northing;
-                        hasPoints = true;
+                        bb.Include(pt.ToGeoCoord());
                     }
                 }
             }
 
-            // If no boundary, use AB lines to calculate bounds
-            if (!hasPoints && abLines != null)
+            // If no boundary, use tracks to calculate bounds
+            if (bb.IsEmpty && tracks != null)
             {
-                foreach (var ab in abLines)
+                foreach (var trk in tracks)
                 {
-                    if (ab.CurvePoints != null && ab.CurvePoints.Count > 0)
+                    if (trk.mode == TrackMode.Curve && trk.curvePts != null && trk.curvePts.Count > 0)
                     {
-                        foreach (var pt in ab.CurvePoints)
+                        foreach (var pt in trk.curvePts)
                         {
-                            if (pt.Easting < minX) minX = pt.Easting;
-                            if (pt.Easting > maxX) maxX = pt.Easting;
-                            if (pt.Northing < minY) minY = pt.Northing;
-                            if (pt.Northing > maxY) maxY = pt.Northing;
-                            hasPoints = true;
+                            bb.Include(pt.ToGeoCoord());
                         }
                     }
                     else
                     {
-                        // AB line (two points)
-                        if (ab.PtA.Easting < minX) minX = ab.PtA.Easting;
-                        if (ab.PtA.Easting > maxX) maxX = ab.PtA.Easting;
-                        if (ab.PtA.Northing < minY) minY = ab.PtA.Northing;
-                        if (ab.PtA.Northing > maxY) maxY = ab.PtA.Northing;
-
-                        if (ab.PtB.Easting < minX) minX = ab.PtB.Easting;
-                        if (ab.PtB.Easting > maxX) maxX = ab.PtB.Easting;
-                        if (ab.PtB.Northing < minY) minY = ab.PtB.Northing;
-                        if (ab.PtB.Northing > maxY) maxY = ab.PtB.Northing;
-                        hasPoints = true;
+                        bb.Include(trk.ptA.ToGeoCoord());
+                        bb.Include(trk.ptB.ToGeoCoord());
                     }
                 }
             }
 
             // Fallback to default bounds if no data
-            if (!hasPoints)
+            if (bb.IsEmpty)
             {
-                minX = minY = -100;
-                maxX = maxY = 100;
+                bb.Include(new GeoCoord(-100.0, -100.0));
+                bb.Include(new GeoCoord(100.0, 100.0));
             }
+            return bb;
         }
 
         #endregion
 
         private void glControl1_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -287,7 +287,7 @@ namespace AgOpenGPS
                 curList.Add(arr[cnt - 2]);
                 curList.Add(arr[cnt - 1]);
 
-                mf.curve.CalculateHeadings(ref curList);
+                CABCurve.CalculateHeadings(ref curList);
 
                 gArr[idx].curvePts.Clear();
 

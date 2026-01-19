@@ -21,6 +21,11 @@ namespace AgOpenGPS.Core.Streamers
             return intValue.ToString(CultureInfo.InvariantCulture);
         }
 
+        public string DoubleString(double doubleValue)
+        {
+            return doubleValue.ToString(CultureInfo.InvariantCulture);
+        }
+
         public string DoubleString(double value, string formatString)
         {
             return value.ToString(formatString, CultureInfo.InvariantCulture);
@@ -78,9 +83,9 @@ namespace AgOpenGPS.Core.Streamers
             WriteLine(stringValue ?? "");
         }
 
-        public void WriteColorRgb(ColorRgb colorRgb)
+        public void WriteColorRgb(ColorRgba onlyRgb)
         {
-            WriteLine(IntString(colorRgb.Red) + "," + IntString(colorRgb.Green) + "," + IntString(colorRgb.Blue));
+            WriteLine(IntString(onlyRgb.Red) + "," + IntString(onlyRgb.Green) + "," + IntString(onlyRgb.Blue));
         }
 
         public void WriteWgs84(Wgs84 wgs84)

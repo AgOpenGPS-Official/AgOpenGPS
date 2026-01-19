@@ -119,12 +119,11 @@ namespace AgOpenGPS
         private void btnStop_Click(object sender, EventArgs e)
         {
             // Ask user if they are done with the boundary
-            DialogResult result3 = FormDialog.Show(
-                gStr.gsBoundary,         // Title
-                "Done?",                 // Message
-                MessageBoxButtons.OKCancel);
+            DialogResult result = FormDialog.ShowQuestion(
+                gStr.gsBoundary,
+                "Done?");
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 if (mf.bnd.bndBeingMadePts.Count > 2)
                 {
@@ -152,8 +151,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    // Show quick message that nothing was saved
-                    mf.TimedMessageBox(2000, gStr.gsNoBoundary, gStr.gsExit);
+                    FormDialog.Show(gStr.gsNoBoundary, gStr.gsExit, DialogSeverity.Error);
                 }
 
                 // Stop adding points and reset state
@@ -206,12 +204,11 @@ namespace AgOpenGPS
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 gStr.gsDeleteForSure,
-                gStr.gsCompletelyDeleteBoundary,
-                MessageBoxButtons.OKCancel);
+                gStr.gsCompletelyDeleteBoundary);
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 mf.bnd.bndBeingMadePts?.Clear();
             }
@@ -231,46 +228,6 @@ namespace AgOpenGPS
             Properties.Settings.Default.setBnd_isDrawPivot = mf.bnd.isDrawAtPivot;
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.B) //autosteer button on off
-            {
-                mf.bnd.isOkToAddPoints = true;
-                mf.AddBoundaryPoint();
-                mf.bnd.isOkToAddPoints = false;
-                lblPoints.Text = mf.bnd.bndBeingMadePts.Count.ToString();
-            }
-
-            if (keyData == Keys.D) //autosteer button on off
-            {
-                int ptCount = mf.bnd.bndBeingMadePts.Count;
-                if (ptCount > 0)
-                    mf.bnd.bndBeingMadePts.RemoveAt(ptCount - 1);
-                lblPoints.Text = mf.bnd.bndBeingMadePts.Count.ToString();
-            }
-
-            if (keyData == Keys.R) //autosteer button on off
-            {
-                if (mf.bnd.isOkToAddPoints)
-                {
-                    mf.bnd.isOkToAddPoints = false;
-                    btnPausePlay.Image = Properties.Resources.BoundaryRecord;
-                    //btnPausePlay.Text = gStr.gsRecord;
-                    btnAddPoint.Enabled = true;
-                    btnDeleteLast.Enabled = true;
-                }
-                else
-                {
-                    mf.bnd.isOkToAddPoints = true;
-                    btnPausePlay.Image = Properties.Resources.boundaryPause;
-                    //btnPausePlay.Text = gStr.gsPause;
-                    btnAddPoint.Enabled = false;
-                    btnDeleteLast.Enabled = false;
-                }
-            }
-            // Call the base class
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
         private void cboxIsRecBoundaryWhenSectionOn_Click(object sender, EventArgs e)
         {
             mf.bnd.isRecBoundaryWhenSectionOn = cboxIsRecBoundaryWhenSectionOn.Checked;

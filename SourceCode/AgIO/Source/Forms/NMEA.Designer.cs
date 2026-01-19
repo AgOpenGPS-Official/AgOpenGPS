@@ -207,7 +207,7 @@ namespace AgIO
                     if (isGPSSentencesOn) avrSentence = nextNMEASentence;
                 }
 
-                else if (words[0] == "$GNTRA")
+                else if (words[0] == "$GNTRA" || words[0] == "$GPTRA")
                 {
                     ParseTRA();
                 }
@@ -948,8 +948,9 @@ namespace AgIO
                 float.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrueDual);
                 headingTrueDualData = headingTrueDual;
 
+
                 //  Console.WriteLine(HeadingForced);
-                float.TryParse(words[3], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);
+                float.TryParse(words[4], NumberStyles.Float, CultureInfo.InvariantCulture, out rollK);
                 // Console.WriteLine(nRoll);
 
                 int.TryParse(words[5], NumberStyles.Float, CultureInfo.InvariantCulture, out int trasolution);

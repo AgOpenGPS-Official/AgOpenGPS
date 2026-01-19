@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Generiraj AB - Klikni 2 Točke za početak</value>
+    <value>Generiraj AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klikni 2 Točke za početak</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linija</value>
@@ -126,17 +129,17 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD Konverter</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG Meni</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>O programu...</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann geometrija</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Uhvati</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Faktor preuzimanja</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Akcija je prekinuta</value>
@@ -152,9 +155,6 @@
   </data>
   <data name="gsAgShareDownloader" xml:space="preserve">
     <value>Preuzmi polja iz AgShare</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Slažem se sa uslovima korišćenja</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresivnost</value>
@@ -173,15 +173,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Obrađeno</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Uhvati</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Uhvati = Factor * Hold</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Faktor preuzimanja</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Površina</value>
@@ -222,7 +213,7 @@
     <value>Pozadina</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Koristi parcelu:</value>
+    <value>Koristi parcelu</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Donji meni</value>
@@ -244,6 +235,12 @@
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Parcela je već učitana</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Dugme</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>Pritisni za pokretanje/zaustavljanje navođenja</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>odabir Tipke</value>
@@ -290,8 +287,8 @@
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Najprije zatvorite polje</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Pixel</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Izbor boje</value>
@@ -318,7 +315,7 @@
     <value>Impuls / °</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% pokrivenosti</value>
+    <value>pokrivenosti</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Kreiraj</value>
@@ -351,10 +348,13 @@
     <value>Dan</value>
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value>-Mrtva zona-</value>
+    <value>Mrtva zona</value>
   </data>
   <data name="gsDefault" xml:space="preserve">
     <value>Podrazumjevano</value>
+  </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>°</value>
   </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Obriši</value>
@@ -364,9 +364,6 @@
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Brisanje obrađene površine</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Da li zaista želite da obrišete Međe polja?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Brisanje kontura</value>
@@ -395,9 +392,6 @@
   <data name="gsDisagree" xml:space="preserve">
     <value>Odbij</value>
   </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskusije:</value>
-  </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Displej</value>
   </data>
@@ -411,7 +405,7 @@
     <value>Preuzmi sve</value>
   </data>
   <data name="gsDownloading" xml:space="preserve">
-    <value>Preuzmanje...pričekaj</value>
+    <value>Preuzmanje</value>
   </data>
   <data name="gsDriveIn" xml:space="preserve">
     <value>Nađi ovde</value>
@@ -474,10 +468,13 @@
     <value>Izlaz</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>izlaz u Windows za:</value>
+    <value>izlaz u Windows za</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Dodatne linije</value>
+  </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>Faktor</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>Brzo</value>
@@ -564,7 +561,7 @@
     <value>Grafikon pravca</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Pomeraj pravca (°)</value>
+    <value>Pomeraj pravca</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Uvrtine</value>
@@ -597,7 +594,7 @@
     <value>Klikni na vozilo za obrtanje smera</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Nema Slike:</value>
+    <value>Nema Slike</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Spajanje podataka</value>
@@ -629,7 +626,7 @@
   <data name="gsInvertWas" xml:space="preserve">
     <value>Obrni WAS</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
+  <data name="gsKmH" xml:space="preserve">
     <value>km/h</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
@@ -666,7 +663,7 @@
     <value>Geografska dužina</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Reakcija unaprijed:</value>
+    <value>Reakcija unaprijed</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Postavke vremena reakcije unaprijed</value>
@@ -740,7 +737,7 @@
   <data name="gsN_West" xml:space="preserve">
     <value>Severozapad</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Novo Od podrazumevanog</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -771,7 +768,7 @@
     <value>Ništa nije obrisano</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Pomeraj:</value>
+    <value>Pomeraj</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Udaljenost</value>
@@ -794,11 +791,8 @@
   <data name="gsOnDelay" xml:space="preserve">
     <value>On-Delay</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>ON/OFF</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Transparetnost:</value>
+    <value>Transparetnost</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Otvori</value>
@@ -807,10 +801,7 @@
     <value>Spoljni</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Preklop:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Preklop/razmak</value>
+    <value>Preklop</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>Prepiši</value>
@@ -833,6 +824,9 @@
   <data name="gsPivotDistance" xml:space="preserve">
     <value>udaljenost Točke zakreta</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>Gustoća biljaka</value>
   </data>
@@ -840,7 +834,7 @@
     <value>Unesite AB Liniju</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Molim sačekajte...</value>
+    <value>Molim sačekajte</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Točka</value>
@@ -899,9 +893,6 @@
   <data name="gsRecordedPathPicker" xml:space="preserve">
     <value>Učitaj putanju</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Reducirane točke</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>Preostalo</value>
   </data>
@@ -951,22 +942,16 @@
     <value>Vidimo se sljedeći put!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Spremam polje..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Spremam parametre polja..</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>Parametri polja spremljeni.</value>
+    <value>Spremam polje</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>Polje spremljeno lokalno.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Završavam gašenje..</value>
+    <value>Završavam gašenje</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Spremam postavke..</value>
+    <value>Spremam postavke</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Postavke spremljene.</value>
@@ -978,7 +963,7 @@
     <value>Greška Prijenosa.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>“Prijenos polja na AgShare...</value>
+    <value>Prijenos polja na AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Dugmad ekrana</value>
@@ -990,7 +975,7 @@
     <value>Linije sekcija</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekcije:</value>
+    <value>Sekcije</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Izaberi dugme</value>
@@ -1008,13 +993,13 @@
     <value>Podesi tačku</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Pomeraj pocizije (cm)</value>
+    <value>Pomeraj pocizije</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>Gašenje</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Gašenje za:</value>
+    <value>Gašenje za</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Kompenzacija bočnog nagiba po stupnju</value>
@@ -1050,7 +1035,7 @@
     <value>Jug</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Razmak (cm)</value>
+    <value>Razmak</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>Faktor brzine</value>
@@ -1082,10 +1067,6 @@
   <data name="gsSteerChart" xml:space="preserve">
     <value>Grafikoni upravljanja</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Dugme - Pritisni za pokretanje/zaustavljanje navođenja
-Prekidač - Uključi/isključi</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Eksterno pokretanje</value>
   </data>
@@ -1107,13 +1088,13 @@ Prekidač - Uključi/isključi</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Strelica smjera</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Uvjeti korištenja za verziju: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Prekidač</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Ako distribuiraš kopije ovog BESPLATNOG programa, bilo besplatno ili uz naknadu, izmijenjenog ili poboljšanog, moraš primateljima prenijeti iste slobode koje si i sam dobio, kako je navedeno u GPLv3 licenci.</value>
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>Uključi/isključi</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS je isključivo edukativni softver za učenje o sustavima navođenja, GPS rečenicama i teorijskoj primjeni upravljanja strojevima.
 
 Ni u kojem slučaju ne smije se koristiti na stvarnoj opremi. Simulator je osiguran kako bi student mogao sigurno iskusiti navođenje stroja.
@@ -1122,8 +1103,8 @@ Softver nema sigurnosne sustave niti ih implicira.
 
 KORIŠTENJE NA VLASTITU ODGOVORNOST.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Moraš osigurati da primatelji dobiju ili mogu dobiti izvorni kod. Također im moraš pokazati ove uvjete kako bi znali svoja prava. Nemoj krasti tuđi rad i nazivati ga svojim.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Uvjeti korištenja</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>U fajl</value>
@@ -1156,7 +1137,7 @@ KORIŠTENJE NA VLASTITU ODGOVORNOST.</value>
     <value>Tragovi u polju</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>širina Tragova:</value>
+    <value>širina Tragova</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Uključi krivu</value>
@@ -1173,26 +1154,14 @@ KORIŠTENJE NA VLASTITU ODGOVORNOST.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Senzor skretanja</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Jedinice:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
-    <value>Metrični/imperijalni</value>
+    <value>Jedinice</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Koristi odabrano</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>Korisnik 1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>Korisnik 2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>Korisnik 3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>Korisnik 4</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>Korisnik {0}</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>U-Okretanje</value>
@@ -1207,7 +1176,10 @@ KORIŠTENJE NA VLASTITU ODGOVORNOST.</value>
     <value>Postavi zaglađivanje na 3‑4× radijus</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Tip vozila:</value>
+    <value>Tip vozila</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Verziju</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Nuliranje WAS</value>
@@ -1219,10 +1191,10 @@ KORIŠTENJE NA VLASTITU ODGOVORNOST.</value>
     <value>Zapad</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Osovina:</value>
+    <value>Osovina</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Širina:</value>
+    <value>Širina</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Prozori su otvoreni</value>

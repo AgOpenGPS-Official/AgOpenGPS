@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="gsABDraw" xml:space="preserve">
+  <data name="gsABDrawHint" xml:space="preserve">
     <value>A점B점을찍은후시작하세요</value>
   </data>
   <data name="gsABline" xml:space="preserve">
@@ -126,17 +126,17 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD변환</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG메뉴</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A플러스</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>조향보조설명...</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>좌각도</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>습득</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>습득요인</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>작업취소</value>
@@ -149,9 +149,6 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>고급트램라인만들기</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>이용약관에동의합니다</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>공격성</value>
@@ -170,15 +167,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>적용</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>습득</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>습득=요인*보유</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>습득요인</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>구역</value>
@@ -219,7 +207,7 @@
     <value>배경화면</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>들판기준:</value>
+    <value>들판기준</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>버튼메뉴</value>
@@ -241,6 +229,12 @@
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>하지만들판은로드되었습니다</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>버튼</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>누르면 켜기. 누르면 끄기</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>버튼선택기</value>
@@ -287,8 +281,8 @@
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>들판먼저닫기</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>센치미터-&gt;픽셀</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>센치미터</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>색상선택</value>
@@ -315,7 +309,7 @@
     <value>우측각도</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% 커버리지</value>
+    <value>커버리지</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>처음만들기</value>
@@ -348,10 +342,13 @@
     <value>날짜</value>
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value>---데드존---</value>
+    <value>데드존</value>
   </data>
   <data name="gsDefault" xml:space="preserve">
     <value>기본값</value>
+  </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>각도</value>
   </data>
   <data name="gsDelete" xml:space="preserve">
     <value>삭제</value>
@@ -361,9 +358,6 @@
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>적용된영역삭제</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>모든경계를 삭제합니다.계속하시겠습니까?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>등고선경로삭제</value>
@@ -391,9 +385,6 @@
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>동의하지않음</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>토론장소:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>디스플레이</value>
@@ -465,10 +456,13 @@
     <value>나가기</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Windows로나가기:</value>
+    <value>Windows로나가기</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>안내선추가</value>
+  </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>요인</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>빠르게</value>
@@ -549,7 +543,7 @@
     <value>진행방향차트</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>진행방향수정(각도)</value>
+    <value>진행방향수정</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>회전구역</value>
@@ -582,7 +576,7 @@
     <value>잘못된방향일경우차량터치</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>이미지없음:</value>
+    <value>이미지없음</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>데이터융합</value>
@@ -614,7 +608,7 @@
   <data name="gsInvertWas" xml:space="preserve">
     <value>각도반전</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
+  <data name="gsKmH" xml:space="preserve">
     <value>킬로미터</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
@@ -651,7 +645,7 @@
     <value>경도</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>앞미리보기:</value>
+    <value>앞미리보기</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>앞미리보기시간설정</value>
@@ -725,7 +719,7 @@
   <data name="gsN_West" xml:space="preserve">
     <value>북서쪽</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>처음부터새로만들기</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -756,7 +750,7 @@
     <value>삭제된내용없음</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>소폭조정:</value>
+    <value>소폭조정</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>소폭거리</value>
@@ -779,11 +773,8 @@
   <data name="gsOnDelay" xml:space="preserve">
     <value>지연켜기</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>켜기/끄기</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>선명도:</value>
+    <value>선명도</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>열기</value>
@@ -792,10 +783,7 @@
     <value>바깥선</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>겹침:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>겹침 / 간격</value>
+    <value>겹침</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>강제조작</value>
@@ -818,6 +806,9 @@
   <data name="gsPivotDistance" xml:space="preserve">
     <value>중심축거리</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>픽셀</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>식재밀도</value>
   </data>
@@ -825,7 +816,7 @@
     <value>AB라인을 지정하세요</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>기다려 주세요..</value>
+    <value>기다려 주세요</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>지점</value>
@@ -884,9 +875,6 @@
   <data name="gsRecordedPathPicker" xml:space="preserve">
     <value>저장된경로로드</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>경로점간소화</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>미완료</value>
   </data>
@@ -936,22 +924,16 @@
     <value>다음에 또 봐요!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>들판저장중..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>들판설정저장중...</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>들판설정저장되었습니다.</value>
+    <value>들판저장중</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>들판정보저장완료.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>마지막종료중입니다..</value>
+    <value>마지막종료중입니다</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>설정저장중...</value>
+    <value>설정저장중</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>저장된설정.</value>
@@ -963,7 +945,7 @@
     <value>업로드실패.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>AgShare에들판업로드중...</value>
+    <value>AgShare에들판업로드중</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>화면버튼들</value>
@@ -975,7 +957,7 @@
     <value>구획라인</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>구획:</value>
+    <value>구획</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>버튼선택</value>
@@ -993,13 +975,13 @@
     <value>설정값</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>GPS위치이동(cm)</value>
+    <value>GPS위치이동</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>모두종료</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>종료위치:</value>
+    <value>종료위치</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>학위당 비탈보상</value>
@@ -1035,7 +1017,7 @@
     <value>남쪽</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>간격(cm)</value>
+    <value>간격</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>속도계수</value>
@@ -1067,10 +1049,6 @@
   <data name="gsSteerChart" xml:space="preserve">
     <value>핸들차트</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>버튼 - 누르면 켜기. 누르면 끄기
-스위치 - 켜기. 끄기</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>외부스위치활성</value>
   </data>
@@ -1092,13 +1070,13 @@
   <data name="gsSvennArrow" xml:space="preserve">
     <value>화살표시</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>사용약관: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>스위치</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>이 무료 프로그램의 사본을 무료로 배포하는 경우, GPLv3 라이선스에 명시된 대로 받은 것과 동일하게 전달해야 합니다.</value>
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>켜기. 끄기</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS 안내 시스템은, GPS/RTK 기계 제어의 이론적 응용에 대해 배우기 위한 엄격한 교육용 소프트웨어입니다
 
 농부들이 안전하게 조향보조를 경험할 수 있도록 시뮬레이터가 제공됩니다.
@@ -1107,8 +1085,8 @@
 
 위험을 감수하고 사용하세요.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>소스 코드를 받거나 받을 수 있는지 확인해야 합니다. 그리고 자신의 권리를 알 수 있도록 이 용어들을 보여줘야 합니다.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>사용약관</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>파일가기</value>
@@ -1141,7 +1119,7 @@
     <value>트램라인</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>트램너비:</value>
+    <value>트램너비</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>AB곡선선회켜기</value>
@@ -1158,26 +1136,14 @@
   <data name="gsTurnSensor" xml:space="preserve">
     <value>선회센서</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>단위:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
     <value>단위들</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>저장목록선택</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>사용자1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>사용자2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>사용자3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>사용자4</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>사용자{0}</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>회전</value>
@@ -1192,7 +1158,7 @@
     <value>평활화 3-4배반경설정</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>트랙터유형:</value>
+    <value>트랙터유형</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>각도기영점</value>
@@ -1204,10 +1170,10 @@
     <value>서쪽</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>앞뒤바퀴거리:</value>
+    <value>앞뒤바퀴거리</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>너비:</value>
+    <value>너비</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows가열려있음</value>

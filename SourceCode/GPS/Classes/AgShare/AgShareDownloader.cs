@@ -1,28 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using AgOpenGPS.Properties;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Classes.AgShare.Helpers;
 using AgLibrary.Logging;
+using AgOpenGPS.Classes.AgShare.Helpers;
+using AgOpenGPS.Core.AgShare;
+using AgOpenGPS.Core.AgShare.Models;
+using AgOpenGPS.IO;
 
 namespace AgOpenGPS
 {
     /// <summary>
     /// Central helper class for downloading, parsing and saving AgShare fields locally.
     /// </summary>
-    public class CAgShareDownloader
+    public class AgShareDownloader
     {
-        private readonly AgShareClient client;
+        private readonly AgShareClient _client;
 
-        public CAgShareDownloader()
+        public AgShareDownloader(AgShareClient client)
         {
-            // Initialize AgShare client using stored settings
-            client = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
+            _client = client;
         }
 
         // Downloads a field and saves it to disk
@@ -30,26 +27,16 @@ namespace AgOpenGPS
         {
             try
             {
-                string json = await client.DownloadFieldAsync(fieldId);
+                var result = await _client.DownloadFieldAsync(fieldId);
 
-                // Validate JSON response
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Empty response from server");
-                    return false;
-                }
-
-                var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
-
-                // Validate DTO
-                if (dto == null)
+                if (!result.IsSuccessful)
                 {
                     Log.EventWriter($"[AgShare] Download failed for fieldId={fieldId}: Failed to deserialize field data");
                     return false;
                 }
 
                 // Parse DTO - validation is now done inside Parse method
-                var model = AgShareFieldParser.Parse(dto);
+                var model = AgShareFieldParser.Parse(result.Data);
 
                 string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, model.Name);
                 FieldFileWriter.WriteAllFiles(model, fieldDir);
@@ -64,27 +51,27 @@ namespace AgOpenGPS
         }
 
         // Retrieves a list of user-owned fields
-        public async Task<List<AgShareGetOwnFieldDto>> GetOwnFieldsAsync()
+        public async Task<List<GetOwnFieldDto>> GetOwnFieldsAsync()
         {
-            return await client.GetOwnFieldsAsync();
+            var result = await _client.GetOwnFieldsAsync();
+
+            if (!result.IsSuccessful)
+            {
+                Log.EventWriter($"[AgShare] Download own fields failed");
+                return null;
+            }
+
+            return result.Data;
         }
 
         // Downloads a field DTO for preview only
-        public async Task<AgShareFieldDto> DownloadFieldPreviewAsync(Guid fieldId)
+        public async Task<GetFieldDto> DownloadFieldPreviewAsync(Guid fieldId)
         {
             try
             {
-                string json = await client.DownloadFieldAsync(fieldId);
+                var result = await _client.DownloadFieldAsync(fieldId);
 
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Empty response from server");
-                    return null;
-                }
-
-                var dto = JsonConvert.DeserializeObject<AgShareFieldDto>(json);
-
-                if (dto == null)
+                if (!result.IsSuccessful)
                 {
                     Log.EventWriter($"[AgShare] Preview download failed for fieldId={fieldId}: Failed to deserialize field data");
                     return null;
@@ -92,9 +79,9 @@ namespace AgOpenGPS
 
                 // Validation is done in Parse method
                 // If validation fails, the outer catch will handle it
-                AgShareFieldParser.Parse(dto);
+                AgShareFieldParser.Parse(result.Data);
 
-                return dto;
+                return result.Data;
             }
             catch (Exception ex)
             {
@@ -194,172 +181,27 @@ namespace AgOpenGPS
     }
 
     /// <summary>
-    /// Utility class that writes a LocalFieldModel to standard AgOpenGPS-compatible files.
+    /// Utility class that writes a ParsedField to standard AgOpenGPS-compatible files.
+    /// Uses static IO classes from GPS\IO for consistent file formatting.
     /// </summary>
     public static class FieldFileWriter
     {
-        // Writes all files required for a field
-        public static void WriteAllFiles(LocalFieldModel field, string fieldDir)
+        // Writes all files required for a field using static IO classes
+        public static void WriteAllFiles(ParsedField field, string fieldDir)
         {
             if (!Directory.Exists(fieldDir))
                 Directory.CreateDirectory(fieldDir);
 
-            WriteAgShareId(fieldDir, field.FieldId);
-            WriteFieldTxt(fieldDir, field.Origin);
-            WriteBoundaryTxt(fieldDir, field.Boundaries);
-            WriteTrackLinesTxt(fieldDir, field.AbLines);
-            WriteStaticFiles(fieldDir); // Flags, Headland
-        }
+            File.WriteAllText(Path.Combine(fieldDir, "agshare.txt"), field.FieldId.ToString());
+            FieldPlaneFiles.Save(fieldDir, DateTime.Now, field.Origin);
+            BoundaryFiles.Save(fieldDir, field.Boundaries);
+            TrackFiles.Save(fieldDir, field.Tracks);
 
-        // Writes agshare.txt with the field ID
-        private static void WriteAgShareId(string fieldDir, Guid fieldId)
-        {
-            File.WriteAllText(Path.Combine(fieldDir, "agshare.txt"), fieldId.ToString());
-        }
-
-        // Writes origin and metadata to Field.txt
-        private static void WriteFieldTxt(string fieldDir, Wgs84 origin)
-        {
-            var fieldTxt = new List<string>
-            {
-                DateTime.Now.ToString("yyyy-MMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture),
-                "$FieldDir",
-                "AgShare Downloaded",
-                "$Offsets",
-                "0,0",
-                "Convergence",
-                "0", // Always 0
-                "StartFix",
-                origin.Latitude.ToString(CultureInfo.InvariantCulture) + "," + origin.Longitude.ToString(CultureInfo.InvariantCulture)
-            };
-
-            File.WriteAllLines(Path.Combine(fieldDir, "Field.txt"), fieldTxt);
-        }
-
-        // Writes outer and inner boundary rings to Boundary.txt
-        private static void WriteBoundaryTxt(string fieldDir, List<List<LocalPoint>> boundaries)
-        {
-            if (boundaries == null || boundaries.Count == 0) return;
-
-            var lines = new List<string> { "$Boundary" };
-
-            for (int i = 0; i < boundaries.Count; i++)
-            {
-                var ring = boundaries[i];
-                bool isHole = i != 0;
-
-                // Header for hole/outer ring (legacy AOG format)
-                lines.Add(isHole ? "True" : "False");
-
-                // ---- Normalize ring using CBoundaryList ----
-                var bnd = new CBoundaryList();
-
-                // Ensure fenceLine exists and is empty
-                if (bnd.fenceLine == null)
-                {
-                    bnd.fenceLine = new List<vec3>();
-                }
-                else
-                {
-                    bnd.fenceLine.Clear();
-                }
-
-                // Inline conversion LocalPoint -> vec3 (heading will be recomputed)
-                for (int p = 0; p < ring.Count; p++)
-                {
-                    var lp = ring[p];
-                    bnd.fenceLine.Add(new vec3(lp.Easting, lp.Northing, 0.0));
-                }
-
-                // First calculate area / winding (FixFenceLine spacing depends on area; winding may be reversed here)
-                bnd.CalculateFenceArea(i);
-
-                // Then fix spacing and recalc headings (also populates fenceLineEar if used elsewhere)
-                bnd.FixFenceLine(i);
-
-                // Use the fixed/normalized fenceLine for output
-                int fixedCount = bnd.fenceLine.Count;
-                lines.Add(fixedCount.ToString(CultureInfo.InvariantCulture));
-
-                for (int k = 0; k < fixedCount; k++)
-                {
-                    var pt = bnd.fenceLine[k];
-                    lines.Add(
-                        pt.easting.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                        pt.northing.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                        pt.heading.ToString("0.#####", CultureInfo.InvariantCulture)
-                    );
-                }
-                // ---- end normalization ----
-            }
-
-            File.WriteAllLines(Path.Combine(fieldDir, "Boundary.txt"), lines);
-        }
-
-
-        // Writes AB-lines and optional curve points to TrackLines.txt
-        private static void WriteTrackLinesTxt(string fieldDir, List<AbLineLocal> abLines)
-        {
-            var lines = new List<string> { "$TrackLines" };
-
-            foreach (var ab in abLines)
-            {
-                lines.Add(ab.Name ?? "Unnamed");
-
-                bool isCurve = ab.CurvePoints != null && ab.CurvePoints.Count > 1;
-
-                LocalPoint ptA = ab.PtA;
-                LocalPoint ptB = ab.PtB;
-                double heading = ab.Heading;
-
-                if (isCurve)
-                {
-                    ptA = ab.CurvePoints[0];
-                    ptB = ab.CurvePoints[ab.CurvePoints.Count - 1];
-                    heading = GeoConverter.HeadingFromPoints(
-                        new Vec2(ptA.Easting, ptA.Northing),
-                        new Vec2(ptB.Easting, ptB.Northing)
-                    );
-                }
-
-                lines.Add(heading.ToString("0.###", CultureInfo.InvariantCulture));
-                lines.Add(ptA.Easting.ToString("0.###", CultureInfo.InvariantCulture) + "," + ptA.Northing.ToString("0.###", CultureInfo.InvariantCulture));
-                lines.Add(ptB.Easting.ToString("0.###", CultureInfo.InvariantCulture) + "," + ptB.Northing.ToString("0.###", CultureInfo.InvariantCulture));
-                lines.Add("0"); // Nudge
-
-                if (isCurve)
-                {
-                    lines.Add("4"); // Curve mode
-                    lines.Add("True");
-                    lines.Add(ab.CurvePoints.Count.ToString());
-
-                    foreach (var pt in ab.CurvePoints)
-                    {
-                        lines.Add(
-                            pt.Easting.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                            pt.Northing.ToString("0.###", CultureInfo.InvariantCulture) + "," +
-                            pt.Heading.ToString("0.#####", CultureInfo.InvariantCulture)
-                        );
-                    }
-                }
-                else
-                {
-                    lines.Add("2"); // AB mode
-                    lines.Add("True");
-                    lines.Add("0");
-                }
-            }
-
-            File.WriteAllLines(Path.Combine(fieldDir, "TrackLines.txt"), lines);
-        }
-
-        // Writes default placeholder files like Flags.txt and Headland.txt
-        private static void WriteStaticFiles(string fieldDir)
-        {
-            File.WriteAllLines(Path.Combine(fieldDir, "Flags.txt"), new[] { "$Flags", "0" });
-            File.WriteAllLines(Path.Combine(fieldDir, "Headland.txt"), new[] { "$Headland", "0" });
-            File.WriteAllLines(Path.Combine(fieldDir, "Contour.txt"), new[] { "$Contour", "0" });
-            File.WriteAllLines(Path.Combine(fieldDir, "Sections.txt"), new[] { "Sections", "0" });
+            // Empty placeholder files
+            FlagsFiles.Save(fieldDir, new List<CFlag>());
+            HeadlandFiles.Save(fieldDir, new List<CBoundaryList>());
+            ContourFiles.CreateFile(fieldDir);
+            SectionsFiles.CreateEmpty(fieldDir);
         }
     }
 

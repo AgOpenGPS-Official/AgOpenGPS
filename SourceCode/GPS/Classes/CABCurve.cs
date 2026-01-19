@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Translations;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -186,10 +187,7 @@ namespace AgOpenGPS
 
                 distAway += (0.5 * widthMinusOverlap);
 
-                if (cts != null)
-                {
-                    cts.Cancel();
-                }
+                cts?.Cancel();
                 cts = new CancellationTokenSource();
 
                 if (build != null) await build;
@@ -581,9 +579,13 @@ namespace AgOpenGPS
                                     newGuideList.Add(point);
                                 }
                             }
-
                         }
                     }
+
+                    if (newGuideList == null || newGuideList.Count == 0)
+                        continue;
+
+                    AddGuidelineExtensions(ref newGuideList);
                 }
 
                 //right side
@@ -679,6 +681,11 @@ namespace AgOpenGPS
                             }
                         }
                     }
+
+                    if (newGuideList == null || newGuideList.Count == 0)
+                        continue;
+
+                    AddGuidelineExtensions(ref newGuideList);
                 }
             }
             catch (Exception e)
@@ -1014,15 +1021,18 @@ namespace AgOpenGPS
                 GL.Color3(0.95f, 0.42f, 0.750f);
                 GL.LineWidth(4.0f);
                 GL.Begin(PrimitiveType.LineStrip);
-                for (int h = 0; h < desList.Count; h++) GL.Vertex3(desList[h].easting, desList[h].northing, 0);
+                for (int h = 0; h < desList.Count; h++)
+                {
+                    GL.Vertex2(desList[h].easting, desList[h].northing);
+                }
                 GL.End();
 
                 GL.Enable(EnableCap.LineStipple);
                 GL.LineStipple(1, 0x0F00);
                 GL.Begin(PrimitiveType.Lines);
                 GL.Color3(0.99f, 0.99f, 0.0);
-                GL.Vertex3(desList[desList.Count - 1].easting, desList[desList.Count - 1].northing, 0);
-                GL.Vertex3(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, 0);
+                GL.Vertex2(desList[desList.Count - 1].easting, desList[desList.Count - 1].northing);
+                GL.Vertex2(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing);
                 GL.End();
 
                 GL.Disable(EnableCap.LineStipple);
@@ -1043,11 +1053,10 @@ namespace AgOpenGPS
                 GL.Color3(0.96, 0.2f, 0.2f);
                 GL.Begin(PrimitiveType.Lines);
 
-                for (int h = 0; h < ptCount; h++) GL.Vertex3(
-                    mf.trk.gArr[mf.trk.idx].curvePts[h].easting,
-                    mf.trk.gArr[mf.trk.idx].curvePts[h].northing,
-                    0);
-
+                for (int h = 0; h < ptCount; h++)
+                {
+                    GL.Vertex2(mf.trk.gArr[mf.trk.idx].curvePts[h].easting, mf.trk.gArr[mf.trk.idx].curvePts[h].northing);
+                }
                 GL.End();
 
                 GL.Color3(0.40f, 0.90f, 0.95f);
@@ -1061,7 +1070,10 @@ namespace AgOpenGPS
                     GL.LineWidth(mf.ABLine.lineWidth);
                     GL.Color3(0.930f, 0.92f, 0.260f);
                     GL.Begin(PrimitiveType.Lines);
-                    for (int h = 0; h < smooList.Count; h++) GL.Vertex3(smooList[h].easting, smooList[h].northing, 0);
+                    for (int h = 0; h < smooList.Count; h++)
+                    {
+                        GL.Vertex2(smooList[h].easting, smooList[h].northing);
+                    }
                     GL.End();
                 }
             }
@@ -1083,14 +1095,19 @@ namespace AgOpenGPS
                         {
                             GL.PointSize(15.0f);
                             GL.Begin(PrimitiveType.Points);
-                            GL.Vertex3(mf.trk.gArr[mf.trk.idx].ptA.easting, mf.trk.gArr[mf.trk.idx].ptA.northing, 0);
+                            GL.Vertex2(
+                                mf.trk.gArr[mf.trk.idx].ptA.easting,
+                                mf.trk.gArr[mf.trk.idx].ptA.northing);
                             GL.End();
                         }
 
                         GL.Begin(PrimitiveType.LineLoop);
                     }
 
-                    for (int h = 0; h < curList.Count; h++) GL.Vertex3(curList[h].easting, curList[h].northing, 0);
+                    for (int h = 0; h < curList.Count; h++)
+                    {
+                        GL.Vertex2(curList[h].easting, curList[h].northing);
+                    }
                     GL.End();
 
                     GL.LineWidth(mf.ABLine.lineWidth);
@@ -1105,14 +1122,19 @@ namespace AgOpenGPS
                         {
                             GL.PointSize(15.0f);
                             GL.Begin(PrimitiveType.Points);
-                            GL.Vertex3(mf.trk.gArr[mf.trk.idx].ptA.easting, mf.trk.gArr[mf.trk.idx].ptA.northing, 0);
+                            GL.Vertex2(
+                                mf.trk.gArr[mf.trk.idx].ptA.easting,
+                                mf.trk.gArr[mf.trk.idx].ptA.northing);
                             GL.End();
                         }
 
                         GL.Begin(PrimitiveType.LineLoop);
                     }
 
-                    for (int h = 0; h < curList.Count; h++) GL.Vertex3(curList[h].easting, curList[h].northing, 0);
+                    for (int h = 0; h < curList.Count; h++)
+                    {
+                        GL.Vertex2(curList[h].easting, curList[h].northing);
+                    }
                     GL.End();
 
                     mf.yt.DrawYouTurn();
@@ -1133,7 +1155,9 @@ namespace AgOpenGPS
                 {
                     GL.Begin(PrimitiveType.LineStrip);
                     for (int h = 0; h < guideArr[i].Count; h++)
-                        GL.Vertex3(guideArr[i][h].easting, guideArr[i][h].northing, 0);
+                    {
+                        GL.Vertex2(guideArr[i][h].easting, guideArr[i][h].northing);
+                    }
                     GL.End();
                 }
                 GL.End();
@@ -1150,7 +1174,9 @@ namespace AgOpenGPS
                 {
                     GL.Begin(PrimitiveType.LineStrip);
                     for (int h = 0; h < guideArr[i].Count; h++)
-                        GL.Vertex3(guideArr[i][h].easting, guideArr[i][h].northing, 0);
+                    {
+                        GL.Vertex2(guideArr[i][h].easting, guideArr[i][h].northing);
+                    }
                     GL.End();
                 }
                 GL.End();
@@ -1162,7 +1188,7 @@ namespace AgOpenGPS
         public void BuildTram()
         {
             //if all or bnd only then make outer loop pass
-            if (mf.tram.generateMode != 1)
+            if (mf.tram.generateMode.IncludesBoundaryTracks())
             {
                 mf.tram.BuildTramBnd();
             }
@@ -1175,24 +1201,21 @@ namespace AgOpenGPS
             mf.tram.tramList?.Clear();
             mf.tram.tramArr?.Clear();
 
-            if (mf.tram.generateMode == 2) return;
+            if (!mf.tram.generateMode.IncludesFillTracks())
+            {
+                return;
+            }
 
             bool isBndExist = mf.bnd.bndList.Count != 0;
 
             int refCount = mf.trk.gArr[mf.trk.idx].curvePts.Count;
 
-            int cntr = 0;
-            if (isBndExist)
-            {
-                if (mf.tram.generateMode == 1)
-                    cntr = 0;
-                else
-                    cntr = 1;
-            }
+            bool skipFirstPass = isBndExist && mf.tram.generateMode.IncludesBoundaryTracks();
+            int startPass = skipFirstPass ? 1 : 0;
 
             double widd;
 
-            for (int i = cntr; i <= mf.tram.passes; i++)
+            for (int i = startPass; i <= mf.tram.passes; i++)
             {
                 mf.tram.tramArr = new List<vec2>
                 {
@@ -1244,7 +1267,7 @@ namespace AgOpenGPS
                 }
             }
 
-            for (int i = cntr; i <= mf.tram.passes; i++)
+            for (int i = startPass; i <= mf.tram.passes; i++)
             {
                 mf.tram.tramArr = new List<vec2>
                 {
@@ -1348,7 +1371,7 @@ namespace AgOpenGPS
             }
         }
 
-        public void CalculateHeadings(ref List<vec3> xList)
+        public static void CalculateHeadings(ref List<vec3> xList)
         {
             //to calc heading based on next and previous points to give an average heading.
             int cnt = xList.Count;
@@ -1381,7 +1404,7 @@ namespace AgOpenGPS
             }
         }
 
-        public void MakePointMinimumSpacing(ref List<vec3> xList, double minDistance)
+        public static void MakePointMinimumSpacing(ref List<vec3> xList, double minDistance)
         {
             int cnt = xList.Count;
             if (cnt > 3)
@@ -1405,16 +1428,35 @@ namespace AgOpenGPS
             }
         }
 
+        private List<vec3> AddGuidelineExtensions(ref List<vec3> guideLine)
+        {
+            vec3 startExtension = new vec3
+            {
+                easting = guideLine[0].easting - (Math.Sin(guideLine[0].heading) * 2000.0),
+                northing = guideLine[0].northing - (Math.Cos(guideLine[0].heading) * 2000.0)
+            };
+            guideLine.Insert(0, startExtension);
+
+            vec3 endExtension = new vec3
+            {
+                easting = guideLine[guideLine.Count - 1].easting + (Math.Sin(guideLine[guideLine.Count - 1].heading) * 2000.0),
+                northing = guideLine[guideLine.Count - 1].northing + (Math.Cos(guideLine[guideLine.Count - 1].heading) * 2000.0)
+            };
+            guideLine.Add(endExtension);
+            return guideLine;
+        }
+
         // Resample curve points to uniform spacing to prevent lookahead jumping
-        private List<vec3> ResampleCurveToUniformSpacing(List<vec3> originalList, double targetSpacing)
+        private static List<vec3> ResampleCurveToUniformSpacing(List<vec3> originalList, double targetSpacing)
         {
             if (originalList == null || originalList.Count < 2)
                 return originalList;
 
-            List<vec3> resampledList = new List<vec3>();
-
-            // Always add the first point
-            resampledList.Add(originalList[0]);
+            List<vec3> resampledList = new List<vec3>
+            {
+                // Always add the first point
+                originalList[0]
+            };
 
             double accumulatedDistance = 0;
             int sourceIndex = 1;

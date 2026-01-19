@@ -7,9 +7,9 @@
 
         private QuadStrip() { }
 
-        public QuadStrip(ColorRgb colorRgb)
+        public QuadStrip(ColorRgba colorRgba)
         {
-            ColorRgb = colorRgb;
+            ColorRgba = colorRgba;
             Area = new GeoArea(0.0);
             BoundingBox = GeoBoundingBox.CreateEmpty();
         }
@@ -29,7 +29,7 @@
             return quadArea;
         }
 
-        public ColorRgb ColorRgb { get; }
+        public ColorRgba ColorRgba { get; }
         public GeoArea Area { get; private set; }
         public GeoBoundingBox BoundingBox { get; }
 

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,16 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Tegn AB - Klik 2 punkter på grænsen for at begynde</value>
+    <value>Tegn AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klik 2 punkter på grænsen for at begynde</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linje</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>Om…</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Erhverve</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Erhverve Faktor</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Handling afbrudt</value>
@@ -141,9 +147,6 @@
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Lav avancerede sprøjtespor</value>
   </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Jeg accepterer regler og vilkår</value>
-  </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Aggressivitet</value>
   </data>
@@ -155,15 +158,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Bearbejdet</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Erhverve</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Erhverve = Faktor * Hold</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Erhverve Faktor</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Areal</value>
@@ -192,7 +186,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Baggrund</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Baseret På Mark:</value>
+    <value>Baseret På Mark</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Bund Menu</value>
@@ -285,7 +279,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Tæller pr. grad</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% dækning</value>
+    <value>dækning</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Lav</value>
@@ -320,6 +314,9 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsDefault" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>grader</value>
+  </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Slet</value>
   </data>
@@ -328,9 +325,6 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Slet Bearbejdet Areal</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Dette vil slette alle markgrænser. Vil du fortsætte?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Slet kontur spor</value>
@@ -425,6 +419,9 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Ekstra hjælpelinjer</value>
   </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>Faktor</value>
+  </data>
   <data name="gsFast" xml:space="preserve">
     <value>Hurtig</value>
   </data>
@@ -489,7 +486,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Retning diagram</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Retning offset (grader)</value>
+    <value>Retning offset</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Forager</value>
@@ -510,7 +507,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Forkert retning? Tryk på Køretøj</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Intet billede:</value>
+    <value>Intet billede</value>
   </data>
   <data name="gsInches" xml:space="preserve">
     <value>Tommer</value>
@@ -536,7 +533,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsInvertWas" xml:space="preserve">
     <value>omvend WAS</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
+  <data name="gsKmH" xml:space="preserve">
     <value>km/t</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
@@ -602,7 +599,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsN_West" xml:space="preserve">
     <value>Nord Vest</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Ny fra standard</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -633,7 +630,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Intet Slettet</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Nudge:</value>
+    <value>Nudge</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>Nudge afstand</value>
@@ -645,7 +642,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Offset Fix</value>
   </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Gennemsigtighed:</value>
+    <value>Gennemsigtighed</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Åben</value>
@@ -666,7 +663,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Vælg AB Linie</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Vent venligst...</value>
+    <value>Vent venligst</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Punkt</value>
@@ -738,22 +735,16 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Vi ses næste gang!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Gemmer felt..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Gemmer feltparametre...</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>Feltparametre gemt.</value>
+    <value>Gemmer felt</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>Felt gemt lokalt.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Afslutning af lukning..</value>
+    <value>Afslutning af lukning</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Gemmer indstillinger...</value>
+    <value>Gemmer indstillinger</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Indstillinger gemt.</value>
@@ -765,7 +756,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Upload mislykkedes.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Upload til AgShare...</value>
+    <value>Upload til AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Skærm knapper</value>
@@ -777,7 +768,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Sektion linjer</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sektioner:</value>
+    <value>Sektioner</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Vælg knapper</value>
@@ -795,7 +786,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Setpunkt</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Skift GPS Position cm</value>
+    <value>Skift GPS Position</value>
   </data>
   <data name="gsSimpleTramLines" xml:space="preserve">
     <value>Dan Simpel kørespor</value>
@@ -825,7 +816,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
     <value>Syd</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Afstand (cm)</value>
+    <value>Afstand</value>
   </data>
   <data name="gsStartDeleteABoundary" xml:space="preserve">
     <value>Start Eller Slet Kant</value>
@@ -854,10 +845,7 @@ Rækkefølgen du klikker på dem, angiver placeringen nedefra og op.</value>
   <data name="gsStopRecordPauseBoundary" xml:space="preserve">
     <value>Stop Record Pause Af Kant</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Hvis du omdeler kopier af dette FRIE program, uanset om det er gratis eller mod betaling, forbedret, ændret, skal du give modtageren samme friheder som du modtog som det står i GPLv3 licensen.</value>
-  </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS er udelukkende undervisnings software, til at lære om autostyrings systemer, GPS meddelelser, og teoretisk tildeling af maskin kontrol.
 
 Det må på ingen måde bruges på rigtige maskiner. En simulator er inkluderet for at tilbyde eleven, sikkert at opleve maskin styring.
@@ -865,9 +853,6 @@ Det må på ingen måde bruges på rigtige maskiner. En simulator er inkluderet 
 Der er ingen sikkerhedssystemer i softwaren, og ingen er underforstået.
 
 ANVENDELSE PÅ EGET RISIKO.</value>
-  </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Du skal sikre dig, at de modtager eller kan få kildekoden.  Og du skal vise dem disse vilkår, så de kender deres rettigheder. Stjæl ikke andres arbejde og kald det dit eget.</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Gem fil</value>
@@ -897,7 +882,7 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Plejespor</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Plejespor bredde:</value>
+    <value>Plejespor bredde</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Tænd AB Kurve</value>
@@ -912,7 +897,7 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Sæt forlængelseslinjer til 2 eller 3 * radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Køretøj Type:</value>
+    <value>Køretøj Type</value>
   </data>
   <data name="gsWebCam" xml:space="preserve">
     <value>Kamera</value>
@@ -921,10 +906,10 @@ ANVENDELSE PÅ EGET RISIKO.</value>
     <value>Vest</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Akselafstand:</value>
+    <value>Akselafstand</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Bredde:</value>
+    <value>Bredde</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows stadig åben</value>

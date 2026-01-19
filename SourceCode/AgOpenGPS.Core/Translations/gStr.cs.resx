@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gsABDraw" xml:space="preserve">
-    <value>Draw AB - Klepněte na tlačítko 2 body na boundary začít</value>
+    <value>Draw AB</value>
+  </data>
+  <data name="gsABDrawHint" xml:space="preserve">
+    <value>Klepněte na tlačítko 2 body na boundary začít</value>
   </data>
   <data name="gsABline" xml:space="preserve">
     <value>AB Linie</value>
@@ -126,17 +129,17 @@
   <data name="gsADConverter" xml:space="preserve">
     <value>AD převodník</value>
   </data>
-  <data name="gsAOGMenu" xml:space="preserve">
-    <value>AOG Menu</value>
-  </data>
   <data name="gsAPlus" xml:space="preserve">
     <value>A+</value>
   </data>
-  <data name="gsAbout" xml:space="preserve">
-    <value>O nás...</value>
-  </data>
   <data name="gsAckermann" xml:space="preserve">
     <value>Ackermann</value>
+  </data>
+  <data name="gsAcquire" xml:space="preserve">
+    <value>Získat</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Získat Faktor</value>
   </data>
   <data name="gsActionHasBeenCancelled" xml:space="preserve">
     <value>Akce byla zrušena</value>
@@ -149,9 +152,6 @@
   </data>
   <data name="gsAdvancedTramLines" xml:space="preserve">
     <value>Votvoř pokročilé kolejové řádky</value>
-  </data>
-  <data name="gsAgree" xml:space="preserve">
-    <value>Souhlasím s podmínkami</value>
   </data>
   <data name="gsAgressiveness" xml:space="preserve">
     <value>Agresivita</value>
@@ -170,15 +170,6 @@
   </data>
   <data name="gsApplied" xml:space="preserve">
     <value>Použité</value>
-  </data>
-  <data name="gsAquire" xml:space="preserve">
-    <value>Získat</value>
-  </data>
-  <data name="gsAquireDescription" xml:space="preserve">
-    <value>Získat = Faktor * Hold</value>
-  </data>
-  <data name="gsAquireFactor" xml:space="preserve">
-    <value>Aquire Faktor</value>
   </data>
   <data name="gsArea" xml:space="preserve">
     <value>Plocha</value>
@@ -219,7 +210,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Pozadí</value>
   </data>
   <data name="gsBasedOnField" xml:space="preserve">
-    <value>Na základě pole:</value>
+    <value>Na základě pole</value>
   </data>
   <data name="gsBottomMenu" xml:space="preserve">
     <value>Spodní menu</value>
@@ -241,6 +232,12 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsButFieldIsLoaded" xml:space="preserve">
     <value>Ale pole je zatíženo</value>
+  </data>
+  <data name="gsButton" xml:space="preserve">
+    <value>Tlačítko</value>
+  </data>
+  <data name="gsButtonDescription" xml:space="preserve">
+    <value>Stiskněte Zap. Stiskněte Vyp</value>
   </data>
   <data name="gsButtonPicker" xml:space="preserve">
     <value>Tlačítko Picker</value>
@@ -287,8 +284,8 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsCloseFieldFirst" xml:space="preserve">
     <value>Zavřít pole První</value>
   </data>
-  <data name="gsCmPix" xml:space="preserve">
-    <value>Cm -&gt; Pixel</value>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
   </data>
   <data name="gsColorPicker" xml:space="preserve">
     <value>Barevny Picker</value>
@@ -315,7 +312,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Počet na stupeň</value>
   </data>
   <data name="gsCoverage" xml:space="preserve">
-    <value>% Krytí</value>
+    <value>Krytí</value>
   </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Vytvořit</value>
@@ -348,10 +345,13 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Den</value>
   </data>
   <data name="gsDeadzone" xml:space="preserve">
-    <value>---Mrtvázóna---</value>
+    <value>Mrtvázóna</value>
   </data>
   <data name="gsDefault" xml:space="preserve">
     <value>Výchozí</value>
+  </data>
+  <data name="gsDegree" xml:space="preserve">
+    <value>stupeň</value>
   </data>
   <data name="gsDelete" xml:space="preserve">
     <value>Smazat</value>
@@ -361,9 +361,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsDeleteAppliedArea" xml:space="preserve">
     <value>Smazat aplikovanou oblast</value>
-  </data>
-  <data name="gsDeleteBoundaryMapping" xml:space="preserve">
-    <value>Tato akce odstraní všechny hranice. Chcete pokračovat?</value>
   </data>
   <data name="gsDeleteContourPaths" xml:space="preserve">
     <value>Smazat Contour cesty</value>
@@ -391,9 +388,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   </data>
   <data name="gsDisagree" xml:space="preserve">
     <value>Nesouhlasím</value>
-  </data>
-  <data name="gsDiscussions" xml:space="preserve">
-    <value>Diskuse:</value>
   </data>
   <data name="gsDisplay" xml:space="preserve">
     <value>Zobrazit</value>
@@ -465,10 +459,13 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Opustit</value>
   </data>
   <data name="gsExitToWindows" xml:space="preserve">
-    <value>Exit do Windows v:</value>
+    <value>Exit do Windows v</value>
   </data>
   <data name="gsExtraGuideLines" xml:space="preserve">
     <value>Další pokyny</value>
+  </data>
+  <data name="gsFactor" xml:space="preserve">
+    <value>Faktor</value>
   </data>
   <data name="gsFast" xml:space="preserve">
     <value>Rychle</value>
@@ -549,7 +546,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Graf vedení</value>
   </data>
   <data name="gsHeadingOffset" xml:space="preserve">
-    <value>Vedeni offset (stupeň)</value>
+    <value>Vedeni offset</value>
   </data>
   <data name="gsHeadland" xml:space="preserve">
     <value>Souvrať</value>
@@ -582,7 +579,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Je-li špatné směrování Klepněte na vozidlo</value>
   </data>
   <data name="gsImage" xml:space="preserve">
-    <value>Žádný obrázek:</value>
+    <value>Žádný obrázek</value>
   </data>
   <data name="gsImuFusion" xml:space="preserve">
     <value>Splynuti</value>
@@ -614,8 +611,8 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsInvertWas" xml:space="preserve">
     <value>Invertuj WAS</value>
   </data>
-  <data name="gsKMH" xml:space="preserve">
-    <value>kmh</value>
+  <data name="gsKmH" xml:space="preserve">
+    <value>km/h</value>
   </data>
   <data name="gsKeyboard" xml:space="preserve">
     <value>Klávesnice</value>
@@ -651,7 +648,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Zem. délka</value>
   </data>
   <data name="gsLookAhead" xml:space="preserve">
-    <value>Pohled dozadu:</value>
+    <value>Pohled dozadu</value>
   </data>
   <data name="gsLookAheadTiming" xml:space="preserve">
     <value>Nastavení času předvídání</value>
@@ -725,7 +722,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsN_West" xml:space="preserve">
     <value>Nzápad</value>
   </data>
-  <data name="gsNew" xml:space="preserve">
+  <data name="gsNewFromDefault" xml:space="preserve">
     <value>Nové Od Výchozí</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
@@ -756,7 +753,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Neodstraněno</value>
   </data>
   <data name="gsNudge" xml:space="preserve">
-    <value>Pošťouchnout:</value>
+    <value>Pošťouchnout</value>
   </data>
   <data name="gsNudgeDistance" xml:space="preserve">
     <value>vzdálenoust posunu</value>
@@ -779,11 +776,8 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsOnDelay" xml:space="preserve">
     <value>Zap-Zpozdeni</value>
   </data>
-  <data name="gsOnOff" xml:space="preserve">
-    <value>Zap/Vyp</value>
-  </data>
   <data name="gsOpacity" xml:space="preserve">
-    <value>Neprůsvitnost:</value>
+    <value>Neprůsvitnost</value>
   </data>
   <data name="gsOpen" xml:space="preserve">
     <value>Otevřít</value>
@@ -792,10 +786,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Venkovní</value>
   </data>
   <data name="gsOverlap" xml:space="preserve">
-    <value>Překryv:</value>
-  </data>
-  <data name="gsOverlapGap" xml:space="preserve">
-    <value>Překryv / Díra</value>
+    <value>Překryv</value>
   </data>
   <data name="gsOverride" xml:space="preserve">
     <value>Přepsat</value>
@@ -818,6 +809,9 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsPivotDistance" xml:space="preserve">
     <value>Vzdalenost Pivotu</value>
   </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
   <data name="gsPlantPop" xml:space="preserve">
     <value>Rostlina Pop</value>
   </data>
@@ -825,7 +819,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Prosím vlož ABLine</value>
   </data>
   <data name="gsPleaseWait" xml:space="preserve">
-    <value>Prosím čekej...</value>
+    <value>Prosím čekej</value>
   </data>
   <data name="gsPoint" xml:space="preserve">
     <value>Bod</value>
@@ -884,9 +878,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsRecordedPathPicker" xml:space="preserve">
     <value>Nahraj zaznamenané cesty</value>
   </data>
-  <data name="gsReducedPoints" xml:space="preserve">
-    <value>Snížené body</value>
-  </data>
   <data name="gsRemain" xml:space="preserve">
     <value>Ponechat</value>
   </data>
@@ -933,25 +924,19 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Uložit a vrátit</value>
   </data>
   <data name="gsSaveBeerTime" xml:space="preserve">
-    <value>Čas na pivo! Čeština!</value>
+    <value>Uvidíme se příště!</value>
   </data>
   <data name="gsSaveField" xml:space="preserve">
-    <value>Ukládám pole..</value>
-  </data>
-  <data name="gsSaveFieldParam" xml:space="preserve">
-    <value>Ukládání parametrů polí...</value>
-  </data>
-  <data name="gsSaveFieldParamSaved" xml:space="preserve">
-    <value>Parametry pole uložené.</value>
+    <value>Ukládám pole</value>
   </data>
   <data name="gsSaveFieldSavedLocal" xml:space="preserve">
     <value>Oblast uložená lokálně.</value>
   </data>
   <data name="gsSaveFinalizeShutdown" xml:space="preserve">
-    <value>Konečné vypnutí..</value>
+    <value>Konečné vypnutí</value>
   </data>
   <data name="gsSaveSettings" xml:space="preserve">
-    <value>Ukládání nastavení...</value>
+    <value>Ukládání nastavení</value>
   </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Nastavení uloženo.</value>
@@ -963,7 +948,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Nahrát neúspěšné.</value>
   </data>
   <data name="gsSaveUploadToAgshare" xml:space="preserve">
-    <value>Nahrát pole do AgShare...</value>
+    <value>Nahrát pole do AgShare</value>
   </data>
   <data name="gsScreenButtons" xml:space="preserve">
     <value>Tlačítka obrazovky</value>
@@ -975,7 +960,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Linie sekcí</value>
   </data>
   <data name="gsSections" xml:space="preserve">
-    <value>Sekce:</value>
+    <value>Sekce</value>
   </data>
   <data name="gsSelectButtons" xml:space="preserve">
     <value>Vyberte tlačítka</value>
@@ -993,13 +978,13 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>SetPoint</value>
   </data>
   <data name="gsShiftGPSPosition" xml:space="preserve">
-    <value>Pozice Shift GPS (cm)</value>
+    <value>Pozice Shift GPS</value>
   </data>
   <data name="gsShutdown" xml:space="preserve">
     <value>Vypnout</value>
   </data>
   <data name="gsShutdownIn" xml:space="preserve">
-    <value>Vypnutí za:</value>
+    <value>Vypnutí za</value>
   </data>
   <data name="gsSideHillComp" xml:space="preserve">
     <value>Kompenzace stranového náklonu</value>
@@ -1035,7 +1020,7 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
     <value>Jih</value>
   </data>
   <data name="gsSpacing" xml:space="preserve">
-    <value>Rozestup (cm)</value>
+    <value>Rozestup</value>
   </data>
   <data name="gsSpeedFactor" xml:space="preserve">
     <value>Rychlostní faktor</value>
@@ -1067,10 +1052,6 @@ Objednávku, kterou je tlačíte, bude objednávka, která se objeví v menu od 
   <data name="gsSteerChart" xml:space="preserve">
     <value>Graf zatáčení</value>
   </data>
-  <data name="gsSteerDescription" xml:space="preserve">
-    <value>Tlačítko - Stiskněte Zap. Stiskněte Vyp
-Přepínač - Sepnuto Zap., Uvolněno Vyp</value>
-  </data>
   <data name="gsSteerEnable" xml:space="preserve">
     <value>Externí povolení</value>
   </data>
@@ -1092,13 +1073,13 @@ Přepínač - Sepnuto Zap., Uvolněno Vyp</value>
   <data name="gsSvennArrow" xml:space="preserve">
     <value>Naváděcí Šipka</value>
   </data>
-  <data name="gsTermsConditions" xml:space="preserve">
-    <value>Podmínky pro verzi: </value>
+  <data name="gsSwitch" xml:space="preserve">
+    <value>Přepínač</value>
   </data>
-  <data name="gsTermsOne" xml:space="preserve">
-    <value>Pokud šíříte kopie tohoto BEZPLATNÉHO programu, ať už zdarma nebo za poplatek, vylepšené nebo pozměněné, musíte příjemcům předat stejnou svobodu, kterou jste obdrželi jak je uvedeno v licenci GPLv3.</value>
+  <data name="gsSwitchDescription" xml:space="preserve">
+    <value>Sepnuto Zap., Uvolněno Vyp</value>
   </data>
-  <data name="gsTermsThree" xml:space="preserve">
+  <data name="gsTerms" xml:space="preserve">
     <value>AgOpenGPS je přísně vzdělávací software, který se dozví o vedení systémů, GPS cvičení a teoretické aplikaci řízení stroje.
 
 Není to žádný způsob, jak používat na skutečném zařízení v jakékoliv okolnostech. Simulátor je určen k tomu, aby student mohl bezpečně zažít vedení stroje.
@@ -1107,8 +1088,8 @@ V softwaru nejsou k dispozici žádné bezpečnostní systémy.
 
 POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
-  <data name="gsTermsTwo" xml:space="preserve">
-    <value>Musíte se ujistit, že obdrží nebo může získat zdrojový kód. A musíte ukázat tyto podmínky. Nekrást práci ostatních a zavolej mu.</value>
+  <data name="gsTermsConditions" xml:space="preserve">
+    <value>Podmínky</value>
   </data>
   <data name="gsToFile" xml:space="preserve">
     <value>Do souboru</value>
@@ -1141,7 +1122,7 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
     <value>Kolejové řádky</value>
   </data>
   <data name="gsTramWidth" xml:space="preserve">
-    <value>Šířka kolejáků:</value>
+    <value>Šířka kolejáků</value>
   </data>
   <data name="gsTurnABCurveOn" xml:space="preserve">
     <value>Zapni AB křivku</value>
@@ -1158,26 +1139,14 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   <data name="gsTurnSensor" xml:space="preserve">
     <value>Otočný senzor</value>
   </data>
-  <data name="gsUnit" xml:space="preserve">
-    <value>Jednotky:</value>
-  </data>
   <data name="gsUnits" xml:space="preserve">
     <value>Jednotky</value>
   </data>
   <data name="gsUseSelected" xml:space="preserve">
     <value>Použití vybrané</value>
   </data>
-  <data name="gsUser1" xml:space="preserve">
-    <value>Uživatel 1</value>
-  </data>
-  <data name="gsUser2" xml:space="preserve">
-    <value>Uživatel 2</value>
-  </data>
-  <data name="gsUser3" xml:space="preserve">
-    <value>Uživatel 3</value>
-  </data>
-  <data name="gsUser4" xml:space="preserve">
-    <value>Uživatel 4</value>
+  <data name="gsUserNo" xml:space="preserve">
+    <value>Uživatel {0}</value>
   </data>
   <data name="gsUturn" xml:space="preserve">
     <value>Otáčení U</value>
@@ -1192,7 +1161,10 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
     <value>Nastav plynulost 3-4x Radius</value>
   </data>
   <data name="gsVehiclegroupbox" xml:space="preserve">
-    <value>Typ vozidla:</value>
+    <value>Typ vozidla</value>
+  </data>
+  <data name="gsVersion" xml:space="preserve">
+    <value>Verzi</value>
   </data>
   <data name="gsWasZero" xml:space="preserve">
     <value>Byla Nula</value>
@@ -1204,10 +1176,10 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
     <value>Západ</value>
   </data>
   <data name="gsWheelbase" xml:space="preserve">
-    <value>Wheelbase:</value>
+    <value>Wheelbase</value>
   </data>
   <data name="gsWidth" xml:space="preserve">
-    <value>Šířka:</value>
+    <value>Šířka</value>
   </data>
   <data name="gsWindowsStillOpen" xml:space="preserve">
     <value>Windows stále otevřeno</value>
@@ -1244,5 +1216,57 @@ POUŽÍVÁNÍ NA VLASTNÍCH RISK.</value>
   </data>
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Stáhnout pole z AgShare</value>
+  </data>
+  <data name="gsDownloadAll" xml:space="preserve">
+    <value>Získat vše</value>
+  </data>
+  <data name="gsGetSelected" xml:space="preserve">
+    <value>Získat vybrané</value>
+  </data>
+  <data name="gsForceOverwrite" xml:space="preserve">
+    <value>Vynucené přepsání</value>
+  </data>
+  <data name="gsAgree" xml:space="preserve">
+    <value>Příjmout</value>
+  </data>
+  <data name="gsCopyFrom" xml:space="preserve">
+    <value>Kopírovat z</value>
+  </data>
+  <data name="gsCreateNewProfile" xml:space="preserve">
+    <value>Vytvořit nový profil</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Diskusní fórum</value>
+  </data>
+  <data name="gsNew" xml:space="preserve">
+    <value>Nový</value>
+  </data>
+  <data name="gsProfile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>Nastavení vozidla se nyní nazývají „profily“ a lze
+je vytvářet/načítat v hlavním menu (vlevo nahoře).</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>Návody na YouTube</value>
+  </data>
+  <data name="gsDownloading" xml:space="preserve">
+    <value>Stahování</value>
+  </data>
+  <data name="gsEmptyProfile" xml:space="preserve">
+    <value>Prázdný profil</value>
+  </data>
+  <data name="gsLoad" xml:space="preserve">
+    <value>Načíst</value>
+  </data>
+  <data name="gsLoadProfile" xml:space="preserve">
+    <value>Načíst profil</value>
+  </data>
+  <data name="gsName" xml:space="preserve">
+    <value>Jméno</value>
   </data>
 </root>

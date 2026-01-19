@@ -208,12 +208,11 @@ namespace AgOpenGPS
         private void btnDelete_Click(object sender, EventArgs e)
         {
             // Show custom confirmation dialog for full boundary deletion
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 gStr.gsCompletelyDeleteBoundary,
-                gStr.gsDeleteForSure,
-                MessageBoxButtons.YesNo);
+                gStr.gsDeleteForSure);
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 btnDelete.Enabled = false;
 
@@ -231,11 +230,6 @@ namespace AgOpenGPS
                 mf.fd.UpdateFieldBoundaryGUIAreas();
                 mf.bnd.BuildTurnLines();
                 UpdateChart();
-            }
-            else
-            {
-                // Show brief message if action was cancelled
-                mf.TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
             }
         }
 
@@ -280,7 +274,7 @@ namespace AgOpenGPS
         {
             if (mf.tool.width < 0.2)
             {
-                mf.TimedMessageBox(2000, "Tool Error", "Your tool is too small");
+                FormDialog.Show("Tool Error", "Your tool is too small", DialogSeverity.Error);
                 Log.EventWriter("Boundary, Tool is too narrow");
 
                 return;
@@ -383,10 +377,10 @@ namespace AgOpenGPS
                                 }
                                 else
                                 {
-                                    mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone);
+                                    FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsChooseBuildDifferentone, DialogSeverity.Error);
                                     Log.EventWriter("KML Read Error to make new field");
-
                                 }
+
                                 if (button.Name == "btnLoadBoundaryFromGE")
                                 {
                                     break;
@@ -443,7 +437,7 @@ namespace AgOpenGPS
         {
             if (mf.bnd.bndList.Count > 0)
             {
-                var result = FormDialog.Show("Boundary Exists", "A boundary already exists. Do you want to remove it?", MessageBoxButtons.YesNo);
+                var result = FormDialog.ShowQuestion("Boundary Exists", "A boundary already exists. Do you want to remove it?");
                 if (result != DialogResult.OK) return;
 
                 mf.bnd.bndList.Clear();

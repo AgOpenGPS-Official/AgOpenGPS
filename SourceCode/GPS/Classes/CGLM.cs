@@ -116,7 +116,7 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.LineStrip);
                 for (int i = 0; i < polygon.Count; i++)
                 {
-                    GL.Vertex3(polygon[i].easting, polygon[i].northing, 0);
+                    GL.Vertex2(polygon[i].easting, polygon[i].northing);
                 }
                 GL.End();
             }
@@ -129,7 +129,7 @@ namespace AgOpenGPS
                 GL.Begin(PrimitiveType.LineLoop);
                 for (int i = 0; i < polygon.Count; i++)
                 {
-                    GL.Vertex3(polygon[i].easting, polygon[i].northing, 0);
+                    GL.Vertex2(polygon[i].easting, polygon[i].northing);
                 }
                 GL.End();
             }

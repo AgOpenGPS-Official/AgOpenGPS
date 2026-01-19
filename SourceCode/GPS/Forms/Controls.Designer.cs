@@ -11,6 +11,7 @@ using AgOpenGPS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -627,7 +628,8 @@ namespace AgOpenGPS
                 try
                 {
                     isAgShareUploadStarted = true;
-                    agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+                    var uploader = new AgShareUploader(agShareClient);
+                    agShareUploadTask = uploader.UploadAsync(snapshot, this);
                 }
                 catch (Exception ex)
                 {
@@ -695,7 +697,7 @@ namespace AgOpenGPS
         {
             if (!isJobStarted) return;
 
-            snapshot = CAgShareUploader.CreateSnapshot(this);
+            snapshot = AgShareUploader.CreateSnapshot(this);
         }
 
 
@@ -708,7 +710,8 @@ namespace AgOpenGPS
 
             //set bool to true so we don't start another upload by double clicking or something.
             isAgShareUploadStarted = true;
-            agShareUploadTask = CAgShareUploader.UploadAsync(snapshot, agShareClient, this);
+            var uploader = new AgShareUploader(agShareClient);
+            agShareUploadTask = uploader.UploadAsync(snapshot, this);
         }
         #endregion
         private void tramLinesMenuField_Click(object sender, EventArgs e)
@@ -1395,7 +1398,7 @@ namespace AgOpenGPS
                 // Inform user that app needs to restart
                 FormDialog.Show("Restart Required",
                     gStr.gsProgramWillExitPleaseRestart,
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Info);
 
                 // Close the app
                 Close();
@@ -1412,11 +1415,7 @@ namespace AgOpenGPS
 
         private void AgShareApiMenuItem_Click(object sender, EventArgs e)
         {
-            var server = Properties.Settings.Default.AgShareServer;
-            var apiKey = Properties.Settings.Default.AgShareApiKey;
-            var client = new AgShareClient(server, apiKey);
-
-            var form = new FormAgShareSettings();
+            var form = new FormAgShareSettings(agShareClient);
             form.ShowDialog(this);
         }
 
@@ -1428,13 +1427,7 @@ namespace AgOpenGPS
                 form.ShowDialog(this);
             }
         }
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (var form = new Form_About())
-            {
-                form.ShowDialog(this);
-            }
-        }
+
         private void kioskModeToolStrip_Click(object sender, EventArgs e)
         {
             isKioskMode = !isKioskMode;
@@ -1463,20 +1456,20 @@ namespace AgOpenGPS
             if (isJobStarted)
             {
                 // Show message if field is still open
-                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, MessageBoxButtons.OK);
+                FormDialog.Show("Warning", gStr.gsCloseFieldFirst, DialogSeverity.Warning);
             }
             else
             {
                 // Ask user for confirmation before resetting everything
-                DialogResult result2 = FormDialog.Show(gStr.gsResetAll, gStr.gsReallyResetEverything, MessageBoxButtons.YesNoCancel);
+                DialogResult result = FormDialog.ShowQuestion(gStr.gsResetAll, gStr.gsReallyResetEverything);
 
-                if (result2 == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     // Reset registry settings
                     RegistrySettings.Reset();
 
                     // Notify user and close app
-                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, MessageBoxButtons.OK);
+                    FormDialog.Show("Restart Required", gStr.gsProgramWillExitPleaseRestart, DialogSeverity.Info);
                     Close();
                 }
             }
@@ -1484,7 +1477,7 @@ namespace AgOpenGPS
 
         private void helpMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new Form_Help(this))
+            using (var form = new FormHelp())
             {
                 form.ShowDialog(this);
             }
@@ -1583,9 +1576,11 @@ namespace AgOpenGPS
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Suomalainen (Finland)", "fi"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Slovenčina (Slovakia)", "sk"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Serbia (Servië)", "sr"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Svenska (Sweden)", "sv"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Türkçe (Turkey)", "tr"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("Yкраїнська (Ukraine)", "uk"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("中国人 (Chinese)", "zh-CHS"));
+            menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("日本語 (Japanese)", "ja"));
             menustripLanguage.DropDownItems.Add(CreateLanguageMenuItem("한국인 (Korean)", "ko"));
         }
 
@@ -1628,35 +1623,31 @@ namespace AgOpenGPS
         public void CloseTopMosts()
         {
             Form fc = Application.OpenForms["FormSteer"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
             fc = Application.OpenForms["FormSteerGraph"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
             fc = Application.OpenForms["FormGPSData"];
-
             if (fc != null)
             {
                 fc.Focus();
                 fc.Close();
             }
-
         }
+
         private void btnAutoTrack_Click(object sender, EventArgs e)
         {
             trk.isAutoTrack = !trk.isAutoTrack;
             btnAutoTrack.Image = trk.isAutoTrack ? Resources.AutoTrack : Resources.AutoTrackOff;
         }
+
         private void btnResetToolHeading_Click(object sender, EventArgs e)
         {
             tankPos.heading = fixHeading;
@@ -1667,43 +1658,51 @@ namespace AgOpenGPS
             toolPivotPos.easting = tankPos.easting + (Math.Sin(toolPivotPos.heading) * (tool.trailingHitchLength));
             toolPivotPos.northing = tankPos.northing + (Math.Cos(toolPivotPos.heading) * (tool.trailingHitchLength));
         }
+
         private void btnTramDisplayMode_Click(object sender, EventArgs e)
         {
             tram.isLeftManualOn = false;
             tram.isRightManualOn = false;
 
-            //if only lines cycle on off
-            if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count == 0)
-            {
-                if (tram.displayMode != 0) tram.displayMode = 0;
-                else tram.displayMode = 2;
-            }
-            else
-            {
-                tram.displayMode++;
-                if (tram.displayMode > 3) tram.displayMode = 0;
-            }
-
-            switch (tram.displayMode)
-            {
-                case 0:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOff;
-                    break;
-                case 1:
-                    btnTramDisplayMode.Image = Properties.Resources.TramAll;
-                    break;
-                case 2:
-                    btnTramDisplayMode.Image = Properties.Resources.TramLines;
-                    break;
-                case 3:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            tram.displayMode = GetNextDisplayMode(tram.displayMode);
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
+
+        private TramMode GetNextDisplayMode(TramMode currentMode)
+        {
+            TramMode nextMode;
+
+            switch (currentMode)
+            {
+                case TramMode.None:
+                    nextMode = TramMode.All;
+                    break;
+                case TramMode.All:
+                    nextMode = TramMode.FillTracks;
+                    break;
+                case TramMode.FillTracks:
+                    nextMode = TramMode.BoundaryTracks;
+                    break;
+                case TramMode.BoundaryTracks:
+                    nextMode = TramMode.None;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(currentMode), "TramMode argument out of range");
+            }
+            // Skip inapplicable modes
+            if (nextMode.IncludesBoundaryTracks() && tram.tramBndOuterArr.Count == 0)
+            {
+                nextMode = GetNextDisplayMode(nextMode);
+            }
+            if (nextMode.IncludesFillTracks() && tram.tramList.Count == 0)
+            {
+                nextMode = GetNextDisplayMode(nextMode);
+            }
+            return nextMode;
+        }
+
         public bool isPatchesChangingColor = false;
+
         private void btnChangeMappingColor_Click(object sender, EventArgs e)
         {
             using (var form = new FormColorPicker(this, sectionColorDay))
@@ -1719,6 +1718,7 @@ namespace AgOpenGPS
 
             isPatchesChangingColor = true;
         }
+
         private void btnYouSkipEnable_Click(object sender, EventArgs e)
         {
             yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
@@ -1750,11 +1750,8 @@ namespace AgOpenGPS
                     yt.skipMode = SkipMode.Normal;
                     break;
             }
-
             yt.ResetCreatedYouTurn();
-
         }
-
 
         private void cboxpRowWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1764,6 +1761,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.set_youSkipWidth = yt.rowSkipsWidth;
             Properties.Settings.Default.Save();
         }
+
         private void btnHeadlandOnOff_Click(object sender, EventArgs e)
         {
             bnd.isHeadlandOn = !bnd.isHeadlandOn;
@@ -1794,6 +1792,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
             Properties.Settings.Default.Save();
         }
+
         private void btnHydLift_Click(object sender, EventArgs e)
         {
             if (bnd.isHeadlandOn)
@@ -1865,13 +1864,11 @@ namespace AgOpenGPS
             {
                 if (autoBtnState == btnStates.Off && manualBtnState == btnStates.Off)
                 {
-                    DialogResult result3 = FormDialog.Show(
+                    DialogResult result = FormDialog.ShowQuestion(
                         gStr.gsDeleteAllContoursAndSections,
-                        gStr.gsDeleteForSure,
-                        MessageBoxButtons.YesNo
-                    );
+                        gStr.gsDeleteForSure);
 
-                    if (result3 == DialogResult.OK)
+                    if (result == DialogResult.OK)
                     {
                         //FileCreateElevation();
 
@@ -2057,7 +2054,7 @@ namespace AgOpenGPS
 
         private void btnGrid_Click(object sender, EventArgs e)
         {
-            var form = new FormGrid(this);
+            var form = new FormGrid(this, worldGrid.FieldGrid);
             form.Show(this);
             navPanelCounter = 0;
         }
@@ -2204,37 +2201,21 @@ namespace AgOpenGPS
         {
             if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = 1;
+                tram.displayMode = TramMode.All;
             }
             else if (tram.tramList.Count == 0 && tram.tramBndOuterArr.Count > 0)
             {
-                tram.displayMode = 3;
+                tram.displayMode = TramMode.BoundaryTracks;
             }
             else if (tram.tramList.Count > 0 && tram.tramBndOuterArr.Count == 0)
             {
-                tram.displayMode = 2;
+                tram.displayMode = TramMode.FillTracks;
             }
-
-            switch (tram.displayMode)
-            {
-                case 1:
-                    btnTramDisplayMode.Image = Properties.Resources.TramAll;
-                    break;
-                case 2:
-                    btnTramDisplayMode.Image = Properties.Resources.TramLines;
-                    break;
-                case 3:
-                    btnTramDisplayMode.Image = Properties.Resources.TramOuter;
-                    break;
-
-                default:
-                    break;
-            }
+            btnTramDisplayMode.Image = CTram.GetModeBitmap(tram.displayMode);
         }
 
         private ToolStripMenuItem steerChartToolStripMenuItem;
         private ToolStripMenuItem headingChartToolStripMenuItem;
         private ToolStripMenuItem xTEChartToolStripMenuItem;
-    }//end class
-
-}//end namespace
+    }
+}

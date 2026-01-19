@@ -22,8 +22,8 @@ namespace AgOpenGPS.Forms.Config
             InitializeComponent();
 
             labelVehicleGroupBox.Text = gStr.gsVehiclegroupbox;
-            labelImage.Text = gStr.gsImage;
-            labelOpacity.Text = gStr.gsOpacity;
+            labelImage.Text = gStr.gsImage + ":";
+            labelOpacity.Text = gStr.gsOpacity + ":";
         }
 
         public TractorBrand TractorBrand
@@ -139,7 +139,7 @@ namespace AgOpenGPS.Forms.Config
                 pboxAlpha.BackgroundImage = BrandImages.BrandTriangleVehicle;
             }
 
-            _vehicleConfig.Color = new ColorRgb(254, 254, 254);
+            _vehicleConfig.Color = new ColorRgba(254, 254, 254);
 
             cboxIsImage.Checked = !_vehicleConfig.IsImage;
             ResetImage();

@@ -4,39 +4,46 @@ namespace AgOpenGPS.Core.Models
 {
     public struct ColorRgba
     {
-        public ColorRgba(byte red, byte green, byte blue, byte alpha)
+        public ColorRgba(byte red, byte green, byte blue, byte alpha = 255)
         {
-            Red = red;
-            Green = green;
-            Blue = blue;
-            Alpha = alpha;
+            ByteArray = new byte[4] { red, green, blue, alpha };
         }
 
-        public ColorRgba(ColorRgb colorRgb, float alpha)
-        {
-            if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
-            Red = colorRgb.Red;
-            Green = colorRgb.Green;
-            Blue = colorRgb.Blue;
-            Alpha = ColorRgba.FloatToByte(alpha);
-        }
-
-        public ColorRgba(float red, float green, float blue, float alpha)
+        public ColorRgba(float red, float green, float blue, float alpha = 1.0f)
         {
             if (red < 0.0f || 1.0f < red) throw new ArgumentOutOfRangeException(nameof(red), "Argument out of range");
             if (green < 0.0f || 1.0f < green) throw new ArgumentOutOfRangeException(nameof(green), "Argument out of range");
             if (blue < 0.0f || 1.0f < blue) throw new ArgumentOutOfRangeException(nameof(blue), "Argument out of range");
             if (alpha < 0.0f || 1.0f < alpha) throw new ArgumentOutOfRangeException(nameof(alpha), "Argument out of range");
-            Red = ColorRgba.FloatToByte(red);
-            Green = ColorRgba.FloatToByte(green);
-            Blue = ColorRgba.FloatToByte(blue);
-            Alpha = ColorRgba.FloatToByte(alpha);
+            ByteArray = new byte[4] { FloatToByte(red), FloatToByte(green), FloatToByte(blue), FloatToByte(alpha) };
         }
 
-        public byte Red { get; }
-        public byte Green { get; }
-        public byte Blue { get; }
-        public byte Alpha { get; }
+        // For better performance in GLW.SetColor()
+        public byte[] ByteArray { get; private set; }
+
+        public byte Red
+        {
+            get { return ByteArray[0]; }
+            set { ByteArray[0] = value; }
+        }
+
+        public byte Green
+        {
+            get { return ByteArray[1]; }
+            set { ByteArray[1] = value; }
+        }
+
+        public byte Blue
+        {
+            get { return ByteArray[2]; }
+            set { ByteArray[2] = value; }
+        }
+
+        public byte Alpha
+        {
+            get { return ByteArray[3]; }
+            set { ByteArray[3] = value; }
+        }
 
         public static explicit operator System.Drawing.Color(ColorRgba color)
         {
@@ -48,7 +55,7 @@ namespace AgOpenGPS.Core.Models
             return new ColorRgba(color.R, color.G, color.B, color.A);
         }
 
-        static private byte FloatToByte(float fraction)
+        private static byte FloatToByte(float fraction)
         {
             return (byte)(255 * fraction);
         }

@@ -1,15 +1,16 @@
-﻿using AgLibrary.Logging;
-using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Models;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using AgLibrary.Logging;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Models;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -478,7 +479,7 @@ namespace AgOpenGPS
                 UpdateTable();
                 flp.Focus();
 
-                mf.TimedMessageBox(1500, "A B Swapped", "Curve is Reversed");
+                FormDialog.Show("A B Swapped", "Curve is Reversed", DialogSeverity.Info);
             }
         }
 
@@ -726,8 +727,8 @@ namespace AgOpenGPS
             else if (cnt > 2)
             {
                 //make sure point distance isn't too big 
-                mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 mf.trk.gArr.Add(new CTrk());
                 //array number is 1 less since it starts at zero
@@ -755,7 +756,7 @@ namespace AgOpenGPS
                 //build the tail extensions
                 mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                 SmoothAB(4);
-                mf.curve.CalculateHeadings(ref mf.curve.desList);
+                CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                 //write out the Curve Points
                 foreach (vec3 item in mf.curve.desList)
@@ -1151,8 +1152,8 @@ namespace AgOpenGPS
                     else if (mf.curve.desList.Count > 2)
                     {
                         //make sure point distance isn't too big 
-                        mf.curve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
-                        mf.curve.CalculateHeadings(ref mf.curve.desList);
+                        CABCurve.MakePointMinimumSpacing(ref mf.curve.desList, 1.6);
+                        CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                         mf.trk.gArr.Add(new CTrk());
 
@@ -1184,7 +1185,7 @@ namespace AgOpenGPS
                         //build the tail extensions
                         mf.curve.AddFirstLastPoints(ref mf.curve.desList);
                         //SmoothAB(4);
-                        mf.curve.CalculateHeadings(ref mf.curve.desList);
+                        CABCurve.CalculateHeadings(ref mf.curve.desList);
 
                         //write out the Curve Points
                         foreach (vec3 item in mf.curve.desList)
@@ -1205,7 +1206,7 @@ namespace AgOpenGPS
                     }
                     else
                     {
-                        mf.TimedMessageBox(2000, gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile);
+                        FormDialog.Show(gStr.gsErrorreadingKML, gStr.gsMissingABLinesFile, DialogSeverity.Error);
                     }
                 }
             }
