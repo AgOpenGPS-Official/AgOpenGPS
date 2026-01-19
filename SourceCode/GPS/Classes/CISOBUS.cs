@@ -24,7 +24,7 @@ namespace AgOpenGPS
 
         //const for the CANBUS sending
         private const int pdPGN = 0xCB00; //the acronim PD is used for the ISOBUS "Process Data message"
-        private const byte priority = 5;
+        private const byte priority = 6;
         private const byte sourceAddress = 0x7F; //for now we send the AOG address
         private const byte allDest = 255;
         private const byte notDefinedCommand = 0x0F;
@@ -67,10 +67,10 @@ namespace AgOpenGPS
             message[2] = 0x7F; // SRC address
             message[3] = 0xF2; // PGN
             message[4] = 12; // Length
-            message[5] = idBytes[0];
-            message[6] = idBytes[1];
-            message[7] = idBytes[2];
-            message[8] = idBytes[3];
+            message[5] = idBytes[3];
+            message[6] = idBytes[2];
+            message[7] = idBytes[1];
+            message[8] = idBytes[0];
             for (int i = 0; i < 8; i++)
             {
                 message[i + 9] = data[i];
@@ -82,9 +82,9 @@ namespace AgOpenGPS
         int buildCanFrameIdentifier(int pgn, byte priority, byte src_addr, byte dest_addr)
         {
             int id;
-            id = (int)(priority & 0x07) << 26; //shifted 26 like the real CAN message with the 2 reserved bit at position 24 and 25
+            id = (int)(priority & 0x07) << 26; //shifted 26 like the real CAN message with the  reserved bit at position 25
                                                //so visually the first byte will not show correctly
-                                               //ex: identifier 0x0CCBF782 will be shown 0x30CBF782 in the AOG PGN data
+                                               //ex: identifier 0x0CCBF782 will be shown 0x18CBF782 in the AOG PGN data
 
             /* if a peer to peer message, encode dest_addr */
             if ((pgn > 0 && pgn <= 0xEFFF) || (pgn > 0x10000 && pgn <= 0x1EFFF))
