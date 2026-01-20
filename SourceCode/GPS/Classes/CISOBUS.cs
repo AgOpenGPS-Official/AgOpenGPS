@@ -61,19 +61,20 @@ namespace AgOpenGPS
         private void SendCanbusMessage(int id, byte[] data)
         {
             byte[] idBytes = BitConverter.GetBytes(id);
-            byte[] message = new byte[18];
+            byte[] message = new byte[19];
             message[0] = 0x80; // standard AIO header
             message[1] = 0x81; // PGN header
             message[2] = 0x7F; // SRC address
             message[3] = 0xF2; // PGN
-            message[4] = 12; // Length
-            message[5] = idBytes[3];
-            message[6] = idBytes[2];
-            message[7] = idBytes[1];
-            message[8] = idBytes[0];
+            message[4] = 13; // Length
+            message[5] = 0; //a reserved byte to be able to add some future AOG ecosystem command
+            message[6] = idBytes[3];
+            message[7] = idBytes[2];
+            message[8] = idBytes[1];
+            message[9] = idBytes[0];
             for (int i = 0; i < 8; i++)
             {
-                message[i + 9] = data[i];
+                message[i + 10] = data[i];
             }
 
             mf.SendPgnToLoop(message);
