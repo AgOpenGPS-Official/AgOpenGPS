@@ -82,9 +82,7 @@ namespace AgOpenGPS
         int buildCanFrameIdentifier(int pgn, byte priority, byte src_addr, byte dest_addr)
         {
             int id;
-            id = (int)(priority & 0x07) << 26; //shifted 26 like the real CAN message with the  reserved bit at position 25
-                                               //so visually the first byte will not show correctly
-                                               //ex: identifier 0x0CCBF782 will be shown 0x18CBF782 in the AOG PGN data
+            id = (int)(priority & 0x07) << 26;
 
             /* if a peer to peer message, encode dest_addr */
             if ((pgn > 0 && pgn <= 0xEFFF) || (pgn > 0x10000 && pgn <= 0x1EFFF))
