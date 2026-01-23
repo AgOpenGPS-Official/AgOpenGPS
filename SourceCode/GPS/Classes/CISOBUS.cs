@@ -24,7 +24,7 @@ namespace AgOpenGPS
 
         //const for the CANBUS sending
         private const int pdPGN = 0xCB00; //the acronim PD is used for the ISOBUS "Process Data message"
-        private const byte priority = 6;
+        private const byte priority = 3;
         private const byte sourceAddress = 0x7F; //for now we send the AOG address
         private const byte allDest = 255;
         private const byte notDefinedCommand = 0x0F;
