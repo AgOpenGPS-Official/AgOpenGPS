@@ -22,13 +22,6 @@ namespace AgOpenGPS
         private int lastTotalDistance;
         private DateTimeOffset totalDistanceTime;
 
-        //const for the CANBUS sending
-        private const int pdPGN = 0xCB00; //the acronim PD is used for the ISOBUS "Process Data message"
-        private const byte priority = 3;
-        private const byte sourceAddress = 0x7F; //for now we send the AOG address
-        private const byte allDest = 255;
-        private const byte notDefinedCommand = 0x0F;
-        private const ushort notDefinedElementNumber = 0xFFFF;
 
         public CISOBUS(FormGPS _f)
         {
@@ -81,7 +74,7 @@ namespace AgOpenGPS
             mf.SendPgnToLoop(message);
         }
 
-        int buildCanFrameIdentifier(int pgn, byte priority, byte src_addr, byte dest_addr)
+        int buildCanFrameIdentifier(int pgn = 0xCB00, byte priority = 3, byte src_addr = 0x7F, byte dest_addr = 0xFF)
         {
             int id;
             id = (int)(priority & 0x07) << 26;
@@ -99,20 +92,22 @@ namespace AgOpenGPS
         }
 
         //the acronim PD is used for the ISOBUS "Process Data message", the PGN 0xCB00 (51968)
-        private byte[] buildPDdata(byte command, ushort elementNumber, ushort identifier, int data)
+        private byte[] buildPDdata(ushort identifier, int data, byte command = 0x0F, ushort elementNumber = 0x0FFF, int length = 4)
         {
+            if (length < 1) length = 1;
+            if (length > 4) length = 4;
             byte[] dataBytes = BitConverter.GetBytes(data);
-            byte[] message = new byte[8];
+            byte[] message = new byte[length + 4];
             byte temp = (byte)(elementNumber << 4);
             temp += (byte)(command & 0x0F);
             message[0] = temp;
             message[1] = (byte)(elementNumber >> 4);
             message[2] = (byte)(identifier & 0xFF);
             message[3] = (byte)(identifier >> 8);
-            message[4] = dataBytes[0];
-            message[5] = dataBytes[1];
-            message[6] = dataBytes[2];
-            message[7] = dataBytes[3];
+            for (int i = 0; i < length; i++)
+            {
+                message[i + 4] = dataBytes[i];
+            }
 
             return message;
         }
@@ -129,7 +124,7 @@ namespace AgOpenGPS
             }
             lastGuidanceLineDeviation = deviation;
             guidanceLineDeviationTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 513, deviation));
+            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(513, deviation));
         }
 
         public void SetActualSpeed(int speed)
@@ -144,7 +139,7 @@ namespace AgOpenGPS
             }
             lastActualSpeed = speed;
             actualSpeedTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 397, speed));
+            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(397, speed));
         }
 
         public void SetTotalDistance(int distance)
@@ -159,7 +154,7 @@ namespace AgOpenGPS
             }
             lastTotalDistance = distance;
             totalDistanceTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(pdPGN, priority, sourceAddress, allDest), buildPDdata(notDefinedCommand, notDefinedElementNumber, 597, distance));
+            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(597, distance));
         }
 
         public bool SectionControlEnabled
