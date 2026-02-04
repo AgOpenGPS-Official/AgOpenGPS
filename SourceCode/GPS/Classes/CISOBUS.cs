@@ -41,14 +41,8 @@ namespace AgOpenGPS
         public void RequestSectionControlEnabled(bool enabled)
         {
             // Send the request
-            byte[] data = new byte[7];
-            data[0] = 0x80; // standard AIO header
-            data[1] = 0x81; // PGN header
-            data[2] = 0x7F; // SRC address
-            data[3] = 0xF1; // PGN
-            data[4] = 1; // Length
-            data[5] = (byte)(enabled ? 0x01 : 0x00); // Section control enabled request
-            mf.SendPgnToLoop(data);
+            int data = (byte)(enabled ? 0x01 : 0x00); // Section control enabled request
+            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(160, data, 3));
         }
 
         private void SendCanbusMessage(int id, byte[] data)
