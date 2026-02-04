@@ -42,10 +42,10 @@ namespace AgOpenGPS
         {
             // Send the request
             int data = (byte)(enabled ? 0x01 : 0x00); // Section control enabled request
-            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(160, data, 3));
+            SendCanbusMessage(BuildCanFrameIdentifier(), BuildPDdata(160, data, 3));
         }
 
-        private void SendCanbusMessage(int id, byte[] data)
+        public void SendCanbusMessage(int id, byte[] data)
         {
             int length = data.Length;
             byte[] idBytes = BitConverter.GetBytes(id);
@@ -68,7 +68,7 @@ namespace AgOpenGPS
             mf.SendPgnToLoop(message);
         }
 
-        int buildCanFrameIdentifier(int pgn = 0xCB00, byte priority = 3, byte src_addr = 0x7F, byte dest_addr = 0xFF)
+        public int BuildCanFrameIdentifier(int pgn = 0xCB00, byte priority = 3, byte src_addr = 0x7F, byte dest_addr = 0xFF)
         {
             int id;
             id = (int)(priority & 0x07) << 26;
@@ -86,7 +86,7 @@ namespace AgOpenGPS
         }
 
         //the acronim PD is used for the ISOBUS "Process Data message", the PGN 0xCB00 (51968)
-        private byte[] buildPDdata(ushort identifier, int data, byte command = 0x0F, ushort elementNumber = 0x0FFF, int length = 4)
+        public byte[] BuildPDdata(ushort identifier, int data, byte command = 0x0F, ushort elementNumber = 0x0FFF, int length = 4)
         {
             if (length < 1) length = 1;
             if (length > 4) length = 4;
@@ -118,7 +118,7 @@ namespace AgOpenGPS
             }
             lastGuidanceLineDeviation = deviation;
             guidanceLineDeviationTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(513, deviation));
+            SendCanbusMessage(BuildCanFrameIdentifier(), BuildPDdata(513, deviation));
         }
 
         public void SetActualSpeed(int speed)
@@ -133,7 +133,7 @@ namespace AgOpenGPS
             }
             lastActualSpeed = speed;
             actualSpeedTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(397, speed));
+            SendCanbusMessage(BuildCanFrameIdentifier(), BuildPDdata(397, speed));
         }
 
         public void SetTotalDistance(int distance)
@@ -148,7 +148,7 @@ namespace AgOpenGPS
             }
             lastTotalDistance = distance;
             totalDistanceTime = DateTimeOffset.Now;
-            SendCanbusMessage(buildCanFrameIdentifier(), buildPDdata(597, distance));
+            SendCanbusMessage(BuildCanFrameIdentifier(), BuildPDdata(597, distance));
         }
 
         public bool SectionControlEnabled

@@ -513,6 +513,38 @@ namespace AgOpenGPS
 
             p_239.pgn[p_239.speed] = unchecked((byte)(avgSpeed * 10));
             p_239.pgn[p_239.tram] = unchecked((byte)tram.controlByte);
+
+            //build the ISOBUS section PGNs
+            if (isobus.IsAlive())
+            {
+                // 16 sections per PGN
+                for (int i = 0; i < (tool.numOfSections + 15) / 16; i++)
+                {
+                    int data = 0;
+                    for (int j = 3; j > -1; j--)
+                    {
+                        for (int k = 0; k < 4; k++)
+                        {
+                            data = (data << 2);
+                            if ((i * 16 + j * 4 + k) < tool.numOfSections)
+                            {
+                                if (section[k + j * 4 + i * 16].isSectionOn)
+                                {
+                                    data |= 1;  //01 if section ON
+                                }
+                            }
+                            else
+                            {
+                                data |= 3; //11 if no section
+                            }
+                        }
+                    }
+
+                    //DDE290 Setpoint Condensed Work State
+                    ushort dde = (ushort)(290 + (ushort)i);
+                    isobus.SendCanbusMessage(isobus.BuildCanFrameIdentifier(), isobus.BuildPDdata(dde, data, 3));
+                }
+            }
         }
 
 
