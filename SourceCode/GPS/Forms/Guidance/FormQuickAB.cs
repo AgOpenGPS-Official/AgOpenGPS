@@ -1,10 +1,11 @@
-﻿using AgOpenGPS.Controls;
-using AgOpenGPS.Core.Translations;
-using AgOpenGPS.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Translations;
+using AgOpenGPS.Forms;
+using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
 {
@@ -510,7 +511,7 @@ namespace AgOpenGPS
             if (mf.isBtnAutoSteerOn)
             {
                 mf.btnAutoSteer.PerformClick();
-                mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, "Return From Editing");
+                FormDialog.Show(gStr.gsGuidanceStopped, "Return From Editing", DialogSeverity.Info);
 
             }
             if (mf.yt.isYouTurnBtnOn) mf.btnAutoYouTurn.PerformClick();

@@ -62,7 +62,7 @@ namespace AgOpenGPS.Forms.Pickers
                 FormDialog.Show(
                     "No Recorded Paths",
                     "Create A Path First",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
 
                 Close();
             }
@@ -113,7 +113,7 @@ namespace AgOpenGPS.Forms.Pickers
                         }
                         catch (Exception ex)
                         {
-                            mf.TimedMessageBox(2000, gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded);
+                            FormDialog.Show(gStr.gsRecordedPathFileIsCorrupt, gStr.gsButFieldIsLoaded, DialogSeverity.Error);
                             Log.EventWriter("Load Recorded Path" + ex.ToString());
                         }
                     }
@@ -131,12 +131,11 @@ namespace AgOpenGPS.Forms.Pickers
                 dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory, selectedRecord + ".rec");
 
                 // Ask confirmation before deleting the file
-                DialogResult result3 = FormDialog.Show(
+                DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsDeleteForSure,
-                    dir2Delete,
-                    MessageBoxButtons.YesNo);
+                    dir2Delete);
 
-                if (result3 == DialogResult.OK)
+                if (result == DialogResult.OK)
                 {
                     System.IO.File.Delete(dir2Delete);
                 }

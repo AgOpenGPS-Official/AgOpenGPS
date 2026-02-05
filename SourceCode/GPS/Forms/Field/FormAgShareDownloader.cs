@@ -50,7 +50,7 @@ namespace AgOpenGPS.Forms.Field
 
                 if (fields == null)
                 {
-                    gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.");
+                    FormDialog.Show("AgShare", "Failed to load field list.", DialogSeverity.Error);
                     return;
                 }
 
@@ -70,7 +70,7 @@ namespace AgOpenGPS.Forms.Field
             }
             catch (Exception ex)
             {
-                gps.TimedMessageBox(1000, "AgShare", "Failed to load field list.\n" + ex.Message);
+                FormDialog.Show("AgShare", "Failed to load field list.\n" + ex.Message, DialogSeverity.Error);
             }
         }
 
@@ -91,7 +91,7 @@ namespace AgOpenGPS.Forms.Field
 
             if (previewDto == null)
             {
-                gps.TimedMessageBox(2000, "AgShare", "Failed to download field preview. Check logs for details.");
+                FormDialog.Show("AgShare", "Failed to download field preview. Check logs for details.", DialogSeverity.Error);
                 return;
             }
 
@@ -106,43 +106,43 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0)
             {
-                gps.TimedMessageBox(1000, "AgShare", "No field selected.");
+                FormDialog.Show("AgShare", "No field selected.", DialogSeverity.Error);
                 return;
             }
 
             var selected = lbFields.SelectedItems[0].Tag as GetOwnFieldDto;
             if (selected == null)
             {
-                gps.TimedMessageBox(1000, "AgShare", "Invalid selection.");
+                FormDialog.Show("AgShare", "Invalid selection.", DialogSeverity.Error);
                 return;
             }
 
             // Attempt to download and save field locally
             bool success = await downloader.DownloadAndSaveAsync(selected.Id);
-
-            if (success)
+            if (!success)
             {
-                gps.TimedMessageBox(2000, "AgShare", "Field downloaded and saved.");
-
-                // Build full path to Field.txt
-                string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected.Name);
-                string fieldFile = Path.Combine(fieldDir, "Field.txt");
-
-                if (!File.Exists(fieldFile))
-                {
-                    gps.TimedMessageBox(2000, "AgShare", "Field saved but could not be opened (missing Field.txt).");
-                    return;
-                }
-
-                // Close Current Field if necessary
-                if (gps.isJobStarted)
-                {
-                    await gps.FileSaveEverythingBeforeClosingField();
-                }
-
-                gps.FileOpenField(fieldFile);
-                Close();
+                FormDialog.Show("AgShare", "Failed to download field.", DialogSeverity.Error);
+                return;
             }
+
+            // Build full path to Field.txt
+            string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, selected.Name);
+            string fieldFile = Path.Combine(fieldDir, "Field.txt");
+
+            if (!File.Exists(fieldFile))
+            {
+                FormDialog.Show("AgShare", "Field saved but could not be opened (missing Field.txt).", DialogSeverity.Error);
+                return;
+            }
+
+            // Close Current Field if necessary
+            if (gps.isJobStarted)
+            {
+                await gps.FileSaveEverythingBeforeClosingField();
+            }
+
+            gps.FileOpenField(fieldFile);
+            Close();
         }
 
         // Called when the "Download All" button is clicked
@@ -193,7 +193,7 @@ namespace AgOpenGPS.Forms.Field
             {
                 message += $"\nFailed {result.Failed} field(s).";
             }
-            gps.TimedMessageBox(3000, "AgShare", message);
+            FormDialog.Show("AgShare", message, DialogSeverity.Info);
         }
 
 

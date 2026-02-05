@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using AgOpenGPS.Forms;
 using AgOpenGPS.Helpers;
 
 namespace AgOpenGPS
@@ -71,7 +72,7 @@ namespace AgOpenGPS
             }
             else
             {
-                mf.TimedMessageBox(2000, "Alphanumeric Only", "A to Z and 0 to 9");
+                FormDialog.Show("Alphanumeric Only", "A to Z and 0 to 9", DialogSeverity.Error);
             }
             tboxKey.TextChanged += tboxKey_TextChanged;
         }
@@ -156,7 +157,7 @@ namespace AgOpenGPS
             (btnSection7.Text == "...") ||
             (btnSection8.Text == "..."))
             {
-                mf.TimedMessageBox(2000, "HoyKey Incomplete", "Finish Setting All, or Reset to Default");
+                FormDialog.Show("HoyKey Incomplete", "Finish Setting All, or Reset to Default", DialogSeverity.Error);
             }
 
             else Close();

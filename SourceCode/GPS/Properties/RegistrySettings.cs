@@ -122,7 +122,7 @@ namespace AgOpenGPS
                 FormDialog.Show(
                     "Critical Registry Error",
                     "Can't delete the Registry SubKeyTree",
-                    MessageBoxButtons.OK);
+                    DialogSeverity.Error);
 
 
                 Environment.Exit(0);

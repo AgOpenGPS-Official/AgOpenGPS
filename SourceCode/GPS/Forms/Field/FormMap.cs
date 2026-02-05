@@ -219,17 +219,16 @@ namespace AgOpenGPS
 
             if (mf.bnd.bndList == null || mf.bnd.bndList.Count == 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, gStr.gsNoBoundary);
+                FormDialog.Show(gStr.gsBoundary, gStr.gsNoBoundary, DialogSeverity.Error);
                 return;
             }
 
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 gStr.gsDeleteForSure,
-                "Delete Last Field Boundary Made?",
-                MessageBoxButtons.YesNo);
+                "Delete Last Field Boundary Made?");
 
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 int cnt = mf.bnd.bndList.Count;
                 mf.bnd.bndList[cnt - 1].hdLine?.Clear();
@@ -240,10 +239,7 @@ namespace AgOpenGPS
                 mf.fd.UpdateFieldBoundaryGUIAreas();
                 mf.btnABDraw.Visible = false;
             }
-            else
-            {
-                mf.TimedMessageBox(1500, gStr.gsNothingDeleted, gStr.gsActionHasBeenCancelled);
-            }
+
             cboxEnableLineDraw.Checked = false;
 
             //clean up line
@@ -257,7 +253,7 @@ namespace AgOpenGPS
         {
             if (cboxEnableLineDraw.Checked)
             {
-                mf.TimedMessageBox(3000, "Boundary Create Mode", "Touch Map to Create The Boundary");
+                FormDialog.Show("Boundary Create Mode", "Touch Map to Create The Boundary", DialogSeverity.Info);
                 btnAddFence.Enabled = true;
                 btnDeletePoint.Enabled = true;
                 Log.EventWriter("Bing Touch Boundary started");
@@ -318,7 +314,7 @@ namespace AgOpenGPS
         {
             if (polygon.Points.Count > 0)
             {
-                mf.TimedMessageBox(2000, gStr.gsBoundary, "Finish Making Boundary");
+                FormDialog.Show(gStr.gsBoundary, "Finish Making Boundary", DialogSeverity.Info);
                 cboxDrawMap.Checked = !cboxDrawMap.Checked;
                 return;
             }
@@ -329,7 +325,7 @@ namespace AgOpenGPS
                 BingMap bingMap = CreateBingMap();
                 if (bingMap == null)
                 {
-                    mf.TimedMessageBox(2000, "BingMap Error", "Map Too Large");
+                    FormDialog.Show("BingMap Error", "Map Too Large", DialogSeverity.Error);
                     Log.EventWriter("BingMap, Map Too Large");
                 }
                 SetAndSaveBingMap(bingMap);

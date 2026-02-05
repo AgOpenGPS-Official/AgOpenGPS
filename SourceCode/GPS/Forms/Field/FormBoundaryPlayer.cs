@@ -119,12 +119,11 @@ namespace AgOpenGPS
         private void btnStop_Click(object sender, EventArgs e)
         {
             // Ask user if they are done with the boundary
-            DialogResult result3 = FormDialog.Show(
-                gStr.gsBoundary,         // Title
-                "Done?",                 // Message
-                MessageBoxButtons.OKCancel);
+            DialogResult result = FormDialog.ShowQuestion(
+                gStr.gsBoundary,
+                "Done?");
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 if (mf.bnd.bndBeingMadePts.Count > 2)
                 {
@@ -152,8 +151,7 @@ namespace AgOpenGPS
                 }
                 else
                 {
-                    // Show quick message that nothing was saved
-                    mf.TimedMessageBox(2000, gStr.gsNoBoundary, gStr.gsExit);
+                    FormDialog.Show(gStr.gsNoBoundary, gStr.gsExit, DialogSeverity.Error);
                 }
 
                 // Stop adding points and reset state
@@ -206,12 +204,11 @@ namespace AgOpenGPS
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            DialogResult result3 = FormDialog.Show(
+            DialogResult result = FormDialog.ShowQuestion(
                 gStr.gsDeleteForSure,
-                gStr.gsCompletelyDeleteBoundary,
-                MessageBoxButtons.OKCancel);
+                gStr.gsCompletelyDeleteBoundary);
 
-            if (result3 == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 mf.bnd.bndBeingMadePts?.Clear();
             }
