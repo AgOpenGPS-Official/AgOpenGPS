@@ -1369,7 +1369,7 @@ namespace AgOpenGPS
                            $"{gStr.gsConfidence}: {stats.ConfidenceLevel:F1}%\n\n" +
                            (stats.HasValidRecommendation ? "✓" : "✗");
 
-            FormDialog.Show(gStr.gsCalibrationDetails, message, MessageBoxButtons.OK);
+            FormDialog.Show(gStr.gsCalibrationDetails, message, DialogSeverity.Info);
 
             // Also log to file
             mf.smartWASCalibration.LogAnalysisReport();
