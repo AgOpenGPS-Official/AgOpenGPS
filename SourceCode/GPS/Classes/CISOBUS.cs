@@ -200,7 +200,7 @@ namespace AgOpenGPS
             SectionControlEnabled = ReadBit(data[0], 0);
             int numberOfSections = data[1];
 
-            if (data.Length != 2 + (numberOfSections + 7) / 8)
+            if (data.Length < 2 + (numberOfSections + 7) / 8)
             {
                 // Make sure we have enough data to read all the section states
                 return false;

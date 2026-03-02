@@ -1331,6 +1331,7 @@ namespace AgOpenGPS
                     number |= 1ul << j;
                 }
             }
+            if (!isJobStarted) number = 0; //
 
             //there has been a status change of section on/off
             if (number != lastNumber)

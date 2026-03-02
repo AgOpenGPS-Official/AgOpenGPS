@@ -895,6 +895,7 @@ namespace AgOpenGPS
             autoBtnState = btnStates.Off;
             btnSectionMasterAuto.Image = Properties.Resources.SectionMasterOff;
 
+            lastNumber = 0;
             btnSection1Man.BackColor = Color.Red;
             btnSection2Man.BackColor = Color.Red;
             btnSection3Man.BackColor = Color.Red;
