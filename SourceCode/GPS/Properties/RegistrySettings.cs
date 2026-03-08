@@ -10,6 +10,8 @@ namespace AgOpenGPS
     public static class RegKeys
     {
         public const string vehicleFileName = "VehicleFileName";
+        public const string toolFileName = "ToolFileName";
+        public const string environmentFileName = "EnvironmentFileName";
         public const string workingDirectory = "WorkingDirectory";
         public const string language = "Language";
     }
@@ -19,11 +21,15 @@ namespace AgOpenGPS
         public const string defaultString = "Default";
         public static string culture = "en";
         public static string vehicleFileName = "";
+        public static string toolFileName = "";
+        public static string environmentFileName = "Default";
         public static string workingDirectory = "Default";
         public static string vehiclesDirectory;
+        public static string toolsDirectory;
         public static string logsDirectory;
         public static string baseDirectory;
         public static string fieldsDirectory;
+        public static string environmentDirectory;
 
         public static void Load()
         {
@@ -46,6 +52,22 @@ namespace AgOpenGPS
                     Log.EventWriter("Registry -> Key vehicleFileName was null");
                 }
                 vehicleFileName = regKey.GetValue(RegKeys.vehicleFileName).ToString();
+
+                //Tool File Name Registry Key
+                if (regKey.GetValue(RegKeys.toolFileName) == null)
+                {
+                    regKey.SetValue(RegKeys.toolFileName, "");
+                    Log.EventWriter("Registry -> Key toolFileName was null");
+                }
+                toolFileName = regKey.GetValue(RegKeys.toolFileName).ToString();
+
+                //Environment File Name Registry Key
+                if (regKey.GetValue(RegKeys.environmentFileName) == null)
+                {
+                    regKey.SetValue(RegKeys.environmentFileName, "Default");
+                    Log.EventWriter("Registry -> Key environmentFileName was null");
+                }
+                environmentFileName = regKey.GetValue(RegKeys.environmentFileName).ToString();
 
                 //Language Registry Key
                 if (regKey.GetValue(RegKeys.language) == null || regKey.GetValue(RegKeys.language).ToString() == "")
@@ -82,6 +104,10 @@ namespace AgOpenGPS
 
                 if (name == RegKeys.vehicleFileName)
                     vehicleFileName = value;
+                else if (name == RegKeys.toolFileName)
+                    toolFileName = value;
+                else if (name == RegKeys.environmentFileName)
+                    environmentFileName = value;
                 else if (name == RegKeys.language)
                     culture = value;
 
@@ -173,6 +199,36 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 Log.EventWriter("Catch, Serious Problem Making Vehicles Directory: " + ex.ToString());
+            }
+
+            //get the tools directory, if not exist, create
+            try
+            {
+                toolsDirectory = Path.Combine(baseDirectory, "Tools");
+                if (!string.IsNullOrEmpty(toolsDirectory) && !Directory.Exists(toolsDirectory))
+                {
+                    Directory.CreateDirectory(toolsDirectory);
+                    Log.EventWriter("Tools Dir Created");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter("Catch, Serious Problem Making Tools Directory: " + ex.ToString());
+            }
+
+            //get the environment directory, if not exist, create
+            try
+            {
+                environmentDirectory = Path.Combine(baseDirectory, "Envoirment");
+                if (!string.IsNullOrEmpty(environmentDirectory) && !Directory.Exists(environmentDirectory))
+                {
+                    Directory.CreateDirectory(environmentDirectory);
+                    Log.EventWriter("Environment Dir Created");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter("Catch, Serious Problem Making Environment Directory: " + ex.ToString());
             }
 
             //get the fields directory, if not exist, create
