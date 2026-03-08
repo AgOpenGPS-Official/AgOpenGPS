@@ -92,14 +92,14 @@ namespace AgOpenGPS
 
             public CPGN_FC()
             {
-                pgn[gainProportional] = Properties.Settings.Default.setAS_Kp;
-                pgn[highPWM] = Properties.Settings.Default.setAS_highSteerPWM;
-                pgn[lowPWM] = Properties.Settings.Default.setAS_lowSteerPWM;
-                pgn[minPWM] = Properties.Settings.Default.setAS_minSteerPWM;
-                pgn[countsPerDegree] = Properties.Settings.Default.setAS_countsPerDegree;
-                pgn[wasOffsetHi] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset >> 8));
-                pgn[wasOffsetLo] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset));
-                pgn[ackerman] = Properties.Settings.Default.setAS_ackerman;
+                pgn[gainProportional] = Properties.VehicleSettings.Default.setAS_Kp;
+                pgn[highPWM] = Properties.VehicleSettings.Default.setAS_highSteerPWM;
+                pgn[lowPWM] = Properties.VehicleSettings.Default.setAS_lowSteerPWM;
+                pgn[minPWM] = Properties.VehicleSettings.Default.setAS_minSteerPWM;
+                pgn[countsPerDegree] = Properties.VehicleSettings.Default.setAS_countsPerDegree;
+                pgn[wasOffsetHi] = unchecked((byte)(Properties.VehicleSettings.Default.setAS_wasOffset >> 8));
+                pgn[wasOffsetLo] = unchecked((byte)(Properties.VehicleSettings.Default.setAS_wasOffset));
+                pgn[ackerman] = Properties.VehicleSettings.Default.setAS_ackerman;
             }
 
             public void Reset()
@@ -212,15 +212,15 @@ namespace AgOpenGPS
 
             public CPGN_EE()
             {
-                pgn[raiseTime] = Properties.Settings.Default.setArdMac_hydRaiseTime;
-                pgn[lowerTime] = Properties.Settings.Default.setArdMac_hydLowerTime;
-                pgn[enableHyd] = Properties.Settings.Default.setArdMac_isHydEnabled;
-                pgn[set0] = Properties.Settings.Default.setArdMac_setting0;
+                pgn[raiseTime] = Properties.ToolSettings.Default.setArdMac_hydRaiseTime;
+                pgn[lowerTime] = Properties.ToolSettings.Default.setArdMac_hydLowerTime;
+                pgn[enableHyd] = Properties.ToolSettings.Default.setArdMac_isHydEnabled;
+                pgn[set0] = Properties.ToolSettings.Default.setArdMac_setting0;
 
-                pgn[user1] = Properties.Settings.Default.setArdMac_user1;
-                pgn[user2] = Properties.Settings.Default.setArdMac_user2;
-                pgn[user3] = Properties.Settings.Default.setArdMac_user3;
-                pgn[user4] = Properties.Settings.Default.setArdMac_user4;
+                pgn[user1] = Properties.ToolSettings.Default.setArdMac_user1;
+                pgn[user2] = Properties.ToolSettings.Default.setArdMac_user2;
+                pgn[user3] = Properties.ToolSettings.Default.setArdMac_user3;
+                pgn[user4] = Properties.ToolSettings.Default.setArdMac_user4;
             }
 
             public void MakeCRC()
@@ -285,7 +285,7 @@ namespace AgOpenGPS
             {
                 string[] words;
 
-                words = Properties.Settings.Default.setRelay_pinConfig.Split(',');
+                words = Properties.ToolSettings.Default.setRelay_pinConfig.Split(',');
 
                 pgn[pin0] = (byte)int.Parse(words[0]);
                 pgn[pin1] = (byte)int.Parse(words[1]);

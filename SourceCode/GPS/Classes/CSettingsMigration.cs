@@ -24,7 +24,7 @@ namespace AgOpenGPS
                 return LoadResult.MissingFile;
 
             // Load old settings
-            Settings oldSettings = new Settings();
+            SettingsLegacy oldSettings = new SettingsLegacy();
             var loadResult = XmlSettingsHandler.LoadXMLFile(oldPath, oldSettings);
             if (loadResult != LoadResult.Ok)
                 return loadResult;
@@ -49,7 +49,7 @@ namespace AgOpenGPS
                 return LoadResult.MissingFile;
 
             // Load old settings
-            Settings oldSettings = new Settings();
+            SettingsLegacy oldSettings = new SettingsLegacy();
             var loadResult = XmlSettingsHandler.LoadXMLFile(oldPath, oldSettings);
             if (loadResult != LoadResult.Ok)
                 return loadResult;
@@ -66,7 +66,7 @@ namespace AgOpenGPS
             return LoadResult.Ok;
         }
 
-        private static void CopyVehicleSettings(Settings source, VehicleSettings dest)
+        private static void CopyVehicleSettings(SettingsLegacy source, VehicleSettings dest)
         {
             // Vehicle dimensions
             dest.setVehicle_wheelbase = source.setVehicle_wheelbase;
@@ -137,7 +137,7 @@ namespace AgOpenGPS
             dest.setVehicle_panicStopSpeed = source.setVehicle_panicStopSpeed;
         }
 
-        private static void CopyToolSettings(Settings source, ToolSettings dest)
+        private static void CopyToolSettings(SettingsLegacy source, ToolSettings dest)
         {
             // Tool dimensions
             dest.setVehicle_toolWidth = source.setVehicle_toolWidth;

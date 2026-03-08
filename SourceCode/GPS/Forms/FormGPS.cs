@@ -1244,24 +1244,24 @@ namespace AgOpenGPS
         public void SendSettings()
         {
             //Form Steer Settings
-            p_252.pgn[p_252.countsPerDegree] = unchecked((byte)Properties.Settings.Default.setAS_countsPerDegree);
-            p_252.pgn[p_252.ackerman] = unchecked((byte)Properties.Settings.Default.setAS_ackerman);
+            p_252.pgn[p_252.countsPerDegree] = unchecked((byte)Properties.VehicleSettings.Default.setAS_countsPerDegree);
+            p_252.pgn[p_252.ackerman] = unchecked((byte)Properties.VehicleSettings.Default.setAS_ackerman);
 
-            p_252.pgn[p_252.wasOffsetHi] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset >> 8));
-            p_252.pgn[p_252.wasOffsetLo] = unchecked((byte)(Properties.Settings.Default.setAS_wasOffset));
+            p_252.pgn[p_252.wasOffsetHi] = unchecked((byte)(Properties.VehicleSettings.Default.setAS_wasOffset >> 8));
+            p_252.pgn[p_252.wasOffsetLo] = unchecked((byte)(Properties.VehicleSettings.Default.setAS_wasOffset));
 
-            p_252.pgn[p_252.highPWM] = unchecked((byte)Properties.Settings.Default.setAS_highSteerPWM);
-            p_252.pgn[p_252.lowPWM] = unchecked((byte)Properties.Settings.Default.setAS_lowSteerPWM);
-            p_252.pgn[p_252.gainProportional] = unchecked((byte)Properties.Settings.Default.setAS_Kp);
-            p_252.pgn[p_252.minPWM] = unchecked((byte)Properties.Settings.Default.setAS_minSteerPWM);
+            p_252.pgn[p_252.highPWM] = unchecked((byte)Properties.VehicleSettings.Default.setAS_highSteerPWM);
+            p_252.pgn[p_252.lowPWM] = unchecked((byte)Properties.VehicleSettings.Default.setAS_lowSteerPWM);
+            p_252.pgn[p_252.gainProportional] = unchecked((byte)Properties.VehicleSettings.Default.setAS_Kp);
+            p_252.pgn[p_252.minPWM] = unchecked((byte)Properties.VehicleSettings.Default.setAS_minSteerPWM);
 
             SendPgnToLoop(p_252.pgn);
 
             //steer config
-            p_251.pgn[p_251.set0] = Properties.Settings.Default.setArdSteer_setting0;
-            p_251.pgn[p_251.set1] = Properties.Settings.Default.setArdSteer_setting1;
-            p_251.pgn[p_251.maxPulse] = Properties.Settings.Default.setArdSteer_maxPulseCounts;
-            p_251.pgn[p_251.minSpeed] = unchecked((byte)(Properties.Settings.Default.setAS_minSteerSpeed * 10));
+            p_251.pgn[p_251.set0] = Properties.VehicleSettings.Default.setArdSteer_setting0;
+            p_251.pgn[p_251.set1] = Properties.VehicleSettings.Default.setArdSteer_setting1;
+            p_251.pgn[p_251.maxPulse] = Properties.VehicleSettings.Default.setArdSteer_maxPulseCounts;
+            p_251.pgn[p_251.minSpeed] = unchecked((byte)(Properties.VehicleSettings.Default.setAS_minSteerSpeed * 10));
 
             if (Properties.Settings.Default.setAS_isConstantContourOn)
                 p_251.pgn[p_251.angVel] = 1;
@@ -1270,21 +1270,21 @@ namespace AgOpenGPS
             SendPgnToLoop(p_251.pgn);
 
             //machine settings    
-            p_238.pgn[p_238.set0] = Properties.Settings.Default.setArdMac_setting0;
-            p_238.pgn[p_238.raiseTime] = Properties.Settings.Default.setArdMac_hydRaiseTime;
-            p_238.pgn[p_238.lowerTime] = Properties.Settings.Default.setArdMac_hydLowerTime;
+            p_238.pgn[p_238.set0] = Properties.ToolSettings.Default.setArdMac_setting0;
+            p_238.pgn[p_238.raiseTime] = Properties.ToolSettings.Default.setArdMac_hydRaiseTime;
+            p_238.pgn[p_238.lowerTime] = Properties.ToolSettings.Default.setArdMac_hydLowerTime;
 
-            p_238.pgn[p_238.user1] = Properties.Settings.Default.setArdMac_user1;
-            p_238.pgn[p_238.user2] = Properties.Settings.Default.setArdMac_user2;
-            p_238.pgn[p_238.user3] = Properties.Settings.Default.setArdMac_user3;
-            p_238.pgn[p_238.user4] = Properties.Settings.Default.setArdMac_user4;
+            p_238.pgn[p_238.user1] = Properties.ToolSettings.Default.setArdMac_user1;
+            p_238.pgn[p_238.user2] = Properties.ToolSettings.Default.setArdMac_user2;
+            p_238.pgn[p_238.user3] = Properties.ToolSettings.Default.setArdMac_user3;
+            p_238.pgn[p_238.user4] = Properties.ToolSettings.Default.setArdMac_user4;
 
             SendPgnToLoop(p_238.pgn);
         }
 
         public void SendRelaySettingsToMachineModule()
         {
-            string[] words = Properties.Settings.Default.setRelay_pinConfig.Split(',');
+            string[] words = Properties.ToolSettings.Default.setRelay_pinConfig.Split(',');
 
             //load the pgn
             p_236.pgn[p_236.pin0] = (byte)int.Parse(words[0]);

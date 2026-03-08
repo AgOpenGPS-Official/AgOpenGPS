@@ -37,23 +37,23 @@ namespace AgOpenGPS
             //constructor
             mf = _f;
 
-            tramWidth = Properties.Settings.Default.setTram_tramWidth;
-            //halfTramWidth = (Math.Round((Properties.Settings.Default.setTram_tramWidth) / 2.0, 3));
+            tramWidth = Properties.ToolSettings.Default.setTram_tramWidth;
+            //halfTramWidth = (Math.Round((Properties.ToolSettings.Default.setTram_tramWidth) / 2.0, 3));
 
-            halfWheelTrack = Properties.Settings.Default.setVehicle_trackWidth * 0.5;
+            halfWheelTrack = Properties.VehicleSettings.Default.setVehicle_trackWidth * 0.5;
 
             IsTramOuterOrInner();
 
-            passes = Properties.Settings.Default.setTram_passes;
+            passes = Properties.ToolSettings.Default.setTram_passes;
             displayMode = 0;
 
-            alpha = Properties.Settings.Default.setTram_alpha;
+            alpha = Properties.ToolSettings.Default.setTram_alpha;
         }
 
         public void IsTramOuterOrInner()
         {
             isOuter = ((int)(tramWidth / mf.tool.width + 0.5)) % 2 == 0;
-            if (Properties.Settings.Default.setTool_isTramOuterInverted) isOuter = !isOuter;
+            if (Properties.ToolSettings.Default.setTool_isTramOuterInverted) isOuter = !isOuter;
         }
 
         public void DrawTram()

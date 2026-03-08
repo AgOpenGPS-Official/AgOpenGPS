@@ -58,9 +58,9 @@ namespace AgOpenGPS
             Properties.Settings.Default.setMenu_isMetric = rbtnDisplayMetric.Checked;
             mf.isMetric = rbtnDisplayMetric.Checked;
 
-            Properties.Settings.Default.setTool_isDirectionMarkers = mf.isDirectionMarkers;
+            Properties.ToolSettings.Default.setTool_isDirectionMarkers = mf.isDirectionMarkers;
 
-            Properties.Settings.Default.setAS_numGuideLines = mf.ABLine.numGuideLines;
+            Properties.VehicleSettings.Default.setAS_numGuideLines = mf.ABLine.numGuideLines;
             Properties.Settings.Default.setDisplay_isSectionLinesOn = mf.isSectionlinesOn;
             Properties.Settings.Default.setDisplay_isLineSmooth = mf.isLineSmooth;
             Properties.Settings.Default.isHeadlandDistanceOn = mf.isHeadlandDistanceOn;
@@ -73,27 +73,27 @@ namespace AgOpenGPS
         #region Antenna Enter/Leave
         private void tabVAntenna_Enter(object sender, EventArgs e)
         {
-            nudAntennaHeight.Value = (int)(Properties.Settings.Default.setVehicle_antennaHeight * mf.m2InchOrCm);
+            nudAntennaHeight.Value = (int)(Properties.VehicleSettings.Default.setVehicle_antennaHeight * mf.m2InchOrCm);
 
-            nudAntennaPivot.Value = (int)((Properties.Settings.Default.setVehicle_antennaPivot) * mf.m2InchOrCm);
+            nudAntennaPivot.Value = (int)((Properties.VehicleSettings.Default.setVehicle_antennaPivot) * mf.m2InchOrCm);
 
             //negative is to the right
-            nudAntennaOffset.Value = (int)(Math.Abs(Properties.Settings.Default.setVehicle_antennaOffset) * mf.m2InchOrCm);
+            nudAntennaOffset.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_antennaOffset) * mf.m2InchOrCm);
 
             rbtnAntennaLeft.Checked = false;
             rbtnAntennaRight.Checked = false;
             rbtnAntennaCenter.Checked = false;
-            rbtnAntennaLeft.Checked = Properties.Settings.Default.setVehicle_antennaOffset > 0;
-            rbtnAntennaRight.Checked = Properties.Settings.Default.setVehicle_antennaOffset < 0;
-            rbtnAntennaCenter.Checked = Properties.Settings.Default.setVehicle_antennaOffset == 0;
+            rbtnAntennaLeft.Checked = Properties.VehicleSettings.Default.setVehicle_antennaOffset > 0;
+            rbtnAntennaRight.Checked = Properties.VehicleSettings.Default.setVehicle_antennaOffset < 0;
+            rbtnAntennaCenter.Checked = Properties.VehicleSettings.Default.setVehicle_antennaOffset == 0;
 
-            if (Properties.Settings.Default.setVehicle_vehicleType == 0)
+            if (Properties.VehicleSettings.Default.setVehicle_vehicleType == 0)
                 pboxAntenna.BackgroundImage = Properties.Resources.AntennaTractor;
 
-            else if (Properties.Settings.Default.setVehicle_vehicleType == 1)
+            else if (Properties.VehicleSettings.Default.setVehicle_vehicleType == 1)
                 pboxAntenna.BackgroundImage = Properties.Resources.AntennaHarvester;
 
-            else if (Properties.Settings.Default.setVehicle_vehicleType == 2)
+            else if (Properties.VehicleSettings.Default.setVehicle_vehicleType == 2)
                 pboxAntenna.BackgroundImage = Properties.Resources.AntennaArticulated;
 
             label98.Text = mf.unitsInCm;
@@ -118,7 +118,7 @@ namespace AgOpenGPS
                 nudAntennaOffset.Value = 0;
             }
 
-            Properties.Settings.Default.setVehicle_antennaOffset = mf.vehicle.VehicleConfig.AntennaOffset;
+            Properties.VehicleSettings.Default.setVehicle_antennaOffset = mf.vehicle.VehicleConfig.AntennaOffset;
         }
 
         private void nudAntennaOffset_Click(object sender, EventArgs e)
@@ -143,21 +143,21 @@ namespace AgOpenGPS
                         mf.vehicle.VehicleConfig.AntennaOffset = (double)nudAntennaOffset.Value * mf.inchOrCm2m;
                 }
 
-                Properties.Settings.Default.setVehicle_antennaOffset = mf.vehicle.VehicleConfig.AntennaOffset;
+                Properties.VehicleSettings.Default.setVehicle_antennaOffset = mf.vehicle.VehicleConfig.AntennaOffset;
             }
 
             //rbtnAntennaLeft.Checked = false;
             //rbtnAntennaRight.Checked = false;
-            //rbtnAntennaLeft.Checked = Properties.Settings.Default.setVehicle_antennaOffset > 0;
-            //rbtnAntennaRight.Checked = Properties.Settings.Default.setVehicle_antennaOffset < 0;
+            //rbtnAntennaLeft.Checked = Properties.VehicleSettings.Default.setVehicle_antennaOffset > 0;
+            //rbtnAntennaRight.Checked = Properties.VehicleSettings.Default.setVehicle_antennaOffset < 0;
         }
 
         private void nudAntennaPivot_Click(object sender, EventArgs e)
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setVehicle_antennaPivot = (double)nudAntennaPivot.Value * mf.inchOrCm2m;
-                mf.vehicle.VehicleConfig.AntennaPivot = Properties.Settings.Default.setVehicle_antennaPivot;
+                Properties.VehicleSettings.Default.setVehicle_antennaPivot = (double)nudAntennaPivot.Value * mf.inchOrCm2m;
+                mf.vehicle.VehicleConfig.AntennaPivot = Properties.VehicleSettings.Default.setVehicle_antennaPivot;
             }
         }
 
@@ -165,8 +165,8 @@ namespace AgOpenGPS
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setVehicle_antennaHeight = (double)nudAntennaHeight.Value * mf.inchOrCm2m;
-                mf.vehicle.VehicleConfig.AntennaHeight = Properties.Settings.Default.setVehicle_antennaHeight;
+                Properties.VehicleSettings.Default.setVehicle_antennaHeight = (double)nudAntennaHeight.Value * mf.inchOrCm2m;
+                mf.vehicle.VehicleConfig.AntennaHeight = Properties.VehicleSettings.Default.setVehicle_antennaHeight;
             }
         }
 
@@ -176,11 +176,11 @@ namespace AgOpenGPS
 
         private void tabVDimensions_Enter(object sender, EventArgs e)
         {
-            nudWheelbase.Value = (int)(Math.Abs(Properties.Settings.Default.setVehicle_wheelbase) * mf.m2InchOrCm);
+            nudWheelbase.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_wheelbase) * mf.m2InchOrCm);
 
-            nudVehicleTrack.Value = (int)(Math.Abs(Properties.Settings.Default.setVehicle_trackWidth) * mf.m2InchOrCm);
+            nudVehicleTrack.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_trackWidth) * mf.m2InchOrCm);
 
-            nudTractorHitchLength.Value = (int)(Math.Abs(Properties.Settings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
+            nudTractorHitchLength.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
 
             if (mf.vehicle.VehicleConfig.Type == VehicleType.Tractor)
             {
@@ -210,11 +210,11 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 mf.tool.hitchLength = (double)nudTractorHitchLength.Value * mf.inchOrCm2m;
-                if (!Properties.Settings.Default.setTool_isToolFront)
+                if (!Properties.ToolSettings.Default.setTool_isToolFront)
                 {
                     mf.tool.hitchLength *= -1;
                 }
-                Properties.Settings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
+                Properties.VehicleSettings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
             }
         }
 
@@ -222,8 +222,8 @@ namespace AgOpenGPS
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
-                mf.vehicle.VehicleConfig.Wheelbase = Properties.Settings.Default.setVehicle_wheelbase;
+                Properties.VehicleSettings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
+                mf.vehicle.VehicleConfig.Wheelbase = Properties.VehicleSettings.Default.setVehicle_wheelbase;
                 Properties.Settings.Default.Save();
             }
         }
@@ -232,8 +232,8 @@ namespace AgOpenGPS
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
-                mf.vehicle.VehicleConfig.TrackWidth = Properties.Settings.Default.setVehicle_trackWidth;
+                Properties.VehicleSettings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
+                mf.vehicle.VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
                 mf.tram.halfWheelTrack = mf.vehicle.VehicleConfig.TrackWidth * 0.5;
                 Properties.Settings.Default.Save();
             }
@@ -267,10 +267,10 @@ namespace AgOpenGPS
             {
                 if (mf.tool.hitchLength < 0) mf.tool.hitchLength *= -1;
 
-                Settings.Default.setTool_isToolFront = true;
-                Settings.Default.setTool_isToolTBT = false;
-                Settings.Default.setTool_isToolTrailing = false;
-                Settings.Default.setTool_isToolRearFixed = false;
+                Properties.ToolSettings.Default.setTool_isToolFront = true;
+                Properties.ToolSettings.Default.setTool_isToolTBT = false;
+                Properties.ToolSettings.Default.setTool_isToolTrailing = false;
+                Properties.ToolSettings.Default.setTool_isToolRearFixed = false;
             }
 
             switch (mf.vehicle.VehicleConfig.Type)

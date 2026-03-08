@@ -99,7 +99,7 @@ namespace AgOpenGPS
 
             uTurnStyle = Properties.Settings.Default.set_uTurnStyle;
 
-            uTurnSmoothing = Properties.Settings.Default.setAS_uTurnSmoothing;
+            uTurnSmoothing = (int)Properties.Settings.Default.setAS_uTurnSmoothing;
         }
 
         //find next not worked lane after the defined lanes to skip

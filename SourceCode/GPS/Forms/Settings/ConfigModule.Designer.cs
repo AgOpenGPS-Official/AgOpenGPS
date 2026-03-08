@@ -32,7 +32,7 @@ namespace AgOpenGPS
         {
             pboxSendMachine.Visible = false;
 
-            int sett = Properties.Settings.Default.setArdMac_setting0;
+            int sett = Properties.ToolSettings.Default.setArdMac_setting0;
 
             cboxMachInvertRelays.Checked = ((sett & 1) == 1);
 
@@ -53,17 +53,17 @@ namespace AgOpenGPS
                 nudRaiseTime.Enabled = false;
             }
 
-            nudRaiseTime.Value = (decimal)Properties.Settings.Default.setArdMac_hydRaiseTime;
-            nudLowerTime.Value = (decimal)Properties.Settings.Default.setArdMac_hydLowerTime;
+            nudRaiseTime.Value = (decimal)Properties.ToolSettings.Default.setArdMac_hydRaiseTime;
+            nudLowerTime.Value = (decimal)Properties.ToolSettings.Default.setArdMac_hydLowerTime;
 
-            nudUser1.Value = Properties.Settings.Default.setArdMac_user1;
-            nudUser2.Value = Properties.Settings.Default.setArdMac_user2;
-            nudUser3.Value = Properties.Settings.Default.setArdMac_user3;
-            nudUser4.Value = Properties.Settings.Default.setArdMac_user4;
+            nudUser1.Value = Properties.ToolSettings.Default.setArdMac_user1;
+            nudUser2.Value = Properties.ToolSettings.Default.setArdMac_user2;
+            nudUser3.Value = Properties.ToolSettings.Default.setArdMac_user3;
+            nudUser4.Value = Properties.ToolSettings.Default.setArdMac_user4;
 
             btnSendMachinePGN.Focus();
 
-            nudHydLiftLookAhead.Value = (decimal)Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead;
+            nudHydLiftLookAhead.Value = (decimal)Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead;
         }
         private void tabAMachine_Leave(object sender, EventArgs e)
         {
@@ -159,17 +159,17 @@ namespace AgOpenGPS
             if (cboxIsHydOn.Checked) sett |= set;
             else sett &= reset;
 
-            Properties.Settings.Default.setArdMac_setting0 = (byte)sett;
-            Properties.Settings.Default.setArdMac_hydRaiseTime = (byte)nudRaiseTime.Value;
-            Properties.Settings.Default.setArdMac_hydLowerTime = (byte)nudLowerTime.Value;
+            Properties.ToolSettings.Default.setArdMac_setting0 = (byte)sett;
+            Properties.ToolSettings.Default.setArdMac_hydRaiseTime = (byte)nudRaiseTime.Value;
+            Properties.ToolSettings.Default.setArdMac_hydLowerTime = (byte)nudLowerTime.Value;
 
-            Properties.Settings.Default.setArdMac_user1 = (byte)nudUser1.Value;
-            Properties.Settings.Default.setArdMac_user2 = (byte)nudUser2.Value;
-            Properties.Settings.Default.setArdMac_user3 = (byte)nudUser3.Value;
-            Properties.Settings.Default.setArdMac_user4 = (byte)nudUser4.Value;
+            Properties.ToolSettings.Default.setArdMac_user1 = (byte)nudUser1.Value;
+            Properties.ToolSettings.Default.setArdMac_user2 = (byte)nudUser2.Value;
+            Properties.ToolSettings.Default.setArdMac_user3 = (byte)nudUser3.Value;
+            Properties.ToolSettings.Default.setArdMac_user4 = (byte)nudUser4.Value;
 
-            Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead = (double)nudHydLiftLookAhead.Value;
-            mf.vehicle.hydLiftLookAheadTime = Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead;
+            Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead = (double)nudHydLiftLookAhead.Value;
+            mf.vehicle.hydLiftLookAheadTime = Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead;
 
             mf.p_238.pgn[mf.p_238.set0] = (byte)sett;
             mf.p_238.pgn[mf.p_238.raiseTime] = (byte)nudRaiseTime.Value;
@@ -238,7 +238,7 @@ namespace AgOpenGPS
             cboxPin22.Items.Clear(); cboxPin22.Items.AddRange(wordsList);
             cboxPin23.Items.Clear(); cboxPin23.Items.AddRange(wordsList);
 
-            words = Properties.Settings.Default.setRelay_pinConfig.Split(',');
+            words = Properties.ToolSettings.Default.setRelay_pinConfig.Split(',');
 
             cboxPin0.SelectedIndex = int.Parse(words[0]);
             cboxPin1.SelectedIndex = int.Parse(words[1]);
@@ -310,7 +310,7 @@ namespace AgOpenGPS
                .Append(cboxPin22.SelectedIndex.ToString() + ",")
                .Append(cboxPin23.SelectedIndex.ToString());
 
-            Properties.Settings.Default.setRelay_pinConfig = bob.ToString();
+            Properties.ToolSettings.Default.setRelay_pinConfig = bob.ToString();
 
             //save settings
             Properties.Settings.Default.Save();
@@ -483,16 +483,16 @@ namespace AgOpenGPS
         {
             lblTramWidthUnits.Text = mf.unitsInCm;
 
-            nudTramWidth.Value = (int)(Math.Abs(Properties.Settings.Default.setTram_tramWidth) * mf.m2InchOrCm);
-            chkBoxOverrideTramControlPos.Checked = Properties.Settings.Default.setTool_isTramOuterInverted;
-            cboxDisplayTramControl.Checked = Properties.Settings.Default.setTool_isDisplayTramControl;
+            nudTramWidth.Value = (int)(Math.Abs(Properties.ToolSettings.Default.setTram_tramWidth) * mf.m2InchOrCm);
+            chkBoxOverrideTramControlPos.Checked = Properties.ToolSettings.Default.setTool_isTramOuterInverted;
+            cboxDisplayTramControl.Checked = Properties.ToolSettings.Default.setTool_isDisplayTramControl;
         }
 
         private void tabTram_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.setTool_isTramOuterInverted = chkBoxOverrideTramControlPos.Checked;
+            Properties.ToolSettings.Default.setTool_isTramOuterInverted = chkBoxOverrideTramControlPos.Checked;
 
-            Properties.Settings.Default.setTool_isDisplayTramControl = cboxDisplayTramControl.Checked;
+            Properties.ToolSettings.Default.setTool_isDisplayTramControl = cboxDisplayTramControl.Checked;
             mf.tool.isDisplayTramControl = cboxDisplayTramControl.Checked;
 
             mf.tram.IsTramOuterOrInner();
@@ -505,7 +505,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 mf.tram.tramWidth = (double)nudTramWidth.Value * mf.inchOrCm2m;
-                Properties.Settings.Default.setTram_tramWidth = mf.tram.tramWidth;
+                Properties.ToolSettings.Default.setTram_tramWidth = mf.tram.tramWidth;
             }
         }
 

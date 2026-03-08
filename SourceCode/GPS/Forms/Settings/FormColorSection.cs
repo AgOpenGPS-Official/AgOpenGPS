@@ -44,24 +44,24 @@ namespace AgOpenGPS
 
         private void FormDisplaySettings_Load(object sender, EventArgs e)
         {
-            cb01.BackColor = Settings.Default.setColor_sec01.CheckColorFor255();
-            cb02.BackColor = Settings.Default.setColor_sec02.CheckColorFor255();
-            cb03.BackColor = Settings.Default.setColor_sec03.CheckColorFor255();
-            cb04.BackColor = Settings.Default.setColor_sec04.CheckColorFor255();
-            cb05.BackColor = Settings.Default.setColor_sec05.CheckColorFor255();
-            cb06.BackColor = Settings.Default.setColor_sec06.CheckColorFor255();
-            cb07.BackColor = Settings.Default.setColor_sec07.CheckColorFor255();
-            cb08.BackColor = Settings.Default.setColor_sec08.CheckColorFor255();
-            cb09.BackColor = Settings.Default.setColor_sec09.CheckColorFor255();
-            cb10.BackColor = Settings.Default.setColor_sec10.CheckColorFor255();
-            cb11.BackColor = Settings.Default.setColor_sec11.CheckColorFor255();
-            cb12.BackColor = Settings.Default.setColor_sec12.CheckColorFor255();
-            cb13.BackColor = Settings.Default.setColor_sec13.CheckColorFor255();
-            cb14.BackColor = Settings.Default.setColor_sec14.CheckColorFor255();
-            cb15.BackColor = Settings.Default.setColor_sec15.CheckColorFor255();
-            cb16.BackColor = Settings.Default.setColor_sec16.CheckColorFor255();
+            cb01.BackColor = Properties.ToolSettings.Default.setColor_sec01.CheckColorFor255();
+            cb02.BackColor = Properties.ToolSettings.Default.setColor_sec02.CheckColorFor255();
+            cb03.BackColor = Properties.ToolSettings.Default.setColor_sec03.CheckColorFor255();
+            cb04.BackColor = Properties.ToolSettings.Default.setColor_sec04.CheckColorFor255();
+            cb05.BackColor = Properties.ToolSettings.Default.setColor_sec05.CheckColorFor255();
+            cb06.BackColor = Properties.ToolSettings.Default.setColor_sec06.CheckColorFor255();
+            cb07.BackColor = Properties.ToolSettings.Default.setColor_sec07.CheckColorFor255();
+            cb08.BackColor = Properties.ToolSettings.Default.setColor_sec08.CheckColorFor255();
+            cb09.BackColor = Properties.ToolSettings.Default.setColor_sec09.CheckColorFor255();
+            cb10.BackColor = Properties.ToolSettings.Default.setColor_sec10.CheckColorFor255();
+            cb11.BackColor = Properties.ToolSettings.Default.setColor_sec11.CheckColorFor255();
+            cb12.BackColor = Properties.ToolSettings.Default.setColor_sec12.CheckColorFor255();
+            cb13.BackColor = Properties.ToolSettings.Default.setColor_sec13.CheckColorFor255();
+            cb14.BackColor = Properties.ToolSettings.Default.setColor_sec14.CheckColorFor255();
+            cb15.BackColor = Properties.ToolSettings.Default.setColor_sec15.CheckColorFor255();
+            cb16.BackColor = Properties.ToolSettings.Default.setColor_sec16.CheckColorFor255();
 
-            if (Settings.Default.setColor_isMultiColorSections) cboxIsMulti.Checked = true;
+            if (Properties.ToolSettings.Default.setColor_isMultiColorSections) cboxIsMulti.Checked = true;
             else cboxIsMulti.Checked = false;
 
             btnC01.BackColor = Color.FromArgb(customSectionColorsList[0]).CheckColorFor255();
@@ -144,26 +144,26 @@ namespace AgOpenGPS
 
         private void bntOK_Click(object sender, EventArgs e)
         {
-            mf.tool.secColors[0] = Settings.Default.setColor_sec01 = cb01.BackColor.CheckColorFor255();
-            mf.tool.secColors[1] = Settings.Default.setColor_sec02 = cb02.BackColor.CheckColorFor255();
-            mf.tool.secColors[2] = Settings.Default.setColor_sec03 = cb03.BackColor.CheckColorFor255();
-            mf.tool.secColors[3] = Settings.Default.setColor_sec04 = cb04.BackColor.CheckColorFor255();
-            mf.tool.secColors[4] = Settings.Default.setColor_sec05 = cb05.BackColor.CheckColorFor255();
-            mf.tool.secColors[5] = Settings.Default.setColor_sec06 = cb06.BackColor.CheckColorFor255();
-            mf.tool.secColors[6] = Settings.Default.setColor_sec07 = cb07.BackColor.CheckColorFor255();
-            mf.tool.secColors[7] = Settings.Default.setColor_sec08 = cb08.BackColor.CheckColorFor255();
-            mf.tool.secColors[8] = Settings.Default.setColor_sec09 = cb09.BackColor.CheckColorFor255();
-            mf.tool.secColors[9] = Settings.Default.setColor_sec10 = cb10.BackColor.CheckColorFor255();
-            mf.tool.secColors[10] = Settings.Default.setColor_sec11 = cb11.BackColor.CheckColorFor255();
-            mf.tool.secColors[11] = Settings.Default.setColor_sec12 = cb12.BackColor.CheckColorFor255();
-            mf.tool.secColors[12] = Settings.Default.setColor_sec13 = cb13.BackColor.CheckColorFor255();
-            mf.tool.secColors[13] = Settings.Default.setColor_sec14 = cb14.BackColor.CheckColorFor255();
-            mf.tool.secColors[14] = Settings.Default.setColor_sec15 = cb15.BackColor.CheckColorFor255();
-            mf.tool.secColors[15] = Settings.Default.setColor_sec16 = cb16.BackColor.CheckColorFor255();
+            mf.tool.secColors[0] = Properties.ToolSettings.Default.setColor_sec01 = cb01.BackColor.CheckColorFor255();
+            mf.tool.secColors[1] = Properties.ToolSettings.Default.setColor_sec02 = cb02.BackColor.CheckColorFor255();
+            mf.tool.secColors[2] = Properties.ToolSettings.Default.setColor_sec03 = cb03.BackColor.CheckColorFor255();
+            mf.tool.secColors[3] = Properties.ToolSettings.Default.setColor_sec04 = cb04.BackColor.CheckColorFor255();
+            mf.tool.secColors[4] = Properties.ToolSettings.Default.setColor_sec05 = cb05.BackColor.CheckColorFor255();
+            mf.tool.secColors[5] = Properties.ToolSettings.Default.setColor_sec06 = cb06.BackColor.CheckColorFor255();
+            mf.tool.secColors[6] = Properties.ToolSettings.Default.setColor_sec07 = cb07.BackColor.CheckColorFor255();
+            mf.tool.secColors[7] = Properties.ToolSettings.Default.setColor_sec08 = cb08.BackColor.CheckColorFor255();
+            mf.tool.secColors[8] = Properties.ToolSettings.Default.setColor_sec09 = cb09.BackColor.CheckColorFor255();
+            mf.tool.secColors[9] = Properties.ToolSettings.Default.setColor_sec10 = cb10.BackColor.CheckColorFor255();
+            mf.tool.secColors[10] = Properties.ToolSettings.Default.setColor_sec11 = cb11.BackColor.CheckColorFor255();
+            mf.tool.secColors[11] = Properties.ToolSettings.Default.setColor_sec12 = cb12.BackColor.CheckColorFor255();
+            mf.tool.secColors[12] = Properties.ToolSettings.Default.setColor_sec13 = cb13.BackColor.CheckColorFor255();
+            mf.tool.secColors[13] = Properties.ToolSettings.Default.setColor_sec14 = cb14.BackColor.CheckColorFor255();
+            mf.tool.secColors[14] = Properties.ToolSettings.Default.setColor_sec15 = cb15.BackColor.CheckColorFor255();
+            mf.tool.secColors[15] = Properties.ToolSettings.Default.setColor_sec16 = cb16.BackColor.CheckColorFor255();
 
             if (cboxIsMulti.Checked)
-                Settings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = true;
-            else Settings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = false;
+                Properties.ToolSettings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = true;
+            else Properties.ToolSettings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = false;
 
             Settings.Default.Save();
             isClosing = true;

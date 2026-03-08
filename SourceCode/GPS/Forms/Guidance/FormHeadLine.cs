@@ -79,7 +79,7 @@ namespace AgOpenGPS
                 CABCurve.CalculateHeadings(ref mf.bnd.bndList[0].hdLine);
             }
 
-            cboxIsSectionControlled.Checked = Properties.Settings.Default.setHeadland_isSectionControlled;
+            cboxIsSectionControlled.Checked = Properties.ToolSettings.Default.setHeadland_isSectionControlled;
             if (cboxIsSectionControlled.Checked) cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOn;
             else cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOff;
 
@@ -602,7 +602,7 @@ namespace AgOpenGPS
 
                 //does headland control sections
                 mf.bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
-                Properties.Settings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
+                Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
                 Properties.Settings.Default.Save();
 
                 //middle points

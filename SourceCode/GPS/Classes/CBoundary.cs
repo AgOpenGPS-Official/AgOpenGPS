@@ -18,7 +18,7 @@ namespace AgOpenGPS
             mf = _f;
             turnSelected = 0;
             isHeadlandOn = false;
-            isSectionControlledByHeadland = Properties.Settings.Default.setHeadland_isSectionControlled;
+            isSectionControlledByHeadland = Properties.ToolSettings.Default.setHeadland_isSectionControlled;
         }
     }
 }

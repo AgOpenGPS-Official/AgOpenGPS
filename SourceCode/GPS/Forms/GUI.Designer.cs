@@ -499,8 +499,8 @@ namespace AgOpenGPS
             }
 
             udpWatchLimit = Properties.Settings.Default.SetGPS_udpWatchMsec;
-            pn.headingTrueDualOffset = Properties.Settings.Default.setGPS_dualHeadingOffset;
-            dualReverseDetectionDistance = Properties.Settings.Default.setGPS_dualReverseDetectionDistance;
+            pn.headingTrueDualOffset = Properties.VehicleSettings.Default.setGPS_dualHeadingOffset;
+            dualReverseDetectionDistance = Properties.VehicleSettings.Default.setGPS_dualReverseDetectionDistance;
 
             frameDayColor = Properties.Settings.Default.setDisplay_colorDayFrame.CheckColorFor255();
             frameNightColor = Properties.Settings.Default.setDisplay_colorNightFrame.CheckColorFor255();
@@ -538,7 +538,7 @@ namespace AgOpenGPS
 
             isAutoStartAgIO = Settings.Default.setDisplay_isAutoStartAgIO;
 
-            isDirectionMarkers = Settings.Default.setTool_isDirectionMarkers;
+            isDirectionMarkers = Properties.ToolSettings.Default.setTool_isDirectionMarkers;
 
             isHeadlandDistanceOn = Settings.Default.isHeadlandDistanceOn;
 
@@ -616,11 +616,11 @@ namespace AgOpenGPS
             pn.ageAlarm = Properties.Settings.Default.setGPS_ageAlarm;
 
             isConstantContourOn = Properties.Settings.Default.setAS_isConstantContourOn;
-            isSteerInReverse = Properties.Settings.Default.setAS_isSteerInReverse;
+            isSteerInReverse = Properties.VehicleSettings.Default.setAS_isSteerInReverse;
 
             guidanceLookAheadTime = Properties.Settings.Default.setAS_guidanceLookAheadTime;
 
-            gyd.sideHillCompFactor = Properties.Settings.Default.setAS_sideHillComp;
+            gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
 
             ahrs = new CAHRS();
 
@@ -675,7 +675,7 @@ namespace AgOpenGPS
             DisableYouTurnButtons();
 
             //which heading source is being used
-            headingFromSource = Settings.Default.setGPS_headingFromWhichSource;
+            headingFromSource = Properties.VehicleSettings.Default.setGPS_headingFromWhichSource;
 
             //workswitch stuff
             mc.isRemoteWorkSystemOn = Settings.Default.setF_isRemoteWorkSystemOn;
@@ -684,15 +684,15 @@ namespace AgOpenGPS
             mc.isWorkSwitchManualSections = Settings.Default.setF_isWorkSwitchManualSections;
             mc.isWorkSwitchEnabled = Settings.Default.setF_isWorkSwitchEnabled;
 
-            mc.isSteerWorkSwitchEnabled = Settings.Default.setF_isSteerWorkSwitchEnabled;
+            mc.isSteerWorkSwitchEnabled = Properties.ToolSettings.Default.setF_isSteerWorkSwitchEnabled;
             mc.isSteerWorkSwitchManualSections = Settings.Default.setF_isSteerWorkSwitchManualSections;
 
             minHeadingStepDist = Settings.Default.setF_minHeadingStepDistance;
-            gpsMinimumStepDistance = Settings.Default.setGPS_minimumStepLimit;
+            gpsMinimumStepDistance = Properties.VehicleSettings.Default.setGPS_minimumStepLimit;
 
             fd.workedAreaTotalUser = Settings.Default.setF_UserTotalArea;
 
-            yt.uTurnSmoothing = Settings.Default.setAS_uTurnSmoothing;
+            yt.uTurnSmoothing = (int)Settings.Default.setAS_uTurnSmoothing;
 
             tool.halfWidth = (tool.width - tool.overlap) / 2.0;
             tool.contourWidth = (tool.width - tool.overlap) / 3.0;
@@ -700,7 +700,7 @@ namespace AgOpenGPS
             //load the lightbar resolution
             lightbarCmPerPixel = Properties.Settings.Default.setDisplay_lightbarCmPerPixel;
 
-            isStanleyUsed = Properties.Settings.Default.setVehicle_isStanleyUsed;
+            isStanleyUsed = Properties.VehicleSettings.Default.setVehicle_isStanleyUsed;
 
             //main window first
             if (!isKioskMode)
@@ -758,7 +758,7 @@ namespace AgOpenGPS
                 buttonOrder.Add(int.Parse(words[i], CultureInfo.InvariantCulture));
             }
 
-            bnd.isSectionControlledByHeadland = Properties.Settings.Default.setHeadland_isSectionControlled;
+            bnd.isSectionControlledByHeadland = Properties.ToolSettings.Default.setHeadland_isSectionControlled;
             if (bnd.isSectionControlledByHeadland) cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOn;
             else cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOff;
 
@@ -835,7 +835,7 @@ namespace AgOpenGPS
                 btnTramDisplayMode.Visible = istram;
                 btnHeadlandOnOff.Visible = isHdl;
 
-                int sett = Properties.Settings.Default.setArdMac_setting0;
+                int sett = Properties.ToolSettings.Default.setArdMac_setting0;
                 btnHydLift.Visible = (((sett & 2) == 2) && isHdl);
 
                 cboxIsSectionControlled.Visible = isHdl;

@@ -84,16 +84,16 @@ namespace AgOpenGPS.Forms.Config
             switch (_vehicleConfig.Type)
             {
                 case VehicleType.Tractor:
-                    Settings.Default.setVehicle_vehicleType = 0;
-                    Settings.Default.setBrand_TBrand = TractorBrand;
+                    Properties.VehicleSettings.Default.setVehicle_vehicleType = 0;
+                    Properties.VehicleSettings.Default.setBrand_TBrand = TractorBrand;
                     break;
                 case VehicleType.Harvester:
-                    Settings.Default.setVehicle_vehicleType = 1;
-                    Settings.Default.setBrand_HBrand = HarvesterBrand;
+                    Properties.VehicleSettings.Default.setVehicle_vehicleType = 1;
+                    Properties.VehicleSettings.Default.setBrand_HBrand = HarvesterBrand;
                     break;
                 case VehicleType.Articulated:
-                    Settings.Default.setVehicle_vehicleType = 2;
-                    Settings.Default.setBrand_WDBrand = ArticulatedBrand;
+                    Properties.VehicleSettings.Default.setVehicle_vehicleType = 2;
+                    Properties.VehicleSettings.Default.setBrand_WDBrand = ArticulatedBrand;
                     break;
             }
 
@@ -114,21 +114,21 @@ namespace AgOpenGPS.Forms.Config
                 {
                     panelTractorBrands.Visible = true;
 
-                    TractorBrand = Settings.Default.setBrand_TBrand;
+                    TractorBrand = Properties.VehicleSettings.Default.setBrand_TBrand;
                     UpdateTractorBrand();
                 }
                 else if (_vehicleConfig.Type == VehicleType.Harvester)
                 {
                     panelHarvesterBrands.Visible = true;
 
-                    HarvesterBrand = Settings.Default.setBrand_HBrand;
+                    HarvesterBrand = Properties.VehicleSettings.Default.setBrand_HBrand;
                     UpdateHarvesterBrand();
                 }
                 else if (_vehicleConfig.Type == VehicleType.Articulated)
                 {
                     panelArticulatedBrands.Visible = true;
 
-                    ArticulatedBrand = Settings.Default.setBrand_WDBrand;
+                    ArticulatedBrand = Properties.VehicleSettings.Default.setBrand_WDBrand;
                     UpdateArticulatedBrand();
                 }
 
@@ -227,21 +227,21 @@ namespace AgOpenGPS.Forms.Config
         private void rbtnTractor_Click(object sender, EventArgs e)
         {
             _vehicleConfig.Type = VehicleType.Tractor;
-            Settings.Default.setVehicle_vehicleType = 0;
+            Properties.VehicleSettings.Default.setVehicle_vehicleType = 0;
             UpdateImage();
         }
 
         private void rbtnHarvester_Click(object sender, EventArgs e)
         {
             _vehicleConfig.Type = VehicleType.Harvester;
-            Settings.Default.setVehicle_vehicleType = 1;
+            Properties.VehicleSettings.Default.setVehicle_vehicleType = 1;
             UpdateImage();
         }
 
         private void rbtnArticulated_Click(object sender, EventArgs e)
         {
             _vehicleConfig.Type = VehicleType.Articulated;
-            Settings.Default.setVehicle_vehicleType = 2;
+            Properties.VehicleSettings.Default.setVehicle_vehicleType = 2;
             UpdateImage();
         }
 

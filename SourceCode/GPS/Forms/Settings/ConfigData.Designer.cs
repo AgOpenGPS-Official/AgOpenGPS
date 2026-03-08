@@ -14,9 +14,9 @@ namespace AgOpenGPS
         private void tabDHeading_Enter(object sender, EventArgs e)
         {
             //heading
-            if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Fix") rbtnHeadingFix.Checked = true;
-            //else if (Properties.Settings.Default.setGPS_headingFromWhichSource == "VTG") rbtnHeadingGPS.Checked = true;
-            else if (Properties.Settings.Default.setGPS_headingFromWhichSource == "Dual") rbtnHeadingHDT.Checked = true;
+            if (Properties.VehicleSettings.Default.setGPS_headingFromWhichSource == "Fix") rbtnHeadingFix.Checked = true;
+            //else if (Properties.VehicleSettings.Default.setGPS_headingFromWhichSource == "VTG") rbtnHeadingGPS.Checked = true;
+            else if (Properties.VehicleSettings.Default.setGPS_headingFromWhichSource == "Dual") rbtnHeadingHDT.Checked = true;
 
             if (rbtnHeadingHDT.Checked)
             {
@@ -41,10 +41,10 @@ namespace AgOpenGPS
             cboxMinGPSStep.Checked = (Properties.Settings.Default.setF_minHeadingStepDistance == 1.0);
             UpdateStepDistanceUI();
 
-            nudDualHeadingOffset.Value = (decimal)Properties.Settings.Default.setGPS_dualHeadingOffset;
-            nudDualReverseDistance.Value = (decimal)Properties.Settings.Default.setGPS_dualReverseDetectionDistance;
+            nudDualHeadingOffset.Value = (decimal)Properties.VehicleSettings.Default.setGPS_dualHeadingOffset;
+            nudDualReverseDistance.Value = (decimal)Properties.VehicleSettings.Default.setGPS_dualReverseDetectionDistance;
 
-            hsbarFusion.Value = (int)(Properties.Settings.Default.setIMU_fusionWeight2 * 500);
+            hsbarFusion.Value = (int)(Properties.VehicleSettings.Default.setIMU_fusionWeight2 * 500);
             lblFusion.Text = (hsbarFusion.Value).ToString();
             lblFusionIMU.Text = (100 - hsbarFusion.Value).ToString();
 
@@ -73,8 +73,8 @@ namespace AgOpenGPS
 
             //nudMinimumFrameTime.Value = Properties.Settings.Default.SetGPS_udpWatchMsec;
 
-            //nudForwardComp.Value = (decimal)(Properties.Settings.Default.setGPS_forwardComp);
-            //nudReverseComp.Value = (decimal)(Properties.Settings.Default.setGPS_reverseComp);
+            //nudForwardComp.Value = (decimal)(Properties.VehicleSettings.Default.setGPS_forwardComp);
+            //nudReverseComp.Value = (decimal)(Properties.VehicleSettings.Default.setGPS_reverseComp);
             //nudAgeAlarm.Value = Properties.Settings.Default.setGPS_ageAlarm;
         }
         private void cboxMinGPSStep_CheckedChanged(object sender, EventArgs e)
@@ -88,7 +88,7 @@ namespace AgOpenGPS
             if (cboxMinGPSStep.Checked)
             {
                 Properties.Settings.Default.setF_minHeadingStepDistance = 1.0;
-                Properties.Settings.Default.setGPS_minimumStepLimit = 0.1;
+                Properties.VehicleSettings.Default.setGPS_minimumStepLimit = 0.1;
 
                 cboxMinGPSStep.Text = mf.isMetric ? "10 cm" : "3.93 in";
                 lblHeadingDistance.Text = mf.isMetric ? "100 cm" : "39.3 in";
@@ -96,7 +96,7 @@ namespace AgOpenGPS
             else
             {
                 Properties.Settings.Default.setF_minHeadingStepDistance = 0.5;
-                Properties.Settings.Default.setGPS_minimumStepLimit = 0.05;
+                Properties.VehicleSettings.Default.setGPS_minimumStepLimit = 0.05;
 
                 cboxMinGPSStep.Text = mf.isMetric ? "5 cm" : "1.96 in";
                 lblHeadingDistance.Text = mf.isMetric ? "50 cm" : "19.68 in";
@@ -107,7 +107,7 @@ namespace AgOpenGPS
 
         private void tabDHeading_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.setIMU_fusionWeight2 = (double)hsbarFusion.Value * 0.002;
+            Properties.VehicleSettings.Default.setIMU_fusionWeight2 = (double)hsbarFusion.Value * 0.002;
             mf.ahrs.fusionWeight = (double)hsbarFusion.Value * 0.002;
 
             Properties.Settings.Default.setGPS_isRTK = mf.isRTK_AlarmOn = cboxIsRTK.Checked;
@@ -122,7 +122,7 @@ namespace AgOpenGPS
         private void rbtnHeadingFix_CheckedChanged(object sender, EventArgs e)
         {
             var checkedButton = headingGroupBox.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
-            Properties.Settings.Default.setGPS_headingFromWhichSource = checkedButton.Text;
+            Properties.VehicleSettings.Default.setGPS_headingFromWhichSource = checkedButton.Text;
             mf.headingFromSource = checkedButton.Text;
 
             if (rbtnHeadingHDT.Checked)
@@ -142,7 +142,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 Properties.Settings.Default.setGPS_jumpFixAlarmDistance = ((int)nudFixJumpDistance.Value);
-                //mf.jumpDistanceAlarm = Properties.Settings.Default.setGPS_dualHeadingOffset;
+                //mf.jumpDistanceAlarm = Properties.VehicleSettings.Default.setGPS_dualHeadingOffset;
             }
         }
 
@@ -150,8 +150,8 @@ namespace AgOpenGPS
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setGPS_dualHeadingOffset = ((double)nudDualHeadingOffset.Value);
-                mf.pn.headingTrueDualOffset = Properties.Settings.Default.setGPS_dualHeadingOffset;
+                Properties.VehicleSettings.Default.setGPS_dualHeadingOffset = ((double)nudDualHeadingOffset.Value);
+                mf.pn.headingTrueDualOffset = Properties.VehicleSettings.Default.setGPS_dualHeadingOffset;
             }
         }
 
@@ -159,8 +159,8 @@ namespace AgOpenGPS
         {
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
-                Properties.Settings.Default.setGPS_dualReverseDetectionDistance = ((double)nudDualReverseDistance.Value);
-                mf.dualReverseDetectionDistance = Properties.Settings.Default.setGPS_dualReverseDetectionDistance;
+                Properties.VehicleSettings.Default.setGPS_dualReverseDetectionDistance = ((double)nudDualReverseDistance.Value);
+                mf.dualReverseDetectionDistance = Properties.VehicleSettings.Default.setGPS_dualReverseDetectionDistance;
             }
         }
         //private void nudMinimumFrameTime_Click(object sender, EventArgs e)
@@ -262,7 +262,7 @@ namespace AgOpenGPS
         //{
         //    if (((NudlessNumericUpDown)sender).ShowKeypad(this))
         //    {
-        //        Properties.Settings.Default.setGPS_forwardComp = (double)nudForwardComp.Value;
+        //        Properties.VehicleSettings.Default.setGPS_forwardComp = (double)nudForwardComp.Value;
         //    }
         //}
 
@@ -270,7 +270,7 @@ namespace AgOpenGPS
         //{
         //    if (((NudlessNumericUpDown)sender).ShowKeypad(this))
         //    {
-        //        Properties.Settings.Default.setGPS_reverseComp = (double)nudReverseComp.Value;
+        //        Properties.VehicleSettings.Default.setGPS_reverseComp = (double)nudReverseComp.Value;
         //    }
         //}
 
@@ -289,19 +289,19 @@ namespace AgOpenGPS
         private void tabDRoll_Enter(object sender, EventArgs e)
         {
             //Roll
-            lblRollZeroOffset.Text = ((double)Properties.Settings.Default.setIMU_rollZero).ToString("N2");
-            hsbarRollFilter.Value = (int)(Properties.Settings.Default.setIMU_rollFilter * 100);
-            cboxDataInvertRoll.Checked = Properties.Settings.Default.setIMU_invertRoll;
+            lblRollZeroOffset.Text = ((double)Properties.VehicleSettings.Default.setIMU_rollZero).ToString("N2");
+            hsbarRollFilter.Value = (int)(Properties.VehicleSettings.Default.setIMU_rollFilter * 100);
+            cboxDataInvertRoll.Checked = Properties.VehicleSettings.Default.setIMU_invertRoll;
         }
 
         private void tabDRoll_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.setIMU_rollFilter = (double)hsbarRollFilter.Value * 0.01;
-            Properties.Settings.Default.setIMU_rollZero = mf.ahrs.rollZero;
-            Properties.Settings.Default.setIMU_invertRoll = cboxDataInvertRoll.Checked;
+            Properties.VehicleSettings.Default.setIMU_rollFilter = (double)hsbarRollFilter.Value * 0.01;
+            Properties.VehicleSettings.Default.setIMU_rollZero = mf.ahrs.rollZero;
+            Properties.VehicleSettings.Default.setIMU_invertRoll = cboxDataInvertRoll.Checked;
 
-            mf.ahrs.rollFilter = Properties.Settings.Default.setIMU_rollFilter;
-            mf.ahrs.isRollInvert = Properties.Settings.Default.setIMU_invertRoll;
+            mf.ahrs.rollFilter = Properties.VehicleSettings.Default.setIMU_rollFilter;
+            mf.ahrs.isRollInvert = Properties.VehicleSettings.Default.setIMU_invertRoll;
 
             Properties.Settings.Default.Save();
         }

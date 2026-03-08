@@ -55,7 +55,7 @@ namespace AgOpenGPS
 
             mf.bnd.bndList[0].hdLine?.Clear();
 
-            cboxIsSectionControlled.Checked = Properties.Settings.Default.setHeadland_isSectionControlled;
+            cboxIsSectionControlled.Checked = Properties.ToolSettings.Default.setHeadland_isSectionControlled;
             if (cboxIsSectionControlled.Checked) cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOn;
             else cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOff;
 
@@ -687,7 +687,7 @@ namespace AgOpenGPS
             mf.FileSaveHeadLines();
             //does headland control sections
             mf.bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
-            Properties.Settings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
+            Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
             Properties.Settings.Default.Save();
 
             Close();

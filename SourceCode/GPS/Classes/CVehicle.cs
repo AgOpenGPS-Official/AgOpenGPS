@@ -50,37 +50,37 @@ namespace AgOpenGPS
 
             VehicleConfig = new VehicleConfig();
 
-            VehicleConfig.AntennaHeight = Properties.Settings.Default.setVehicle_antennaHeight;
-            VehicleConfig.AntennaPivot = Properties.Settings.Default.setVehicle_antennaPivot;
-            VehicleConfig.AntennaOffset = Properties.Settings.Default.setVehicle_antennaOffset;
+            VehicleConfig.AntennaHeight = Properties.VehicleSettings.Default.setVehicle_antennaHeight;
+            VehicleConfig.AntennaPivot = Properties.VehicleSettings.Default.setVehicle_antennaPivot;
+            VehicleConfig.AntennaOffset = Properties.VehicleSettings.Default.setVehicle_antennaOffset;
 
-            VehicleConfig.Wheelbase = Properties.Settings.Default.setVehicle_wheelbase;
+            VehicleConfig.Wheelbase = Properties.VehicleSettings.Default.setVehicle_wheelbase;
 
-            slowSpeedCutoff = Properties.Settings.Default.setVehicle_slowSpeedCutoff;
+            slowSpeedCutoff = Properties.ToolSettings.Default.setVehicle_slowSpeedCutoff;
 
-            goalPointLookAheadHold = Properties.Settings.Default.setVehicle_goalPointLookAheadHold;
-            goalPointLookAheadMult = Properties.Settings.Default.setVehicle_goalPointLookAheadMult;
-            goalPointAcquireFactor = Properties.Settings.Default.setVehicle_goalPointAcquireFactor;
+            goalPointLookAheadHold = Properties.ToolSettings.Default.setVehicle_goalPointLookAheadHold;
+            goalPointLookAheadMult = Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult;
+            goalPointAcquireFactor = Properties.ToolSettings.Default.setVehicle_goalPointAcquireFactor;
 
-            stanleyDistanceErrorGain = Properties.Settings.Default.stanleyDistanceErrorGain;
-            stanleyHeadingErrorGain = Properties.Settings.Default.stanleyHeadingErrorGain;
+            stanleyDistanceErrorGain = Properties.VehicleSettings.Default.stanleyDistanceErrorGain;
+            stanleyHeadingErrorGain = Properties.VehicleSettings.Default.stanleyHeadingErrorGain;
 
-            maxAngularVelocity = Properties.Settings.Default.setVehicle_maxAngularVelocity;
-            maxSteerAngle = Properties.Settings.Default.setVehicle_maxSteerAngle;
+            maxAngularVelocity = Properties.VehicleSettings.Default.setVehicle_maxAngularVelocity;
+            maxSteerAngle = Properties.VehicleSettings.Default.setVehicle_maxSteerAngle;
 
             isHydLiftOn = false;
 
-            VehicleConfig.TrackWidth = Properties.Settings.Default.setVehicle_trackWidth;
+            VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
 
-            stanleyIntegralGainAB = Properties.Settings.Default.stanleyIntegralGainAB;
+            stanleyIntegralGainAB = Properties.VehicleSettings.Default.stanleyIntegralGainAB;
 
-            purePursuitIntegralGain = Properties.Settings.Default.purePursuitIntegralGainAB;
-            VehicleConfig.Type = (VehicleType)Properties.Settings.Default.setVehicle_vehicleType;
+            purePursuitIntegralGain = Properties.VehicleSettings.Default.purePursuitIntegralGainAB;
+            VehicleConfig.Type = (VehicleType)Properties.VehicleSettings.Default.setVehicle_vehicleType;
 
-            hydLiftLookAheadTime = Properties.Settings.Default.setVehicle_hydraulicLiftLookAhead;
+            hydLiftLookAheadTime = Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead;
 
-            deadZoneHeading = Properties.Settings.Default.setAS_deadZoneHeading;
-            deadZoneDelay = Properties.Settings.Default.setAS_deadZoneDelay;
+            deadZoneHeading = Properties.VehicleSettings.Default.setAS_deadZoneHeading;
+            deadZoneDelay = Properties.VehicleSettings.Default.setAS_deadZoneDelay;
 
             isInFreeDriveMode = false;
 
@@ -90,9 +90,9 @@ namespace AgOpenGPS
             //how long before hold is activated
             modeTime = 1;
 
-            functionSpeedLimit = Properties.Settings.Default.setAS_functionSpeedLimit;
-            maxSteerSpeed = Properties.Settings.Default.setAS_maxSteerSpeed;
-            minSteerSpeed = Properties.Settings.Default.setAS_minSteerSpeed;
+            functionSpeedLimit = Properties.VehicleSettings.Default.setAS_functionSpeedLimit;
+            maxSteerSpeed = Properties.VehicleSettings.Default.setAS_maxSteerSpeed;
+            minSteerSpeed = Properties.VehicleSettings.Default.setAS_minSteerSpeed;
 
             uturnCompensation = Properties.Settings.Default.setAS_uTurnCompensation;
         }

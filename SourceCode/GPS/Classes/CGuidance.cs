@@ -34,7 +34,7 @@ namespace AgOpenGPS
         {
             //constructor
             mf = _f;
-            sideHillCompFactor = Properties.Settings.Default.setAS_sideHillComp;
+            sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
         }
 
         #region Stanley

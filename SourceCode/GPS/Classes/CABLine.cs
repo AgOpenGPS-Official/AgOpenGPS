@@ -80,7 +80,7 @@ namespace AgOpenGPS
             //isOnTramLine = true;
             lineWidth = Properties.Settings.Default.setDisplay_lineWidth;
             abLength = 2000;
-            numGuideLines = Properties.Settings.Default.setAS_numGuideLines;
+            numGuideLines = Properties.VehicleSettings.Default.setAS_numGuideLines;
         }
 
         public void BuildCurrentABLineList(vec3 pivot)

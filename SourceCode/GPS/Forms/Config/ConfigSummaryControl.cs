@@ -32,7 +32,7 @@ namespace AgOpenGPS.Forms.Config
 
         public void UpdateSummary(FormGPS mf)
         {
-            lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_wheelbase);
+            lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, Properties.VehicleSettings.Default.setVehicle_wheelbase);
 
             lblSumNumSections.Text = mf.tool.numOfSections.ToString();
 
@@ -41,12 +41,12 @@ namespace AgOpenGPS.Forms.Config
 
             lblSummaryVehicleName.Text = gStr.gsCurrent + ": " + RegistrySettings.vehicleFileName;
 
-            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, Properties.Settings.Default.setTram_tramWidth);
+            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, Properties.ToolSettings.Default.setTram_tramWidth);
 
-            lblToolOffset.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_toolOffset);
-            lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, Properties.Settings.Default.setVehicle_toolOverlap);
+            lblToolOffset.Text = Distance.SmallDistanceString(mf.isMetric, Properties.ToolSettings.Default.setVehicle_toolOffset);
+            lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, Properties.ToolSettings.Default.setVehicle_toolOverlap);
 
-            lblLookahead.Text = Properties.Settings.Default.setVehicle_toolLookAheadOn.ToString() + " sec";
+            lblLookahead.Text = Properties.ToolSettings.Default.setVehicle_toolLookAheadOn.ToString() + " sec";
         }
 
         public void SetSummaryWidth(string widthText)

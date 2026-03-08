@@ -135,7 +135,7 @@ namespace AgOpenGPS.Properties
         public int set_youSkipWidth = 1;
         public double set_youTurnRadius = 8.1;
         public int set_uTurnStyle = 0;
-        public int setAS_uTurnSmoothing = 14;
+        public double setAS_uTurnSmoothing = 14;
         public double setAS_uTurnCompensation = 1;
 
         // ===== AGSHARE SETTINGS =====
@@ -180,7 +180,7 @@ namespace AgOpenGPS.Properties
                 string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, RegistrySettings.vehicleFileName + ".XML");
                 if (File.Exists(oldPath))
                 {
-                    Settings oldSettings = new Settings();
+                    SettingsLegacy oldSettings = new SettingsLegacy();
                     var result = XmlSettingsHandler.LoadXMLFile(oldPath, oldSettings);
                     if (result == LoadResult.Ok)
                     {
@@ -194,7 +194,7 @@ namespace AgOpenGPS.Properties
             return LoadResult.MissingFile;
         }
 
-        private void CopyEnvironmentSettings(Settings source, Settings dest)
+        private void CopyEnvironmentSettings(SettingsLegacy source, Settings dest)
         {
             // Copy all environment-related fields from source to dest
             // Window positions
@@ -283,7 +283,7 @@ namespace AgOpenGPS.Properties
             dest.setF_minHeadingStepDistance = source.setF_minHeadingStepDistance;
             dest.setF_UserTotalArea = source.setF_UserTotalArea;
             dest.setF_isRemoteWorkSystemOn = source.setF_isRemoteWorkSystemOn;
-            dest.setF_isSteerWorkSwitchEnabled = source.setF_isSteerWorkSwitchEnabled;
+            // setF_isSteerWorkSwitchEnabled is now in ToolSettings
 
             // Global settings
             dest.setFeatures = source.setFeatures;

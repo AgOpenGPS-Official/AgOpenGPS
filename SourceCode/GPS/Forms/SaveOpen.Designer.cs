@@ -367,7 +367,7 @@ namespace AgOpenGPS
                 ? Properties.Resources.HeadlandOn
                 : Properties.Resources.HeadlandOff;
 
-            int sett = Properties.Settings.Default.setArdMac_setting0;
+            int sett = Properties.ToolSettings.Default.setArdMac_setting0;
             btnHydLift.Visible = (((sett & 2) == 2) && hasHeadland);
             if (hasHeadland) btnHydLift.Image = Properties.Resources.HydraulicLiftOff;
 
