@@ -534,13 +534,13 @@ namespace AgOpenGPS
 
             hotkeys = Properties.Settings.Default.setKey_hotkeys.ToCharArray();
 
-            if (RegistrySettings.vehicleFileName == "")
+            if (string.IsNullOrEmpty(RegistrySettings.vehicleFileName) || string.IsNullOrEmpty(RegistrySettings.toolFileName))
             {
-                Log.EventWriter("No profile selected, prompt to create a new one");
+                Log.EventWriter("No vehicle or tool profile selected, prompting to create or select one");
 
-                YesMessageBox("No profile selected\n\nCreate a new profile to save your configuration\n\nIf no profile is created, NO changes will be saved!");
+                YesMessageBox("No vehicle or tool selected\n\nUse 'New' to create a vehicle and tool profile\n\nIf none are created, NO changes will be saved!");
 
-                using (FormNewProfile form = new FormNewProfile(this))
+                using (var form = new AgOpenGPS.Forms.Profiles.FormLoadVehicleTool(this))
                 {
                     form.ShowDialog(this);
                 }
