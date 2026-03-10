@@ -188,7 +188,7 @@ namespace AgOpenGPS
         {
             SaveSettingsMachine();
 
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
             FormDialog.Show(gStr.gsMachinePort, gStr.gsSentToMachineModule, DialogSeverity.Info);
 
@@ -313,7 +313,7 @@ namespace AgOpenGPS
             Properties.ToolSettings.Default.setRelay_pinConfig = bob.ToString();
 
             //save settings
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             pboxSendRelay.Visible = false;
 
         }
@@ -497,7 +497,7 @@ namespace AgOpenGPS
 
             mf.tram.IsTramOuterOrInner();
 
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
         }
         private void nudTramWidth_Click(object sender, EventArgs e)

@@ -1733,7 +1733,7 @@ namespace AgOpenGPS
                 : (controlBitOn ? Colors.TramDotAutomaticControlBitOnColor : Colors.TramDotAutomaticControlBitOffColor);
         }
 
-        private void SetVehicleTextures()
+        public void SetVehicleTextures()
         {
             VehicleTextures.Tractor.SetBitmap(TractorBitmaps.GetBitmap(Properties.VehicleSettings.Default.setBrand_TBrand));
             VehicleTextures.Harvester.SetBitmap(HarvesterBitmaps.GetBitmap(Properties.VehicleSettings.Default.setBrand_HBrand));

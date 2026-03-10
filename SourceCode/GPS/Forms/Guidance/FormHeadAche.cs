@@ -688,7 +688,7 @@ namespace AgOpenGPS
             //does headland control sections
             mf.bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
             Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
             Close();
         }

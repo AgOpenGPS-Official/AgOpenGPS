@@ -303,7 +303,7 @@ namespace AgOpenGPS
             mf.ahrs.rollFilter = Properties.VehicleSettings.Default.setIMU_rollFilter;
             mf.ahrs.isRollInvert = Properties.VehicleSettings.Default.setIMU_invertRoll;
 
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
         }
 
         private void hsbarRollFilter_ValueChanged(object sender, EventArgs e)

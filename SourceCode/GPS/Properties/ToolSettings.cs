@@ -17,6 +17,7 @@ namespace AgOpenGPS.Properties
         public double setVehicle_toolWidth = 4.0;
         public double setVehicle_toolOverlap = 0.0;
         public double setVehicle_toolOffset = 0;
+        public double setVehicle_tankTrailingHitchLength = 3;
         public double setVehicle_toolTrailingHitchLength = -2.5;
         public double setVehicle_toolLookAheadOn = 1;
         public double setVehicle_toolLookAheadOff = 0.5;

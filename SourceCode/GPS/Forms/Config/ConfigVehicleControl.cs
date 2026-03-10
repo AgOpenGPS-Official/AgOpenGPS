@@ -226,6 +226,7 @@ namespace AgOpenGPS.Forms.Config
 
         private void rbtnTractor_Click(object sender, EventArgs e)
         {
+            if (_vehicleConfig == null) return;
             _vehicleConfig.Type = VehicleType.Tractor;
             Properties.VehicleSettings.Default.setVehicle_vehicleType = 0;
             UpdateImage();
@@ -233,6 +234,7 @@ namespace AgOpenGPS.Forms.Config
 
         private void rbtnHarvester_Click(object sender, EventArgs e)
         {
+            if (_vehicleConfig == null) return;
             _vehicleConfig.Type = VehicleType.Harvester;
             Properties.VehicleSettings.Default.setVehicle_vehicleType = 1;
             UpdateImage();
@@ -240,6 +242,7 @@ namespace AgOpenGPS.Forms.Config
 
         private void rbtnArticulated_Click(object sender, EventArgs e)
         {
+            if (_vehicleConfig == null) return;
             _vehicleConfig.Type = VehicleType.Articulated;
             Properties.VehicleSettings.Default.setVehicle_vehicleType = 2;
             UpdateImage();

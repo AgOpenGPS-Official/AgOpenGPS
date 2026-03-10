@@ -43,7 +43,7 @@ namespace AgOpenGPS
             if (Properties.ToolSettings.Default.setTram_passes < 1)
             {
                 Properties.ToolSettings.Default.setTram_passes = 1;
-                Properties.Settings.Default.Save();
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             }
             nudPasses.Value = Properties.ToolSettings.Default.setTram_passes;
             nudPasses.ValueChanged += nudPasses_ValueChanged;
@@ -128,7 +128,7 @@ namespace AgOpenGPS
             mf.FixTramModeButton();
 
             Properties.ToolSettings.Default.setTram_alpha = mf.tram.alpha;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
         private void MoveBuildTramLine(double Dist)
@@ -159,7 +159,7 @@ namespace AgOpenGPS
         {
             mf.tram.passes = (int)nudPasses.Value;
             Properties.ToolSettings.Default.setTram_passes = mf.tram.passes;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             MoveBuildTramLine(0);
         }
 

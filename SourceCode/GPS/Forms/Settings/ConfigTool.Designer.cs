@@ -132,7 +132,8 @@ namespace AgOpenGPS
                 mf.tool.hitchLength *= -1;
             Properties.VehicleSettings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
 
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
         #endregion
@@ -207,12 +208,13 @@ namespace AgOpenGPS
             nudDrawbarLength.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
 
             nudTrailingHitchLength.Value = (int)(Math.Abs(Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength) * mf.m2InchOrCm);
-            nudTankHitch.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_tankTrailingHitchLength) * mf.m2InchOrCm);
+            nudTankHitch.Value = (int)(Math.Abs(Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength) * mf.m2InchOrCm);
         }
 
         private void tabTHitch_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
         private void nudDrawbarLength_Click(object sender, EventArgs e)
@@ -233,7 +235,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 mf.tool.tankTrailingHitchLength = (double)nudTankHitch.Value * -mf.inchOrCm2m;
-                Properties.VehicleSettings.Default.setVehicle_tankTrailingHitchLength = mf.tool.tankTrailingHitchLength;
+                Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength = mf.tool.tankTrailingHitchLength;
             }
         }
 
@@ -275,7 +277,7 @@ namespace AgOpenGPS
             ////update the widths of sections and tool width in main
             //mf.SectionCalcWidths();
 
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
         private void nudLookAhead_Click(object sender, EventArgs e)
         {
@@ -355,7 +357,7 @@ namespace AgOpenGPS
 
         private void tabToolOffset_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
         private void nudOffset_Click(object sender, EventArgs e)
@@ -441,7 +443,7 @@ namespace AgOpenGPS
             else
                 mf.tool.overlap = (double)nudOverlap.Value * -mf.inchOrCm2m;
             Properties.ToolSettings.Default.setVehicle_toolOverlap = mf.tool.overlap;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
             rbtnToolOverlap.Checked = false;
             rbtnToolGap.Checked = false;
@@ -467,7 +469,7 @@ namespace AgOpenGPS
 
         private void tabToolPivot_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
 
@@ -746,7 +748,7 @@ namespace AgOpenGPS
 
                 mf.tram.IsTramOuterOrInner();
 
-                Properties.Settings.Default.Save();
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
                 mf.SectionCalcMulti();
 
@@ -825,7 +827,7 @@ namespace AgOpenGPS
             if (mf.tool.isSectionsNotZones)
                 Properties.ToolSettings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = false;
 
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
 
         private void nudZone1To_Click(object sender, EventArgs e)
@@ -1096,7 +1098,7 @@ namespace AgOpenGPS
         private void cboxSectionBoundaryControl_Click(object sender, EventArgs e)
         {
             Properties.ToolSettings.Default.setTool_isSectionOffWhenOut = !Properties.ToolSettings.Default.setTool_isSectionOffWhenOut;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
             cboxSectionBoundaryControl.Checked = Properties.ToolSettings.Default.setTool_isSectionOffWhenOut;
             if (cboxSectionBoundaryControl.Checked)
@@ -1130,7 +1132,7 @@ namespace AgOpenGPS
                 SetNudZoneMinMax();
 
                 Properties.ToolSettings.Default.setTool_numSectionsMulti = numberOfSections;
-                Properties.Settings.Default.Save();
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
                 lblVehicleToolWidth.Text = Convert.ToString((int)(numberOfSections * defaultSectionWidth * 100 * mf.cm2CmOrIn));
                 SectionFeetInchesTotalWidthLabelUpdate(mf.isMetric, mf.tool.width);
@@ -1150,7 +1152,7 @@ namespace AgOpenGPS
                 else
                     Properties.ToolSettings.Default.setTool_sectionWidthMulti = defaultSectionWidth;
 
-                Properties.Settings.Default.Save();
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
                 //lblVehicleToolWidth.Text = Convert.ToString((int)(numberOfSections * defaultSectionWidth * 100 * mf.cm2CmOrIn));
                 //SectionFeetInchesTotalWidthLabelUpdate();

@@ -102,7 +102,7 @@ namespace AgOpenGPS
             label140.Text = Properties.Settings.Default.set_youTurnRadius.ToString();
             label142.Text = Properties.ToolSettings.Default.setVehicle_numSections.ToString();
             label144.Text = Properties.ToolSettings.Default.setVehicle_slowSpeedCutoff.ToString();
-            label146.Text = Properties.VehicleSettings.Default.setVehicle_tankTrailingHitchLength.ToString();
+            label146.Text = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength.ToString();
             label148.Text = Properties.ToolSettings.Default.setVehicle_toolLookAheadOn.ToString();
             label150.Text = Properties.ToolSettings.Default.setVehicle_toolLookAheadOff.ToString();
             label152.Text = Properties.ToolSettings.Default.setVehicle_toolOffDelay.ToString();

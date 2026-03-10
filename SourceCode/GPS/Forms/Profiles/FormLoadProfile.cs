@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,8 +23,8 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void FormLoadProfile_Load(object sender, EventArgs e)
         {
-            Text = gStr.gsLoadProfile;
-            labelLoadProfile.Text = gStr.gsLoadProfile;
+            Text = "Load Environment";
+            labelLoadProfile.Text = "Load Environment:";
             buttonProfileDelete.Text = gStr.gsDelete;
             buttonLoad.Text = gStr.gsLoad;
             buttonCancel.Text = gStr.gsCancel;
@@ -36,7 +36,10 @@ namespace AgOpenGPS.Forms.Profiles
 
         private IEnumerable<string> LoadProfiles()
         {
-            DirectoryInfo directory = new DirectoryInfo(RegistrySettings.vehiclesDirectory);
+            if (!Directory.Exists(RegistrySettings.environmentDirectory))
+                return Enumerable.Empty<string>();
+
+            DirectoryInfo directory = new DirectoryInfo(RegistrySettings.environmentDirectory);
             FileInfo[] files = directory.GetFiles("*.xml");
             return files.Select(file => Path.GetFileNameWithoutExtension(file.Name));
         }
@@ -55,7 +58,7 @@ namespace AgOpenGPS.Forms.Profiles
             if (listViewProfiles.SelectedItems.Count <= 0) return;
 
             string profileName = listViewProfiles.SelectedItems[0].Text;
-            if (RegistrySettings.vehicleFileName != profileName)
+            if (RegistrySettings.environmentFileName != profileName)
             {
                 DialogResult result = FormDialog.ShowQuestion(
                     gStr.gsSaveAndReturn,
@@ -63,12 +66,12 @@ namespace AgOpenGPS.Forms.Profiles
 
                 if (result == DialogResult.OK)
                 {
-                    File.Delete(Path.Combine(RegistrySettings.vehiclesDirectory, profileName + ".XML"));
+                    File.Delete(Path.Combine(RegistrySettings.environmentDirectory, profileName + ".xml"));
                 }
             }
             else
             {
-                FormDialog.Show("Profile currently in use", "Select different profile", DialogSeverity.Error);
+                FormDialog.Show("Environment currently in use", "Select different environment", DialogSeverity.Error);
             }
 
             listViewProfiles.Items.Clear();
@@ -100,30 +103,25 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void LoadProfile(string profileName)
         {
-            RegistrySettings.Save(RegKeys.vehicleFileName, profileName);
+            RegistrySettings.Save(RegKeys.environmentFileName, profileName);
 
             var result = Settings.Default.Load();
             if (result != LoadResult.Ok)
             {
-                Log.EventWriter($"Error loading profile {profileName}.xml ({result})");
+                Log.EventWriter($"Error loading environment profile {profileName}.xml ({result})");
 
                 FormDialog.Show(
                     gStr.gsError,
-                    $"Error loading profile {profileName}.xml\n\nResult: {result}",
+                    $"Error loading environment profile {profileName}.xml\n\nResult: {result}",
                     DialogSeverity.Error);
+                return;
             }
 
-            Log.EventWriter($"Profile loaded: {profileName}.xml");
-
-            _formGPS.vehicle = new CVehicle(_formGPS);
-            _formGPS.tool = new CTool(_formGPS);
+            Log.EventWriter($"Environment profile loaded: {profileName}.xml");
 
             _formGPS.LoadSettings();
 
-            _formGPS.SendSettings();
-            _formGPS.SendRelaySettingsToMachineModule();
-
-            _formGPS.TimedMessageBox(2500, $"Profile '{profileName}' loaded", "Steer settings reset!");
+            _formGPS.TimedMessageBox(2500, $"Profile '{profileName}' loaded", "Environment settings loaded!");
         }
     }
 }

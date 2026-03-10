@@ -22,7 +22,6 @@ namespace AgOpenGPS.Properties
         public double setVehicle_maxAngularVelocity = 0.64;
         public double setVehicle_trackWidth = 1.9;
         public double setVehicle_hitchLength = -1;
-        public double setVehicle_tankTrailingHitchLength = 3;
 
         // AutoSteer settings (zonder snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn, uTurnSmoothing, uTurnCompensation - die zitten nu in Environment)
         public byte setAS_Kp = 50;

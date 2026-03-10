@@ -476,6 +476,7 @@ namespace AgOpenGPS
             this.chkDisplaySpeedo = new System.Windows.Forms.CheckBox();
             this.chkDisplayExtraGuides = new System.Windows.Forms.CheckBox();
             this.labelCurrentVehicle = new System.Windows.Forms.Label();
+            this.labelCurrentTool = new System.Windows.Forms.Label();
             this.lblInchesCm = new System.Windows.Forms.Label();
             this.lblSecTotalWidth = new System.Windows.Forms.Label();
             this.labelToolWidthBottom = new System.Windows.Forms.Label();
@@ -8500,8 +8501,23 @@ namespace AgOpenGPS
             this.labelCurrentVehicle.Size = new System.Drawing.Size(138, 23);
             this.labelCurrentVehicle.TabIndex = 450;
             this.labelCurrentVehicle.Text = "Current Vehicle";
-            this.labelCurrentVehicle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            this.labelCurrentVehicle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // labelCurrentTool
+            //
+            this.labelCurrentTool.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelCurrentTool.AutoSize = true;
+            this.labelCurrentTool.BackColor = System.Drawing.Color.Transparent;
+            this.labelCurrentTool.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.labelCurrentTool.ForeColor = System.Drawing.Color.Black;
+            this.labelCurrentTool.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.labelCurrentTool.Location = new System.Drawing.Point(21, 32);
+            this.labelCurrentTool.Name = "labelCurrentTool";
+            this.labelCurrentTool.Size = new System.Drawing.Size(138, 23);
+            this.labelCurrentTool.TabIndex = 451;
+            this.labelCurrentTool.Text = "Current Tool";
+            this.labelCurrentTool.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
             // lblInchesCm
             // 
             this.lblInchesCm.AutoSize = true;
@@ -8547,6 +8563,7 @@ namespace AgOpenGPS
             this.panelBottom.Controls.Add(this.lblInchesCm);
             this.panelBottom.Controls.Add(this.lblSecTotalWidth);
             this.panelBottom.Controls.Add(this.labelCurrentVehicle);
+            this.panelBottom.Controls.Add(this.labelCurrentTool);
             this.panelBottom.Controls.Add(this.labelUnitsBottom);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.ForeColor = System.Drawing.Color.Lime;
@@ -8810,6 +8827,7 @@ namespace AgOpenGPS
         private NudlessNumericUpDown nudTurnOffDelay;
         private NudlessNumericUpDown nudLookAhead;
         private System.Windows.Forms.Label labelCurrentVehicle;
+        private System.Windows.Forms.Label labelCurrentTool;
         private System.Windows.Forms.GroupBox labelBoxAttachmentStyle;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label label1;

@@ -70,7 +70,7 @@ namespace AgOpenGPS
             offset = Properties.ToolSettings.Default.setVehicle_toolOffset;
 
             trailingHitchLength = Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength;
-            tankTrailingHitchLength = Properties.VehicleSettings.Default.setVehicle_tankTrailingHitchLength;
+            tankTrailingHitchLength = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength;
             hitchLength = Properties.VehicleSettings.Default.setVehicle_hitchLength;
 
             isToolRearFixed = Properties.ToolSettings.Default.setTool_isToolRearFixed;
@@ -114,7 +114,7 @@ namespace AgOpenGPS
             string[] words = Properties.ToolSettings.Default.setTool_zones.Split(',');
             zones = int.Parse(words[0]);
 
-            for (int i = 0; i < words.Length; i++)
+            for (int i = 0; i < Math.Min(words.Length, zoneRanges.Length); i++)
             {
                 zoneRanges[i] = int.Parse(words[i]);
             }

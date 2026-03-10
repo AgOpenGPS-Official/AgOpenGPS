@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Xml;
 using AgLibrary.Logging;
 using AgLibrary.Settings;
 using AgOpenGPS.Properties;
@@ -8,17 +10,60 @@ namespace AgOpenGPS
 {
     public static class CSettingsMigration
     {
+        /// <summary>
+        /// Reads the XML settings type name from the third-level element.
+        /// Returns the element name (e.g. "AgOpenGPS.Properties.VehicleSettings") or null on failure.
+        /// </summary>
+        public static string GetXmlSettingsType(string filePath)
+        {
+            try
+            {
+                using (var reader = new XmlTextReader(filePath))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.NodeType == XmlNodeType.Element && reader.Depth == 2)
+                            return reader.Name;
+                    }
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        /// <summary>
+        /// Checks if the XML file contains the expected settings type.
+        /// </summary>
+        public static bool IsSettingsType(string filePath, string expectedType)
+        {
+            string type = GetXmlSettingsType(filePath);
+            return type != null && type.Contains(expectedType);
+        }
+
+        /// <summary>
+        /// Returns true if the file is an old format (not VehicleSettings, not ToolSettings).
+        /// </summary>
+        public static bool IsOldFormat(string filePath)
+        {
+            string type = GetXmlSettingsType(filePath);
+            if (type == null) return false;
+            return !type.Contains("VehicleSettings") && !type.Contains("ToolSettings");
+        }
+
         public static bool NeedsMigration(string fileName)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".XML");
-            string vehiclePath = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
-
-            return File.Exists(oldPath) && !File.Exists(vehiclePath);
+            string path = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            return File.Exists(path) && IsOldFormat(path);
         }
 
         public static LoadResult MigrateVehicle(string vehicleFileName, VehicleSettings vehicleSettings)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, vehicleFileName + ".XML");
+            return MigrateVehicle(vehicleFileName, vehicleFileName, vehicleSettings);
+        }
+
+        public static LoadResult MigrateVehicle(string sourceFileName, string outputName, VehicleSettings vehicleSettings)
+        {
+            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
 
             if (!File.Exists(oldPath))
                 return LoadResult.MissingFile;
@@ -33,17 +78,19 @@ namespace AgOpenGPS
             CopyVehicleSettings(oldSettings, vehicleSettings);
 
             // Save as new format
-            vehicleSettings.Save(vehicleFileName);
-
-            // Backup old file if all migrations done
-            CheckAndBackupOldFile(vehicleFileName);
+            vehicleSettings.Save(outputName);
 
             return LoadResult.Ok;
         }
 
         public static LoadResult MigrateTool(string toolFileName, ToolSettings toolSettings)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, toolFileName + ".XML");
+            return MigrateTool(toolFileName, toolFileName, toolSettings);
+        }
+
+        public static LoadResult MigrateTool(string sourceFileName, string outputName, ToolSettings toolSettings)
+        {
+            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
 
             if (!File.Exists(oldPath))
                 return LoadResult.MissingFile;
@@ -58,10 +105,7 @@ namespace AgOpenGPS
             CopyToolSettings(oldSettings, toolSettings);
 
             // Save as new format
-            toolSettings.Save(toolFileName);
-
-            // Backup old file if all migrations done
-            CheckAndBackupOldFile(toolFileName);
+            toolSettings.Save(outputName);
 
             return LoadResult.Ok;
         }
@@ -77,7 +121,6 @@ namespace AgOpenGPS
             dest.setVehicle_maxAngularVelocity = source.setVehicle_maxAngularVelocity;
             dest.setVehicle_trackWidth = source.setVehicle_trackWidth;
             dest.setVehicle_hitchLength = source.setVehicle_hitchLength;
-            dest.setVehicle_tankTrailingHitchLength = source.setVehicle_tankTrailingHitchLength;
 
             // AutoSteer (zonder snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn, uTurnSmoothing, uTurnCompensation - die zitten nu in Environment)
             dest.setAS_Kp = source.setAS_Kp;
@@ -143,6 +186,7 @@ namespace AgOpenGPS
             dest.setVehicle_toolWidth = source.setVehicle_toolWidth;
             dest.setVehicle_toolOverlap = source.setVehicle_toolOverlap;
             dest.setVehicle_toolOffset = source.setVehicle_toolOffset;
+            dest.setVehicle_tankTrailingHitchLength = source.setVehicle_tankTrailingHitchLength;
             dest.setVehicle_toolTrailingHitchLength = source.setVehicle_toolTrailingHitchLength;
             dest.setVehicle_toolLookAheadOn = source.setVehicle_toolLookAheadOn;
             dest.setVehicle_toolLookAheadOff = source.setVehicle_toolLookAheadOff;
@@ -163,7 +207,9 @@ namespace AgOpenGPS
             dest.setSection_isFast = source.setSection_isFast;
             dest.setTool_defaultSectionWidth = source.setTool_defaultSectionWidth;
             dest.setTool_sectionWidthMulti = source.setTool_sectionWidthMulti;
-            dest.setTool_zones = source.setTool_zones;
+            // Old format had 10 zones values, new format uses 9 - truncate to prevent IndexOutOfRangeException
+            var zoneWords = source.setTool_zones.Split(',');
+            dest.setTool_zones = string.Join(",", zoneWords.Take(9));
 
             // Section positions
             dest.setSection_position1 = source.setSection_position1;
@@ -257,33 +303,88 @@ namespace AgOpenGPS
             }
         }
 
-        public static void MigrateAllVehicles()
+        public static LoadResult MigrateEnvironment(string sourceFileName, string outputName)
+        {
+            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
+
+            if (!File.Exists(oldPath))
+                return LoadResult.MissingFile;
+
+            // Load old settings
+            SettingsLegacy oldSettings = new SettingsLegacy();
+            var loadResult = XmlSettingsHandler.LoadXMLFile(oldPath, oldSettings);
+            if (loadResult != LoadResult.Ok)
+                return loadResult;
+
+            // Copy environment settings from old to new
+            var envSettings = new Settings();
+            Settings.MigrateFromOldToTarget(oldSettings, envSettings);
+
+            // Save as environment file
+            string envPath = Path.Combine(RegistrySettings.environmentDirectory, outputName + ".xml");
+            XmlSettingsHandler.SaveXMLFile(envPath, envSettings);
+
+            return LoadResult.Ok;
+        }
+
+        /// <summary>
+        /// Gets list of old format XML files in the Vehicles directory that can be converted.
+        /// Uses XML type detection to distinguish old from new format.
+        /// </summary>
+        public static string[] GetConvertibleFiles()
         {
             string vehiclesDir = RegistrySettings.vehiclesDirectory;
-
             if (!Directory.Exists(vehiclesDir))
-                return;
+                return new string[0];
 
-            foreach (string file in Directory.GetFiles(vehiclesDir, "*.XML"))
+            var files = new System.Collections.Generic.List<string>();
+            foreach (string file in Directory.GetFiles(vehiclesDir, "*.xml"))
             {
-                string fileName = Path.GetFileNameWithoutExtension(file);
+                if (IsOldFormat(file))
+                    files.Add(Path.GetFileNameWithoutExtension(file));
+            }
+            return files.ToArray();
+        }
 
-                // Skip already migrated files
-                if (File.Exists(Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml")) ||
-                    File.Exists(Path.Combine(RegistrySettings.toolsDirectory, fileName + ".xml")))
-                    continue;
+        /// <summary>
+        /// Backs up an old format file after conversion.
+        /// </summary>
+        public static void BackupOldFile(string fileName)
+        {
+            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            if (!File.Exists(oldPath)) return;
 
-                // Check if old format file
-                if (!NeedsMigration(fileName))
-                    continue;
+            // Don't backup if it's already a new-format file (happens when vehicleName == sourceFile)
+            if (!IsOldFormat(oldPath)) return;
 
+            string backupDir = Path.Combine(RegistrySettings.vehiclesDirectory, "oldSettingsFiles");
+            if (!Directory.Exists(backupDir))
+                Directory.CreateDirectory(backupDir);
+
+            string backupPath = Path.Combine(backupDir, fileName + ".xml.backup");
+            if (File.Exists(backupPath))
+                File.Delete(backupPath);
+
+            File.Move(oldPath, backupPath);
+            Log.EventWriter($"Old settings file backed up: {fileName}");
+        }
+
+        public static void MigrateAllVehicles()
+        {
+            string[] files = GetConvertibleFiles();
+
+            foreach (string fileName in files)
+            {
                 // Migrate vehicle settings
-                VehicleSettings.Default.Reset();
-                MigrateVehicle(fileName, VehicleSettings.Default);
+                var vehicleSettings = new VehicleSettings();
+                MigrateVehicle(fileName, fileName, vehicleSettings);
 
                 // Migrate tool settings
-                ToolSettings.Default.Reset();
-                MigrateTool(fileName, ToolSettings.Default);
+                var toolSettings = new ToolSettings();
+                MigrateTool(fileName, fileName, toolSettings);
+
+                // Backup old file
+                BackupOldFile(fileName);
             }
         }
     }

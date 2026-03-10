@@ -64,7 +64,7 @@
             // 
             // columnHeaderProfile
             // 
-            this.columnHeaderProfile.Text = "Profiles";
+            this.columnHeaderProfile.Text = "Environments";
             this.columnHeaderProfile.Width = 500;
             // 
             // buttonCancel
@@ -115,7 +115,7 @@
             this.labelLoadProfile.Name = "labelLoadProfile";
             this.labelLoadProfile.Size = new System.Drawing.Size(198, 23);
             this.labelLoadProfile.TabIndex = 510;
-            this.labelLoadProfile.Text = "Load Profile:";
+            this.labelLoadProfile.Text = "Load Environment:";
             this.labelLoadProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // buttonProfileDelete
@@ -155,7 +155,7 @@
             this.Name = "FormLoadProfile";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Load Profile";
+            this.Text = "Load Environment";
             this.Load += new System.EventHandler(this.FormLoadProfile_Load);
             this.ResumeLayout(false);
 

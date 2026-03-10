@@ -65,6 +65,8 @@ namespace AgOpenGPS
             Properties.Settings.Default.setDisplay_isLineSmooth = mf.isLineSmooth;
             Properties.Settings.Default.isHeadlandDistanceOn = mf.isHeadlandDistanceOn;
 
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             Properties.Settings.Default.Save();
         }
 
@@ -103,7 +105,7 @@ namespace AgOpenGPS
 
         private void tabVAntenna_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
         }
 
         private void rbtnAntennaLeft_Click(object sender, EventArgs e)
@@ -224,7 +226,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.Wheelbase = Properties.VehicleSettings.Default.setVehicle_wheelbase;
-                Properties.Settings.Default.Save();
+                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
             }
         }
 
@@ -235,7 +237,7 @@ namespace AgOpenGPS
                 Properties.VehicleSettings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
                 mf.tram.halfWheelTrack = mf.vehicle.VehicleConfig.TrackWidth * 0.5;
-                Properties.Settings.Default.Save();
+                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
             }
         }
 
@@ -287,6 +289,8 @@ namespace AgOpenGPS
                     break;
             }
 
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             Settings.Default.Save();
         }
 

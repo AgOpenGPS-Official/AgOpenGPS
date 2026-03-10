@@ -1584,6 +1584,17 @@ namespace AgOpenGPS
             }
         }
 
+        private void loadVehicleToolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormLoadVehicleTool(this))
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+
+
+
         #endregion
 
         #region Languages
@@ -1822,7 +1833,7 @@ namespace AgOpenGPS
             else cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOff;
             bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
             Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
         }
         private void btnHydLift_Click(object sender, EventArgs e)
         {

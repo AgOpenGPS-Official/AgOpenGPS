@@ -603,7 +603,7 @@ namespace AgOpenGPS
                 //does headland control sections
                 mf.bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
                 Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
-                Properties.Settings.Default.Save();
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
                 //middle points
                 for (int i = 1; i < hdArr.Length; i++)

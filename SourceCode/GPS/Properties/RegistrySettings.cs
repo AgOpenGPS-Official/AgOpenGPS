@@ -92,7 +92,21 @@ namespace AgOpenGPS
             //keep below 500 kb
             Log.CheckLogSize(Path.Combine(logsDirectory, "AgOpenGPS_Events_Log.txt"), 1000000);
 
+            // Load Environment settings
             Properties.Settings.Default.Load();
+
+            // Load Vehicle settings if vehicleFileName is set
+            if (!string.IsNullOrEmpty(vehicleFileName))
+            {
+                Properties.VehicleSettings.Default.Load(vehicleFileName);
+            }
+
+            // Load Tool settings if toolFileName is set, otherwise use vehicleFileName
+            string toolFile = !string.IsNullOrEmpty(toolFileName) ? toolFileName : vehicleFileName;
+            if (!string.IsNullOrEmpty(toolFile))
+            {
+                Properties.ToolSettings.Default.Load(toolFile);
+            }
         }
 
         public static void Save(string name, string value)

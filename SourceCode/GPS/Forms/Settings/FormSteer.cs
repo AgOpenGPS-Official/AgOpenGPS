@@ -375,6 +375,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
             //save current vehicle
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
             Properties.Settings.Default.Save();
         }
 
@@ -595,7 +596,7 @@ namespace AgOpenGPS
         private void tabSettings_Leave(object sender, EventArgs e)
         {
             Properties.VehicleSettings.Default.setAS_isSteerInReverse = cboxSteerInReverse.Checked;
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
         }
 
         private void hsbarUTurnCompensation_ValueChanged(object sender, EventArgs e)
@@ -642,7 +643,7 @@ namespace AgOpenGPS
 
 
             Properties.VehicleSettings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
 
             if (mf.isStanleyUsed)
             {
@@ -1173,7 +1174,7 @@ namespace AgOpenGPS
 
             Properties.VehicleSettings.Default.setArdSteer_setting1 = (byte)sett;
 
-            Properties.Settings.Default.Save();
+            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
 
             mf.p_251.pgn[mf.p_251.set0] = Properties.VehicleSettings.Default.setArdSteer_setting0;
             mf.p_251.pgn[mf.p_251.set1] = Properties.VehicleSettings.Default.setArdSteer_setting1;
@@ -1259,7 +1260,7 @@ namespace AgOpenGPS
                 mf.isSteerInReverse = false;
 
                 //save current vehicle
-                Properties.Settings.Default.Save();
+                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
 
                 mf.vehicle = new CVehicle(mf);
 

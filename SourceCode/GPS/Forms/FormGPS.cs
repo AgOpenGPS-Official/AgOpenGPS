@@ -692,6 +692,8 @@ namespace AgOpenGPS
                     // STEP 3: Settings + System Log
                     try
                     {
+                        Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                        Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
                         Settings.Default.Save();
                         Log.FileSaveSystemEvents();
                         await Task.Delay(300);
@@ -720,6 +722,8 @@ namespace AgOpenGPS
 
                     try
                     {
+                        Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                        Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
                         Settings.Default.Save();
                         Log.FileSaveSystemEvents();
                         await Task.Delay(300);
@@ -859,6 +863,11 @@ namespace AgOpenGPS
         private void btnIsobusSC_Click(object sender, EventArgs e)
         {
             isobus.RequestSectionControlEnabled(!isobus.SectionControlEnabled);
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void FormGPS_Move(object sender, EventArgs e)

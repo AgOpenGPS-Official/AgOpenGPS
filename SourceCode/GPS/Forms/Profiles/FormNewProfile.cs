@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace AgOpenGPS.Forms.Profiles
             listViewProfiles.Items.AddRange(LoadProfiles().Select(profile => new ListViewItem(profile) { Name = profile }).ToArray());
             listViewProfiles.SelectedItems.Clear();
 
-            ListViewItem currentProfile = listViewProfiles.Items[RegistrySettings.vehicleFileName];
+            ListViewItem currentProfile = listViewProfiles.Items[RegistrySettings.environmentFileName];
             if (currentProfile != null)
             {
                 currentProfile.SubItems.Add($"({gStr.gsCurrent})");
@@ -53,7 +53,10 @@ namespace AgOpenGPS.Forms.Profiles
 
         private IEnumerable<string> LoadProfiles()
         {
-            DirectoryInfo directory = new DirectoryInfo(RegistrySettings.vehiclesDirectory);
+            if (!Directory.Exists(RegistrySettings.environmentDirectory))
+                return Enumerable.Empty<string>();
+
+            DirectoryInfo directory = new DirectoryInfo(RegistrySettings.environmentDirectory);
             FileInfo[] files = directory.GetFiles("*.xml");
             return files.Select(file => Path.GetFileNameWithoutExtension(file.Name));
         }
@@ -90,7 +93,7 @@ namespace AgOpenGPS.Forms.Profiles
             if (string.IsNullOrEmpty(newProfileName))
                 return;
 
-            string newProfilePath = Path.Combine(RegistrySettings.vehiclesDirectory, newProfileName + ".xml");
+            string newProfilePath = Path.Combine(RegistrySettings.environmentDirectory, newProfileName + ".xml");
 
             if (File.Exists(newProfilePath))
             {
@@ -111,7 +114,7 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 var confirmReset = FormDialog.ShowQuestion(
                     "!! WARNING !!",
-                    "This will reset all Tractor measurements and control, Are you Sure??",
+                    "This will reset all Environment settings (display, sounds, window positions). Are you Sure?",
                     DialogSeverity.Warning);
 
                 if (confirmReset != DialogResult.OK)
@@ -119,7 +122,7 @@ namespace AgOpenGPS.Forms.Profiles
 
                 CreateNewEmptyProfile(newProfileName);
             }
-            else if (existingProfileName.Equals(RegistrySettings.vehicleFileName))
+            else if (existingProfileName.Equals(RegistrySettings.environmentFileName))
             {
                 CreateNewProfileFromCurrent(newProfileName);
             }
@@ -132,61 +135,56 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void CreateNewEmptyProfile(string profileName)
         {
-            RegistrySettings.Save(RegKeys.vehicleFileName, profileName);
+            RegistrySettings.Save(RegKeys.environmentFileName, profileName);
 
             Settings.Default.Reset();
-            Settings.Default.Save();
 
-            Log.EventWriter($"New profile created: {profileName}.xml");
-
-            _formGPS.vehicle = new CVehicle(_formGPS);
-            _formGPS.tool = new CTool(_formGPS);
+            Log.EventWriter($"New environment profile created: {profileName}.xml");
 
             _formGPS.LoadSettings();
 
-            _formGPS.SendSettings();
-            _formGPS.SendRelaySettingsToMachineModule();
-
-            _formGPS.TimedMessageBox(2500, $"New profile '{profileName}' created", "Steer settings reset!");
+            _formGPS.TimedMessageBox(2500, $"New profile '{profileName}' created", "Environment settings reset!");
         }
 
         private void CreateNewProfileFromCurrent(string profileName)
         {
-            RegistrySettings.Save(RegKeys.vehicleFileName, profileName);
+            RegistrySettings.Save(RegKeys.environmentFileName, profileName);
 
             Settings.Default.Save();
+
+            Log.EventWriter($"Environment profile saved as: {profileName}.xml");
         }
 
         private void CreateNewProfileFromExisting(string profileName, string existingProfileName)
         {
-            RegistrySettings.Save(RegKeys.vehicleFileName, existingProfileName);
+            // Temporarily switch to existing profile to load its settings
+            string previousEnv = RegistrySettings.environmentFileName;
+            RegistrySettings.Save(RegKeys.environmentFileName, existingProfileName);
 
             var result = Settings.Default.Load();
             if (result != LoadResult.Ok)
             {
-                Log.EventWriter($"Error loading profile {existingProfileName}.xml ({result})");
+                Log.EventWriter($"Error loading environment profile {existingProfileName}.xml ({result})");
 
                 FormDialog.Show(
                     gStr.gsError,
                     "Error loading profile " + existingProfileName + ".xml\n\nResult: " + result,
                     DialogSeverity.Error);
+
+                // Restore previous environment file name
+                RegistrySettings.Save(RegKeys.environmentFileName, previousEnv);
+                return;
             }
 
-            Log.EventWriter($"Profile loaded: {existingProfileName}.xml");
-
-            _formGPS.vehicle = new CVehicle(_formGPS);
-            _formGPS.tool = new CTool(_formGPS);
+            Log.EventWriter($"Environment profile loaded: {existingProfileName}.xml");
 
             _formGPS.LoadSettings();
 
-            _formGPS.SendSettings();
-            _formGPS.SendRelaySettingsToMachineModule();
-
-            RegistrySettings.Save(RegKeys.vehicleFileName, profileName);
-
+            // Save as the new profile name
+            RegistrySettings.Save(RegKeys.environmentFileName, profileName);
             Settings.Default.Save();
 
-            _formGPS.TimedMessageBox(2500, $"New profile '{profileName}' created", "Steer settings reset!");
+            _formGPS.TimedMessageBox(2500, $"New profile '{profileName}' created", "Environment settings loaded!");
         }
 
         private static string SanitizeFileName(string fileName)

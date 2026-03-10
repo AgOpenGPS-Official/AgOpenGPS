@@ -165,7 +165,7 @@ namespace AgOpenGPS
                 Properties.ToolSettings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = true;
             else Properties.ToolSettings.Default.setColor_isMultiColorSections = mf.tool.isMultiColoredSections = false;
 
-            Settings.Default.Save();
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             isClosing = true;
             Close();
         }

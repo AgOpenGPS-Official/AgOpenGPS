@@ -185,7 +185,7 @@ namespace AgOpenGPS.Properties
                     if (result == LoadResult.Ok)
                     {
                         // Copy environment settings
-                        CopyEnvironmentSettings(oldSettings, this);
+                        MigrateFromOldToTarget(oldSettings, this);
                         Save();
                         return LoadResult.Ok;
                     }
@@ -194,7 +194,7 @@ namespace AgOpenGPS.Properties
             return LoadResult.MissingFile;
         }
 
-        private void CopyEnvironmentSettings(SettingsLegacy source, Settings dest)
+        public static void MigrateFromOldToTarget(SettingsLegacy source, Settings dest)
         {
             // Copy all environment-related fields from source to dest
             // Window positions
