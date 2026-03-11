@@ -2376,7 +2376,7 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile.
+        ///   Looks up a localized string similar to Environment.
         /// </summary>
         public static string gsProfile {
             get {
@@ -2385,8 +2385,8 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vehicle settings are now called &quot;profiles&quot; and
-        ///can be created/loaded in the main menu (top left)..
+        ///   Looks up a localized string similar to Vehicle, Tool and Environment settings are now stored as separate profiles.
+        ///Load from Config panel &amp; Top Left Menu..
         /// </summary>
         public static string gsProfileMenuHint {
             get {
@@ -2859,6 +2859,24 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsSlowDownBelow {
             get {
                 return ResourceManager.GetString("gsSlowDownBelow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart WAS.
+        /// </summary>
+        public static string gsSmartWAS {
+            get {
+                return ResourceManager.GetString("gsSmartWAS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-calibrates WAS zero by analyzing guidance steering angles while driving. Enable autosteer and drive smoothly along the line..
+        /// </summary>
+        public static string gsSmartWASHelp {
+            get {
+                return ResourceManager.GetString("gsSmartWASHelp", resourceCulture);
             }
         }
         
@@ -3342,24 +3360,6 @@ namespace AgOpenGPS.Core.Translations {
         public static string gsWasZero {
             get {
                 return ResourceManager.GetString("gsWasZero", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Smart WAS.
-        /// </summary>
-        public static string gsSmartWAS {
-            get {
-                return ResourceManager.GetString("gsSmartWAS", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Auto-calibrates WAS zero by analyzing guidance steering angles while driving. Enable autosteer and drive smoothly along the line..
-        /// </summary>
-        public static string gsSmartWASHelp {
-            get {
-                return ResourceManager.GetString("gsSmartWASHelp", resourceCulture);
             }
         }
         

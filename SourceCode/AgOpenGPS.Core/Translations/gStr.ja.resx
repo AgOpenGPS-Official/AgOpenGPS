@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -885,8 +885,8 @@
     <value>プロファイル</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>車両設定は「プロファイル」と呼ばれ、
-メインメニュー（左上）で作成・読み込みが可能です。</value>
+    <value>Vehicle, Tool and Environment settings are now stored as separate profiles.
+Load from Config panel &amp; Top Left Menu.</value>
   </data>
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>プログラムを終了します　再起動してください</value>

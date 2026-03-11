@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1263,7 +1263,7 @@ ANVÄNDS PÅ EGEN RISK.</value>
     <value>Profil</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>Fordonsinställningarna är nu kallade "profiler" och
-kan skapas/laddas från huvudmenyn (längst upp till vänster).</value>
+    <value>Inställningar för Fordon, Verktyg och Miljö lagras nu som separata profiler.
+Ladda via Config-panelen &amp; menyn längst upp till vänster.</value>
   </data>
 </root>

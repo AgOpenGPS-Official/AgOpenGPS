@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1263,8 +1263,8 @@ KÄYTTÖ OMALLA VASTUULLA.</value>
     <value>Profiili</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>Ajoneuvoasetuksia kutsutaan nyt "profiileiksi" ja niitä 
-voidaan luoda/ladata päävalikosta(ylhällä vasemmalla).</value>
+    <value>Vehicle, Tool and Environment settings are now stored as separate profiles.
+Load from Config panel &amp; Top Left Menu.</value>
   </data>
   <data name="gsYouTubeTutorials" xml:space="preserve">
     <value>Youtube tutoriaalit</value>

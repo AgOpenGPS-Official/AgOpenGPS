@@ -891,11 +891,11 @@ The order you push them will be the order they appear on the menu from bottom up
     <value>Problem Making Path</value>
   </data>
   <data name="gsProfile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Environment</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>The vehicle settings are now called "profiles" and
-can be created/loaded in the main menu (top left).</value>
+    <value>Vehicle, Tool and Environment settings are now stored as separate profiles.
+Load from Config panel &amp; Top Left Menu.</value>
   </data>
   <data name="gsProgramWillExitPleaseRestart" xml:space="preserve">
     <value>Program Will Exit Please Restart</value>

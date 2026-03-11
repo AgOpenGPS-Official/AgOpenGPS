@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1126,5 +1126,9 @@ GEBRUIK OP EIGEN RISICO.</value>
   </data>
   <data name="gsZeroRoll" xml:space="preserve">
     <value>Calibreer Gyroscoop</value>
+  </data>
+  <data name="gsProfileMenuHint" xml:space="preserve">
+    <value>Voertuig-, Werktuig- en Omgevingsinstellingen worden nu opgeslagen als aparte profielen.
+Laad via het Config-paneel &amp; menu linksboven.</value>
   </data>
 </root>

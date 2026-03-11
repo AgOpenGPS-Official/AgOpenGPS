@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1266,7 +1266,7 @@ UTILIZAȚI PE PROPRIUL RISC.</value>
     <value>Profil</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>Setările vehiculului se numesc acum „profiluri” și
-pot fi create/încărcate în meniul principal (stânga sus).</value>
+    <value>Vehicle, Tool and Environment settings are now stored as separate profiles.
+Load from Config panel &amp; Top Left Menu.</value>
   </data>
 </root>

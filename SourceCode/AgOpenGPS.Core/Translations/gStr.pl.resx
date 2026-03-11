@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1191,8 +1191,8 @@ UŻYWAJ NA WŁASNE RYZYKO.</value>
     <value>Wczytaj profil maszyny</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>Ustawienia pojazdu są teraz nazywane "Profilami maszyny"
-i mogą być utworzone/wczytane w menu głównym (lewy górny narożnik).</value>
+    <value>Vehicle, Tool and Environment settings are now stored as separate profiles.
+Load from Config panel &amp; Top Left Menu.</value>
   </data>
   <data name="gsAgree" xml:space="preserve">
     <value>Zgadzam się</value>

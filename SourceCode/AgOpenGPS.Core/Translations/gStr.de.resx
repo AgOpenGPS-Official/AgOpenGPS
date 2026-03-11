@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1257,8 +1257,8 @@ VERWENDUNG AUF EIGENES RISIKO.</value>
     <value>Profil</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>Fahrzeugeinstellungen werden jetzt "Profile" genannt und
-können im Hauptmenü (oben links) erstellt und geladen werden.</value>
+    <value>Fahrzeug-, Werkzeug- und Umgebungseinstellungen werden nun als separate Profile gespeichert.
+Im Konfig-Panel &amp; Menü oben links laden.</value>
   </data>
   <data name="gsYouTubeTutorials" xml:space="preserve">
     <value>YouTube Tutorials</value>

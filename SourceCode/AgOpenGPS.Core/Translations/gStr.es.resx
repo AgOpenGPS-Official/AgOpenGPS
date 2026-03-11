@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1242,8 +1242,8 @@ USAR BAJO SU PROPIA RESPONSABILIDAD.</value>
     <value>Perfil</value>
   </data>
   <data name="gsProfileMenuHint" xml:space="preserve">
-    <value>La configuración de vehículo ahora se llama "perfiles" y
-pueden ser creados/cargados en el menú principal (arriba izquierda).</value>
+    <value>Los ajustes de Vehículo, Herramienta y Entorno se guardan ahora como perfiles separados.
+Cárguelos desde el panel Config &amp; menú superior izquierdo.</value>
   </data>
   <data name="gsCopyFrom" xml:space="preserve">
     <value>Copiar desde</value>
