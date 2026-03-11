@@ -444,7 +444,7 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void buttonConvertOld_Click(object sender, EventArgs e)
         {
-            using (var form = new FormConvertProfiles())
+            using (var form = new FormConvertProfiles(_formGPS))
             {
                 form.ShowDialog(this);
             }

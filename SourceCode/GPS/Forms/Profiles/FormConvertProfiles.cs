@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AgLibrary.Logging;
 using AgLibrary.Settings;
+using AgOpenGPS;
 using AgOpenGPS.Controls;
 using AgOpenGPS.Properties;
 
@@ -14,23 +15,16 @@ namespace AgOpenGPS.Forms.Profiles
 {
     public partial class FormConvertProfiles : Form
     {
-        private FormGPS _formGPS;
+        private readonly FormGPS _formGPS;
 
-        public FormConvertProfiles()
+        public FormConvertProfiles(FormGPS formGPS)
         {
+            _formGPS = formGPS;
             InitializeComponent();
         }
 
         private void FormConvertProfiles_Load(object sender, EventArgs e)
         {
-            // Get FormGPS reference from Owner
-            _formGPS = Owner as FormGPS;
-
-            // Attach keyboard click handlers
-            textBoxVehicleName.Click += TextBox_Click;
-            textBoxToolName.Click += TextBox_Click;
-            textBoxEnvName.Click += TextBox_Click;
-
             RefreshFileList();
             ClearDetails();
             UpdateToggleButtons();
@@ -113,13 +107,13 @@ namespace AgOpenGPS.Forms.Profiles
             // Vehicle button
             if (vehicleEnabled)
             {
-                btnToggleVehicle.Text = "Vehicle: ON";
+                btnToggleVehicle.Text = "Also Split Vehicle Settings";
                 btnToggleVehicle.BackColor = Color.LightGreen;
                 textBoxVehicleName.Enabled = true;
             }
             else
             {
-                btnToggleVehicle.Text = "Vehicle: OFF";
+                btnToggleVehicle.Text = "Don't split Vehicle Settings";
                 btnToggleVehicle.BackColor = Color.LightGray;
                 textBoxVehicleName.Enabled = false;
             }
@@ -127,13 +121,13 @@ namespace AgOpenGPS.Forms.Profiles
             // Environment button
             if (environmentEnabled)
             {
-                btnToggleEnvironment.Text = "Environment: ON";
+                btnToggleEnvironment.Text = "Also Split Environment";
                 btnToggleEnvironment.BackColor = Color.LightGreen;
                 textBoxEnvName.Enabled = true;
             }
             else
             {
-                btnToggleEnvironment.Text = "Environment: OFF";
+                btnToggleEnvironment.Text = "Don't split Environment";
                 btnToggleEnvironment.BackColor = Color.LightGray;
                 textBoxEnvName.Enabled = false;
             }
@@ -191,14 +185,14 @@ namespace AgOpenGPS.Forms.Profiles
                     overwrites.Add($"Environment: {envName}");
             }
 
-            string confirmMsg = $"Convert '{sourceFile}' to:\n\n" +
-                (exportVehicle ? $"  Vehicle: {vehicleName}\n" : "") +
-                $"  Tool: {toolName}\n" +
-                (exportEnv ? $"  Environment: {envName}\n" : "") +
-                "\nOriginal will be backed up.";
+            string confirmMsg = $"Convert '{sourceFile}' to: " +
+                (exportVehicle ? $"Vehicle: {vehicleName}, " : "") +
+                $"Tool: {toolName}" +
+                (exportEnv ? $", Environment: {envName}" : "") +
+                "\n\nOriginal will be backed up.";
 
             if (overwrites.Count > 0)
-                confirmMsg += $"\n\nWARNING: These files will be overwritten:\n  " + string.Join("\n  ", overwrites);
+                confirmMsg += $"\n\nWARNING: Overwriting:\n{string.Join("\n", overwrites)}";
 
             var confirm = FormDialog.ShowQuestion("Convert Profile", confirmMsg);
             if (confirm != DialogResult.OK) return;
