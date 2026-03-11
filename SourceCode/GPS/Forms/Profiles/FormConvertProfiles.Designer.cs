@@ -34,30 +34,10 @@ namespace AgOpenGPS.Forms.Profiles
             this.labelSaveTo = new System.Windows.Forms.Label();
             this.panelDetails.SuspendLayout();
             this.SuspendLayout();
-            //
-            // labelTitle
-            //
-            this.labelTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
-            this.labelTitle.Location = new System.Drawing.Point(12, 9);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(660, 28);
-            this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Convert Old Profile Files";
-            this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // labelOldFiles
-            //
-            this.labelOldFiles.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.labelOldFiles.Location = new System.Drawing.Point(12, 42);
-            this.labelOldFiles.Name = "labelOldFiles";
-            this.labelOldFiles.Size = new System.Drawing.Size(280, 25);
-            this.labelOldFiles.TabIndex = 20;
-            this.labelOldFiles.Text = "Old format files:";
-            this.labelOldFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
             // listViewFiles
-            //
-            this.listViewFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            // 
+            this.listViewFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listViewFiles.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.listViewFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -77,106 +57,24 @@ namespace AgOpenGPS.Forms.Profiles
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.Details;
             this.listViewFiles.SelectedIndexChanged += new System.EventHandler(this.listViewFiles_SelectedIndexChanged);
-            //
+            // 
             // columnHeaderName
-            //
+            // 
             this.columnHeaderName.Text = "File Name";
             this.columnHeaderName.Width = 250;
-            //
-            // labelSaveTo
-            //
-            this.labelSaveTo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.labelSaveTo.Location = new System.Drawing.Point(305, 42);
-            this.labelSaveTo.Name = "labelSaveTo";
-            this.labelSaveTo.Size = new System.Drawing.Size(360, 25);
-            this.labelSaveTo.TabIndex = 21;
-            this.labelSaveTo.Text = "Save as:";
-            this.labelSaveTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // panelDetails
-            //
-            this.panelDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelDetails.Controls.Add(this.btnToggleVehicle);
-            this.panelDetails.Controls.Add(this.textBoxVehicleName);
-            this.panelDetails.Controls.Add(this.btnToggleEnvironment);
-            this.panelDetails.Controls.Add(this.textBoxEnvName);
-            this.panelDetails.Controls.Add(this.labelToolName);
-            this.panelDetails.Controls.Add(this.textBoxToolName);
-            this.panelDetails.Enabled = false;
-            this.panelDetails.Location = new System.Drawing.Point(305, 70);
-            this.panelDetails.Name = "panelDetails";
-            this.panelDetails.Size = new System.Drawing.Size(370, 270);
-            this.panelDetails.TabIndex = 2;
-            //
-            // btnToggleVehicle
-            //
-            this.btnToggleVehicle.BackColor = System.Drawing.Color.LightGreen;
-            this.btnToggleVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnToggleVehicle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.btnToggleVehicle.ForeColor = System.Drawing.Color.Black;
-            this.btnToggleVehicle.Location = new System.Drawing.Point(5, 5);
-            this.btnToggleVehicle.Name = "btnToggleVehicle";
-            this.btnToggleVehicle.Size = new System.Drawing.Size(350, 40);
-            this.btnToggleVehicle.TabIndex = 0;
-            this.btnToggleVehicle.Text = "Vehicle: ON";
-            this.btnToggleVehicle.UseVisualStyleBackColor = false;
-            this.btnToggleVehicle.Click += new System.EventHandler(this.btnToggleVehicle_Click);
-            //
-            // textBoxVehicleName
-            //
-            this.textBoxVehicleName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxVehicleName.Location = new System.Drawing.Point(5, 50);
-            this.textBoxVehicleName.Name = "textBoxVehicleName";
-            this.textBoxVehicleName.Size = new System.Drawing.Size(350, 30);
-            this.textBoxVehicleName.TabIndex = 1;
-            this.textBoxVehicleName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
-            //
-            // labelToolName
-            //
-            this.labelToolName.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.labelToolName.Location = new System.Drawing.Point(5, 90);
-            this.labelToolName.Name = "labelToolName";
-            this.labelToolName.Size = new System.Drawing.Size(350, 25);
-            this.labelToolName.TabIndex = 2;
-            this.labelToolName.Text = "Tool name:";
-            this.labelToolName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // textBoxToolName
-            //
-            this.textBoxToolName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxToolName.Location = new System.Drawing.Point(5, 118);
-            this.textBoxToolName.Name = "textBoxToolName";
-            this.textBoxToolName.Size = new System.Drawing.Size(350, 30);
-            this.textBoxToolName.TabIndex = 3;
-            this.textBoxToolName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
-            //
-            // btnToggleEnvironment
-            //
-            this.btnToggleEnvironment.BackColor = System.Drawing.Color.LightGray;
-            this.btnToggleEnvironment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnToggleEnvironment.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.btnToggleEnvironment.ForeColor = System.Drawing.Color.Black;
-            this.btnToggleEnvironment.Location = new System.Drawing.Point(5, 158);
-            this.btnToggleEnvironment.Name = "btnToggleEnvironment";
-            this.btnToggleEnvironment.Size = new System.Drawing.Size(350, 40);
-            this.btnToggleEnvironment.TabIndex = 4;
-            this.btnToggleEnvironment.Text = "Environment: OFF";
-            this.btnToggleEnvironment.UseVisualStyleBackColor = false;
-            this.btnToggleEnvironment.Click += new System.EventHandler(this.btnToggleEnvironment_Click);
-            //
-            // textBoxEnvName
-            //
-            this.textBoxEnvName.Enabled = false;
-            this.textBoxEnvName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxEnvName.Location = new System.Drawing.Point(5, 203);
-            this.textBoxEnvName.Name = "textBoxEnvName";
-            this.textBoxEnvName.Size = new System.Drawing.Size(350, 30);
-            this.textBoxEnvName.TabIndex = 5;
-            this.textBoxEnvName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
-            //
+            // 
+            // labelTitle
+            // 
+            this.labelTitle.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
+            this.labelTitle.Location = new System.Drawing.Point(12, 9);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(660, 28);
+            this.labelTitle.TabIndex = 0;
+            this.labelTitle.Text = "Convert Old Profile Files";
+            this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // labelStatus
-            //
+            // 
             this.labelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelStatus.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Italic);
             this.labelStatus.Location = new System.Drawing.Point(12, 408);
@@ -184,25 +82,9 @@ namespace AgOpenGPS.Forms.Profiles
             this.labelStatus.Size = new System.Drawing.Size(400, 25);
             this.labelStatus.TabIndex = 3;
             this.labelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // buttonClose
-            //
-            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonClose.FlatAppearance.BorderSize = 0;
-            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonClose.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.buttonClose.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.buttonClose.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonClose.Location = new System.Drawing.Point(595, 340);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(80, 92);
-            this.buttonClose.TabIndex = 5;
-            this.buttonClose.Text = "Close";
-            this.buttonClose.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            //
+            // 
             // buttonConvert
-            //
+            // 
             this.buttonConvert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonConvert.Enabled = false;
             this.buttonConvert.FlatAppearance.BorderSize = 0;
@@ -217,9 +99,130 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonConvert.Text = "Convert";
             this.buttonConvert.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.buttonConvert.Click += new System.EventHandler(this.buttonConvert_Click);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.FlatAppearance.BorderSize = 0;
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonClose.Font = new System.Drawing.Font("Tahoma", 14.25F);
+            this.buttonClose.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
+            this.buttonClose.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonClose.Location = new System.Drawing.Point(595, 340);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(80, 92);
+            this.buttonClose.TabIndex = 5;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // panelDetails
+            // 
+            this.panelDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelDetails.Controls.Add(this.btnToggleVehicle);
+            this.panelDetails.Controls.Add(this.textBoxVehicleName);
+            this.panelDetails.Controls.Add(this.btnToggleEnvironment);
+            this.panelDetails.Controls.Add(this.textBoxEnvName);
+            this.panelDetails.Controls.Add(this.labelToolName);
+            this.panelDetails.Controls.Add(this.textBoxToolName);
+            this.panelDetails.Enabled = false;
+            this.panelDetails.Location = new System.Drawing.Point(305, 70);
+            this.panelDetails.Name = "panelDetails";
+            this.panelDetails.Size = new System.Drawing.Size(370, 270);
+            this.panelDetails.TabIndex = 2;
+            // 
+            // btnToggleVehicle
+            // 
+            this.btnToggleVehicle.BackColor = System.Drawing.Color.LightGreen;
+            this.btnToggleVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleVehicle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.btnToggleVehicle.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleVehicle.Location = new System.Drawing.Point(5, 5);
+            this.btnToggleVehicle.Name = "btnToggleVehicle";
+            this.btnToggleVehicle.Size = new System.Drawing.Size(350, 40);
+            this.btnToggleVehicle.TabIndex = 0;
+            this.btnToggleVehicle.Text = "Also Split Vehicle Settings";
+            this.btnToggleVehicle.UseVisualStyleBackColor = false;
+            this.btnToggleVehicle.Click += new System.EventHandler(this.btnToggleVehicle_Click);
+            // 
+            // textBoxVehicleName
             //
+            this.textBoxVehicleName.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.textBoxVehicleName.Location = new System.Drawing.Point(5, 50);
+            this.textBoxVehicleName.Name = "textBoxVehicleName";
+            this.textBoxVehicleName.Size = new System.Drawing.Size(350, 30);
+            this.textBoxVehicleName.TabIndex = 1;
+            this.textBoxVehicleName.Click += new System.EventHandler(this.TextBox_Click);
+            this.textBoxVehicleName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            // 
+            // btnToggleEnvironment
+            // 
+            this.btnToggleEnvironment.BackColor = System.Drawing.Color.LightGray;
+            this.btnToggleEnvironment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleEnvironment.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.btnToggleEnvironment.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleEnvironment.Location = new System.Drawing.Point(5, 158);
+            this.btnToggleEnvironment.Name = "btnToggleEnvironment";
+            this.btnToggleEnvironment.Size = new System.Drawing.Size(350, 40);
+            this.btnToggleEnvironment.TabIndex = 4;
+            this.btnToggleEnvironment.Text = "Also Split Envoirement Settings";
+            this.btnToggleEnvironment.UseVisualStyleBackColor = false;
+            this.btnToggleEnvironment.Click += new System.EventHandler(this.btnToggleEnvironment_Click);
+            // 
+            // textBoxEnvName
+            //
+            this.textBoxEnvName.Enabled = false;
+            this.textBoxEnvName.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.textBoxEnvName.Location = new System.Drawing.Point(5, 203);
+            this.textBoxEnvName.Name = "textBoxEnvName";
+            this.textBoxEnvName.Size = new System.Drawing.Size(350, 30);
+            this.textBoxEnvName.TabIndex = 5;
+            this.textBoxEnvName.Click += new System.EventHandler(this.TextBox_Click);
+            this.textBoxEnvName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            // 
+            // labelToolName
+            // 
+            this.labelToolName.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.labelToolName.Location = new System.Drawing.Point(5, 90);
+            this.labelToolName.Name = "labelToolName";
+            this.labelToolName.Size = new System.Drawing.Size(350, 25);
+            this.labelToolName.TabIndex = 2;
+            this.labelToolName.Text = "Tool name:";
+            this.labelToolName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // textBoxToolName
+            //
+            this.textBoxToolName.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.textBoxToolName.Location = new System.Drawing.Point(5, 118);
+            this.textBoxToolName.Name = "textBoxToolName";
+            this.textBoxToolName.Size = new System.Drawing.Size(350, 30);
+            this.textBoxToolName.TabIndex = 3;
+            this.textBoxToolName.Click += new System.EventHandler(this.TextBox_Click);
+            this.textBoxToolName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            // 
+            // labelOldFiles
+            // 
+            this.labelOldFiles.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.labelOldFiles.Location = new System.Drawing.Point(12, 42);
+            this.labelOldFiles.Name = "labelOldFiles";
+            this.labelOldFiles.Size = new System.Drawing.Size(280, 25);
+            this.labelOldFiles.TabIndex = 20;
+            this.labelOldFiles.Text = "Old format files:";
+            this.labelOldFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelSaveTo
+            // 
+            this.labelSaveTo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.labelSaveTo.Location = new System.Drawing.Point(305, 42);
+            this.labelSaveTo.Name = "labelSaveTo";
+            this.labelSaveTo.Size = new System.Drawing.Size(360, 25);
+            this.labelSaveTo.TabIndex = 21;
+            this.labelSaveTo.Text = "Save as:";
+            this.labelSaveTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormConvertProfiles
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;

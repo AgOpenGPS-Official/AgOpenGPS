@@ -7,12 +7,15 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AgLibrary.Logging;
 using AgLibrary.Settings;
+using AgOpenGPS.Controls;
 using AgOpenGPS.Properties;
 
 namespace AgOpenGPS.Forms.Profiles
 {
     public partial class FormConvertProfiles : Form
     {
+        private FormGPS _formGPS;
+
         public FormConvertProfiles()
         {
             InitializeComponent();
@@ -20,9 +23,26 @@ namespace AgOpenGPS.Forms.Profiles
 
         private void FormConvertProfiles_Load(object sender, EventArgs e)
         {
+            // Get FormGPS reference from Owner
+            _formGPS = Owner as FormGPS;
+
+            // Attach keyboard click handlers
+            textBoxVehicleName.Click += TextBox_Click;
+            textBoxToolName.Click += TextBox_Click;
+            textBoxEnvName.Click += TextBox_Click;
+
             RefreshFileList();
             ClearDetails();
             UpdateToggleButtons();
+        }
+
+        private void TextBox_Click(object sender, EventArgs e)
+        {
+            if (_formGPS?.isKeyboardOn == true)
+            {
+                ((TextBox)sender).ShowKeyboard(this);
+                buttonConvert.Focus();
+            }
         }
 
         private void RefreshFileList()
