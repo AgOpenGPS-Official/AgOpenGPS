@@ -31,6 +31,19 @@ namespace AgOpenGPS.Forms.Profiles
         {
             RefreshVehicleList();
             RefreshToolList();
+
+            // Pre-select and preview the currently active vehicle/tool
+            if (!string.IsNullOrEmpty(RegistrySettings.vehicleFileName))
+            {
+                _selectedVehicle = RegistrySettings.vehicleFileName;
+                LoadVehiclePreview(_selectedVehicle);
+            }
+            if (!string.IsNullOrEmpty(RegistrySettings.toolFileName))
+            {
+                _selectedTool = RegistrySettings.toolFileName;
+                LoadToolPreview(_selectedTool);
+            }
+
             UpdateCurrentLabels();
             UpdateSelectedLabels();
             UpdateLoadButton();
@@ -445,45 +458,7 @@ namespace AgOpenGPS.Forms.Profiles
 
         private string PromptForName(string title, string prompt)
         {
-            using (var form = new Form())
-            {
-                form.Text = title;
-                form.ClientSize = new Size(400, 130);
-                form.StartPosition = FormStartPosition.CenterParent;
-                form.FormBorderStyle = FormBorderStyle.FixedDialog;
-                form.MaximizeBox = false;
-                form.MinimizeBox = false;
-                form.Font = new Font("Tahoma", 14.25F);
-
-                var label = new Label { Text = prompt, Left = 15, Top = 15, Width = 370, Height = 25 };
-                var textBox = new TextBox { Left = 15, Top = 48, Width = 370, Height = 30 };
-                textBox.Click += (s, ev) =>
-                {
-                    if (_formGPS.isKeyboardOn)
-                        textBox.ShowKeyboard(_formGPS);
-                };
-                textBox.TextChanged += (s, ev) =>
-                {
-                    var pos = textBox.SelectionStart;
-                    textBox.Text = Regex.Replace(textBox.Text, glm.fileRegex, "");
-                    textBox.SelectionStart = pos;
-                };
-
-                var btnOk = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 205, Top = 88, Width = 85 };
-                var btnCancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Left = 300, Top = 88, Width = 85 };
-
-                form.Controls.AddRange(new Control[] { label, textBox, btnOk, btnCancel });
-                form.AcceptButton = btnOk;
-                form.CancelButton = btnCancel;
-
-                if (form.ShowDialog(this) == DialogResult.OK)
-                {
-                    string name = textBox.Text.Trim();
-                    if (!string.IsNullOrEmpty(name))
-                        return name;
-                }
-            }
-            return null;
+            return AgOpenGPS.Forms.FormInputDialog.ShowInput(title, prompt, _formGPS);
         }
 
         private IEnumerable<string> GetFiles(string directory, string expectedType)

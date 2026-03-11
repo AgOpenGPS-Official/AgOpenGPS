@@ -700,7 +700,7 @@ namespace AgOpenGPS
             //load the lightbar resolution
             lightbarCmPerPixel = Properties.Settings.Default.setDisplay_lightbarCmPerPixel;
 
-            isStanleyUsed = Properties.VehicleSettings.Default.setVehicle_isStanleyUsed;
+            isStanleyUsed = Properties.ToolSettings.Default.setVehicle_isStanleyUsed;
 
             //main window first
             if (!isKioskMode)

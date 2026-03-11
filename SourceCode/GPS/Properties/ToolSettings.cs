@@ -99,6 +99,13 @@ namespace AgOpenGPS.Properties
         // Relay (verplaatst van Vehicle naar Tool)
         public string setRelay_pinConfig = "1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 
+        // Guidance algorithm (verplaatst van Vehicle naar Tool: per werktuig eigen instelling)
+        public double purePursuitIntegralGainAB = 0;
+        public double stanleyDistanceErrorGain = 1;
+        public double stanleyHeadingErrorGain = 1;
+        public double stanleyIntegralGainAB = 0;
+        public bool setVehicle_isStanleyUsed = false;
+
         // Tool specific Steer Parameters (verplaatst van Vehicle naar Tool)
         public double setVehicle_goalPointLookAheadHold = 3;
         public double setVehicle_toolOffDelay = 0;

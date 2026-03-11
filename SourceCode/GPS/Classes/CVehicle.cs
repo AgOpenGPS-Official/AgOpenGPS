@@ -62,8 +62,8 @@ namespace AgOpenGPS
             goalPointLookAheadMult = Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult;
             goalPointAcquireFactor = Properties.ToolSettings.Default.setVehicle_goalPointAcquireFactor;
 
-            stanleyDistanceErrorGain = Properties.VehicleSettings.Default.stanleyDistanceErrorGain;
-            stanleyHeadingErrorGain = Properties.VehicleSettings.Default.stanleyHeadingErrorGain;
+            stanleyDistanceErrorGain = Properties.ToolSettings.Default.stanleyDistanceErrorGain;
+            stanleyHeadingErrorGain = Properties.ToolSettings.Default.stanleyHeadingErrorGain;
 
             maxAngularVelocity = Properties.VehicleSettings.Default.setVehicle_maxAngularVelocity;
             maxSteerAngle = Properties.VehicleSettings.Default.setVehicle_maxSteerAngle;
@@ -72,9 +72,9 @@ namespace AgOpenGPS
 
             VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
 
-            stanleyIntegralGainAB = Properties.VehicleSettings.Default.stanleyIntegralGainAB;
+            stanleyIntegralGainAB = Properties.ToolSettings.Default.stanleyIntegralGainAB;
 
-            purePursuitIntegralGain = Properties.VehicleSettings.Default.purePursuitIntegralGainAB;
+            purePursuitIntegralGain = Properties.ToolSettings.Default.purePursuitIntegralGainAB;
             VehicleConfig.Type = (VehicleType)Properties.VehicleSettings.Default.setVehicle_vehicleType;
 
             hydLiftLookAheadTime = Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead;

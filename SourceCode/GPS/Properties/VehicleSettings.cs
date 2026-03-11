@@ -69,13 +69,6 @@ namespace AgOpenGPS.Properties
         public HarvesterBrand setBrand_HBrand = HarvesterBrand.AgOpenGPS;
         public ArticulatedBrand setBrand_WDBrand = ArticulatedBrand.AgOpenGPS;
 
-        // PurePursuit/Stanley
-        public double purePursuitIntegralGainAB = 0;
-        public double stanleyDistanceErrorGain = 1;
-        public double stanleyHeadingErrorGain = 1;
-        public double stanleyIntegralGainAB = 0;
-        public bool setVehicle_isStanleyUsed = false;
-
         // Vehicle type (zonder goalPointLookAheadMult, goalPointLookAheadHold, goalPointAcquireFactor, slowSpeedCutoff, minCoverage, hydraulicLiftLookAhead, toolOffDelay, isSteerWorkSwitchEnabled - die zitten nu in Tool)
         public int setVehicle_vehicleType = 0;
         public double setVehicle_panicStopSpeed = 0;

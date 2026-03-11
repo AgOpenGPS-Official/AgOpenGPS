@@ -181,20 +181,20 @@ namespace AgOpenGPS
             hsbarMaxSteerAngle.Value = (Int16)Properties.VehicleSettings.Default.setVehicle_maxSteerAngle;
             lblMaxSteerAngle.Text = hsbarMaxSteerAngle.Value.ToString();
 
-            mf.vehicle.stanleyDistanceErrorGain = Properties.VehicleSettings.Default.stanleyDistanceErrorGain;
+            mf.vehicle.stanleyDistanceErrorGain = Properties.ToolSettings.Default.stanleyDistanceErrorGain;
             hsbarStanleyGain.Value = (Int16)(mf.vehicle.stanleyDistanceErrorGain * 10);
             lblStanleyGain.Text = mf.vehicle.stanleyDistanceErrorGain.ToString();
 
-            mf.vehicle.stanleyHeadingErrorGain = Properties.VehicleSettings.Default.stanleyHeadingErrorGain;
+            mf.vehicle.stanleyHeadingErrorGain = Properties.ToolSettings.Default.stanleyHeadingErrorGain;
             hsbarHeadingErrorGain.Value = (Int16)(mf.vehicle.stanleyHeadingErrorGain * 10);
             lblHeadingErrorGain.Text = mf.vehicle.stanleyHeadingErrorGain.ToString();
 
-            mf.vehicle.stanleyIntegralGainAB = Properties.VehicleSettings.Default.stanleyIntegralGainAB;
-            hsbarIntegral.Value = (int)(Properties.VehicleSettings.Default.stanleyIntegralGainAB * 100);
+            mf.vehicle.stanleyIntegralGainAB = Properties.ToolSettings.Default.stanleyIntegralGainAB;
+            hsbarIntegral.Value = (int)(Properties.ToolSettings.Default.stanleyIntegralGainAB * 100);
             lblIntegralPercent.Text = ((int)(mf.vehicle.stanleyIntegralGainAB * 100)).ToString();
 
-            mf.vehicle.purePursuitIntegralGain = Properties.VehicleSettings.Default.purePursuitIntegralGainAB;
-            hsbarIntegralPurePursuit.Value = (int)(Properties.VehicleSettings.Default.purePursuitIntegralGainAB * 100);
+            mf.vehicle.purePursuitIntegralGain = Properties.ToolSettings.Default.purePursuitIntegralGainAB;
+            hsbarIntegralPurePursuit.Value = (int)(Properties.ToolSettings.Default.purePursuitIntegralGainAB * 100);
             lblPureIntegral.Text = ((int)(mf.vehicle.purePursuitIntegralGain * 100)).ToString();
 
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
@@ -346,10 +346,10 @@ namespace AgOpenGPS
             Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult = mf.vehicle.goalPointLookAheadMult;
             Properties.ToolSettings.Default.setVehicle_goalPointAcquireFactor = mf.vehicle.goalPointAcquireFactor;
 
-            Properties.VehicleSettings.Default.stanleyHeadingErrorGain = mf.vehicle.stanleyHeadingErrorGain;
-            Properties.VehicleSettings.Default.stanleyDistanceErrorGain = mf.vehicle.stanleyDistanceErrorGain;
-            Properties.VehicleSettings.Default.stanleyIntegralGainAB = mf.vehicle.stanleyIntegralGainAB;
-            Properties.VehicleSettings.Default.purePursuitIntegralGainAB = mf.vehicle.purePursuitIntegralGain;
+            Properties.ToolSettings.Default.stanleyHeadingErrorGain = mf.vehicle.stanleyHeadingErrorGain;
+            Properties.ToolSettings.Default.stanleyDistanceErrorGain = mf.vehicle.stanleyDistanceErrorGain;
+            Properties.ToolSettings.Default.stanleyIntegralGainAB = mf.vehicle.stanleyIntegralGainAB;
+            Properties.ToolSettings.Default.purePursuitIntegralGainAB = mf.vehicle.purePursuitIntegralGain;
             Properties.VehicleSettings.Default.setVehicle_maxSteerAngle = mf.vehicle.maxSteerAngle;
 
             Properties.VehicleSettings.Default.setAS_countsPerDegree = mf.p_252.pgn[mf.p_252.countsPerDegree] = unchecked((byte)hsbarCountsPerDegree.Value);
@@ -374,8 +374,9 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
-            //save current vehicle
+            //save current vehicle and tool
             Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             Properties.Settings.Default.Save();
         }
 
@@ -642,8 +643,9 @@ namespace AgOpenGPS
             tabControl1.TabPages.Remove(tabStan);
 
 
-            Properties.VehicleSettings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
+            Properties.ToolSettings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
             Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
             if (mf.isStanleyUsed)
             {
@@ -1230,11 +1232,11 @@ namespace AgOpenGPS
                 Properties.ToolSettings.Default.setVehicle_goalPointLookAheadHold = 3;
                 Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult = 1.5;
 
-                Properties.VehicleSettings.Default.stanleyHeadingErrorGain = 1;
-                Properties.VehicleSettings.Default.stanleyDistanceErrorGain = 1;
-                Properties.VehicleSettings.Default.stanleyIntegralGainAB = 0;
+                Properties.ToolSettings.Default.stanleyHeadingErrorGain = 1;
+                Properties.ToolSettings.Default.stanleyDistanceErrorGain = 1;
+                Properties.ToolSettings.Default.stanleyIntegralGainAB = 0;
 
-                Properties.VehicleSettings.Default.purePursuitIntegralGainAB = 0;
+                Properties.ToolSettings.Default.purePursuitIntegralGainAB = 0;
 
                 Properties.VehicleSettings.Default.setAS_sideHillComp = 0;
 
@@ -1253,14 +1255,15 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setAS_guidanceLookAheadTime = 1.5;
                 Properties.Settings.Default.setAS_uTurnCompensation = 1;
 
-                Properties.VehicleSettings.Default.setVehicle_isStanleyUsed = false;
+                Properties.ToolSettings.Default.setVehicle_isStanleyUsed = false;
                 mf.isStanleyUsed = false;
 
                 Properties.VehicleSettings.Default.setAS_isSteerInReverse = false;
                 mf.isSteerInReverse = false;
 
-                //save current vehicle
+                //save current vehicle and tool
                 Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
 
                 mf.vehicle = new CVehicle(mf);
 

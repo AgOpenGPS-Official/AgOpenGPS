@@ -168,13 +168,6 @@ namespace AgOpenGPS
             dest.setBrand_HBrand = source.setBrand_HBrand;
             dest.setBrand_WDBrand = source.setBrand_WDBrand;
 
-            // PurePursuit/Stanley
-            dest.purePursuitIntegralGainAB = source.purePursuitIntegralGainAB;
-            dest.stanleyDistanceErrorGain = source.stanleyDistanceErrorGain;
-            dest.stanleyHeadingErrorGain = source.stanleyHeadingErrorGain;
-            dest.stanleyIntegralGainAB = source.stanleyIntegralGainAB;
-            dest.setVehicle_isStanleyUsed = source.setVehicle_isStanleyUsed;
-
             // Vehicle type (zonder goalPointLookAheadMult, goalPointLookAheadHold, goalPointAcquireFactor, slowSpeedCutoff, minCoverage, hydraulicLiftLookAhead, toolOffDelay, isSteerWorkSwitchEnabled - die zitten nu in Tool)
             dest.setVehicle_vehicleType = source.setVehicle_vehicleType;
             dest.setVehicle_panicStopSpeed = source.setVehicle_panicStopSpeed;
@@ -269,6 +262,13 @@ namespace AgOpenGPS
 
             // Relay (verplaatst van Vehicle naar Tool)
             dest.setRelay_pinConfig = source.setRelay_pinConfig;
+
+            // Guidance algorithm (verplaatst van Vehicle naar Tool)
+            dest.purePursuitIntegralGainAB = source.purePursuitIntegralGainAB;
+            dest.stanleyDistanceErrorGain = source.stanleyDistanceErrorGain;
+            dest.stanleyHeadingErrorGain = source.stanleyHeadingErrorGain;
+            dest.stanleyIntegralGainAB = source.stanleyIntegralGainAB;
+            dest.setVehicle_isStanleyUsed = source.setVehicle_isStanleyUsed;
 
             // Tool specific Steer Parameters (verplaatst van Vehicle naar Tool)
             dest.setVehicle_goalPointLookAheadHold = source.setVehicle_goalPointLookAheadHold;

@@ -28,25 +28,37 @@ namespace AgOpenGPS.Forms.Config
             labelNudge.Text = gStr.gsNudge + ":";
             labelTramW.Text = gStr.gsTramWidth + ":";
             labelWheelBase.Text = gStr.gsWheelbase + ":";
+            labelVehicleType.Text = gStr.gsVehiclegroupbox + ":";
+            labelAntPivot.Text = gStr.gsPivot + ":";
+            labelAntOffset.Text = gStr.gsAntennaOffset + ":";
+            labelHitch.Text = gStr.gsHitchLength + ":";
         }
 
         public void UpdateSummary(FormGPS mf)
         {
-            lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, Properties.VehicleSettings.Default.setVehicle_wheelbase);
+            var vs = Properties.VehicleSettings.Default;
+            var ts = Properties.ToolSettings.Default;
 
+            // Vehicle panel
+            lblSummaryVehicleName.Text = RegistrySettings.vehicleFileName;
+            lblSumVehicleType.Text = vs.setVehicle_vehicleType == 0 ? "Tractor"
+                : vs.setVehicle_vehicleType == 1 ? "Harvester" : "Articulated";
+            lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_wheelbase);
+            lblAntPivot.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_antennaPivot);
+            lblAntOffset.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_antennaOffset);
+            lblHitch.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_hitchLength);
+
+            // Tool panel
+            lblSummaryToolName.Text = RegistrySettings.toolFileName;
             lblSumNumSections.Text = mf.tool.numOfSections.ToString();
-
+            lblToolOffset.Text = Distance.SmallDistanceString(mf.isMetric, ts.setVehicle_toolOffset);
+            lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, ts.setVehicle_toolOverlap);
+            lblLookahead.Text = ts.setVehicle_toolLookAheadOn.ToString() + " sec";
             lblNudgeDistance.Text = Distance.VerySmallDistanceString(mf.isMetric, 0.01 * Properties.Settings.Default.setAS_snapDistance);
+            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, ts.setTram_tramWidth);
+
+            // Buiten panels
             lblUnits.Text = mf.isMetric ? "Metric" : "Imperial";
-
-            lblSummaryVehicleName.Text = gStr.gsCurrent + ": " + RegistrySettings.vehicleFileName;
-
-            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, Properties.ToolSettings.Default.setTram_tramWidth);
-
-            lblToolOffset.Text = Distance.SmallDistanceString(mf.isMetric, Properties.ToolSettings.Default.setVehicle_toolOffset);
-            lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, Properties.ToolSettings.Default.setVehicle_toolOverlap);
-
-            lblLookahead.Text = Properties.ToolSettings.Default.setVehicle_toolLookAheadOn.ToString() + " sec";
         }
 
         public void SetSummaryWidth(string widthText)
