@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,6 +22,7 @@ namespace AgOpenGPS.Forms.Profiles
         {
             RefreshFileList();
             ClearDetails();
+            UpdateToggleButtons();
         }
 
         private void RefreshFileList()
@@ -45,12 +47,11 @@ namespace AgOpenGPS.Forms.Profiles
             textBoxVehicleName.Text = "";
             textBoxToolName.Text = "";
             textBoxEnvName.Text = "";
-            checkBoxVehicle.Checked = true;
-            textBoxVehicleName.Enabled = true;
-            checkBoxEnvironment.Checked = false;
-            textBoxEnvName.Enabled = false;
+            vehicleEnabled = true;
+            environmentEnabled = false;
             panelDetails.Enabled = false;
             buttonConvert.Enabled = false;
+            UpdateToggleButtons();
         }
 
         private void listViewFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -61,10 +62,8 @@ namespace AgOpenGPS.Forms.Profiles
                 textBoxVehicleName.Text = selected;
                 textBoxToolName.Text = selected;
                 textBoxEnvName.Text = selected;
-                checkBoxVehicle.Checked = true;
-                textBoxVehicleName.Enabled = true;
-                checkBoxEnvironment.Checked = false;
-                textBoxEnvName.Enabled = false;
+                vehicleEnabled = true;
+                environmentEnabled = false;
                 panelDetails.Enabled = true;
                 buttonConvert.Enabled = true;
             }
@@ -72,26 +71,60 @@ namespace AgOpenGPS.Forms.Profiles
             {
                 ClearDetails();
             }
+            UpdateToggleButtons();
         }
 
-        private void checkBoxVehicle_CheckedChanged(object sender, EventArgs e)
+        private void btnToggleVehicle_Click(object sender, EventArgs e)
         {
-            textBoxVehicleName.Enabled = checkBoxVehicle.Checked;
+            vehicleEnabled = !vehicleEnabled;
+            UpdateToggleButtons();
             UpdateConvertButton();
         }
 
-        private void checkBoxEnvironment_CheckedChanged(object sender, EventArgs e)
+        private void btnToggleEnvironment_Click(object sender, EventArgs e)
         {
-            textBoxEnvName.Enabled = checkBoxEnvironment.Checked;
+            environmentEnabled = !environmentEnabled;
+            UpdateToggleButtons();
             UpdateConvertButton();
+        }
+
+        private void UpdateToggleButtons()
+        {
+            // Vehicle button
+            if (vehicleEnabled)
+            {
+                btnToggleVehicle.Text = "Vehicle: ON";
+                btnToggleVehicle.BackColor = Color.LightGreen;
+                textBoxVehicleName.Enabled = true;
+            }
+            else
+            {
+                btnToggleVehicle.Text = "Vehicle: OFF";
+                btnToggleVehicle.BackColor = Color.LightGray;
+                textBoxVehicleName.Enabled = false;
+            }
+
+            // Environment button
+            if (environmentEnabled)
+            {
+                btnToggleEnvironment.Text = "Environment: ON";
+                btnToggleEnvironment.BackColor = Color.LightGreen;
+                textBoxEnvName.Enabled = true;
+            }
+            else
+            {
+                btnToggleEnvironment.Text = "Environment: OFF";
+                btnToggleEnvironment.BackColor = Color.LightGray;
+                textBoxEnvName.Enabled = false;
+            }
         }
 
         private void UpdateConvertButton()
         {
             buttonConvert.Enabled = listViewFiles.SelectedItems.Count > 0
-                && (!checkBoxVehicle.Checked || !string.IsNullOrWhiteSpace(textBoxVehicleName.Text))
+                && (!vehicleEnabled || !string.IsNullOrWhiteSpace(textBoxVehicleName.Text))
                 && !string.IsNullOrWhiteSpace(textBoxToolName.Text)
-                && (!checkBoxEnvironment.Checked || !string.IsNullOrWhiteSpace(textBoxEnvName.Text));
+                && (!environmentEnabled || !string.IsNullOrWhiteSpace(textBoxEnvName.Text));
         }
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
@@ -109,10 +142,10 @@ namespace AgOpenGPS.Forms.Profiles
             if (listViewFiles.SelectedItems.Count == 0) return;
 
             string sourceFile = listViewFiles.SelectedItems[0].Text;
-            bool exportVehicle = checkBoxVehicle.Checked;
+            bool exportVehicle = vehicleEnabled;
             string vehicleName = exportVehicle ? textBoxVehicleName.Text.Trim() : null;
             string toolName = textBoxToolName.Text.Trim();
-            bool exportEnv = checkBoxEnvironment.Checked;
+            bool exportEnv = environmentEnabled;
             string envName = textBoxEnvName.Text.Trim();
 
             if (exportVehicle && string.IsNullOrEmpty(vehicleName)) return;

@@ -24,12 +24,12 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonConvert = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.panelDetails = new System.Windows.Forms.Panel();
-            this.checkBoxVehicle = new System.Windows.Forms.CheckBox();
+            this.btnToggleVehicle = new System.Windows.Forms.Button();
             this.textBoxVehicleName = new System.Windows.Forms.TextBox();
+            this.btnToggleEnvironment = new System.Windows.Forms.Button();
+            this.textBoxEnvName = new System.Windows.Forms.TextBox();
             this.labelToolName = new System.Windows.Forms.Label();
             this.textBoxToolName = new System.Windows.Forms.TextBox();
-            this.checkBoxEnvironment = new System.Windows.Forms.CheckBox();
-            this.textBoxEnvName = new System.Windows.Forms.TextBox();
             this.labelOldFiles = new System.Windows.Forms.Label();
             this.labelSaveTo = new System.Windows.Forms.Label();
             this.panelDetails.SuspendLayout();
@@ -97,34 +97,36 @@ namespace AgOpenGPS.Forms.Profiles
             //
             this.panelDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelDetails.Controls.Add(this.checkBoxVehicle);
+            this.panelDetails.Controls.Add(this.btnToggleVehicle);
             this.panelDetails.Controls.Add(this.textBoxVehicleName);
+            this.panelDetails.Controls.Add(this.btnToggleEnvironment);
+            this.panelDetails.Controls.Add(this.textBoxEnvName);
             this.panelDetails.Controls.Add(this.labelToolName);
             this.panelDetails.Controls.Add(this.textBoxToolName);
-            this.panelDetails.Controls.Add(this.checkBoxEnvironment);
-            this.panelDetails.Controls.Add(this.textBoxEnvName);
             this.panelDetails.Enabled = false;
             this.panelDetails.Location = new System.Drawing.Point(305, 70);
             this.panelDetails.Name = "panelDetails";
-            this.panelDetails.Size = new System.Drawing.Size(370, 240);
+            this.panelDetails.Size = new System.Drawing.Size(370, 270);
             this.panelDetails.TabIndex = 2;
             //
-            // checkBoxVehicle
+            // btnToggleVehicle
             //
-            this.checkBoxVehicle.Checked = true;
-            this.checkBoxVehicle.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxVehicle.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.checkBoxVehicle.Location = new System.Drawing.Point(5, 5);
-            this.checkBoxVehicle.Name = "checkBoxVehicle";
-            this.checkBoxVehicle.Size = new System.Drawing.Size(350, 25);
-            this.checkBoxVehicle.TabIndex = 0;
-            this.checkBoxVehicle.Text = "Also export Vehicle settings";
-            this.checkBoxVehicle.CheckedChanged += new System.EventHandler(this.checkBoxVehicle_CheckedChanged);
+            this.btnToggleVehicle.BackColor = System.Drawing.Color.LightGreen;
+            this.btnToggleVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleVehicle.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.btnToggleVehicle.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleVehicle.Location = new System.Drawing.Point(5, 5);
+            this.btnToggleVehicle.Name = "btnToggleVehicle";
+            this.btnToggleVehicle.Size = new System.Drawing.Size(350, 40);
+            this.btnToggleVehicle.TabIndex = 0;
+            this.btnToggleVehicle.Text = "Vehicle: ON";
+            this.btnToggleVehicle.UseVisualStyleBackColor = false;
+            this.btnToggleVehicle.Click += new System.EventHandler(this.btnToggleVehicle_Click);
             //
             // textBoxVehicleName
             //
             this.textBoxVehicleName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxVehicleName.Location = new System.Drawing.Point(5, 33);
+            this.textBoxVehicleName.Location = new System.Drawing.Point(5, 50);
             this.textBoxVehicleName.Name = "textBoxVehicleName";
             this.textBoxVehicleName.Size = new System.Drawing.Size(350, 30);
             this.textBoxVehicleName.TabIndex = 1;
@@ -133,7 +135,7 @@ namespace AgOpenGPS.Forms.Profiles
             // labelToolName
             //
             this.labelToolName.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.labelToolName.Location = new System.Drawing.Point(5, 73);
+            this.labelToolName.Location = new System.Drawing.Point(5, 90);
             this.labelToolName.Name = "labelToolName";
             this.labelToolName.Size = new System.Drawing.Size(350, 25);
             this.labelToolName.TabIndex = 2;
@@ -143,27 +145,31 @@ namespace AgOpenGPS.Forms.Profiles
             // textBoxToolName
             //
             this.textBoxToolName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxToolName.Location = new System.Drawing.Point(5, 101);
+            this.textBoxToolName.Location = new System.Drawing.Point(5, 118);
             this.textBoxToolName.Name = "textBoxToolName";
             this.textBoxToolName.Size = new System.Drawing.Size(350, 30);
             this.textBoxToolName.TabIndex = 3;
             this.textBoxToolName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             //
-            // checkBoxEnvironment
+            // btnToggleEnvironment
             //
-            this.checkBoxEnvironment.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.checkBoxEnvironment.Location = new System.Drawing.Point(5, 145);
-            this.checkBoxEnvironment.Name = "checkBoxEnvironment";
-            this.checkBoxEnvironment.Size = new System.Drawing.Size(350, 25);
-            this.checkBoxEnvironment.TabIndex = 4;
-            this.checkBoxEnvironment.Text = "Also export Environment settings";
-            this.checkBoxEnvironment.CheckedChanged += new System.EventHandler(this.checkBoxEnvironment_CheckedChanged);
+            this.btnToggleEnvironment.BackColor = System.Drawing.Color.LightGray;
+            this.btnToggleEnvironment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleEnvironment.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
+            this.btnToggleEnvironment.ForeColor = System.Drawing.Color.Black;
+            this.btnToggleEnvironment.Location = new System.Drawing.Point(5, 158);
+            this.btnToggleEnvironment.Name = "btnToggleEnvironment";
+            this.btnToggleEnvironment.Size = new System.Drawing.Size(350, 40);
+            this.btnToggleEnvironment.TabIndex = 4;
+            this.btnToggleEnvironment.Text = "Environment: OFF";
+            this.btnToggleEnvironment.UseVisualStyleBackColor = false;
+            this.btnToggleEnvironment.Click += new System.EventHandler(this.btnToggleEnvironment_Click);
             //
             // textBoxEnvName
             //
             this.textBoxEnvName.Enabled = false;
             this.textBoxEnvName.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.textBoxEnvName.Location = new System.Drawing.Point(5, 175);
+            this.textBoxEnvName.Location = new System.Drawing.Point(5, 203);
             this.textBoxEnvName.Name = "textBoxEnvName";
             this.textBoxEnvName.Size = new System.Drawing.Size(350, 30);
             this.textBoxEnvName.TabIndex = 5;
@@ -202,11 +208,11 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonConvert.FlatAppearance.BorderSize = 0;
             this.buttonConvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonConvert.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.buttonConvert.Image = global::AgOpenGPS.Properties.Resources.OK64;
+            this.buttonConvert.Image = global::AgOpenGPS.Properties.Resources.Play;
             this.buttonConvert.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonConvert.Location = new System.Drawing.Point(509, 340);
+            this.buttonConvert.Location = new System.Drawing.Point(483, 351);
             this.buttonConvert.Name = "buttonConvert";
-            this.buttonConvert.Size = new System.Drawing.Size(80, 92);
+            this.buttonConvert.Size = new System.Drawing.Size(106, 81);
             this.buttonConvert.TabIndex = 4;
             this.buttonConvert.Text = "Convert";
             this.buttonConvert.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -237,6 +243,7 @@ namespace AgOpenGPS.Forms.Profiles
             this.panelDetails.ResumeLayout(false);
             this.panelDetails.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -248,13 +255,17 @@ namespace AgOpenGPS.Forms.Profiles
         private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Panel panelDetails;
-        private System.Windows.Forms.CheckBox checkBoxVehicle;
+        private System.Windows.Forms.Button btnToggleVehicle;
         private System.Windows.Forms.TextBox textBoxVehicleName;
+        private System.Windows.Forms.Button btnToggleEnvironment;
+        private System.Windows.Forms.TextBox textBoxEnvName;
         private System.Windows.Forms.Label labelToolName;
         private System.Windows.Forms.TextBox textBoxToolName;
-        private System.Windows.Forms.CheckBox checkBoxEnvironment;
-        private System.Windows.Forms.TextBox textBoxEnvName;
         private System.Windows.Forms.Label labelOldFiles;
         private System.Windows.Forms.Label labelSaveTo;
+
+        // Toggle states
+        private bool vehicleEnabled = true;
+        private bool environmentEnabled = false;
     }
 }
