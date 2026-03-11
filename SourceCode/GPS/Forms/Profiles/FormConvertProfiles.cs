@@ -45,6 +45,8 @@ namespace AgOpenGPS.Forms.Profiles
             textBoxVehicleName.Text = "";
             textBoxToolName.Text = "";
             textBoxEnvName.Text = "";
+            checkBoxVehicle.Checked = true;
+            textBoxVehicleName.Enabled = true;
             checkBoxEnvironment.Checked = false;
             textBoxEnvName.Enabled = false;
             panelDetails.Enabled = false;
@@ -59,6 +61,8 @@ namespace AgOpenGPS.Forms.Profiles
                 textBoxVehicleName.Text = selected;
                 textBoxToolName.Text = selected;
                 textBoxEnvName.Text = selected;
+                checkBoxVehicle.Checked = true;
+                textBoxVehicleName.Enabled = true;
                 checkBoxEnvironment.Checked = false;
                 textBoxEnvName.Enabled = false;
                 panelDetails.Enabled = true;
@@ -70,9 +74,24 @@ namespace AgOpenGPS.Forms.Profiles
             }
         }
 
+        private void checkBoxVehicle_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxVehicleName.Enabled = checkBoxVehicle.Checked;
+            UpdateConvertButton();
+        }
+
         private void checkBoxEnvironment_CheckedChanged(object sender, EventArgs e)
         {
             textBoxEnvName.Enabled = checkBoxEnvironment.Checked;
+            UpdateConvertButton();
+        }
+
+        private void UpdateConvertButton()
+        {
+            buttonConvert.Enabled = listViewFiles.SelectedItems.Count > 0
+                && (!checkBoxVehicle.Checked || !string.IsNullOrWhiteSpace(textBoxVehicleName.Text))
+                && !string.IsNullOrWhiteSpace(textBoxToolName.Text)
+                && (!checkBoxEnvironment.Checked || !string.IsNullOrWhiteSpace(textBoxEnvName.Text));
         }
 
         private void textBoxName_TextChanged(object sender, EventArgs e)
@@ -82,11 +101,7 @@ namespace AgOpenGPS.Forms.Profiles
             tb.Text = Regex.Replace(tb.Text, glm.fileRegex, "");
             tb.SelectionStart = pos;
 
-            // Enable convert only if vehicle and tool names are filled
-            buttonConvert.Enabled = listViewFiles.SelectedItems.Count > 0
-                && !string.IsNullOrWhiteSpace(textBoxVehicleName.Text)
-                && !string.IsNullOrWhiteSpace(textBoxToolName.Text)
-                && (!checkBoxEnvironment.Checked || !string.IsNullOrWhiteSpace(textBoxEnvName.Text));
+            UpdateConvertButton();
         }
 
         private void buttonConvert_Click(object sender, EventArgs e)
@@ -94,21 +109,26 @@ namespace AgOpenGPS.Forms.Profiles
             if (listViewFiles.SelectedItems.Count == 0) return;
 
             string sourceFile = listViewFiles.SelectedItems[0].Text;
-            string vehicleName = textBoxVehicleName.Text.Trim();
+            bool exportVehicle = checkBoxVehicle.Checked;
+            string vehicleName = exportVehicle ? textBoxVehicleName.Text.Trim() : null;
             string toolName = textBoxToolName.Text.Trim();
             bool exportEnv = checkBoxEnvironment.Checked;
             string envName = textBoxEnvName.Text.Trim();
 
-            if (string.IsNullOrEmpty(vehicleName) || string.IsNullOrEmpty(toolName)) return;
+            if (exportVehicle && string.IsNullOrEmpty(vehicleName)) return;
+            if (string.IsNullOrEmpty(toolName)) return;
             if (exportEnv && string.IsNullOrEmpty(envName)) return;
 
             // Check for existing files
             var overwrites = new List<string>();
-            string vehiclePath = Path.Combine(RegistrySettings.vehiclesDirectory, vehicleName + ".xml");
             string toolPath = Path.Combine(RegistrySettings.toolsDirectory, toolName + ".xml");
 
-            if (File.Exists(vehiclePath) && CSettingsMigration.IsSettingsType(vehiclePath, "VehicleSettings"))
-                overwrites.Add($"Vehicle: {vehicleName}");
+            if (exportVehicle)
+            {
+                string vehiclePath = Path.Combine(RegistrySettings.vehiclesDirectory, vehicleName + ".xml");
+                if (File.Exists(vehiclePath) && CSettingsMigration.IsSettingsType(vehiclePath, "VehicleSettings"))
+                    overwrites.Add($"Vehicle: {vehicleName}");
+            }
             if (File.Exists(toolPath) && CSettingsMigration.IsSettingsType(toolPath, "ToolSettings"))
                 overwrites.Add($"Tool: {toolName}");
             if (exportEnv)
@@ -119,7 +139,7 @@ namespace AgOpenGPS.Forms.Profiles
             }
 
             string confirmMsg = $"Convert '{sourceFile}' to:\n\n" +
-                $"  Vehicle: {vehicleName}\n" +
+                (exportVehicle ? $"  Vehicle: {vehicleName}\n" : "") +
                 $"  Tool: {toolName}\n" +
                 (exportEnv ? $"  Environment: {envName}\n" : "") +
                 "\nOriginal will be backed up.";
@@ -139,11 +159,14 @@ namespace AgOpenGPS.Forms.Profiles
             if (tResult != LoadResult.Ok)
                 errors.Add($"Tool: {tResult}");
 
-            // Convert Vehicle
-            var vSettings = new VehicleSettings();
-            var vResult = CSettingsMigration.MigrateVehicle(sourceFile, vehicleName, vSettings);
-            if (vResult != LoadResult.Ok)
-                errors.Add($"Vehicle: {vResult}");
+            // Convert Vehicle (optional)
+            if (exportVehicle)
+            {
+                var vSettings = new VehicleSettings();
+                var vResult = CSettingsMigration.MigrateVehicle(sourceFile, vehicleName, vSettings);
+                if (vResult != LoadResult.Ok)
+                    errors.Add($"Vehicle: {vResult}");
+            }
 
             // Convert Environment (optional)
             if (exportEnv)
@@ -158,7 +181,9 @@ namespace AgOpenGPS.Forms.Profiles
                 // Backup old file
                 CSettingsMigration.BackupOldFile(sourceFile);
 
-                Log.EventWriter($"Converted '{sourceFile}' -> Vehicle:'{vehicleName}', Tool:'{toolName}'" +
+                Log.EventWriter($"Converted '{sourceFile}' -> " +
+                    (exportVehicle ? $"Vehicle:'{vehicleName}', " : "") +
+                    $"Tool:'{toolName}'" +
                     (exportEnv ? $", Env:'{envName}'" : ""));
 
                 FormDialog.Show("Conversion Complete",

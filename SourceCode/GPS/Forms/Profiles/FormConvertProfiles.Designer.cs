@@ -24,7 +24,7 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonConvert = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.panelDetails = new System.Windows.Forms.Panel();
-            this.labelVehicleName = new System.Windows.Forms.Label();
+            this.checkBoxVehicle = new System.Windows.Forms.CheckBox();
             this.textBoxVehicleName = new System.Windows.Forms.TextBox();
             this.labelToolName = new System.Windows.Forms.Label();
             this.textBoxToolName = new System.Windows.Forms.TextBox();
@@ -97,7 +97,7 @@ namespace AgOpenGPS.Forms.Profiles
             //
             this.panelDetails.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelDetails.Controls.Add(this.labelVehicleName);
+            this.panelDetails.Controls.Add(this.checkBoxVehicle);
             this.panelDetails.Controls.Add(this.textBoxVehicleName);
             this.panelDetails.Controls.Add(this.labelToolName);
             this.panelDetails.Controls.Add(this.textBoxToolName);
@@ -109,15 +109,17 @@ namespace AgOpenGPS.Forms.Profiles
             this.panelDetails.Size = new System.Drawing.Size(370, 240);
             this.panelDetails.TabIndex = 2;
             //
-            // labelVehicleName
+            // checkBoxVehicle
             //
-            this.labelVehicleName.Font = new System.Drawing.Font("Tahoma", 12F);
-            this.labelVehicleName.Location = new System.Drawing.Point(5, 5);
-            this.labelVehicleName.Name = "labelVehicleName";
-            this.labelVehicleName.Size = new System.Drawing.Size(350, 25);
-            this.labelVehicleName.TabIndex = 0;
-            this.labelVehicleName.Text = "Vehicle name:";
-            this.labelVehicleName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.checkBoxVehicle.Checked = true;
+            this.checkBoxVehicle.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxVehicle.Font = new System.Drawing.Font("Tahoma", 12F);
+            this.checkBoxVehicle.Location = new System.Drawing.Point(5, 5);
+            this.checkBoxVehicle.Name = "checkBoxVehicle";
+            this.checkBoxVehicle.Size = new System.Drawing.Size(350, 25);
+            this.checkBoxVehicle.TabIndex = 0;
+            this.checkBoxVehicle.Text = "Also export Vehicle settings";
+            this.checkBoxVehicle.CheckedChanged += new System.EventHandler(this.checkBoxVehicle_CheckedChanged);
             //
             // textBoxVehicleName
             //
@@ -246,7 +248,7 @@ namespace AgOpenGPS.Forms.Profiles
         private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Panel panelDetails;
-        private System.Windows.Forms.Label labelVehicleName;
+        private System.Windows.Forms.CheckBox checkBoxVehicle;
         private System.Windows.Forms.TextBox textBoxVehicleName;
         private System.Windows.Forms.Label labelToolName;
         private System.Windows.Forms.TextBox textBoxToolName;
