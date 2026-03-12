@@ -181,9 +181,10 @@ namespace AgOpenGPS.Properties
         private LoadResult MigrateFromOld()
         {
             // Check if old vehicle file exists
+            // Note: old combined profiles are in baseDirectory\Vehicles, not VehicleProfiles
             if (!string.IsNullOrEmpty(RegistrySettings.vehicleFileName))
             {
-                string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, RegistrySettings.vehicleFileName + ".XML");
+                string oldPath = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", RegistrySettings.vehicleFileName + ".xml");
                 if (File.Exists(oldPath))
                 {
                     SettingsLegacy oldSettings = new SettingsLegacy();
