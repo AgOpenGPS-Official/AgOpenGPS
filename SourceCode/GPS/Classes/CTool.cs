@@ -71,7 +71,7 @@ namespace AgOpenGPS
 
             trailingHitchLength = Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength;
             tankTrailingHitchLength = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength;
-            hitchLength = Properties.VehicleSettings.Default.setVehicle_hitchLength;
+            hitchLength = Properties.ToolSettings.Default.setVehicle_hitchLength;
 
             isToolRearFixed = Properties.ToolSettings.Default.setTool_isToolRearFixed;
             isToolTrailing = Properties.ToolSettings.Default.setTool_isToolTrailing;

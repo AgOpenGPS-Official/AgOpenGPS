@@ -124,7 +124,7 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setWindow_tramLineSize = Size;
             Properties.Settings.Default.setTram_alpha = mf.tram.alpha;
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.ToolSettings.Default.Save();
             Properties.Settings.Default.Save();
         }
 

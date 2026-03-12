@@ -46,7 +46,7 @@ namespace AgOpenGPS.Forms.Config
             lblSumWheelbase.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_wheelbase);
             lblAntPivot.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_antennaPivot);
             lblAntOffset.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_antennaOffset);
-            lblHitch.Text = Distance.SmallDistanceString(mf.isMetric, vs.setVehicle_hitchLength);
+            lblHitch.Text = Distance.SmallDistanceString(mf.isMetric, ts.setVehicle_hitchLength);
 
             // Tool panel
             lblSummaryToolName.Text = RegistrySettings.toolFileName;

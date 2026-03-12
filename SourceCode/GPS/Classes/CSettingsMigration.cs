@@ -120,7 +120,6 @@ namespace AgOpenGPS
             dest.setVehicle_maxSteerAngle = source.setVehicle_maxSteerAngle;
             dest.setVehicle_maxAngularVelocity = source.setVehicle_maxAngularVelocity;
             dest.setVehicle_trackWidth = source.setVehicle_trackWidth;
-            dest.setVehicle_hitchLength = source.setVehicle_hitchLength;
 
             // AutoSteer (zonder snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn, uTurnSmoothing, uTurnCompensation - die zitten nu in Environment)
             dest.setAS_Kp = source.setAS_Kp;
@@ -179,6 +178,8 @@ namespace AgOpenGPS
             dest.setVehicle_toolTrailingHitchLength = source.setVehicle_toolTrailingHitchLength;
             dest.setVehicle_toolLookAheadOn = source.setVehicle_toolLookAheadOn;
             dest.setVehicle_toolLookAheadOff = source.setVehicle_toolLookAheadOff;
+            dest.setVehicle_hitchLength = source.setVehicle_hitchLength;
+
             dest.setTool_isToolTrailing = source.setTool_isToolTrailing;
             dest.setTool_isToolRearFixed = source.setTool_isToolRearFixed;
             dest.setTool_isToolTBT = source.setTool_isToolTBT;

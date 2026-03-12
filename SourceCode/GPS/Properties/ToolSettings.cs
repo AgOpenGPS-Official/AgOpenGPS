@@ -21,6 +21,8 @@ namespace AgOpenGPS.Properties
         public double setVehicle_toolTrailingHitchLength = -2.5;
         public double setVehicle_toolLookAheadOn = 1;
         public double setVehicle_toolLookAheadOff = 0.5;
+        public double setVehicle_hitchLength = -1;
+
         public bool setTool_isToolTrailing = true;
         public bool setTool_isToolRearFixed = false;
         public bool setTool_isToolTBT = false;
@@ -125,14 +127,40 @@ namespace AgOpenGPS.Properties
                 // Try loading from old format and migrate
                 return CSettingsMigration.MigrateTool(toolFileName, this);
             }
+
+            // Update registry with the loaded tool file name
+            if (result == LoadResult.Ok)
+            {
+                RegistrySettings.toolFileName = toolFileName;
+            }
+
             return result;
         }
 
-        public void Save(string toolFileName)
+        /// <summary>
+        /// Save tool settings to file using the file name from registry.
+        /// Uses "DefaultTool" as fallback if registry value is empty.
+        /// </summary>
+        public void Save()
         {
-            string path = Path.Combine(RegistrySettings.toolsDirectory, toolFileName + ".xml");
-            if (!string.IsNullOrEmpty(toolFileName))
-                XmlSettingsHandler.SaveXMLFile(path, this);
+            // Read file name from registry, use fallback if empty
+            string fileName = string.IsNullOrEmpty(RegistrySettings.toolFileName)
+                ? "DefaultTool"
+                : RegistrySettings.toolFileName;
+
+            string path = Path.Combine(RegistrySettings.toolsDirectory, fileName + ".xml");
+            XmlSettingsHandler.SaveXMLFile(path, this);
+        }
+
+        /// <summary>
+        /// Save tool settings to a specific file (used during migration).
+        /// This overload saves to a custom file name without updating the registry.
+        /// </summary>
+        /// <param name="fileName">The file name to save to (without extension)</param>
+        public void Save(string fileName)
+        {
+            string path = Path.Combine(RegistrySettings.toolsDirectory, fileName + ".xml");
+            XmlSettingsHandler.SaveXMLFile(path, this);
         }
 
         public void Reset()

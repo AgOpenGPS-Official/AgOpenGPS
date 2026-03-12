@@ -272,8 +272,8 @@ namespace AgOpenGPS
             mf.LoadSettings();
 
             //save current vehicle
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
             Properties.Settings.Default.Save();
         }
 

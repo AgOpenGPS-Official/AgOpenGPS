@@ -1833,7 +1833,7 @@ namespace AgOpenGPS
             else cboxIsSectionControlled.Image = Properties.Resources.HeadlandSectionOff;
             bnd.isSectionControlledByHeadland = cboxIsSectionControlled.Checked;
             Properties.ToolSettings.Default.setHeadland_isSectionControlled = cboxIsSectionControlled.Checked;
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.ToolSettings.Default.Save();
         }
         private void btnHydLift_Click(object sender, EventArgs e)
         {

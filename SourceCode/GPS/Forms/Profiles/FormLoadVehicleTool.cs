@@ -238,7 +238,6 @@ namespace AgOpenGPS.Forms.Profiles
             lblVehAntPivot.Text = "Ant. Pivot: " + preview.setVehicle_antennaPivot.ToString("N2") + " m";
             lblVehAntOffset.Text = "Ant. Offset: " + preview.setVehicle_antennaOffset.ToString("N2") + " m";
             lblVehTrackWidth.Text = "Track Width: " + preview.setVehicle_trackWidth.ToString("N2") + " m";
-            lblVehHitch.Text = "Hitch: " + preview.setVehicle_hitchLength.ToString("N2") + " m";
         }
 
         private void ClearVehiclePreview()
@@ -269,6 +268,8 @@ namespace AgOpenGPS.Forms.Profiles
             lblToolSections.Text = "Sections: " + preview.setVehicle_numSections.ToString();
             lblToolAttach.Text = "Attach: " + attach;
             lblToolHitch.Text = "Trail Hitch: " + preview.setVehicle_toolTrailingHitchLength.ToString("N2") + " m";
+            lblVehHitch.Text = "Hitch: " + preview.setVehicle_hitchLength.ToString("N2") + " m";
+
         }
 
         private void ClearToolPreview()
@@ -407,7 +408,7 @@ namespace AgOpenGPS.Forms.Profiles
                 if (!field.IsStatic)
                     field.SetValue(VehicleSettings.Default, field.GetValue(fresh));
             }
-            VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            VehicleSettings.Default.Save();
 
             _formGPS.vehicle = new CVehicle(_formGPS);
             _formGPS.LoadSettings();
@@ -431,7 +432,7 @@ namespace AgOpenGPS.Forms.Profiles
                 if (!field.IsStatic)
                     field.SetValue(ToolSettings.Default, field.GetValue(fresh));
             }
-            ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            ToolSettings.Default.Save();
 
             _formGPS.tool = new CTool(_formGPS);
             _formGPS.LoadSettings();

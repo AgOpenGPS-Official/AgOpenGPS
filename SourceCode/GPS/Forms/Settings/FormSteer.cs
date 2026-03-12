@@ -375,8 +375,8 @@ namespace AgOpenGPS
             Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
             //save current vehicle and tool
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
             Properties.Settings.Default.Save();
         }
 
@@ -597,7 +597,7 @@ namespace AgOpenGPS
         private void tabSettings_Leave(object sender, EventArgs e)
         {
             Properties.VehicleSettings.Default.setAS_isSteerInReverse = cboxSteerInReverse.Checked;
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.VehicleSettings.Default.Save();
         }
 
         private void hsbarUTurnCompensation_ValueChanged(object sender, EventArgs e)
@@ -644,8 +644,8 @@ namespace AgOpenGPS
 
 
             Properties.ToolSettings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
 
             if (mf.isStanleyUsed)
             {
@@ -1176,7 +1176,7 @@ namespace AgOpenGPS
 
             Properties.VehicleSettings.Default.setArdSteer_setting1 = (byte)sett;
 
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.VehicleSettings.Default.Save();
 
             mf.p_251.pgn[mf.p_251.set0] = Properties.VehicleSettings.Default.setArdSteer_setting0;
             mf.p_251.pgn[mf.p_251.set1] = Properties.VehicleSettings.Default.setArdSteer_setting1;
@@ -1262,8 +1262,8 @@ namespace AgOpenGPS
                 mf.isSteerInReverse = false;
 
                 //save current vehicle and tool
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+                Properties.VehicleSettings.Default.Save();
+                Properties.ToolSettings.Default.Save();
 
                 mf.vehicle = new CVehicle(mf);
 

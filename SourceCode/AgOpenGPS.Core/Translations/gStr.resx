@@ -987,8 +987,26 @@ Load from Config panel &amp; Top Left Menu.</value>
   <data name="gsSaveSettings" xml:space="preserve">
     <value>Saving settings</value>
   </data>
+  <data name="gsSaveEnvironmentSettings" xml:space="preserve">
+    <value>Environment settings</value>
+  </data>
+  <data name="gsSaveEnvironmentSettingsSaved" xml:space="preserve">
+    <value>Environment settings saved.</value>
+  </data>
   <data name="gsSaveSettingsSaved" xml:space="preserve">
     <value>Settings saved.</value>
+  </data>
+  <data name="gsSaveVehicleSettings" xml:space="preserve">
+    <value>Vehicle settings</value>
+  </data>
+  <data name="gsSaveVehicleSettingsSaved" xml:space="preserve">
+    <value>Vehicle settings saved.</value>
+  </data>
+  <data name="gsSaveToolSettings" xml:space="preserve">
+    <value>Tool settings</value>
+  </data>
+  <data name="gsSaveToolSettingsSaved" xml:space="preserve">
+    <value>Tool settings saved.</value>
   </data>
   <data name="gsSaveUploadCompleted" xml:space="preserve">
     <value>Upload complete.</value>

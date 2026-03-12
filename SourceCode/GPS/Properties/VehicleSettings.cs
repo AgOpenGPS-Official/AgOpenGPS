@@ -21,7 +21,6 @@ namespace AgOpenGPS.Properties
         public double setVehicle_maxSteerAngle = 30;
         public double setVehicle_maxAngularVelocity = 0.64;
         public double setVehicle_trackWidth = 1.9;
-        public double setVehicle_hitchLength = -1;
 
         // AutoSteer settings (zonder snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn, uTurnSmoothing, uTurnCompensation - die zitten nu in Environment)
         public byte setAS_Kp = 50;
@@ -78,14 +77,40 @@ namespace AgOpenGPS.Properties
                 // Try loading from old format and migrate
                 return CSettingsMigration.MigrateVehicle(vehicleFileName, this);
             }
+
+            // Update registry with the loaded vehicle file name
+            if (result == LoadResult.Ok)
+            {
+                RegistrySettings.vehicleFileName = vehicleFileName;
+            }
+
             return result;
         }
 
-        public void Save(string vehicleFileName)
+        /// <summary>
+        /// Save vehicle settings to file using the file name from registry.
+        /// Uses "DefaultVehicle" as fallback if registry value is empty.
+        /// </summary>
+        public void Save()
         {
-            string path = Path.Combine(RegistrySettings.vehiclesDirectory, vehicleFileName + ".xml");
-            if (!string.IsNullOrEmpty(vehicleFileName))
-                XmlSettingsHandler.SaveXMLFile(path, this);
+            // Read file name from registry, use fallback if empty
+            string fileName = string.IsNullOrEmpty(RegistrySettings.vehicleFileName)
+                ? "DefaultVehicle"
+                : RegistrySettings.vehicleFileName;
+
+            string path = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            XmlSettingsHandler.SaveXMLFile(path, this);
+        }
+
+        /// <summary>
+        /// Save vehicle settings to a specific file (used during migration).
+        /// This overload saves to a custom file name without updating the registry.
+        /// </summary>
+        /// <param name="fileName">The file name to save to (without extension)</param>
+        public void Save(string fileName)
+        {
+            string path = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            XmlSettingsHandler.SaveXMLFile(path, this);
         }
 
         public void Reset()

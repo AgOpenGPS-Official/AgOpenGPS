@@ -248,8 +248,8 @@ namespace AgOpenGPS
             Properties.VehicleSettings.Default.setIMU_invertRoll = mf.ahrs.isRollInvert;
 
             //save current vehicle and tool
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
             Properties.Settings.Default.Save();
         }
 
@@ -372,7 +372,7 @@ namespace AgOpenGPS
                 Properties.VehicleSettings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
                 Properties.VehicleSettings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
 
                 mf.SendPgnToLoop(mf.p_252.pgn);
                 toSend252 = false;
@@ -470,7 +470,7 @@ namespace AgOpenGPS
 
                 Properties.VehicleSettings.Default.setArdSteer_setting1 = (byte)sett;
 
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
 
                 mf.p_251.pgn[mf.p_251.set0] = Properties.VehicleSettings.Default.setArdSteer_setting0;
                 mf.p_251.pgn[mf.p_251.set1] = Properties.VehicleSettings.Default.setArdSteer_setting1;
@@ -598,8 +598,8 @@ namespace AgOpenGPS
             counter251 = 2;
 
             //save current vehicle and tool
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
 
             FormSteer_Load(this, e);
         }
@@ -1173,7 +1173,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.Wheelbase = Properties.VehicleSettings.Default.setVehicle_wheelbase;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -1184,7 +1184,7 @@ namespace AgOpenGPS
                 Properties.VehicleSettings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
                 mf.tram.halfWheelTrack = mf.vehicle.VehicleConfig.TrackWidth * 0.5;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -1194,7 +1194,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_antennaPivot = (double)nudAntennaPivot.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.AntennaPivot = Properties.VehicleSettings.Default.setVehicle_antennaPivot;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -1238,7 +1238,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_antennaHeight = (double)nudAntennaHeight.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.AntennaHeight = Properties.VehicleSettings.Default.setVehicle_antennaHeight;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -1248,7 +1248,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_antennaOffset = (double)nudAntennaOffset.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.AntennaOffset = Properties.VehicleSettings.Default.setVehicle_antennaOffset;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 

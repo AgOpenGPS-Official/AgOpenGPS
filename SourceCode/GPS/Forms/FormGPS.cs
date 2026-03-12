@@ -633,7 +633,9 @@ namespace AgOpenGPS
                     // Setup progress steps
                     savingForm.AddStep("Field", gStr.gsSaveField);
                     if (isAgShareEnabled) savingForm.AddStep("AgShare", gStr.gsSaveUploadToAgshare);
-                    savingForm.AddStep("Settings", gStr.gsSaveSettings);
+                    savingForm.AddStep("Vehicle", gStr.gsSaveVehicleSettings);
+                    savingForm.AddStep("Tool", gStr.gsSaveToolSettings);
+                    savingForm.AddStep("Environment", gStr.gsSaveEnvironmentSettings);
                     savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
 
                     savingForm.Show();
@@ -692,18 +694,45 @@ namespace AgOpenGPS
                     // STEP 3: Settings + System Log
                     try
                     {
-                        Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-                        Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
-                        Settings.Default.Save();
-                        Log.FileSaveSystemEvents();
-                        await Task.Delay(300);
-                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                        // Save Vehicle Settings
+                        Properties.VehicleSettings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Vehicle", gStr.gsSaveVehicleSettingsSaved, SavingStepState.Done);
                     }
                     catch (Exception ex)
                     {
-                        Log.EventWriter($"Settings save error: {ex}");
-                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
+                        Log.EventWriter($"Vehicle settings save error: {ex}");
+                        savingForm.UpdateStep("Vehicle", "Vehicle settings save failed", SavingStepState.Failed);
                     }
+
+                    try
+                    {
+                        // Save Tool Settings
+                        Properties.ToolSettings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Tool", gStr.gsSaveToolSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Tool settings save error: {ex}");
+                        savingForm.UpdateStep("Tool", "Tool settings save failed", SavingStepState.Failed);
+                    }
+
+                    try
+                    {
+                        // Save Environment Settings
+                        Settings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Environment", gStr.gsSaveEnvironmentSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Environment settings save error: {ex}");
+                        savingForm.UpdateStep("Environment", "Environment settings save failed", SavingStepState.Failed);
+                    }
+
+                    // System Log
+                    Log.FileSaveSystemEvents();
 
                     // STEP 4: Finalizing
                     await Task.Delay(500);
@@ -714,26 +743,55 @@ namespace AgOpenGPS
                 else
                 {
                     // Job not started - just save settings with visual feedback
-                    savingForm.AddStep("Settings", gStr.gsSaveSettings);
+                    savingForm.AddStep("Vehicle", gStr.gsSaveVehicleSettings);
+                    savingForm.AddStep("Tool", gStr.gsSaveToolSettings);
+                    savingForm.AddStep("Environment", gStr.gsSaveEnvironmentSettings);
                     savingForm.AddStep("Finalize", gStr.gsSaveFinalizeShutdown);
 
                     savingForm.Show();
                     await Task.Delay(300); // Let UI settle
 
+                    // Save Vehicle Settings
                     try
                     {
-                        Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-                        Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
-                        Settings.Default.Save();
-                        Log.FileSaveSystemEvents();
-                        await Task.Delay(300);
-                        savingForm.UpdateStep("Settings", gStr.gsSaveSettingsSaved, SavingStepState.Done);
+                        Properties.VehicleSettings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Vehicle", gStr.gsSaveVehicleSettingsSaved, SavingStepState.Done);
                     }
                     catch (Exception ex)
                     {
-                        Log.EventWriter($"Settings save error: {ex}");
-                        savingForm.UpdateStep("Settings", "Settings save failed", SavingStepState.Failed);
+                        Log.EventWriter($"Vehicle settings save error: {ex}");
+                        savingForm.UpdateStep("Vehicle", "Vehicle settings save failed", SavingStepState.Failed);
                     }
+
+                    // Save Tool Settings
+                    try
+                    {
+                        Properties.ToolSettings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Tool", gStr.gsSaveToolSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Tool settings save error: {ex}");
+                        savingForm.UpdateStep("Tool", "Tool settings save failed", SavingStepState.Failed);
+                    }
+
+                    // Save Environment Settings
+                    try
+                    {
+                        Settings.Default.Save();
+                        await Task.Delay(100);
+                        savingForm.UpdateStep("Environment", gStr.gsSaveEnvironmentSettingsSaved, SavingStepState.Done);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.EventWriter($"Environment settings save error: {ex}");
+                        savingForm.UpdateStep("Environment", "Environment settings save failed", SavingStepState.Failed);
+                    }
+
+                    // System Log
+                    Log.FileSaveSystemEvents();
 
                     // Finalizing
                     await Task.Delay(500);

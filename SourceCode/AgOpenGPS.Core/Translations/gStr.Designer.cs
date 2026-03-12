@@ -2672,7 +2672,61 @@ namespace AgOpenGPS.Core.Translations {
                 return ResourceManager.GetString("gsSaveSettingsSaved", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Environment settings.
+        /// </summary>
+        public static string gsSaveEnvironmentSettings {
+            get {
+                return ResourceManager.GetString("gsSaveEnvironmentSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Environment settings saved..
+        /// </summary>
+        public static string gsSaveEnvironmentSettingsSaved {
+            get {
+                return ResourceManager.GetString("gsSaveEnvironmentSettingsSaved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle settings.
+        /// </summary>
+        public static string gsSaveVehicleSettings {
+            get {
+                return ResourceManager.GetString("gsSaveVehicleSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle settings saved..
+        /// </summary>
+        public static string gsSaveVehicleSettingsSaved {
+            get {
+                return ResourceManager.GetString("gsSaveVehicleSettingsSaved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tool settings.
+        /// </summary>
+        public static string gsSaveToolSettings {
+            get {
+                return ResourceManager.GetString("gsSaveToolSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tool settings saved..
+        /// </summary>
+        public static string gsSaveToolSettingsSaved {
+            get {
+                return ResourceManager.GetString("gsSaveToolSettingsSaved", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Upload complete..
         /// </summary>

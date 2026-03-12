@@ -30,7 +30,6 @@ namespace AgOpenGPS.Forms.Profiles
             this.lblVehAntPivot = new System.Windows.Forms.Label();
             this.lblVehAntOffset = new System.Windows.Forms.Label();
             this.lblVehTrackWidth = new System.Windows.Forms.Label();
-            this.lblVehHitch = new System.Windows.Forms.Label();
             this.lblToolWidth = new System.Windows.Forms.Label();
             this.lblToolOverlap = new System.Windows.Forms.Label();
             this.lblToolOffset = new System.Windows.Forms.Label();
@@ -44,6 +43,7 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonDeleteVehicle = new System.Windows.Forms.Button();
             this.buttonDeleteTool = new System.Windows.Forms.Button();
             this.buttonConvertOld = new System.Windows.Forms.Button();
+            this.lblVehHitch = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listViewVehicles
@@ -183,16 +183,6 @@ namespace AgOpenGPS.Forms.Profiles
             this.lblVehTrackWidth.Size = new System.Drawing.Size(220, 20);
             this.lblVehTrackWidth.TabIndex = 10;
             this.lblVehTrackWidth.Text = "Track Width:";
-            // 
-            // lblVehHitch
-            // 
-            this.lblVehHitch.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.lblVehHitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblVehHitch.Location = new System.Drawing.Point(242, 429);
-            this.lblVehHitch.Name = "lblVehHitch";
-            this.lblVehHitch.Size = new System.Drawing.Size(220, 20);
-            this.lblVehHitch.TabIndex = 11;
-            this.lblVehHitch.Text = "Hitch:";
             // 
             // lblToolWidth
             // 
@@ -356,6 +346,16 @@ namespace AgOpenGPS.Forms.Profiles
             this.buttonConvertOld.UseVisualStyleBackColor = false;
             this.buttonConvertOld.Click += new System.EventHandler(this.buttonConvertOld_Click);
             // 
+            // lblVehHitch
+            // 
+            this.lblVehHitch.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblVehHitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.lblVehHitch.Location = new System.Drawing.Point(501, 449);
+            this.lblVehHitch.Name = "lblVehHitch";
+            this.lblVehHitch.Size = new System.Drawing.Size(220, 20);
+            this.lblVehHitch.TabIndex = 26;
+            this.lblVehHitch.Text = "Hitch:";
+            // 
             // FormLoadVehicleTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -363,6 +363,7 @@ namespace AgOpenGPS.Forms.Profiles
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1008, 545);
             this.ControlBox = false;
+            this.Controls.Add(this.lblVehHitch);
             this.Controls.Add(this.lblCurrentVehicle);
             this.Controls.Add(this.listViewVehicles);
             this.Controls.Add(this.buttonDeleteVehicle);
@@ -373,7 +374,6 @@ namespace AgOpenGPS.Forms.Profiles
             this.Controls.Add(this.lblVehAntPivot);
             this.Controls.Add(this.lblVehAntOffset);
             this.Controls.Add(this.lblVehTrackWidth);
-            this.Controls.Add(this.lblVehHitch);
             this.Controls.Add(this.lblCurrentTool);
             this.Controls.Add(this.listViewTools);
             this.Controls.Add(this.buttonDeleteTool);
@@ -414,7 +414,6 @@ namespace AgOpenGPS.Forms.Profiles
         private System.Windows.Forms.Label lblVehAntPivot;
         private System.Windows.Forms.Label lblVehAntOffset;
         private System.Windows.Forms.Label lblVehTrackWidth;
-        private System.Windows.Forms.Label lblVehHitch;
         private System.Windows.Forms.Label lblToolWidth;
         private System.Windows.Forms.Label lblToolOverlap;
         private System.Windows.Forms.Label lblToolOffset;
@@ -428,5 +427,6 @@ namespace AgOpenGPS.Forms.Profiles
         private System.Windows.Forms.Button buttonDeleteVehicle;
         private System.Windows.Forms.Button buttonDeleteTool;
         private System.Windows.Forms.Button buttonConvertOld;
+        private System.Windows.Forms.Label lblVehHitch;
     }
 }

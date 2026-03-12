@@ -65,8 +65,8 @@ namespace AgOpenGPS
             Properties.Settings.Default.setDisplay_isLineSmooth = mf.isLineSmooth;
             Properties.Settings.Default.isHeadlandDistanceOn = mf.isHeadlandDistanceOn;
 
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
             Properties.Settings.Default.Save();
         }
 
@@ -105,7 +105,7 @@ namespace AgOpenGPS
 
         private void tabVAntenna_Leave(object sender, EventArgs e)
         {
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+            Properties.VehicleSettings.Default.Save();
         }
 
         private void rbtnAntennaLeft_Click(object sender, EventArgs e)
@@ -182,7 +182,7 @@ namespace AgOpenGPS
 
             nudVehicleTrack.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_trackWidth) * mf.m2InchOrCm);
 
-            nudTractorHitchLength.Value = (int)(Math.Abs(Properties.VehicleSettings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
+            nudTractorHitchLength.Value = (int)(Math.Abs(Properties.ToolSettings.Default.setVehicle_hitchLength) * mf.m2InchOrCm);
 
             if (mf.vehicle.VehicleConfig.Type == VehicleType.Tractor)
             {
@@ -216,7 +216,7 @@ namespace AgOpenGPS
                 {
                     mf.tool.hitchLength *= -1;
                 }
-                Properties.VehicleSettings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
+                Properties.ToolSettings.Default.setVehicle_hitchLength = mf.tool.hitchLength;
             }
         }
 
@@ -226,7 +226,7 @@ namespace AgOpenGPS
             {
                 Properties.VehicleSettings.Default.setVehicle_wheelbase = (double)nudWheelbase.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.Wheelbase = Properties.VehicleSettings.Default.setVehicle_wheelbase;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -237,7 +237,7 @@ namespace AgOpenGPS
                 Properties.VehicleSettings.Default.setVehicle_trackWidth = (double)nudVehicleTrack.Value * mf.inchOrCm2m;
                 mf.vehicle.VehicleConfig.TrackWidth = Properties.VehicleSettings.Default.setVehicle_trackWidth;
                 mf.tram.halfWheelTrack = mf.vehicle.VehicleConfig.TrackWidth * 0.5;
-                Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
+                Properties.VehicleSettings.Default.Save();
             }
         }
 
@@ -289,8 +289,8 @@ namespace AgOpenGPS
                     break;
             }
 
-            Properties.VehicleSettings.Default.Save(RegistrySettings.vehicleFileName);
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.VehicleSettings.Default.Save();
+            Properties.ToolSettings.Default.Save();
             Settings.Default.Save();
         }
 

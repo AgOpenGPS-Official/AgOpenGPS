@@ -153,7 +153,6 @@ namespace AgOpenGPS
             AddRow(mid, "Antenna Pivot", vsDefault.setVehicle_antennaPivot, vs.setVehicle_antennaPivot);
             AddRow(mid, "Antenna Offset", vsDefault.setVehicle_antennaOffset, vs.setVehicle_antennaOffset);
             AddRow(mid, "Antenna Height", vsDefault.setVehicle_antennaHeight, vs.setVehicle_antennaHeight);
-            AddRow(mid, "Hitch Length", vsDefault.setVehicle_hitchLength, vs.setVehicle_hitchLength);
 
             right.Rows.Clear();
             AddHeader(right, "── GPS");
@@ -188,6 +187,8 @@ namespace AgOpenGPS
             AddRow(left, "Trailing Hitch", tsDefault.setVehicle_toolTrailingHitchLength, ts.setVehicle_toolTrailingHitchLength);
             AddRow(left, "Tank Trailing", tsDefault.setVehicle_tankTrailingHitchLength, ts.setVehicle_tankTrailingHitchLength);
             AddRow(left, "Trailing To Pivot", tsDefault.setTool_trailingToolToPivotLength, ts.setTool_trailingToolToPivotLength);
+            AddRow(mid, "Hitch Length", tsDefault.setVehicle_hitchLength, ts.setVehicle_hitchLength);
+
 
             AddHeader(left, "── Tool Type");
             AddRow(left, "Is Trailing", tsDefault.setTool_isToolTrailing, ts.setTool_isToolTrailing);
