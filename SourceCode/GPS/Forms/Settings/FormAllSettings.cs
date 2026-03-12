@@ -485,7 +485,7 @@ namespace AgOpenGPS
 
         private void btnExportCSV_Click(object sender, EventArgs e)
         {
-            string path = Path.Combine(RegistrySettings.baseDirectory, "AllSettings.tsv");
+            string path = Path.Combine(RegistrySettings.baseDirectory, "AllSettings.csv");
             ExportToCSV(path);
             System.Diagnostics.Process.Start("explorer.exe", RegistrySettings.baseDirectory);
             Log.EventWriter("View All Settings to CSV");
