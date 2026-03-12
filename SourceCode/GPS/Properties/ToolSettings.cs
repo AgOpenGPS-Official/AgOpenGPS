@@ -78,10 +78,10 @@ namespace AgOpenGPS.Properties
         public Color setColor_sec16 = Color.FromArgb(247, 229, 215);
         public bool setColor_isMultiColorSections = false;
 
-        // Tram
-        public double setTram_tramWidth = 24.0;
-        public int setTram_passes = 1;
-        public double setTram_alpha = 0.8;
+        // DeadZone settings (from Vehicle)
+        public int setAS_deadZoneDistance = 1;
+        public int setAS_deadZoneHeading = 10;
+        public int setAS_deadZoneDelay = 5;
 
         // Headland
         public bool setHeadland_isSectionControlled = true;

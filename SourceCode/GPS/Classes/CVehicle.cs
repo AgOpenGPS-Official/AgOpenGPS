@@ -79,8 +79,8 @@ namespace AgOpenGPS
 
             hydLiftLookAheadTime = Properties.ToolSettings.Default.setVehicle_hydraulicLiftLookAhead;
 
-            deadZoneHeading = Properties.VehicleSettings.Default.setAS_deadZoneHeading;
-            deadZoneDelay = Properties.VehicleSettings.Default.setAS_deadZoneDelay;
+            deadZoneHeading = Properties.ToolSettings.Default.setAS_deadZoneHeading;
+            deadZoneDelay = Properties.ToolSettings.Default.setAS_deadZoneDelay;
 
             isInFreeDriveMode = false;
 

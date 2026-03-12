@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -123,7 +123,7 @@ namespace AgOpenGPS
             mf.FixTramModeButton();
 
             Properties.Settings.Default.setWindow_tramLineSize = Size;
-            Properties.ToolSettings.Default.setTram_alpha = mf.tram.alpha;
+            Properties.Settings.Default.setTram_alpha = mf.tram.alpha;
             Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
             Properties.Settings.Default.Save();
         }

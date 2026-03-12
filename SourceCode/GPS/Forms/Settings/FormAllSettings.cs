@@ -132,8 +132,6 @@ namespace AgOpenGPS
             AddRow(left, "Panic Stop Speed", vsDefault.setVehicle_panicStopSpeed, vs.setVehicle_panicStopSpeed);
             AddRow(left, "Steer In Reverse", vsDefault.setAS_isSteerInReverse, vs.setAS_isSteerInReverse);
             AddRow(left, "Side Hill Comp", vsDefault.setAS_sideHillComp, vs.setAS_sideHillComp);
-            AddRow(left, "Dead Zone Heading", vsDefault.setAS_deadZoneHeading, vs.setAS_deadZoneHeading);
-            AddRow(left, "Dead Zone Delay", vsDefault.setAS_deadZoneDelay, vs.setAS_deadZoneDelay);
 
             AddHeader(left, "── Arduino Steer");
             AddRow(left, "Counts/Degree", vsDefault.setAS_countsPerDegree, vs.setAS_countsPerDegree);
@@ -177,7 +175,7 @@ namespace AgOpenGPS
             AddRow(right, "Articulated Brand", vsDefault.setBrand_WDBrand, vs.setBrand_WDBrand);
         }
 
-        // ── Tool: L = Dimensions + Type, M = Sections + Lookahead + Guidance, R = Tram + Work Switch ──
+        // ── Tool: L = Dimensions + Type, M = Sections + Lookahead + Guidance, R = Work Switch ──
 
         private static void PopulateTool(DataGridView left, DataGridView mid, DataGridView right, ToolSettings ts)
         {
@@ -211,6 +209,9 @@ namespace AgOpenGPS
             AddRow(mid, "Headland Sect. Ctrl", tsDefault.setHeadland_isSectionControlled, ts.setHeadland_isSectionControlled);
 
             AddHeader(mid, "── Guidance (per Tool)");
+            AddRow(mid, "DeadZone Dist", tsDefault.setAS_deadZoneDistance, ts.setAS_deadZoneDistance);
+            AddRow(mid, "DeadZone Hdg", tsDefault.setAS_deadZoneHeading, ts.setAS_deadZoneHeading);
+            AddRow(mid, "DeadZone Delay", tsDefault.setAS_deadZoneDelay, ts.setAS_deadZoneDelay);
             AddRow(mid, "Stanley Used", tsDefault.setVehicle_isStanleyUsed, ts.setVehicle_isStanleyUsed);
             AddRow(mid, "Stanley Dist. Gain", tsDefault.stanleyDistanceErrorGain, ts.stanleyDistanceErrorGain);
             AddRow(mid, "Stanley Hdg. Gain", tsDefault.stanleyHeadingErrorGain, ts.stanleyHeadingErrorGain);
@@ -222,12 +223,6 @@ namespace AgOpenGPS
             AddRow(mid, "Slow Speed Cutoff", tsDefault.setVehicle_slowSpeedCutoff, ts.setVehicle_slowSpeedCutoff);
 
             right.Rows.Clear();
-            AddHeader(right, "── Tram");
-            AddRow(right, "Tram Width", tsDefault.setTram_tramWidth, ts.setTram_tramWidth);
-            AddRow(right, "Tram Passes", tsDefault.setTram_passes, ts.setTram_passes);
-            AddRow(right, "Display Tram Ctrl", tsDefault.setTool_isDisplayTramControl, ts.setTool_isDisplayTramControl);
-            AddRow(right, "Tram Outer Inv.", tsDefault.setTool_isTramOuterInverted, ts.setTool_isTramOuterInverted);
-
             AddHeader(right, "── Work Switch");
             AddRow(right, "Steer Work Switch", tsDefault.setF_isSteerWorkSwitchEnabled, ts.setF_isSteerWorkSwitchEnabled);
             AddRow(right, "Min Coverage", tsDefault.setVehicle_minCoverage, ts.setVehicle_minCoverage);
@@ -285,6 +280,7 @@ namespace AgOpenGPS
             AddRow(mid, "U-Turn Style", esDefault.set_uTurnStyle, es.set_uTurnStyle);
             AddRow(mid, "U-Turn Smoothing", esDefault.setAS_uTurnSmoothing, es.setAS_uTurnSmoothing);
             AddRow(mid, "U-Turn Compensation", esDefault.setAS_uTurnCompensation, es.setAS_uTurnCompensation);
+            AddRow(mid, "Num Guide Lines", esDefault.setAS_numGuideLines, es.setAS_numGuideLines);
 
             AddHeader(mid, "── GPS");
             AddRow(mid, "GPS Age Alarm", esDefault.setGPS_ageAlarm, es.setGPS_ageAlarm);
@@ -301,6 +297,11 @@ namespace AgOpenGPS
             AddRow(right, "Hyd Lift Sound", esDefault.setSound_isHydLiftOn, es.setSound_isHydLiftOn);
             AddRow(right, "AutoSteer Sound", esDefault.setSound_isAutoSteerOn, es.setSound_isAutoSteerOn);
             AddRow(right, "Sections Sound", esDefault.setSound_isSectionsOn, es.setSound_isSectionsOn);
+
+            AddHeader(right, "── Tram");
+            AddRow(right, "Tram Width", esDefault.setTram_tramWidth, es.setTram_tramWidth);
+            AddRow(right, "Tram Passes", esDefault.setTram_passes, es.setTram_passes);
+            AddRow(right, "Tram Alpha", esDefault.setTram_alpha, es.setTram_alpha);
 
             AddHeader(right, "── IMU / Global");
             AddRow(right, "Reverse On", esDefault.setIMU_isReverseOn, es.setIMU_isReverseOn);

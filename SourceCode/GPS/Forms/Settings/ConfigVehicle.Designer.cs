@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -60,7 +60,7 @@ namespace AgOpenGPS
 
             Properties.ToolSettings.Default.setTool_isDirectionMarkers = mf.isDirectionMarkers;
 
-            Properties.VehicleSettings.Default.setAS_numGuideLines = mf.ABLine.numGuideLines;
+            Properties.Settings.Default.setAS_numGuideLines = mf.ABLine.numGuideLines;
             Properties.Settings.Default.setDisplay_isSectionLinesOn = mf.isSectionlinesOn;
             Properties.Settings.Default.setDisplay_isLineSmooth = mf.isLineSmooth;
             Properties.Settings.Default.isHeadlandDistanceOn = mf.isHeadlandDistanceOn;

@@ -137,10 +137,6 @@ namespace AgOpenGPS
             dest.setAS_maxSteerSpeed = source.setAS_maxSteerSpeed;
             dest.setAS_minSteerSpeed = source.setAS_minSteerSpeed;
             dest.setAS_isSteerInReverse = source.setAS_isSteerInReverse;
-            dest.setAS_deadZoneDistance = source.setAS_deadZoneDistance;
-            dest.setAS_deadZoneHeading = source.setAS_deadZoneHeading;
-            dest.setAS_deadZoneDelay = source.setAS_deadZoneDelay;
-            dest.setAS_numGuideLines = source.setAS_numGuideLines;
 
             // IMU
             dest.setIMU_rollZero = source.setIMU_rollZero;
@@ -242,10 +238,10 @@ namespace AgOpenGPS
             dest.setColor_sec16 = source.setColor_sec16;
             dest.setColor_isMultiColorSections = source.setColor_isMultiColorSections;
 
-            // Tram
-            dest.setTram_tramWidth = source.setTram_tramWidth;
-            dest.setTram_passes = source.setTram_passes;
-            dest.setTram_alpha = source.setTram_alpha;
+            // DeadZone settings (from Vehicle)
+            dest.setAS_deadZoneDistance = source.setAS_deadZoneDistance;
+            dest.setAS_deadZoneHeading = source.setAS_deadZoneHeading;
+            dest.setAS_deadZoneDelay = source.setAS_deadZoneDelay;
 
             // Headland
             dest.setHeadland_isSectionControlled = source.setHeadland_isSectionControlled;

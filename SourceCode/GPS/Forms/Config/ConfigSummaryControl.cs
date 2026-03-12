@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,7 +55,7 @@ namespace AgOpenGPS.Forms.Config
             lblOverlap.Text = Distance.SmallDistanceString(mf.isMetric, ts.setVehicle_toolOverlap);
             lblLookahead.Text = ts.setVehicle_toolLookAheadOn.ToString() + " sec";
             lblNudgeDistance.Text = Distance.VerySmallDistanceString(mf.isMetric, 0.01 * Properties.Settings.Default.setAS_snapDistance);
-            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, ts.setTram_tramWidth);
+            lblTramWidth.Text = Distance.MediumDistanceString(mf.isMetric, Properties.Settings.Default.setTram_tramWidth);
 
             // Buiten panels
             lblUnits.Text = mf.isMetric ? "Metric" : "Imperial";

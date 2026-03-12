@@ -40,12 +40,12 @@ namespace AgOpenGPS
             tbarTramAlpha.Value = (int)(mf.tram.alpha * 100);
             lblAplha.Text = tbarTramAlpha.Value.ToString() + "%";
 
-            if (Properties.ToolSettings.Default.setTram_passes < 1)
+            if (Properties.Settings.Default.setTram_passes < 1)
             {
-                Properties.ToolSettings.Default.setTram_passes = 1;
-                Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+                Properties.Settings.Default.setTram_passes = 1;
+                Properties.Settings.Default.Save();
             }
-            nudPasses.Value = Properties.ToolSettings.Default.setTram_passes;
+            nudPasses.Value = Properties.Settings.Default.setTram_passes;
             nudPasses.ValueChanged += nudPasses_ValueChanged;
 
             lblTrack.Text = (mf.vehicle.VehicleConfig.TrackWidth * mf.m2FtOrM).ToString("N2") + mf.unitsFtM;
@@ -127,8 +127,8 @@ namespace AgOpenGPS
             mf.PanelUpdateRightAndBottom();
             mf.FixTramModeButton();
 
-            Properties.ToolSettings.Default.setTram_alpha = mf.tram.alpha;
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.Settings.Default.setTram_alpha = mf.tram.alpha;
+            Properties.Settings.Default.Save();
         }
 
         private void MoveBuildTramLine(double Dist)
@@ -158,8 +158,8 @@ namespace AgOpenGPS
         private void nudPasses_ValueChanged(object sender, EventArgs e)
         {
             mf.tram.passes = (int)nudPasses.Value;
-            Properties.ToolSettings.Default.setTram_passes = mf.tram.passes;
-            Properties.ToolSettings.Default.Save(RegistrySettings.toolFileName);
+            Properties.Settings.Default.setTram_passes = mf.tram.passes;
+            Properties.Settings.Default.Save();
             MoveBuildTramLine(0);
         }
 

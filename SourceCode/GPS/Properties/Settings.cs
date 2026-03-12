@@ -137,6 +137,12 @@ namespace AgOpenGPS.Properties
         public int set_uTurnStyle = 0;
         public double setAS_uTurnSmoothing = 14;
         public double setAS_uTurnCompensation = 1;
+        public int setAS_numGuideLines = 10;
+
+        // Tram settings
+        public double setTram_tramWidth = 24.0;
+        public int setTram_passes = 1;
+        public double setTram_alpha = 0.8;
 
         // ===== AGSHARE SETTINGS =====
         public string AgShareServer = "https://agshare.agopengps.com";
@@ -318,6 +324,12 @@ namespace AgOpenGPS.Properties
             dest.set_uTurnStyle = source.set_uTurnStyle;
             dest.setAS_uTurnSmoothing = source.setAS_uTurnSmoothing;
             dest.setAS_uTurnCompensation = source.setAS_uTurnCompensation;
+            dest.setAS_numGuideLines = source.setAS_numGuideLines;
+
+            // Tram settings (from Tool)
+            dest.setTram_tramWidth = source.setTram_tramWidth;
+            dest.setTram_passes = source.setTram_passes;
+            dest.setTram_alpha = source.setTram_alpha;
 
             // AgShare settings
             dest.AgShareServer = source.AgShareServer;

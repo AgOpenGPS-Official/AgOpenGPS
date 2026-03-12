@@ -483,7 +483,7 @@ namespace AgOpenGPS
         {
             lblTramWidthUnits.Text = mf.unitsInCm;
 
-            nudTramWidth.Value = (int)(Math.Abs(Properties.ToolSettings.Default.setTram_tramWidth) * mf.m2InchOrCm);
+            nudTramWidth.Value = (int)(Math.Abs(Properties.Settings.Default.setTram_tramWidth) * mf.m2InchOrCm);
             chkBoxOverrideTramControlPos.Checked = Properties.ToolSettings.Default.setTool_isTramOuterInverted;
             cboxDisplayTramControl.Checked = Properties.ToolSettings.Default.setTool_isDisplayTramControl;
         }
@@ -505,7 +505,7 @@ namespace AgOpenGPS
             if (((NudlessNumericUpDown)sender).ShowKeypad(this))
             {
                 mf.tram.tramWidth = (double)nudTramWidth.Value * mf.inchOrCm2m;
-                Properties.ToolSettings.Default.setTram_tramWidth = mf.tram.tramWidth;
+                Properties.Settings.Default.setTram_tramWidth = mf.tram.tramWidth;
             }
         }
 

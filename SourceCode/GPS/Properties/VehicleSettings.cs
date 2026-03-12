@@ -38,10 +38,6 @@ namespace AgOpenGPS.Properties
         public double setAS_maxSteerSpeed = 15;
         public double setAS_minSteerSpeed = 0;
         public bool setAS_isSteerInReverse = false;
-        public int setAS_deadZoneDistance = 1;
-        public int setAS_deadZoneHeading = 10;
-        public int setAS_deadZoneDelay = 5;
-        public int setAS_numGuideLines = 10;
 
         // IMU settings
         public double setIMU_rollZero = 0.0;

@@ -222,8 +222,8 @@ namespace AgOpenGPS
             btnSteerAngleUp.Enabled = false;
             mf.vehicle.driveFreeSteerAngle = 0;
 
-            //nudDeadZoneDistance.Value = (decimal)((double)(Properties.VehicleSettings.Default.setAS_deadZoneDistance)/10);
-            nudDeadZoneHeading.Value = (decimal)((double)(Properties.VehicleSettings.Default.setAS_deadZoneHeading) / 100);
+            //nudDeadZoneDistance.Value = (decimal)((double)(Properties.ToolSettings.Default.setAS_deadZoneDistance)/10);
+            nudDeadZoneHeading.Value = (decimal)((double)(Properties.ToolSettings.Default.setAS_deadZoneHeading) / 100);
             nudDeadZoneDelay.Value = (decimal)(mf.vehicle.deadZoneDelay);
 
             toSend = false;
@@ -364,8 +364,8 @@ namespace AgOpenGPS
             Properties.VehicleSettings.Default.setAS_Kp = mf.p_252.pgn[mf.p_252.gainProportional] = unchecked((byte)hsbarProportionalGain.Value);
             Properties.VehicleSettings.Default.setAS_minSteerPWM = mf.p_252.pgn[mf.p_252.minPWM] = unchecked((byte)hsbarMinPWM.Value);
 
-            Properties.VehicleSettings.Default.setAS_deadZoneHeading = mf.vehicle.deadZoneHeading;
-            Properties.VehicleSettings.Default.setAS_deadZoneDelay = mf.vehicle.deadZoneDelay;
+            Properties.ToolSettings.Default.setAS_deadZoneHeading = mf.vehicle.deadZoneHeading;
+            Properties.ToolSettings.Default.setAS_deadZoneDelay = mf.vehicle.deadZoneDelay;
 
             Properties.VehicleSettings.Default.setAS_ModeXTE = mf.vehicle.modeXTE;
             Properties.VehicleSettings.Default.setAS_ModeTime = mf.vehicle.modeTime;
