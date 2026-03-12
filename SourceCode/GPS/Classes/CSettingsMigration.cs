@@ -52,7 +52,7 @@ namespace AgOpenGPS
 
         public static bool NeedsMigration(string fileName)
         {
-            string path = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            string path = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", fileName + ".xml");
             return File.Exists(path) && IsOldFormat(path);
         }
 
@@ -63,7 +63,7 @@ namespace AgOpenGPS
 
         public static LoadResult MigrateVehicle(string sourceFileName, string outputName, VehicleSettings vehicleSettings)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
+            string oldPath = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", sourceFileName + ".xml");
 
             if (!File.Exists(oldPath))
                 return LoadResult.MissingFile;
@@ -90,7 +90,7 @@ namespace AgOpenGPS
 
         public static LoadResult MigrateTool(string sourceFileName, string outputName, ToolSettings toolSettings)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
+            string oldPath = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", sourceFileName + ".xml");
 
             if (!File.Exists(oldPath))
                 return LoadResult.MissingFile;
@@ -305,7 +305,7 @@ namespace AgOpenGPS
 
         public static LoadResult MigrateEnvironment(string sourceFileName, string outputName)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, sourceFileName + ".xml");
+            string oldPath = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", sourceFileName + ".xml");
 
             if (!File.Exists(oldPath))
                 return LoadResult.MissingFile;
@@ -328,45 +328,59 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Gets list of old format XML files in the Vehicles directory that can be converted.
+        /// Gets list of old format XML files in the base\Vehicles directory that can be converted.
         /// Uses XML type detection to distinguish old from new format.
         /// </summary>
         public static string[] GetConvertibleFiles()
         {
-            string vehiclesDir = RegistrySettings.vehiclesDirectory;
-            if (!Directory.Exists(vehiclesDir))
+            string oldVehiclesDir = Path.Combine(RegistrySettings.baseDirectory, "Vehicles");
+            if (!Directory.Exists(oldVehiclesDir))
                 return new string[0];
 
             var files = new System.Collections.Generic.List<string>();
-            foreach (string file in Directory.GetFiles(vehiclesDir, "*.xml"))
+            foreach (string file in Directory.GetFiles(oldVehiclesDir, "*.xml"))
             {
-                if (IsOldFormat(file))
+                // Skip already converted files
+                if (IsOldFormat(file) && !File.ReadAllText(file).Contains("<!-- CONVERTED:"))
                     files.Add(Path.GetFileNameWithoutExtension(file));
             }
             return files.ToArray();
         }
 
         /// <summary>
-        /// Backs up an old format file after conversion.
+        /// Marks an old format file as converted by adding a comment.
+        /// The original file is left untouched for backward compatibility.
         /// </summary>
-        public static void BackupOldFile(string fileName)
+        public static void MarkAsConverted(string fileName)
         {
-            string oldPath = Path.Combine(RegistrySettings.vehiclesDirectory, fileName + ".xml");
+            string oldPath = Path.Combine(RegistrySettings.baseDirectory, "Vehicles", fileName + ".xml");
             if (!File.Exists(oldPath)) return;
 
-            // Don't backup if it's already a new-format file (happens when vehicleName == sourceFile)
+            // Don't mark if it's already a new-format file
             if (!IsOldFormat(oldPath)) return;
 
-            string backupDir = Path.Combine(RegistrySettings.vehiclesDirectory, "oldSettingsFiles");
-            if (!Directory.Exists(backupDir))
-                Directory.CreateDirectory(backupDir);
+            // Check if already marked
+            string content = File.ReadAllText(oldPath);
+            if (content.Contains("<!-- CONVERTED:"))
+            {
+                Log.EventWriter($"File already marked as converted: {fileName}");
+                return;
+            }
 
-            string backupPath = Path.Combine(backupDir, fileName + ".xml.backup");
-            if (File.Exists(backupPath))
-                File.Delete(backupPath);
-
-            File.Move(oldPath, backupPath);
-            Log.EventWriter($"Old settings file backed up: {fileName}");
+            // Add marker comment at the end (harmless to old versions)
+            try
+            {
+                using (var writer = File.AppendText(oldPath))
+                {
+                    writer.WriteLine();
+                    writer.WriteLine("<!-- CONVERTED: Vehicle/Tool/Environment profiles created -->");
+                }
+                Log.EventWriter($"Marked as converted: {fileName}");
+            }
+            catch (Exception ex)
+            {
+                Log.EventWriter($"Error marking file as converted: {fileName} - {ex.Message}");
+            }
         }
 
         public static void MigrateAllVehicles()
@@ -383,8 +397,8 @@ namespace AgOpenGPS
                 var toolSettings = new ToolSettings();
                 MigrateTool(fileName, fileName, toolSettings);
 
-                // Backup old file
-                BackupOldFile(fileName);
+                // Mark old file as converted
+                MarkAsConverted(fileName);
             }
         }
     }

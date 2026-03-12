@@ -189,7 +189,7 @@ namespace AgOpenGPS.Forms.Profiles
                 (exportVehicle ? $"Vehicle: {vehicleName}, " : "") +
                 $"Tool: {toolName}" +
                 (exportEnv ? $", Environment: {envName}" : "") +
-                "\n\nOriginal will be backed up.";
+                "\n\nOriginal file will be marked as converted.";
 
             if (overwrites.Count > 0)
                 confirmMsg += $"\n\nWARNING: Overwriting:\n{string.Join("\n", overwrites)}";
@@ -225,8 +225,8 @@ namespace AgOpenGPS.Forms.Profiles
 
             if (errors.Count == 0)
             {
-                // Backup old file
-                CSettingsMigration.BackupOldFile(sourceFile);
+                // Mark old file as converted
+                CSettingsMigration.MarkAsConverted(sourceFile);
 
                 Log.EventWriter($"Converted '{sourceFile}' -> " +
                     (exportVehicle ? $"Vehicle:'{vehicleName}', " : "") +

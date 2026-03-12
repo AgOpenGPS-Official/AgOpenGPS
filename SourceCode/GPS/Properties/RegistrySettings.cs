@@ -203,31 +203,31 @@ namespace AgOpenGPS
             //get the vehicles directory, if not exist, create
             try
             {
-                vehiclesDirectory = Path.Combine(baseDirectory, "Vehicles");
+                vehiclesDirectory = Path.Combine(baseDirectory, "VehicleProfiles");
                 if (!string.IsNullOrEmpty(vehiclesDirectory) && !Directory.Exists(vehiclesDirectory))
                 {
                     Directory.CreateDirectory(vehiclesDirectory);
-                    Log.EventWriter("Vehicles Dir Created");
+                    Log.EventWriter("VehicleProfiles Dir Created");
                 }
             }
             catch (Exception ex)
             {
-                Log.EventWriter("Catch, Serious Problem Making Vehicles Directory: " + ex.ToString());
+                Log.EventWriter("Catch, Serious Problem Making VehicleProfiles Directory: " + ex.ToString());
             }
 
             //get the tools directory, if not exist, create
             try
             {
-                toolsDirectory = Path.Combine(baseDirectory, "Tools");
+                toolsDirectory = Path.Combine(baseDirectory, "ToolProfiles");
                 if (!string.IsNullOrEmpty(toolsDirectory) && !Directory.Exists(toolsDirectory))
                 {
                     Directory.CreateDirectory(toolsDirectory);
-                    Log.EventWriter("Tools Dir Created");
+                    Log.EventWriter("ToolProfiles Dir Created");
                 }
             }
             catch (Exception ex)
             {
-                Log.EventWriter("Catch, Serious Problem Making Tools Directory: " + ex.ToString());
+                Log.EventWriter("Catch, Serious Problem Making ToolProfiles Directory: " + ex.ToString());
             }
 
             //get the environment directory, if not exist, create
