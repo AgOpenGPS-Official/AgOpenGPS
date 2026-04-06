@@ -1,0 +1,13 @@
+{
+  "Enabled": true,
+  "BrokerAddress": "127.0.0.1",
+  "BrokerPort": 1883,
+  "ClientId": "AgOpenGPS_VistaX",
+  "TelemetriaTopic": "vistax/nodos/telemetria",
+  "SpeedTopic": "aog/machine/speed",
+  "SectionsTopic": "sections/state",
+  "ImplementoJsonPath": "data\\implementos\\implemento_tanzi43.json",
+  "UiUpdateIntervalMs": 500,
+  "SensorTimeoutMs": 3000,
+   "ServerUrl":"localhost:3001"
+}

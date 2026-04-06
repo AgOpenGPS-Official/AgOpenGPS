@@ -36,15 +36,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.WinForms" Version="146.0.70" />
     <PackageReference Include="Dev4Agriculture.ISO11783.ISOXML" Version="0.23.1.1" />
     <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
     <PackageReference Include="MechanikaDesign.WinForms.UI.ColorPicker" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3856.49" />
     <PackageReference Include="OpenTK.GLControl" Version="3.3.3" />
-    <PackageReference Include="SourceGear.sqlite3" Version="3.50.3"/>
+    <PackageReference Include="SourceGear.sqlite3" Version="3.50.3" />
     <PackageReference Include="System.Data.SQLite" Version="2.0.1" />
     <PackageReference Include="System.Memory" Version="4.6.0" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
     <PackageReference Include="System.ValueTuple" Version="4.6.1" />
+    <!-- VISTAX_MOD_START -->
+    <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+<PackageReference Include="System.Text.Json" Version="9.0.0" />
+    <!-- VISTAX_MOD_END -->	
   </ItemGroup>
 
   <ItemGroup>

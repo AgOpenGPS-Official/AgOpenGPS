@@ -1,0 +1,221 @@
+// ============================================================================
+// VistaX_Integration.cs
+// *** ESTE ARCHIVO ES UNA GUÍA — NO SE COMPILA ***
+// Renombralo a .txt o no lo incluyas en el proyecto.
+//
+// Contiene los fragmentos exactos para integrar VistaX en AgOpenGPS.
+// El formulario principal es FormGPS.cs (no Form1.cs).
+// ============================================================================
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 0: ESTRUCTURA DE CARPETAS                                          ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+//
+// Crear la carpeta dentro de SourceCode/GPS/ (donde está el .csproj):
+//
+//   SourceCode/
+//   └── GPS/
+//       ├── AgOpenGPS.csproj          ← proyecto principal
+//       ├── Forms/
+//       │   └── FormGPS.cs            ← formulario principal
+//       ├── Classes/
+//       └── AgroParallel/             ← CREAR ESTA CARPETA
+//           └── VistaX/               ← COPIAR LOS 5 ARCHIVOS .cs ACÁ
+//               ├── VistaXConfig.cs
+//               ├── SeedDataModels.cs
+//               ├── MqttClientWrapper.cs
+//               ├── SeedMonitor.cs
+//               └── VistaXPanel.cs
+//
+// Como es SDK-style, todos los .cs dentro de GPS/ se compilan automáticamente.
+// NO necesitás agregar <Compile Include="..."> al csproj.
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 1: AGREGAR PAQUETE MQTTnet AL CSPROJ                              ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+//
+// En AgOpenGPS.csproj, dentro del <ItemGroup> que tiene los PackageReference,
+// agregar:
+//
+// <!-- VISTAX_MOD_START -->
+// <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+// <!-- VISTAX_MOD_END -->
+//
+// Quedaría así (extracto):
+//
+//   <ItemGroup>
+//     <PackageReference Include="Dev4Agriculture.ISO11783.ISOXML" Version="0.23.1.1" />
+//     <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
+//     ...
+//     <!-- VISTAX_MOD_START -->
+//     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+//     <!-- VISTAX_MOD_END -->
+//   </ItemGroup>
+//
+// Luego en Visual Studio: clic derecho en Dependencies → Restore NuGet Packages.
+// O desde terminal: dotnet restore
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 2: MODIFICAR FormGPS.cs                                            ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+
+// --- 2a. Agregar using al inicio de FormGPS.cs ---
+
+// VISTAX_MOD_START
+// using AgroParallel.VistaX;
+// VISTAX_MOD_END
+
+
+// --- 2b. Agregar campos en la clase FormGPS ---
+// (junto a los otros campos de instancia, al inicio de la clase)
+
+// VISTAX_MOD_START
+// private SeedMonitor? vistaXMonitor;
+// private VistaXPanel? vistaXPanel;
+// VISTAX_MOD_END
+
+
+// --- 2c. Crear método de inicialización ---
+// (como método privado en FormGPS)
+
+// VISTAX_MOD_START
+/*
+private void InitVistaX()
+{
+    var cfg = VistaXConfig.Load();
+    if (!cfg.Enabled) return;
+
+    vistaXMonitor = new SeedMonitor(cfg);
+    vistaXPanel = new VistaXPanel(cfg.NumberOfRows)
+    {
+        Dock = DockStyle.Right,     // o DockStyle.Bottom según preferencia
+        Width = 320,
+        Visible = true
+    };
+    Controls.Add(vistaXPanel);
+    vistaXPanel.BringToFront();
+
+    // Snapshot → UI (thread-safe)
+    vistaXMonitor.SnapshotUpdated += snapshot =>
+    {
+        if (InvokeRequired)
+            BeginInvoke(() => vistaXPanel.UpdateDisplay(snapshot));
+        else
+            vistaXPanel.UpdateDisplay(snapshot);
+    };
+
+    // Alarmas (opcional: mostrar en statusbar, barra inferior, etc.)
+    vistaXMonitor.AlarmTriggered += message =>
+    {
+        if (InvokeRequired)
+            BeginInvoke(() => System.Diagnostics.Debug.WriteLine($"[VistaX ALARM] {message}"));
+    };
+
+    _ = vistaXMonitor.StartAsync();
+}
+*/
+// VISTAX_MOD_END
+
+
+// --- 2d. Llamar InitVistaX() ---
+// Buscar el evento Load del formulario (puede ser FormGPS_Load, o el
+// constructor después de InitializeComponent). Agregar al final:
+
+// VISTAX_MOD_START
+// InitVistaX();
+// VISTAX_MOD_END
+
+
+// --- 2e. Limpieza en FormClosing ---
+// Buscar el evento FormClosing (puede estar en Controls.Designer.cs
+// o en el formulario). Agregar:
+
+// VISTAX_MOD_START
+/*
+private async void CleanupVistaX()
+{
+    if (vistaXMonitor is not null)
+    {
+        await vistaXMonitor.StopAsync();
+        vistaXMonitor.Dispose();
+        vistaXMonitor = null;
+    }
+}
+*/
+// VISTAX_MOD_END
+
+// En el evento FormClosing existente, agregar la llamada:
+// VISTAX_MOD_START
+// CleanupVistaX();
+// VISTAX_MOD_END
+
+
+// --- 2f. Botón toggle (opcional) ---
+// Si querés un botón para mostrar/ocultar el panel:
+
+// VISTAX_MOD_START
+/*
+private void btnVistaXToggle_Click(object sender, EventArgs e)
+{
+    if (vistaXPanel is not null)
+        vistaXPanel.Visible = !vistaXPanel.Visible;
+}
+*/
+// VISTAX_MOD_END
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 3: REGISTRO DE CAMPO (opcional pero recomendado)                   ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+//
+// Buscar el punto donde AgOpenGPS graba datos por posición GPS en el
+// archivo de campo (CField.cs, CGuidance.cs, o similar).
+// Agregar:
+//
+// VISTAX_MOD_START
+/*
+if (vistaXMonitor is { IsRunning: true })
+{
+    var (seedsPerHa, sowSpeed, failedRows) = vistaXMonitor.GetFieldRecordData();
+    // Agregar como atributos al registro:
+    // "SeedRate" = seedsPerHa
+    // "SowSpeed" = sowSpeed
+    // "FailRows" = failedRows
+}
+*/
+// VISTAX_MOD_END
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 4: COPIAR vistaX.json AL DIRECTORIO DE EJECUCIÓN                  ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+//
+// Copiar el archivo vistaX.json al directorio donde se genera el .exe:
+//   - Debug:   SourceCode/GPS/bin/Debug/
+//   - Release: SourceCode/GPS/bin/Release/
+//   - Publish: según PublishDir del csproj (..\..\AgOpenGPS\)
+//
+// Si querés que se copie automáticamente, agregar al csproj:
+//
+// <!-- VISTAX_MOD_START -->
+// <ItemGroup>
+//   <None Include="AgroParallel\VistaX\vistaX.json">
+//     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+//   </None>
+// </ItemGroup>
+// <!-- VISTAX_MOD_END -->
+
+
+// ╔═══════════════════════════════════════════════════════════════════════════╗
+// ║ PASO 5: COMPILAR Y PROBAR                                              ║
+// ╚═══════════════════════════════════════════════════════════════════════════╝
+//
+// 1. dotnet restore (o Restore NuGet Packages en VS)
+// 2. dotnet build / F5 en Visual Studio
+// 3. Para probar sin hardware:
+//    docker run -d -p 1883:1883 eclipse-mosquitto
+//    mosquitto_pub -h localhost -t "ag/sowing/data" \
+//      -m '{"seedsPerHa":72000,"seedsPerSecond":14.2,"speedKmh":8.5,"totalSeeds":1542300,"timestamp":1711929600000}'

@@ -22,7 +22,10 @@ using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-
+using AgroParallel.Common;
+// VISTAX_MOD_START
+using AgroParallel.VistaX;
+// VISTAX_MOD_END
 namespace AgOpenGPS
 {
     //the main form object
@@ -84,6 +87,12 @@ namespace AgOpenGPS
         private static extern bool ShowWindow(IntPtr hWind, int nCmdShow);
 
         private Task agShareUploadTask = null;
+
+        // VISTAX_MOD_START
+        private SeedMonitor vistaXMonitor;
+        private VistaXPanel vistaXPanel;
+        public VistaXConfig vistaXConfig;
+        // VISTAX_MOD_END
 
 
         #region // Class Props and instances
@@ -306,6 +315,16 @@ namespace AgOpenGPS
 
         public FormGPS()
         {
+            if (CefSharp.Cef.IsInitialized == false)
+            {
+                var settings = new CefSharp.WinForms.CefSettings();
+
+                // Opcional: Desactiva aceleración por hardware si el panel se ve negro
+                settings.CefCommandLineArgs.Add("disable-gpu", "1");
+
+                CefSharp.Cef.Initialize(settings);
+            }
+
             //winform initialization
             InitializeComponent();
 
@@ -424,6 +443,30 @@ namespace AgOpenGPS
             }
             else Log.EventWriter("Terms Already Accepted");
 
+            // VISTAX_MOD_START
+            // 1. Cargamos el JSON desde el disco
+            vistaXConfig = VistaXConfig.Load();
+
+            if (vistaXConfig != null && vistaXConfig.Enabled)
+            {
+                // Iniciamos el monitor (lógica MQTT)
+                vistaXMonitor = new SeedMonitor(this, vistaXConfig);
+
+                // Iniciamos el panel pasándole la URL del JSON
+                vistaXPanel = new VistaXPanel(vistaXConfig.ServerUrl);
+
+                this.Controls.Add(vistaXPanel);
+                vistaXPanel.Reposition();
+
+                // Suscribimos el panel a las actualizaciones del monitor
+                vistaXMonitor.SnapshotUpdated += (snap) => { // Cambiado de OnUpdate a SnapshotUpdated
+                    this.BeginInvoke((MethodInvoker)delegate {
+                        vistaXPanel.UpdateDisplay(snap);
+                    });
+                };
+            }
+            // VISTAX_MOD_END
+
             this.MouseWheel += ZoomByMouseWheel;
 
             //The way we subscribe to the System Event to check when Power Mode has changed.
@@ -541,6 +584,10 @@ namespace AgOpenGPS
             }
             //Init AgShareClient
             agShareClient = new AgShareClient(Settings.Default.AgShareServer, Settings.Default.AgShareApiKey);
+
+            // VISTAX_MOD_START
+            InitVistaX();
+            // VISTAX_MOD_END
         }
 
         #region Shutdown Handling
@@ -593,6 +640,10 @@ namespace AgOpenGPS
             // Execute shutdown with proper exception handling
             try
             {
+                // VISTAX_MOD_START
+                CleanupVistaX();
+                // VISTAX_MOD_END
+
                 Log.EventWriter("Closing Application " + DateTime.Now);
                 await ShowSavingFormAndShutdown(choice);
             }
@@ -1361,6 +1412,133 @@ namespace AgOpenGPS
             var form = new FormYes(s1);
             form.ShowDialog(this);
         }
+
+        // AGROPARALLEL_MOD_START
+        private void toolStripAgroParallel_Click(object sender, EventArgs e)
+        {
+            using (var form = new FormAgroParallel())
+            {
+                form.OpenModulePanel += delegate (string moduleName)
+                {
+                    if (moduleName == "VistaX")
+                    {
+                        // Si el panel no existe todavía, crearlo ahora
+                        if (vistaXPanel == null)
+                        {
+                            InitVistaX();
+                        }
+
+                        if (vistaXPanel != null)
+                        {
+                            vistaXPanel.Visible = !vistaXPanel.Visible;
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "No se pudo iniciar VistaX.\n\n" +
+                                "Verificá que vistaX.json esté en la carpeta del ejecutable\n" +
+                                "y que 'Enabled' sea true.",
+                                "AgroParallel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                };
+
+                // Mostrar estado actual si VistaX está corriendo
+                if (vistaXMonitor != null && vistaXMonitor.IsRunning)
+                {
+                    var snap = vistaXMonitor.CreateSnapshot();
+                    form.UpdateModuleStatus("VistaX",
+                        snap.IsConnected,
+                        snap.IsConnected ? "MQTT conectado" : "MQTT desconectado");
+                }
+
+                form.ShowDialog(this);
+            }
+        }
+        // AGROPARALLEL_MOD_END
+
+        // VISTAX_MOD_START
+        private void InitVistaX()
+        {
+            try
+            {
+                var cfg = VistaXConfig.Load();
+                System.Diagnostics.Debug.WriteLine("[VistaX] Config: Enabled=" + cfg.Enabled
+                    + " Broker=" + cfg.BrokerAddress + ":" + cfg.BrokerPort);
+
+                if (!cfg.Enabled)
+                {
+                    System.Diagnostics.Debug.WriteLine("[VistaX] Deshabilitado");
+                    return;
+                }
+
+                vistaXMonitor = new SeedMonitor(this, vistaXConfig);
+
+                // Contar surcos semilla del implemento
+                var implemento = cfg.LoadImplemento();
+                int numSurcos = 24;
+                if (implemento != null && implemento.MapeoSensores != null)
+                {
+                    numSurcos = implemento.MapeoSensores.FindAll(
+                        delegate (SensorConfig s) { return s.IsActive && s.Tipo == "semilla"; }
+                    ).Count;
+                    System.Diagnostics.Debug.WriteLine("[VistaX] Implemento: " + implemento.Nombre
+                        + " surcos: " + numSurcos);
+                }
+                if (numSurcos <= 0) numSurcos = 24;
+
+                // Crear panel - se auto-posiciona al ancho del form
+                vistaXPanel = new VistaXPanel(vistaXConfig.ServerUrl);
+                vistaXPanel.Visible = true;
+               
+                this.Controls.Add(vistaXPanel);
+                vistaXPanel.Reposition();
+
+                // Agrega esto para que si el usuario maximiza la ventana, el panel se acomode
+                this.Resize += (s, e) => { vistaXPanel.Reposition(); };
+                // Snapshot → UI
+                vistaXMonitor.SnapshotUpdated += delegate (SeedMonitorSnapshot snapshot)
+                {
+                    if (IsDisposed) return;
+                    if (InvokeRequired)
+                        BeginInvoke(new Action(delegate {
+                            System.Diagnostics.Debug.WriteLine("[VistaX-DBG] UI UPDATE: panel visible=" + vistaXPanel.Visible
+                                + " size=" + vistaXPanel.Width + "x" + vistaXPanel.Height
+                                + " loc=" + vistaXPanel.Location.ToString());
+                            vistaXPanel.UpdateDisplay(snapshot);
+                        }));
+                    else
+                        vistaXPanel.UpdateDisplay(snapshot);
+                };
+
+                vistaXMonitor.AlarmTriggered += delegate (string message)
+                {
+                    System.Diagnostics.Debug.WriteLine("[VistaX ALARM] " + message);
+                };
+
+                Task.Run(async delegate { await vistaXMonitor.StartAsync(); });
+                System.Diagnostics.Debug.WriteLine("[VistaX] Iniciado OK");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[VistaX] ERROR: " + ex.ToString());
+            }
+        }
+
+        private void CleanupVistaX()
+        {
+            if (vistaXMonitor != null)
+            {
+                try
+                {
+                    vistaXMonitor.StopAsync().GetAwaiter().GetResult();
+                    vistaXMonitor.Dispose();
+                }
+                catch { }
+                vistaXMonitor = null;
+            }
+        }
+        // VISTAX_MOD_END
     }//class FormGPS
 }//namespace AgOpenGPS
 

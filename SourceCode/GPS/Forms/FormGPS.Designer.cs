@@ -130,6 +130,10 @@ namespace AgOpenGPS
             this.panelLeft = new System.Windows.Forms.TableLayoutPanel();
             this.statusStrip2 = new System.Windows.Forms.StatusStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            // AGROPARALLEL_MOD_START
+            this.toolStripAgroParallel = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparatorAgroParallel = new System.Windows.Forms.ToolStripSeparator();
+            // AGROPARALLEL_MOD_END
             this.toolStripConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSteerSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripAllSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -1680,7 +1684,12 @@ namespace AgOpenGPS
             this.toolStripGPSData,
             this.toolStripColors,
             this.toolStripSectionColors,
-            this.toolStripHotkeys});
+            this.toolStripHotkeys,
+            // AGROPARALLEL_MOD_START
+            this.toolStripSeparatorAgroParallel,
+            this.toolStripAgroParallel
+            // AGROPARALLEL_MOD_END
+            });
             this.toolStripDropDownButton1.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripDropDownButton1.Image = global::AgOpenGPS.Properties.Resources.Settings48;
             this.toolStripDropDownButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -1754,6 +1763,24 @@ namespace AgOpenGPS
             this.toolStripHotkeys.Size = new System.Drawing.Size(419, 44);
             this.toolStripHotkeys.Text = "HotKeys";
             this.toolStripHotkeys.Click += new System.EventHandler(this.hotKeysToolStripMenuItem_Click);
+            // 
+            // AGROPARALLEL_MOD_START
+            // 
+            // toolStripSeparatorAgroParallel
+            // 
+            this.toolStripSeparatorAgroParallel.Name = "toolStripSeparatorAgroParallel";
+            this.toolStripSeparatorAgroParallel.Size = new System.Drawing.Size(416, 6);
+            // 
+            // toolStripAgroParallel
+            // 
+            this.toolStripAgroParallel.Name = "toolStripAgroParallel";
+            this.toolStripAgroParallel.Size = new System.Drawing.Size(419, 44);
+            this.toolStripAgroParallel.Text = "🌿 AgroParallel";
+            this.toolStripAgroParallel.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripAgroParallel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(80)))));
+            this.toolStripAgroParallel.Click += new System.EventHandler(this.toolStripAgroParallel_Click);
+            // 
+            // AGROPARALLEL_MOD_END
             // 
             // btnNavigationSettings
             // 
@@ -3115,6 +3142,10 @@ namespace AgOpenGPS
         private System.Windows.Forms.ToolStripMenuItem toolStripColors;
         private System.Windows.Forms.ToolStripMenuItem toolStripSectionColors;
         private System.Windows.Forms.ToolStripMenuItem toolStripHotkeys;
+        // AGROPARALLEL_MOD_START
+        private System.Windows.Forms.ToolStripMenuItem toolStripAgroParallel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorAgroParallel;
+        // AGROPARALLEL_MOD_END
         private System.Windows.Forms.Button btnChargeStatus;
         private System.Windows.Forms.Label lblHardwareMessage;
         private System.Windows.Forms.ToolStripMenuItem eventViewerToolStripMenuItem;
