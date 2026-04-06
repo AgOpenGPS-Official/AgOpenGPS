@@ -35,12 +35,16 @@ namespace AgroParallel.VistaX
         private DateTime _lastDataTime = DateTime.MinValue;
         private bool _isConnected;
         private bool _disposed;
+        private bool _monitoreoActivo;
+        private MetodoInicioMonitoreo _metodoInicio;
+        private DateTime _confirmacionInicio = DateTime.MinValue;
 
         public event Action<SeedMonitorSnapshot> SnapshotUpdated;
         public event Action<string> AlarmTriggered;
 
         public bool IsRunning { get; private set; }
         public bool IsConnected { get { return _isConnected; } }
+        public bool MonitoreoActivo { get { return _monitoreoActivo; } }
 
         public SeedMonitor(FormGPS parent, VistaXConfig config)
         {
@@ -59,6 +63,17 @@ namespace AgroParallel.VistaX
             _implemento = _config.LoadImplemento();
             System.Diagnostics.Debug.WriteLine("[VistaX] Implemento: " + (_implemento.Nombre ?? "?")
                 + " | Sensores: " + _implemento.MapeoSensores.Count);
+
+            // Parsear método de inicio
+            _monitoreoActivo = false;
+            switch ((_config.MetodoInicio ?? "sensores").ToLowerInvariant())
+            {
+                case "herramienta": _metodoInicio = MetodoInicioMonitoreo.Herramienta; break;
+                case "pintando": _metodoInicio = MetodoInicioMonitoreo.Pintando; break;
+                case "manual": _metodoInicio = MetodoInicioMonitoreo.Manual; break;
+                default: _metodoInicio = MetodoInicioMonitoreo.Sensores; break;
+            }
+            System.Diagnostics.Debug.WriteLine("[VistaX] Método inicio: " + _metodoInicio);
 
             // Inicializar surcos — KEY INCLUYE TREN
             lock (_lock)
@@ -307,6 +322,90 @@ namespace AgroParallel.VistaX
         }
 
         // =====================================================================
+        // Inicio de monitoreo configurable (4 modos)
+        // =====================================================================
+
+        private void EvaluarInicio()
+        {
+            if (_monitoreoActivo) return;
+
+            switch (_metodoInicio)
+            {
+                case MetodoInicioMonitoreo.Sensores:
+                    lock (_lock)
+                    {
+                        int activos = 0;
+                        foreach (var s in _surcos.Values)
+                        {
+                            if (s.Tipo == "semilla" && s.Valor > 0) activos++;
+                        }
+                        if (activos >= _config.UmbralSensoresActivos)
+                        {
+                            if (_confirmacionInicio == DateTime.MinValue)
+                            {
+                                _confirmacionInicio = DateTime.UtcNow;
+                            }
+                            else if ((DateTime.UtcNow - _confirmacionInicio).TotalMilliseconds >= _config.TiempoConfirmacionMs)
+                            {
+                                IniciarMonitoreo("sensores (" + activos + " activos)");
+                            }
+                        }
+                        else
+                        {
+                            _confirmacionInicio = DateTime.MinValue;
+                        }
+                    }
+                    break;
+
+                case MetodoInicioMonitoreo.Herramienta:
+                    // Se evalúa desde ProcessSections cuando llegan datos de secciones
+                    lock (_lock)
+                    {
+                        bool bajada = _seccionesT1.Count > 0 || _seccionesT2.Count > 0;
+                        if (bajada)
+                        {
+                            bool algunaActiva = _seccionesT1.Any(s => s == 1) || _seccionesT2.Any(s => s == 1);
+                            if (algunaActiva)
+                                IniciarMonitoreo("herramienta bajada");
+                        }
+                    }
+                    break;
+
+                case MetodoInicioMonitoreo.Pintando:
+                    lock (_lock)
+                    {
+                        bool pintando = _seccionesT1.Any(s => s == 1) || _seccionesT2.Any(s => s == 1);
+                        if (pintando && _velocidad > 0.5)
+                            IniciarMonitoreo("pintando (secciones activas)");
+                    }
+                    break;
+
+                case MetodoInicioMonitoreo.Manual:
+                    // Se inicia externamente via IniciarMonitoreoManual()
+                    break;
+            }
+        }
+
+        private void IniciarMonitoreo(string motivo)
+        {
+            _monitoreoActivo = true;
+            _confirmacionInicio = DateTime.MinValue;
+            System.Diagnostics.Debug.WriteLine("[VistaX] MONITOREO INICIADO — " + motivo);
+        }
+
+        public void DetenerMonitoreo()
+        {
+            _monitoreoActivo = false;
+            _confirmacionInicio = DateTime.MinValue;
+            System.Diagnostics.Debug.WriteLine("[VistaX] MONITOREO DETENIDO");
+        }
+
+        public void IniciarMonitoreoManual()
+        {
+            IniciarMonitoreo("manual (botón UI)");
+        }
+
+        // =====================================================================
         // Helpers
         // =====================================================================
 
@@ -330,6 +429,7 @@ namespace AgroParallel.VistaX
         private void EmitSnapshot()
         {
             if (_disposed) return;
+            EvaluarInicio();
             var snap = CreateSnapshot();
             System.Diagnostics.Debug.WriteLine("[VistaX-DBG] SNAPSHOT: vel=" + snap.Velocidad.ToString("F1")
                 + " surcos=" + (snap.Surcos != null ? snap.Surcos.Length : 0)
@@ -339,6 +439,11 @@ namespace AgroParallel.VistaX
             var handler = SnapshotUpdated;
             if (handler != null) handler(snap);
         }
+
+        // Ancho de cada sensor (tubo) y spacing en píxeles — constantes de layout
+        private const int SensorWidthPx = 32;
+        private const int SensorSpacingPx = 4;
+        private const int ContainerWidthPx = 1200;
 
         public SeedMonitorSnapshot CreateSnapshot()
         {
@@ -370,17 +475,57 @@ namespace AgroParallel.VistaX
                     alarmMsg = "FALLA EN " + fallasStr;
                 }
 
+                // Agrupar surcos por tren y calcular layout de centrado
+                var trenesGroup = surcosList
+                    .GroupBy(s => s.Tren)
+                    .OrderBy(g => g.Key);
+
+                var trenes = new List<TrenLayout>();
+                foreach (var grupo in trenesGroup)
+                {
+                    var surcosTren = grupo.OrderBy(s => s.Bajada).ToArray();
+                    int count = surcosTren.Length;
+
+                    int totalWidth = count * SensorWidthPx + (count > 1 ? (count - 1) * SensorSpacingPx : 0);
+
+                    // Clamp: si el grupo excede el contenedor, reducir spacing
+                    int effectiveSpacing = SensorSpacingPx;
+                    if (totalWidth > ContainerWidthPx && count > 1)
+                    {
+                        effectiveSpacing = Math.Max(0, (ContainerWidthPx - count * SensorWidthPx) / (count - 1));
+                        totalWidth = count * SensorWidthPx + (count - 1) * effectiveSpacing;
+                    }
+
+                    // Offset X para centrar horizontalmente dentro del contenedor
+                    int offsetX = Math.Max(0, (ContainerWidthPx - totalWidth) / 2);
+
+                    trenes.Add(new TrenLayout
+                    {
+                        Tren = grupo.Key,
+                        Count = count,
+                        SensorWidthPx = SensorWidthPx,
+                        SpacingPx = effectiveSpacing,
+                        TotalWidthPx = totalWidth,
+                        OffsetXPx = offsetX,
+                        Surcos = surcosTren
+                    });
+                }
+
                 var snapshot = new SeedMonitorSnapshot();
                 snapshot.Velocidad = _velocidad;
                 snapshot.SpmPromedio = promedio;
                 snapshot.FallasActivas = fallas;
                 snapshot.SurcosActivos = semillas.Length;
                 snapshot.Surcos = surcosList;
+                snapshot.Trenes = trenes.ToArray();
+                snapshot.ContainerWidthPx = ContainerWidthPx;
                 snapshot.LastUpdate = _lastDataTime;
                 snapshot.IsConnected = _isConnected;
                 snapshot.HasAlarm = hasAlarm;
                 snapshot.AlarmMessage = alarmMsg;
                 snapshot.NombreImplemento = _implemento.Nombre ?? "";
+                snapshot.MonitoreoActivo = _monitoreoActivo;
+                snapshot.MetodoInicio = _metodoInicio;
                 return snapshot;
             }
         }

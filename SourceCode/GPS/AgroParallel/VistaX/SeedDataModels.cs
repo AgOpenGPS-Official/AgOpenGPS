@@ -140,6 +140,18 @@ namespace AgroParallel.VistaX
     }
 
     // =========================================================================
+    // Método de inicio de monitoreo
+    // =========================================================================
+
+    public enum MetodoInicioMonitoreo
+    {
+        Sensores = 0,
+        Herramienta = 1,
+        Pintando = 2,
+        Manual = 3
+    }
+
+    // =========================================================================
     // Estado de cada surco procesado
     // =========================================================================
 
@@ -177,6 +189,39 @@ namespace AgroParallel.VistaX
     }
 
     // =========================================================================
+    // Layout de un tren para centrado de sensores en la UI
+    // =========================================================================
+
+    public class TrenLayout
+    {
+        [JsonPropertyName("tren")]
+        public int Tren { get; set; }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
+        [JsonPropertyName("sensorWidthPx")]
+        public int SensorWidthPx { get; set; }
+
+        [JsonPropertyName("spacingPx")]
+        public int SpacingPx { get; set; }
+
+        [JsonPropertyName("totalWidthPx")]
+        public int TotalWidthPx { get; set; }
+
+        [JsonPropertyName("offsetXPx")]
+        public int OffsetXPx { get; set; }
+
+        [JsonPropertyName("surcos")]
+        public SurcoState[] Surcos { get; set; }
+
+        public TrenLayout()
+        {
+            Surcos = new SurcoState[0];
+        }
+    }
+
+    // =========================================================================
     // Snapshot para UI (thread-safe)
     // =========================================================================
 
@@ -187,15 +232,20 @@ namespace AgroParallel.VistaX
         public int FallasActivas { get; set; }
         public int SurcosActivos { get; set; }
         public SurcoState[] Surcos { get; set; }
+        public TrenLayout[] Trenes { get; set; }
+        public int ContainerWidthPx { get; set; }
         public DateTime LastUpdate { get; set; }
         public bool IsConnected { get; set; }
         public bool HasAlarm { get; set; }
         public string AlarmMessage { get; set; }
         public string NombreImplemento { get; set; }
+        public bool MonitoreoActivo { get; set; }
+        public MetodoInicioMonitoreo MetodoInicio { get; set; }
 
         public SeedMonitorSnapshot()
         {
             Surcos = new SurcoState[0];
+            Trenes = new TrenLayout[0];
             AlarmMessage = "";
             NombreImplemento = "";
         }

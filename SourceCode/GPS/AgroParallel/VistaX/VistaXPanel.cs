@@ -63,11 +63,9 @@ namespace AgroParallel.VistaX
             try
             {
                 string json = JsonSerializer.Serialize(snap);
-
-                // En CefSharp moderno, se accede al Frame principal para ejecutar JS
-                string script = $@"if(window.updateData) {{ window.updateData('{json}'); }}";
-
-                // CAMBIO AQUÍ:
+                // Base64 encode para evitar problemas de escape con comillas en JS
+                string b64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(json));
+                string script = $@"if(window.updateData) {{ window.updateData(atob('{b64}')); }}";
                 browser.GetMainFrame().ExecuteJavaScriptAsync(script);
             }
             catch (Exception ex)

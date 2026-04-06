@@ -30,6 +30,11 @@ namespace AgroParallel.VistaX
         // Nueva propiedad para el servidor de interfaz moderna
         public string ServerUrl { get; set; }
 
+        // Método de inicio de monitoreo
+        public string MetodoInicio { get; set; }
+        public int UmbralSensoresActivos { get; set; }
+        public int TiempoConfirmacionMs { get; set; }
+
         private static readonly string ConfigFileName = "vistaX.json";
 
         public VistaXConfig()
@@ -51,6 +56,11 @@ namespace AgroParallel.VistaX
 
             // Valor por defecto para el servidor local
             ServerUrl = "http://localhost:3001";
+
+            // Inicio de monitoreo: sensores, herramienta, pintando, manual
+            MetodoInicio = "sensores";
+            UmbralSensoresActivos = 3;
+            TiempoConfirmacionMs = 500;
         }
 
         public static VistaXConfig Load()

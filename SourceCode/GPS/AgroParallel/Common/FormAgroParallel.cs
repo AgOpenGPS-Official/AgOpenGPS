@@ -40,13 +40,17 @@ namespace AgroParallel.Common
             LoadModuleStates();
         }
 
+        // Drag support for custom title bar
+        private bool _dragging;
+        private Point _dragStart;
+
         private void InitForm()
         {
             Text = "AgroParallel - Módulos";
             Size = new Size(720, 560);
             MinimumSize = new Size(600, 480);
             StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             BackColor = CBgDark;
             Font = new Font("Segoe UI", 9.5f);
@@ -55,16 +59,31 @@ namespace AgroParallel.Common
 
         private void BuildUI()
         {
-            // Header
+            // Custom title bar (no native chrome)
             var pnlHeader = new Panel();
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Height = 70;
             pnlHeader.BackColor = CBgPanel;
+            pnlHeader.Cursor = Cursors.SizeAll;
             pnlHeader.Paint += delegate (object s, PaintEventArgs e)
             {
                 using (var pen = new Pen(CAccent, 2))
                     e.Graphics.DrawLine(pen, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
+                // Subtle border around entire form
+                using (var borderPen = new Pen(CBorder))
+                    e.Graphics.DrawRectangle(borderPen, 0, 0, this.Width - 1, 0);
             };
+            pnlHeader.MouseDown += delegate (object s, MouseEventArgs me)
+            {
+                if (me.Button == MouseButtons.Left) { _dragging = true; _dragStart = me.Location; }
+            };
+            pnlHeader.MouseMove += delegate (object s, MouseEventArgs me)
+            {
+                if (_dragging) this.Location = new Point(
+                    this.Location.X + me.X - _dragStart.X,
+                    this.Location.Y + me.Y - _dragStart.Y);
+            };
+            pnlHeader.MouseUp += delegate { _dragging = false; };
 
             var lblTitle = new Label();
             lblTitle.Text = "AgroParallel";
@@ -83,6 +102,22 @@ namespace AgroParallel.Common
             lblSub.AutoSize = true;
             lblSub.BackColor = Color.Transparent;
             pnlHeader.Controls.Add(lblSub);
+
+            // Close button (custom, no native)
+            var btnX = new Button();
+            btnX.Text = "✕";
+            btnX.FlatStyle = FlatStyle.Flat;
+            btnX.BackColor = CBgPanel;
+            btnX.ForeColor = CTextDim;
+            btnX.Font = new Font("Segoe UI", 12f, FontStyle.Bold);
+            btnX.Size = new Size(40, 36);
+            btnX.Location = new Point(670, 4);
+            btnX.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnX.Cursor = Cursors.Hand;
+            btnX.FlatAppearance.BorderSize = 0;
+            btnX.FlatAppearance.MouseOverBackColor = CRed;
+            btnX.Click += delegate { Close(); };
+            pnlHeader.Controls.Add(btnX);
 
             Controls.Add(pnlHeader);
 
@@ -385,6 +420,13 @@ namespace AgroParallel.Common
             btn.FlatAppearance.MouseOverBackColor =
                 Color.FromArgb(Math.Min(bg.R + 20, 255), Math.Min(bg.G + 20, 255), Math.Min(bg.B + 20, 255));
             return btn;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            using (var pen = new Pen(CBorder))
+                e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
         }
 
         private class ModuleCard : Panel

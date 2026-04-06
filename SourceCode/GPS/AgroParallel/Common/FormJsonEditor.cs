@@ -21,10 +21,15 @@ namespace AgroParallel.Common
         private static readonly Color CDim     = Color.FromArgb(160, 160, 160);
         private static readonly Color CAccent  = Color.FromArgb(0, 180, 80);
         private static readonly Color CBorder  = Color.FromArgb(70, 70, 75);
+        private static readonly Color CRed     = Color.FromArgb(231, 76, 60);
 
         private readonly string _filePath;
         private readonly Dictionary<string, Control> _editors = new Dictionary<string, Control>();
         private JsonDocument _originalDoc;
+
+        // Drag support for custom title bar
+        private bool _dragging;
+        private Point _dragStart;
 
         public FormJsonEditor(string filePath, string title)
         {
@@ -33,7 +38,7 @@ namespace AgroParallel.Common
             Size = new Size(520, 600);
             MinimumSize = new Size(400, 400);
             StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             BackColor = CBg;
             Font = new Font("Segoe UI", 9f);
@@ -43,15 +48,49 @@ namespace AgroParallel.Common
 
         private void BuildUI()
         {
+            // Custom title bar (no native chrome)
+            var pnlTitleBar = new Panel();
+            pnlTitleBar.Dock = DockStyle.Top;
+            pnlTitleBar.Height = 40;
+            pnlTitleBar.BackColor = Color.FromArgb(40, 40, 45);
+            pnlTitleBar.Cursor = Cursors.SizeAll;
+            pnlTitleBar.MouseDown += delegate (object s, MouseEventArgs me)
+            {
+                if (me.Button == MouseButtons.Left) { _dragging = true; _dragStart = me.Location; }
+            };
+            pnlTitleBar.MouseMove += delegate (object s, MouseEventArgs me)
+            {
+                if (_dragging) this.Location = new Point(
+                    this.Location.X + me.X - _dragStart.X,
+                    this.Location.Y + me.Y - _dragStart.Y);
+            };
+            pnlTitleBar.MouseUp += delegate { _dragging = false; };
+
             var lblHeader = new Label();
             lblHeader.Text = Path.GetFileName(_filePath);
             lblHeader.Font = new Font("Segoe UI", 12f, FontStyle.Bold);
             lblHeader.ForeColor = CText;
-            lblHeader.Dock = DockStyle.Top;
-            lblHeader.Height = 40;
-            lblHeader.Padding = new Padding(16, 10, 0, 0);
-            lblHeader.BackColor = Color.FromArgb(40, 40, 45);
-            Controls.Add(lblHeader);
+            lblHeader.Location = new Point(16, 10);
+            lblHeader.AutoSize = true;
+            lblHeader.BackColor = Color.Transparent;
+            pnlTitleBar.Controls.Add(lblHeader);
+
+            var btnX = new Button();
+            btnX.Text = "✕";
+            btnX.FlatStyle = FlatStyle.Flat;
+            btnX.BackColor = Color.FromArgb(40, 40, 45);
+            btnX.ForeColor = CDim;
+            btnX.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
+            btnX.Size = new Size(36, 32);
+            btnX.Location = new Point(476, 4);
+            btnX.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnX.Cursor = Cursors.Hand;
+            btnX.FlatAppearance.BorderSize = 0;
+            btnX.FlatAppearance.MouseOverBackColor = CRed;
+            btnX.Click += delegate { DialogResult = DialogResult.Cancel; Close(); };
+            pnlTitleBar.Controls.Add(btnX);
+
+            Controls.Add(pnlTitleBar);
 
             var pnlBody = new Panel();
             pnlBody.Dock = DockStyle.Fill;
@@ -243,6 +282,13 @@ namespace AgroParallel.Common
                 result.Append(name[i]);
             }
             return result.ToString();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            using (var pen = new Pen(CBorder))
+                e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
         }
 
         protected override void Dispose(bool disposing)

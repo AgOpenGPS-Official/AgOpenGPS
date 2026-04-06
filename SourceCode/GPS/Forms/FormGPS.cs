@@ -458,12 +458,7 @@ namespace AgOpenGPS
                 this.Controls.Add(vistaXPanel);
                 vistaXPanel.Reposition();
 
-                // Suscribimos el panel a las actualizaciones del monitor
-                vistaXMonitor.SnapshotUpdated += (snap) => { // Cambiado de OnUpdate a SnapshotUpdated
-                    this.BeginInvoke((MethodInvoker)delegate {
-                        vistaXPanel.UpdateDisplay(snap);
-                    });
-                };
+                // Snapshot → UI: suscripción en el bloque inferior (línea ~1500)
             }
             // VISTAX_MOD_END
 

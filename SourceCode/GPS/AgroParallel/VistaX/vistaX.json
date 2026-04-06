@@ -9,5 +9,8 @@
   "ImplementoJsonPath": "data\\implementos\\implemento_tanzi43.json",
   "UiUpdateIntervalMs": 500,
   "SensorTimeoutMs": 3000,
-   "ServerUrl":"localhost:3001"
+   "ServerUrl":"localhost:3001",
+   "MetodoInicio": "sensores",
+   "UmbralSensoresActivos": 3,
+   "TiempoConfirmacionMs": 500
 }
