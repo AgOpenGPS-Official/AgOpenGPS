@@ -1491,19 +1491,20 @@ namespace AgOpenGPS
 
                 // Agrega esto para que si el usuario maximiza la ventana, el panel se acomode
                 this.Resize += (s, e) => { vistaXPanel.Reposition(); };
-                // Snapshot → UI
+                // Snapshot → UI (throttled en VistaXPanel)
                 vistaXMonitor.SnapshotUpdated += delegate (SeedMonitorSnapshot snapshot)
                 {
                     if (IsDisposed) return;
                     if (InvokeRequired)
                         BeginInvoke(new Action(delegate {
-                            System.Diagnostics.Debug.WriteLine("[VistaX-DBG] UI UPDATE: panel visible=" + vistaXPanel.Visible
-                                + " size=" + vistaXPanel.Width + "x" + vistaXPanel.Height
-                                + " loc=" + vistaXPanel.Location.ToString());
+                            vistaXPanel.FlushPending();
                             vistaXPanel.UpdateDisplay(snapshot);
                         }));
                     else
+                    {
+                        vistaXPanel.FlushPending();
                         vistaXPanel.UpdateDisplay(snapshot);
+                    }
                 };
 
                 vistaXMonitor.AlarmTriggered += delegate (string message)

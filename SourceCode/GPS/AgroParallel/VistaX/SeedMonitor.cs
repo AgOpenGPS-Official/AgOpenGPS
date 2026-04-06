@@ -108,11 +108,13 @@ namespace AgroParallel.VistaX
 
             await _mqtt.ConnectAsync();
 
+            // Clamp: mínimo 200ms entre snapshots para evitar presión de memoria en CefSharp
+            int intervalMs = Math.Max(200, _config.UiUpdateIntervalMs);
             _uiTimer = new Timer(
                 delegate { EmitSnapshot(); },
                 null,
-                _config.UiUpdateIntervalMs,
-                _config.UiUpdateIntervalMs);
+                intervalMs,
+                intervalMs);
 
             IsRunning = true;
             System.Diagnostics.Debug.WriteLine("[VistaX] Monitor iniciado — "
@@ -431,11 +433,6 @@ namespace AgroParallel.VistaX
             if (_disposed) return;
             EvaluarInicio();
             var snap = CreateSnapshot();
-            System.Diagnostics.Debug.WriteLine("[VistaX-DBG] SNAPSHOT: vel=" + snap.Velocidad.ToString("F1")
-                + " surcos=" + (snap.Surcos != null ? snap.Surcos.Length : 0)
-                + " semillas=" + snap.SurcosActivos
-                + " fallas=" + snap.FallasActivas
-                + " spm=" + snap.SpmPromedio.ToString("F1"));
             var handler = SnapshotUpdated;
             if (handler != null) handler(snap);
         }
