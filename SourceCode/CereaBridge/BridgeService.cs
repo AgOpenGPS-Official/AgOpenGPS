@@ -57,8 +57,11 @@ namespace CereaBridge
             OpenDevices();
             BeginReceive(_listenPrimary);
             BeginReceive(_listenFallback);
-            _telemetryTimer.Change(_cfg.TelemetryPeriodMs, _cfg.TelemetryPeriodMs);
-            _helloTimer.Change(_cfg.HelloPeriodMs, _cfg.HelloPeriodMs);
+
+            var telemetryPeriod = Math.Max(20, _cfg.TelemetryPeriodMs);
+            var helloPeriod = Math.Max(20, _cfg.HelloPeriodMs);
+            _telemetryTimer.Change(telemetryPeriod, telemetryPeriod);
+            _helloTimer.Change(helloPeriod, helloPeriod);
         }
 
         public void Dispose()
