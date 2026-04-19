@@ -29,7 +29,7 @@ namespace CereaBridge
         private byte _kp = 20;
         private byte _highPwm = 120;
         private byte _minPwm = 25;
-        private byte _countsPerDegree = 30;
+        private double _countsPerDegree = 30.0;
         private int _wasOffset;
         private byte _minSpeedX10 = 5;
         private int _lastPwm;
@@ -48,6 +48,7 @@ namespace CereaBridge
             _telemetryTimer = new Timer(OnTelemetryTick, null, Timeout.Infinite, Timeout.Infinite);
             _helloTimer = new Timer(OnHelloTick, null, Timeout.Infinite, Timeout.Infinite);
             _wasOffset = cfg.WasOffsetFallback;
+            _countsPerDegree = cfg.CountsPerDegreeFallback;
         }
 
         public void Start()
