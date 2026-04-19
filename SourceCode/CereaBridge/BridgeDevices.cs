@@ -78,17 +78,25 @@ namespace CereaBridge
             {
                 try { _motor.TargetVelocity = 0; } catch { }
                 try { _motor.Close(); } catch { }
+                _motor = null;
             }
 
             if (_encoder != null)
             {
                 try { _encoder.Close(); } catch { }
+                _encoder = null;
             }
 
             if (_ipcon != null)
             {
                 try { _ipcon.Disconnect(); } catch { }
+                _ipcon = null;
             }
+
+            _imu = null;
+            IsMotorConnected = false;
+            IsEncoderConnected = false;
+            IsImuConnected = false;
         }
 
         private int ReadCounts()
