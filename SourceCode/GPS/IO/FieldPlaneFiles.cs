@@ -53,7 +53,7 @@ namespace AgOpenGPS.IO
 
         /// <summary>
         /// Create or overwrite Field.txt with a StartFix origin and standard header.
-        /// Returns true on success; false on failure (error contains a short description).
+        /// Throws an exception if writing the file fails.
         /// Stateless: no UI, no globals, only file IO.
         /// </summary>
         public static void Save(string fieldDirectory, DateTime timestamp, Wgs84 startFix)
