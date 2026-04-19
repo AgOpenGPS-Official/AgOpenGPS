@@ -28,6 +28,18 @@ Windows helper files are included as:
 
 - `CereaBridge.setup.bat`
 - `CereaBridge.run.bat`
+- `CereaBridge.publish.bat`
+
+## CI build
+
+The repository includes a GitHub Actions workflow for CereaBridge that runs:
+
+- restore
+- build
+- publish
+- artifact upload
+
+If the workflow passes, you can download the published `CereaBridge-publish` artifact from Actions.
 
 ## Defaults
 
