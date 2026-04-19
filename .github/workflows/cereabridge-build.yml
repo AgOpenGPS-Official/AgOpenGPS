@@ -28,3 +28,9 @@ jobs:
 
       - name: Publish CereaBridge Release
         run: dotnet publish SourceCode/CereaBridge/CereaBridge.csproj --configuration Release --no-restore --output artifacts/CereaBridge
+
+      - name: Upload CereaBridge artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CereaBridge-publish
+          path: artifacts/CereaBridge
