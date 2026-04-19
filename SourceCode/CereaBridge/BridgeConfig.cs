@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 
@@ -45,7 +44,6 @@ namespace CereaBridge
         public static BridgeConfig Load()
         {
             var cfg = new BridgeConfig();
-            cfg.LoadFromAppSettings();
             cfg.LoadFromProfileIfExists(GetDefaultProfilePath());
             return cfg;
         }
@@ -153,36 +151,6 @@ namespace CereaBridge
             }
         }
 
-        private void LoadFromAppSettings()
-        {
-            ListenPort = GetInt("ListenPort", ListenPort);
-            ListenPortFallback = GetInt("ListenPortFallback", ListenPortFallback);
-            AgioHost = GetString("AgioHost", AgioHost);
-            AgioPort = GetInt("AgioPort", AgioPort);
-            UsePhidgets = GetBool("UsePhidgets", UsePhidgets);
-            PhidgetsDeviceSerialNumber = GetInt("PhidgetsDeviceSerialNumber", PhidgetsDeviceSerialNumber);
-            PhidgetsMotorChannel = GetInt("PhidgetsMotorChannel", PhidgetsMotorChannel);
-            PhidgetsEncoderChannel = GetInt("PhidgetsEncoderChannel", PhidgetsEncoderChannel);
-            ReverseMotor = GetBool("ReverseMotor", ReverseMotor);
-            ReverseWas = GetBool("ReverseWas", ReverseWas);
-            UseImuBrick = GetBool("UseImuBrick", UseImuBrick);
-            ImuHost = GetString("ImuHost", ImuHost);
-            ImuPort = GetInt("ImuPort", ImuPort);
-            ImuUid = GetString("ImuUid", ImuUid);
-            ReverseRoll = GetBool("ReverseRoll", ReverseRoll);
-            ReverseHeading = GetBool("ReverseHeading", ReverseHeading);
-            HeadingOffset16 = (short)GetInt("HeadingOffset16", HeadingOffset16);
-            CountsPerDegreeFallback = GetDouble("CountsPerDegreeFallback", CountsPerDegreeFallback);
-            WasOffsetFallback = GetInt("WasOffsetFallback", WasOffsetFallback);
-            VelocityGainMultiplier = GetDouble("VelocityGainMultiplier", VelocityGainMultiplier);
-            MaxMotorOutput = GetDouble("MaxMotorOutput", MaxMotorOutput);
-            DeadbandDegrees = GetDouble("DeadbandDegrees", DeadbandDegrees);
-            TelemetryPeriodMs = GetInt("TelemetryPeriodMs", TelemetryPeriodMs);
-            HelloPeriodMs = GetInt("HelloPeriodMs", HelloPeriodMs);
-            SteerSwitchOn = GetBool("SteerSwitchOn", SteerSwitchOn);
-            WorkSwitchOn = GetBool("WorkSwitchOn", WorkSwitchOn);
-        }
-
         private void ApplyValue(string key, string value)
         {
             switch (key)
@@ -214,27 +182,6 @@ namespace CereaBridge
                 case "SteerSwitchOn": SteerSwitchOn = ParseBool(value, SteerSwitchOn); break;
                 case "WorkSwitchOn": WorkSwitchOn = ParseBool(value, WorkSwitchOn); break;
             }
-        }
-
-        private static string GetString(string key, string fallback)
-        {
-            var value = ConfigurationManager.AppSettings[key];
-            return string.IsNullOrWhiteSpace(value) ? fallback : value;
-        }
-
-        private static int GetInt(string key, int fallback)
-        {
-            return ParseInt(ConfigurationManager.AppSettings[key], fallback);
-        }
-
-        private static double GetDouble(string key, double fallback)
-        {
-            return ParseDouble(ConfigurationManager.AppSettings[key], fallback);
-        }
-
-        private static bool GetBool(string key, bool fallback)
-        {
-            return ParseBool(ConfigurationManager.AppSettings[key], fallback);
         }
 
         private static int ParseInt(string value, int fallback)
