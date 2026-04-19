@@ -26,6 +26,10 @@ namespace CereaBridge
                     bridge.Start();
                     Console.WriteLine("CereaBridge running.");
                     Console.WriteLine("Profile: " + profilePath);
+                    foreach (var line in cfg.BuildSummaryLines())
+                    {
+                        Console.WriteLine(line);
+                    }
                     Console.WriteLine("Motor: " + (bridge.IsMotorConnected ? "connected" : "not connected"));
                     Console.WriteLine("Encoder: " + (bridge.IsEncoderConnected ? "connected" : "not connected"));
                     Console.WriteLine("IMU Brick: " + (bridge.IsImuConnected ? "connected" : "not connected"));
