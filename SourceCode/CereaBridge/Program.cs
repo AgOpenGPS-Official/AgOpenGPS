@@ -1,17 +1,31 @@
 using System;
+using System.IO;
+using System.Linq;
 
 namespace CereaBridge
 {
     internal static class Program
     {
         [STAThread]
-        private static void Main()
+        private static void Main(string[] args)
         {
             var cfg = BridgeConfig.Load();
+            var profilePath = BridgeConfig.GetDefaultProfilePath();
+            var forceSetup = args.Any(a => string.Equals(a, "--setup", StringComparison.OrdinalIgnoreCase));
+            var firstRun = !File.Exists(profilePath);
+
+            if (forceSetup || firstRun)
+            {
+                ConsoleSetup.Run(cfg);
+            }
+
             using (var bridge = new BridgeService(cfg))
             {
                 bridge.Start();
-                Console.WriteLine("CereaBridge running. Press Enter to exit.");
+                Console.WriteLine("CereaBridge running.");
+                Console.WriteLine("Profile: " + profilePath);
+                Console.WriteLine("Use --setup to change saved settings.");
+                Console.WriteLine("Press Enter to exit.");
                 Console.ReadLine();
             }
         }
