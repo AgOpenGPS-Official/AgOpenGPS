@@ -62,6 +62,34 @@ namespace CereaBridge
             yield return "Timing: telemetry=" + TelemetryPeriodMs.ToString(CultureInfo.InvariantCulture) + " ms, hello=" + HelloPeriodMs.ToString(CultureInfo.InvariantCulture) + " ms";
         }
 
+        public IEnumerable<string> BuildWarningLines()
+        {
+            if (UsePhidgets && PhidgetsMotorChannel == PhidgetsEncoderChannel)
+            {
+                yield return "Motor and encoder channel are both set to " + PhidgetsMotorChannel.ToString(CultureInfo.InvariantCulture) + ". Check if that is correct for your hardware.";
+            }
+
+            if (UseImuBrick && string.IsNullOrWhiteSpace(ImuUid))
+            {
+                yield return "IMU Brick is enabled but ImuUid is empty.";
+            }
+
+            if (CountsPerDegreeFallback <= 0)
+            {
+                yield return "CountsPerDegreeFallback must be greater than zero.";
+            }
+
+            if (MaxMotorOutput <= 0 || MaxMotorOutput > 1.0)
+            {
+                yield return "MaxMotorOutput should normally be between 0.0 and 1.0.";
+            }
+
+            if (TelemetryPeriodMs < 20)
+            {
+                yield return "TelemetryPeriodMs is very low. That can make debugging harder.";
+            }
+        }
+
         public void SaveProfile(string path)
         {
             var lines = new List<string>
