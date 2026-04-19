@@ -77,6 +77,46 @@ namespace AgLibrary.Tests.Settings
             var expected = File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "Settings", "TestSettings.xml"));
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void SaveXMLFile_ShouldHandleNullReferenceFields()
+        {
+            // Arrange
+            var filePath = Path.GetTempFileName();
+            var testSettings = new TestSettings
+            {
+                StringSetting = "Some text",
+                ListSetting = null,
+                ClassSetting = null
+            };
+
+            // Act / Assert (no exception)
+            Assert.DoesNotThrow(() => XmlSettingsHandler.SaveXMLFile(filePath, testSettings));
+
+            var savedContent = File.ReadAllText(filePath);
+            Assert.That(savedContent, Does.Contain("<setting name=\"ListSetting\" serializeAs=\"String\">"));
+            Assert.That(savedContent, Does.Contain("<setting name=\"ClassSetting\" serializeAs=\"String\">"));
+        }
+
+        [Test]
+        public void LoadXMLFile_ShouldLoadArraySettingsSuccessfully()
+        {
+            // Arrange
+            var filePath = Path.GetTempFileName();
+            var source = new TestArraySettings
+            {
+                ArraySetting = new[] { 7, 8, 9 }
+            };
+            XmlSettingsHandler.SaveXMLFile(filePath, source);
+            var loaded = new TestArraySettings();
+
+            // Act
+            var loadResult = XmlSettingsHandler.LoadXMLFile(filePath, loaded);
+
+            // Assert
+            Assert.That(loadResult, Is.EqualTo(LoadResult.Ok));
+            Assert.That(loaded.ArraySetting, Is.EqualTo(new[] { 7, 8, 9 }));
+        }
     }
 
     public enum TestEnum { One, Two, Three }
@@ -99,5 +139,10 @@ namespace AgLibrary.Tests.Settings
         public Size SizeSetting;
         public List<int> ListSetting;
         public TestSubSettings ClassSetting;
+    }
+
+    public class TestArraySettings
+    {
+        public int[] ArraySetting;
     }
 }
