@@ -12,6 +12,11 @@ CereaBridge listens for AgIO/AgOpenGPS steer packets and sends steer telemetry b
 
 ## Simple setup
 
+CereaBridge now uses:
+
+- built-in default values
+- optional saved profile values from `CereaBridge.profile.ini`
+
 On first run, CereaBridge asks for the basic settings it needs and saves them into:
 
 `CereaBridge.profile.ini`
@@ -45,7 +50,7 @@ If the workflow passes, you can download the published `CereaBridge-publish` art
 
 - listens on UDP 18888 and 8888
 - sends module data back to AgIO on 127.0.0.1:9999
-- reads saved profile values first
+- starts from built-in defaults and then applies saved profile values if present
 - optional IMU Brick is enabled only when `ImuUid` is set
 
 ## Before running
