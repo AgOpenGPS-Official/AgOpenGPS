@@ -44,7 +44,7 @@ namespace CereaBridge
             _listenPrimary = new UdpClient(cfg.ListenPort);
             _listenFallback = new UdpClient(cfg.ListenPortFallback);
             _sender = new UdpClient();
-            _agioEndpoint = new IPEndPoint(IPAddress.Parse(cfg.AgioHost), cfg.AgioPort);
+            _agioEndpoint = new IPEndPoint(ResolveHostAddress(cfg.AgioHost), cfg.AgioPort);
             _telemetryTimer = new Timer(OnTelemetryTick, null, Timeout.Infinite, Timeout.Infinite);
             _helloTimer = new Timer(OnHelloTick, null, Timeout.Infinite, Timeout.Infinite);
             _wasOffset = cfg.WasOffsetFallback;
@@ -69,6 +69,25 @@ namespace CereaBridge
             _listenPrimary.Dispose();
             _listenFallback.Dispose();
             _sender.Dispose();
+        }
+
+        private static IPAddress ResolveHostAddress(string host)
+        {
+            if (IPAddress.TryParse(host, out var parsed))
+            {
+                return parsed;
+            }
+
+            var addresses = Dns.GetHostAddresses(host);
+            foreach (var address in addresses)
+            {
+                if (address.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return address;
+                }
+            }
+
+            return addresses.Length > 0 ? addresses[0] : IPAddress.Loopback;
         }
     }
 }
