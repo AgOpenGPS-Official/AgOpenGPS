@@ -64,6 +64,11 @@ namespace CereaBridge
 
         public IEnumerable<string> BuildWarningLines()
         {
+            if (UsePhidgets && PhidgetsDeviceSerialNumber == 0)
+            {
+                yield return "PhidgetsDeviceSerialNumber is 0. The first matching device found will be used.";
+            }
+
             if (UsePhidgets && PhidgetsMotorChannel == PhidgetsEncoderChannel)
             {
                 yield return "Motor and encoder channel are both set to " + PhidgetsMotorChannel.ToString(CultureInfo.InvariantCulture) + ". Check if that is correct for your hardware.";
@@ -82,6 +87,11 @@ namespace CereaBridge
             if (MaxMotorOutput <= 0 || MaxMotorOutput > 1.0)
             {
                 yield return "MaxMotorOutput should normally be between 0.0 and 1.0.";
+            }
+
+            if (DeadbandDegrees < 0)
+            {
+                yield return "DeadbandDegrees should not be negative.";
             }
 
             if (TelemetryPeriodMs < 20)
