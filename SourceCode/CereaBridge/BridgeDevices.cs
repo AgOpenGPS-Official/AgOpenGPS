@@ -53,9 +53,10 @@ namespace CereaBridge
 
             if (_cfg.UseImuBrick && !string.IsNullOrWhiteSpace(_cfg.ImuUid))
             {
+                IPConnection? ipcon = null;
                 try
                 {
-                    var ipcon = new IPConnection();
+                    ipcon = new IPConnection();
                     ipcon.Connect(_cfg.ImuHost, _cfg.ImuPort);
                     var imu = new BrickIMUV2(_cfg.ImuUid, ipcon);
                     _ipcon = ipcon;
@@ -65,10 +66,7 @@ namespace CereaBridge
                 }
                 catch (Exception ex)
                 {
-                    if (_ipcon != null)
-                    {
-                        try { _ipcon.Disconnect(); } catch { }
-                    }
+                    try { ipcon?.Disconnect(); } catch { }
                     _ipcon = null;
                     _imu = null;
                     Console.WriteLine("IMU Brick not connected: " + ex.Message);
