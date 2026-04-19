@@ -34,6 +34,10 @@ namespace CereaBridge
         private byte _minSpeedX10 = 5;
         private int _lastPwm;
 
+        public bool IsMotorConnected { get; private set; }
+        public bool IsEncoderConnected { get; private set; }
+        public bool IsImuConnected { get; private set; }
+
         public BridgeService(BridgeConfig cfg)
         {
             _cfg = cfg;
