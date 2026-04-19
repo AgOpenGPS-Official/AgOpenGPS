@@ -17,10 +17,10 @@ namespace CereaBridge
         private readonly Timer _telemetryTimer;
         private readonly Timer _helloTimer;
 
-        private DCMotor _motor;
-        private Encoder _encoder;
-        private IPConnection _ipcon;
-        private BrickIMUV2 _imu;
+        private DCMotor? _motor;
+        private Encoder? _encoder;
+        private IPConnection? _ipcon;
+        private BrickIMUV2? _imu;
 
         private volatile bool _running;
         private double _desiredAngleDeg;
