@@ -25,3 +25,6 @@ jobs:
 
       - name: Build CereaBridge Debug
         run: dotnet build SourceCode/CereaBridge/CereaBridge.csproj --configuration Debug --no-restore
+
+      - name: Publish CereaBridge Release
+        run: dotnet publish SourceCode/CereaBridge/CereaBridge.csproj --configuration Release --no-restore --output artifacts/CereaBridge
