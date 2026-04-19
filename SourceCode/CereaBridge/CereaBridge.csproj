@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <PublishDir>..\..\AgOpenGPS\</PublishDir>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.6" />
     <PackageReference Include="Phidget22.NET" Version="1.24.20260127" />
     <PackageReference Include="Tinkerforge" Version="2.1.33" />
   </ItemGroup>
