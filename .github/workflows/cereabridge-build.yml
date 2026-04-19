@@ -1,0 +1,27 @@
+name: CereaBridge Build
+
+on:
+  push:
+    paths:
+      - 'SourceCode/CereaBridge/**'
+      - '.github/workflows/cereabridge-build.yml'
+  workflow_dispatch:
+
+jobs:
+  build-cereabridge:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore CereaBridge
+        run: dotnet restore SourceCode/CereaBridge/CereaBridge.csproj
+
+      - name: Build CereaBridge Debug
+        run: dotnet build SourceCode/CereaBridge/CereaBridge.csproj --configuration Debug --no-restore
