@@ -21,6 +21,7 @@ namespace CereaBridge
                 var speedOk = _speedKph >= (_minSpeedX10 * 0.1);
                 var shouldDrive = _autosteerEnabled && speedOk;
                 var pwm = 0;
+                var motorVelocity = 0.0;
 
                 if (shouldDrive)
                 {
@@ -29,8 +30,14 @@ namespace CereaBridge
                     {
                         pwm = (int)Math.Round((_kp * absError) + _minPwm);
                         if (pwm > _highPwm) pwm = _highPwm;
+                        motorVelocity = (pwm / 255.0) * _cfg.VelocityGainMultiplier;
+                        if (motorVelocity > _cfg.MaxMotorOutput) motorVelocity = _cfg.MaxMotorOutput;
+                        if (errorDeg < 0) motorVelocity = -motorVelocity;
                     }
                 }
+
+                if (_cfg.ReverseMotor) motorVelocity = -motorVelocity;
+                if (_motor != null) _motor.TargetVelocity = motorVelocity;
 
                 _lastPwm = pwm;
                 SendSteerTelemetry((short)Math.Round(actualDeg * 100.0), heading16, roll16, BuildSwitchByte(), (byte)Math.Max(0, Math.Min(255, pwm)));
