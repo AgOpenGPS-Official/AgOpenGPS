@@ -81,76 +81,6 @@ namespace AgLibrary.Settings
         private static bool SetFieldValue(FieldInfo pinfo, XmlTextReader reader, object obj)
         {
             Type fieldType = pinfo.FieldType;
-            if (typeof(IEnumerable).IsAssignableFrom(fieldType) && (fieldType.IsGenericType || fieldType.IsArray))
-            {
-                Type itemType;
-
-                if (fieldType.IsGenericType) // For generic collections like List<T>
-                    itemType = fieldType.GetGenericArguments()[0];
-                else if (fieldType.IsArray) // For arrays like T[]
-                    itemType = fieldType.GetElementType();
-                else
-                {
-                    throw new NotSupportedException($"Unsupported collection type: {fieldType}");
-                }
-
-                var innerXml = reader.ReadInnerXml().Trim();
-                if (string.IsNullOrWhiteSpace(innerXml))
-                {
-                    pinfo.SetValue(obj, null);
-                    return true;
-                }
-
-                // Deserialize XML into the custom object
-                var serializer = new XmlSerializer(typeof(List<>).MakeGenericType(itemType));
-                using (var stringReader = new StringReader(innerXml))
-                {
-                    var list = serializer.Deserialize(stringReader);
-
-                    if (fieldType.IsArray) // Convert List<T> to T[] for arrays
-                    {
-                        var toArrayMethod = typeof(Enumerable).GetMethod(nameof(Enumerable.ToArray))?.MakeGenericMethod(itemType);
-                        if (toArrayMethod == null)
-                        {
-                            throw new InvalidOperationException($"Failed to create array conversion method for {itemType}.");
-                        }
-
-                        var typedArray = toArrayMethod.Invoke(null, new[] { list });
-                        pinfo.SetValue(obj, typedArray);
-                    }
-                    else // Directly assign the List<T>
-                    {
-                        pinfo.SetValue(obj, list);
-                    }
-                }
-                return true;
-            }
-
-            if (fieldType.IsClass && fieldType != typeof(string))
-            {
-                try
-                {
-                    var innerXml = reader.ReadInnerXml().Trim();
-                    if (string.IsNullOrWhiteSpace(innerXml))
-                    {
-                        pinfo.SetValue(obj, null);
-                        return true;
-                    }
-
-                    innerXml = innerXml.Replace(">True<", ">true<").Replace(">False<", ">false<");
-                    using (StringReader stringReader = new StringReader(innerXml))
-                    {
-                        var serializer = new XmlSerializer(fieldType);
-                        object nestedObj = serializer.Deserialize(stringReader);
-                        pinfo.SetValue(obj, nestedObj);
-                    }
-                }
-                catch (Exception)
-                {
-                }
-                return true;
-            }
-
             // Read string values
             string value = reader.ReadString();
 
@@ -192,6 +122,59 @@ namespace AgLibrary.Settings
                     pinfo.SetValue(obj, new Size(width, height));
                 }
             }
+            else if (typeof(IEnumerable).IsAssignableFrom(fieldType) && (fieldType.IsGenericType || fieldType.IsArray))
+            {
+                Type itemType;
+
+                if (fieldType.IsGenericType) // For generic collections like List<T>
+                    itemType = fieldType.GetGenericArguments()[0];
+                else if (fieldType.IsArray) // For arrays like T[]
+                    itemType = fieldType.GetElementType();
+                else
+                {
+                    throw new NotSupportedException($"Unsupported collection type: {fieldType}");
+                }
+
+                // Deserialize XML into the custom object
+                var serializer = new XmlSerializer(typeof(List<>).MakeGenericType(itemType));
+                var list = serializer.Deserialize(reader);
+
+                if (fieldType.IsArray) // Convert List<T> to T[] for arrays
+                {
+                    var array = ((IEnumerable)list).Cast<object>().ToArray();
+                    pinfo.SetValue(obj, Array.CreateInstance(itemType, array.Length));
+                    Array.Copy(array, (Array)pinfo.GetValue(obj), array.Length);
+                }
+                else // Directly assign the List<T>
+                {
+                    pinfo.SetValue(obj, list);
+                }
+            }
+            else if (fieldType.IsClass)
+            {
+                try
+                {
+                    if (reader.NodeType == XmlNodeType.Element && !reader.IsEmptyElement)
+                    {
+                        string innerXml = reader.ReadOuterXml().Trim();
+                        innerXml = innerXml.Replace(">True<", ">true<").Replace(">False<", ">false<");
+
+                        if (!string.IsNullOrEmpty(innerXml))
+                        {
+                            using (StringReader stringReader = new StringReader(innerXml))
+                            {
+                                var serializer = new XmlSerializer(fieldType);
+                                object nestedObj = serializer.Deserialize(stringReader);
+                                pinfo.SetValue(obj, nestedObj);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+            }
+
             else
             {
                 if (Debugger.IsAttached)
@@ -232,7 +215,7 @@ namespace AgLibrary.Settings
                     foreach (var fld in obj.GetType().GetFields())
                     {
                         var value = fld.GetValue(obj);
-                        var fieldType = fld.FieldType;
+                        var fieldType = value.GetType();
 
                         // Start a "setting" element
                         xml.WriteStartElement("setting");
@@ -240,12 +223,7 @@ namespace AgLibrary.Settings
                         // Add attributes to the "setting" element
                         xml.WriteAttributeString("name", fld.Name);
 
-                        if (value == null)
-                        {
-                            xml.WriteAttributeString("serializeAs", "String");
-                            xml.WriteElementString("value", string.Empty);
-                        }
-                        else if ((fieldType.IsClass && fieldType != typeof(string)) || (typeof(IEnumerable).IsAssignableFrom(fieldType) && (fieldType.IsGenericType || fieldType.IsArray)))
+                        if ((fieldType.IsClass && fieldType != typeof(string)) || (typeof(IEnumerable).IsAssignableFrom(fieldType) && (fieldType.IsGenericType || fieldType.IsArray)))
                         {
                             //classes, arrays and lists
                             xml.WriteAttributeString("serializeAs", "Xml");
