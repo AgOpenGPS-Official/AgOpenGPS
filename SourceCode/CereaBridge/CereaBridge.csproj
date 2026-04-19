@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="App.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.6" />
     <PackageReference Include="Phidget22.NET" Version="1.24.20260127" />
     <PackageReference Include="Tinkerforge" Version="2.1.33" />
   </ItemGroup>
