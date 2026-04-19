@@ -8,30 +8,67 @@ namespace CereaBridge
     {
         private void OpenDevices()
         {
+            IsMotorConnected = false;
+            IsEncoderConnected = false;
+            IsImuConnected = false;
+
             if (_cfg.UsePhidgets)
             {
-                _motor = new DCMotor();
-                _encoder = new Encoder();
-
-                if (_cfg.PhidgetsDeviceSerialNumber > 0)
+                try
                 {
-                    _motor.DeviceSerialNumber = _cfg.PhidgetsDeviceSerialNumber;
-                    _encoder.DeviceSerialNumber = _cfg.PhidgetsDeviceSerialNumber;
+                    _motor = new DCMotor();
+                    if (_cfg.PhidgetsDeviceSerialNumber > 0)
+                    {
+                        _motor.DeviceSerialNumber = _cfg.PhidgetsDeviceSerialNumber;
+                    }
+                    _motor.Channel = _cfg.PhidgetsMotorChannel;
+                    _motor.Open(5000);
+                    _motor.Acceleration = _motor.MaxAcceleration;
+                    _motor.TargetVelocity = 0;
+                    IsMotorConnected = true;
+                    Console.WriteLine("Phidgets motor connected.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Phidgets motor not connected: " + ex.Message);
                 }
 
-                _motor.Channel = _cfg.PhidgetsMotorChannel;
-                _encoder.Channel = _cfg.PhidgetsEncoderChannel;
-                _motor.Open(5000);
-                _encoder.Open(5000);
-                _motor.Acceleration = _motor.MaxAcceleration;
-                _motor.TargetVelocity = 0;
+                try
+                {
+                    _encoder = new Encoder();
+                    if (_cfg.PhidgetsDeviceSerialNumber > 0)
+                    {
+                        _encoder.DeviceSerialNumber = _cfg.PhidgetsDeviceSerialNumber;
+                    }
+                    _encoder.Channel = _cfg.PhidgetsEncoderChannel;
+                    _encoder.Open(5000);
+                    IsEncoderConnected = true;
+                    Console.WriteLine("Phidgets encoder connected.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Phidgets encoder not connected: " + ex.Message);
+                }
             }
 
             if (_cfg.UseImuBrick && !string.IsNullOrWhiteSpace(_cfg.ImuUid))
             {
-                _ipcon = new IPConnection();
-                _ipcon.Connect(_cfg.ImuHost, _cfg.ImuPort);
-                _imu = new BrickIMUV2(_cfg.ImuUid, _ipcon);
+                try
+                {
+                    _ipcon = new IPConnection();
+                    _ipcon.Connect(_cfg.ImuHost, _cfg.ImuPort);
+                    _imu = new BrickIMUV2(_cfg.ImuUid, _ipcon);
+                    IsImuConnected = true;
+                    Console.WriteLine("IMU Brick connected.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("IMU Brick not connected: " + ex.Message);
+                }
+            }
+            else if (_cfg.UseImuBrick)
+            {
+                Console.WriteLine("IMU Brick skipped: UID not set.");
             }
         }
 
