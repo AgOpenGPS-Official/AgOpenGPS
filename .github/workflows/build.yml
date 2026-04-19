@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+    paths-ignore:
+      - 'SourceCode/CereaBridge/**'
+      - '.github/workflows/cereabridge-build.yml'
   pull_request:
 
 env:
