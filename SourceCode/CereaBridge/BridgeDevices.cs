@@ -55,14 +55,22 @@ namespace CereaBridge
             {
                 try
                 {
-                    _ipcon = new IPConnection();
-                    _ipcon.Connect(_cfg.ImuHost, _cfg.ImuPort);
-                    _imu = new BrickIMUV2(_cfg.ImuUid, _ipcon);
+                    var ipcon = new IPConnection();
+                    ipcon.Connect(_cfg.ImuHost, _cfg.ImuPort);
+                    var imu = new BrickIMUV2(_cfg.ImuUid, ipcon);
+                    _ipcon = ipcon;
+                    _imu = imu;
                     IsImuConnected = true;
                     Console.WriteLine("IMU Brick connected.");
                 }
                 catch (Exception ex)
                 {
+                    if (_ipcon != null)
+                    {
+                        try { _ipcon.Disconnect(); } catch { }
+                    }
+                    _ipcon = null;
+                    _imu = null;
                     Console.WriteLine("IMU Brick not connected: " + ex.Message);
                 }
             }
