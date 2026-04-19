@@ -1,4 +1,5 @@
 ﻿using AgOpenGPS.Core.Interfaces;
+using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using System.Windows.Input;
 
@@ -93,26 +94,76 @@ namespace AgOpenGPS.Core.ViewModels
 
         private void StartSelectNearField()
         {
-            // TODO implement different behaviour if number of fields is 0 or 1
             _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
-            SelectNearFieldViewModel.UpdateFields();
-            _selectFieldPanelPresenter.ShowSelectNearFieldDialog(SelectNearFieldViewModel);
+            var viewModel = SelectNearFieldViewModel;
+            viewModel.UpdateFields();
+
+            var fieldCount = viewModel.FieldDescriptionViewModels?.Count ?? 0;
+            if (fieldCount == 0)
+            {
+                return;
+            }
+
+            if (fieldCount == 1)
+            {
+                ActivateField(viewModel.FieldDescriptionViewModels[0]);
+                return;
+            }
+
+            _selectFieldPanelPresenter.ShowSelectNearFieldDialog(viewModel);
         }
 
         private void StartCreateFieldFromExisting()
         {
-            // TODO implement different behaviour if number of fields is 0 or 1
             _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
-            CreateFromExistingFieldViewModel.UpdateFields();
-            _selectFieldPanelPresenter.ShowCreateFromExistingFieldDialog(CreateFromExistingFieldViewModel);
+            var viewModel = CreateFromExistingFieldViewModel;
+            viewModel.UpdateFields();
+
+            var fieldCount = viewModel.FieldDescriptionViewModels?.Count ?? 0;
+            if (fieldCount == 0)
+            {
+                return;
+            }
+
+            if (fieldCount == 1)
+            {
+                viewModel.LocalSelectedField = viewModel.FieldDescriptionViewModels[0];
+            }
+
+            _selectFieldPanelPresenter.ShowCreateFromExistingFieldDialog(viewModel);
         }
 
         private void StartSelectField()
         {
-            // TODO implement different behaviour if number of fields is 0 or 1
             _selectFieldPanelPresenter.CloseSelectFieldMenuDialog();
-            SelectFieldViewModel.UpdateFields();
-            _selectFieldPanelPresenter.ShowSelectFieldDialog(SelectFieldViewModel);
+            var viewModel = SelectFieldViewModel;
+            viewModel.UpdateFields();
+
+            var fieldCount = viewModel.FieldDescriptionViewModels?.Count ?? 0;
+            if (fieldCount == 0)
+            {
+                return;
+            }
+
+            if (fieldCount == 1)
+            {
+                ActivateField(viewModel.FieldDescriptionViewModels[0]);
+                return;
+            }
+
+            _selectFieldPanelPresenter.ShowSelectFieldDialog(viewModel);
+        }
+
+        private void ActivateField(FieldDescriptionViewModel selectedField)
+        {
+            if (selectedField == null)
+            {
+                return;
+            }
+
+            var field = new Field(selectedField.DirectoryInfo);
+            _fieldStreamer.ReadFlagList(field);
+            _appModel.Fields.ActiveField = field;
         }
 
         private void Cancel()
