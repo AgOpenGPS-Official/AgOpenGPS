@@ -19,12 +19,24 @@ namespace CereaBridge
                 ConsoleSetup.Run(cfg);
             }
 
-            using (var bridge = new BridgeService(cfg))
+            try
             {
-                bridge.Start();
-                Console.WriteLine("CereaBridge running.");
-                Console.WriteLine("Profile: " + profilePath);
-                Console.WriteLine("Use --setup to change saved settings.");
+                using (var bridge = new BridgeService(cfg))
+                {
+                    bridge.Start();
+                    Console.WriteLine("CereaBridge running.");
+                    Console.WriteLine("Profile: " + profilePath);
+                    Console.WriteLine("Motor: " + (bridge.IsMotorConnected ? "connected" : "not connected"));
+                    Console.WriteLine("Encoder: " + (bridge.IsEncoderConnected ? "connected" : "not connected"));
+                    Console.WriteLine("IMU Brick: " + (bridge.IsImuConnected ? "connected" : "not connected"));
+                    Console.WriteLine("Use --setup to change saved settings.");
+                    Console.WriteLine("Press Enter to exit.");
+                    Console.ReadLine();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CereaBridge startup error: " + ex.Message);
                 Console.WriteLine("Press Enter to exit.");
                 Console.ReadLine();
             }
