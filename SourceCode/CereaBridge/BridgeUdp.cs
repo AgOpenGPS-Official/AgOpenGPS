@@ -14,10 +14,10 @@ namespace CereaBridge
         private void OnReceive(IAsyncResult ar)
         {
             if (!_running) return;
+            if (ar.AsyncState is not UdpClient client) return;
 
-            var client = (UdpClient)ar.AsyncState;
-            IPEndPoint remote = null;
-            byte[] data = null;
+            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            byte[]? data = null;
 
             try
             {
