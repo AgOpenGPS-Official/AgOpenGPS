@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 
 namespace CereaBridge
 {
     internal sealed class BridgeConfig
     {
+        public const string ProfileFileName = "CereaBridge.profile.ini";
+
         public int ListenPort = 18888;
         public int ListenPortFallback = 8888;
         public string AgioHost = "127.0.0.1";
@@ -33,36 +37,133 @@ namespace CereaBridge
         public bool SteerSwitchOn = true;
         public bool WorkSwitchOn = false;
 
+        public static string GetDefaultProfilePath()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ProfileFileName);
+        }
+
         public static BridgeConfig Load()
         {
             var cfg = new BridgeConfig();
-            cfg.ListenPort = GetInt("ListenPort", cfg.ListenPort);
-            cfg.ListenPortFallback = GetInt("ListenPortFallback", cfg.ListenPortFallback);
-            cfg.AgioHost = GetString("AgioHost", cfg.AgioHost);
-            cfg.AgioPort = GetInt("AgioPort", cfg.AgioPort);
-            cfg.UsePhidgets = GetBool("UsePhidgets", cfg.UsePhidgets);
-            cfg.PhidgetsDeviceSerialNumber = GetInt("PhidgetsDeviceSerialNumber", cfg.PhidgetsDeviceSerialNumber);
-            cfg.PhidgetsMotorChannel = GetInt("PhidgetsMotorChannel", cfg.PhidgetsMotorChannel);
-            cfg.PhidgetsEncoderChannel = GetInt("PhidgetsEncoderChannel", cfg.PhidgetsEncoderChannel);
-            cfg.ReverseMotor = GetBool("ReverseMotor", cfg.ReverseMotor);
-            cfg.ReverseWas = GetBool("ReverseWas", cfg.ReverseWas);
-            cfg.UseImuBrick = GetBool("UseImuBrick", cfg.UseImuBrick);
-            cfg.ImuHost = GetString("ImuHost", cfg.ImuHost);
-            cfg.ImuPort = GetInt("ImuPort", cfg.ImuPort);
-            cfg.ImuUid = GetString("ImuUid", cfg.ImuUid);
-            cfg.ReverseRoll = GetBool("ReverseRoll", cfg.ReverseRoll);
-            cfg.ReverseHeading = GetBool("ReverseHeading", cfg.ReverseHeading);
-            cfg.HeadingOffset16 = (short)GetInt("HeadingOffset16", cfg.HeadingOffset16);
-            cfg.CountsPerDegreeFallback = GetDouble("CountsPerDegreeFallback", cfg.CountsPerDegreeFallback);
-            cfg.WasOffsetFallback = GetInt("WasOffsetFallback", cfg.WasOffsetFallback);
-            cfg.VelocityGainMultiplier = GetDouble("VelocityGainMultiplier", cfg.VelocityGainMultiplier);
-            cfg.MaxMotorOutput = GetDouble("MaxMotorOutput", cfg.MaxMotorOutput);
-            cfg.DeadbandDegrees = GetDouble("DeadbandDegrees", cfg.DeadbandDegrees);
-            cfg.TelemetryPeriodMs = GetInt("TelemetryPeriodMs", cfg.TelemetryPeriodMs);
-            cfg.HelloPeriodMs = GetInt("HelloPeriodMs", cfg.HelloPeriodMs);
-            cfg.SteerSwitchOn = GetBool("SteerSwitchOn", cfg.SteerSwitchOn);
-            cfg.WorkSwitchOn = GetBool("WorkSwitchOn", cfg.WorkSwitchOn);
+            cfg.LoadFromAppSettings();
+            cfg.LoadFromProfileIfExists(GetDefaultProfilePath());
             return cfg;
+        }
+
+        public void SaveProfile(string path)
+        {
+            var lines = new List<string>
+            {
+                "ListenPort=" + ListenPort.ToString(CultureInfo.InvariantCulture),
+                "ListenPortFallback=" + ListenPortFallback.ToString(CultureInfo.InvariantCulture),
+                "AgioHost=" + AgioHost,
+                "AgioPort=" + AgioPort.ToString(CultureInfo.InvariantCulture),
+                "UsePhidgets=" + UsePhidgets.ToString(),
+                "PhidgetsDeviceSerialNumber=" + PhidgetsDeviceSerialNumber.ToString(CultureInfo.InvariantCulture),
+                "PhidgetsMotorChannel=" + PhidgetsMotorChannel.ToString(CultureInfo.InvariantCulture),
+                "PhidgetsEncoderChannel=" + PhidgetsEncoderChannel.ToString(CultureInfo.InvariantCulture),
+                "ReverseMotor=" + ReverseMotor.ToString(),
+                "ReverseWas=" + ReverseWas.ToString(),
+                "UseImuBrick=" + UseImuBrick.ToString(),
+                "ImuHost=" + ImuHost,
+                "ImuPort=" + ImuPort.ToString(CultureInfo.InvariantCulture),
+                "ImuUid=" + ImuUid,
+                "ReverseRoll=" + ReverseRoll.ToString(),
+                "ReverseHeading=" + ReverseHeading.ToString(),
+                "HeadingOffset16=" + HeadingOffset16.ToString(CultureInfo.InvariantCulture),
+                "CountsPerDegreeFallback=" + CountsPerDegreeFallback.ToString(CultureInfo.InvariantCulture),
+                "WasOffsetFallback=" + WasOffsetFallback.ToString(CultureInfo.InvariantCulture),
+                "VelocityGainMultiplier=" + VelocityGainMultiplier.ToString(CultureInfo.InvariantCulture),
+                "MaxMotorOutput=" + MaxMotorOutput.ToString(CultureInfo.InvariantCulture),
+                "DeadbandDegrees=" + DeadbandDegrees.ToString(CultureInfo.InvariantCulture),
+                "TelemetryPeriodMs=" + TelemetryPeriodMs.ToString(CultureInfo.InvariantCulture),
+                "HelloPeriodMs=" + HelloPeriodMs.ToString(CultureInfo.InvariantCulture),
+                "SteerSwitchOn=" + SteerSwitchOn.ToString(),
+                "WorkSwitchOn=" + WorkSwitchOn.ToString()
+            };
+
+            File.WriteAllLines(path, lines.ToArray());
+        }
+
+        private void LoadFromProfileIfExists(string path)
+        {
+            if (!File.Exists(path)) return;
+
+            foreach (var rawLine in File.ReadAllLines(path))
+            {
+                var line = rawLine.Trim();
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
+
+                var idx = line.IndexOf('=');
+                if (idx <= 0) continue;
+
+                var key = line.Substring(0, idx).Trim();
+                var value = line.Substring(idx + 1).Trim();
+                ApplyValue(key, value);
+            }
+        }
+
+        private void LoadFromAppSettings()
+        {
+            ListenPort = GetInt("ListenPort", ListenPort);
+            ListenPortFallback = GetInt("ListenPortFallback", ListenPortFallback);
+            AgioHost = GetString("AgioHost", AgioHost);
+            AgioPort = GetInt("AgioPort", AgioPort);
+            UsePhidgets = GetBool("UsePhidgets", UsePhidgets);
+            PhidgetsDeviceSerialNumber = GetInt("PhidgetsDeviceSerialNumber", PhidgetsDeviceSerialNumber);
+            PhidgetsMotorChannel = GetInt("PhidgetsMotorChannel", PhidgetsMotorChannel);
+            PhidgetsEncoderChannel = GetInt("PhidgetsEncoderChannel", PhidgetsEncoderChannel);
+            ReverseMotor = GetBool("ReverseMotor", ReverseMotor);
+            ReverseWas = GetBool("ReverseWas", ReverseWas);
+            UseImuBrick = GetBool("UseImuBrick", UseImuBrick);
+            ImuHost = GetString("ImuHost", ImuHost);
+            ImuPort = GetInt("ImuPort", ImuPort);
+            ImuUid = GetString("ImuUid", ImuUid);
+            ReverseRoll = GetBool("ReverseRoll", ReverseRoll);
+            ReverseHeading = GetBool("ReverseHeading", ReverseHeading);
+            HeadingOffset16 = (short)GetInt("HeadingOffset16", HeadingOffset16);
+            CountsPerDegreeFallback = GetDouble("CountsPerDegreeFallback", CountsPerDegreeFallback);
+            WasOffsetFallback = GetInt("WasOffsetFallback", WasOffsetFallback);
+            VelocityGainMultiplier = GetDouble("VelocityGainMultiplier", VelocityGainMultiplier);
+            MaxMotorOutput = GetDouble("MaxMotorOutput", MaxMotorOutput);
+            DeadbandDegrees = GetDouble("DeadbandDegrees", DeadbandDegrees);
+            TelemetryPeriodMs = GetInt("TelemetryPeriodMs", TelemetryPeriodMs);
+            HelloPeriodMs = GetInt("HelloPeriodMs", HelloPeriodMs);
+            SteerSwitchOn = GetBool("SteerSwitchOn", SteerSwitchOn);
+            WorkSwitchOn = GetBool("WorkSwitchOn", WorkSwitchOn);
+        }
+
+        private void ApplyValue(string key, string value)
+        {
+            switch (key)
+            {
+                case "ListenPort": ListenPort = ParseInt(value, ListenPort); break;
+                case "ListenPortFallback": ListenPortFallback = ParseInt(value, ListenPortFallback); break;
+                case "AgioHost": AgioHost = value; break;
+                case "AgioPort": AgioPort = ParseInt(value, AgioPort); break;
+                case "UsePhidgets": UsePhidgets = ParseBool(value, UsePhidgets); break;
+                case "PhidgetsDeviceSerialNumber": PhidgetsDeviceSerialNumber = ParseInt(value, PhidgetsDeviceSerialNumber); break;
+                case "PhidgetsMotorChannel": PhidgetsMotorChannel = ParseInt(value, PhidgetsMotorChannel); break;
+                case "PhidgetsEncoderChannel": PhidgetsEncoderChannel = ParseInt(value, PhidgetsEncoderChannel); break;
+                case "ReverseMotor": ReverseMotor = ParseBool(value, ReverseMotor); break;
+                case "ReverseWas": ReverseWas = ParseBool(value, ReverseWas); break;
+                case "UseImuBrick": UseImuBrick = ParseBool(value, UseImuBrick); break;
+                case "ImuHost": ImuHost = value; break;
+                case "ImuPort": ImuPort = ParseInt(value, ImuPort); break;
+                case "ImuUid": ImuUid = value; break;
+                case "ReverseRoll": ReverseRoll = ParseBool(value, ReverseRoll); break;
+                case "ReverseHeading": ReverseHeading = ParseBool(value, ReverseHeading); break;
+                case "HeadingOffset16": HeadingOffset16 = (short)ParseInt(value, HeadingOffset16); break;
+                case "CountsPerDegreeFallback": CountsPerDegreeFallback = ParseDouble(value, CountsPerDegreeFallback); break;
+                case "WasOffsetFallback": WasOffsetFallback = ParseInt(value, WasOffsetFallback); break;
+                case "VelocityGainMultiplier": VelocityGainMultiplier = ParseDouble(value, VelocityGainMultiplier); break;
+                case "MaxMotorOutput": MaxMotorOutput = ParseDouble(value, MaxMotorOutput); break;
+                case "DeadbandDegrees": DeadbandDegrees = ParseDouble(value, DeadbandDegrees); break;
+                case "TelemetryPeriodMs": TelemetryPeriodMs = ParseInt(value, TelemetryPeriodMs); break;
+                case "HelloPeriodMs": HelloPeriodMs = ParseInt(value, HelloPeriodMs); break;
+                case "SteerSwitchOn": SteerSwitchOn = ParseBool(value, SteerSwitchOn); break;
+                case "WorkSwitchOn": WorkSwitchOn = ParseBool(value, WorkSwitchOn); break;
+            }
         }
 
         private static string GetString(string key, string fallback)
@@ -73,19 +174,31 @@ namespace CereaBridge
 
         private static int GetInt(string key, int fallback)
         {
-            var value = ConfigurationManager.AppSettings[key];
-            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) ? parsed : fallback;
+            return ParseInt(ConfigurationManager.AppSettings[key], fallback);
         }
 
         private static double GetDouble(string key, double fallback)
         {
-            var value = ConfigurationManager.AppSettings[key];
-            return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed) ? parsed : fallback;
+            return ParseDouble(ConfigurationManager.AppSettings[key], fallback);
         }
 
         private static bool GetBool(string key, bool fallback)
         {
-            var value = ConfigurationManager.AppSettings[key];
+            return ParseBool(ConfigurationManager.AppSettings[key], fallback);
+        }
+
+        private static int ParseInt(string value, int fallback)
+        {
+            return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) ? parsed : fallback;
+        }
+
+        private static double ParseDouble(string value, double fallback)
+        {
+            return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed) ? parsed : fallback;
+        }
+
+        private static bool ParseBool(string value, bool fallback)
+        {
             return bool.TryParse(value, out var parsed) ? parsed : fallback;
         }
     }
