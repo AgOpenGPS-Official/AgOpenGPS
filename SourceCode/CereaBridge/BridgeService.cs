@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Phidget22.Devices;
+using Phidget22;
 using Tinkerforge;
 
 namespace CereaBridge
