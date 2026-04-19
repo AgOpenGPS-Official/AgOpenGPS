@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'SourceCode/CereaBridge/**'
+      - 'SourceCode/Directory.Build.props'
       - '.github/workflows/cereabridge-build.yml'
   workflow_dispatch:
 
