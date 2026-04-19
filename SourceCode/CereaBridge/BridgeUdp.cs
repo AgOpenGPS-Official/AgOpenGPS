@@ -54,7 +54,7 @@ namespace CereaBridge
                         _kp = data[5];
                         _highPwm = data[6];
                         _minPwm = data[8];
-                        _countsPerDegree = data[9] == 0 ? (byte)_cfg.CountsPerDegreeFallback : data[9];
+                        _countsPerDegree = data[9] == 0 ? _cfg.CountsPerDegreeFallback : data[9];
                         _wasOffset = (short)((data[11] << 8) | data[10]);
                     }
                     break;
