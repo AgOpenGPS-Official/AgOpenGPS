@@ -4,7 +4,7 @@ namespace CereaBridge
 {
     internal sealed partial class BridgeService
     {
-        private void OnTelemetryTick(object state)
+        private void OnTelemetryTick(object? state)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace CereaBridge
             }
         }
 
-        private void OnHelloTick(object state)
+        private void OnHelloTick(object? state)
         {
             try
             {
