@@ -9,18 +9,18 @@ namespace CereaBridge
         [STAThread]
         private static void Main(string[] args)
         {
-            var cfg = BridgeConfig.Load();
-            var profilePath = BridgeConfig.GetDefaultProfilePath();
-            var forceSetup = args.Any(a => string.Equals(a, "--setup", StringComparison.OrdinalIgnoreCase));
-            var firstRun = !File.Exists(profilePath);
-
-            if (forceSetup || firstRun)
-            {
-                ConsoleSetup.Run(cfg);
-            }
-
             try
             {
+                var cfg = BridgeConfig.Load();
+                var profilePath = BridgeConfig.GetDefaultProfilePath();
+                var forceSetup = args.Any(a => string.Equals(a, "--setup", StringComparison.OrdinalIgnoreCase));
+                var firstRun = !File.Exists(profilePath);
+
+                if (forceSetup || firstRun)
+                {
+                    ConsoleSetup.Run(cfg);
+                }
+
                 using (var bridge = new BridgeService(cfg))
                 {
                     bridge.Start();
