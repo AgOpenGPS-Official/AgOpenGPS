@@ -50,6 +50,18 @@ namespace CereaBridge
             return cfg;
         }
 
+        public IEnumerable<string> BuildSummaryLines()
+        {
+            yield return "UDP listen: " + ListenPort.ToString(CultureInfo.InvariantCulture) + " / " + ListenPortFallback.ToString(CultureInfo.InvariantCulture);
+            yield return "AgIO target: " + AgioHost + ":" + AgioPort.ToString(CultureInfo.InvariantCulture);
+            yield return "Phidgets: " + (UsePhidgets ? "enabled" : "disabled") + ", serial=" + PhidgetsDeviceSerialNumber.ToString(CultureInfo.InvariantCulture) + ", motorCh=" + PhidgetsMotorChannel.ToString(CultureInfo.InvariantCulture) + ", encoderCh=" + PhidgetsEncoderChannel.ToString(CultureInfo.InvariantCulture);
+            yield return "IMU Brick: " + (UseImuBrick ? "enabled" : "disabled") + ", host=" + ImuHost + ":" + ImuPort.ToString(CultureInfo.InvariantCulture) + ", uid=" + (string.IsNullOrWhiteSpace(ImuUid) ? "<empty>" : ImuUid);
+            yield return "Reverse flags: motor=" + ReverseMotor.ToString() + ", was=" + ReverseWas.ToString() + ", heading=" + ReverseHeading.ToString() + ", roll=" + ReverseRoll.ToString();
+            yield return "Fallbacks: counts/deg=" + CountsPerDegreeFallback.ToString(CultureInfo.InvariantCulture) + ", wasOffset=" + WasOffsetFallback.ToString(CultureInfo.InvariantCulture);
+            yield return "Motor tuning: gainMul=" + VelocityGainMultiplier.ToString(CultureInfo.InvariantCulture) + ", maxOut=" + MaxMotorOutput.ToString(CultureInfo.InvariantCulture) + ", deadband=" + DeadbandDegrees.ToString(CultureInfo.InvariantCulture);
+            yield return "Timing: telemetry=" + TelemetryPeriodMs.ToString(CultureInfo.InvariantCulture) + " ms, hello=" + HelloPeriodMs.ToString(CultureInfo.InvariantCulture) + " ms";
+        }
+
         public void SaveProfile(string path)
         {
             var lines = new List<string>
