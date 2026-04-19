@@ -30,6 +30,17 @@ namespace CereaBridge
                     {
                         Console.WriteLine(line);
                     }
+
+                    var warnings = cfg.BuildWarningLines().ToList();
+                    if (warnings.Count > 0)
+                    {
+                        Console.WriteLine("Warnings:");
+                        foreach (var warning in warnings)
+                        {
+                            Console.WriteLine("- " + warning);
+                        }
+                    }
+
                     Console.WriteLine("Motor: " + (bridge.IsMotorConnected ? "connected" : "not connected"));
                     Console.WriteLine("Encoder: " + (bridge.IsEncoderConnected ? "connected" : "not connected"));
                     Console.WriteLine("IMU Brick: " + (bridge.IsImuConnected ? "connected" : "not connected"));
