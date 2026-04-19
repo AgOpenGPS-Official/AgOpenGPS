@@ -39,6 +39,15 @@ An example profile is included as:
 4. Verify AgIO UDP is enabled.
 5. Verify counts-per-degree and WAS offset in AgOpenGPS settings.
 
+## What you see on startup
+
+CereaBridge prints:
+
+- the profile path in use
+- the active settings summary
+- startup warnings for empty or risky values
+- device status for motor, encoder and IMU Brick
+
 ## Notes
 
 - AgIO has been updated to mirror module packets to localhost so the bridge can run on the same PC.
