@@ -15,7 +15,7 @@ for Agricultural use. Also it has up to 16 sections of Section Control that can 
 or up to 64 same width sections to control implements application of product preventing 
 over-application.
 
-Also ouputs Pure pursuit steer angles from reference line for AB line, AB Curve and Contour guidance. 
+Also outputs Pure pursuit steer angles from reference line for AB line, AB Curve and Contour guidance. 
 Auto Headland called UTurn on Curve and AB Line with loops for narrow equipment. 
 Mapping as a background can also be added.
 
