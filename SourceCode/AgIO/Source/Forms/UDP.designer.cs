@@ -57,6 +57,7 @@ namespace AgIO
                 Properties.Settings.Default.etIP_SubnetOne.ToString() + "." +
                 Properties.Settings.Default.etIP_SubnetTwo.ToString() + "." +
                 Properties.Settings.Default.etIP_SubnetThree.ToString() + ".255"), 8888);
+        private IPEndPoint epLocalBridge = new IPEndPoint(IPAddress.Loopback, 18888);
         private IPEndPoint epNtrip;
 
         public IPEndPoint epModuleSet = new IPEndPoint(IPAddress.Parse("255.255.255.255"), 8888);
@@ -193,6 +194,7 @@ namespace AgIO
         {
             //Send out to udp network
             SendUDPMessage(data, epModule);
+            SendUDPMessage(data, epLocalBridge);
 
             if (data[0] == 0x80 && data[1] == 0x81)
             {
