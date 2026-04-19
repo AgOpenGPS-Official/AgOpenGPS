@@ -24,6 +24,11 @@ An example profile is included as:
 
 `CereaBridge.profile.example.ini`
 
+Windows helper files are included as:
+
+- `CereaBridge.setup.bat`
+- `CereaBridge.run.bat`
+
 ## Defaults
 
 - listens on UDP 18888 and 8888
