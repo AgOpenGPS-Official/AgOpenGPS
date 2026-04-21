@@ -837,6 +837,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsNewFromDefault" xml:space="preserve">
     <value>New From Default</value>
   </data>
+  <data name="gsNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Next Guidance Line</value>
   </data>

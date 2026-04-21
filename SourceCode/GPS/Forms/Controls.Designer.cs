@@ -566,7 +566,19 @@ namespace AgOpenGPS
                 if (isEasyDriveRequested)
                 {
                     isEasyDriveRequested = false;
-                    using (var form2 = new FormEasyDrive(this)) { form2.ShowDialog(this); }
+                    using (var form2 = new FormEasyDrive(this))
+                    {
+                        if (form2.ShowDialog(this) == DialogResult.OK)
+                        {
+                            // Open FormQuickAB immediately after Easy Drive starts
+                            Form fc = Application.OpenForms["FormQuickAB"];
+                            if (fc == null)
+                            {
+                                Form formAB = new FormQuickAB(this);
+                                formAB.Show(this);
+                            }
+                        }
+                    }
                 }
 
                 if (result == DialogResult.Yes)

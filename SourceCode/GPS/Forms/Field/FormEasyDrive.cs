@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using AgOpenGPS.Controls;
+using AgOpenGPS.Core.Translations;
 
 namespace AgOpenGPS
 {
@@ -12,6 +13,11 @@ namespace AgOpenGPS
         {
             mf = callingForm;
             InitializeComponent();
+
+            lblWidth.Text = gStr.gsWorkWidth;
+            lblPivot.Text = gStr.gsHitchLength;
+            btnStart.Text = gStr.gsNext;
+            this.Text = "Easy Drive";
         }
 
         private void FormEasyDrive_Load(object sender, EventArgs e)
