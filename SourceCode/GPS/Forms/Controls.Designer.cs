@@ -134,8 +134,8 @@ namespace AgOpenGPS
                 //nudge closest
                 flp1.Controls[0].Visible = tracksVisible > 0;
 
-                //always these 3 - Build and if a bnd then ABDraw
-                flp1.Controls[1].Visible = isBnd;
+                //always these 3 - Build and if a bnd then ABDraw (not in Easy Drive)
+                flp1.Controls[1].Visible = isBnd && !isEasyDriveMode;
 
                 flp1.Controls[2].Visible = true;
                 flp1.Controls[3].Visible = true;
@@ -562,6 +562,25 @@ namespace AgOpenGPS
                     if (manualBtnState == btnStates.On) btnSectionMasterManual.PerformClick();
                 }
 
+                // Easy Drive requested from FormJob
+                if (isEasyDriveRequested)
+                {
+                    isEasyDriveRequested = false;
+                    using (var form2 = new FormEasyDrive(this))
+                    {
+                        if (form2.ShowDialog(this) == DialogResult.OK)
+                        {
+                            // Open FormQuickAB immediately after Easy Drive starts
+                            Form fc = Application.OpenForms["FormQuickAB"];
+                            if (fc == null)
+                            {
+                                Form formAB = new FormQuickAB(this);
+                                formAB.Show(this);
+                            }
+                        }
+                    }
+                }
+
                 if (result == DialogResult.Yes)
                 {
                     using (var form2 = new FormFieldDir(this)) { form2.ShowDialog(this); }
@@ -598,8 +617,11 @@ namespace AgOpenGPS
                     Log.EventWriter("** Opened **  " + currentFieldDirectory + "   " +
                         DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
 
-                    Settings.Default.setF_CurrentDir = currentFieldDirectory;
-                    Settings.Default.Save();
+                    if (!isEasyDriveMode)
+                    {
+                        Settings.Default.setF_CurrentDir = currentFieldDirectory;
+                        Settings.Default.Save();
+                    }
 
                     isobus.SendFieldName(currentFieldDirectory);
                 }
@@ -614,6 +636,59 @@ namespace AgOpenGPS
 
         public async Task FileSaveEverythingBeforeClosingField()
         {
+            // Easy Drive mode: skip all saves, just close
+            if (isEasyDriveMode)
+            {
+                if (ct.isContourOn) ct.StopContourLine();
+
+                for (int j = 0; j < tool.numOfSections; j++)
+                {
+                    section[j].sectionOnOffCycle = false;
+                    section[j].sectionOffRequest = false;
+                }
+
+                this.Invoke((MethodInvoker)(() =>
+                {
+                    panelRight.Enabled = false;
+                    FieldMenuButtonEnableDisable(false);
+                    JobClose();
+                    isEasyDriveMode = false;
+
+                    // Restore tool properties from saved profiles
+                    tool.hitchLength = Properties.ToolSettings.Default.setVehicle_hitchLength;
+                    tool.trailingHitchLength = Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength;
+                    tool.tankTrailingHitchLength = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength;
+                    tool.trailingToolToPivotLength = Properties.ToolSettings.Default.setTool_trailingToolToPivotLength;
+                    tool.isToolRearFixed = Properties.ToolSettings.Default.setTool_isToolRearFixed;
+                    tool.isToolTrailing = Properties.ToolSettings.Default.setTool_isToolTrailing;
+                    tool.isToolTBT = Properties.ToolSettings.Default.setTool_isToolTBT;
+                    tool.isToolFrontFixed = Properties.ToolSettings.Default.setTool_isToolFront;
+                    tool.offset = Properties.ToolSettings.Default.setVehicle_toolOffset;
+                    tool.overlap = Properties.ToolSettings.Default.setVehicle_toolOverlap;
+                    tool.isSectionsNotZones = Properties.ToolSettings.Default.setTool_isSectionsNotZones;
+
+                    if (tool.isSectionsNotZones)
+                        tool.numOfSections = Properties.ToolSettings.Default.setVehicle_numSections;
+                    else
+                        tool.numOfSections = Properties.ToolSettings.Default.setTool_numSectionsMulti;
+
+                    SectionSetPosition();
+                    SectionCalcWidths();
+
+                    // Restore vehicle and tool settings from saved profiles
+                    if (!string.IsNullOrEmpty(RegistrySettings.vehicleProfileName))
+                    {
+                        Properties.VehicleSettings.Default.Load(RegistrySettings.vehicleProfileName);
+                        SendSettings();
+                    }
+                    if (!string.IsNullOrEmpty(RegistrySettings.toolProfileName))
+                        Properties.ToolSettings.Default.Load(RegistrySettings.toolProfileName);
+
+                    Text = "AgOpenGPS";
+                }));
+                return;
+            }
+
             // Save the current field data before closing
             if (ct.isContourOn) ct.StopContourLine();
 
@@ -1594,6 +1669,12 @@ namespace AgOpenGPS
         //Profiles
         private void loadVehicleToolToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isEasyDriveMode)
+            {
+                TimedMessageBox(2000, "Easy Drive", "Profiles not available in Easy Drive mode");
+                return;
+            }
+
             using (var form = new FormLoadVehicleTool(this))
             {
                 form.ShowDialog(this);
