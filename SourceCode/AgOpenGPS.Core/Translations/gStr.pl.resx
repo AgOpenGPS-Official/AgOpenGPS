@@ -1521,4 +1521,74 @@ Load from Config panel &amp; Top Left Menu.</value>
   <data name="gsFactor" xml:space="preserve">
     <value>Współczynnik</value>
   </data>
+  <data name="gsAgShareActivated" xml:space="preserve">
+    <value>Aktywowany</value>
+  </data>
+  <data name="gsAgShareApiKey" xml:space="preserve">
+    <value>Klucz API</value>
+  </data>
+  <data name="gsAgShareAutoLoad" xml:space="preserve">
+    <value>Chmura</value>
+  </data>
+  <data name="gsAgShareLocalOnly" xml:space="preserve">
+    <value>Lokalnie</value>
+  </data>
+  <data name="gsAgSharePaste" xml:space="preserve">
+    <value>Wklej ze schowka</value>
+  </data>
+  <data name="gsAgShareRegisterHere" xml:space="preserve">
+    <value>Zarejestruj się aby używać AgShare</value>
+  </data>
+  <data name="gsAgShareSaved" xml:space="preserve">
+    <value>Zapisano ustawienia</value>
+  </data>
+  <data name="gsAgShareServer" xml:space="preserve">
+    <value>Serwer</value>
+  </data>
+  <data name="gsAgShareSettings" xml:space="preserve">
+    <value>Ustawienia AgShare</value>
+  </data>
+  <data name="gsAgShareTestConnection" xml:space="preserve">
+    <value>Test połączenia</value>
+  </data>
+  <data name="gsAgShareUploadOff" xml:space="preserve">
+    <value>Wysyłanie wył</value>
+  </data>
+  <data name="gsAgShareUploadOn" xml:space="preserve">
+    <value>Wysyłanie wł</value>
+  </data>
+  <data name="gsAgShareAutoLoadActive" xml:space="preserve">
+    <value>Pola są automatycznie wczytywane z chmury</value>
+  </data>
+  <data name="gsAgShareFieldLoaded" xml:space="preserve">
+    <value>Pole wczytane z AgShare</value>
+  </data>
+  <data name="gsAgShareLoadFailed" xml:space="preserve">
+    <value>Nie można wczytać pola z chmury, używana jest lokalna wersja.</value>
+  </data>
+  <data name="gsAgShareAutoUpload" xml:space="preserve">
+    <value>Auto-Wysyłanie</value>
+  </data>
+  <data name="gsAgShareButtonsHint" xml:space="preserve">
+    <value>Auto-Wysyłanie: prześlij zmiany w polach przy zamykaniu
+Chmura: zawsze pobieraj najnowsze dane z AgShare przy uruchomieniu</value>
+  </data>
+  <data name="gsAgShareConnecting" xml:space="preserve">
+    <value>Łączenie...</value>
+  </data>
+  <data name="gsAgShareConnectionOk" xml:space="preserve">
+    <value>Połączono pomyślnie</value>
+  </data>
+  <data name="gsAgShareDeactivated" xml:space="preserve">
+    <value>Dezaktywowany</value>
+  </data>
+  <data name="gsAgShareEnterDetails" xml:space="preserve">
+    <value>Wprowadź serwer oraz klucz API, następnie przetestuj połączenie</value>
+  </data>
+  <data name="gsAgShareInvalidApiKey" xml:space="preserve">
+    <value>Niepoprawny klucz API</value>
+  </data>
+  <data name="gsAgShareActivate" xml:space="preserve">
+    <value>Aktywacja</value>
+  </data>
 </root>
