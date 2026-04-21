@@ -45,6 +45,11 @@ namespace AgroParallel.Common
         // Cache de rings reproyectados a coords locales (Easting/Northing).
         private readonly List<List<PointF[]>> _ringsLocal = new List<List<PointF[]>>();
 
+        // Triangulos del contorno exterior por poligono (indices al array Rings[0]).
+        // Pre-calculados en EnsureProjected para que GL.Polygon no haga artefactos
+        // en poligonos concavos.
+        private readonly List<int[]> _outerTriangles = new List<int[]>();
+
         // Atributos DBF por poligono (paralelo a _ringsWgs84).
         private readonly List<Dictionary<string, object>> _polyAttrs = new List<Dictionary<string, object>>();
 
@@ -207,11 +212,9 @@ namespace AgroParallel.Common
 
             EnsureProjected(plane);
 
-            // Fill primero para que el outline quede por encima.
-            // Nota: GL.Begin(Polygon) maneja bien poligonos convexos. Con
-            // poligonos concavos podrian aparecer artefactos de triangulacion.
-            // Los agujeros (Rings[1..n]) se ignoran en el fill — quedan
-            // visibles solo como outline.
+            // Fill primero (triangulado con ear-clipping en EnsureProjected)
+            // para que el outline quede por encima. Los agujeros (Rings[1..n])
+            // se ignoran en el fill — quedan visibles solo como outline.
             if (ShowFill)
             {
                 bool hasStyle = _polyFillColors != null;
@@ -224,14 +227,17 @@ namespace AgroParallel.Common
                     var outer = poly[0];
                     if (outer == null || outer.Length < 3) continue;
 
+                    int[] tris = p < _outerTriangles.Count ? _outerTriangles[p] : null;
+                    if (tris == null || tris.Length < 3) continue;
+
                     Color c = (hasStyle && p < _polyFillColors.Length)
                         ? _polyFillColors[p]
                         : FillColor;
                     GL.Color4(c.R, c.G, c.B, c.A);
 
-                    GL.Begin(PrimitiveType.Polygon);
-                    for (int i = 0; i < outer.Length; i++)
-                        GL.Vertex2(outer[i].X, outer[i].Y);
+                    GL.Begin(PrimitiveType.Triangles);
+                    for (int i = 0; i < tris.Length; i++)
+                        GL.Vertex2(outer[tris[i]].X, outer[tris[i]].Y);
                     GL.End();
                 }
             }
@@ -269,6 +275,7 @@ namespace AgroParallel.Common
             }
 
             _ringsLocal.Clear();
+            _outerTriangles.Clear();
 
             for (int p = 0; p < _ringsWgs84.Count; p++)
             {
@@ -288,6 +295,16 @@ namespace AgroParallel.Common
                     polyDst.Add(ringDst);
                 }
                 _ringsLocal.Add(polyDst);
+
+                // Triangular solo el anillo exterior. Si falla (triangulacion
+                // atascada), guardamos array vacio y el fill de ese poligono
+                // no se dibuja — el outline se mantiene.
+                int[] tris;
+                if (polyDst.Count > 0 && polyDst[0] != null && polyDst[0].Length >= 3)
+                    tris = EarClipper.Triangulate(polyDst[0]).ToArray();
+                else
+                    tris = new int[0];
+                _outerTriangles.Add(tris);
             }
 
             _cachedOriginLat = origin.Latitude;
