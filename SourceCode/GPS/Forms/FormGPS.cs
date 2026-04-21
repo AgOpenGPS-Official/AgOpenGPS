@@ -28,6 +28,9 @@ using AgroParallel.Common;
 // VISTAX_MOD_START
 using AgroParallel.VistaX;
 // VISTAX_MOD_END
+// QUANTIX_MOD_START
+using AgroParallel.QuantiX;
+// QUANTIX_MOD_END
 namespace AgOpenGPS
 {
     //the main form object
@@ -102,6 +105,11 @@ namespace AgOpenGPS
         private ToolStripMenuItem shapefileStyleItem;
         private ShapefileLegendControl shapefileLegend;
         // SHAPEFILE_MOD_END
+
+        // QUANTIX_MOD_START
+        private QuantiXConfig quantiXConfig;
+        private QuantiXSender quantiXSender;
+        // QUANTIX_MOD_END
 
         // COREX_FIELD_MOD_START
         // Último campo notificado al sistema AgroParallel (CoreX / VistaX)
@@ -1048,6 +1056,10 @@ namespace AgOpenGPS
             // SHAPEFILE_MOD_START
             TryAutoLoadShapefileForCurrentField();
             // SHAPEFILE_MOD_END
+
+            // QUANTIX_MOD_START
+            StartQuantiXSender();
+            // QUANTIX_MOD_END
         }
 
         //close the current job
@@ -1103,6 +1115,10 @@ namespace AgOpenGPS
             // SHAPEFILE_MOD_START
             ClearShapefileLayer();
             // SHAPEFILE_MOD_END
+
+            // QUANTIX_MOD_START
+            StopQuantiXSender();
+            // QUANTIX_MOD_END
 
             AppModel.Fields.CloseField();
 
@@ -1869,6 +1885,79 @@ namespace AgOpenGPS
                 shapefileLayer.CurrentDose,
                 shapefileLayer.HasCurrentDose);
         }
+
+        // QUANTIX_MOD_START
+        private void StartQuantiXSender()
+        {
+            try
+            {
+                if (quantiXSender != null) return;
+
+                if (quantiXConfig == null)
+                    quantiXConfig = QuantiXConfig.Load();
+
+                if (!quantiXConfig.Enabled)
+                {
+                    System.Diagnostics.Debug.WriteLine("[QuantiX] deshabilitado en quantiX.json");
+                    return;
+                }
+
+                quantiXSender = new QuantiXSender(quantiXConfig, BuildQuantiXSample);
+                quantiXSender.Start();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[QuantiX] StartSender: " + ex.Message);
+            }
+        }
+
+        private void StopQuantiXSender()
+        {
+            try
+            {
+                if (quantiXSender == null) return;
+                quantiXSender.Dispose();
+                quantiXSender = null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[QuantiX] StopSender: " + ex.Message);
+            }
+        }
+
+        private QuantiXSample BuildQuantiXSample()
+        {
+            var sample = new QuantiXSample();
+
+            if (shapefileLayer != null)
+            {
+                sample.Inside = shapefileLayer.CurrentInside;
+                sample.Dose = shapefileLayer.CurrentDose;
+                sample.FieldName = shapefileLayer.StyleField;
+            }
+
+            // Posicion actual del pivot en WGS84 via la reproyeccion inversa.
+            try
+            {
+                var plane = AppModel != null ? AppModel.LocalPlane : null;
+                if (plane != null)
+                {
+                    var geo = new AgOpenGPS.Core.Models.GeoCoord(
+                        pivotAxlePos.northing, pivotAxlePos.easting);
+                    var ll = plane.ConvertGeoCoordToWgs84(geo);
+                    sample.Latitude = ll.Latitude;
+                    sample.Longitude = ll.Longitude;
+                }
+                sample.HeadingRad = pivotAxlePos.heading;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[QuantiX] BuildSample pos: " + ex.Message);
+            }
+
+            return sample;
+        }
+        // QUANTIX_MOD_END
 
         private void ShowShapefileSummary(string fileName, ShapefileReadResult r)
         {
