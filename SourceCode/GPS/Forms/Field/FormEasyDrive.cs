@@ -81,7 +81,7 @@ namespace AgOpenGPS
             mf.tool.isToolTrailing = false;
             mf.tool.isToolTBT = false;
             mf.tool.isToolFrontFixed = false;
-            mf.tool.hitchLength = pivotDistance;
+            mf.tool.hitchLength = -pivotDistance;
             mf.tool.trailingHitchLength = 0;
             mf.tool.tankTrailingHitchLength = 0;
             mf.tool.trailingToolToPivotLength = 0;
