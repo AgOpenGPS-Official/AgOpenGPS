@@ -654,7 +654,13 @@ namespace AgOpenGPS
                     JobClose();
                     isEasyDriveMode = false;
 
-                    // Restore tool properties from saved profiles
+                    // Reload profiles from disk first so all subsequent restores use clean values
+                    if (!string.IsNullOrEmpty(RegistrySettings.vehicleProfileName))
+                        Properties.VehicleSettings.Default.Load(RegistrySettings.vehicleProfileName);
+                    if (!string.IsNullOrEmpty(RegistrySettings.toolProfileName))
+                        Properties.ToolSettings.Default.Load(RegistrySettings.toolProfileName);
+
+                    // Restore tool properties from freshly loaded profile
                     tool.hitchLength = Properties.ToolSettings.Default.setVehicle_hitchLength;
                     tool.trailingHitchLength = Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength;
                     tool.tankTrailingHitchLength = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength;
@@ -675,14 +681,24 @@ namespace AgOpenGPS
                     SectionSetPosition();
                     SectionCalcWidths();
 
-                    // Restore vehicle and tool settings from saved profiles
-                    if (!string.IsNullOrEmpty(RegistrySettings.vehicleProfileName))
-                    {
-                        Properties.VehicleSettings.Default.Load(RegistrySettings.vehicleProfileName);
-                        SendSettings();
-                    }
-                    if (!string.IsNullOrEmpty(RegistrySettings.toolProfileName))
-                        Properties.ToolSettings.Default.Load(RegistrySettings.toolProfileName);
+                    // Restore vehicle in-memory properties from freshly loaded profile
+                    vehicle.maxSteerAngle = Properties.VehicleSettings.Default.setVehicle_maxSteerAngle;
+                    vehicle.maxSteerSpeed = Properties.VehicleSettings.Default.setAS_maxSteerSpeed;
+                    vehicle.minSteerSpeed = Properties.VehicleSettings.Default.setAS_minSteerSpeed;
+                    vehicle.functionSpeedLimit = Properties.VehicleSettings.Default.setAS_functionSpeedLimit;
+                    vehicle.goalPointLookAheadHold = Properties.ToolSettings.Default.setVehicle_goalPointLookAheadHold;
+                    vehicle.goalPointLookAheadMult = Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult;
+                    vehicle.goalPointAcquireFactor = Properties.ToolSettings.Default.setVehicle_goalPointAcquireFactor;
+                    vehicle.stanleyDistanceErrorGain = Properties.ToolSettings.Default.stanleyDistanceErrorGain;
+                    vehicle.stanleyHeadingErrorGain = Properties.ToolSettings.Default.stanleyHeadingErrorGain;
+                    vehicle.stanleyIntegralGainAB = Properties.ToolSettings.Default.stanleyIntegralGainAB;
+                    vehicle.purePursuitIntegralGain = Properties.ToolSettings.Default.purePursuitIntegralGainAB;
+                    vehicle.deadZoneHeading = Properties.ToolSettings.Default.setAS_deadZoneHeading;
+                    vehicle.deadZoneDelay = Properties.ToolSettings.Default.setAS_deadZoneDelay;
+                    isSteerInReverse = Properties.VehicleSettings.Default.setAS_isSteerInReverse;
+
+                    // Resend steer hardware settings to module
+                    SendSettings();
 
                     Text = "AgOpenGPS";
                 }));

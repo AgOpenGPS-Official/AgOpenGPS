@@ -743,8 +743,8 @@ namespace AgOpenGPS
 
                 DistanceToFieldOriginCheck();
 
-                //don't save if no gps
-                if (isJobStarted)
+                //don't save if no gps, and never persist in Easy Drive mode
+                if (isJobStarted && !isEasyDriveMode)
                 {
                     //auto save the field patches, contours accumulated so far
                     FileSaveSections();
