@@ -14,6 +14,7 @@ namespace AgOpenGPS
             mf = callingForm;
             InitializeComponent();
 
+            lblInfo.Text = gStr.gsEasyDriveInfo;
             lblWidth.Text = gStr.gsWorkWidth;
             lblPivot.Text = gStr.gsHitchLength;
             btnStart.Text = gStr.gsNext;

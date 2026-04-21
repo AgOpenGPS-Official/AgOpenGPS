@@ -17,6 +17,7 @@ namespace AgOpenGPS
 
         private void InitializeComponent()
         {
+            this.lblInfo = new System.Windows.Forms.Label();
             this.lblWidth = new System.Windows.Forms.Label();
             this.lblPivot = new System.Windows.Forms.Label();
             this.nudWidth = new AgOpenGPS.NudlessNumericUpDown();
@@ -29,10 +30,20 @@ namespace AgOpenGPS
             ((System.ComponentModel.ISupportInitialize)(this.nudPivotDistance)).BeginInit();
             this.SuspendLayout();
             //
+            // lblInfo
+            //
+            this.lblInfo.Font = new System.Drawing.Font("Tahoma", 13F, System.Drawing.FontStyle.Italic);
+            this.lblInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.lblInfo.Location = new System.Drawing.Point(20, 15);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(360, 80);
+            this.lblInfo.Text = "info";
+            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            //
             // lblWidth
             //
             this.lblWidth.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.lblWidth.Location = new System.Drawing.Point(20, 20);
+            this.lblWidth.Location = new System.Drawing.Point(20, 105);
             this.lblWidth.Name = "lblWidth";
             this.lblWidth.Size = new System.Drawing.Size(360, 40);
             this.lblWidth.Text = "Working Width";
@@ -44,7 +55,7 @@ namespace AgOpenGPS
             this.nudWidth.DecimalPlaces = 1;
             this.nudWidth.Font = new System.Drawing.Font("Tahoma", 28F, System.Drawing.FontStyle.Bold);
             this.nudWidth.InterceptArrowKeys = false;
-            this.nudWidth.Location = new System.Drawing.Point(20, 65);
+            this.nudWidth.Location = new System.Drawing.Point(20, 150);
             this.nudWidth.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
             this.nudWidth.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
             this.nudWidth.Name = "nudWidth";
@@ -58,7 +69,7 @@ namespace AgOpenGPS
             // lblUnitWidth
             //
             this.lblUnitWidth.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
-            this.lblUnitWidth.Location = new System.Drawing.Point(310, 65);
+            this.lblUnitWidth.Location = new System.Drawing.Point(310, 150);
             this.lblUnitWidth.Name = "lblUnitWidth";
             this.lblUnitWidth.Size = new System.Drawing.Size(70, 54);
             this.lblUnitWidth.Text = "m";
@@ -67,10 +78,10 @@ namespace AgOpenGPS
             // lblPivot
             //
             this.lblPivot.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold);
-            this.lblPivot.Location = new System.Drawing.Point(20, 140);
+            this.lblPivot.Location = new System.Drawing.Point(20, 220);
             this.lblPivot.Name = "lblPivot";
             this.lblPivot.Size = new System.Drawing.Size(360, 40);
-            this.lblPivot.Text = "Pivot Distance";
+            this.lblPivot.Text = "Hitch Length";
             this.lblPivot.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             //
             // nudPivotDistance
@@ -79,7 +90,7 @@ namespace AgOpenGPS
             this.nudPivotDistance.DecimalPlaces = 2;
             this.nudPivotDistance.Font = new System.Drawing.Font("Tahoma", 28F, System.Drawing.FontStyle.Bold);
             this.nudPivotDistance.InterceptArrowKeys = false;
-            this.nudPivotDistance.Location = new System.Drawing.Point(20, 185);
+            this.nudPivotDistance.Location = new System.Drawing.Point(20, 265);
             this.nudPivotDistance.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             this.nudPivotDistance.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
             this.nudPivotDistance.Name = "nudPivotDistance";
@@ -93,7 +104,7 @@ namespace AgOpenGPS
             // lblUnitPivot
             //
             this.lblUnitPivot.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
-            this.lblUnitPivot.Location = new System.Drawing.Point(310, 185);
+            this.lblUnitPivot.Location = new System.Drawing.Point(310, 265);
             this.lblUnitPivot.Name = "lblUnitPivot";
             this.lblUnitPivot.Size = new System.Drawing.Size(70, 54);
             this.lblUnitPivot.Text = "m";
@@ -108,11 +119,11 @@ namespace AgOpenGPS
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold);
             this.btnStart.Image = global::AgOpenGPS.Properties.Resources.OK64;
-            this.btnStart.Location = new System.Drawing.Point(20, 270);
+            this.btnStart.Location = new System.Drawing.Point(20, 350);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(170, 80);
             this.btnStart.TabIndex = 2;
-            this.btnStart.Text = "Start";
+            this.btnStart.Text = "Next";
             this.btnStart.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -127,7 +138,7 @@ namespace AgOpenGPS
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold);
             this.btnCancel.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.btnCancel.Location = new System.Drawing.Point(210, 270);
+            this.btnCancel.Location = new System.Drawing.Point(210, 350);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(170, 80);
             this.btnCancel.TabIndex = 3;
@@ -141,8 +152,9 @@ namespace AgOpenGPS
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(400, 370);
+            this.ClientSize = new System.Drawing.Size(400, 450);
             this.ControlBox = false;
+            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.lblWidth);
             this.Controls.Add(this.nudWidth);
             this.Controls.Add(this.lblUnitWidth);
@@ -167,6 +179,7 @@ namespace AgOpenGPS
 
         #endregion
 
+        private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Label lblWidth;
         private System.Windows.Forms.Label lblPivot;
         private AgOpenGPS.NudlessNumericUpDown nudWidth;

@@ -1361,6 +1361,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quick start with GPS guidance....
+        /// </summary>
+        public static string gsEasyDriveInfo {
+            get {
+                return ResourceManager.GetString("gsEasyDriveInfo", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to East.
         /// </summary>
         public static string gsEast {
