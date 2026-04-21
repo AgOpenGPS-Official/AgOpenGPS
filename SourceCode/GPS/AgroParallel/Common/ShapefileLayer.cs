@@ -17,8 +17,10 @@
 
 using AgOpenGPS.Core.Models;
 using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 
 namespace AgroParallel.Common
 {
@@ -39,16 +41,34 @@ namespace AgroParallel.Common
         // Cache de rings reproyectados a coords locales (Easting/Northing).
         private readonly List<List<PointF[]>> _ringsLocal = new List<List<PointF[]>>();
 
+        // Atributos DBF por poligono (paralelo a _ringsWgs84).
+        private readonly List<Dictionary<string, object>> _polyAttrs = new List<Dictionary<string, object>>();
+
+        // Nombres de campos DBF en orden original.
+        private readonly List<string> _fieldNames = new List<string>();
+
+        // Color de fill por poligono si hay estilo por campo aplicado; null = fallback FillColor.
+        private Color[] _polyFillColors;
+
+        // Campo actualmente usado para colorear (null = sin estilo por DBF).
+        public string StyleField { get; private set; }
+        public double StyleMin { get; private set; }
+        public double StyleMax { get; private set; }
+
         private double _cachedOriginLat;
         private double _cachedOriginLon;
         private bool _hasCache;
 
         public int PolygonCount { get { return _ringsWgs84.Count; } }
+        public IReadOnlyList<string> FieldNames { get { return _fieldNames; } }
 
         public ShapefileLayer(ShapefileReadResult src, string sourceName)
         {
             Source = sourceName;
             if (src == null || src.Polygons == null) return;
+
+            if (src.DbfFieldNames != null)
+                _fieldNames.AddRange(src.DbfFieldNames);
 
             foreach (var poly in src.Polygons)
             {
@@ -60,8 +80,119 @@ namespace AgroParallel.Common
                     ringsCopy.Add(ring.ToArray());
                 }
                 if (ringsCopy.Count > 0)
+                {
                     _ringsWgs84.Add(ringsCopy);
+                    _polyAttrs.Add(poly.Attributes ?? new Dictionary<string, object>());
+                }
             }
+        }
+
+        // Devuelve true si el campo es mayoritariamente numerico (>= 50% de poligonos
+        // tienen un valor convertible a double) y rellena min/max/count con las metricas.
+        public bool TryGetFieldStats(string fieldName, out double min, out double max, out int count)
+        {
+            min = double.MaxValue;
+            max = double.MinValue;
+            count = 0;
+            if (string.IsNullOrEmpty(fieldName)) return false;
+
+            for (int i = 0; i < _polyAttrs.Count; i++)
+            {
+                object raw;
+                if (!_polyAttrs[i].TryGetValue(fieldName, out raw)) continue;
+                double v;
+                if (TryToDouble(raw, out v))
+                {
+                    count++;
+                    if (v < min) min = v;
+                    if (v > max) max = v;
+                }
+            }
+
+            if (count == 0 || _polyAttrs.Count == 0) return false;
+            return count * 2 >= _polyAttrs.Count;
+        }
+
+        // Aplica un gradiente verde→amarillo→rojo basado en los valores del campo DBF.
+        // fieldName == null limpia el estilo y vuelve a FillColor uniforme.
+        public bool ApplyColorByField(string fieldName)
+        {
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                StyleField = null;
+                _polyFillColors = null;
+                return true;
+            }
+
+            double min, max;
+            int count;
+            if (!TryGetFieldStats(fieldName, out min, out max, out count))
+            {
+                StyleField = null;
+                _polyFillColors = null;
+                return false;
+            }
+
+            StyleField = fieldName;
+            StyleMin = min;
+            StyleMax = max;
+
+            double range = max - min;
+            if (range < 1e-9) range = 1;
+
+            byte alpha = FillColor.A;
+            var cLow = Color.FromArgb(alpha, 0, 200, 0);      // verde
+            var cMid = Color.FromArgb(alpha, 255, 220, 0);    // amarillo
+            var cHigh = Color.FromArgb(alpha, 220, 40, 0);    // rojo
+
+            _polyFillColors = new Color[_polyAttrs.Count];
+            for (int i = 0; i < _polyAttrs.Count; i++)
+            {
+                object raw;
+                double v;
+                if (_polyAttrs[i].TryGetValue(fieldName, out raw) && TryToDouble(raw, out v))
+                {
+                    double t = (v - min) / range;
+                    _polyFillColors[i] = Gradient(t, cLow, cMid, cHigh);
+                }
+                else
+                {
+                    // Poligono sin valor en el campo → gris semitransparente.
+                    _polyFillColors[i] = Color.FromArgb(alpha, 150, 150, 150);
+                }
+            }
+            return true;
+        }
+
+        private static bool TryToDouble(object raw, out double v)
+        {
+            v = 0;
+            if (raw == null) return false;
+            if (raw is double d) { v = d; return true; }
+            if (raw is float f) { v = f; return true; }
+            if (raw is int i) { v = i; return true; }
+            if (raw is long l) { v = l; return true; }
+            if (raw is decimal m) { v = (double)m; return true; }
+            string s = Convert.ToString(raw, CultureInfo.InvariantCulture);
+            return double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out v);
+        }
+
+        private static Color Gradient(double t, Color cLow, Color cMid, Color cHigh)
+        {
+            if (t < 0) t = 0;
+            else if (t > 1) t = 1;
+
+            if (t <= 0.5) return Lerp(cLow, cMid, t * 2.0);
+            return Lerp(cMid, cHigh, (t - 0.5) * 2.0);
+        }
+
+        private static Color Lerp(Color a, Color b, double t)
+        {
+            int r = (int)Math.Round(a.R + (b.R - a.R) * t);
+            int g = (int)Math.Round(a.G + (b.G - a.G) * t);
+            int bl = (int)Math.Round(a.B + (b.B - a.B) * t);
+            int al = (int)Math.Round(a.A + (b.A - a.A) * t);
+            return Color.FromArgb(al, r, g, bl);
         }
 
         public void Draw(LocalPlane plane)
@@ -79,7 +210,7 @@ namespace AgroParallel.Common
             // visibles solo como outline.
             if (ShowFill)
             {
-                GL.Color4(FillColor.R, FillColor.G, FillColor.B, FillColor.A);
+                bool hasStyle = _polyFillColors != null;
 
                 for (int p = 0; p < _ringsLocal.Count; p++)
                 {
@@ -88,6 +219,11 @@ namespace AgroParallel.Common
 
                     var outer = poly[0];
                     if (outer == null || outer.Length < 3) continue;
+
+                    Color c = (hasStyle && p < _polyFillColors.Length)
+                        ? _polyFillColors[p]
+                        : FillColor;
+                    GL.Color4(c.R, c.G, c.B, c.A);
 
                     GL.Begin(PrimitiveType.Polygon);
                     for (int i = 0; i < outer.Length; i++)

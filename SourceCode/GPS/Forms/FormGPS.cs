@@ -99,6 +99,7 @@ namespace AgOpenGPS
         // SHAPEFILE_MOD_START
         private ShapefileLayer shapefileLayer;
         private ToolStripMenuItem shapefileToggleItem;
+        private ToolStripMenuItem shapefileStyleItem;
         // SHAPEFILE_MOD_END
 
         // COREX_FIELD_MOD_START
@@ -1596,6 +1597,14 @@ namespace AgOpenGPS
                 itemLoad.Click += (s, e) => OpenShapefileLoadDialog();
                 toolStripDropDownButton1.DropDownItems.Add(itemLoad);
 
+                shapefileStyleItem = new ToolStripMenuItem();
+                shapefileStyleItem.Text = "\U0001F3A8 Estilo Shapefile";
+                shapefileStyleItem.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                shapefileStyleItem.ForeColor = Color.FromArgb(0, 140, 200);
+                shapefileStyleItem.Enabled = false;
+                shapefileStyleItem.Click += (s, e) => OpenShapefileStyleDialog();
+                toolStripDropDownButton1.DropDownItems.Add(shapefileStyleItem);
+
                 shapefileToggleItem = new ToolStripMenuItem();
                 shapefileToggleItem.Text = "\U0001F441 Mostrar Shapefile";
                 shapefileToggleItem.Font = new Font("Tahoma", 18F, FontStyle.Bold);
@@ -1667,7 +1676,26 @@ namespace AgOpenGPS
                     shapefileToggleItem.Enabled = shapefileLayer.PolygonCount > 0;
                     shapefileToggleItem.Checked = true;
                 }
+                if (shapefileStyleItem != null)
+                {
+                    shapefileStyleItem.Enabled = shapefileLayer.PolygonCount > 0
+                        && shapefileLayer.FieldNames.Count > 0;
+                }
                 shapefileLayer.IsVisible = true;
+
+                // Invocar dialogo de estilo automaticamente si hay campos DBF.
+                if (shapefileLayer.PolygonCount > 0 && shapefileLayer.FieldNames.Count > 0)
+                    OpenShapefileStyleDialog();
+            }
+        }
+
+        private void OpenShapefileStyleDialog()
+        {
+            if (shapefileLayer == null || shapefileLayer.PolygonCount == 0) return;
+
+            using (var dlg = new FormShapefileStyle(shapefileLayer))
+            {
+                dlg.ShowDialog(this);
             }
         }
 
