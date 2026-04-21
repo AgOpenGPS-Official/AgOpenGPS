@@ -95,7 +95,7 @@ namespace AgOpenGPS
 
         // VISTAX_MOD_START
         private SeedMonitor vistaXMonitor;
-        private VistaXPanel vistaXPanel;
+        private VistaXNativePanel vistaXPanel;
         public VistaXConfig vistaXConfig;
         // VISTAX_MOD_END
 
@@ -1514,8 +1514,7 @@ namespace AgOpenGPS
                 if (vistaXPanel != null) return;
 
                 var cfg = VistaXConfig.Load();
-                System.Diagnostics.Debug.WriteLine("[VistaX] Config: Enabled=" + cfg.Enabled
-                    + " ServerUrl=" + cfg.ServerUrl);
+                System.Diagnostics.Debug.WriteLine("[VistaX] Config: Enabled=" + cfg.Enabled);
 
                 if (!cfg.Enabled)
                 {
@@ -1523,17 +1522,25 @@ namespace AgOpenGPS
                     return;
                 }
 
-                // Solo crear el panel CefSharp — el servidor Node maneja MQTT y Socket.IO
-                vistaXPanel = new VistaXPanel(cfg);
+                // Panel nativo (GDI+) — sin CefSharp, sin servidor Node.
+                vistaXPanel = new VistaXNativePanel(cfg);
                 vistaXPanel.Visible = true;
-
                 this.Controls.Add(vistaXPanel);
                 vistaXPanel.Reposition();
+
+                // Monitor MQTT nativo — alimenta el panel via SnapshotUpdated.
+                vistaXMonitor = new SeedMonitor(this, cfg);
+                vistaXMonitor.SnapshotUpdated += vistaXPanel.SetSnapshot;
+                vistaXMonitor.AlarmTriggered += msg =>
+                    System.Diagnostics.Debug.WriteLine("[VistaX] Alarma: " + msg);
+
+                // Fire-and-forget: StartAsync maneja sus propios errores de MQTT.
+                _ = vistaXMonitor.StartAsync();
 
                 // Reposicionar al redimensionar
                 this.Resize += (s, e) => { if (vistaXPanel != null) vistaXPanel.Reposition(); };
 
-                System.Diagnostics.Debug.WriteLine("[VistaX] Panel CefSharp iniciado OK → " + cfg.ServerUrl);
+                System.Diagnostics.Debug.WriteLine("[VistaX] Panel nativo iniciado OK");
             }
             catch (Exception ex)
             {
