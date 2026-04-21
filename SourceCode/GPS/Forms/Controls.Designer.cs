@@ -642,7 +642,24 @@ namespace AgOpenGPS
                     JobClose();
                     isEasyDriveMode = false;
 
-                    // Restore tool settings from saved profiles
+                    // Restore tool properties from saved profiles
+                    tool.hitchLength = Properties.ToolSettings.Default.setVehicle_hitchLength;
+                    tool.trailingHitchLength = Properties.ToolSettings.Default.setVehicle_toolTrailingHitchLength;
+                    tool.tankTrailingHitchLength = Properties.ToolSettings.Default.setVehicle_tankTrailingHitchLength;
+                    tool.trailingToolToPivotLength = Properties.ToolSettings.Default.setTool_trailingToolToPivotLength;
+                    tool.isToolRearFixed = Properties.ToolSettings.Default.setTool_isToolRearFixed;
+                    tool.isToolTrailing = Properties.ToolSettings.Default.setTool_isToolTrailing;
+                    tool.isToolTBT = Properties.ToolSettings.Default.setTool_isToolTBT;
+                    tool.isToolFrontFixed = Properties.ToolSettings.Default.setTool_isToolFront;
+                    tool.offset = Properties.ToolSettings.Default.setVehicle_toolOffset;
+                    tool.overlap = Properties.ToolSettings.Default.setVehicle_toolOverlap;
+                    tool.isSectionsNotZones = Properties.ToolSettings.Default.setTool_isSectionsNotZones;
+
+                    if (tool.isSectionsNotZones)
+                        tool.numOfSections = Properties.ToolSettings.Default.setVehicle_numSections;
+                    else
+                        tool.numOfSections = Properties.ToolSettings.Default.setTool_numSectionsMulti;
+
                     SectionSetPosition();
                     SectionCalcWidths();
 
