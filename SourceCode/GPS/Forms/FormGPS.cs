@@ -73,6 +73,9 @@ namespace AgOpenGPS
 
         public bool isJobStarted => AppModel.Fields.ActiveField != null;
 
+        public bool isEasyDriveMode;
+        public bool isEasyDriveRequested;
+
         public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
 
