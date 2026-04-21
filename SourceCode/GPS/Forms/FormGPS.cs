@@ -22,7 +22,9 @@ using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-// using AgroParallel.Common; // Ya no se usa — config se hace desde el frontend web
+// AGROPARALLEL_MOD_START
+using AgroParallel.Common;
+// AGROPARALLEL_MOD_END
 // VISTAX_MOD_START
 using AgroParallel.VistaX;
 // VISTAX_MOD_END
@@ -574,6 +576,10 @@ namespace AgOpenGPS
             // VISTAX_MOD_START
             InitVistaX();
             // VISTAX_MOD_END
+
+            // AGROPARALLEL_MOD_START
+            InitAgroParallelModulesMenu();
+            // AGROPARALLEL_MOD_END
         }
 
         #region Shutdown Handling
@@ -1507,6 +1513,64 @@ namespace AgOpenGPS
             }
         }
         // VISTAX_MOD_END
+
+        // AGROPARALLEL_MOD_START
+        // Lee agroParallelModules.json del directorio base y agrega un item en el
+        // dropdown de configuracion por cada modulo habilitado. Cada item abre una
+        // ventana popup (ModulePopupForm) que embebe CefSharp apuntando a su Url.
+        private void InitAgroParallelModulesMenu()
+        {
+            try
+            {
+                var cfg = AgroParallelModulesConfig.Load();
+                if (cfg == null || cfg.Modules == null) return;
+
+                foreach (var m in cfg.Modules)
+                {
+                    if (m == null || !m.Enabled) continue;
+                    if (string.IsNullOrWhiteSpace(m.Name)) continue;
+
+                    var item = new ToolStripMenuItem();
+                    string prefix = string.IsNullOrEmpty(m.Emoji) ? "" : m.Emoji + " ";
+                    item.Text = prefix + m.Name;
+                    item.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                    item.ForeColor = AgroParallelModulesConfig.ResolveAccentColor(m);
+
+                    string iconFull = AgroParallelModulesConfig.ResolveIconFullPath(m.IconPath);
+                    if (iconFull != null && File.Exists(iconFull))
+                    {
+                        try { item.Image = Image.FromFile(iconFull); }
+                        catch { /* icono invalido: seguimos con solo texto+emoji */ }
+                    }
+
+                    var capture = m;
+                    item.Click += (s, e) => OpenAgroParallelModulePopup(capture);
+
+                    toolStripDropDownButton1.DropDownItems.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[AgroParallel] InitAgroParallelModulesMenu: "
+                    + ex.Message);
+            }
+        }
+
+        private void OpenAgroParallelModulePopup(AgroParallelModuleEntry module)
+        {
+            try
+            {
+                var popup = new ModulePopupForm(module);
+                popup.Show(this);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[AgroParallel] Popup " + module.Name
+                    + " error: " + ex.Message);
+                TimedMessageBox(2500, "AgroParallel", module.Name + ": " + ex.Message);
+            }
+        }
+        // AGROPARALLEL_MOD_END
 
         // COREX_FIELD_MOD_START
         /// <summary>
