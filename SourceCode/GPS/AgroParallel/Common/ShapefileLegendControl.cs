@@ -25,6 +25,8 @@ namespace AgroParallel.Common
         private string _fieldName;
         private double _min;
         private double _max;
+        private double _current;
+        private bool _hasCurrent;
 
         // Mismos colores que ShapefileLayer.ApplyColorByField (sin alpha:
         // el alpha del layer pinta el mapa; en la leyenda usamos opaco).
@@ -39,7 +41,7 @@ namespace AgroParallel.Common
         public ShapefileLegendControl()
         {
             DoubleBuffered = true;
-            Size = new Size(110, 210);
+            Size = new Size(130, 240);
             BackColor = Color.Black;
             SetStyle(ControlStyles.OptimizedDoubleBuffer
                 | ControlStyles.AllPaintingInWmPaint
@@ -57,6 +59,15 @@ namespace AgroParallel.Common
         public void Clear()
         {
             _fieldName = null;
+            _hasCurrent = false;
+            Invalidate();
+        }
+
+        public void SetCurrent(double value, bool inside)
+        {
+            if (_hasCurrent == inside && _hasCurrent && _current == value) return;
+            _current = value;
+            _hasCurrent = inside;
             Invalidate();
         }
 
@@ -120,6 +131,35 @@ namespace AgroParallel.Common
                 double mid = (_min + _max) / 2.0;
                 string midStr = mid.ToString("G4", CultureInfo.InvariantCulture);
                 g.DrawString(midStr, fMid, midBrush, 40, barRect.Top + (barRect.Height / 2) - 7);
+            }
+
+            // Marcador del valor actual (triangulo a la izquierda de la barra).
+            if (_hasCurrent && _max > _min)
+            {
+                double t = (_current - _min) / (_max - _min);
+                if (t < 0) t = 0;
+                else if (t > 1) t = 1;
+                int y = barRect.Bottom - (int)(t * barRect.Height);
+                var tri = new[] {
+                    new Point(barRect.Left - 2, y),
+                    new Point(barRect.Left - 10, y - 5),
+                    new Point(barRect.Left - 10, y + 5)
+                };
+                using (var mkBrush = new SolidBrush(Color.White))
+                    g.FillPolygon(mkBrush, tri);
+            }
+
+            // Readout actual al pie.
+            using (var fLbl = new Font("Segoe UI", 8f))
+            using (var fVal = new Font("Segoe UI", 11f, FontStyle.Bold))
+            using (var dimBrush = new SolidBrush(CTextDim))
+            using (var textBrush = new SolidBrush(CText))
+            {
+                g.DrawString("Dosis actual", fLbl, dimBrush, 8, Height - 42);
+                string val = _hasCurrent
+                    ? _current.ToString("G5", CultureInfo.InvariantCulture)
+                    : "fuera";
+                g.DrawString(val, fVal, textBrush, 8, Height - 26);
             }
         }
     }

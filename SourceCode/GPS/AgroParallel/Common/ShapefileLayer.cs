@@ -50,6 +50,16 @@ namespace AgroParallel.Common
         // en poligonos concavos.
         private readonly List<int[]> _outerTriangles = new List<int[]>();
 
+        // Bounding boxes del contorno exterior (pre-filtro en PIP).
+        // Formato por poligono: [minE, minN, maxE, maxN].
+        private readonly List<float[]> _outerBBox = new List<float[]>();
+
+        // Estado del muestreo por posicion (paso 9A). Actualizado desde FormGPS.
+        public int CurrentPolygonIndex { get; private set; } = -1;
+        public bool CurrentInside { get; private set; }
+        public double CurrentDose { get; private set; }   // valor del StyleField (si hay).
+        public bool HasCurrentDose { get; private set; }
+
         // Lineas del shape (polilineas / MultiLineString expandidas a arrays simples).
         private readonly List<ShapeLatLon[]> _linesWgs84 = new List<ShapeLatLon[]>();
         private readonly List<PointF[]> _linesLocal = new List<PointF[]>();
@@ -241,6 +251,83 @@ namespace AgroParallel.Common
             return Color.FromArgb(al, r, g, bl);
         }
 
+        // Busca el primer poligono cuyo contorno exterior contiene (easting, northing).
+        // Requiere que EnsureProjected se haya llamado al menos una vez (lo hace Draw
+        // automaticamente). Retorna -1 si el punto no esta en ningun poligono.
+        public int FindPolygonAt(double easting, double northing)
+        {
+            if (_ringsLocal.Count == 0) return -1;
+
+            for (int p = 0; p < _ringsLocal.Count; p++)
+            {
+                var bbox = p < _outerBBox.Count ? _outerBBox[p] : null;
+                if (bbox == null) continue;
+                if (easting < bbox[0] || easting > bbox[2]) continue;
+                if (northing < bbox[1] || northing > bbox[3]) continue;
+
+                var poly = _ringsLocal[p];
+                if (poly.Count == 0) continue;
+                var outer = poly[0];
+                if (outer == null || outer.Length < 3) continue;
+
+                if (PointInRing(outer, (float)easting, (float)northing))
+                    return p;
+            }
+            return -1;
+        }
+
+        // Lee el valor numerico del atributo DBF del poligono dado.
+        // Retorna false si no existe, es nulo, o no es convertible a double.
+        public bool TryGetPolygonNumeric(int polygonIndex, string fieldName, out double value)
+        {
+            value = 0;
+            if (polygonIndex < 0 || polygonIndex >= _polyAttrs.Count) return false;
+            if (string.IsNullOrEmpty(fieldName)) return false;
+            object raw;
+            if (!_polyAttrs[polygonIndex].TryGetValue(fieldName, out raw)) return false;
+            return TryToDouble(raw, out value);
+        }
+
+        // Actualiza el estado CurrentInside / CurrentDose con la posicion dada.
+        // La posicion viene en las mismas coords locales que usa el mapa
+        // (pivotAxlePos.easting / northing de FormGPS).
+        public void SamplePosition(double easting, double northing)
+        {
+            int idx = FindPolygonAt(easting, northing);
+            CurrentPolygonIndex = idx;
+            CurrentInside = idx >= 0;
+
+            if (idx >= 0 && !string.IsNullOrEmpty(StyleField))
+            {
+                double v;
+                if (TryGetPolygonNumeric(idx, StyleField, out v))
+                {
+                    CurrentDose = v;
+                    HasCurrentDose = true;
+                    return;
+                }
+            }
+            CurrentDose = 0;
+            HasCurrentDose = false;
+        }
+
+        private static bool PointInRing(PointF[] ring, float px, float py)
+        {
+            // Ray casting clasico. El ring puede tener el ultimo punto igual al
+            // primero (shapefile cerrado) — no molesta al algoritmo.
+            bool inside = false;
+            int n = ring.Length;
+            for (int i = 0, j = n - 1; i < n; j = i++)
+            {
+                float xi = ring[i].X, yi = ring[i].Y;
+                float xj = ring[j].X, yj = ring[j].Y;
+                bool intersect = ((yi > py) != (yj > py))
+                    && (px < (xj - xi) * (py - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
         public void Draw(LocalPlane plane)
         {
             if (!IsVisible) return;
@@ -343,6 +430,7 @@ namespace AgroParallel.Common
 
             _ringsLocal.Clear();
             _outerTriangles.Clear();
+            _outerBBox.Clear();
             _linesLocal.Clear();
             _pointsLocal.Clear();
 
@@ -374,6 +462,26 @@ namespace AgroParallel.Common
                 else
                     tris = new int[0];
                 _outerTriangles.Add(tris);
+
+                // Bounding box del contorno exterior (para acelerar PIP).
+                if (polyDst.Count > 0 && polyDst[0] != null && polyDst[0].Length > 0)
+                {
+                    var outer = polyDst[0];
+                    float minE = float.MaxValue, minN = float.MaxValue;
+                    float maxE = float.MinValue, maxN = float.MinValue;
+                    for (int i = 0; i < outer.Length; i++)
+                    {
+                        if (outer[i].X < minE) minE = outer[i].X;
+                        if (outer[i].X > maxE) maxE = outer[i].X;
+                        if (outer[i].Y < minN) minN = outer[i].Y;
+                        if (outer[i].Y > maxN) maxN = outer[i].Y;
+                    }
+                    _outerBBox.Add(new[] { minE, minN, maxE, maxN });
+                }
+                else
+                {
+                    _outerBBox.Add(null);
+                }
             }
 
             for (int l = 0; l < _linesWgs84.Count; l++)

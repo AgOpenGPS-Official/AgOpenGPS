@@ -413,7 +413,12 @@ namespace AgOpenGPS
 
                     // SHAPEFILE_MOD_START
                     if (shapefileLayer != null && isJobStarted)
+                    {
                         shapefileLayer.Draw(AppModel.LocalPlane);
+                        shapefileLayer.SamplePosition(
+                            pivotAxlePos.easting, pivotAxlePos.northing);
+                        UpdateShapefileCurrentDose();
+                    }
                     // SHAPEFILE_MOD_END
 
                     #region Guidance Lines

@@ -1862,6 +1862,14 @@ namespace AgOpenGPS
             if (show) shapefileLegend.BringToFront();
         }
 
+        public void UpdateShapefileCurrentDose()
+        {
+            if (shapefileLegend == null || shapefileLayer == null) return;
+            shapefileLegend.SetCurrent(
+                shapefileLayer.CurrentDose,
+                shapefileLayer.HasCurrentDose);
+        }
+
         private void ShowShapefileSummary(string fileName, ShapefileReadResult r)
         {
             var sb = new System.Text.StringBuilder();
