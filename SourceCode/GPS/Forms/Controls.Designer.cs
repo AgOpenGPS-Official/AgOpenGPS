@@ -675,6 +675,15 @@ namespace AgOpenGPS
                     SectionSetPosition();
                     SectionCalcWidths();
 
+                    // Restore vehicle and tool settings from saved profiles
+                    if (!string.IsNullOrEmpty(RegistrySettings.vehicleProfileName))
+                    {
+                        Properties.VehicleSettings.Default.Load(RegistrySettings.vehicleProfileName);
+                        SendSettings();
+                    }
+                    if (!string.IsNullOrEmpty(RegistrySettings.toolProfileName))
+                        Properties.ToolSettings.Default.Load(RegistrySettings.toolProfileName);
+
                     Text = "AgOpenGPS";
                 }));
                 return;
@@ -1216,12 +1225,6 @@ namespace AgOpenGPS
         }
         private void btnConfig_Click(object sender, EventArgs e)
         {
-            if (isEasyDriveMode)
-            {
-                TimedMessageBox(2000, "Easy Drive", "Config not available in Easy Drive mode");
-                return;
-            }
-
             using (FormConfig form = new FormConfig(this))
             {
                 form.ShowDialog(this);

@@ -39,6 +39,9 @@ namespace AgOpenGPS
 
         private void FormJob_Load(object sender, EventArgs e)
         {
+            // Close only makes sense when a field is open
+            btnJobClose.Enabled = mf.isJobStarted;
+
             //check if directory and file exists, maybe was deleted etc
             if (String.IsNullOrEmpty(mf.currentFieldDirectory)) btnJobResume.Enabled = false;
             string directoryName = Path.Combine(RegistrySettings.fieldsDirectory, mf.currentFieldDirectory);
@@ -63,13 +66,8 @@ namespace AgOpenGPS
 
                 if (mf.isJobStarted)
                 {
-
                     btnJobResume.Enabled = false;
                     lblResumeField.Text = gStr.gsOpen + ": " + mf.currentFieldDirectory;
-                }
-                else
-                {
-                    btnJobClose.Enabled = false;
                 }
             }
             // Hide AgShare buttons and resize form if AgShare is disabled

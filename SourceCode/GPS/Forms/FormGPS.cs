@@ -1375,6 +1375,15 @@ namespace AgOpenGPS
 
         public void FieldMenuButtonEnableDisable(bool isOn)
         {
+            // Always restore config toolbar items (may have been disabled by Easy Drive)
+            toolStripConfig.Enabled = true;
+            toolStripAllSettings.Enabled = true;
+            toolStripWorkingDirectories.Enabled = true;
+            toolStripGPSData.Enabled = true;
+            toolStripColors.Enabled = true;
+            toolStripSectionColors.Enabled = true;
+            toolStripHotkeys.Enabled = true;
+
             SmoothABtoolStripMenu.Enabled = isOn;
             deleteContourPathsToolStripMenuItem.Enabled = isOn;
             boundaryToolToolStripMenu.Enabled = isOn;
@@ -1390,7 +1399,7 @@ namespace AgOpenGPS
             recordedPathStripMenu.Enabled = isOn;
             loadVehicleToolToolStripMenuItem.Enabled = true;
 
-            // In Easy Drive mode, disable boundary/headland/tram/profiles
+            // In Easy Drive mode, disable boundary/headland/tram/profiles and most settings
             if (isOn && isEasyDriveMode)
             {
                 boundaryToolToolStripMenu.Enabled = false;
@@ -1401,6 +1410,15 @@ namespace AgOpenGPS
                 tramsMultiMenuField.Enabled = false;
                 recordedPathStripMenu.Enabled = false;
                 loadVehicleToolToolStripMenuItem.Enabled = false;
+
+                // Gray out all settings toolbar items except Auto Steer (FormSteer)
+                toolStripConfig.Enabled = false;
+                toolStripAllSettings.Enabled = false;
+                toolStripWorkingDirectories.Enabled = false;
+                toolStripGPSData.Enabled = false;
+                toolStripColors.Enabled = false;
+                toolStripSectionColors.Enabled = false;
+                toolStripHotkeys.Enabled = false;
             }
         }
 
