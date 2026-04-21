@@ -24,7 +24,7 @@ using System.Globalization;
 
 namespace AgroParallel.Common
 {
-    public class ShapefileLayer
+    public class ShapefileLayer : IShapefileExportSource
     {
         public bool IsVisible = true;
         public bool ShowOutline = true;
@@ -282,6 +282,33 @@ namespace AgroParallel.Common
         {
             if (polygonIndex < 0 || polygonIndex >= _polyAttrs.Count) return null;
             return _polyAttrs[polygonIndex];
+        }
+
+        // Implementacion de IShapefileExportSource (paso 13).
+        IReadOnlyList<ShapeLatLon[]> IShapefileExportSource.GetPolygonRingsWgs84(int polygonIndex)
+        {
+            if (polygonIndex < 0 || polygonIndex >= _ringsWgs84.Count) return null;
+            return _ringsWgs84[polygonIndex];
+        }
+
+        ShapeLatLon[] IShapefileExportSource.GetLinePointsWgs84(int lineIndex)
+        {
+            if (lineIndex < 0 || lineIndex >= _linesWgs84.Count) return null;
+            return _linesWgs84[lineIndex];
+        }
+
+        ShapeLatLon IShapefileExportSource.GetPointWgs84(int pointIndex)
+        {
+            if (pointIndex < 0 || pointIndex >= _pointsWgs84.Count)
+                return new ShapeLatLon();
+            return _pointsWgs84[pointIndex];
+        }
+
+        Color? IShapefileExportSource.GetPolygonFillColor(int polygonIndex)
+        {
+            if (_polyFillColors == null) return null;
+            if (polygonIndex < 0 || polygonIndex >= _polyFillColors.Length) return null;
+            return _polyFillColors[polygonIndex];
         }
 
         // Lee el valor numerico del atributo DBF del poligono dado.

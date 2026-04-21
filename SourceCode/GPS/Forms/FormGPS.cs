@@ -1670,6 +1670,13 @@ namespace AgOpenGPS
                 };
                 toolStripDropDownButton1.DropDownItems.Add(shapefileInspectItem);
 
+                var itemExport = new ToolStripMenuItem();
+                itemExport.Text = "\U0001F4BE Exportar Shapefile...";
+                itemExport.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                itemExport.ForeColor = Color.FromArgb(0, 140, 200);
+                itemExport.Click += (s, e) => OpenShapefileExportDialog();
+                toolStripDropDownButton1.DropDownItems.Add(itemExport);
+
                 // QUANTIX_MOD_START
                 var itemQuantiX = new ToolStripMenuItem();
                 itemQuantiX.Text = "⚙ QuantiX (UDP)";
@@ -1880,6 +1887,65 @@ namespace AgOpenGPS
 
         // Intenta procesar un click en modo inspeccion. Retorna true si lo
         // manejo (en cuyo caso el handler del mapa no debe hacer nada mas).
+        private void OpenShapefileExportDialog()
+        {
+            if (shapefileLayer == null || shapefileLayer.IsEmpty)
+            {
+                MessageBox.Show(this,
+                    "No hay shapefile cargado para exportar.",
+                    "Exportar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Title = "Exportar shapefile";
+                sfd.Filter = "Shapefile (*.shp)|*.shp|KML (*.kml)|*.kml";
+                sfd.DefaultExt = "shp";
+                sfd.AddExtension = true;
+
+                string fieldPath = GetCurrentFieldFullPath();
+                if (!string.IsNullOrEmpty(fieldPath) && Directory.Exists(fieldPath))
+                    sfd.InitialDirectory = fieldPath;
+
+                string stem = string.IsNullOrEmpty(shapefileLayer.Source)
+                    ? "export"
+                    : Path.GetFileNameWithoutExtension(shapefileLayer.Source);
+                sfd.FileName = stem + "_export";
+
+                if (sfd.ShowDialog(this) != DialogResult.OK) return;
+
+                Cursor oldCursor = Cursor.Current;
+                Cursor.Current = Cursors.WaitCursor;
+                try
+                {
+                    IShapefileExportSource src = shapefileLayer;
+                    bool isKml = sfd.FilterIndex == 2
+                        || string.Equals(Path.GetExtension(sfd.FileName),
+                            ".kml", StringComparison.OrdinalIgnoreCase);
+
+                    if (isKml)
+                        ShapefileExporter.ExportKml(src, sfd.FileName, shapefileLayer.Source);
+                    else
+                        ShapefileExporter.ExportShapefile(src, sfd.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Cursor.Current = oldCursor;
+                    System.Diagnostics.Debug.WriteLine("[Shapefile] Export: " + ex);
+                    MessageBox.Show(this,
+                        "Error exportando:\n\n" + ex.Message,
+                        "Exportar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Cursor.Current = oldCursor;
+
+                MessageBox.Show(this,
+                    "Export completo:\n" + sfd.FileName,
+                    "Exportar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         public bool TryHandleShapefileInspectClick(int screenX, int screenY)
         {
             if (!shapefileInspectMode) return false;
