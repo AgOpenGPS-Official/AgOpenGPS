@@ -1893,6 +1893,20 @@ namespace AgOpenGPS
             shapefileLegend.SetCurrent(
                 shapefileLayer.CurrentDose,
                 shapefileLayer.HasCurrentDose);
+
+            // QUANTIX_MOD_START
+            if (quantiXSender != null)
+            {
+                shapefileLegend.SetUdpStatus(
+                    quantiXSender.IsRunning,
+                    quantiXSender.PacketsSent,
+                    quantiXSender.LastSendUtc);
+            }
+            else
+            {
+                shapefileLegend.SetUdpStatus(false, 0, null);
+            }
+            // QUANTIX_MOD_END
         }
 
         // QUANTIX_MOD_START

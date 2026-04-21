@@ -28,6 +28,11 @@ namespace AgroParallel.Common
         private double _current;
         private bool _hasCurrent;
 
+        // Estado UDP (paso 11).
+        private bool _udpActive;
+        private int _udpPackets;
+        private DateTime? _udpLastSend;
+
         // Mismos colores que ShapefileLayer.ApplyColorByField (sin alpha:
         // el alpha del layer pinta el mapa; en la leyenda usamos opaco).
         private static readonly Color CLow = Color.FromArgb(0, 200, 0);
@@ -68,6 +73,16 @@ namespace AgroParallel.Common
             if (_hasCurrent == inside && _hasCurrent && _current == value) return;
             _current = value;
             _hasCurrent = inside;
+            Invalidate();
+        }
+
+        public void SetUdpStatus(bool active, int packets, DateTime? lastSendUtc)
+        {
+            if (_udpActive == active && _udpPackets == packets && _udpLastSend == lastSendUtc)
+                return;
+            _udpActive = active;
+            _udpPackets = packets;
+            _udpLastSend = lastSendUtc;
             Invalidate();
         }
 
@@ -160,6 +175,45 @@ namespace AgroParallel.Common
                     ? _current.ToString("G5", CultureInfo.InvariantCulture)
                     : "fuera";
                 g.DrawString(val, fVal, textBrush, 8, Height - 26);
+            }
+
+            // UDP: LED + contador de paquetes (paso 11).
+            DrawUdpStatus(g);
+        }
+
+        private void DrawUdpStatus(Graphics g)
+        {
+            // LED en la esquina superior derecha (6px + halo).
+            var ledCenter = new Point(Width - 16, 12);
+            Color ledColor;
+            if (!_udpActive)
+            {
+                ledColor = Color.FromArgb(80, 80, 80); // apagado
+            }
+            else if (_udpLastSend.HasValue
+                && (DateTime.UtcNow - _udpLastSend.Value).TotalMilliseconds < 500)
+            {
+                ledColor = Color.FromArgb(0, 220, 80);  // activo y enviando
+            }
+            else
+            {
+                ledColor = Color.FromArgb(180, 180, 60); // activo pero ultimo send > 500ms
+            }
+
+            using (var ledBrush = new SolidBrush(ledColor))
+                g.FillEllipse(ledBrush, ledCenter.X - 5, ledCenter.Y - 5, 10, 10);
+            using (var rim = new Pen(Color.FromArgb(50, 50, 50)))
+                g.DrawEllipse(rim, ledCenter.X - 5, ledCenter.Y - 5, 10, 10);
+
+            // Contador debajo del LED.
+            using (var fCnt = new Font("Segoe UI", 7.5f))
+            using (var dim = new SolidBrush(CTextDim))
+            {
+                string txt = _udpActive
+                    ? "UDP " + _udpPackets
+                    : "UDP off";
+                var sz = g.MeasureString(txt, fCnt);
+                g.DrawString(txt, fCnt, dim, Width - sz.Width - 6, 22);
             }
         }
     }
