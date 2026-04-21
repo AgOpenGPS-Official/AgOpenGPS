@@ -100,6 +100,7 @@ namespace AgOpenGPS
         private ShapefileLayer shapefileLayer;
         private ToolStripMenuItem shapefileToggleItem;
         private ToolStripMenuItem shapefileStyleItem;
+        private ShapefileLegendControl shapefileLegend;
         // SHAPEFILE_MOD_END
 
         // COREX_FIELD_MOD_START
@@ -1616,8 +1617,11 @@ namespace AgOpenGPS
                 {
                     if (shapefileLayer != null)
                         shapefileLayer.IsVisible = shapefileToggleItem.Checked;
+                    UpdateShapefileLegendVisibility();
                 };
                 toolStripDropDownButton1.DropDownItems.Add(shapefileToggleItem);
+
+                InitShapefileLegend();
             }
             catch (Exception ex)
             {
@@ -1697,6 +1701,40 @@ namespace AgOpenGPS
             {
                 dlg.ShowDialog(this);
             }
+            RefreshShapefileLegend();
+        }
+
+        private void InitShapefileLegend()
+        {
+            if (shapefileLegend != null) return;
+
+            shapefileLegend = new ShapefileLegendControl();
+            shapefileLegend.Visible = false;
+            shapefileLegend.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+            // Sobre oglMain (oglMain.Left=75); margen izquierdo + encima del footer.
+            shapefileLegend.Location = new Point(85, this.ClientSize.Height - shapefileLegend.Height - 90);
+            this.Controls.Add(shapefileLegend);
+            shapefileLegend.BringToFront();
+        }
+
+        private void RefreshShapefileLegend()
+        {
+            if (shapefileLegend == null) return;
+            if (shapefileLayer != null && !string.IsNullOrEmpty(shapefileLayer.StyleField))
+                shapefileLegend.SetLegend(shapefileLayer.StyleField, shapefileLayer.StyleMin, shapefileLayer.StyleMax);
+            else
+                shapefileLegend.Clear();
+            UpdateShapefileLegendVisibility();
+        }
+
+        private void UpdateShapefileLegendVisibility()
+        {
+            if (shapefileLegend == null) return;
+            bool show = shapefileLegend.HasData
+                && shapefileLayer != null
+                && shapefileLayer.IsVisible;
+            shapefileLegend.Visible = show;
+            if (show) shapefileLegend.BringToFront();
         }
 
         private void ShowShapefileSummary(string fileName, ShapefileReadResult r)
