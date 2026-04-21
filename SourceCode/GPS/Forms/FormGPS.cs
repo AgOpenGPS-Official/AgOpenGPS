@@ -1388,6 +1388,18 @@ namespace AgOpenGPS
             tramLinesMenuField.Enabled = isOn;
             tramsMultiMenuField.Enabled = isOn;
             recordedPathStripMenu.Enabled = isOn;
+
+            // In Easy Drive mode, disable boundary/headland/tram tools
+            if (isOn && isEasyDriveMode)
+            {
+                boundaryToolToolStripMenu.Enabled = false;
+                boundariesToolStripMenuItem.Enabled = false;
+                headlandToolStripMenuItem.Enabled = false;
+                headlandBuildToolStripMenuItem.Enabled = false;
+                tramLinesMenuField.Enabled = false;
+                tramsMultiMenuField.Enabled = false;
+                recordedPathStripMenu.Enabled = false;
+            }
         }
 
         //take the distance from object and convert to camera data

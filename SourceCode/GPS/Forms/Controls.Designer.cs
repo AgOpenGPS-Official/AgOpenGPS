@@ -134,8 +134,8 @@ namespace AgOpenGPS
                 //nudge closest
                 flp1.Controls[0].Visible = tracksVisible > 0;
 
-                //always these 3 - Build and if a bnd then ABDraw
-                flp1.Controls[1].Visible = isBnd;
+                //always these 3 - Build and if a bnd then ABDraw (not in Easy Drive)
+                flp1.Controls[1].Visible = isBnd && !isEasyDriveMode;
 
                 flp1.Controls[2].Visible = true;
                 flp1.Controls[3].Visible = true;
@@ -1187,6 +1187,12 @@ namespace AgOpenGPS
         }
         private void btnConfig_Click(object sender, EventArgs e)
         {
+            if (isEasyDriveMode)
+            {
+                TimedMessageBox(2000, "Easy Drive", "Config not available in Easy Drive mode");
+                return;
+            }
+
             using (FormConfig form = new FormConfig(this))
             {
                 form.ShowDialog(this);

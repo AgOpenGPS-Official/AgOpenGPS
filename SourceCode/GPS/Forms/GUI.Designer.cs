@@ -144,7 +144,9 @@ namespace AgOpenGPS
                     switch (currentFieldTextCounter)
                     {
                         case 0:
-                            lblCurrentField.Text = gStr.gsField + ": " + displayFieldName;
+                            lblCurrentField.Text = isEasyDriveMode
+                                ? "Easy Drive: " + (tool.width * m2FtOrM).ToString("N1") + unitsFtM
+                                : gStr.gsField + ": " + displayFieldName;
                             break;
 
                         case 1:
