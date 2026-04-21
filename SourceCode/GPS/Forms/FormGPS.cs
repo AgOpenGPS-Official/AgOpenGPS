@@ -1375,7 +1375,7 @@ namespace AgOpenGPS
 
         public void FieldMenuButtonEnableDisable(bool isOn)
         {
-            // Always restore config toolbar items (may have been disabled by Easy Drive)
+            // Always restore items that may have been disabled by Easy Drive
             toolStripConfig.Enabled = true;
             toolStripAllSettings.Enabled = true;
             toolStripWorkingDirectories.Enabled = true;
@@ -1383,6 +1383,7 @@ namespace AgOpenGPS
             toolStripColors.Enabled = true;
             toolStripSectionColors.Enabled = true;
             toolStripHotkeys.Enabled = true;
+            copyTracksToolStripMenuItem.Enabled = true;
 
             SmoothABtoolStripMenu.Enabled = isOn;
             deleteContourPathsToolStripMenuItem.Enabled = isOn;
@@ -1419,6 +1420,9 @@ namespace AgOpenGPS
                 toolStripColors.Enabled = false;
                 toolStripSectionColors.Enabled = false;
                 toolStripHotkeys.Enabled = false;
+
+                // Block track import — writes files to disk, breaks no-persistence contract
+                copyTracksToolStripMenuItem.Enabled = false;
             }
         }
 

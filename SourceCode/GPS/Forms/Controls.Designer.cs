@@ -697,6 +697,16 @@ namespace AgOpenGPS
                     vehicle.deadZoneDelay = Properties.ToolSettings.Default.setAS_deadZoneDelay;
                     isSteerInReverse = Properties.VehicleSettings.Default.setAS_isSteerInReverse;
 
+                    // Reload environment settings to prevent Easy Drive mutations leaking to disk at shutdown
+                    Properties.Settings.Default.Load();
+
+                    // Re-apply live variables from freshly loaded Settings.Default
+                    vehicle.uturnCompensation = Properties.Settings.Default.setAS_uTurnCompensation;
+                    guidanceLookAheadTime = Properties.Settings.Default.setAS_guidanceLookAheadTime;
+                    isLightBarNotSteerBar = Properties.Settings.Default.setMenu_isLightbarNotSteerBar;
+                    isLightbarOn = Properties.Settings.Default.setMenu_isLightbarOn;
+                    lightbarCmPerPixel = Properties.Settings.Default.setDisplay_lightbarCmPerPixel;
+
                     // Resend steer hardware settings to module
                     SendSettings();
 
