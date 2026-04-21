@@ -1709,11 +1709,12 @@ namespace AgOpenGPS
 
             if (shapefileToggleItem != null)
             {
-                shapefileToggleItem.Enabled = shapefileLayer.PolygonCount > 0;
+                shapefileToggleItem.Enabled = !shapefileLayer.IsEmpty;
                 shapefileToggleItem.Checked = autoVisible;
             }
             if (shapefileStyleItem != null)
             {
+                // El estilo por DBF solo aplica al fill de poligonos.
                 shapefileStyleItem.Enabled = shapefileLayer.PolygonCount > 0
                     && shapefileLayer.FieldNames.Count > 0;
             }
@@ -1866,8 +1867,10 @@ namespace AgOpenGPS
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("Archivo: " + fileName);
             sb.AppendLine("Poligonos: " + r.Polygons.Count);
+            sb.AppendLine("Lineas: " + r.Lines.Count);
+            sb.AppendLine("Puntos: " + r.Points.Count);
 
-            if (r.Polygons.Count > 0)
+            if (r.Polygons.Count + r.Lines.Count + r.Points.Count > 0)
             {
                 sb.AppendLine(string.Format(
                     System.Globalization.CultureInfo.InvariantCulture,

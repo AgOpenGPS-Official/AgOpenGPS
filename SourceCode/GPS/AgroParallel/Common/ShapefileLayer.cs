@@ -50,6 +50,19 @@ namespace AgroParallel.Common
         // en poligonos concavos.
         private readonly List<int[]> _outerTriangles = new List<int[]>();
 
+        // Lineas del shape (polilineas / MultiLineString expandidas a arrays simples).
+        private readonly List<ShapeLatLon[]> _linesWgs84 = new List<ShapeLatLon[]>();
+        private readonly List<PointF[]> _linesLocal = new List<PointF[]>();
+
+        // Puntos del shape.
+        private readonly List<ShapeLatLon> _pointsWgs84 = new List<ShapeLatLon>();
+        private readonly List<PointF> _pointsLocal = new List<PointF>();
+
+        // Estilo para puntos y lineas (fijo por ahora; el gradiente por DBF
+        // se aplica solo al fill de poligonos).
+        public Color PointColor = Color.FromArgb(255, 255, 80, 200);
+        public float PointSize = 6f;
+
         // Atributos DBF por poligono (paralelo a _ringsWgs84).
         private readonly List<Dictionary<string, object>> _polyAttrs = new List<Dictionary<string, object>>();
 
@@ -69,6 +82,12 @@ namespace AgroParallel.Common
         private bool _hasCache;
 
         public int PolygonCount { get { return _ringsWgs84.Count; } }
+        public int LineCount { get { return _linesWgs84.Count; } }
+        public int PointCount { get { return _pointsWgs84.Count; } }
+        public bool IsEmpty
+        {
+            get { return PolygonCount == 0 && LineCount == 0 && PointCount == 0; }
+        }
         public IReadOnlyList<string> FieldNames { get { return _fieldNames; } }
 
         public ShapefileLayer(ShapefileReadResult src, string sourceName)
@@ -92,6 +111,24 @@ namespace AgroParallel.Common
                 {
                     _ringsWgs84.Add(ringsCopy);
                     _polyAttrs.Add(poly.Attributes ?? new Dictionary<string, object>());
+                }
+            }
+
+            if (src.Lines != null)
+            {
+                foreach (var line in src.Lines)
+                {
+                    if (line == null || line.Points == null || line.Points.Count < 2) continue;
+                    _linesWgs84.Add(line.Points.ToArray());
+                }
+            }
+
+            if (src.Points != null)
+            {
+                foreach (var pt in src.Points)
+                {
+                    if (pt == null) continue;
+                    _pointsWgs84.Add(pt.Location);
                 }
             }
         }
@@ -208,7 +245,7 @@ namespace AgroParallel.Common
         {
             if (!IsVisible) return;
             if (plane == null) return;
-            if (_ringsWgs84.Count == 0) return;
+            if (IsEmpty) return;
 
             EnsureProjected(plane);
 
@@ -262,6 +299,36 @@ namespace AgroParallel.Common
                     }
                 }
             }
+
+            // Lineas del shape (tipo PolyLine) — sin cierre, LineStrip.
+            if (ShowOutline && _linesLocal.Count > 0)
+            {
+                GL.LineWidth(LineWidth);
+                GL.Color3(LineColor.R, LineColor.G, LineColor.B);
+
+                for (int l = 0; l < _linesLocal.Count; l++)
+                {
+                    var pts = _linesLocal[l];
+                    if (pts == null || pts.Length < 2) continue;
+
+                    GL.Begin(PrimitiveType.LineStrip);
+                    for (int i = 0; i < pts.Length; i++)
+                        GL.Vertex2(pts[i].X, pts[i].Y);
+                    GL.End();
+                }
+            }
+
+            // Puntos — tamano fijo, color fijo.
+            if (_pointsLocal.Count > 0)
+            {
+                GL.PointSize(PointSize);
+                GL.Color4(PointColor.R, PointColor.G, PointColor.B, PointColor.A);
+
+                GL.Begin(PrimitiveType.Points);
+                for (int q = 0; q < _pointsLocal.Count; q++)
+                    GL.Vertex2(_pointsLocal[q].X, _pointsLocal[q].Y);
+                GL.End();
+            }
         }
 
         private void EnsureProjected(LocalPlane plane)
@@ -276,6 +343,8 @@ namespace AgroParallel.Common
 
             _ringsLocal.Clear();
             _outerTriangles.Clear();
+            _linesLocal.Clear();
+            _pointsLocal.Clear();
 
             for (int p = 0; p < _ringsWgs84.Count; p++)
             {
@@ -305,6 +374,26 @@ namespace AgroParallel.Common
                 else
                     tris = new int[0];
                 _outerTriangles.Add(tris);
+            }
+
+            for (int l = 0; l < _linesWgs84.Count; l++)
+            {
+                var src = _linesWgs84[l];
+                var dst = new PointF[src.Length];
+                for (int i = 0; i < src.Length; i++)
+                {
+                    var gc = plane.ConvertWgs84ToGeoCoord(
+                        new Wgs84(src[i].Lat, src[i].Lon));
+                    dst[i] = new PointF((float)gc.Easting, (float)gc.Northing);
+                }
+                _linesLocal.Add(dst);
+            }
+
+            for (int q = 0; q < _pointsWgs84.Count; q++)
+            {
+                var src = _pointsWgs84[q];
+                var gc = plane.ConvertWgs84ToGeoCoord(new Wgs84(src.Lat, src.Lon));
+                _pointsLocal.Add(new PointF((float)gc.Easting, (float)gc.Northing));
             }
 
             _cachedOriginLat = origin.Latitude;

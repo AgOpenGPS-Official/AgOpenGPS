@@ -35,9 +35,23 @@ namespace AgroParallel.Common
         public Dictionary<string, object> Attributes = new Dictionary<string, object>();
     }
 
+    public class ShapeLine
+    {
+        public List<ShapeLatLon> Points = new List<ShapeLatLon>();
+        public Dictionary<string, object> Attributes = new Dictionary<string, object>();
+    }
+
+    public class ShapePoint
+    {
+        public ShapeLatLon Location;
+        public Dictionary<string, object> Attributes = new Dictionary<string, object>();
+    }
+
     public class ShapefileReadResult
     {
         public List<ShapePolygon> Polygons = new List<ShapePolygon>();
+        public List<ShapeLine> Lines = new List<ShapeLine>();
+        public List<ShapePoint> Points = new List<ShapePoint>();
         public List<string> DbfFieldNames = new List<string>();
         public string PrjText;
         public double MinLat = double.MaxValue;
@@ -49,7 +63,13 @@ namespace AgroParallel.Common
 
     public static class ShapefileReader
     {
+        // Mantenido por compatibilidad con el caller original.
         public static ShapefileReadResult ReadPolygons(string shpPath)
+        {
+            return ReadShapes(shpPath);
+        }
+
+        public static ShapefileReadResult ReadShapes(string shpPath)
         {
             if (string.IsNullOrWhiteSpace(shpPath))
                 throw new ArgumentException("shpPath vacio", "shpPath");
@@ -99,19 +119,46 @@ namespace AgroParallel.Common
                 {
                     AddPolygon(result, polygon, feature.Attributes);
                 }
-                else if (geom is MultiPolygon multi)
+                else if (geom is MultiPolygon multiPoly)
                 {
-                    for (int i = 0; i < multi.NumGeometries; i++)
+                    for (int i = 0; i < multiPoly.NumGeometries; i++)
                     {
-                        if (multi.GetGeometryN(i) is Polygon p)
+                        if (multiPoly.GetGeometryN(i) is Polygon p)
                             AddPolygon(result, p, feature.Attributes);
                     }
                 }
-                // Point / LineString / etc: ignorados en Paso 1.
+                else if (geom is LineString line)
+                {
+                    AddLine(result, line, feature.Attributes);
+                }
+                else if (geom is MultiLineString multiLine)
+                {
+                    for (int i = 0; i < multiLine.NumGeometries; i++)
+                    {
+                        if (multiLine.GetGeometryN(i) is LineString ls)
+                            AddLine(result, ls, feature.Attributes);
+                    }
+                }
+                else if (geom is Point point)
+                {
+                    AddPoint(result, point, feature.Attributes);
+                }
+                else if (geom is MultiPoint multiPt)
+                {
+                    for (int i = 0; i < multiPt.NumGeometries; i++)
+                    {
+                        if (multiPt.GetGeometryN(i) is Point pt)
+                            AddPoint(result, pt, feature.Attributes);
+                    }
+                }
             }
 
-            if (result.Polygons.Count == 0)
-                result.Warnings.Add("No se encontraron poligonos en el shapefile.");
+            if (result.Polygons.Count == 0
+                && result.Lines.Count == 0
+                && result.Points.Count == 0)
+            {
+                result.Warnings.Add("No se encontraron geometrias soportadas en el shapefile.");
+            }
 
             return result;
         }
@@ -136,6 +183,54 @@ namespace AgroParallel.Common
             }
 
             result.Polygons.Add(poly);
+        }
+
+        private static void AddLine(ShapefileReadResult result, LineString line, IAttributesTable attrs)
+        {
+            if (line == null || line.Coordinates == null || line.Coordinates.Length < 2) return;
+
+            var sl = new ShapeLine();
+            var coords = line.Coordinates;
+            for (int i = 0; i < coords.Length; i++)
+            {
+                double lon = coords[i].X;
+                double lat = coords[i].Y;
+                sl.Points.Add(new ShapeLatLon { Lat = lat, Lon = lon });
+                UpdateExtent(result, lat, lon);
+            }
+
+            CopyAttributes(attrs, sl.Attributes);
+            result.Lines.Add(sl);
+        }
+
+        private static void AddPoint(ShapefileReadResult result, Point point, IAttributesTable attrs)
+        {
+            if (point == null || double.IsNaN(point.X) || double.IsNaN(point.Y)) return;
+
+            var sp = new ShapePoint();
+            sp.Location = new ShapeLatLon { Lat = point.Y, Lon = point.X };
+            UpdateExtent(result, point.Y, point.X);
+
+            CopyAttributes(attrs, sp.Attributes);
+            result.Points.Add(sp);
+        }
+
+        private static void CopyAttributes(IAttributesTable src, Dictionary<string, object> dst)
+        {
+            if (src == null) return;
+            foreach (var name in src.GetNames())
+            {
+                try { dst[name] = src[name]; }
+                catch { /* atributo problematico: ignorar */ }
+            }
+        }
+
+        private static void UpdateExtent(ShapefileReadResult r, double lat, double lon)
+        {
+            if (lat < r.MinLat) r.MinLat = lat;
+            if (lat > r.MaxLat) r.MaxLat = lat;
+            if (lon < r.MinLon) r.MinLon = lon;
+            if (lon > r.MaxLon) r.MaxLon = lon;
         }
 
         private static List<ShapeLatLon> ConvertRing(LineString ring, ShapefileReadResult result)
