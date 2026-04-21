@@ -1302,4 +1302,284 @@ Load from Config panel &amp; Top Left Menu.</value>
   <data name="gsCurrentTool" xml:space="preserve">
     <value>Nykyinen Työkalu</value>
   </data>
+  <data name="gsAgShareActivate" xml:space="preserve">
+    <value>Aktivoi</value>
+  </data>
+  <data name="gsAgShareActivated" xml:space="preserve">
+    <value>Aktivoitu</value>
+  </data>
+  <data name="gsAgShareAutoLoad" xml:space="preserve">
+    <value>Lataus pilvestä</value>
+  </data>
+  <data name="gsAgShareAutoUpload" xml:space="preserve">
+    <value>Automaattinen lataus</value>
+  </data>
+  <data name="gsAgShareButtonsHint" xml:space="preserve">
+    <value>Automaattinen lataus: lataa peltojen muutokset suljettaessa
+Lataus pilvestä: lataa aina avattaessa viimeisin AgSharesta</value>
+  </data>
+  <data name="gsAgShareConnecting" xml:space="preserve">
+    <value>Yhdistetään...</value>
+  </data>
+  <data name="gsAgShareConnectionOk" xml:space="preserve">
+    <value>Yhteys muodostettu</value>
+  </data>
+  <data name="gsAgShareRegisterHere" xml:space="preserve">
+    <value>Rekisteröidy tässä käyttääksesi AgSharea</value>
+  </data>
+  <data name="gsAgShareSaved" xml:space="preserve">
+    <value>Asetukset tallennettu</value>
+  </data>
+  <data name="gsAgShareServer" xml:space="preserve">
+    <value>Serveri</value>
+  </data>
+  <data name="gsAgShareSettings" xml:space="preserve">
+    <value>AgShare Asetukset</value>
+  </data>
+  <data name="gsAgShareTestConnection" xml:space="preserve">
+    <value>Yhteystesti</value>
+  </data>
+  <data name="gsAgShareUploadOff" xml:space="preserve">
+    <value>Lataus Pois</value>
+  </data>
+  <data name="gsAgShareUploadOn" xml:space="preserve">
+    <value>Lataus Päällä</value>
+  </data>
+  <data name="gsAgShareAutoLoadActive" xml:space="preserve">
+    <value>Pellot on ladattu automaattisesti pilvestä</value>
+  </data>
+  <data name="gsAgShareFieldLoaded" xml:space="preserve">
+    <value>Pellot ladattu AgSharesta</value>
+  </data>
+  <data name="gsAgShareLoadFailed" xml:space="preserve">
+    <value>Ei pystytty lataamaan peltoa pilvestä, käytetään, käytetään olemassa olevaa versiota.</value>
+  </data>
+  <data name="gsAgShareDeactivated" xml:space="preserve">
+    <value>Deaktivoi</value>
+  </data>
+  <data name="gsAgShareEnterDetails" xml:space="preserve">
+    <value>Lisää serveri ja API avain, sitten testaa yhteys</value>
+  </data>
+  <data name="gsAgShareInvalidApiKey" xml:space="preserve">
+    <value>API avain ei kelpaa</value>
+  </data>
+  <data name="gsAgShareLocalOnly" xml:space="preserve">
+    <value>Ainoastaan paikallinen</value>
+  </data>
+  <data name="gsAgSharePaste" xml:space="preserve">
+    <value>Liitä leikepöydältä</value>
+  </data>
+  <data name="gsAgShareApiKey" xml:space="preserve">
+    <value>API avain</value>
+  </data>
+  <data name="gsTrackWidth" xml:space="preserve">
+    <value>Raideleveys</value>
+  </data>
+  <data name="gsVehicle" xml:space="preserve">
+    <value>Ajoneuvo</value>
+  </data>
+  <data name="gsTool" xml:space="preserve">
+    <value>Työlaite</value>
+  </data>
+  <data name="gsTractor" xml:space="preserve">
+    <value>Traktori</value>
+  </data>
+  <data name="gsHarvester" xml:space="preserve">
+    <value>Puimuri</value>
+  </data>
+  <data name="gsArticulated" xml:space="preserve">
+    <value>Runko-ohjattu</value>
+  </data>
+  <data name="gsFront" xml:space="preserve">
+    <value>Etu</value>
+  </data>
+  <data name="gsVehicleInUse" xml:space="preserve">
+    <value>Käytössä oleva ajoneuvo</value>
+  </data>
+  <data name="gsCannotDeleteActiveVehicle" xml:space="preserve">
+    <value>Aktiivista ajoveuvoa ei voida poistaa</value>
+  </data>
+  <data name="gsDeleteVehicleConfirm" xml:space="preserve">
+    <value>Poista ajoneuvo</value>
+  </data>
+  <data name="gsRenameVehicle" xml:space="preserve">
+    <value>Nimeä ajoneuvo uudelleen</value>
+  </data>
+  <data name="gsEnterNewVehicleName" xml:space="preserve">
+    <value>Kirjoita uusi ajouneuvon nimi</value>
+  </data>
+  <data name="gsVehicleExists" xml:space="preserve">
+    <value>Ajoneuvo on jo olemassa</value>
+  </data>
+  <data name="gsToolInUse" xml:space="preserve">
+    <value>Käytössä oleva työlaite</value>
+  </data>
+  <data name="gsCannotDeleteActiveTool" xml:space="preserve">
+    <value>Aktiivista työlaitetta ei voida poistaa</value>
+  </data>
+  <data name="gsDeleteToolConfirm" xml:space="preserve">
+    <value>Poista työlaite</value>
+  </data>
+  <data name="gsRenameTool" xml:space="preserve">
+    <value>Nimeä työlaite uudelleen</value>
+  </data>
+  <data name="gsEnterNewToolName" xml:space="preserve">
+    <value>Kirjoita työlaitteen uusi nimi</value>
+  </data>
+  <data name="gsToolExists" xml:space="preserve">
+    <value>Työlaite on jo olemassa</value>
+  </data>
+  <data name="gsErrorLoadingVehicle" xml:space="preserve">
+    <value>Virhe ladattaessa ajoneuvo</value>
+  </data>
+  <data name="gsErrorLoadingTool" xml:space="preserve">
+    <value>Virhe ladattaessa työlaite</value>
+  </data>
+  <data name="gsNewVehicle" xml:space="preserve">
+    <value>Uusi ajoneuvo</value>
+  </data>
+  <data name="gsEnterVehicleName" xml:space="preserve">
+    <value>Kirjoita ajoneuvon nimi</value>
+  </data>
+  <data name="gsNewTool" xml:space="preserve">
+    <value>Uusi työlaite</value>
+  </data>
+  <data name="gsEnterToolName" xml:space="preserve">
+    <value>Kirjoita työlaitteen nimi</value>
+  </data>
+  <data name="gsCreateDefaultVehicle" xml:space="preserve">
+    <value>Luo oletusajoneuvo</value>
+  </data>
+  <data name="gsCreateDefaultVehicleConfirm" xml:space="preserve">
+    <value>Luo oletusajoneuvo oletusasetuksilla?</value>
+  </data>
+  <data name="gsOverwrite" xml:space="preserve">
+    <value>Ylikirjoita</value>
+  </data>
+  <data name="gsProfileExistsOverwrite" xml:space="preserve">
+    <value>Profiili on jo olemassa. Ylikirjoita</value>
+  </data>
+  <data name="gsCreateDefaultTool" xml:space="preserve">
+    <value>Luo työlaite oletuksista</value>
+  </data>
+  <data name="gsCreateDefaultToolConfirm" xml:space="preserve">
+    <value>Luo oletustyölaite tehdasasetuksilla</value>
+  </data>
+  <data name="gsDefaultVehicleLoaded" xml:space="preserve">
+    <value>Oletuksen mukainen ajoneuvo avattu</value>
+  </data>
+  <data name="gsDefaultToolLoaded" xml:space="preserve">
+    <value>Oletusten mukainen laite avattu</value>
+  </data>
+  <data name="gsVehicleTool" xml:space="preserve">
+    <value>Ajoneuvo/työlaite</value>
+  </data>
+  <data name="gsConvertOldProfilesTitle" xml:space="preserve">
+    <value>Luo vanhoista profiileista uuden formaatin mukaisia tiedostoja</value>
+  </data>
+  <data name="gsConvertProfilesExplanation" xml:space="preserve">
+    <value>Aiempien versioiden profiileista kaikki asetukset olivat yhdessä tiedostossa. Uudessa formaatissa ajoneuvo-, työkalu- ja olosuhdeasetukset on eritelty. Valitse mitä haluat poimia.</value>
+  </data>
+  <data name="gsConvertStep1" xml:space="preserve">
+    <value>Askel 1</value>
+  </data>
+  <data name="gsConvertStep2" xml:space="preserve">
+    <value>Askel 2</value>
+  </data>
+  <data name="gsVehicleProfileName" xml:space="preserve">
+    <value>Ajoneuvoprofiilin nimi</value>
+  </data>
+  <data name="gsToolProfileName" xml:space="preserve">
+    <value>Työlaiteprofiilin nimi</value>
+  </data>
+  <data name="gsImportVehicle" xml:space="preserve">
+    <value>Tuo ajoneuvo</value>
+  </data>
+  <data name="gsImportTool" xml:space="preserve">
+    <value>Tuo työlaite</value>
+  </data>
+  <data name="gsNoImport" xml:space="preserve">
+    <value>Ei tuontia</value>
+  </data>
+  <data name="gsNoOldFormatFiles" xml:space="preserve">
+    <value>Vanhan mukaisia formaattitiedostoja ei löytynyt</value>
+  </data>
+  <data name="gsOldFiles" xml:space="preserve">
+    <value>Vanhat tiedostot</value>
+  </data>
+  <data name="gsOldFilesStatus" xml:space="preserve">
+    <value>vanha(t) tiedosto(t): muunnettu, muunnettavaksi</value>
+  </data>
+  <data name="gsConverted" xml:space="preserve">
+    <value>Muunnettu</value>
+  </data>
+  <data name="gsToConvert" xml:space="preserve">
+    <value>Muunnettavaksi</value>
+  </data>
+  <data name="gsConvertTitle" xml:space="preserve">
+    <value>Muunna</value>
+  </data>
+  <data name="gsConvertConfirm" xml:space="preserve">
+    <value>Vahvista muunnos</value>
+  </data>
+  <data name="gsConvertConfirmMsg" xml:space="preserve">
+    <value>Muunna '{0}': {1} {2}</value>
+  </data>
+  <data name="gsConvertFrom" xml:space="preserve">
+    <value>Muunna</value>
+  </data>
+  <data name="gsConvertVehicleLine" xml:space="preserve">
+    <value>Ajoneuvo</value>
+  </data>
+  <data name="gsConvertToolLine" xml:space="preserve">
+    <value>Työlaite</value>
+  </data>
+  <data name="gsConversionComplete" xml:space="preserve">
+    <value>Muuntaminen suoritettu</value>
+  </data>
+  <data name="gsConvertedSuccess" xml:space="preserve">
+    <value>Muuntaminen suoritettu onnistuneesti</value>
+  </data>
+  <data name="gsConversionErrors" xml:space="preserve">
+    <value>Virheitä muunnettaessa</value>
+  </data>
+  <data name="gsConversionErrorMsg" xml:space="preserve">
+    <value>Virheitä esiintyy</value>
+  </data>
+  <data name="gsLoadVehicleTool" xml:space="preserve">
+    <value>Lataa ajoneuvo/työlaite</value>
+  </data>
+  <data name="gsExists" xml:space="preserve">
+    <value>Olemassa oleva</value>
+  </data>
+  <data name="gsFileName" xml:space="preserve">
+    <value>Tiedostonimi</value>
+  </data>
+  <data name="gsRename" xml:space="preserve">
+    <value>Uudelleennimeä</value>
+  </data>
+  <data name="gsVehicleAlreadyExists" xml:space="preserve">
+    <value>Ajoneuvo on jo olemassa</value>
+  </data>
+  <data name="gsToolAlreadyExists" xml:space="preserve">
+    <value>Työlaite on jo olemassa</value>
+  </data>
+  <data name="gsTBT" xml:space="preserve">
+    <value>TBT</value>
+  </data>
+  <data name="gsRearFixed" xml:space="preserve">
+    <value>Takaohjaus</value>
+  </data>
+  <data name="gsTrailing" xml:space="preserve">
+    <value>Hinattava</value>
+  </data>
+  <data name="gsType" xml:space="preserve">
+    <value>Tyyppi</value>
+  </data>
+  <data name="gsHitch" xml:space="preserve">
+    <value>Nostolaite</value>
+  </data>
+  <data name="gsConvertOldProfiles" xml:space="preserve">
+    <value>Muunna vanhat profiilit</value>
+  </data>
 </root>
