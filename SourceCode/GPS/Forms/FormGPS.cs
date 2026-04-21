@@ -580,6 +580,10 @@ namespace AgOpenGPS
             // AGROPARALLEL_MOD_START
             InitAgroParallelModulesMenu();
             // AGROPARALLEL_MOD_END
+
+            // SHAPEFILE_MOD_START
+            InitShapefileMenu();
+            // SHAPEFILE_MOD_END
         }
 
         #region Shutdown Handling
@@ -1571,6 +1575,109 @@ namespace AgOpenGPS
             }
         }
         // AGROPARALLEL_MOD_END
+
+        // SHAPEFILE_MOD_START
+        // Agrega "Cargar Shapefile" al dropdown de configuracion. El handler abre
+        // un OpenFileDialog, parsea con ShapefileReader y muestra un resumen.
+        // Sin render todavia — eso es el paso siguiente.
+        private void InitShapefileMenu()
+        {
+            try
+            {
+                var item = new ToolStripMenuItem();
+                item.Text = "\U0001F5FA Cargar Shapefile";
+                item.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                item.ForeColor = Color.FromArgb(0, 140, 200);
+                item.Click += (s, e) => OpenShapefileLoadDialog();
+                toolStripDropDownButton1.DropDownItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[Shapefile] InitShapefileMenu: "
+                    + ex.Message);
+            }
+        }
+
+        private void OpenShapefileLoadDialog()
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Title = "Cargar Shapefile";
+                ofd.Filter = "Shapefile (*.shp)|*.shp|Todos (*.*)|*.*";
+
+                string initial = RegistrySettings.fieldsDirectory;
+                if (!string.IsNullOrEmpty(initial) && Directory.Exists(initial))
+                    ofd.InitialDirectory = initial;
+
+                if (ofd.ShowDialog(this) != DialogResult.OK) return;
+
+                ShapefileReadResult result;
+                Cursor oldCursor = Cursor.Current;
+                Cursor.Current = Cursors.WaitCursor;
+                try
+                {
+                    result = ShapefileReader.ReadPolygons(ofd.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Cursor.Current = oldCursor;
+                    System.Diagnostics.Debug.WriteLine("[Shapefile] Error leyendo "
+                        + ofd.FileName + ": " + ex);
+                    MessageBox.Show(this,
+                        "Error leyendo shapefile:\n\n" + ex.Message,
+                        "Shapefile",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Cursor.Current = oldCursor;
+
+                ShowShapefileSummary(Path.GetFileName(ofd.FileName), result);
+            }
+        }
+
+        private void ShowShapefileSummary(string fileName, ShapefileReadResult r)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Archivo: " + fileName);
+            sb.AppendLine("Poligonos: " + r.Polygons.Count);
+
+            if (r.Polygons.Count > 0)
+            {
+                sb.AppendLine(string.Format(
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    "Extent lat: {0:F6} .. {1:F6}", r.MinLat, r.MaxLat));
+                sb.AppendLine(string.Format(
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    "Extent lon: {0:F6} .. {1:F6}", r.MinLon, r.MaxLon));
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Campos DBF (" + r.DbfFieldNames.Count + "):");
+            if (r.DbfFieldNames.Count == 0)
+            {
+                sb.AppendLine("  (ninguno)");
+            }
+            else
+            {
+                int shown = Math.Min(r.DbfFieldNames.Count, 20);
+                for (int i = 0; i < shown; i++)
+                    sb.AppendLine("  - " + r.DbfFieldNames[i]);
+                if (r.DbfFieldNames.Count > shown)
+                    sb.AppendLine("  ... y " + (r.DbfFieldNames.Count - shown) + " mas");
+            }
+
+            if (r.Warnings.Count > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("Advertencias:");
+                foreach (var w in r.Warnings)
+                    sb.AppendLine("  ! " + w);
+            }
+
+            MessageBox.Show(this, sb.ToString(), "Shapefile cargado",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        // SHAPEFILE_MOD_END
 
         // COREX_FIELD_MOD_START
         /// <summary>
