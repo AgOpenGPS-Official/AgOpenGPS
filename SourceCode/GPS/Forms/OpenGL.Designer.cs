@@ -6,6 +6,9 @@ using AgOpenGPS.Core.DrawLib;
 using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Performance;
 using AgOpenGPS.Properties;
+// SHAPEFILE_MOD_START
+using AgroParallel.Common;
+// SHAPEFILE_MOD_END
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -408,9 +411,14 @@ namespace AgOpenGPS
 
                     #endregion
 
+                    // SHAPEFILE_MOD_START
+                    if (shapefileLayer != null && isJobStarted)
+                        shapefileLayer.Draw(AppModel.LocalPlane);
+                    // SHAPEFILE_MOD_END
+
                     #region Guidance Lines
 
-                    //draw contour line if button on 
+                    //draw contour line if button on
                     if (ct.isContourBtnOn)
                     {
                         ct.DrawContourLine();

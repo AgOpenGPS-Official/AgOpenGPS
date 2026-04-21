@@ -96,6 +96,11 @@ namespace AgOpenGPS
         public VistaXConfig vistaXConfig;
         // VISTAX_MOD_END
 
+        // SHAPEFILE_MOD_START
+        private ShapefileLayer shapefileLayer;
+        private ToolStripMenuItem shapefileToggleItem;
+        // SHAPEFILE_MOD_END
+
         // COREX_FIELD_MOD_START
         // Último campo notificado al sistema AgroParallel (CoreX / VistaX)
         // Permite detectar si es "nuevo", "abierto" o "continuar"
@@ -1584,12 +1589,26 @@ namespace AgOpenGPS
         {
             try
             {
-                var item = new ToolStripMenuItem();
-                item.Text = "\U0001F5FA Cargar Shapefile";
-                item.Font = new Font("Tahoma", 18F, FontStyle.Bold);
-                item.ForeColor = Color.FromArgb(0, 140, 200);
-                item.Click += (s, e) => OpenShapefileLoadDialog();
-                toolStripDropDownButton1.DropDownItems.Add(item);
+                var itemLoad = new ToolStripMenuItem();
+                itemLoad.Text = "\U0001F5FA Cargar Shapefile";
+                itemLoad.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                itemLoad.ForeColor = Color.FromArgb(0, 140, 200);
+                itemLoad.Click += (s, e) => OpenShapefileLoadDialog();
+                toolStripDropDownButton1.DropDownItems.Add(itemLoad);
+
+                shapefileToggleItem = new ToolStripMenuItem();
+                shapefileToggleItem.Text = "\U0001F441 Mostrar Shapefile";
+                shapefileToggleItem.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                shapefileToggleItem.ForeColor = Color.FromArgb(0, 140, 200);
+                shapefileToggleItem.CheckOnClick = true;
+                shapefileToggleItem.Checked = true;
+                shapefileToggleItem.Enabled = false;
+                shapefileToggleItem.CheckedChanged += (s, e) =>
+                {
+                    if (shapefileLayer != null)
+                        shapefileLayer.IsVisible = shapefileToggleItem.Checked;
+                };
+                toolStripDropDownButton1.DropDownItems.Add(shapefileToggleItem);
             }
             catch (Exception ex)
             {
@@ -1632,6 +1651,23 @@ namespace AgOpenGPS
                 Cursor.Current = oldCursor;
 
                 ShowShapefileSummary(Path.GetFileName(ofd.FileName), result);
+
+                if (!isJobStarted)
+                {
+                    MessageBox.Show(this,
+                        "No hay un campo abierto. Abri o crea un campo antes de cargar un "
+                        + "shapefile para poder dibujarlo sobre el mapa.",
+                        "Shapefile", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                shapefileLayer = new ShapefileLayer(result, Path.GetFileName(ofd.FileName));
+                if (shapefileToggleItem != null)
+                {
+                    shapefileToggleItem.Enabled = shapefileLayer.PolygonCount > 0;
+                    shapefileToggleItem.Checked = true;
+                }
+                shapefileLayer.IsVisible = true;
             }
         }
 
