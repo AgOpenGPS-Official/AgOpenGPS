@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using System.Windows.Forms;
+using AgOpenGPS.Controls;
 
 namespace AgOpenGPS
 {

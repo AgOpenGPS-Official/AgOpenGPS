@@ -1637,6 +1637,12 @@ namespace AgOpenGPS
         //Profiles
         private void loadVehicleToolToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isEasyDriveMode)
+            {
+                TimedMessageBox(2000, "Easy Drive", "Profiles not available in Easy Drive mode");
+                return;
+            }
+
             using (var form = new FormLoadVehicleTool(this))
             {
                 form.ShowDialog(this);
