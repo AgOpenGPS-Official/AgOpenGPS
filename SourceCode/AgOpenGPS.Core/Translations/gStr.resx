@@ -504,6 +504,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsDualpositionAntennaRight" xml:space="preserve">
     <value>Dual Position Antenna is on Right side</value>
   </data>
+  <data name="gsEasyDriveInfo" xml:space="preserve">
+    <value>Quick start with GPS guidance. Set working width and hitch length, then create an AB line or curve. Nothing is saved to disk.</value>
+  </data>
   <data name="gsEast" xml:space="preserve">
     <value>East</value>
   </data>
@@ -836,6 +839,9 @@ The order you push them will be the order they appear on the menu from bottom up
   </data>
   <data name="gsNewFromDefault" xml:space="preserve">
     <value>New From Default</value>
+  </data>
+  <data name="gsNext" xml:space="preserve">
+    <value>Next</value>
   </data>
   <data name="gsNextGuidanceLine" xml:space="preserve">
     <value>Next Guidance Line</value>

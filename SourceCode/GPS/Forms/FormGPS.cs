@@ -73,6 +73,9 @@ namespace AgOpenGPS
 
         public bool isJobStarted => AppModel.Fields.ActiveField != null;
 
+        public bool isEasyDriveMode;
+        public bool isEasyDriveRequested;
+
         public string displayFieldName => AppModel.Fields.ActiveField != null ? AppModel.Fields.ActiveField.Name : gStr.gsNone;
 
 
@@ -1372,6 +1375,16 @@ namespace AgOpenGPS
 
         public void FieldMenuButtonEnableDisable(bool isOn)
         {
+            // Always restore items that may have been disabled by Easy Drive
+            toolStripConfig.Enabled = true;
+            toolStripAllSettings.Enabled = true;
+            toolStripWorkingDirectories.Enabled = true;
+            toolStripGPSData.Enabled = true;
+            toolStripColors.Enabled = true;
+            toolStripSectionColors.Enabled = true;
+            toolStripHotkeys.Enabled = true;
+            copyTracksToolStripMenuItem.Enabled = true;
+
             SmoothABtoolStripMenu.Enabled = isOn;
             deleteContourPathsToolStripMenuItem.Enabled = isOn;
             boundaryToolToolStripMenu.Enabled = isOn;
@@ -1385,6 +1398,32 @@ namespace AgOpenGPS
             tramLinesMenuField.Enabled = isOn;
             tramsMultiMenuField.Enabled = isOn;
             recordedPathStripMenu.Enabled = isOn;
+            loadVehicleToolToolStripMenuItem.Enabled = true;
+
+            // In Easy Drive mode, disable boundary/headland/tram/profiles and most settings
+            if (isOn && isEasyDriveMode)
+            {
+                boundaryToolToolStripMenu.Enabled = false;
+                boundariesToolStripMenuItem.Enabled = false;
+                headlandToolStripMenuItem.Enabled = false;
+                headlandBuildToolStripMenuItem.Enabled = false;
+                tramLinesMenuField.Enabled = false;
+                tramsMultiMenuField.Enabled = false;
+                recordedPathStripMenu.Enabled = false;
+                loadVehicleToolToolStripMenuItem.Enabled = false;
+
+                // Gray out all settings toolbar items except Auto Steer (FormSteer)
+                toolStripConfig.Enabled = false;
+                toolStripAllSettings.Enabled = false;
+                toolStripWorkingDirectories.Enabled = false;
+                toolStripGPSData.Enabled = false;
+                toolStripColors.Enabled = false;
+                toolStripSectionColors.Enabled = false;
+                toolStripHotkeys.Enabled = false;
+
+                // Block track import — writes files to disk, breaks no-persistence contract
+                copyTracksToolStripMenuItem.Enabled = false;
+            }
         }
 
         //take the distance from object and convert to camera data

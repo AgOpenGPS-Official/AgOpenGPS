@@ -70,9 +70,12 @@ namespace AgOpenGPS.Protocols.ISOBUS
                 }
                 else if (type == "3" || type == "4" || type == "6")
                 {
-                    if (node.SelectSingleNode("LSG[@A='1']") is XmlNode lsg)
+                    // Inner boundaries can use LSG type 1 (exterior) or 2 (interior)
+                    XmlNode lsg = node.SelectSingleNode("LSG[@A='1']")
+                                ?? node.SelectSingleNode("LSG[@A='2']");
+                    if (lsg is XmlNode validLsg)
                     {
-                        boundaries.Add(ParseBoundaryFromLSG(lsg, appModel));
+                        boundaries.Add(ParseBoundaryFromLSG(validLsg, appModel));
                     }
                 }
             }

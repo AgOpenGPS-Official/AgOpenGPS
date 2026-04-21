@@ -81,10 +81,10 @@ namespace AgOpenGPS
             {
                 if (tramBndOuterArr.Count > 0)
                 {
-                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Begin(PrimitiveType.LineLoop);
                     for (int h = 0; h < tramBndOuterArr.Count; h++) GL.Vertex3(tramBndOuterArr[h].easting, tramBndOuterArr[h].northing, 0);
                     GL.End();
-                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Begin(PrimitiveType.LineLoop);
                     for (int h = 0; h < tramBndInnerArr.Count; h++) GL.Vertex3(tramBndInnerArr[h].easting, tramBndInnerArr[h].northing, 0);
                     GL.End();
                 }
@@ -113,10 +113,10 @@ namespace AgOpenGPS
             {
                 if (tramBndOuterArr.Count > 0)
                 {
-                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Begin(PrimitiveType.LineLoop);
                     for (int h = 0; h < tramBndOuterArr.Count; h++) GL.Vertex3(tramBndOuterArr[h].easting, tramBndOuterArr[h].northing, 0);
                     GL.End();
-                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Begin(PrimitiveType.LineLoop);
                     for (int h = 0; h < tramBndInnerArr.Count; h++) GL.Vertex3(tramBndInnerArr[h].easting, tramBndInnerArr[h].northing, 0);
                     GL.End();
                 }
@@ -142,61 +142,89 @@ namespace AgOpenGPS
         public void CreateBoundaryOuterTrack()
         {
             tramBndOuterArr = CreateBoundaryTrack(0.5 * tramWidth - halfWheelTrack);
-            tramBndOuterArr.ReducePointsByAngle(0.01, 50);
         }
 
         public void CreateBoundaryInnerTrack()
         {
             tramBndInnerArr = CreateBoundaryTrack(0.5 * tramWidth + halfWheelTrack);
-            tramBndInnerArr.ReducePointsByAngle(0.01, 50);
         }
 
         private List<vec2> CreateBoundaryTrack(double distance)
         {
             List<vec2> newTrack = new List<vec2>();
 
-            //countExit the points from the boundary
             int ptCount = mf.bnd.bndList[0].fenceLine.Count;
+            if (ptCount < 2) return newTrack;
 
-            //outside point
-            vec2 pt3 = new vec2();
+            // Identical to the headland "Build Around" algorithm (btnBndLoop_Click):
+            // 1. Shift each boundary point inward along its perpendicular by 'distance'.
+            // 2. Reject any shifted point closer than 'distance' to any original boundary
+            //    point — removes self-intersecting loops at concave corners naturally.
+            // 3. Reject consecutive points less than 1 m apart.
+            // 4. Close the loop by appending the first accepted point twice,
+            //    then MakePointMinimumSpacing fills gaps (e.g. at sharp convex corners)
+            //    and CalculateHeadings recalculates all bisector headings.
 
             double distSq = distance * distance * 0.999;
 
+            List<vec3> rawList = new List<vec3>();
+
             for (int i = 0; i < ptCount; i++)
             {
-                //calculate the point inside the boundary
-                pt3.easting = mf.bnd.bndList[0].fenceLine[i].easting -
-                    (Math.Sin(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * distance);
+                double heading = mf.bnd.bndList[0].fenceLine[i].heading;
 
-                pt3.northing = mf.bnd.bndList[0].fenceLine[i].northing -
-                    (Math.Cos(glm.PIBy2 + mf.bnd.bndList[0].fenceLine[i].heading) * distance);
+                vec3 pt = new vec3(
+                    mf.bnd.bndList[0].fenceLine[i].easting - (Math.Sin(glm.PIBy2 + heading) * distance),
+                    mf.bnd.bndList[0].fenceLine[i].northing - (Math.Cos(glm.PIBy2 + heading) * distance),
+                    heading);
 
-                bool Add = true;
+                bool add = true;
 
                 for (int j = 0; j < ptCount; j++)
                 {
-                    double check = glm.DistanceSquared(pt3.northing, pt3.easting,
-                                        mf.bnd.bndList[0].fenceLine[j].northing, mf.bnd.bndList[0].fenceLine[j].easting);
+                    double check = glm.DistanceSquared(
+                        pt.northing, pt.easting,
+                        mf.bnd.bndList[0].fenceLine[j].northing,
+                        mf.bnd.bndList[0].fenceLine[j].easting);
+
                     if (check < distSq)
                     {
-                        Add = false;
+                        add = false;
                         break;
                     }
                 }
 
-                if (Add)
+                if (!add) continue;
+
+                if (rawList.Count > 0)
                 {
-                    if (newTrack.Count > 0)
-                    {
-                        double dist = ((pt3.easting - newTrack[newTrack.Count - 1].easting) * (pt3.easting - newTrack[newTrack.Count - 1].easting))
-                            + ((pt3.northing - newTrack[newTrack.Count - 1].northing) * (pt3.northing - newTrack[newTrack.Count - 1].northing));
-                        if (dist > 2)
-                            newTrack.Add(pt3);
-                    }
-                    else newTrack.Add(pt3);
+                    double spacingSq = (pt.easting - rawList[rawList.Count - 1].easting) * (pt.easting - rawList[rawList.Count - 1].easting)
+                                     + (pt.northing - rawList[rawList.Count - 1].northing) * (pt.northing - rawList[rawList.Count - 1].northing);
+                    if (spacingSq > 1.0)
+                        rawList.Add(pt);
+                }
+                else
+                {
+                    rawList.Add(pt);
                 }
             }
+
+            if (rawList.Count < 4)
+            {
+                foreach (var p in rawList) newTrack.Add(new vec2(p.easting, p.northing));
+                return newTrack;
+            }
+
+            // Close the loop and smooth, exactly as the headland algorithm does.
+            rawList.Add(new vec3(rawList[0]));
+            rawList.Add(new vec3(rawList[0]));
+
+            CABCurve.MakePointMinimumSpacing(ref rawList, 1.2);
+            CABCurve.CalculateHeadings(ref rawList);
+
+            foreach (var p in rawList)
+                newTrack.Add(new vec2(p.easting, p.northing));
+
             return newTrack;
         }
 

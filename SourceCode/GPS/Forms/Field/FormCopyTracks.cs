@@ -26,6 +26,13 @@ namespace AgOpenGPS.Forms.Field
 
         private void FormCopyTracks_Load(object sender, EventArgs e)
         {
+            // Force tall rows for touch-friendly targets
+            var il = new ImageList { ImageSize = new Size(1, 40) };
+            lvTracks.SmallImageList = il;
+
+            // Size column to fill the list width
+            chTrackName.Width = lvTracks.ClientSize.Width - 4;
+
             LoadFieldList();
         }
 
@@ -81,7 +88,17 @@ namespace AgOpenGPS.Forms.Field
         {
             if (lbFields.SelectedItems.Count == 0) return;
 
+            // Reset all items, highlight selected orange
+            foreach (ListViewItem it in lbFields.Items)
+            {
+                it.BackColor = Color.WhiteSmoke;
+                it.ForeColor = Color.Black;
+            }
+
             var selectedItem = lbFields.SelectedItems[0];
+            selectedItem.BackColor = Color.DarkOrange;
+            selectedItem.ForeColor = Color.White;
+
             if (selectedItem.Tag is DirectoryInfo fieldDirInfo)
             {
                 selectedFieldDirectory = fieldDirInfo.FullName;
@@ -94,7 +111,7 @@ namespace AgOpenGPS.Forms.Field
             try
             {
                 var availableTracks = TrackFiles.Load(fieldDirectory);
-                flpTrackList.Controls.Clear();
+                lvTracks.Items.Clear();
 
                 if (availableTracks.Count == 0)
                 {
@@ -102,6 +119,7 @@ namespace AgOpenGPS.Forms.Field
                     return;
                 }
 
+                lvTracks.BeginUpdate();
                 foreach (var track in availableTracks)
                 {
                     string trackName = track.name ?? "Unnamed Track";
@@ -109,11 +127,15 @@ namespace AgOpenGPS.Forms.Field
                                       track.mode == TrackMode.Curve ? "Curve" :
                                       track.mode.ToString();
 
-                    var checkbox = CreateTrackCheckbox(track, $"{trackName} ({trackType})");
-                    flpTrackList.Controls.Add(checkbox);
+                    var item = new ListViewItem($"{trackName} ({trackType})");
+                    item.Tag = track;
+                    item.BackColor = Color.White;
+                    item.ForeColor = Color.Black;
+                    lvTracks.Items.Add(item);
                 }
+                lvTracks.EndUpdate();
 
-                lblStatus.Text = $"{flpTrackList.Controls.Count} track(s) available for importing";
+                lblStatus.Text = $"{lvTracks.Items.Count} track(s) available for importing";
             }
             catch (Exception ex)
             {
@@ -122,58 +144,34 @@ namespace AgOpenGPS.Forms.Field
             }
         }
 
-        private CheckBox CreateTrackCheckbox(CTrk track, string displayText)
-        {
-            var checkbox = new CheckBox
-            {
-                Text = displayText,
-                Checked = false,
-                AutoSize = false,
-                Width = flpTrackList.Width - 25,
-                Height = 45,
-                Tag = track,
-                Font = new Font("Tahoma", 18F, FontStyle.Regular),
-                TextAlign = ContentAlignment.MiddleLeft,
-                Padding = new Padding(8, 8, 0, 0),
-                BackColor = Color.Transparent,
-                ForeColor = Color.Black
-            };
+        private static readonly Color SelectedColor = Color.FromArgb(0, 150, 0);
 
-            checkbox.CheckedChanged += OnTrackSelectionChanged;
-            return checkbox;
-        }
-
-        private void OnTrackSelectionChanged(object sender, EventArgs e)
+        private void lvTracks_MouseClick(object sender, MouseEventArgs e)
         {
-            if (sender is CheckBox checkbox)
-            {
-                if (checkbox.Checked)
-                {
-                    checkbox.BackColor = Color.FromArgb(0, 119, 190); // OceanBlue
-                    checkbox.ForeColor = Color.White;
-                }
-                else
-                {
-                    checkbox.BackColor = Color.Transparent;
-                    checkbox.ForeColor = Color.Black;
-                }
-            }
+            var hit = lvTracks.HitTest(e.Location);
+            if (hit.Item == null) return;
+
+            bool isSelected = hit.Item.BackColor == SelectedColor;
+            hit.Item.BackColor = isSelected ? Color.White : SelectedColor;
+            hit.Item.ForeColor = isSelected ? Color.Black : Color.White;
         }
 
 
         private void btnSelectAllTracks_Click(object sender, EventArgs e)
         {
-            foreach (CheckBox checkbox in flpTrackList.Controls)
+            foreach (ListViewItem item in lvTracks.Items)
             {
-                checkbox.Checked = true;
+                item.BackColor = SelectedColor;
+                item.ForeColor = Color.White;
             }
         }
 
         private void btnDeselectAllTracks_Click(object sender, EventArgs e)
         {
-            foreach (CheckBox checkbox in flpTrackList.Controls)
+            foreach (ListViewItem item in lvTracks.Items)
             {
-                checkbox.Checked = false;
+                item.BackColor = Color.White;
+                item.ForeColor = Color.Black;
             }
         }
 
@@ -190,9 +188,9 @@ namespace AgOpenGPS.Forms.Field
 
                 // Get selected tracks
                 var selectedTracks = new List<CTrk>();
-                foreach (CheckBox checkbox in flpTrackList.Controls)
+                foreach (ListViewItem item in lvTracks.Items)
                 {
-                    if (checkbox.Checked && checkbox.Tag is CTrk track)
+                    if (item.BackColor == SelectedColor && item.Tag is CTrk track)
                     {
                         selectedTracks.Add(track);
                     }

@@ -1521,4 +1521,80 @@ Carregar a partir do painel de configurações e do menu superior esquerdo.</val
   <data name="gsAgree" xml:space="preserve">
     <value>Aceitar</value>
   </data>
+  <data name="gsAgShareActivate" xml:space="preserve">
+    <value>Ativar</value>
+  </data>
+  <data name="gsAgShareActivated" xml:space="preserve">
+    <value>Ativado</value>
+  </data>
+  <data name="gsAgShareApiKey" xml:space="preserve">
+    <value>Chave de API</value>
+  </data>
+  <data name="gsAgShareAutoLoad" xml:space="preserve">
+    <value>Carregar em Nuvem</value>
+  </data>
+  <data name="gsAgShareAutoUpload" xml:space="preserve">
+    <value>Upload automático</value>
+  </data>
+  <data name="gsAgShareButtonsHint" xml:space="preserve">
+    <value>Upload automático: carrega as alterações de campo ao fechar o arquivo
+Carregamento na nuvem: baixa sempre a versão mais recente do AgShare ao abrir o arquivo</value>
+  </data>
+  <data name="gsAgShareConnecting" xml:space="preserve">
+    <value>Conectando...</value>
+  </data>
+  <data name="gsAgShareConnectionOk" xml:space="preserve">
+    <value>Conexão bem-sucedida</value>
+  </data>
+  <data name="gsAgShareDeactivated" xml:space="preserve">
+    <value>Desativado</value>
+  </data>
+  <data name="gsAgShareEnterDetails" xml:space="preserve">
+    <value>Insira o servidor e a chave da API e, em seguida, teste a conexão</value>
+  </data>
+  <data name="gsAgShareInvalidApiKey" xml:space="preserve">
+    <value>Chave de API inválida</value>
+  </data>
+  <data name="gsAgShareLocalOnly" xml:space="preserve">
+    <value>Somente Local</value>
+  </data>
+  <data name="gsAgSharePaste" xml:space="preserve">
+    <value>Colar da área de transferência</value>
+  </data>
+  <data name="gsAgShareRegisterHere" xml:space="preserve">
+    <value>Cadastre-se aqui para usar o AgShare</value>
+  </data>
+  <data name="gsAgShareSaved" xml:space="preserve">
+    <value>Configurações salvas</value>
+  </data>
+  <data name="gsAgShareServer" xml:space="preserve">
+    <value>Servidor</value>
+  </data>
+  <data name="gsAgShareSettings" xml:space="preserve">
+    <value>Configurações do AgShare</value>
+  </data>
+  <data name="gsAgShareTestConnection" xml:space="preserve">
+    <value>Teste de conexão</value>
+  </data>
+  <data name="gsAgShareUploadOff" xml:space="preserve">
+    <value>Desativar upload</value>
+  </data>
+  <data name="gsAgShareUploadOn" xml:space="preserve">
+    <value>Carregar</value>
+  </data>
+  <data name="gsAgShareAutoLoadActive" xml:space="preserve">
+    <value>Os campos são carregados automaticamente da nuvem</value>
+  </data>
+  <data name="gsAgShareFieldLoaded" xml:space="preserve">
+    <value>Campo carregado do AgShare</value>
+  </data>
+  <data name="gsAgShareLoadFailed" xml:space="preserve">
+    <value>Não foi possível carregar o campo, usando a versão local</value>
+  </data>
+  <data name="gsAntennaPivot" xml:space="preserve">
+    <value>Pivô da antena</value>
+  </data>
+  <data name="gsTBT" xml:space="preserve">
+    <value>TBT</value>
+  </data>
 </root>

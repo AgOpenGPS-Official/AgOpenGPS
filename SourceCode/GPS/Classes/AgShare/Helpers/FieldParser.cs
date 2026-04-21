@@ -79,7 +79,8 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                         bnd.isDriveThru = false;
 
                         // Normalize boundary (calculate area, fix spacing, compute headings)
-                        bnd.CalculateFenceArea(boundaryIndex);
+                        // Skip intersection removal - data from cloud is already finalized
+                        bnd.CalculateFenceArea(boundaryIndex, cleanIntersections: false);
                         bnd.FixFenceLine(boundaryIndex);
                         result.Boundaries.Add(bnd);
                         boundaryIndex++;

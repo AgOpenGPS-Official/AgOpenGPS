@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnEasyDrive = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnAgShareBulkUpload = new System.Windows.Forms.Button();
             this.btnJobAgShare = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -61,6 +63,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.btnAgShareBulkUpload, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnJobAgShare, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.btnEasyDrive, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.label4, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
@@ -75,13 +79,14 @@
             this.tableLayoutPanel1.Controls.Add(this.btnJobNew, 0, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 7);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(605, 469);
+            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.7F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(605, 555);
             this.tableLayoutPanel1.TabIndex = 106;
             // 
             // btnAgShareBulkUpload
@@ -372,7 +377,7 @@
             this.lblResumeField.BackColor = System.Drawing.Color.Transparent;
             this.lblResumeField.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblResumeField.ForeColor = System.Drawing.Color.Black;
-            this.lblResumeField.Location = new System.Drawing.Point(9, 508);
+            this.lblResumeField.Location = new System.Drawing.Point(9, 594);
             this.lblResumeField.Name = "lblResumeField";
             this.lblResumeField.Size = new System.Drawing.Size(468, 28);
             this.lblResumeField.TabIndex = 106;
@@ -385,7 +390,7 @@
             this.lblAgShareCloudLoad.BackColor = System.Drawing.Color.Transparent;
             this.lblAgShareCloudLoad.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAgShareCloudLoad.ForeColor = System.Drawing.Color.SteelBlue;
-            this.lblAgShareCloudLoad.Location = new System.Drawing.Point(9, 480);
+            this.lblAgShareCloudLoad.Location = new System.Drawing.Point(9, 566);
             this.lblAgShareCloudLoad.Name = "lblAgShareCloudLoad";
             this.lblAgShareCloudLoad.Size = new System.Drawing.Size(468, 20);
             this.lblAgShareCloudLoad.TabIndex = 116;
@@ -402,19 +407,53 @@
             this.btnDeleteAB.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
             this.btnDeleteAB.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnDeleteAB.Image = global::AgOpenGPS.Properties.Resources.Cancel64;
-            this.btnDeleteAB.Location = new System.Drawing.Point(486, 495);
+            this.btnDeleteAB.Location = new System.Drawing.Point(486, 581);
             this.btnDeleteAB.Name = "btnDeleteAB";
             this.btnDeleteAB.Size = new System.Drawing.Size(129, 57);
             this.btnDeleteAB.TabIndex = 4;
             this.btnDeleteAB.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDeleteAB.UseVisualStyleBackColor = false;
             this.btnDeleteAB.Click += new System.EventHandler(this.btnDeleteAB_Click);
-            // 
+            //
+            // btnEasyDrive
+            //
+            this.btnEasyDrive.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(225)))));
+            this.btnEasyDrive.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEasyDrive.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnEasyDrive.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(183)))), ((int)(((byte)(77)))));
+            this.btnEasyDrive.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(236)))), ((int)(((byte)(179)))));
+            this.btnEasyDrive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEasyDrive.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEasyDrive.ForeColor = System.Drawing.Color.Black;
+            this.btnEasyDrive.Image = global::AgOpenGPS.Properties.Resources.AutoManualIsAuto;
+            this.btnEasyDrive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEasyDrive.Location = new System.Drawing.Point(6, 467);
+            this.btnEasyDrive.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.btnEasyDrive.Name = "btnEasyDrive";
+            this.btnEasyDrive.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnEasyDrive.Size = new System.Drawing.Size(279, 83);
+            this.btnEasyDrive.TabIndex = 117;
+            this.btnEasyDrive.Text = "Easy Drive";
+            this.btnEasyDrive.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEasyDrive.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEasyDrive.UseVisualStyleBackColor = false;
+            this.btnEasyDrive.Click += new System.EventHandler(this.btnEasyDrive_Click);
+            //
+            // label5
+            //
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Gainsboro;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(294, 462);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(17, 93);
+            this.label5.TabIndex = 118;
+            //
             // FormJob
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(638, 559);
+            this.ClientSize = new System.Drawing.Size(638, 645);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnDeleteAB);
@@ -458,5 +497,7 @@
         private System.Windows.Forms.Button btnJobAgShare;
         private System.Windows.Forms.Button btnAgShareBulkUpload;
         private System.Windows.Forms.Label lblAgShareCloudLoad;
+        private System.Windows.Forms.Button btnEasyDrive;
+        private System.Windows.Forms.Label label5;
     }
 }

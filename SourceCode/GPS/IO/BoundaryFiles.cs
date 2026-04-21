@@ -72,8 +72,8 @@ namespace AgOpenGPS.IO
                         }
                     }
 
-                    // Compute area and ear
-                    b.CalculateFenceArea(result.Count);
+                    // Compute area and ear - skip intersection removal, data is already saved
+                    b.CalculateFenceArea(result.Count, cleanIntersections: false);
                     if (b.fenceLineEar != null) b.fenceLineEar.Clear();
 
                     double delta = 0;

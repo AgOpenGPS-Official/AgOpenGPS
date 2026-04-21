@@ -506,7 +506,7 @@ namespace AgOpenGPS
 
             mf.curve.desList?.Clear();
 
-            mf.FileSaveTracks();
+            if (!mf.isEasyDriveMode) mf.FileSaveTracks();
 
             if (mf.isBtnAutoSteerOn)
             {

@@ -154,10 +154,10 @@ namespace AgOpenGPS
         }
 
         //obvious
-        public bool CalculateFenceArea(int idx)
+        public bool CalculateFenceArea(int idx, bool cleanIntersections = true)
         {
             Debug.WriteLine("CalculateFenceArea is Called");
-            RemoveSelfIntersections();
+            if (cleanIntersections) RemoveSelfIntersections();
             int ptCount = fenceLine.Count;
             if (ptCount < 3) return false; // Need at least 3 points for a valid boundary
 

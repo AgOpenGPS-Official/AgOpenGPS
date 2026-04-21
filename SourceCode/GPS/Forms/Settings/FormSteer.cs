@@ -374,10 +374,13 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
-            //save current vehicle and tool
-            Properties.VehicleSettings.Default.Save();
-            Properties.ToolSettings.Default.Save();
-            Properties.Settings.Default.Save();
+            // Do not persist settings in Easy Drive mode
+            if (!mf.isEasyDriveMode)
+            {
+                Properties.VehicleSettings.Default.Save();
+                Properties.ToolSettings.Default.Save();
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -597,7 +600,7 @@ namespace AgOpenGPS
         private void tabSettings_Leave(object sender, EventArgs e)
         {
             Properties.VehicleSettings.Default.setAS_isSteerInReverse = cboxSteerInReverse.Checked;
-            Properties.VehicleSettings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.VehicleSettings.Default.Save();
         }
 
         private void hsbarUTurnCompensation_ValueChanged(object sender, EventArgs e)
@@ -644,8 +647,11 @@ namespace AgOpenGPS
 
 
             Properties.ToolSettings.Default.setVehicle_isStanleyUsed = mf.isStanleyUsed;
-            Properties.VehicleSettings.Default.Save();
-            Properties.ToolSettings.Default.Save();
+            if (!mf.isEasyDriveMode)
+            {
+                Properties.VehicleSettings.Default.Save();
+                Properties.ToolSettings.Default.Save();
+            }
 
             if (mf.isStanleyUsed)
             {
@@ -692,7 +698,7 @@ namespace AgOpenGPS
 
         private void tabAlarm_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.Settings.Default.Save();
         }
 
 
@@ -760,7 +766,7 @@ namespace AgOpenGPS
 
         private void tabOnTheLine_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.Settings.Default.Save();
         }
 
         private void nudcmPerPixel_Click(object sender, EventArgs e)
@@ -803,14 +809,14 @@ namespace AgOpenGPS
         {
             mf.isLightBarNotSteerBar = true;
             Properties.Settings.Default.setMenu_isLightbarNotSteerBar = mf.isLightBarNotSteerBar;
-            Properties.Settings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.Settings.Default.Save();
         }
 
         private void rbtnSteerBar_Click(object sender, EventArgs e)
         {
             mf.isLightBarNotSteerBar = false;
             Properties.Settings.Default.setMenu_isLightbarNotSteerBar = mf.isLightBarNotSteerBar;
-            Properties.Settings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.Settings.Default.Save();
         }
 
         private void chkDisplayLightbar_Click(object sender, EventArgs e)
@@ -819,7 +825,7 @@ namespace AgOpenGPS
             else { chkDisplayLightbar.Image = Resources.SwitchOff; }
 
             Properties.Settings.Default.setMenu_isLightbarOn = chkDisplayLightbar.Checked;
-            Properties.Settings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.Settings.Default.Save();
             mf.isLightbarOn = chkDisplayLightbar.Checked;
         }
 
@@ -1176,7 +1182,7 @@ namespace AgOpenGPS
 
             Properties.VehicleSettings.Default.setArdSteer_setting1 = (byte)sett;
 
-            Properties.VehicleSettings.Default.Save();
+            if (!mf.isEasyDriveMode) Properties.VehicleSettings.Default.Save();
 
             mf.p_251.pgn[mf.p_251.set0] = Properties.VehicleSettings.Default.setArdSteer_setting0;
             mf.p_251.pgn[mf.p_251.set1] = Properties.VehicleSettings.Default.setArdSteer_setting1;

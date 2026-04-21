@@ -250,6 +250,10 @@ namespace AgOpenGPS
             int cnt = curList.Count;
             if (cnt > 6)
             {
+                // Set ptA and ptB from the shifted raw points before Catmull-Rom extension
+                gArr[idx].ptA = new vec2(curList[0].easting, curList[0].northing);
+                gArr[idx].ptB = new vec2(curList[cnt - 1].easting, curList[cnt - 1].northing);
+
                 vec3[] arr = new vec3[cnt];
                 curList.CopyTo(arr);
 
