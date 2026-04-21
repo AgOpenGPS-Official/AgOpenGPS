@@ -1199,7 +1199,7 @@ namespace AgOpenGPS
             return (" ?? ");
         }
 
-        //Mouse Clicks 
+        //Mouse Clicks
         private void oglMain_MouseDown(object sender, MouseEventArgs e)
         {
 
@@ -1210,6 +1210,12 @@ namespace AgOpenGPS
 
                 //0 at bottom for opengl, 0 at top for windows, so invert Y value
                 Point point = oglMain.PointToClient(Cursor.Position);
+
+                // SHAPEFILE_MOD_START
+                // Modo inspeccion: si esta activo, consumir el click.
+                if (TryHandleShapefileInspectClick(e.X, e.Y))
+                    return;
+                // SHAPEFILE_MOD_END
 
                 if (isJobStarted)
                 {

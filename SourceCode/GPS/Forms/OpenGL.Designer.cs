@@ -414,6 +414,13 @@ namespace AgOpenGPS
                     // SHAPEFILE_MOD_START
                     if (shapefileLayer != null && isJobStarted)
                     {
+                        // Matrices en coords del mundo para la unproyeccion
+                        // del click de inspeccion (paso 12).
+                        GL.GetDouble(GetPName.ModelviewMatrix, _glModelView);
+                        GL.GetDouble(GetPName.ProjectionMatrix, _glProjection);
+                        GL.GetInteger(GetPName.Viewport, _glViewport);
+                        _glMatricesValid = true;
+
                         shapefileLayer.Draw(AppModel.LocalPlane);
                         shapefileLayer.SamplePosition(
                             pivotAxlePos.easting, pivotAxlePos.northing);

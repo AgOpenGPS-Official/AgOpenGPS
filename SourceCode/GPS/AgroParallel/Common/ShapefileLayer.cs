@@ -276,6 +276,14 @@ namespace AgroParallel.Common
             return -1;
         }
 
+        // Devuelve el diccionario de atributos del poligono (read-only).
+        // Util para popups de inspeccion. Retorna null si el indice es invalido.
+        public IReadOnlyDictionary<string, object> GetPolygonAttributes(int polygonIndex)
+        {
+            if (polygonIndex < 0 || polygonIndex >= _polyAttrs.Count) return null;
+            return _polyAttrs[polygonIndex];
+        }
+
         // Lee el valor numerico del atributo DBF del poligono dado.
         // Retorna false si no existe, es nulo, o no es convertible a double.
         public bool TryGetPolygonNumeric(int polygonIndex, string fieldName, out double value)
