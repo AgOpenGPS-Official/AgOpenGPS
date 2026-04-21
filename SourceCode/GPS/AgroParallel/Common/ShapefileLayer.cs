@@ -25,7 +25,11 @@ namespace AgroParallel.Common
     public class ShapefileLayer
     {
         public bool IsVisible = true;
+        public bool ShowOutline = true;
+        public bool ShowFill = true;
         public Color LineColor = Color.FromArgb(0, 200, 255);
+        // Alpha 80 (~31%) para que el fill se vea sobre el mapa sin tapar detalles.
+        public Color FillColor = Color.FromArgb(80, 0, 200, 255);
         public float LineWidth = 2f;
         public string Source { get; private set; }
 
@@ -68,21 +72,48 @@ namespace AgroParallel.Common
 
             EnsureProjected(plane);
 
-            GL.LineWidth(LineWidth);
-            GL.Color3(LineColor.R, LineColor.G, LineColor.B);
-
-            for (int p = 0; p < _ringsLocal.Count; p++)
+            // Fill primero para que el outline quede por encima.
+            // Nota: GL.Begin(Polygon) maneja bien poligonos convexos. Con
+            // poligonos concavos podrian aparecer artefactos de triangulacion.
+            // Los agujeros (Rings[1..n]) se ignoran en el fill — quedan
+            // visibles solo como outline.
+            if (ShowFill)
             {
-                var poly = _ringsLocal[p];
-                for (int r = 0; r < poly.Count; r++)
-                {
-                    var ring = poly[r];
-                    if (ring == null || ring.Length < 3) continue;
+                GL.Color4(FillColor.R, FillColor.G, FillColor.B, FillColor.A);
 
-                    GL.Begin(PrimitiveType.LineLoop);
-                    for (int i = 0; i < ring.Length; i++)
-                        GL.Vertex2(ring[i].X, ring[i].Y);
+                for (int p = 0; p < _ringsLocal.Count; p++)
+                {
+                    var poly = _ringsLocal[p];
+                    if (poly.Count == 0) continue;
+
+                    var outer = poly[0];
+                    if (outer == null || outer.Length < 3) continue;
+
+                    GL.Begin(PrimitiveType.Polygon);
+                    for (int i = 0; i < outer.Length; i++)
+                        GL.Vertex2(outer[i].X, outer[i].Y);
                     GL.End();
+                }
+            }
+
+            if (ShowOutline)
+            {
+                GL.LineWidth(LineWidth);
+                GL.Color3(LineColor.R, LineColor.G, LineColor.B);
+
+                for (int p = 0; p < _ringsLocal.Count; p++)
+                {
+                    var poly = _ringsLocal[p];
+                    for (int r = 0; r < poly.Count; r++)
+                    {
+                        var ring = poly[r];
+                        if (ring == null || ring.Length < 3) continue;
+
+                        GL.Begin(PrimitiveType.LineLoop);
+                        for (int i = 0; i < ring.Length; i++)
+                            GL.Vertex2(ring[i].X, ring[i].Y);
+                        GL.End();
+                    }
                 }
             }
         }
