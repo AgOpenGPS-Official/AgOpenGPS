@@ -1388,8 +1388,9 @@ namespace AgOpenGPS
             tramLinesMenuField.Enabled = isOn;
             tramsMultiMenuField.Enabled = isOn;
             recordedPathStripMenu.Enabled = isOn;
+            loadVehicleToolToolStripMenuItem.Enabled = true;
 
-            // In Easy Drive mode, disable boundary/headland/tram tools
+            // In Easy Drive mode, disable boundary/headland/tram/profiles
             if (isOn && isEasyDriveMode)
             {
                 boundaryToolToolStripMenu.Enabled = false;
@@ -1399,6 +1400,7 @@ namespace AgOpenGPS
                 tramLinesMenuField.Enabled = false;
                 tramsMultiMenuField.Enabled = false;
                 recordedPathStripMenu.Enabled = false;
+                loadVehicleToolToolStripMenuItem.Enabled = false;
             }
         }
 
