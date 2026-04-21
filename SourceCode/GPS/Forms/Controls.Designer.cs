@@ -1920,7 +1920,11 @@ namespace AgOpenGPS
                         FileCreateContour();
                         FileCreateSections();
 
+
                         Log.EventWriter("All Section Mapping Deleted");
+                        // COREX_FIELD_MOD_START
+                        NotificarBorradoArea();
+                        // COREX_FIELD_MOD_END
                     }
                     else
                     {

@@ -22,7 +22,7 @@ using AgOpenGPS.Forms.Profiles;
 using AgOpenGPS.Properties;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using AgroParallel.Common;
+// using AgroParallel.Common; // Ya no se usa — config se hace desde el frontend web
 // VISTAX_MOD_START
 using AgroParallel.VistaX;
 // VISTAX_MOD_END
@@ -93,6 +93,12 @@ namespace AgOpenGPS
         private VistaXPanel vistaXPanel;
         public VistaXConfig vistaXConfig;
         // VISTAX_MOD_END
+
+        // COREX_FIELD_MOD_START
+        // Último campo notificado al sistema AgroParallel (CoreX / VistaX)
+        // Permite detectar si es "nuevo", "abierto" o "continuar"
+        private string _apLastFieldNotified = "";
+        // COREX_FIELD_MOD_END
 
 
         #region // Class Props and instances
@@ -444,22 +450,7 @@ namespace AgOpenGPS
             else Log.EventWriter("Terms Already Accepted");
 
             // VISTAX_MOD_START
-            // 1. Cargamos el JSON desde el disco
             vistaXConfig = VistaXConfig.Load();
-
-            if (vistaXConfig != null && vistaXConfig.Enabled)
-            {
-                // Iniciamos el monitor (lógica MQTT)
-                vistaXMonitor = new SeedMonitor(this, vistaXConfig);
-
-                // Iniciamos el panel pasándole la URL del JSON
-                vistaXPanel = new VistaXPanel(vistaXConfig.ServerUrl);
-
-                this.Controls.Add(vistaXPanel);
-                vistaXPanel.Reposition();
-
-                // Snapshot → UI: suscripción en el bloque inferior (línea ~1500)
-            }
             // VISTAX_MOD_END
 
             this.MouseWheel += ZoomByMouseWheel;
@@ -1032,6 +1023,10 @@ namespace AgOpenGPS
             lblHardwareMessage.Visible = false;
             btnAutoTrack.Image = Resources.AutoTrackOff;
             trk.isAutoTrack = false;
+
+            // COREX_FIELD_MOD_START
+            NotificarCampoExterno_JobNew();
+            // COREX_FIELD_MOD_END
         }
 
         //close the current job
@@ -1078,6 +1073,11 @@ namespace AgOpenGPS
             FieldMenuButtonEnableDisable(false);
 
             menustripLanguage.Enabled = true;
+
+            // COREX_FIELD_MOD_START
+            // Notificar ANTES de limpiar currentFieldDirectory
+            NotificarCampoExterno_JobClose();
+            // COREX_FIELD_MOD_END
 
             AppModel.Fields.CloseField();
 
@@ -1411,43 +1411,43 @@ namespace AgOpenGPS
         // AGROPARALLEL_MOD_START
         private void toolStripAgroParallel_Click(object sender, EventArgs e)
         {
-            using (var form = new FormAgroParallel())
+            ToggleVistaX();
+        }
+
+        private void ToggleVistaX()
+        {
+            var cfg = VistaXConfig.Load();
+
+            if (vistaXPanel != null)
             {
-                form.OpenModulePanel += delegate (string moduleName)
-                {
-                    if (moduleName == "VistaX")
-                    {
-                        // Si el panel no existe todavía, crearlo ahora
-                        if (vistaXPanel == null)
-                        {
-                            InitVistaX();
-                        }
+                // VistaX está activo → desactivar
+                this.Controls.Remove(vistaXPanel);
+                vistaXPanel.Dispose();
+                vistaXPanel = null;
 
-                        if (vistaXPanel != null)
-                        {
-                            vistaXPanel.Visible = !vistaXPanel.Visible;
-                        }
-                        else
-                        {
-                            MessageBox.Show(
-                                "No se pudo iniciar VistaX.\n\n" +
-                                "Verificá que vistaX.json esté en la carpeta del ejecutable\n" +
-                                "y que 'Enabled' sea true.",
-                                "AgroParallel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
-                };
+                cfg.Enabled = false;
+                cfg.Save();
 
-                // Mostrar estado actual si VistaX está corriendo
-                if (vistaXMonitor != null && vistaXMonitor.IsRunning)
+                System.Diagnostics.Debug.WriteLine("[VistaX] Desactivado por el usuario");
+            }
+            else
+            {
+                // VistaX está inactivo → activar
+                cfg.Enabled = true;
+                cfg.Save();
+
+                InitVistaX();
+
+                if (vistaXPanel == null)
                 {
-                    var snap = vistaXMonitor.CreateSnapshot();
-                    form.UpdateModuleStatus("VistaX",
-                        snap.IsConnected,
-                        snap.IsConnected ? "MQTT conectado" : "MQTT desconectado");
+                    // Falló la inicialización (server Node no corre, etc.)
+                    cfg.Enabled = false;
+                    cfg.Save();
                 }
-
-                form.ShowDialog(this);
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("[VistaX] Activado por el usuario");
+                }
             }
         }
         // AGROPARALLEL_MOD_END
@@ -1457,9 +1457,12 @@ namespace AgOpenGPS
         {
             try
             {
+                // Guard: no crear doble instancia
+                if (vistaXPanel != null) return;
+
                 var cfg = VistaXConfig.Load();
                 System.Diagnostics.Debug.WriteLine("[VistaX] Config: Enabled=" + cfg.Enabled
-                    + " Broker=" + cfg.BrokerAddress + ":" + cfg.BrokerPort);
+                    + " ServerUrl=" + cfg.ServerUrl);
 
                 if (!cfg.Enabled)
                 {
@@ -1467,53 +1470,17 @@ namespace AgOpenGPS
                     return;
                 }
 
-                vistaXMonitor = new SeedMonitor(this, vistaXConfig);
-
-                // Contar surcos semilla del implemento
-                var implemento = cfg.LoadImplemento();
-                int numSurcos = 24;
-                if (implemento != null && implemento.MapeoSensores != null)
-                {
-                    numSurcos = implemento.MapeoSensores.FindAll(
-                        delegate (SensorConfig s) { return s.IsActive && s.Tipo == "semilla"; }
-                    ).Count;
-                    System.Diagnostics.Debug.WriteLine("[VistaX] Implemento: " + implemento.Nombre
-                        + " surcos: " + numSurcos);
-                }
-                if (numSurcos <= 0) numSurcos = 24;
-
-                // Crear panel - se auto-posiciona al ancho del form
-                vistaXPanel = new VistaXPanel(vistaXConfig.ServerUrl);
+                // Solo crear el panel CefSharp — el servidor Node maneja MQTT y Socket.IO
+                vistaXPanel = new VistaXPanel(cfg);
                 vistaXPanel.Visible = true;
-               
+
                 this.Controls.Add(vistaXPanel);
                 vistaXPanel.Reposition();
 
-                // Agrega esto para que si el usuario maximiza la ventana, el panel se acomode
-                this.Resize += (s, e) => { vistaXPanel.Reposition(); };
-                // Snapshot → UI (throttled en VistaXPanel)
-                vistaXMonitor.SnapshotUpdated += delegate (SeedMonitorSnapshot snapshot)
-                {
-                    if (IsDisposed) return;
-                    if (InvokeRequired)
-                        BeginInvoke(new Action(delegate {
-                            vistaXPanel.FlushPending();
-                            vistaXPanel.UpdateDisplay(snapshot);
-                        }));
-                    else
-                    {
-                        vistaXPanel.FlushPending();
-                        vistaXPanel.UpdateDisplay(snapshot);
-                    }
-                };
+                // Reposicionar al redimensionar
+                this.Resize += (s, e) => { if (vistaXPanel != null) vistaXPanel.Reposition(); };
 
-                vistaXMonitor.AlarmTriggered += delegate (string message)
-                {
-                    System.Diagnostics.Debug.WriteLine("[VistaX ALARM] " + message);
-                };
-
-                Task.Run(async delegate { await vistaXMonitor.StartAsync(); });
-                System.Diagnostics.Debug.WriteLine("[VistaX] Iniciado OK");
+                System.Diagnostics.Debug.WriteLine("[VistaX] Panel CefSharp iniciado OK → " + cfg.ServerUrl);
             }
             catch (Exception ex)
             {
@@ -1523,6 +1490,11 @@ namespace AgOpenGPS
 
         private void CleanupVistaX()
         {
+            if (vistaXPanel != null)
+            {
+                try { vistaXPanel.Dispose(); } catch { }
+                vistaXPanel = null;
+            }
             if (vistaXMonitor != null)
             {
                 try
@@ -1535,6 +1507,173 @@ namespace AgOpenGPS
             }
         }
         // VISTAX_MOD_END
+
+        // COREX_FIELD_MOD_START
+        /// <summary>
+        /// Escribe current_field.json en la carpeta raíz de AgOpenGPS (Documents\AgOpenGPS\)
+        /// para que CoreX y los módulos de AgroParallel detecten el campo activo sin AppData.
+        ///
+        /// Detecta automáticamente la acción:
+        ///   "nuevo"    → directorio recién creado, sin datos previos
+        ///   "abierto"  → campo diferente al último notificado, con datos existentes
+        ///   "continuar"→ mismo campo que estaba activo la última vez
+        ///   "cerrado"  → no hay campo activo (JobClose)
+        /// </summary>
+        private void NotificarCampoExterno_JobNew()
+        {
+            try
+            {
+                string nombre = currentFieldDirectory ?? "";
+                if (string.IsNullOrEmpty(nombre)) return;
+
+                string accion;
+                if (nombre == _apLastFieldNotified)
+                {
+                    // Mismo campo que la última vez → el usuario eligió "Continuar"
+                    accion = "continuar";
+                }
+                else
+                {
+                    // Campo distinto → determinar si ya tenía datos o es completamente nuevo
+                    string fieldDir = Path.Combine(RegistrySettings.fieldsDirectory, nombre);
+                    bool tieneDatos = false;
+                    if (Directory.Exists(fieldDir))
+                    {
+                        // Archivos con contenido real indican campo preexistente
+                        string[] archivosConDatos = { "Boundary.txt", "TrackLines.txt", "ABLines.txt" };
+                        foreach (string arch in archivosConDatos)
+                        {
+                            string ruta = Path.Combine(fieldDir, arch);
+                            if (File.Exists(ruta) && new FileInfo(ruta).Length > 10)
+                            {
+                                tieneDatos = true;
+                                break;
+                            }
+                        }
+                    }
+                    accion = tieneDatos ? "abierto" : "nuevo";
+                }
+
+                _apLastFieldNotified = nombre;
+                EscribirCurrentFieldJson(nombre, accion);
+            }
+            catch
+            {
+                // Nunca interrumpir AgOpenGPS por un error de notificación
+            }
+        }
+
+        private void NotificarCampoExterno_JobClose()
+        {
+            try
+            {
+                _apLastFieldNotified = "";
+                EscribirCurrentFieldJson("", "cerrado");
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Serializa el estado del campo a JSON sin dependencias externas.
+        /// Ruta: Documents\AgOpenGPS\current_field.json
+        /// </summary>
+        private void EscribirCurrentFieldJson(string fieldName, string accion)
+        {
+            try
+            {
+                string nombreSeguro = (fieldName ?? "")
+                    .Replace("\\", "\\\\")
+                    .Replace("\"", "\\\"");
+
+                long ts = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+                string json =
+                    "{\r\n" +
+                    "  \"fieldName\": \"" + nombreSeguro + "\",\r\n" +
+                    "  \"accion\": \""    + accion       + "\",\r\n" +
+                    "  \"ts\": "          + ts           + "\r\n" +
+                    "}";
+
+                // Intentar múltiples rutas en orden de prioridad
+                var candidatos = new System.Collections.Generic.List<string>();
+
+                // 1. RegistrySettings.baseDirectory (ruta oficial)
+                string regBase = RegistrySettings.baseDirectory;
+                if (!string.IsNullOrEmpty(regBase))
+                    candidatos.Add(regBase);
+
+                // 2. fieldsDirectory un nivel arriba (si baseDirectory falla)
+                string regFields = RegistrySettings.fieldsDirectory;
+                if (!string.IsNullOrEmpty(regFields))
+                {
+                    string parent = System.IO.Path.GetDirectoryName(regFields.TrimEnd('\\', '/'));
+                    if (!string.IsNullOrEmpty(parent))
+                        candidatos.Add(parent);
+                }
+
+                // 3. Carpetas estándar de Documents como fallback
+                string docs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                candidatos.Add(Path.Combine(docs, "AgOpenGPS"));
+                candidatos.Add(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "OneDrive", "Documents", "AgOpenGPS"));
+
+                // 4. Último recurso: directorio del ejecutable
+                candidatos.Add(Application.StartupPath);
+
+                System.Diagnostics.Debug.WriteLine("[CoreX] baseDirectory = \"" + regBase + "\"");
+                System.Diagnostics.Debug.WriteLine("[CoreX] fieldsDirectory = \"" + regFields + "\"");
+
+                string filePath = null;
+                foreach (string dir in candidatos)
+                {
+                    try
+                    {
+                        if (string.IsNullOrEmpty(dir)) continue;
+                        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                        string ruta = Path.Combine(dir, "current_field.json");
+                        File.WriteAllText(ruta, json, System.Text.Encoding.UTF8);
+                        filePath = ruta;
+                        System.Diagnostics.Debug.WriteLine(
+                            "[CoreX] current_field.json escrito en: " + ruta);
+                        break; // Éxito — no seguir intentando
+                    }
+                    catch (Exception exInner)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "[CoreX] Falló " + dir + ": " + exInner.Message);
+                    }
+                }
+
+                if (filePath == null)
+                    System.Diagnostics.Debug.WriteLine("[CoreX] ERROR: No se pudo escribir en ninguna ruta");
+                else
+                    System.Diagnostics.Debug.WriteLine(
+                        "[CoreX] OK → " + accion + ": \"" + nombreSeguro + "\"");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    "[CoreX] EXCEPCIÓN en EscribirCurrentFieldJson: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// El usuario confirmó el borrado del área trabajada.
+        /// Escribe current_field.json con accion = "area_borrada" manteniendo el campo activo.
+        /// CoreX / VistaX detectan esto para resetear el lote actual sin cerrarlo.
+        /// </summary>
+        public void NotificarBorradoArea()
+        {
+            try
+            {
+                string nombre = currentFieldDirectory ?? "";
+                System.Diagnostics.Debug.WriteLine("[CoreX] NotificarBorradoArea → campo: \"" + nombre + "\"");
+                EscribirCurrentFieldJson(nombre, "area_borrada");
+            }
+            catch { }
+        }
+        // COREX_FIELD_MOD_END
     }//class FormGPS
 }//namespace AgOpenGPS
 

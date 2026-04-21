@@ -1,8 +1,18 @@
+// ============================================================================
+// VistaXPanel.cs — Panel embebido CefSharp para AgOpenGPS
+// Solo renderiza la vista /bar del servidor VistaX (Node.js)
+// El servidor Node maneja MQTT, Socket.IO y toda la lógica.
+//
+// Layout configurable desde vistaX.json:
+//   PanelHeight        → alto en píxeles (default 120)
+//   PanelWidthPercent  → % del ancho del form padre (default 70)
+//   PanelBottomMargin  → margen inferior en px (default 60)
+// ============================================================================
+
 using CefSharp;
 using CefSharp.WinForms;
 using System;
 using System.Drawing;
-using System.Text.Json;
 using System.Windows.Forms;
 
 namespace AgroParallel.VistaX
@@ -12,26 +22,55 @@ namespace AgroParallel.VistaX
         private ChromiumWebBrowser browser;
         private string _serverUrl;
         private bool _isReady = false;
+        private VistaXConfig _config;
 
-        // Throttle: máximo ~4-5 updates/segundo
-        private const int MinUpdateIntervalMs = 220;
-        private DateTime _lastUpdate = DateTime.MinValue;
-        private SeedMonitorSnapshot _pendingSnap;
+        // Layout leído del config
+        private int _panelHeight;
+        private int _panelWidthPercent;
+        private int _panelBottomMargin;
 
-        // Reusable buffers to reduce GC pressure
-        private byte[] _jsonBuffer;
-        private readonly JsonSerializerOptions _jsonOpts = new JsonSerializerOptions
+        public VistaXPanel(VistaXConfig config)
         {
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-        };
+            _config = config;
+            _serverUrl = NormalizeUrl(config.ServerUrl);
+            _panelHeight = config.PanelHeight;
+            _panelWidthPercent = config.PanelWidthPercent;
+            _panelBottomMargin = config.PanelBottomMargin;
 
-        public VistaXPanel(string url)
-        {
-            _serverUrl = url;
             this.BackColor = Color.Black;
             this.DoubleBuffered = true;
 
             InitializeChromium();
+        }
+
+        /// <summary>
+        /// Normaliza la URL del servidor:
+        /// - Agrega http:// si falta
+        /// - Agrega /bar si no tiene path
+        /// </summary>
+        private static string NormalizeUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                url = "http://localhost:3000/bar";
+
+            url = url.Trim();
+
+            if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+                url = "http://" + url;
+
+            try
+            {
+                var uri = new Uri(url);
+                if (string.IsNullOrEmpty(uri.AbsolutePath) || uri.AbsolutePath == "/")
+                    url = url.TrimEnd('/') + "/bar";
+            }
+            catch
+            {
+                if (!url.Contains("/bar"))
+                    url = url.TrimEnd('/') + "/bar";
+            }
+
+            return url;
         }
 
         private void InitializeChromium()
@@ -42,76 +81,61 @@ namespace AgroParallel.VistaX
             var settings = new BrowserSettings
             {
                 WindowlessFrameRate = 15,
-                BackgroundColor = Cef.ColorSetARGB(255, 10, 10, 10)
+                BackgroundColor = Cef.ColorSetARGB(255, 0, 0, 0)
             };
             browser.BrowserSettings = settings;
 
+            // Popups sin bordes de Windows, tamaño configurable
+            browser.LifeSpanHandler = new PopupHandler(_config);
+
             this.Controls.Add(browser);
 
-            browser.FrameLoadEnd += (s, e) => {
+            browser.FrameLoadEnd += (s, e) =>
+            {
                 if (e.Frame.IsMain)
                 {
                     _isReady = true;
+                    System.Diagnostics.Debug.WriteLine("[VistaX] CefSharp cargó: " + _serverUrl);
                 }
+            };
+
+            browser.LoadError += (s, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine("[VistaX] Error cargando " + e.FailedUrl
+                    + ": " + e.ErrorText);
             };
         }
 
+        /// <summary>
+        /// Posiciona el panel según los valores de vistaX.json.
+        /// Modificá PanelHeight, PanelWidthPercent y PanelBottomMargin
+        /// en el JSON sin necesidad de recompilar.
+        /// </summary>
         public void Reposition()
         {
             if (this.Parent == null) return;
-            this.Size = new Size((int)(this.Parent.Width * 0.95), 180);
-            this.Location = new Point((this.Parent.Width - this.Width) / 2, this.Parent.Height - this.Height - 110);
+
+            int parentW = this.Parent.Width;
+            int parentH = this.Parent.Height;
+
+            int panelH = _panelHeight;
+            int panelW = (int)(parentW * _panelWidthPercent / 100.0);
+
+            this.Size = new Size(panelW, panelH);
+            this.Location = new Point(
+                (parentW - panelW) / 2,
+                parentH - panelH - _panelBottomMargin
+            );
             this.BringToFront();
         }
 
-        public void UpdateDisplay(SeedMonitorSnapshot snap)
-        {
-            if (!_isReady || snap == null || browser == null) return;
+        // =====================================================================
+        // No-op — el frontend recibe datos via Socket.IO del server Node.
+        // Se mantienen por compatibilidad con código existente en FormGPS.
+        // =====================================================================
 
-            // Throttle: drop frames si se llama más de ~4-5 veces/segundo
-            var now = DateTime.UtcNow;
-            if ((now - _lastUpdate).TotalMilliseconds < MinUpdateIntervalMs)
-            {
-                _pendingSnap = snap;
-                return;
-            }
-
-            SendToChromium(snap);
-            _lastUpdate = now;
-            _pendingSnap = null;
-        }
-
-        /// <summary>
-        /// Envía un snapshot pendiente si fue dropeado por throttle.
-        /// Llamar desde un timer externo si se quiere flush periódico.
-        /// </summary>
-        public void FlushPending()
-        {
-            var pending = _pendingSnap;
-            if (pending == null) return;
-            if ((DateTime.UtcNow - _lastUpdate).TotalMilliseconds < MinUpdateIntervalMs) return;
-
-            _pendingSnap = null;
-            SendToChromium(pending);
-            _lastUpdate = DateTime.UtcNow;
-        }
-
-        private void SendToChromium(SeedMonitorSnapshot snap)
-        {
-            try
-            {
-                // Serializar a byte[] para evitar string intermedio grande
-                _jsonBuffer = JsonSerializer.SerializeToUtf8Bytes(snap, _jsonOpts);
-                string b64 = Convert.ToBase64String(_jsonBuffer);
-                // El script es pequeño; el payload pesado está en b64 que CefSharp maneja internamente
-                browser.GetMainFrame().ExecuteJavaScriptAsync(
-                    "if(window.updateData){window.updateData(atob('" + b64 + "'));}");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Error enviando a CefSharp: " + ex.Message);
-            }
-        }
+        public void UpdateDisplay(SeedMonitorSnapshot snap) { }
+        public void FlushPending() { }
 
         protected override void Dispose(bool disposing)
         {

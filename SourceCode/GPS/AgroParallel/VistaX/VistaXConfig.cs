@@ -27,13 +27,26 @@ namespace AgroParallel.VistaX
         public int SensorTimeoutMs { get; set; }
         public bool LogToFieldRecord { get; set; }
 
-        // Nueva propiedad para el servidor de interfaz moderna
+        // Servidor de interfaz moderna (Node.js)
         public string ServerUrl { get; set; }
 
         // Método de inicio de monitoreo
         public string MetodoInicio { get; set; }
         public int UmbralSensoresActivos { get; set; }
         public int TiempoConfirmacionMs { get; set; }
+
+        // Layout del panel embebido en AOG — ajustables sin recompilar
+        public int PanelHeight { get; set; }
+        public int PanelWidthPercent { get; set; }
+        public int PanelBottomMargin { get; set; }
+
+        // Tamaños de popups (config, detalle surco) — sin bordes de Windows
+        public int PopupConfigWidth { get; set; }
+        public int PopupConfigHeight { get; set; }
+        public int PopupDetalleWidth { get; set; }
+        public int PopupDetalleHeight { get; set; }
+        public int PopupDefaultWidth { get; set; }
+        public int PopupDefaultHeight { get; set; }
 
         private static readonly string ConfigFileName = "vistaX.json";
 
@@ -54,13 +67,24 @@ namespace AgroParallel.VistaX
             SensorTimeoutMs = 3000;
             LogToFieldRecord = true;
 
-            // Valor por defecto para el servidor local
-            ServerUrl = "http://localhost:3001";
+            ServerUrl = "http://localhost:3000/bar";
 
-            // Inicio de monitoreo: sensores, herramienta, pintando, manual
             MetodoInicio = "sensores";
             UmbralSensoresActivos = 3;
             TiempoConfirmacionMs = 500;
+
+            // Defaults de layout del panel embebido
+            PanelHeight = 120;
+            PanelWidthPercent = 70;
+            PanelBottomMargin = 60;
+
+            // Defaults de popups sin bordes
+            PopupConfigWidth = 900;
+            PopupConfigHeight = 700;
+            PopupDetalleWidth = 380;
+            PopupDetalleHeight = 520;
+            PopupDefaultWidth = 500;
+            PopupDefaultHeight = 400;
         }
 
         public static VistaXConfig Load()
@@ -78,6 +102,14 @@ namespace AgroParallel.VistaX
                 string json = File.ReadAllText(path);
                 var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var config = JsonSerializer.Deserialize<VistaXConfig>(json, opts);
+
+                // Sanitizar valores de layout (por si el JSON tiene valores absurdos)
+                if (config != null)
+                {
+                    if (config.PanelHeight <= 0) config.PanelHeight = 120;
+                    if (config.PanelWidthPercent <= 0 || config.PanelWidthPercent > 100) config.PanelWidthPercent = 70;
+                    if (config.PanelBottomMargin < 0) config.PanelBottomMargin = 60;
+                }
 
                 return config ?? new VistaXConfig();
             }
