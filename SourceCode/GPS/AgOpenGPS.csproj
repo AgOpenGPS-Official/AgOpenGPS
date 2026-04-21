@@ -52,7 +52,7 @@
 <PackageReference Include="System.Text.Json" Version="9.0.0" />
     <!-- VISTAX_MOD_END -->
     <!-- SHAPEFILE_MOD_START -->
-    <PackageReference Include="NetTopologySuite.IO.Esri" Version="1.2.0" />
+    <PackageReference Include="NetTopologySuite.IO.Esri.Shapefile" Version="1.2.0" />
     <!-- SHAPEFILE_MOD_END -->
   </ItemGroup>
 
