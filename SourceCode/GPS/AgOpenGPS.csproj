@@ -50,7 +50,10 @@
     <!-- VISTAX_MOD_START -->
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
 <PackageReference Include="System.Text.Json" Version="9.0.0" />
-    <!-- VISTAX_MOD_END -->	
+    <!-- VISTAX_MOD_END -->
+    <!-- SHAPEFILE_MOD_START -->
+    <PackageReference Include="NetTopologySuite.IO.Esri" Version="1.2.0" />
+    <!-- SHAPEFILE_MOD_END -->
   </ItemGroup>
 
   <ItemGroup>
