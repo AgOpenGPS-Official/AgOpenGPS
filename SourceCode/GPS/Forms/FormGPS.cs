@@ -1044,6 +1044,10 @@ namespace AgOpenGPS
             // COREX_FIELD_MOD_START
             NotificarCampoExterno_JobNew();
             // COREX_FIELD_MOD_END
+
+            // SHAPEFILE_MOD_START
+            TryAutoLoadShapefileForCurrentField();
+            // SHAPEFILE_MOD_END
         }
 
         //close the current job
@@ -1095,6 +1099,10 @@ namespace AgOpenGPS
             // Notificar ANTES de limpiar currentFieldDirectory
             NotificarCampoExterno_JobClose();
             // COREX_FIELD_MOD_END
+
+            // SHAPEFILE_MOD_START
+            ClearShapefileLayer();
+            // SHAPEFILE_MOD_END
 
             AppModel.Fields.CloseField();
 
@@ -1618,6 +1626,7 @@ namespace AgOpenGPS
                     if (shapefileLayer != null)
                         shapefileLayer.IsVisible = shapefileToggleItem.Checked;
                     UpdateShapefileLegendVisibility();
+                    SaveShapefileState();
                 };
                 toolStripDropDownButton1.DropDownItems.Add(shapefileToggleItem);
 
@@ -1643,54 +1652,87 @@ namespace AgOpenGPS
 
                 if (ofd.ShowDialog(this) != DialogResult.OK) return;
 
-                ShapefileReadResult result;
-                Cursor oldCursor = Cursor.Current;
-                Cursor.Current = Cursors.WaitCursor;
-                try
+                LoadShapefileFromPath(ofd.FileName, showSummary: true, promptStyle: true);
+            }
+        }
+
+        // Carga un shapefile desde un path dado. Si promptStyle=true abre el
+        // dialogo de estilo tras la carga; si ya hay StyleField guardado se aplica
+        // en silencio (auto-load). Persiste el estado al final.
+        private bool LoadShapefileFromPath(string shpPath, bool showSummary, bool promptStyle,
+            string autoStyleField = null, bool autoVisible = true, bool autoShowFill = true,
+            bool autoShowOutline = true)
+        {
+            ShapefileReadResult result;
+            Cursor oldCursor = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                result = ShapefileReader.ReadPolygons(shpPath);
+            }
+            catch (Exception ex)
+            {
+                Cursor.Current = oldCursor;
+                System.Diagnostics.Debug.WriteLine("[Shapefile] Error leyendo "
+                    + shpPath + ": " + ex);
+                if (showSummary)
                 {
-                    result = ShapefileReader.ReadPolygons(ofd.FileName);
-                }
-                catch (Exception ex)
-                {
-                    Cursor.Current = oldCursor;
-                    System.Diagnostics.Debug.WriteLine("[Shapefile] Error leyendo "
-                        + ofd.FileName + ": " + ex);
                     MessageBox.Show(this,
                         "Error leyendo shapefile:\n\n" + ex.Message,
                         "Shapefile",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
-                Cursor.Current = oldCursor;
+                return false;
+            }
+            Cursor.Current = oldCursor;
 
-                ShowShapefileSummary(Path.GetFileName(ofd.FileName), result);
+            if (showSummary)
+                ShowShapefileSummary(Path.GetFileName(shpPath), result);
 
-                if (!isJobStarted)
+            if (!isJobStarted)
+            {
+                if (showSummary)
                 {
                     MessageBox.Show(this,
                         "No hay un campo abierto. Abri o crea un campo antes de cargar un "
                         + "shapefile para poder dibujarlo sobre el mapa.",
                         "Shapefile", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
                 }
-
-                shapefileLayer = new ShapefileLayer(result, Path.GetFileName(ofd.FileName));
-                if (shapefileToggleItem != null)
-                {
-                    shapefileToggleItem.Enabled = shapefileLayer.PolygonCount > 0;
-                    shapefileToggleItem.Checked = true;
-                }
-                if (shapefileStyleItem != null)
-                {
-                    shapefileStyleItem.Enabled = shapefileLayer.PolygonCount > 0
-                        && shapefileLayer.FieldNames.Count > 0;
-                }
-                shapefileLayer.IsVisible = true;
-
-                // Invocar dialogo de estilo automaticamente si hay campos DBF.
-                if (shapefileLayer.PolygonCount > 0 && shapefileLayer.FieldNames.Count > 0)
-                    OpenShapefileStyleDialog();
+                return false;
             }
+
+            shapefileLayer = new ShapefileLayer(result, Path.GetFileName(shpPath));
+            shapefileLayer.SourceFullPath = shpPath;
+            shapefileLayer.ShowFill = autoShowFill;
+            shapefileLayer.ShowOutline = autoShowOutline;
+            shapefileLayer.IsVisible = autoVisible;
+
+            if (shapefileToggleItem != null)
+            {
+                shapefileToggleItem.Enabled = shapefileLayer.PolygonCount > 0;
+                shapefileToggleItem.Checked = autoVisible;
+            }
+            if (shapefileStyleItem != null)
+            {
+                shapefileStyleItem.Enabled = shapefileLayer.PolygonCount > 0
+                    && shapefileLayer.FieldNames.Count > 0;
+            }
+
+            // Auto-aplicar estilo si viene de persistencia.
+            if (!string.IsNullOrEmpty(autoStyleField))
+                shapefileLayer.ApplyColorByField(autoStyleField);
+
+            // Dialogo de estilo solo en carga manual.
+            if (promptStyle
+                && shapefileLayer.PolygonCount > 0
+                && shapefileLayer.FieldNames.Count > 0)
+            {
+                OpenShapefileStyleDialog();
+            }
+
+            RefreshShapefileLegend();
+            SaveShapefileState();
+            return true;
         }
 
         private void OpenShapefileStyleDialog()
@@ -1701,6 +1743,88 @@ namespace AgOpenGPS
             {
                 dlg.ShowDialog(this);
             }
+            RefreshShapefileLegend();
+            SaveShapefileState();
+        }
+
+        private string GetCurrentFieldFullPath()
+        {
+            if (string.IsNullOrEmpty(currentFieldDirectory)) return null;
+            if (string.IsNullOrEmpty(RegistrySettings.fieldsDirectory)) return null;
+            return Path.Combine(RegistrySettings.fieldsDirectory, currentFieldDirectory);
+        }
+
+        private void SaveShapefileState()
+        {
+            try
+            {
+                string fieldPath = GetCurrentFieldFullPath();
+                if (string.IsNullOrEmpty(fieldPath)) return;
+                if (!Directory.Exists(fieldPath)) return;
+
+                if (shapefileLayer == null || string.IsNullOrEmpty(shapefileLayer.SourceFullPath))
+                {
+                    // Nada que persistir — si habia un archivo previo, borrarlo.
+                    ShapefilePersistence.Delete(fieldPath);
+                    return;
+                }
+
+                var cfg = new ShapefileFieldConfig
+                {
+                    ShpPath = shapefileLayer.SourceFullPath,
+                    StyleField = shapefileLayer.StyleField,
+                    Visible = shapefileLayer.IsVisible,
+                    ShowFill = shapefileLayer.ShowFill,
+                    ShowOutline = shapefileLayer.ShowOutline
+                };
+                ShapefilePersistence.Save(fieldPath, cfg);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[Shapefile] SaveShapefileState: "
+                    + ex.Message);
+            }
+        }
+
+        public void TryAutoLoadShapefileForCurrentField()
+        {
+            try
+            {
+                string fieldPath = GetCurrentFieldFullPath();
+                if (string.IsNullOrEmpty(fieldPath)) return;
+
+                var cfg = ShapefilePersistence.Load(fieldPath);
+                if (cfg == null || string.IsNullOrWhiteSpace(cfg.ShpPath)) return;
+                if (!File.Exists(cfg.ShpPath))
+                {
+                    System.Diagnostics.Debug.WriteLine("[Shapefile] Auto-load: shape no existe "
+                        + cfg.ShpPath);
+                    return;
+                }
+
+                LoadShapefileFromPath(cfg.ShpPath,
+                    showSummary: false, promptStyle: false,
+                    autoStyleField: cfg.StyleField,
+                    autoVisible: cfg.Visible,
+                    autoShowFill: cfg.ShowFill,
+                    autoShowOutline: cfg.ShowOutline);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[Shapefile] TryAutoLoad: " + ex.Message);
+            }
+        }
+
+        public void ClearShapefileLayer()
+        {
+            shapefileLayer = null;
+            if (shapefileToggleItem != null)
+            {
+                shapefileToggleItem.Enabled = false;
+                shapefileToggleItem.Checked = false;
+            }
+            if (shapefileStyleItem != null)
+                shapefileStyleItem.Enabled = false;
             RefreshShapefileLegend();
         }
 

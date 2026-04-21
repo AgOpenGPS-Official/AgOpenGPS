@@ -35,6 +35,10 @@ namespace AgroParallel.Common
         public float LineWidth = 2f;
         public string Source { get; private set; }
 
+        // Ruta absoluta del .shp original (usada para persistir el estado
+        // por-campo y auto-recargarlo al reabrir el mismo campo).
+        public string SourceFullPath { get; set; }
+
         // Rings originales en WGS84 (copia compacta: array por ring).
         private readonly List<List<ShapeLatLon[]>> _ringsWgs84 = new List<List<ShapeLatLon[]>>();
 
