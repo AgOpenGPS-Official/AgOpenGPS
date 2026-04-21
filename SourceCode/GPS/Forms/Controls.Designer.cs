@@ -562,6 +562,13 @@ namespace AgOpenGPS
                     if (manualBtnState == btnStates.On) btnSectionMasterManual.PerformClick();
                 }
 
+                // Easy Drive requested from FormJob
+                if (isEasyDriveRequested)
+                {
+                    isEasyDriveRequested = false;
+                    using (var form2 = new FormEasyDrive(this)) { form2.ShowDialog(this); }
+                }
+
                 if (result == DialogResult.Yes)
                 {
                     using (var form2 = new FormFieldDir(this)) { form2.ShowDialog(this); }
@@ -598,8 +605,11 @@ namespace AgOpenGPS
                     Log.EventWriter("** Opened **  " + currentFieldDirectory + "   " +
                         DateTime.Now.ToString("f", CultureInfo.InvariantCulture));
 
-                    Settings.Default.setF_CurrentDir = currentFieldDirectory;
-                    Settings.Default.Save();
+                    if (!isEasyDriveMode)
+                    {
+                        Settings.Default.setF_CurrentDir = currentFieldDirectory;
+                        Settings.Default.Save();
+                    }
 
                     isobus.SendFieldName(currentFieldDirectory);
                 }
@@ -614,6 +624,33 @@ namespace AgOpenGPS
 
         public async Task FileSaveEverythingBeforeClosingField()
         {
+            // Easy Drive mode: skip all saves, just close
+            if (isEasyDriveMode)
+            {
+                if (ct.isContourOn) ct.StopContourLine();
+
+                for (int j = 0; j < tool.numOfSections; j++)
+                {
+                    section[j].sectionOnOffCycle = false;
+                    section[j].sectionOffRequest = false;
+                }
+
+                this.Invoke((MethodInvoker)(() =>
+                {
+                    panelRight.Enabled = false;
+                    FieldMenuButtonEnableDisable(false);
+                    JobClose();
+                    isEasyDriveMode = false;
+
+                    // Restore tool settings from saved profiles
+                    SectionSetPosition();
+                    SectionCalcWidths();
+
+                    Text = "AgOpenGPS";
+                }));
+                return;
+            }
+
             // Save the current field data before closing
             if (ct.isContourOn) ct.StopContourLine();
 

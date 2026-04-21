@@ -87,6 +87,24 @@ namespace AgOpenGPS
 
             mf.CloseTopMosts();
 
+            // Easy Drive button: disabled when a field is open, enabled otherwise
+            btnEasyDrive.Enabled = !mf.isJobStarted;
+
+            // When Easy Drive is active, disable all buttons except Close
+            if (mf.isEasyDriveMode)
+            {
+                btnJobNew.Enabled = false;
+                btnJobResume.Enabled = false;
+                btnJobOpen.Enabled = false;
+                btnInField.Enabled = false;
+                btnFromKML.Enabled = false;
+                btnFromExisting.Enabled = false;
+                btnFromISOXML.Enabled = false;
+                btnJobAgShare.Enabled = false;
+                btnAgShareBulkUpload.Enabled = false;
+                btnEasyDrive.Enabled = false;
+                lblResumeField.Text = "Easy Drive Active";
+            }
         }
 
         private void btnJobNew_Click(object sender, EventArgs e)
@@ -291,6 +309,13 @@ namespace AgOpenGPS
             }
 
             DialogResult = DialogResult.Ignore;
+            Close();
+        }
+
+        private void btnEasyDrive_Click(object sender, EventArgs e)
+        {
+            mf.isEasyDriveRequested = true;
+            DialogResult = DialogResult.OK;
             Close();
         }
 
