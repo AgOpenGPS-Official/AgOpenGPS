@@ -1646,6 +1646,15 @@ namespace AgOpenGPS
                 };
                 toolStripDropDownButton1.DropDownItems.Add(shapefileToggleItem);
 
+                // QUANTIX_MOD_START
+                var itemQuantiX = new ToolStripMenuItem();
+                itemQuantiX.Text = "⚙ QuantiX (UDP)";
+                itemQuantiX.Font = new Font("Tahoma", 18F, FontStyle.Bold);
+                itemQuantiX.ForeColor = Color.FromArgb(230, 150, 30);
+                itemQuantiX.Click += (s, e) => OpenQuantiXConfigDialog();
+                toolStripDropDownButton1.DropDownItems.Add(itemQuantiX);
+                // QUANTIX_MOD_END
+
                 InitShapefileLegend();
             }
             catch (Exception ex)
@@ -1922,6 +1931,31 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("[QuantiX] StopSender: " + ex.Message);
+            }
+        }
+
+        private void OpenQuantiXConfigDialog()
+        {
+            try
+            {
+                if (quantiXConfig == null)
+                    quantiXConfig = QuantiXConfig.Load();
+
+                using (var dlg = new FormQuantiXConfig(quantiXConfig))
+                {
+                    if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                }
+
+                // Reiniciar el sender con la nueva config. Si ahora esta
+                // deshabilitado o cambio host/puerto/rate, Stop+Start aplica.
+                StopQuantiXSender();
+                if (isJobStarted && quantiXConfig.Enabled)
+                    StartQuantiXSender();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[QuantiX] OpenConfigDialog: "
+                    + ex.Message);
             }
         }
 
