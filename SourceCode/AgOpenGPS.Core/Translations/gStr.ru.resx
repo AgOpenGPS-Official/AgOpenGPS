@@ -978,4 +978,28 @@
   <data name="v_AboutIntro" xml:space="preserve">
     <value>https://www.youtube.com/watch?v=iN2cZ8avHag</value>
   </data>
+  <data name="gsADConverter" xml:space="preserve">
+    <value>AD Конвертор</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>А+</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Акерман</value>
+  </data>
+  <data name="gsAcquireFactor" xml:space="preserve">
+    <value>Фактор приобретения</value>
+  </data>
+  <data name="gsActual" xml:space="preserve">
+    <value>текущий</value>
+  </data>
+  <data name="gsAgShareDownloader" xml:space="preserve">
+    <value>Скачать поля с AgShare</value>
+  </data>
+  <data name="gsAgShareActivate" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="gsAgShareActivated" xml:space="preserve">
+    <value>активирован</value>
+  </data>
 </root>
