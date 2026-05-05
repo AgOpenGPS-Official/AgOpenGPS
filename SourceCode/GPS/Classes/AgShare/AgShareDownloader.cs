@@ -201,7 +201,7 @@ namespace AgOpenGPS
             FlagsFiles.Save(fieldDir, new List<CFlag>());
             HeadlandFiles.Save(fieldDir, new List<CBoundaryList>());
             ContourFiles.CreateFile(fieldDir);
-            SectionsFiles.CreateEmpty(fieldDir);
+            // Sections.txt is always local - never created or overwritten by AgShare download
         }
     }
 
