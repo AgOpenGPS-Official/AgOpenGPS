@@ -250,6 +250,10 @@ namespace AgOpenGPS
                 //yt.Set_Alternate_skips();
 
                 btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
+
+                // If a turn was already triggered, restore the original path before resetting
+                yt.RestorePreTriggerState();
+
                 yt.ResetYouTurn();
 
                 //new direction so reset where to put turn diagnostic

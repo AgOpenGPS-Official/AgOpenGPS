@@ -78,6 +78,13 @@ namespace AgOpenGPS
 
         //how far should the distance between points on the uTurn be
         private double pointSpacing;
+
+        // Saved state before YouTurnTrigger, used to restore on mid-turn cancel
+        private int savedCurvePathsAway, savedABLinePathsAway;
+        private bool savedCurveHeadingSameWay, savedABLineHeadingSameWay;
+        private bool savedIsTurnLeft;
+        private int savedRowSkipsWidth, savedTurnSkips;
+        private bool savedPreviousBigSkip;
         #endregion
 
         //constructor
@@ -2415,6 +2422,16 @@ namespace AgOpenGPS
 
             if (!isGoingStraightThrough)
             {
+                // Save state so we can restore if user cancels mid-turn
+                savedCurvePathsAway = mf.curve.howManyPathsAway;
+                savedABLinePathsAway = mf.ABLine.howManyPathsAway;
+                savedCurveHeadingSameWay = mf.curve.isHeadingSameWay;
+                savedABLineHeadingSameWay = mf.ABLine.isHeadingSameWay;
+                savedIsTurnLeft = isTurnLeft;
+                savedRowSkipsWidth = rowSkipsWidth;
+                savedTurnSkips = turnSkips;
+                savedPreviousBigSkip = previousBigSkip;
+
                 mf.curve.howManyPathsAway += (isTurnLeft ^ mf.curve.isHeadingSameWay) ? rowSkipsWidth : -rowSkipsWidth;
                 mf.curve.isHeadingSameWay = !mf.curve.isHeadingSameWay;
 
@@ -2435,6 +2452,21 @@ namespace AgOpenGPS
                 }
                 else isTurnLeft = !isTurnLeft;
             }
+        }
+
+        // Restores path state to before the trigger when user cancels a turn in progress
+        public void RestorePreTriggerState()
+        {
+            if (!isYouTurnTriggered || isGoingStraightThrough) return;
+
+            mf.curve.howManyPathsAway = savedCurvePathsAway;
+            mf.curve.isHeadingSameWay = savedCurveHeadingSameWay;
+            mf.ABLine.howManyPathsAway = savedABLinePathsAway;
+            mf.ABLine.isHeadingSameWay = savedABLineHeadingSameWay;
+            isTurnLeft = savedIsTurnLeft;
+            rowSkipsWidth = savedRowSkipsWidth;
+            turnSkips = savedTurnSkips;
+            previousBigSkip = savedPreviousBigSkip;
         }
 
         //Normal copmpletion of youturn
