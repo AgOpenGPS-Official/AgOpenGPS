@@ -197,10 +197,13 @@ namespace AgOpenGPS
             BoundaryFiles.Save(fieldDir, field.Boundaries);
             TrackFiles.Save(fieldDir, field.Tracks);
 
-            // Empty placeholder files
-            FlagsFiles.Save(fieldDir, new List<CFlag>());
-            HeadlandFiles.Save(fieldDir, new List<CBoundaryList>());
-            ContourFiles.CreateFile(fieldDir);
+            // These files are local user data - only create if they don't exist yet
+            if (!File.Exists(Path.Combine(fieldDir, "Flags.txt")))
+                FlagsFiles.Save(fieldDir, new List<CFlag>());
+            if (!File.Exists(Path.Combine(fieldDir, "Headland.txt")))
+                HeadlandFiles.Save(fieldDir, new List<CBoundaryList>());
+            if (!File.Exists(Path.Combine(fieldDir, "Contour.txt")))
+                ContourFiles.CreateFile(fieldDir);
             // Sections.txt is always local - never created or overwritten by AgShare download
         }
     }
