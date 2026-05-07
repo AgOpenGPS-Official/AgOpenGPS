@@ -198,7 +198,7 @@ namespace AgOpenGPS
                                     // Convert to miles if not metric
                                     Distance distanceObj = new Distance(distance * 1000); // Distance expects meters
                                     double displayDistance = mf.isMetric ? distanceObj.InKilometers : distanceObj.InMiles;
-                                    distanceList += displayDistance.ToString("F3");
+                                    distanceList += displayDistance.ToString("F3", System.Globalization.CultureInfo.InvariantCulture);
                                 }
                             }
                         }
