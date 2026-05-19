@@ -1648,6 +1648,13 @@ namespace AgOpenGPS
         }
         private void simulatorOnToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Once SIM has been disabled this session, it stays disabled until app restart.
+            if (isSimDisabledLocked)
+            {
+                simulatorOnToolStripMenuItem.Checked = false;
+                simulatorOnToolStripMenuItem.Enabled = false;
+                return;
+            }
             if (isJobStarted)
             {
                 TimedMessageBox(2000, gStr.gsFieldIsOpen, gStr.gsCloseFieldFirst);
@@ -2299,6 +2306,14 @@ namespace AgOpenGPS
         double lastSimGuidanceAngle = 0;
         private void timerSim_Tick(object sender, EventArgs e)
         {
+            // Hard lock: if SIM was ever disabled in this session, kill the timer and bail.
+            // Prevents rogue sim ticks from overwriting pn.fix with sim coords while live GNSS is active.
+            if (isSimDisabledLocked)
+            {
+                timerSim.Enabled = false;
+                return;
+            }
+
             if (recPath.isDrivingRecordedPath || isBtnAutoSteerOn && (guidanceLineDistanceOff != 32000))
             {
                 if (vehicle.isInDeadZone)
