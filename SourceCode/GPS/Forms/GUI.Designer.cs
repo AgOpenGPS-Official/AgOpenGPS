@@ -259,8 +259,8 @@ namespace AgOpenGPS
                     lblCurrentField.Text = "\u25B6" + " " + lblCurrentField.Text;
                 }
 
-                //fix
-                if (timerSim.Enabled && pn.fixQuality++ > 5) pn.fixQuality = 2;
+                //fix - only cycle fake quality while SIM is genuinely the active source
+                if (timerSim.Enabled && !isSimDisabledLocked && pn.fixQuality++ > 5) pn.fixQuality = 2;
 
                 fileSaveAlwaysCounter += 3;
             }
