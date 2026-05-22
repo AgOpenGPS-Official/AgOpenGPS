@@ -2067,9 +2067,11 @@ namespace AgOpenGPS
                         //clear the section lists
                         for (int j = 0; j < triStrip.Count; j++)
                         {
-                            //clean out the lists
+                            //clean out the lists and reset drawing state
                             triStrip[j].patchList?.Clear();
                             triStrip[j].triangleList?.Clear();
+                            triStrip[j].isDrawing = false;  // Reset drawing state to prevent ISOBUS race condition
+                            triStrip[j].numTriangles = 0;
                         }
                         patchSaveList?.Clear();
 

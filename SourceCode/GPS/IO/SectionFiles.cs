@@ -32,6 +32,15 @@ namespace AgOpenGPS.IO
                     var patch = FileIoUtils.ReadVec3Block(reader, verts);
                     if (patch.Count > 0)
                     {
+                        // Ensure patch has odd vertex count (first vertex is RGB color, rest are coordinates)
+                        // If even, it means the color vertex is missing, so prepend a default color
+                        if (patch.Count % 2 == 0)
+                        {
+                            // The first line was likely a coordinate misinterpreted as color
+                            // Insert default color at the beginning
+                            var colorVec = new vec3(27, 151, 160); // Default teal color
+                            patch.Insert(0, colorVec);
+                        }
                         result.Add(patch);
                     }
                 }
