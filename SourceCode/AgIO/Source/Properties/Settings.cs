@@ -82,6 +82,23 @@ namespace AgIO.Properties
         {
             string path = Path.Combine(RegistrySettings.profileDirectory, RegistrySettings.profileName + ".XML");
             var result = XmlSettingsHandler.LoadXMLFile(path, this);
+            bool loadedFromBackup = false;
+
+            // Fallback to last known good backup when current profile is missing/corrupt.
+            if (result == LoadResult.Failed || result == LoadResult.MissingFile)
+            {
+                string backupPath = Path.ChangeExtension(path, ".last");
+                if (File.Exists(backupPath))
+                {
+                    var backupResult = XmlSettingsHandler.LoadXMLFile(backupPath, this);
+                    if (backupResult == LoadResult.Ok)
+                    {
+                        result = LoadResult.Ok;
+                        loadedFromBackup = true;
+                    }
+                }
+            }
+
             if (result == LoadResult.MissingFile)
             {
                 if (RegistrySettings.profileName != "")
@@ -95,6 +112,9 @@ namespace AgIO.Properties
                 }
             }
 
+            RegistrySettings.profileLoadResult = result;
+            RegistrySettings.profileLoadedFromBackup = loadedFromBackup;
+
             return result;
         }
 
@@ -103,7 +123,18 @@ namespace AgIO.Properties
             string path = Path.Combine(RegistrySettings.profileDirectory, RegistrySettings.profileName + ".XML");
 
             if (RegistrySettings.profileName != "")
+            {
+                // Keep a last-known-good copy before writing, unless this profile was
+                // recovered from .last (primary .XML was unreadable).
+                if (File.Exists(path) && !RegistrySettings.profileLoadedFromBackup)
+                {
+                    string backupPath = Path.ChangeExtension(path, ".last");
+                    File.Copy(path, backupPath, true);
+                }
+
                 XmlSettingsHandler.SaveXMLFile(path, this);
+                RegistrySettings.profileLoadedFromBackup = false;
+            }
             else
             {
                 Log.EventWriter("Default Profile Not saved to Profiles");
