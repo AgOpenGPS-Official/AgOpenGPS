@@ -537,6 +537,46 @@ namespace AgOpenGPS
 
             hotkeys = Properties.Settings.Default.setKey_hotkeys.ToCharArray();
 
+            if (RegistrySettings.vehicleProfileLoadResult == AgLibrary.Settings.LoadResult.Failed ||
+                RegistrySettings.toolProfileLoadResult == AgLibrary.Settings.LoadResult.Failed)
+            {
+                string vehicleMsg = RegistrySettings.vehicleProfileLoadResult == AgLibrary.Settings.LoadResult.Failed
+                    ? $"Vehicle '{RegistrySettings.vehicleProfileName}'"
+                    : null;
+                string toolMsg = RegistrySettings.toolProfileLoadResult == AgLibrary.Settings.LoadResult.Failed
+                    ? $"Tool '{RegistrySettings.toolProfileName}'"
+                    : null;
+
+                string corrupted = vehicleMsg != null && toolMsg != null
+                    ? vehicleMsg + " and " + toolMsg
+                    : vehicleMsg ?? toolMsg;
+
+                TimedMessageBox(
+                    10000,
+                    "Profile Load Warning",
+                    corrupted + " profile could not be fully loaded (file may be corrupt).\r\n" +
+                    "Current session is using defaults for missing/invalid values.");
+            }
+
+            if (RegistrySettings.vehicleProfileLoadedFromBackup || RegistrySettings.toolProfileLoadedFromBackup)
+            {
+                string vehicleMsg = RegistrySettings.vehicleProfileLoadedFromBackup
+                    ? $"Vehicle '{RegistrySettings.vehicleProfileName}'"
+                    : null;
+                string toolMsg = RegistrySettings.toolProfileLoadedFromBackup
+                    ? $"Tool '{RegistrySettings.toolProfileName}'"
+                    : null;
+
+                string recovered = vehicleMsg != null && toolMsg != null
+                    ? vehicleMsg + " and " + toolMsg
+                    : vehicleMsg ?? toolMsg;
+
+                TimedMessageBox(
+                    10000,
+                    "Profile Recovery",
+                    recovered + " profile was recovered from .last backup because the main file was unreadable.");
+            }
+
             // Check if any profile is missing (registry empty OR file doesn't exist)
             bool missingVehicle = string.IsNullOrEmpty(RegistrySettings.vehicleProfileName) ||
                                    !File.Exists(Path.Combine(RegistrySettings.vehiclesDirectory, RegistrySettings.vehicleProfileName + ".xml"));
@@ -769,9 +809,17 @@ namespace AgOpenGPS
                     try
                     {
                         // Save Vehicle Settings
-                        Properties.VehicleSettings.Default.Save();
-                        await Task.Delay(100);
-                        savingForm.UpdateStep("Vehicle", gStr.gsSaveVehicleSettingsSaved, SavingStepState.Done);
+                        if (RegistrySettings.vehicleProfileLoadResult == AgLibrary.Settings.LoadResult.Ok)
+                        {
+                            Properties.VehicleSettings.Default.Save();
+                            await Task.Delay(100);
+                            savingForm.UpdateStep("Vehicle", gStr.gsSaveVehicleSettingsSaved, SavingStepState.Done);
+                        }
+                        else
+                        {
+                            Log.EventWriter($"Vehicle settings save skipped: profile load state is {RegistrySettings.vehicleProfileLoadResult}");
+                            savingForm.UpdateStep("Vehicle", "Vehicle settings save skipped (profile not loaded)", SavingStepState.Failed);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -782,9 +830,17 @@ namespace AgOpenGPS
                     try
                     {
                         // Save Tool Settings
-                        Properties.ToolSettings.Default.Save();
-                        await Task.Delay(100);
-                        savingForm.UpdateStep("Tool", gStr.gsSaveToolSettingsSaved, SavingStepState.Done);
+                        if (RegistrySettings.toolProfileLoadResult == AgLibrary.Settings.LoadResult.Ok)
+                        {
+                            Properties.ToolSettings.Default.Save();
+                            await Task.Delay(100);
+                            savingForm.UpdateStep("Tool", gStr.gsSaveToolSettingsSaved, SavingStepState.Done);
+                        }
+                        else
+                        {
+                            Log.EventWriter($"Tool settings save skipped: profile load state is {RegistrySettings.toolProfileLoadResult}");
+                            savingForm.UpdateStep("Tool", "Tool settings save skipped (profile not loaded)", SavingStepState.Failed);
+                        }
                     }
                     catch (Exception ex)
                     {

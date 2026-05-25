@@ -1,4 +1,5 @@
 ﻿using AgLibrary.Logging;
+using AgLibrary.Settings;
 using AgOpenGPS.Forms;
 using Microsoft.Win32;
 using System;
@@ -41,6 +42,11 @@ namespace AgOpenGPS
         public static string baseDirectory;
         public static string fieldsDirectory;
         public static string environmentDirectory;
+
+        public static LoadResult vehicleProfileLoadResult = LoadResult.MissingFile;
+        public static LoadResult toolProfileLoadResult = LoadResult.MissingFile;
+        public static bool vehicleProfileLoadedFromBackup = false;
+        public static bool toolProfileLoadedFromBackup = false;
 
         // Indicates if migration from legacy single profile is needed
         public static bool NeedsMigration { get; private set; }
@@ -137,14 +143,24 @@ namespace AgOpenGPS
             // Load Vehicle settings if vehicleProfileName is set
             if (!string.IsNullOrEmpty(vehicleProfileName))
             {
-                Properties.VehicleSettings.Default.Load(vehicleProfileName);
+                vehicleProfileLoadResult = Properties.VehicleSettings.Default.Load(vehicleProfileName);
+                if (vehicleProfileLoadResult != LoadResult.Ok)
+                {
+                    Log.EventWriter($"Vehicle profile load failed: {vehicleProfileName} ({vehicleProfileLoadResult})");
+                }
             }
+            else vehicleProfileLoadResult = LoadResult.MissingFile;
 
             // Load Tool settings if toolProfileName is set
             if (!string.IsNullOrEmpty(toolProfileName))
             {
-                Properties.ToolSettings.Default.Load(toolProfileName);
+                toolProfileLoadResult = Properties.ToolSettings.Default.Load(toolProfileName);
+                if (toolProfileLoadResult != LoadResult.Ok)
+                {
+                    Log.EventWriter($"Tool profile load failed: {toolProfileName} ({toolProfileLoadResult})");
+                }
             }
+            else toolProfileLoadResult = LoadResult.MissingFile;
         }
 
         public static void Save(string name, string value)
