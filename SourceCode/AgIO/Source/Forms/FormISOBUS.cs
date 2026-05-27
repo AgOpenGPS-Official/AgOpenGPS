@@ -16,7 +16,8 @@ namespace AgIO
         {
             InitializeComponent();
             cboxRadioAdapter.SelectedIndex = Properties.Settings.Default.isobus_canAdapterIndex;
-            cboxRadioChannel.SelectedIndex = Properties.Settings.Default.isobus_canChannelIndex;
+            if (cboxRadioChannel.Items.Count > 0)
+                cboxRadioChannel.SelectedIndex = Properties.Settings.Default.isobus_canChannelIndex;
         }
 
         private void btnOpenIsobus_Click(object sender, EventArgs e)
@@ -51,7 +52,10 @@ namespace AgIO
 
                 path += @"\bin\AOG-TaskController.exe";
 
-                var arguments = $"--can_adapter={cboxRadioAdapter.SelectedItem} --can_channel={cboxRadioChannel.SelectedItem} --log_level=debug  --log2file";
+                var arguments = $"--can_adapter={cboxRadioAdapter.SelectedItem}";
+                if (cboxRadioChannel.SelectedItem != null)
+                    arguments += $" --can_channel={cboxRadioChannel.SelectedItem}";
+                arguments += " --log_level=debug --log2file";
 
                 aogTaskControllerProcess = new Process
                 {
@@ -88,23 +92,24 @@ namespace AgIO
 
         public void StopAogTaskControllerProcess()
         {
+            var process = aogTaskControllerProcess;
+            if (process == null || process.HasExited)
+                return;
+
             try
             {
-                if (aogTaskControllerProcess == null || aogTaskControllerProcess.HasExited)
-                    return;
-
-                aogTaskControllerProcess.CloseMainWindow();
+                process.CloseMainWindow();
                 var startTime = DateTime.UtcNow;
-                while (!aogTaskControllerProcess.HasExited)
+                while (!process.HasExited)
                 {
                     if ((DateTime.UtcNow - startTime).TotalSeconds > 5)
                     {
-                        aogTaskControllerProcess.Kill(); // Force close if not exiting gracefully
+                        process.Kill();
                         break;
                     }
                     Application.DoEvents();
                 }
-                aogTaskControllerProcess.Close();
+                process.Close();
                 aogTaskControllerProcess = null;
                 AppendLog(">>> AOG-TaskController.exe stopped");
                 UpdateComponentVisibility();
@@ -272,20 +277,21 @@ namespace AgIO
                         {
                             cboxRadioChannel.Items.Add(i);
                         }
+
+                        // Set the channel index to the known item, only if the adapter is the same
+                        if (Properties.Settings.Default.isobus_canAdapterIndex == cboxRadioAdapter.SelectedIndex)
+                        {
+                            cboxRadioChannel.SelectedIndex = Properties.Settings.Default.isobus_canChannelIndex;
+                        }
+                        else
+                        {
+                            cboxRadioChannel.SelectedIndex = 0;
+                        }
                     }
                     else
                     {
                         flowLayoutChannel.Visible = false;
-                    }
-
-                    // Set the channel index to the known item, only if the adapter is the same
-                    if (Properties.Settings.Default.isobus_canAdapterIndex == cboxRadioAdapter.SelectedIndex)
-                    {
-                        cboxRadioChannel.SelectedIndex = Properties.Settings.Default.isobus_canChannelIndex;
-                    }
-                    else
-                    {
-                        cboxRadioChannel.SelectedIndex = 0;
+                        cboxRadioChannel.Items.Clear();
                     }
 
                     // Disable channel selection if the process is running
@@ -304,6 +310,11 @@ namespace AgIO
         private void cboxRadioChannel_SelectedIndexChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.isobus_canChannelIndex = cboxRadioChannel.SelectedIndex;
+        }
+
+        private void FormISOBUS_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

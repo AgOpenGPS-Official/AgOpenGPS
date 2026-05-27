@@ -106,7 +106,8 @@
             "PEAK-PCAN",
             "InnoMaker-USB2CAN",
             "Rusoku-TouCAN",
-            "SYS-TEC-USB2CAN"});
+            "SYS-TEC-USB2CAN",
+            "AOG-CAN-Bridge"});
             this.cboxRadioAdapter.Location = new System.Drawing.Point(3, 21);
             this.cboxRadioAdapter.Name = "cboxRadioAdapter";
             this.cboxRadioAdapter.Size = new System.Drawing.Size(221, 37);
@@ -244,6 +245,7 @@
             this.Controls.Add(this.textBoxRcv);
             this.Name = "FormISOBUS";
             this.Text = "ISOBUS Settings";
+            this.Load += new System.EventHandler(this.FormISOBUS_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutCANAdapter.ResumeLayout(false);
             this.flowLayoutChannel.ResumeLayout(false);
