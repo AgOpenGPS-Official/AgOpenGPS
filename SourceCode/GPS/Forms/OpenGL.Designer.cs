@@ -1282,7 +1282,9 @@ namespace AgOpenGPS
                 mc.CheckWorkAndSteerSwitch();
 
             // Check ISOBUS for actual section states
-            if (isobus.IsAlive())
+            // Only override if TC has active clients with section control capability (numberOfSections > 0)
+            // For 0-section implements, let AOG control sections normally
+            if (isobus.IsAlive() && isobus.HasActiveClients)
             {
                 for (int j = 0; j < tool.numOfSections; j++)
                 {

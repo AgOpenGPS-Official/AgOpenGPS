@@ -15,12 +15,6 @@ AgOpenGPS is a GPS-guidance steering system for agriculture in C# WinForms (.NET
 | [Classes](docs/classes.md) | Core classes and their responsibilities |
 | [PGN Protocol](docs/pgn-protocol.md) | PGN message format and communication |
 
-## Current Work
-
-**Branch**: `NewSettings` - Settings split into Vehicle/Tool/Environment
-
-See [Settings documentation](docs/settings.md) for details.
-
 ## Project Overview
 
 ```
@@ -39,7 +33,7 @@ SourceCode/
 
 ## User Preferences
 
-- **Language**: Dutch speaker
+- **Language**: English
 - **Comments**: All code comments must be in **English**
 - **Style**: Practical working code > perfect architecture
 - **Priority**: Get it working in the field

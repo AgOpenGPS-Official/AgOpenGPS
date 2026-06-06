@@ -67,10 +67,12 @@ namespace AgOpenGPS.Forms.Profiles
         private void UpdateCurrentLabels()
         {
             lblCurrentVehicle.Text = !string.IsNullOrEmpty(RegistrySettings.vehicleProfileName)
-                ? gStr.gsCurrentVehicle + ": " + RegistrySettings.vehicleProfileName
+                ? gStr.gsCurrentVehicle + ": " + RegistrySettings.vehicleProfileName +
+                  (RegistrySettings.vehicleProfileLoadResult == LoadResult.Ok ? "" : " (load failed)")
                 : gStr.gsCurrentVehicle + ": " + gStr.gsNone;
             lblCurrentTool.Text = !string.IsNullOrEmpty(RegistrySettings.toolProfileName)
-                ? gStr.gsCurrentTool + ": " + RegistrySettings.toolProfileName
+                ? gStr.gsCurrentTool + ": " + RegistrySettings.toolProfileName +
+                  (RegistrySettings.toolProfileLoadResult == LoadResult.Ok ? "" : " (load failed)")
                 : gStr.gsCurrentTool + ": " + gStr.gsNone;
         }
 

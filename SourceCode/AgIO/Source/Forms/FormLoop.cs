@@ -79,6 +79,21 @@ namespace AgIO
         //First run
         private void FormLoop_Load(object sender, EventArgs e)
         {
+            if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Failed)
+            {
+                TimedMessageBox(10000,
+                    "Profile Load Warning",
+                    "AgIO profile could not be fully loaded (file may be corrupt).\r\n" +
+                    "Current session is using defaults for missing/invalid values.");
+            }
+
+            if (RegistrySettings.profileLoadedFromBackup)
+            {
+                TimedMessageBox(10000,
+                    "Profile Recovery",
+                    "AgIO profile was recovered from .last backup because the main file was unreadable.");
+            }
+
             if (Settings.Default.setDisplay_StartMinimized)
             {
                 this.WindowState = FormWindowState.Minimized;
@@ -305,7 +320,14 @@ namespace AgIO
             Settings.Default.setPort_wasMachineModuleConnected = wasMachineModuleConnectedLastRun;
             Settings.Default.setPort_wasRtcmConnected = wasRtcmConnectedLastRun;
 
-            Settings.Default.Save();
+            if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Ok)
+            {
+                Settings.Default.Save();
+            }
+            else
+            {
+                Log.EventWriter($"AgIO profile save skipped: profile load state is {RegistrySettings.profileLoadResult}");
+            }
 
             isobusForm.StopAogTaskControllerProcess();
 

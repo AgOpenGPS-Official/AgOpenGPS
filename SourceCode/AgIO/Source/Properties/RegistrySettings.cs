@@ -1,5 +1,6 @@
 ﻿using AgIO.Properties;
 using AgLibrary.Logging;
+using AgLibrary.Settings;
 using Microsoft.Win32;
 using System;
 using System.Configuration;
@@ -29,6 +30,8 @@ namespace AgIO
         public static string profileDirectory;
         public static string logsDirectory;
         public static string profileName = "";
+        public static LoadResult profileLoadResult = LoadResult.MissingFile;
+        public static bool profileLoadedFromBackup = false;
 
         public static void Load()
         {
@@ -73,7 +76,11 @@ namespace AgIO
 
             Log.CheckLogSize(Path.Combine(logsDirectory, "AgIO_Events_Log.txt"));
 
-            Properties.Settings.Default.Load();
+            profileLoadResult = Properties.Settings.Default.Load();
+            if (profileLoadResult != LoadResult.Ok)
+            {
+                Log.EventWriter($"AgIO profile load failed: '{profileName}' ({profileLoadResult})");
+            }
         }
 
         public static void Save(string name, string value)
