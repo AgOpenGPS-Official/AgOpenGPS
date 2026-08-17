@@ -351,6 +351,9 @@ namespace AgOpenGPS
             panelSim.Visible = false;
             timerSim.Enabled = false;
             simulatorOnToolStripMenuItem.Checked = false;
+            // Lock SIM off for the rest of this session — no runtime path may re-enable.
+            isSimDisabledLocked = true;
+            simulatorOnToolStripMenuItem.Enabled = false;
             Properties.Settings.Default.setMenu_isSimulatorOn = simulatorOnToolStripMenuItem.Checked;
             Properties.Settings.Default.Save();
             return;

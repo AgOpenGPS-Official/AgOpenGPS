@@ -14,6 +14,10 @@ namespace AgOpenGPS
         //very first fix to setup grid etc
         public bool isFirstFixPositionSet = false, isGPSPositionInitialized = false, isFirstHeadingSet = false,
             isReverse = false, isSteerInReverse = true, isSuperSlow = false;
+
+        // Sticky lock: once SIM is disabled in this session (either by live fix arriving or by user),
+        // it can never be re-enabled until the app is restarted. Sim uit = Sim uit.
+        public bool isSimDisabledLocked = false;
         public double startGPSHeading = 0;
 
         //string to record fixes for elevation maps

@@ -262,7 +262,7 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
     <value>Autosteer Configuratie</value>
   </data>
   <data name="gsAutoSwitchDualFixSpeed" xml:space="preserve">
-    <value>Dual&lt;&gt;Fix</value>
+    <value>Schakelsnelheid</value>
   </data>
   <data name="gsBackground" xml:space="preserve">
     <value>Achtergrond</value>
@@ -1506,5 +1506,80 @@ Laad via het Config-paneel &amp; menu linksboven.</value>
   </data>
   <data name="gsRename" xml:space="preserve">
     <value>Hernoem</value>
+  </data>
+  <data name="gsCm" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="gsDiscourseForum" xml:space="preserve">
+    <value>Discourse Forum</value>
+  </data>
+  <data name="gsPixel" xml:space="preserve">
+    <value>Pixel</value>
+  </data>
+  <data name="gsYouTubeTutorials" xml:space="preserve">
+    <value>Youtube uitlegvideo's</value>
+  </data>
+  <data name="gsAckermann" xml:space="preserve">
+    <value>Ackermann</value>
+  </data>
+  <data name="gsCurve" xml:space="preserve">
+    <value>Curve</value>
+  </data>
+  <data name="gsDiameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="gsDirect" xml:space="preserve">
+    <value>Direct</value>
+  </data>
+  <data name="gsEasyDriveInfo" xml:space="preserve">
+    <value>Snelle start met GPS begeleiding. Stel werkende breedte en hitch lengte in en maak dan een AB lijn of curve. Er wordt niets opgeslagen.</value>
+  </data>
+  <data name="gsGrid" xml:space="preserve">
+    <value>Raster</value>
+  </data>
+  <data name="gsHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="gsKeyboard" xml:space="preserve">
+    <value>Toetsenbord</value>
+  </data>
+  <data name="gsLatLon" xml:space="preserve">
+    <value>Breedte+Lengte</value>
+  </data>
+  <data name="gsNext" xml:space="preserve">
+    <value>Volgende</value>
+  </data>
+  <data name="gsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="gsWebCam" xml:space="preserve">
+    <value>WebCam</value>
+  </data>
+  <data name="gsWest" xml:space="preserve">
+    <value>West</value>
+  </data>
+  <data name="gsWizards" xml:space="preserve">
+    <value>Installatiehulpen</value>
+  </data>
+  <data name="gsWizard" xml:space="preserve">
+    <value>Installatiehulp</value>
+  </data>
+  <data name="gsZone" xml:space="preserve">
+    <value>Zone</value>
+  </data>
+  <data name="gsZones" xml:space="preserve">
+    <value>Zones</value>
+  </data>
+  <data name="gsZoomIn" xml:space="preserve">
+    <value>Inzoomen</value>
+  </data>
+  <data name="gsTractor" xml:space="preserve">
+    <value>Tractor</value>
+  </data>
+  <data name="gsTBT" xml:space="preserve">
+    <value>TBT</value>
+  </data>
+  <data name="gsAPlus" xml:space="preserve">
+    <value>A+</value>
   </data>
 </root>

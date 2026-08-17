@@ -126,6 +126,23 @@ namespace AgOpenGPS.Properties
         {
             string path = Path.Combine(RegistrySettings.toolsDirectory, toolFileName + ".xml");
             var result = XmlSettingsHandler.LoadXMLFile(path, this);
+            bool loadedFromBackup = false;
+
+            // Fallback to last known good backup when current profile is missing/corrupt.
+            if (result == LoadResult.Failed || result == LoadResult.MissingFile)
+            {
+                string backupPath = Path.ChangeExtension(path, ".last");
+                if (File.Exists(backupPath))
+                {
+                    var backupResult = XmlSettingsHandler.LoadXMLFile(backupPath, this);
+                    if (backupResult == LoadResult.Ok)
+                    {
+                        result = LoadResult.Ok;
+                        loadedFromBackup = true;
+                    }
+                }
+            }
+
             if (result == LoadResult.MissingFile)
             {
                 // Try loading from old format and migrate
@@ -137,6 +154,9 @@ namespace AgOpenGPS.Properties
             {
                 RegistrySettings.toolProfileName = toolFileName;
             }
+
+            RegistrySettings.toolProfileLoadResult = result;
+            RegistrySettings.toolProfileLoadedFromBackup = loadedFromBackup;
 
             return result;
         }
@@ -153,7 +173,17 @@ namespace AgOpenGPS.Properties
                 : RegistrySettings.toolProfileName;
 
             string path = Path.Combine(RegistrySettings.toolsDirectory, fileName + ".xml");
+
+            // Keep a last-known-good copy before writing, unless this profile was
+            // recovered from .last (primary .xml was unreadable).
+            if (File.Exists(path) && !RegistrySettings.toolProfileLoadedFromBackup)
+            {
+                string backupPath = Path.ChangeExtension(path, ".last");
+                File.Copy(path, backupPath, true);
+            }
+
             XmlSettingsHandler.SaveXMLFile(path, this);
+            RegistrySettings.toolProfileLoadedFromBackup = false;
         }
 
         /// <summary>
@@ -164,6 +194,14 @@ namespace AgOpenGPS.Properties
         public void Save(string fileName)
         {
             string path = Path.Combine(RegistrySettings.toolsDirectory, fileName + ".xml");
+
+            // Keep a last-known-good copy before writing.
+            if (File.Exists(path))
+            {
+                string backupPath = Path.ChangeExtension(path, ".last");
+                File.Copy(path, backupPath, true);
+            }
+
             XmlSettingsHandler.SaveXMLFile(path, this);
         }
 

@@ -45,7 +45,11 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                 Origin = origin
             };
 
-            var converter = new GeoConverter(origin.Latitude, origin.Longitude);
+            // Use LocalPlane.ConvertWgs84ToGeoCoord: it is the exact analytic inverse of the
+            // uploader's LocalPlane.ConvertGeoCoordToWgs84 (both evaluate metersPerDegreeLon at
+            // the point's own latitude). The old GeoConverter evaluated it at the origin latitude,
+            // which introduced a systematic east-axis shear on the upload->download round trip.
+            var converter = new LocalPlane(origin, new SharedFieldProperties());
 
             // Parse boundaries directly to CBoundaryList
             if (dto.Boundaries != null)
@@ -68,7 +72,7 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                             continue;
                         }
 
-                        var local = converter.ToLocal(wgs.Latitude, wgs.Longitude);
+                        var local = converter.ConvertWgs84ToGeoCoord(wgs);
                         bnd.fenceLine.Add(new vec3(local.Easting, local.Northing, 0.0));
                     }
 
@@ -104,8 +108,8 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                         continue;
                     }
 
-                    var vA = converter.ToLocal(wgsA.Latitude, wgsA.Longitude);
-                    var vB = converter.ToLocal(wgsB.Latitude, wgsB.Longitude);
+                    var vA = converter.ConvertWgs84ToGeoCoord(wgsA);
+                    var vB = converter.ConvertWgs84ToGeoCoord(wgsB);
                     var ptA = new vec3(vA.Easting, vA.Northing, 0);
                     var ptB = new vec3(vB.Easting, vB.Northing, 0);
                     bool isCurve = ab.Coords.Count > 2;
@@ -134,7 +138,7 @@ namespace AgOpenGPS.Classes.AgShare.Helpers
                             var wgs = new Wgs84(p.Latitude, p.Longitude);
                             if (!wgs.IsValid) continue;
 
-                            var local = converter.ToLocal(wgs.Latitude, wgs.Longitude);
+                            var local = converter.ConvertWgs84ToGeoCoord(wgs);
                             localPts.Add(new vec3(local.Easting, local.Northing, 0));
                         }
 
