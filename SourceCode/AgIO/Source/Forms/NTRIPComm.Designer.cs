@@ -513,13 +513,28 @@ namespace AgIO
                 int headerEnd = response.IndexOf("\r\n\r\n", StringComparison.Ordinal);
                 string headerText = headerEnd >= 0 ? response.Substring(0, headerEnd) : response;
 
-                if (headerText.Contains("200"))
+                //a caster answers an unknown mount point with "SOURCETABLE 200 OK" - that is a
+                //rejection, not an accepted stream, so rule it out before the generic 200 check
+                bool isSourceTable = headerText.IndexOf("SOURCETABLE", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                if (!isSourceTable && headerText.Contains("200"))
                 {
                     isNTRIP_Connected = true;
                     isNTRIP_Connecting = false;
                     bytesSinceConnected = 0;
+
+                    //the caster answered, so restart the data watchdog here as well. Without this a
+                    //mount point that sends its header in a read of its own (no RTCM yet) is torn
+                    //down again by IncrementNTRIPWatchDog() on the very next second.
+                    NTRIP_Watchdog = 0;
+
                     Log.EventWriter("NTRIP - Caster accepted connection");
                     Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+
+                    //VRS / nearest base mount points (Centipede NEAR and similar) send nothing at all
+                    //until they know where we are - push a GGA now instead of waiting for the 5 second
+                    //timer tick, the caster may well drop an idle connection before that
+                    if (sendGGAInterval > 0) SendGGA();
 
                     //some casters send the first RTCM data in the same read as the "200 OK"
                     //header - keep it instead of discarding it below
@@ -534,6 +549,7 @@ namespace AgIO
                 else
                 {
                     string firstLine = response.Split('\r')[0];
+                    if (isSourceTable) firstLine += " - unknown mount point: " + mount;
                     Log.EventWriter("NTRIP - Caster rejected connection: " + firstLine);
                     TimedMessageBox(2500, "NTRIP Connection Rejected", firstLine);
                     ReconnectRequest();
@@ -545,9 +561,11 @@ namespace AgIO
             //update gui with stats
             tripBytes += (uint)data.Length;
 
-            //only count genuine RTCM3 frames (sync byte 0xD3) - a caster can still send extra
-            //protocol/error text after its initial "200 OK" before closing the connection
-            if (data.Length > 0 && data[0] == 0xD3) bytesSinceConnected += (uint)data.Length;
+            //only count genuine RTCM3 data (sync byte 0xD3) - a caster can still send extra
+            //protocol/error text after its initial "200 OK" before closing the connection.
+            //A read can start in the middle of a frame, so scan the whole buffer instead of
+            //only testing the first byte, or a healthy stream can look like it sent nothing.
+            if (Array.IndexOf(data, (byte)0xD3) >= 0) bytesSinceConnected += (uint)data.Length;
 
             if (isViewAdvanced && isNTRIP_RequiredOn)
             {
