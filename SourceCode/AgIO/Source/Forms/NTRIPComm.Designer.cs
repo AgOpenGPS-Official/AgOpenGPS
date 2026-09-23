@@ -518,6 +518,10 @@ namespace AgIO
                     isNTRIP_Connected = true;
                     isNTRIP_Connecting = false;
                     bytesSinceConnected = 0;
+                    //the header itself is legitimate traffic - some casters (e.g. a "nearest
+                    //mountpoint" alias) need a moment after this to resolve a real station and
+                    //start streaming, so don't let the watchdog fire in that gap
+                    NTRIP_Watchdog = 0;
                     Log.EventWriter("NTRIP - Caster accepted connection");
                     Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
 
