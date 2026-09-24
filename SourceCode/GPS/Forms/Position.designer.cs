@@ -873,6 +873,7 @@ namespace AgOpenGPS
                 }
                 isobus.SetActualSpeed(currentSpeed);
                 isobus.SetTotalDistance((int)(fd.distanceUser * 1000)); // convert from meter to mm
+                isobus.SendGuidanceTrackContext();
 
                 if (!isBtnAutoSteerOn) //32020 means auto steer is off
                 {

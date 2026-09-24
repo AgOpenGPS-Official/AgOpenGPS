@@ -195,6 +195,96 @@ Sent when:
 - Field is closed (length = 0)
 - TC reconnects after >1s absence (current state, open or closed)
 
+#### PGN 0xF4 (244) - Guidance Track Context (AOG→External)
+
+**Length:** 18 bytes (12 data bytes + header/CRC)
+
+**Direction:** AOG → AgIO → UDP network (broadcast to all external listeners)
+
+**Purpose:** Exposes the current guidance-track context so external applications (e.g. ISOBUS Task Controllers implementing AEF TRACK Generation 1) can identify the active guidance pattern and the vehicle's current pass/swath number, including orientation-aware left/right neighbour tracks.
+
+| Byte | Field | Type | Description |
+|------|-------|------|-------------|
+| 5 | Sequence | byte | Rolling counter (0–255), increments on each send. Use together with Flags to detect stale or out-of-order messages. |
+| 6 | Flags | byte | See flag bits below. |
+| 7-8 | Guidance Reference ID | uint16 (LE) | Stable identifier for the active guidance pattern. `0` = no active track. Equals `trackIndex + 1` from AOG's internal track list. Changes when the operator switches to a different AB line / curve. |
+| 9-10 | Current Track Number | int16 (LE) | Signed pass/swath number relative to the guidance reference. `0` = on the reference line, positive = one side, negative = the other. |
+| 11-12 | Track Number Left | int16 (LE) | Track number of the pass immediately to the **left** of the vehicle, relative to its current direction of travel. |
+| 13-14 | Track Number Right | int16 (LE) | Track number of the pass immediately to the **right** of the vehicle, relative to its current direction of travel. |
+| 15-16 | Swath Width | uint16 (LE) | Distance between adjacent guidance tracks in **millimetres** (tool width minus overlap, the same spacing the track numbers are derived from). `0` when no active track (Valid flag clear). |
+| 17 | CRC | byte | Checksum (sum of bytes 2–16) |
+
+**Flag bits (byte 6):**
+
+| Bit | Name | Description |
+|-----|------|-------------|
+| 0 | Valid | `1` = data is valid (active guidance track exists). `0` = no active guidance; track fields should be ignored. |
+| 1 | Heading Same Way | `1` = vehicle is travelling in the same direction as the guidance reference heading. `0` = vehicle is travelling opposite to the reference heading. |
+| 2 | Mode | `0` = AB line guidance, `1` = curve guidance. |
+| 3-7 | Reserved | Reserved for future use, always `0`. |
+
+**Behaviour and timing:**
+
+- Sent whenever the track context **changes** (pass number, reference ID, heading direction, swath width, or validity).
+- Minimum send interval: **100 ms** (rate-limited to avoid flooding).
+- When no guidance track is active (e.g. field just opened, no AB line created), the message is sent with `Flags = 0x00` and `Guidance Reference ID = 0`.
+
+**Guidance Reference ID stability:**
+
+- The ID remains constant while the operator drives passes on the same AB line or curve (e.g. passes …, -2, -1, 0, 1, 2, …).
+- The ID changes when the operator selects a different guidance pattern (different AB line or curve).
+- The ID is `trackIndex + 1` where `trackIndex` is the zero-based index into AOG's internal track list. This means the ID is a small positive integer (1, 2, 3, …) that is stable within a session.
+
+**Left/Right track determination:**
+
+Left and right are determined relative to the **vehicle's direction of travel**, not the guidance reference heading:
+
+- When `Heading Same Way = 1` (vehicle going same direction as reference):
+  - `trackLeft = currentTrack - 1`
+  - `trackRight = currentTrack + 1`
+- When `Heading Same Way = 0` (vehicle going opposite to reference):
+  - `trackLeft = currentTrack + 1`
+  - `trackRight = currentTrack - 1`
+
+This means an external application does **not** need to reproduce AOG's heading/orientation logic — the left and right values are always correct from the operator's perspective.
+
+**ISOBUS TRACK mapping:**
+
+For implementors mapping this to AEF ISOBUS TRACK Generation 1:
+
+| ISOBUS TRACK field | PGN 0xF4 field |
+|---|---|
+| Guidance Reference ID | Guidance Reference ID (bytes 7-8) |
+| Actual track number | Current Track Number (bytes 9-10) |
+| Track to the left | Track Number Left (bytes 11-12) |
+| Track to the right | Track Number Right (bytes 13-14) |
+| Guidance line swath width (DDI 512) | Swath Width (bytes 15-16, mm) |
+
+**Decoding example (C#):**
+
+```csharp
+// Assuming 'data' is the received PGN byte array
+if (data[0] == 0x80 && data[1] == 0x81 && data[3] == 0xF4)
+{
+    byte sequence   = data[5];
+    byte flags      = data[6];
+    bool isValid    = (flags & 0x01) != 0;
+    bool headingSame = (flags & 0x02) != 0;
+    bool isCurve    = (flags & 0x04) != 0;
+
+    ushort refId       = BitConverter.ToUInt16(data, 7);
+    short currentTrack = BitConverter.ToInt16(data, 9);
+    short trackLeft    = BitConverter.ToInt16(data, 11);
+    short trackRight   = BitConverter.ToInt16(data, 13);
+    ushort swathWidthMm = BitConverter.ToUInt16(data, 15);
+
+    if (isValid)
+    {
+        // Use refId, currentTrack, trackLeft, trackRight, swathWidthMm
+    }
+}
+```
+
 #### PGN 0xD0 (208) - Latitude/Longitude
 
 **Length:** 14 bytes

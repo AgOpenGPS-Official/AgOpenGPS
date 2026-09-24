@@ -23,6 +23,16 @@ namespace AgOpenGPS
         private int lastTotalDistance;
         private DateTimeOffset totalDistanceTime;
 
+        // Guidance Track Context (PGN 0xF4)
+        private byte trackContextSequence;
+        private int lastTrackContextRefId;
+        private int lastTrackContextCurrent;
+        private int lastTrackContextLeft;
+        private int lastTrackContextRight;
+        private int lastTrackContextWidth;
+        private byte lastTrackContextFlags;
+        private DateTimeOffset trackContextTime;
+
 
         public CISOBUS(FormGPS _f)
         {
@@ -185,6 +195,133 @@ namespace AgOpenGPS
             {
                 mf.btnIsobusSectionControl.Image = Properties.Resources.IsobusSectionControlOff;
             }
+        }
+
+        /// <summary>
+        /// Send guidance track context (PGN 0xF4) to external applications.
+        /// Provides: reference ID, current track number, left/right track numbers, swath width.
+        /// </summary>
+        public void SendGuidanceTrackContext()
+        {
+            bool hasActiveTrack = mf.trk.gArr != null
+                && mf.trk.gArr.Count > 0
+                && mf.trk.idx >= 0
+                && mf.trk.idx < mf.trk.gArr.Count;
+
+            ushort refId = 0;
+            short currentTrack = 0;
+            short trackLeft = 0;
+            short trackRight = 0;
+            ushort swathWidthMm = 0;
+            byte flags = 0;
+
+            if (hasActiveTrack)
+            {
+                CTrk track = mf.trk.gArr[mf.trk.idx];
+                refId = (ushort)(mf.trk.idx + 1);
+
+                // Mode bits (bits 2-3): 0=AB, 1=Curve
+                if (track.mode == TrackMode.Curve)
+                    flags |= 0x04;
+
+                int pathsAway;
+                bool isHeadingSameWay;
+
+                if (track.mode == TrackMode.AB)
+                {
+                    pathsAway = mf.ABLine.howManyPathsAway;
+                    isHeadingSameWay = mf.ABLine.isHeadingSameWay;
+                }
+                else
+                {
+                    pathsAway = mf.curve.howManyPathsAway;
+                    isHeadingSameWay = mf.curve.isHeadingSameWay;
+                }
+
+                // Bit 1: heading same way
+                if (isHeadingSameWay)
+                    flags |= 0x02;
+
+                currentTrack = (short)pathsAway;
+
+                // Left/right relative to vehicle direction of travel.
+                // When heading same way as reference: left = current-1, right = current+1
+                // When heading opposite:              left = current+1, right = current-1
+                if (isHeadingSameWay)
+                {
+                    trackLeft = (short)(currentTrack - 1);
+                    trackRight = (short)(currentTrack + 1);
+                }
+                else
+                {
+                    trackLeft = (short)(currentTrack + 1);
+                    trackRight = (short)(currentTrack - 1);
+                }
+
+                // Track spacing as used for howManyPathsAway in CABLine / CABCurve (widthMinusOverlap)
+                double swathWidth = Math.Round((mf.tool.width - mf.tool.overlap) * 1000.0);
+                swathWidthMm = (ushort)Math.Max(0, Math.Min(65535, swathWidth));
+
+                // Bit 0: data valid
+                flags |= 0x01;
+            }
+
+            // Change detection — only send when something changed, with 100 ms minimum interval
+            if (refId == lastTrackContextRefId
+                && currentTrack == lastTrackContextCurrent
+                && trackLeft == lastTrackContextLeft
+                && trackRight == lastTrackContextRight
+                && swathWidthMm == lastTrackContextWidth
+                && flags == lastTrackContextFlags)
+            {
+                return;
+            }
+
+            if (DateTimeOffset.Now - trackContextTime < TimeSpan.FromMilliseconds(100))
+            {
+                return;
+            }
+
+            lastTrackContextRefId = refId;
+            lastTrackContextCurrent = currentTrack;
+            lastTrackContextLeft = trackLeft;
+            lastTrackContextRight = trackRight;
+            lastTrackContextWidth = swathWidthMm;
+            lastTrackContextFlags = flags;
+            trackContextTime = DateTimeOffset.Now;
+
+            byte seq = trackContextSequence++;
+
+            // PGN 0xF4 — Guidance Track Context, 18 bytes total
+            byte[] message = new byte[18];
+            message[0] = 0x80; // AOG header
+            message[1] = 0x81; // PGN header
+            message[2] = 0x7F; // SRC address
+            message[3] = 0xF4; // PGN: Guidance Track Context
+            message[4] = 12;   // data payload length
+
+            message[5] = seq;                                      // sequence counter
+            message[6] = flags;                                    // validity / heading / mode flags
+            message[7] = (byte)(refId & 0xFF);                     // ref ID lo
+            message[8] = (byte)(refId >> 8);                       // ref ID hi
+
+            byte[] curBytes = BitConverter.GetBytes(currentTrack);
+            message[9] = curBytes[0];                              // current track lo
+            message[10] = curBytes[1];                             // current track hi
+
+            byte[] leftBytes = BitConverter.GetBytes(trackLeft);
+            message[11] = leftBytes[0];                            // track left lo
+            message[12] = leftBytes[1];                            // track left hi
+
+            byte[] rightBytes = BitConverter.GetBytes(trackRight);
+            message[13] = rightBytes[0];                           // track right lo
+            message[14] = rightBytes[1];                           // track right hi
+
+            message[15] = (byte)(swathWidthMm & 0xFF);             // swath width mm lo
+            message[16] = (byte)(swathWidthMm >> 8);               // swath width mm hi
+
+            // CRC is computed by SendPgnToLoop into message[17]
+            mf.SendPgnToLoop(message);
         }
 
         public bool IsAlive()
