@@ -559,14 +559,17 @@ namespace AgOpenGPS
 
             Properties.VehicleSettings.Default.setAS_highSteerPWM = 150;
             Properties.VehicleSettings.Default.setAS_lowSteerPWM = 30;
-            Properties.VehicleSettings.Default.setAS_Kp = 120;
+            Properties.VehicleSettings.Default.setAS_Kp = 15;
             Properties.VehicleSettings.Default.setAS_minSteerPWM = 25;
 
-            Properties.VehicleSettings.Default.setArdSteer_setting0 = 56;
-            Properties.VehicleSettings.Default.setArdSteer_setting1 = 0;
+            //Cytron (16) + Single (8) + Steer Enable Button (64)
+            Properties.VehicleSettings.Default.setArdSteer_setting0 = 88;
+            //Current turn sensor on (4)
+            Properties.VehicleSettings.Default.setArdSteer_setting1 = 4;
             Properties.VehicleSettings.Default.setArdMac_isDanfoss = false;
 
-            Properties.VehicleSettings.Default.setArdSteer_maxPulseCounts = 0;
+            //Current sensor "off at" 40% (102 * 0.392 = 40%)
+            Properties.VehicleSettings.Default.setArdSteer_maxPulseCounts = 102;
 
             Properties.ToolSettings.Default.setVehicle_goalPointLookAheadMult = 1;
 
@@ -1135,7 +1138,7 @@ namespace AgOpenGPS
         private void tab_MinimumGain_Leave(object sender, EventArgs e)
         {
             FreeDrive(false);
-            hsbarProportionalGain.Value = 40;
+            hsbarProportionalGain.Value = 15;
         }
 
         private void tabPGain_Enter(object sender, EventArgs e)
