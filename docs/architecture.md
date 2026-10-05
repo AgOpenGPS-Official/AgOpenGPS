@@ -93,6 +93,7 @@ All UDP messages use the AgOpenGPS PGN format:
 | 0xF1 | 241 | AOG→TC | Section control enable request |
 | 0xF2 | 242 | AOG→TC | Process data (guidance deviation, speed, distance) |
 | 0xF3 | 243 | AOG→TC | Active field folder name (UTF-8, empty = closed) |
+| 0xF4 | 244 | AOG→External | Guidance track context (ref ID, current/left/right track) |
 
 See [PGN Protocol](pgn-protocol.md) for complete specification.
 
