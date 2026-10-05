@@ -544,7 +544,8 @@ namespace AgOpenGPS
                 f.Close();
             }
 
-            if (this.OwnedForms.Any())
+            //the webcam window does not use any field data, it can stay open
+            if (this.OwnedForms.Any(owned => !(owned is FormWebCam)))
             {
                 TimedMessageBox(2000, gStr.gsWindowsStillOpen, gStr.gsCloseAllWindowsFirst);
                 return;

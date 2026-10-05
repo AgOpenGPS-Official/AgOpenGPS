@@ -677,7 +677,7 @@ namespace AgOpenGPS
             e.Cancel = true; // Prevent immediate close
 
             // Close subforms
-            string[] formNames = { "FormGPSData", "FormFieldData", "FormPan", "FormTimedMessage" };
+            string[] formNames = { "FormGPSData", "FormFieldData", "FormPan", "FormTimedMessage", "FormWebCam" };
             foreach (string name in formNames)
             {
                 Form f = Application.OpenForms[name];
