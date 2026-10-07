@@ -231,35 +231,12 @@ namespace AgIO
             pictureBox1.Top = 0;
             //pictureBox1.Dock = DockStyle.Fill;:
 
-            //update Caster IP from URL, just use the old one if can't find
+            //update Caster IP from URL in the background, start from the last known one meanwhile
+            //(the first connect attempt is ~10 s away, the lookup normally finishes long before)
             if (isNTRIP_RequiredOn)
             {
-                broadCasterIP = null;
-
-                if (!ResolveCasterIP())
-                {
-                    TimedMessageBox(1500, "URL Not Located, Network Down?", "Cannot Find: " + Properties.Settings.Default.setNTRIP_casterURL);
-                    //if we had a timer already, kill it
-                    tmr?.Dispose();
-
-                    //use last known
-                    broadCasterIP = Properties.Settings.Default.setNTRIP_casterIP; //Select correct Address
-
-                    // Close the socket if it is still open
-                    if (clientSocket != null && clientSocket.Connected)
-                    {
-                        clientSocket.Shutdown(SocketShutdown.Both);
-                        System.Threading.Thread.Sleep(100);
-                        clientSocket.Close();
-                    }
-
-                    //TimedMessageBox(2000, "NTRIP Not Connected", " Reconnect Request");
-                    ntripCounter = 15;
-                    isNTRIP_Connected = false;
-                    isNTRIP_Starting = false;
-                    isNTRIP_Connecting = false;
-                    return;
-                }
+                broadCasterIP = Properties.Settings.Default.setNTRIP_casterIP;
+                ResolveCasterIPAsync();
             }
 
             this.Text =
