@@ -297,12 +297,25 @@ namespace AgIO
 
                 try
                 {
-                    // Close the socket if it is still open
-                    if (clientSocket != null && clientSocket.Connected)
+                    // Always release the previous socket. After resume from standby the old
+                    // connection is usually half-open (Connected == false) and was leaked here,
+                    // leaving orphaned sockets with pending receives behind on every reconnect.
+                    if (clientSocket != null)
                     {
-                        clientSocket.Shutdown(SocketShutdown.Both);
-                        System.Threading.Thread.Sleep(100);
-                        clientSocket.Close();
+                        Socket oldSocket = clientSocket;
+                        try
+                        {
+                            if (oldSocket.Connected)
+                            {
+                                oldSocket.Shutdown(SocketShutdown.Both);
+                                System.Threading.Thread.Sleep(100);
+                            }
+                        }
+                        catch { /* already dead */ }
+                        finally
+                        {
+                            try { oldSocket.Close(); } catch { /* already disposed */ }
+                        }
                     }
 
                     //NTRIP endpoint

@@ -105,6 +105,8 @@ namespace AgIO
             {
                 spIMU.PortName = portNameIMU;
                 spIMU.BaudRate = baudRateIMU;
+                //remove first so reopening the port never stacks duplicate handlers
+                spIMU.DataReceived -= sp_DataReceivedIMU;
                 spIMU.DataReceived += sp_DataReceivedIMU;
                 spIMU.DtrEnable = true;
                 spIMU.RtsEnable = true;
@@ -325,6 +327,8 @@ namespace AgIO
             {
                 spSteerModule.PortName = portNameSteerModule;
                 spSteerModule.BaudRate = baudRateSteerModule;
+                //remove first so reopening the port never stacks duplicate handlers
+                spSteerModule.DataReceived -= sp_DataReceivedSteerModule;
                 spSteerModule.DataReceived += sp_DataReceivedSteerModule;
                 spSteerModule.DtrEnable = true;
                 spSteerModule.RtsEnable = true;
@@ -537,6 +541,8 @@ namespace AgIO
             {
                 spMachineModule.PortName = portNameMachineModule;
                 spMachineModule.BaudRate = baudRateMachineModule;
+                //remove first so reopening the port never stacks duplicate handlers
+                spMachineModule.DataReceived -= sp_DataReceivedMachineModule;
                 spMachineModule.DataReceived += sp_DataReceivedMachineModule;
                 spMachineModule.DtrEnable = true;
                 spMachineModule.RtsEnable = true;
@@ -746,6 +752,8 @@ namespace AgIO
             {
                 spGPS.PortName = portNameGPS;
                 spGPS.BaudRate = baudRateGPS;
+                //remove first so reopening the port never stacks duplicate handlers
+                spGPS.DataReceived -= sp_DataReceivedGPS;
                 spGPS.DataReceived += sp_DataReceivedGPS;
                 spGPS.WriteTimeout = 1000;
             }
@@ -841,6 +849,8 @@ namespace AgIO
             {
                 spGPS2.PortName = portNameGPS2;
                 spGPS2.BaudRate = baudRateGPS2;
+                //remove first so reopening the port never stacks duplicate handlers
+                spGPS2.DataReceived -= sp_DataReceivedGPS2;
                 spGPS2.DataReceived += sp_DataReceivedGPS2;
                 spGPS2.WriteTimeout = 1000;
             }

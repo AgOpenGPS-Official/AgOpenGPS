@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using AgOpenGPS.Helpers;
+using AgLibrary.Networking;
 
 namespace AgOpenGPS
 {
@@ -328,6 +329,7 @@ namespace AgOpenGPS
                 loopBackSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 loopBackSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
                 loopBackSocket.Bind(new IPEndPoint(IPAddress.Loopback, 15555));
+                UdpSocketHelper.DisableConnectionReset(loopBackSocket);
                 loopBackSocket.BeginReceiveFrom(loopBuffer, 0, loopBuffer.Length, SocketFlags.None,
                     ref endPointLoopBack, new AsyncCallback(ReceiveAppData), null);
                 Log.EventWriter("UDP Loopback network started: " + IPAddress.Loopback.ToString() + ":" + "15555");
@@ -361,24 +363,59 @@ namespace AgOpenGPS
 
         private void ReceiveAppData(IAsyncResult asyncResult)
         {
+            byte[] localMsg = null;
             try
             {
                 // Receive all data
                 int msgLen = loopBackSocket.EndReceiveFrom(asyncResult, ref endPointLoopBack);
 
-                byte[] localMsg = new byte[msgLen];
+                localMsg = new byte[msgLen];
                 Array.Copy(loopBuffer, localMsg, msgLen);
+            }
+            catch (Exception ex)
+            {
+                if (UdpSocketHelper.IsSocketGone(ex)) return;
+                // Transient error (e.g. AgIO restarted, resume from standby) - keep the loop alive below
+                LogLoopbackErrorOnUiThread("Loopback receive error: " + ex.Message);
+                UdpSocketHelper.ErrorBackoff();
+            }
 
-                // Listen for more connections again...
+            // Always listen again, otherwise one error silently stops all data from AgIO
+            try
+            {
                 loopBackSocket.BeginReceiveFrom(loopBuffer, 0, loopBuffer.Length, SocketFlags.None,
                     ref endPointLoopBack, new AsyncCallback(ReceiveAppData), null);
-
-                BeginInvoke((MethodInvoker)(() => ReceiveFromAgIO(localMsg)));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // MessageBox.Show("ReceiveData Error: " + ex.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!UdpSocketHelper.IsSocketGone(ex))
+                    LogLoopbackErrorOnUiThread("Loopback receive could not restart: " + ex.Message);
+                return;
             }
+
+            if (localMsg != null)
+            {
+                try { BeginInvoke((MethodInvoker)(() => ReceiveFromAgIO(localMsg))); }
+                catch { /* form closing */ }
+            }
+        }
+
+        // Rate limit receive error logging so a flapping socket can't flood the log
+        private DateTime lastLoopbackErrorLog = DateTime.MinValue;
+
+        private void LogLoopbackErrorOnUiThread(string message)
+        {
+            try
+            {
+                //Log.sbEvents is not thread-safe, marshal to the UI thread
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    if ((DateTime.UtcNow - lastLoopbackErrorLog).TotalSeconds < 10) return;
+                    lastLoopbackErrorLog = DateTime.UtcNow;
+                    Log.EventWriter(message);
+                }));
+            }
+            catch { /* form closing */ }
         }
 
         public void SendPgnToLoop(byte[] byteData)

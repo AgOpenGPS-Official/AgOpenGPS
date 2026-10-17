@@ -110,6 +110,33 @@ namespace AgOpenGPS
         private readonly Stopwatch swFrame = new Stopwatch();
 
         public double secondsSinceStart;
+
+        //monotonic clock for secondsSinceStart - unaffected by DST/clock changes and cheap to read
+        //(previously Process.GetCurrentProcess() was allocated 4x per second and never disposed)
+        private readonly Stopwatch swSinceStart = Stopwatch.StartNew();
+
+        //standby/resume diagnostics
+        private int resumeCount = 0;
+        private readonly Stopwatch swSinceResume = new Stopwatch();
+        private int diagnosticsMinuteCounter = 0;
+
+        /// <summary>
+        /// Writes a performance snapshot to the event log. Called every 10 minutes so slow
+        /// degradation (e.g. stuttering hours after resume from standby) shows up in the log.
+        /// </summary>
+        private void LogPerformanceSnapshot()
+        {
+            string resumeInfo = resumeCount == 0
+                ? "no resume"
+                : "resumes " + resumeCount + ", " + swSinceResume.Elapsed.TotalMinutes.ToString("N0", CultureInfo.InvariantCulture) + " min since resume";
+
+            Log.EventWriter("Perf: uptime " + (secondsSinceStart / 60).ToString("N0", CultureInfo.InvariantCulture) + " min (" + resumeInfo + "), "
+                + "frame " + frameTime.ToString("N1", CultureInfo.InvariantCulture) + " ms, "
+                + "gps " + gpsHz.ToString("N1", CultureInfo.InvariantCulture) + " Hz, "
+                + "missed " + missedSentenceCount + ", "
+                + PerformanceDiagnostics.Snapshot());
+        }
+
         public double gridToolSpacing;
 
         //private readonly Stopwatch swDraw = new Stopwatch();
@@ -280,6 +307,20 @@ namespace AgOpenGPS
         //The method assigned to the PowerModeChanged event call
         private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
+            //diagnostics for standby/resume related issues (see #1234)
+            if (e.Mode == Microsoft.Win32.PowerModes.Suspend)
+            {
+                Log.EventWriter("Power: Suspend (standby). " + PerformanceDiagnostics.Snapshot());
+                Log.FileSaveSystemEvents();
+            }
+            else if (e.Mode == Microsoft.Win32.PowerModes.Resume)
+            {
+                resumeCount++;
+                swSinceResume.Restart();
+                Log.EventWriter("Power: Resume #" + resumeCount + ". " + PerformanceDiagnostics.Snapshot());
+                Log.FileSaveSystemEvents();
+            }
+
             //We are interested only in StatusChange cases
             if (e.Mode.HasFlag(Microsoft.Win32.PowerModes.StatusChange))
             {
@@ -325,7 +366,7 @@ namespace AgOpenGPS
                 null);
 
             //time keeper
-            secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
+            secondsSinceStart = swSinceStart.Elapsed.TotalSeconds;
 
             camera = new Camera(
                 Properties.Settings.Default.setDisplay_camPitch,

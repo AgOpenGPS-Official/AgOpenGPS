@@ -287,6 +287,13 @@ namespace AgOpenGPS
                 //reset the counter
                 oneSecondCounter = 0;
 
+                //performance snapshot to the log every 10 minutes (diagnostics for #1234)
+                if (++diagnosticsMinuteCounter >= 600)
+                {
+                    diagnosticsMinuteCounter = 0;
+                    LogPerformanceSnapshot();
+                }
+
                 //counter used for saving field in background - is actually 30 second
                 fileSaveCounter++;
 
@@ -384,7 +391,7 @@ namespace AgOpenGPS
 
                 btnAutoSteerConfig.Text = SetSteerAngle + "\r\n" + ActualSteerAngle;
 
-                secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
+                secondsSinceStart = swSinceStart.Elapsed.TotalSeconds;
             }
 
         }//wait till timer fires again.         

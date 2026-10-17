@@ -55,6 +55,10 @@ namespace AgIO
         //timer variables
         public double secondsSinceStart, twoSecondTimer, tenSecondTimer, threeMinuteTimer, pingSecondsStart;
 
+        //monotonic clock for secondsSinceStart - unaffected by DST/clock changes and cheap to read
+        //(previously Process.GetCurrentProcess() was allocated every second and never disposed)
+        private readonly Stopwatch swSinceStart = Stopwatch.StartNew();
+
         public bool isNTRIPToggle;
 
         //usually 256 - send ntrip to serial in chunks
@@ -79,6 +83,9 @@ namespace AgIO
         //First run
         private void FormLoop_Load(object sender, EventArgs e)
         {
+            //standby/resume diagnostics (see #1234)
+            Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+
             if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Failed)
             {
                 TimedMessageBox(10000,
@@ -295,6 +302,9 @@ namespace AgIO
 
         private void FormLoop_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //static event - must be removed or it keeps the form alive
+            Microsoft.Win32.SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+
             Settings.Default.setPort_wasGPSConnected = wasGPSConnectedLastRun;
             Settings.Default.setPort_wasIMUConnected = wasIMUConnectedLastRun;
             Settings.Default.setPort_wasSteerModuleConnected = wasSteerModuleConnectedLastRun;
@@ -356,7 +366,7 @@ namespace AgIO
 
             //to check if new data for subnet
 
-            secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
+            secondsSinceStart = swSinceStart.Elapsed.TotalSeconds;
 
             if (focusSkipCounter != 0)
             {
@@ -453,7 +463,7 @@ namespace AgIO
 
             if (isViewAdvanced)
             {
-                pingSecondsStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
+                pingSecondsStart = swSinceStart.Elapsed.TotalSeconds;
                 lblPing.Text = lblPingMachine.Text = "*";
             }
 
@@ -587,8 +597,52 @@ namespace AgIO
             }
         }
 
+        //standby/resume diagnostics
+        private int resumeCount = 0;
+        private readonly Stopwatch swSinceResume = new Stopwatch();
+        private int threeMinuteLoopCount = 0;
+
+        private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == Microsoft.Win32.PowerModes.Suspend)
+            {
+                Log.EventWriter("Power: Suspend (standby). " + PerformanceDiagnostics.Snapshot());
+                Log.FileSaveSystemEvents();
+            }
+            else if (e.Mode == Microsoft.Win32.PowerModes.Resume)
+            {
+                resumeCount++;
+                swSinceResume.Restart();
+                Log.EventWriter("Power: Resume #" + resumeCount + ". " + PerformanceDiagnostics.Snapshot());
+                Log.FileSaveSystemEvents();
+            }
+        }
+
+        /// <summary>
+        /// Writes a performance snapshot to the event log so slow degradation
+        /// (e.g. stuttering hours after resume from standby) shows up in the log.
+        /// </summary>
+        private void LogPerformanceSnapshot()
+        {
+            string resumeInfo = resumeCount == 0
+                ? "no resume"
+                : "resumes " + resumeCount + ", " + swSinceResume.Elapsed.TotalMinutes.ToString("N0", CultureInfo.InvariantCulture) + " min since resume";
+
+            Log.EventWriter("Perf: uptime " + (secondsSinceStart / 60).ToString("N0", CultureInfo.InvariantCulture) + " min (" + resumeInfo + "), "
+                + "NTRIP queue " + rawTrip.Count + ", "
+                + PerformanceDiagnostics.Snapshot());
+            Log.FileSaveSystemEvents();
+        }
+
         private void ThreeMinuteLoop()
         {
+            //performance snapshot every 9 minutes (diagnostics for #1234)
+            if (++threeMinuteLoopCount >= 3)
+            {
+                threeMinuteLoopCount = 0;
+                LogPerformanceSnapshot();
+            }
+
             if (isViewAdvanced)
             {
                 btnSlide.PerformClick();

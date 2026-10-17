@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using AgLibrary.Logging;
+using AgLibrary.Networking;
 
 namespace AgIO
 {
@@ -69,8 +70,9 @@ namespace AgIO
         //scan results placed here
         public string scanReturn = "Scanning...";
         
-        // Data stream
+        // Data streams - each socket needs its own receive buffer, they complete on different threads
         private byte[] buffer = new byte[1024];
+        private byte[] loopBuffer = new byte[1024];
 
         //used to send communication check pgn= C8 or 200
         private byte[] helloFromAgIO = { 0x80, 0x81, 0x7F, 200, 3, 56, 0, 0, 0x47 };
@@ -97,6 +99,7 @@ namespace AgIO
                 UDPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 UDPSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
                 UDPSocket.Bind(new IPEndPoint(IPAddress.Any, 9999));
+                UdpSocketHelper.DisableConnectionReset(UDPSocket);
                 UDPSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointUDP,
                     new AsyncCallback(ReceiveDataUDPAsync), null);
 
@@ -139,7 +142,8 @@ namespace AgIO
                 loopBackSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 loopBackSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
                 loopBackSocket.Bind(new IPEndPoint(IPAddress.Loopback, 17777));
-                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack, 
+                UdpSocketHelper.DisableConnectionReset(loopBackSocket);
+                loopBackSocket.BeginReceiveFrom(loopBuffer, 0, loopBuffer.Length, SocketFlags.None, ref endPointLoopBack, 
                     new AsyncCallback(ReceiveDataLoopAsync), null);
                 Log.EventWriter("Loopback is Connected: " + IPAddress.Loopback.ToString() + ":17777");
 
@@ -245,23 +249,65 @@ namespace AgIO
 
         private void ReceiveDataLoopAsync(IAsyncResult asyncResult)
         {
+            byte[] localMsg = null;
             try
             {
                 // Receive all data
                 int msgLen = loopBackSocket.EndReceiveFrom(asyncResult, ref endPointLoopBack);
 
-                byte[] localMsg = new byte[msgLen];
-                Array.Copy(buffer, localMsg, msgLen);
-
-                // Listen for more connections again...
-                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack, 
-                    new AsyncCallback(ReceiveDataLoopAsync), null);
-
-                BeginInvoke((MethodInvoker)(() => ReceiveFromLoopBack(localMsg)));
+                localMsg = new byte[msgLen];
+                Array.Copy(loopBuffer, localMsg, msgLen);
             }
-            catch
+            catch (Exception ex)
             {
+                if (UdpSocketHelper.IsSocketGone(ex)) return;
+                // Transient error (e.g. after resume from standby) - keep the loop alive below
+                LogReceiveErrorOnUiThread("Loopback receive error: " + ex.Message);
+                UdpSocketHelper.ErrorBackoff();
             }
+
+            // Always listen again, otherwise one error silently stops all traffic from AgOpenGPS
+            if (!RestartLoopbackReceive()) return;
+
+            if (localMsg != null)
+            {
+                try { BeginInvoke((MethodInvoker)(() => ReceiveFromLoopBack(localMsg))); }
+                catch { /* form closing */ }
+            }
+        }
+
+        private bool RestartLoopbackReceive()
+        {
+            try
+            {
+                loopBackSocket.BeginReceiveFrom(loopBuffer, 0, loopBuffer.Length, SocketFlags.None, ref endPointLoopBack,
+                    new AsyncCallback(ReceiveDataLoopAsync), null);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (!UdpSocketHelper.IsSocketGone(ex))
+                    LogReceiveErrorOnUiThread("Loopback receive could not restart: " + ex.Message);
+                return false;
+            }
+        }
+
+        // Rate limit receive error logging so a flapping socket can't flood the log
+        private DateTime lastReceiveErrorLog = DateTime.MinValue;
+
+        private void LogReceiveErrorOnUiThread(string message)
+        {
+            try
+            {
+                //Log.sbEvents is not thread-safe, marshal to the UI thread
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    if ((DateTime.UtcNow - lastReceiveErrorLog).TotalSeconds < 10) return;
+                    lastReceiveErrorLog = DateTime.UtcNow;
+                    Log.EventWriter(message);
+                }));
+            }
+            catch { /* form closing */ }
         }
 
         #endregion
@@ -320,23 +366,40 @@ namespace AgIO
 
         private void ReceiveDataUDPAsync(IAsyncResult asyncResult)
         {
+            byte[] localMsg = null;
             try
             {
                 // Receive all data
                 int msgLen = UDPSocket.EndReceiveFrom(asyncResult, ref endPointUDP);
 
-                byte[] localMsg = new byte[msgLen];
+                localMsg = new byte[msgLen];
                 Array.Copy(buffer, localMsg, msgLen);
-
-                // Listen for more connections again...
-                UDPSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointUDP, 
-                    new AsyncCallback(ReceiveDataUDPAsync), null);
-
-                BeginInvoke((MethodInvoker)(() => ReceiveFromUDP(localMsg)));
-
             }
-            catch 
+            catch (Exception ex)
             {
+                if (UdpSocketHelper.IsSocketGone(ex)) return;
+                // Transient error (e.g. network adapter reset after resume) - keep the loop alive below
+                LogReceiveErrorOnUiThread("UDP receive error: " + ex.Message);
+                UdpSocketHelper.ErrorBackoff();
+            }
+
+            // Always listen again, otherwise one error silently stops all module traffic
+            try
+            {
+                UDPSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointUDP,
+                    new AsyncCallback(ReceiveDataUDPAsync), null);
+            }
+            catch (Exception ex)
+            {
+                if (!UdpSocketHelper.IsSocketGone(ex))
+                    LogReceiveErrorOnUiThread("UDP receive could not restart: " + ex.Message);
+                return;
+            }
+
+            if (localMsg != null)
+            {
+                try { BeginInvoke((MethodInvoker)(() => ReceiveFromUDP(localMsg))); }
+                catch { /* form closing */ }
             }
         }
 
@@ -356,7 +419,7 @@ namespace AgIO
                         traffic.helloFromAutoSteer = 0;
                         if (isViewAdvanced)
                         {
-                            lblPing.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
+                            lblPing.Text = ((swSinceStart.Elapsed.TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
                             double actualSteerAngle = (Int16)((data[6] << 8) + data[5]);
                             lblSteerAngle.Text = (actualSteerAngle * 0.01).ToString("N1");
                             lblWASCounts.Text = ((Int16)((data[8] << 8) + data[7])).ToString();
@@ -373,7 +436,7 @@ namespace AgIO
 
                         if (isViewAdvanced)
                         {
-                            lblPingMachine.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
+                            lblPingMachine.Text = ((swSinceStart.Elapsed.TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
                             lbl1To8.Text = Convert.ToString(data[5], 2).PadLeft(8, '0');
                             lbl9To16.Text = Convert.ToString(data[6], 2).PadLeft(8, '0');
                         }
