@@ -250,7 +250,7 @@ namespace AgOpenGPS
 
             //the reference curve is only extended ~100 m past its ends, so on a short curve the
             //tramlines stopped long before the boundary - extend it like BuildABTram does
-            List<vec3> refPts = BuildExtendedCurveRef(gTemp[indx].curvePts, mf.maxFieldDistance);
+            List<vec3> refPts = BuildExtendedCurveRef(gTemp[indx].curvePts, mf.bnd.bndList[0].fenceLineEar);
 
             //draw on correct side
             double sideHeading = 0;
@@ -274,23 +274,28 @@ namespace AgOpenGPS
         }
 
         /// <summary>
-        /// Copy of the reference curve with straight extensions of extendDistance at both ends,
-        /// following the heading of the first and last point (every 2 m, same as BuildABTram).
+        /// Copy of the reference curve with straight extensions at both ends, following the
+        /// heading of the first and last point (every 2 m, same as BuildABTram), long enough
+        /// that every offset tramline is guaranteed to leave the boundary.
         /// </summary>
-        private static List<vec3> BuildExtendedCurveRef(List<vec3> curvePts, double extendDistance)
+        private static List<vec3> BuildExtendedCurveRef(List<vec3> curvePts, List<vec2> boundary)
         {
-            List<vec3> refPts = new List<vec3>(curvePts.Count + (int)extendDistance + 2);
             if (curvePts.Count < 2)
             {
-                refPts.AddRange(curvePts);
-                return refPts;
+                return new List<vec3>(curvePts);
             }
 
-            //extension before the start, added from far away towards the curve to keep the order
             vec3 first = curvePts[0];
+            vec3 last = curvePts[curvePts.Count - 1];
+            double startExtend = DistanceToLeaveBoundary(first, boundary);
+            double endExtend = DistanceToLeaveBoundary(last, boundary);
+
+            List<vec3> refPts = new List<vec3>(curvePts.Count + (int)((startExtend + endExtend) * 0.5) + 2);
+
+            //extension before the start, added from far away towards the curve to keep the order
             double fsin = Math.Sin(first.heading);
             double fcos = Math.Cos(first.heading);
-            for (double d = extendDistance; d >= 2; d -= 2)
+            for (double d = startExtend; d >= 2; d -= 2)
             {
                 refPts.Add(new vec3(first.easting - (fsin * d), first.northing - (fcos * d), first.heading));
             }
@@ -298,15 +303,35 @@ namespace AgOpenGPS
             refPts.AddRange(curvePts);
 
             //extension past the end
-            vec3 last = curvePts[curvePts.Count - 1];
             double lsin = Math.Sin(last.heading);
             double lcos = Math.Cos(last.heading);
-            for (double d = 2; d <= extendDistance; d += 2)
+            for (double d = 2; d <= endExtend; d += 2)
             {
                 refPts.Add(new vec3(last.easting + (lsin * d), last.northing + (lcos * d), last.heading));
             }
 
             return refPts;
+        }
+
+        /// <summary>
+        /// Distance from pt to the farthest boundary vertex. The whole boundary lies within that
+        /// radius, so any point farther away is outside it - including the offset tramline points,
+        /// which are even farther from pt than the extended reference point they belong to.
+        /// Works for any heading, unlike an axis-aligned field size (e.g. diagonal curves).
+        /// </summary>
+        private static double DistanceToLeaveBoundary(vec3 pt, List<vec2> boundary)
+        {
+            double maxDistSq = 0;
+            for (int i = 0; i < boundary.Count; i++)
+            {
+                double de = boundary[i].easting - pt.easting;
+                double dn = boundary[i].northing - pt.northing;
+                double distSq = (de * de) + (dn * dn);
+                if (distSq > maxDistSq) maxDistSq = distSq;
+            }
+
+            //small margin, and a sane upper limit for corrupt boundary data
+            return Math.Min(Math.Sqrt(maxDistSq) + 4, 20000);
         }
 
         /// <summary>
