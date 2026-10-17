@@ -130,11 +130,32 @@ namespace AgOpenGPS
                 ? "no resume"
                 : "resumes " + resumeCount + ", " + swSinceResume.Elapsed.TotalMinutes.ToString("N0", CultureInfo.InvariantCulture) + " min since resume";
 
-            Log.EventWriter("Perf: uptime " + (secondsSinceStart / 60).ToString("N0", CultureInfo.InvariantCulture) + " min (" + resumeInfo + "), "
+            //read the hot path values here (cheap), the process snapshot is gathered in the background
+            LogWithSnapshotInBackground("Perf: uptime " + (secondsSinceStart / 60).ToString("N0", CultureInfo.InvariantCulture) + " min (" + resumeInfo + "), "
                 + "frame " + frameTime.ToString("N1", CultureInfo.InvariantCulture) + " ms, "
                 + "gps " + gpsHz.ToString("N1", CultureInfo.InvariantCulture) + " Hz, "
-                + "missed " + missedSentenceCount + ", "
-                + PerformanceDiagnostics.Snapshot());
+                + "missed " + missedSentenceCount + ", ");
+        }
+
+        /// <summary>
+        /// Gathers the process snapshot on a thread pool thread and only appends the finished
+        /// line to the log on the UI thread, so diagnostics never delay the UI-thread hot path.
+        /// </summary>
+        private void LogWithSnapshotInBackground(string prefix)
+        {
+            Task.Run(() =>
+            {
+                string line = prefix + PerformanceDiagnostics.Snapshot();
+                try
+                {
+                    BeginInvoke((MethodInvoker)(() =>
+                    {
+                        Log.EventWriter(line);
+                        Log.FileSaveSystemEventsInBackground();
+                    }));
+                }
+                catch { /* form closing */ }
+            });
         }
 
         public double gridToolSpacing;
@@ -319,15 +340,13 @@ namespace AgOpenGPS
             //diagnostics for standby/resume related issues (see #1234)
             if (e.Mode == Microsoft.Win32.PowerModes.Suspend)
             {
-                Log.EventWriter("Power: Suspend (standby). " + PerformanceDiagnostics.Snapshot());
-                Log.FileSaveSystemEvents();
+                LogWithSnapshotInBackground("Power: Suspend (standby). ");
             }
             else if (e.Mode == Microsoft.Win32.PowerModes.Resume)
             {
                 resumeCount++;
                 swSinceResume.Restart();
-                Log.EventWriter("Power: Resume #" + resumeCount + ". " + PerformanceDiagnostics.Snapshot());
-                Log.FileSaveSystemEvents();
+                LogWithSnapshotInBackground("Power: Resume #" + resumeCount + ". ");
             }
 
             //We are interested only in StatusChange cases

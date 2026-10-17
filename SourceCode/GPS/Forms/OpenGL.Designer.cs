@@ -729,10 +729,8 @@ namespace AgOpenGPS
             if (fileSaveAlwaysCounter > 60)
             {
                 fileSaveAlwaysCounter = 0;
-                if (Log.sbEvents.Length > 0)
-                {
-                    Log.FileSaveSystemEvents();
-                }
+                //disk write in the background - this runs in the render path
+                Log.FileSaveSystemEventsInBackground();
             }
 
             //if a minute has elapsed save the field in case of crash and to be able to resume            

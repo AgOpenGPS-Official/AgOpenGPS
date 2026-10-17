@@ -94,7 +94,7 @@ namespace AgIO
                 if (ntripCounter > 29)
                 {
                     Log.EventWriter("NTRIP - Not connecting to caster (generic connecting-phase timeout)");
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                     TimedMessageBox(1500, "Connection Problem", "Not Connecting To Caster");
                     ReconnectRequest();
                 }
@@ -262,7 +262,7 @@ namespace AgIO
                 if (!ResolveCasterIP())
                 {
                     Log.EventWriter("NTRIP - Cannot resolve caster URL: " + Properties.Settings.Default.setNTRIP_casterURL);
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                     TimedMessageBox(2500, "NTRIP Connection Failed", "Cannot resolve caster URL: " + Properties.Settings.Default.setNTRIP_casterURL);
 
                     if (string.IsNullOrEmpty(broadCasterIP))
@@ -305,11 +305,9 @@ namespace AgIO
                         Socket oldSocket = clientSocket;
                         try
                         {
-                            if (oldSocket.Connected)
-                            {
-                                oldSocket.Shutdown(SocketShutdown.Both);
-                                System.Threading.Thread.Sleep(100);
-                            }
+                            //no Sleep here: this runs on the UI thread, and Close() completes the
+                            //graceful shutdown in the background on its own
+                            if (oldSocket.Connected) oldSocket.Shutdown(SocketShutdown.Both);
                         }
                         catch { /* already dead */ }
                         finally
@@ -333,7 +331,7 @@ namespace AgIO
 
                     Log.EventWriter("NTRIP - Connecting to IP: " + broadCasterIP.ToString() + ":" + broadCasterPort.ToString()
                         + " To Port: " + toUDP_Port.ToString() + " Mount: " + mount);
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                 }
                 catch (Exception ex)
                 {
@@ -536,7 +534,7 @@ namespace AgIO
                     //start streaming, so don't let the watchdog fire in that gap
                     NTRIP_Watchdog = 0;
                     Log.EventWriter("NTRIP - Caster accepted connection");
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
 
                     //some casters send the first RTCM data in the same read as the "200 OK"
                     //header - keep it instead of discarding it below
@@ -554,7 +552,7 @@ namespace AgIO
                     Log.EventWriter("NTRIP - Caster rejected connection: " + firstLine);
                     TimedMessageBox(2500, "NTRIP Connection Rejected", firstLine);
                     ReconnectRequest();
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                     return;
                 }
             }
@@ -753,7 +751,7 @@ namespace AgIO
                 BeginInvoke((MethodInvoker)(() =>
                 {
                     Log.EventWriter("Catch -> NTRIP OnConnect: " + exDetails);
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
 
                     if (isCurrent)
                     {
@@ -816,7 +814,7 @@ namespace AgIO
                         {
                             Log.EventWriter("NTRIP - Connection closed by caster (was connected: " + isNTRIP_Connected + ", auth sent: " + isNTRIP_AuthSent + ")");
                         }
-                        Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                        Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                         ReconnectRequest();
                     }));
                 }
@@ -829,7 +827,7 @@ namespace AgIO
                 BeginInvoke((MethodInvoker)(() =>
                 {
                     Log.EventWriter("Catch -> NTRIP OnRecievedData: " + exDetails);
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                    Log.FileSaveSystemEventsInBackground(); //flush immediately for live diagnostics (disk write off the UI thread)
                 }));
             }
         }

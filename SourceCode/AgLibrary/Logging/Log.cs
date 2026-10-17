@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AgLibrary.Logging
 {
@@ -34,25 +35,64 @@ namespace AgLibrary.Logging
             sbEvents.Append("\r");
         }
 
+        //all file writes go through this chain so background and blocking saves keep their order
+        private static readonly object writeChainLock = new object();
+        private static Task writeChain = Task.FromResult(true);
+
         public static void FileSaveSystemEvents()
         {
             if (logsDirectory != "")
             {
-                try
+                //blocking save - wait for this write (and any queued background writes before it)
+                Task write = QueueWrite(TakePendingText());
+                try { write.Wait(); } catch { /* write errors are already suppressed */ }
+            }
+        }
+
+        /// <summary>
+        /// Same as FileSaveSystemEvents, but the disk write happens on a background thread.
+        /// Use this from the UI thread, where AgOpenGPS also runs its position/render hot path:
+        /// only the (cheap) copy of the buffered text happens on the calling thread.
+        /// </summary>
+        public static void FileSaveSystemEventsInBackground()
+        {
+            if (logsDirectory != "" && sbEvents.Length > 0)
+            {
+                QueueWrite(TakePendingText());
+            }
+        }
+
+        private static string TakePendingText()
+        {
+            //sbEvents is only touched from the UI thread - copy and clear it there
+            string text = sbEvents.ToString();
+            sbEvents.Clear();
+            return text;
+        }
+
+        private static Task QueueWrite(string text)
+        {
+            string path = logsDirectory;
+            lock (writeChainLock)
+            {
+                writeChain = writeChain.ContinueWith(_ => AppendToFile(path, text), TaskScheduler.Default);
+                return writeChain;
+            }
+        }
+
+        private static void AppendToFile(string path, string text)
+        {
+            if (text.Length == 0) return;
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path, true))
                 {
-                    using (StreamWriter writer = new StreamWriter(logsDirectory, true))
-                    {
-                        writer.Write(sbEvents);
-                    }
+                    writer.Write(text);
                 }
-                catch
-                {
-                    // suppressing an edge-case error for eg if someone has onedrive client locking the file
-                }
-                finally
-                {
-                    sbEvents.Clear();
-                }
+            }
+            catch
+            {
+                // suppressing an edge-case error for eg if someone has onedrive client locking the file
             }
         }
 
