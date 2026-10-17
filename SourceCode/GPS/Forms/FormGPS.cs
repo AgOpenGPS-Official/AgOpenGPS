@@ -307,6 +307,15 @@ namespace AgOpenGPS
         //The method assigned to the PowerModeChanged event call
         private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
+            //SystemEvents normally raises this on the subscribing (UI) thread, but make sure:
+            //Log.sbEvents and the controls below are only safe to touch from the UI thread
+            if (InvokeRequired)
+            {
+                try { BeginInvoke((MethodInvoker)(() => SystemEvents_PowerModeChanged(sender, e))); }
+                catch { /* form closing */ }
+                return;
+            }
+
             //diagnostics for standby/resume related issues (see #1234)
             if (e.Mode == Microsoft.Win32.PowerModes.Suspend)
             {

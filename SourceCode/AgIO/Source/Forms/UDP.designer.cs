@@ -292,20 +292,18 @@ namespace AgIO
             }
         }
 
-        // Rate limit receive error logging so a flapping socket can't flood the log
-        private DateTime lastReceiveErrorLog = DateTime.MinValue;
+        // Rate limit receive error logging so a flapping socket can't flood the log or the UI queue
+        private readonly LogRateLimiter receiveErrorLogLimiter = new LogRateLimiter(10);
 
         private void LogReceiveErrorOnUiThread(string message)
         {
+            //gate on the calling thread, before anything is queued to the UI thread
+            if (!receiveErrorLogLimiter.TryAcquire()) return;
+
             try
             {
                 //Log.sbEvents is not thread-safe, marshal to the UI thread
-                BeginInvoke((MethodInvoker)(() =>
-                {
-                    if ((DateTime.UtcNow - lastReceiveErrorLog).TotalSeconds < 10) return;
-                    lastReceiveErrorLog = DateTime.UtcNow;
-                    Log.EventWriter(message);
-                }));
+                BeginInvoke((MethodInvoker)(() => Log.EventWriter(message)));
             }
             catch { /* form closing */ }
         }

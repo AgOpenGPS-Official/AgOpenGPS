@@ -604,6 +604,15 @@ namespace AgIO
 
         private void SystemEvents_PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
         {
+            //SystemEvents normally raises this on the subscribing (UI) thread, but make sure:
+            //Log.sbEvents is only safe to touch from the UI thread
+            if (InvokeRequired)
+            {
+                try { BeginInvoke((MethodInvoker)(() => SystemEvents_PowerModeChanged(sender, e))); }
+                catch { /* form closing */ }
+                return;
+            }
+
             if (e.Mode == Microsoft.Win32.PowerModes.Suspend)
             {
                 Log.EventWriter("Power: Suspend (standby). " + PerformanceDiagnostics.Snapshot());
