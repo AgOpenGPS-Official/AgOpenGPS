@@ -965,6 +965,11 @@ namespace AgOpenGPS
                     if (isReverse) p_254.pgn[p_254.status] = 0;
                 }                
 
+                if (guidanceLineDistanceOff == 32000)
+                {
+                    p_254.pgn[p_254.status] = 0;
+                }
+
                 // delay on dead zone.
                 if (p_254.pgn[p_254.status] == 1 && !isReverse
                     && Math.Abs(guidanceLineSteerAngle - mc.actualSteerAngleDegrees*100) < vehicle.deadZoneHeading)

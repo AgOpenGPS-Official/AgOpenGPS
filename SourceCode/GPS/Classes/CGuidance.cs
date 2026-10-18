@@ -39,6 +39,13 @@ namespace AgOpenGPS
 
         #region Stanley
 
+        private void InvalidateGuidance()
+        {
+            distanceFromCurrentLineSteer = 32000;
+            mf.guidanceLineDistanceOff = 32000;
+            mf.guidanceLineSteerAngle = 0;
+        }
+
         private void DoSteerAngleCalc()
         {
             if (mf.isReverse) steerHeadingError *= -1;
@@ -122,7 +129,11 @@ namespace AgOpenGPS
             //get the pivot distance from currently active AB segment   ///////////  Pivot  ////////////
             double dx = curPtB.easting - curPtA.easting;
             double dy = curPtB.northing - curPtA.northing;
-            if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dy) < Double.Epsilon) return;
+            if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dy) < Double.Epsilon)
+            {
+                InvalidateGuidance();
+                return;
+            }
 
             //how far from current AB Line is fix
             distanceFromCurrentLinePivot = ((dy * pivot.easting) - (dx * pivot.northing) + (curPtB.easting
@@ -157,7 +168,11 @@ namespace AgOpenGPS
             dx = steerB.easting - steerA.easting;
             dy = steerB.northing - steerA.northing;
 
-            if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dy) < Double.Epsilon) return;
+            if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dy) < Double.Epsilon)
+            {
+                InvalidateGuidance();
+                return;
+            }
 
             //how far from current AB Line is fix
             distanceFromCurrentLineSteer = ((dy * steer.easting) - (dx * steer.northing) + (steerB.easting
@@ -204,9 +219,10 @@ namespace AgOpenGPS
             //find the closest point roughly
             int cc = 0, dd;
             int ptCount = curList.Count;
+            sA = sB = pA = pB = -1;
             if (ptCount > 5)
             {
-                double minDistA = 1000000, minDistB;
+                double minDistA = double.PositiveInfinity, minDistB;
 
                 for (int j = 0; j < ptCount; j += 10)
                 {
@@ -219,7 +235,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                minDistA = minDistB = 1000000;
+                minDistA = minDistB = double.PositiveInfinity;
                 dd = cc + 7; if (dd > ptCount - 1) dd = ptCount;
                 cc -= 7; if (cc < 0) cc = 0;
 
@@ -258,9 +274,13 @@ namespace AgOpenGPS
                 if (sA > sB) { C = sA; sA = sB; sB = C; }
 
                 //currentLocationIndex = sA;
-                if (sA > ptCount - 1 || sB > ptCount - 1) return;
+                if (sA < 0 || sB < 0 || sA >= ptCount || sB >= ptCount)
+                {
+                    InvalidateGuidance();
+                    return;
+                }
 
-                minDistA = minDistB = 1000000;
+                minDistA = minDistB = double.PositiveInfinity;
 
                 if (mf.curve.isHeadingSameWay)
                 {
@@ -274,8 +294,8 @@ namespace AgOpenGPS
                 //find the closest 2 points of pivot back from steer
                 for (int j = cc; j < dd; j++)
                 {
-                    double dist = ((steer.easting - curList[j].easting) * (steer.easting - curList[j].easting))
-                                    + ((steer.northing - curList[j].northing) * (steer.northing - curList[j].northing));
+                    double dist = ((pivot.easting - curList[j].easting) * (pivot.easting - curList[j].easting))
+                                    + ((pivot.northing - curList[j].northing) * (pivot.northing - curList[j].northing));
                     if (dist < minDistA)
                     {
                         minDistB = minDistA;
@@ -293,10 +313,10 @@ namespace AgOpenGPS
                 //just need to make sure the points continue ascending or heading switches all over the place
                 if (pA > pB) { C = pA; pA = pB; pB = C; }
 
-                if (pA > ptCount - 1 || pB > ptCount - 1)
+                if (pA < 0 || pB < 0 || pA >= ptCount || pB >= ptCount)
                 {
-                    pA = ptCount - 2;
-                    pB = ptCount - 1;
+                    pA = Math.Max(0, Math.Min(sA, ptCount - 2));
+                    pB = pA + 1;
                 }
 
                 vec3 pivA = new vec3(curList[pA]);
@@ -317,16 +337,20 @@ namespace AgOpenGPS
                 double dx = pivB.easting - pivA.easting;
                 double dz = pivB.northing - pivA.northing;
 
-                if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dz) < Double.Epsilon) return;
+                if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dz) < Double.Epsilon)
+                {
+                    InvalidateGuidance();
+                    return;
+                }
 
                 //how far from current AB Line is fix
-                distanceFromCurrentLinePivot = ((dz * steer.easting) - (dx * steer.northing) + (pivB.easting
+                distanceFromCurrentLinePivot = ((dz * pivot.easting) - (dx * pivot.northing) + (pivB.easting
                             * pivA.northing) - (pivB.northing * pivA.easting))
                                 / Math.Sqrt((dz * dz) + (dx * dx));
 
                 mf.curve.distanceFromCurrentLinePivot = distanceFromCurrentLinePivot;
-                double U = (((steer.easting - pivA.easting) * dx)
-                                + ((steer.northing - pivA.northing) * dz))
+                double U = (((pivot.easting - pivA.easting) * dx)
+                                + ((pivot.northing - pivA.northing) * dz))
                                 / ((dx * dx) + (dz * dz));
 
                 rEastPivot = pivA.easting + (U * dx);
@@ -371,7 +395,11 @@ namespace AgOpenGPS
                 dx = steerB.easting - steerA.easting;
                 dz = steerB.northing - steerA.northing;
 
-                if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dz) < Double.Epsilon) return;
+                if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dz) < Double.Epsilon)
+                {
+                    InvalidateGuidance();
+                    return;
+                }
 
                 //how far from current AB Line is fix
                 distanceFromCurrentLineSteer = ((dz * steer.easting) - (dx * steer.northing) + (steerB.easting
@@ -393,7 +421,7 @@ namespace AgOpenGPS
 
                 //Fix the circular error
                 if (steerHeadingError > Math.PI) steerHeadingError -= Math.PI;
-                else if (steerHeadingError < Math.PI) steerHeadingError += Math.PI;
+                else if (steerHeadingError < -Math.PI) steerHeadingError += Math.PI;
 
                 if (steerHeadingError > glm.PIBy2) steerHeadingError -= Math.PI;
                 else if (steerHeadingError < -glm.PIBy2) steerHeadingError += Math.PI;
@@ -402,9 +430,7 @@ namespace AgOpenGPS
             }
             else
             {
-                //invalid distance so tell AS module
-                distanceFromCurrentLineSteer = 32000;
-                mf.guidanceLineDistanceOff = 32000;
+                InvalidateGuidance();
             }
         }
 
