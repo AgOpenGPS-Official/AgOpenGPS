@@ -170,7 +170,7 @@ namespace AgOpenGPS
             dest.setVehicle_maxAngularVelocity = source.setVehicle_maxAngularVelocity;
             dest.setVehicle_trackWidth = source.setVehicle_trackWidth;
 
-            // AutoSteer (excluding snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn, uTurnSmoothing, uTurnCompensation - these are now in Environment)
+            // AutoSteer (excluding snapDistance, isAutoSteerAutoOn, guidanceLookAheadTime, isConstantContourOn - these are now in Environment; uTurnSmoothing, uTurnCompensation - these are now in Tool)
             dest.setAS_Kp = source.setAS_Kp;
             dest.setAS_countsPerDegree = source.setAS_countsPerDegree;
             dest.setAS_minSteerPWM = source.setAS_minSteerPWM;
@@ -337,6 +337,15 @@ namespace AgOpenGPS
             dest.setAS_deadZoneDistance = source.setAS_deadZoneDistance;
             dest.setAS_deadZoneHeading = source.setAS_deadZoneHeading;
             dest.setAS_deadZoneDelay = source.setAS_deadZoneDelay;
+
+            // U-turn settings were per profile in the old format
+            dest.set_youTurnDistanceFromBoundary = source.set_youTurnDistanceFromBoundary;
+            dest.set_youSkipWidth = Math.Max(1, source.set_youSkipWidth);
+            dest.set_youTurnRadius = source.set_youTurnRadius;
+            dest.set_youTurnExtensionLength = source.set_youTurnExtensionLength;
+            dest.set_uTurnStyle = source.set_uTurnStyle;
+            dest.setAS_uTurnSmoothing = source.setAS_uTurnSmoothing;
+            dest.setAS_uTurnCompensation = source.setAS_uTurnCompensation;
 
             // Headland
             dest.setHeadland_isSectionControlled = source.setHeadland_isSectionControlled;

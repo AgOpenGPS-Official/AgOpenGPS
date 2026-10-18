@@ -92,21 +92,21 @@ namespace AgOpenGPS
         {
             mf = _f;
 
-            uturnDistanceFromBoundary = Properties.Settings.Default.set_youTurnDistanceFromBoundary;
+            uturnDistanceFromBoundary = Properties.ToolSettings.Default.set_youTurnDistanceFromBoundary;
 
             //how far before or after boundary line should turn happen
-            youTurnStartOffset = Properties.Settings.Default.set_youTurnExtensionLength;
+            youTurnStartOffset = Properties.ToolSettings.Default.set_youTurnExtensionLength;
 
-            rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
+            rowSkipsWidth = Properties.ToolSettings.Default.set_youSkipWidth;
             Set_Alternate_skips();
 
             ytList.Capacity = 128;
 
-            youTurnRadius = Properties.Settings.Default.set_youTurnRadius;
+            youTurnRadius = Properties.ToolSettings.Default.set_youTurnRadius;
 
-            uTurnStyle = Properties.Settings.Default.set_uTurnStyle;
+            uTurnStyle = Properties.ToolSettings.Default.set_uTurnStyle;
 
-            uTurnSmoothing = (int)Properties.Settings.Default.setAS_uTurnSmoothing;
+            uTurnSmoothing = (int)Properties.ToolSettings.Default.setAS_uTurnSmoothing;
         }
 
         //find next not worked lane after the defined lanes to skip
@@ -167,7 +167,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, false);
+                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.ToolSettings.Default.set_youSkipWidth, false);
             }
 
             //TODO: is calculated many taimes after the priveous turn is complete
@@ -212,7 +212,7 @@ namespace AgOpenGPS
                     }
                 }
 
-                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.Settings.Default.set_youSkipWidth, true);
+                rowSkipsWidth = GetNextNotWorkedTrack(isTurnLeft, Properties.ToolSettings.Default.set_youSkipWidth, true);
             }
 
             double turnOffset = (mf.tool.width - mf.tool.overlap) * rowSkipsWidth

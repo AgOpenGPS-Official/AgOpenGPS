@@ -2257,20 +2257,18 @@ namespace AgOpenGPS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to                     GNU GENERAL PUBLIC LICENSE
-        ///                       Version 3, 29 June 2007
+        ///   Looks up a localized string similar to                                  Apache License
+        ///                           Version 2.0, January 2004
+        ///                        http://www.apache.org/licenses/
         ///
-        /// Copyright (C) 2007 Free Software Foundation, Inc. &lt;https://fsf.org/&gt;
-        /// Everyone is permitted to copy and distribute verbatim copies
-        /// of this license document, but changing it is not allowed.
+        ///   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
         ///
-        ///                            Preamble
+        ///   1. Definitions.
         ///
-        ///  The GNU General Public License is a free, copyleft license for
-        ///software and other kinds of works.
+        ///      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+        ///      and distribution as defined by Sections 1 through 9 of this document.
         ///
-        ///  The licenses for most software and other practical works are designed
-        ///t [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string License {
             get {
