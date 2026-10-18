@@ -216,9 +216,27 @@ namespace AgOpenGPS
 
                         if (!TrySegmentIntersection(a0, a1, b0, b1, out vec2 intersection)) continue;
 
-                        // Remove the loop between the two segments and insert the intersection point once.
-                        working.RemoveRange(i + 1, j - i);
-                        working.Insert(i + 1, new vec3(intersection.easting, intersection.northing, 0));
+                        vec3 cross = new vec3(intersection.easting, intersection.northing, 0);
+
+                        // The crossing splits the line into two loops: points i+1..j between the two
+                        // segments, and the rest. Keep the bigger one. Always dropping i+1..j removed
+                        // almost the whole field when the end of a driven boundary crossed its start,
+                        // leaving a 0.0 ha "dot" where the tractor stopped (#1212).
+                        if (InnerLoopArea(working, i, j, cross) <= OuterLoopArea(working, i, j, cross))
+                        {
+                            // Remove the loop between the two segments and insert the intersection point once.
+                            working.RemoveRange(i + 1, j - i);
+                            working.Insert(i + 1, cross);
+                        }
+                        else
+                        {
+                            // Keep only the loop between the two segments, closed at the intersection point.
+                            List<vec3> inner = new List<vec3>(j - i + 2) { cross };
+                            inner.AddRange(working.GetRange(i + 1, j - i));
+                            working.Clear();
+                            working.AddRange(inner);
+                            working.Add(cross);
+                        }
                         working[working.Count - 1] = new vec3(working[0]);
 
                         removedAny = true;
@@ -270,6 +288,46 @@ namespace AgOpenGPS
             CalculateFenceLineHeadings();
 
             return true;
+        }
+
+        // Area of the loop cross -> working[i+1] .. working[j] -> cross
+        private static double InnerLoopArea(List<vec3> working, int i, int j, vec3 cross)
+        {
+            double sum = 0;
+            vec3 prev = cross;
+            for (int k = i + 1; k <= j; k++)
+            {
+                sum += ShoelaceTerm(prev, working[k]);
+                prev = working[k];
+            }
+            sum += ShoelaceTerm(prev, cross);
+            return Math.Abs(sum * 0.5);
+        }
+
+        // Area of the loop working[0] .. working[i] -> cross -> working[j+1] .. back to working[0].
+        // working is closed: its last point is a copy of the first one.
+        private static double OuterLoopArea(List<vec3> working, int i, int j, vec3 cross)
+        {
+            double sum = 0;
+            vec3 prev = working[0];
+            for (int k = 1; k <= i; k++)
+            {
+                sum += ShoelaceTerm(prev, working[k]);
+                prev = working[k];
+            }
+            sum += ShoelaceTerm(prev, cross);
+            prev = cross;
+            for (int k = j + 1; k < working.Count; k++)
+            {
+                sum += ShoelaceTerm(prev, working[k]);
+                prev = working[k];
+            }
+            return Math.Abs(sum * 0.5);
+        }
+
+        private static double ShoelaceTerm(vec3 a, vec3 b)
+        {
+            return (a.easting * b.northing) - (b.easting * a.northing);
         }
 
         private static bool TrySegmentIntersection(vec2 a0, vec2 a1, vec2 b0, vec2 b1, out vec2 intersection)
