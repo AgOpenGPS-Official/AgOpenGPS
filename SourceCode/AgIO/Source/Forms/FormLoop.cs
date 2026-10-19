@@ -72,6 +72,7 @@ namespace AgIO
         public FormLoop()
         {
             InitializeComponent();
+            ntripChecks.SwitchClicked += ntripChecks_SwitchClicked;
         }
 
         //First run

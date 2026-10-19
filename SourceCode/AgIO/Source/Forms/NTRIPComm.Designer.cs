@@ -118,15 +118,24 @@ namespace AgIO
                 return;
             }
 
-            NtripStatus st = ntripHost.Status;
+            ManagerStatus ms = ntripHost.Manager;
+            NtripStatus st = ms != null ? ms.Status : ntripHost.Status;
             NtripProfile profile = ntripHost.Profile;
             string source = profile == null ? "" : profile.Host + "\n" + profile.Mount;
+            if (ms != null && ms.Active == SourceRole.Fallback) source = ms.Using.Replace("Fallback: ", "Fallback:\n");
             string received = (tripBytes >> 10).ToString("###,###,##0") + " kb received";
             bool running = st.State == NtripState.Streaming || st.State == NtripState.Connecting
                 || st.State == NtripState.Connected || st.State == NtripState.Waiting;
 
             ntripCard.SetStatus(st.Headline, st.Light, source, received, running ? "Stop" : "Start");
-            if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(st, fixQualityData, ageData));
+            if (ntripChecks.Visible)
+            {
+                ntripChecks.SetChecks(CorrectionChecks.Build(st, fixQualityData, ageData));
+                if (ms == null || !ms.FallbackConfigured) ntripChecks.SetSwitch("", false, ButtonTone.Neutral);
+                else if (ms.Active == SourceRole.Main) ntripChecks.SetSwitch("Switch to fallback", true, ButtonTone.Neutral);
+                else if (ms.MainPaused) ntripChecks.SetSwitch("Try the main service again", true, ButtonTone.Neutral);
+                else ntripChecks.SetSwitch("Switch back to main", true, ms.MainBack ? ButtonTone.Positive : ButtonTone.Neutral);
+            }
         }
 
         //the status card for a serial radio or serial pass-through (no internet involved)
@@ -149,6 +158,69 @@ namespace AgIO
         private void ntripCard_ButtonClicked(object sender, EventArgs e)
         {
             btnStartStopNtrip_Click(sender, e);
+        }
+
+        private void ntripChecks_SwitchClicked(object sender, EventArgs e)
+        {
+            NtripHost host = ntripHost;
+            ManagerStatus ms = host == null ? null : host.Manager;
+            if (ms == null) return;
+
+            if (ms.Active == SourceRole.Main)
+            {
+                AskNtrip("Switch to the fallback?",
+                    "Your GPS may lose RTK for a moment, and your position can shift a little if the two base stations use different coordinates.",
+                    host.SwitchToFallback);
+            }
+            else if (ms.MainPaused)
+            {
+                host.TryMainAgain();
+            }
+            else
+            {
+                AskNtrip("Switch back to the main service?", "Your GPS may lose RTK for a moment.", host.SwitchBackToMain);
+            }
+        }
+
+        private bool ntripQuestionOpen;
+
+        //a question with Yes and Cancel; a second question while one is open is skipped
+        private void AskNtrip(string title, string message, Action onYes)
+        {
+            if (ntripQuestionOpen) return;
+            ntripQuestionOpen = true;
+            try
+            {
+                using (var dialog = new FormYes(title + "\r\n\r\n" + message, true))
+                {
+                    if (dialog.ShowDialog(this) == DialogResult.OK) onYes();
+                }
+            }
+            finally
+            {
+                ntripQuestionOpen = false;
+            }
+        }
+
+        //notices about switching between the main service and the fallback
+        private void OnNtripNotice(NoticeKind kind, string title, string message)
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+
+            try
+            {
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    Log.EventWriter("NTRIP - " + title + ": " + message);
+                    if (kind == NoticeKind.MainBack) AskNtrip(title, message, () => ntripHost.SwitchBackToMain());
+                    else if (kind == NoticeKind.MainFailing) AskNtrip(title, message, () => ntripHost.SwitchToFallback());
+                    else TimedMessageBox(5000, title, message);
+                }));
+            }
+            catch (InvalidOperationException)
+            {
+                //closing
+            }
         }
 
         private void ntripChecks_DetailsClicked(object sender, EventArgs e)
@@ -174,6 +246,9 @@ namespace AgIO
         {
 
             StopNtripHost();
+
+            //an older settings file keeps the service in loose settings: make an NTRIP profile of it once
+            NtripProfiles.MigrateLooseSettings();
 
             //start NTRIP if required
             isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
@@ -204,6 +279,7 @@ namespace AgIO
             {
                 ntripHost = new NtripHost(this);
                 ntripHost.Problem += OnNtripProblem;
+                ntripHost.Notice += OnNtripNotice;
             }
 
             lastNtripBytesReceived = 0;

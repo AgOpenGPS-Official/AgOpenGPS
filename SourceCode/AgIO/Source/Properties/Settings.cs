@@ -1,4 +1,4 @@
-﻿using AgLibrary.Logging;
+using AgLibrary.Logging;
 using AgLibrary.Settings;
 using System.Collections.Generic;
 using System.IO;
@@ -41,6 +41,8 @@ namespace AgIO.Properties
         public bool setNTRIP_isTCP = false;
         public bool setNTRIP_isHTTP10 = false;
         public double setNTRIP_manualAltitude = 0;
+        //the NTRIP profile (main and fallback service) this settings file uses; the profile itself is its own file
+        public string setNTRIP_profileName = "";
         public bool setPgm_isFirstRun = true;
         public string setPort_portNameGPS2 = "GPS2";
         public int setPort_baudRateGPS2 = 9600;
