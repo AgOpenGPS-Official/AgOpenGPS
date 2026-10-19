@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO.Ports;
@@ -38,7 +39,6 @@ namespace AgIO
         internal SerialPort spRadio = new SerialPort("Radio", 9600, Parity.None, 8, StopBits.One);
 
         private long lastNtripBytesReceived;
-        private readonly StringBuilder sbNtripMessages = new StringBuilder();
 
         //every second: the NTRIP client status on the labels, radio / serial pass-through connect logic
         private void DoNTRIPSecondRoutine()
@@ -110,64 +110,69 @@ namespace AgIO
             lastNtripBytesReceived = received;
 
             isNTRIP_Connected = st.State == NtripState.Streaming || st.State == NtripState.Connected;
-            lblNTRIPBytes.Text = ((tripBytes >> 10)).ToString("###,###,### kb");
 
             //Bypass if sleeping
             if (focusSkipCounter == 0) return;
-
-            lblWatch.Text = NtripStateText(st.State);
-            btnStartStopNtrip.Text = st.State == NtripState.Streaming ? "Online" : NtripStateText(st.State);
 
             NtripProfile profile = host.Profile;
             lblNTRIP_IP.Text = profile == null ? "--" : profile.Host;
             lblMount.Text = profile == null ? "--" : profile.Mount;
             lblToGPS.Text = bytesPerSecond < 1 ? "---" : bytesOut.ToString();
-
-            if (isViewAdvanced) UpdateNtripPanel(host, st);
-        }
-
-        private static string NtripStateText(NtripState state)
-        {
-            switch (state)
-            {
-                case NtripState.Streaming: return "Listening NTRIP";
-                case NtripState.Connected: return "Connected";
-                case NtripState.Connecting: return "Connecting";
-                case NtripState.Waiting: return "Waiting";
-                default: return "Stopped";
-            }
-        }
-
-        //the fly-out: what the caster sends, from the client's own statistics
-        private void UpdateNtripPanel(NtripHost host, NtripStatus st)
-        {
-            RtcmStreamSnapshot rtcm = st.Rtcm;
-            if (rtcm == null || rtcm.Types.Count == 0)
-            {
-                lblMessages.Text = "Reading...";
-                lblMessagesFound.Text = "-";
-                lblStationID.Text = "-";
-            }
-            else
-            {
-                sbNtripMessages.Clear();
-                int shown = 0;
-                foreach (RtcmTypeStat t in rtcm.Types)
-                {
-                    if (shown++ >= 12) break;
-                    sbNtripMessages.AppendLine(t.Type + " - " + t.Count);
-                }
-                lblMessages.Text = sbNtripMessages.ToString();
-                lblMessagesFound.Text = rtcm.Types.Count.ToString();
-                lblStationID.Text = rtcm.StationId >= 0 ? rtcm.StationId.ToString() : "-";
-            }
             lblCount.Text = host.QueuedBytes.ToString();
+
+            RefreshNtripCard();
+        }
+
+        //the status card in the main window and the "are the corrections good?" panel in the fly-out
+        private void RefreshNtripCard()
+        {
+            if (ntripCard == null || !ntripCard.Visible) return;
+
+            if (!isNTRIP_RequiredOn || ntripHost == null)
+            {
+                ntripCard.SetStatus("NTRIP is off", NtripLight.Off, "", "", "Start");
+                if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
+                return;
+            }
+
+            NtripStatus st = ntripHost.Status;
+            NtripProfile profile = ntripHost.Profile;
+            string source = profile == null ? "" : profile.Host + "\n" + profile.Mount;
+            string received = (tripBytes >> 10).ToString("###,###,##0") + " kb received";
+            bool running = st.State == NtripState.Streaming || st.State == NtripState.Connecting
+                || st.State == NtripState.Connected || st.State == NtripState.Waiting;
+
+            ntripCard.SetStatus(st.Headline, st.Light, source, received, running ? "Stop" : "Start");
+            if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(st, fixQualityData, ageData));
+        }
+
+        private void ntripCard_ButtonClicked(object sender, EventArgs e)
+        {
+            btnStartStopNtrip_Click(sender, e);
+        }
+
+        private void ntripChecks_DetailsClicked(object sender, EventArgs e)
+        {
+            ShowNtripDetails();
+        }
+
+        private void ShowNtripDetails()
+        {
+            using (var form = new FormNtripDetails(this))
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+        //the fly-out is wider when the NTRIP panel is shown
+        private int FlyOutWidth()
+        {
+            return ntripChecks != null && ntripChecks.Visible ? 1030 : 760;
         }
 
         public void ConfigureNTRIP()
         {
             lblWatch.Text = "Wait GPS";
-            lblMessages.Text = "Reading...";
             lblNTRIP_IP.Text = "";
             lblMount.Text = "";
 
@@ -185,9 +190,14 @@ namespace AgIO
             }
 
             bool anySource = isNTRIP_RequiredOn || isRadio_RequiredOn || isSerialPass_RequiredOn;
-            btnStartStopNtrip.Visible = anySource;
-            lblWatch.Visible = anySource;
-            lblNTRIPBytes.Visible = anySource;
+            bool radioOrPass = isRadio_RequiredOn || isSerialPass_RequiredOn;
+
+            //NTRIP over the internet has its own card; the old small controls stay for radio and serial pass-through
+            ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn && !radioOrPass;
+            ntripChecks.Visible = ntripCard.Visible && isViewAdvanced;
+            btnStartStopNtrip.Visible = radioOrPass;
+            lblWatch.Visible = radioOrPass;
+            lblNTRIPBytes.Visible = radioOrPass;
             lblToGPS.Visible = anySource;
             lblMount.Visible = anySource;
             lblNTRIP_IP.Visible = anySource;
@@ -195,6 +205,7 @@ namespace AgIO
             btnStartStopNtrip.Text = "Off";
 
             if (isNTRIP_RequiredOn) StartNtripHost();
+            RefreshNtripCard();
         }
 
         private void StartNtripHost()
