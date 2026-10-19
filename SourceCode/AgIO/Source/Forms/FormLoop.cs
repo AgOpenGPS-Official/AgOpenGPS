@@ -143,8 +143,6 @@ namespace AgIO
             isSendToSerial = Settings.Default.setNTRIP_sendToSerial;
             isSendToUDP = Settings.Default.setNTRIP_sendToUDP;
 
-            //lblMount.Text = Properties.Settings.Default.setNTRIP_mount;
-
             lblGPS1Comm.Text = "";
             lblIMUComm.Text = "";
             lblMod1Comm.Text = "";

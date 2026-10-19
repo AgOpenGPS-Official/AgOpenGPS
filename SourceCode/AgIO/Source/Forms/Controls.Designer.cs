@@ -67,15 +67,11 @@ namespace AgIO
                     ShutDownNTRIP();
                     isNTRIP_RequiredOn = false;
                     isRadio_RequiredOn = false;
-                    lblNTRIP_IP.Text = "--";
-                    lblMount.Text = "--";
                 }
                 else
                 {
                     isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
                     isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
-                    lblNTRIP_IP.Text = "--";
-                    lblMount.Text = "--";
                     if (isNTRIP_RequiredOn) StartNtripHost();
                 }
 
