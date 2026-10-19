@@ -18,11 +18,13 @@ namespace AgIO
         private string signature = "";
 
         private readonly RoundedButton details;
+        private readonly RoundedButton switchButton;
         private readonly Font headerFont = new Font("Tahoma", 14.25F, FontStyle.Bold);
         private readonly Font titleFont = new Font("Tahoma", 13.5F, FontStyle.Bold);
         private readonly Font detailFont = new Font("Tahoma", 11.25F, FontStyle.Regular);
 
         public event EventHandler DetailsClicked;
+        public event EventHandler SwitchClicked;
 
         public bool ShowDetailsButton
         {
@@ -35,6 +37,21 @@ namespace AgIO
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer
                 | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.Transparent;
+
+            switchButton = new RoundedButton
+            {
+                Dock = DockStyle.Bottom,
+                Height = 64,
+                Text = "Switch to fallback",
+                Font = new Font("Tahoma", 14.25F, FontStyle.Bold),
+                Visible = false,
+            };
+            switchButton.Click += (s, e) =>
+            {
+                EventHandler handler = SwitchClicked;
+                if (handler != null) handler(this, EventArgs.Empty);
+            };
+            Controls.Add(switchButton);
 
             details = new RoundedButton
             {
@@ -49,6 +66,14 @@ namespace AgIO
                 if (handler != null) handler(this, EventArgs.Empty);
             };
             Controls.Add(details);
+        }
+
+        /// <summary>The button for switching by hand between the main service and the fallback.</summary>
+        public void SetSwitch(string text, bool visible, ButtonTone tone)
+        {
+            switchButton.Text = text;
+            switchButton.Tone = tone;
+            switchButton.Visible = visible;
         }
 
         public void SetChecks(IReadOnlyList<CheckItem> checks)

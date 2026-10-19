@@ -6,13 +6,16 @@ using AgLibrary.Ntrip;
 namespace AgIO
 {
     /// <summary>
-    /// Runs the NTRIP client for AgIO and carries its corrections to the outputs (the GPS serial
-    /// port and UDP). Everything here works off the UI thread: the client's receive loop hands whole
-    /// RTCM messages to a paced queue, and one pump thread writes them out. The form only reads
-    /// <see cref="Status"/> and a few counters, and feeds in the position once a second.
+    /// Runs the NTRIP corrections for AgIO: the main service, an optional fallback (another NTRIP service
+    /// or a serial radio) and the output of the corrections to the GPS serial port or to UDP. Everything
+    /// here works off the UI thread. The form only reads <see cref="Status"/> and a few counters, and
+    /// feeds in the position once a second.
     /// </summary>
     internal sealed class NtripHost : IDisposable
     {
+        /// <summary>Largest datagram, as AgIO has always sent it. The AiO firmwares cannot take more than 512.</summary>
+        private const int PacketSize = 256;
+
         private sealed class Position
         {
             public double Latitude, Longitude, Altitude, Age, Hdop;
@@ -22,7 +25,8 @@ namespace AgIO
         private readonly FormLoop mf;
         private readonly object sync = new object();
 
-        private NtripClient client;
+        private CorrectionSourceManager manager;
+        private NtripProfile mainProfile;
         private CancellationTokenSource cts;
         private Task run;
         private RtcmQueue queue;
@@ -43,6 +47,9 @@ namespace AgIO
         /// <summary>A problem the user should hear about once: title and plain message. Raised on a worker thread.</summary>
         public event Action<string, string> Problem;
 
+        /// <summary>A notice from the switching between main and fallback. Raised on a worker thread.</summary>
+        public event Action<NoticeKind, string, string> Notice;
+
         public NtripHost(FormLoop form)
         {
             mf = form;
@@ -53,18 +60,29 @@ namespace AgIO
             get { lock (sync) return run != null && !run.IsCompleted; }
         }
 
+        /// <summary>The status of the source that delivers the corrections.</summary>
         public NtripStatus Status
         {
             get
             {
-                NtripClient c = client;
-                return c == null ? new NtripStatus() : c.Status;
+                CorrectionSourceManager m = manager;
+                return m == null ? new NtripStatus() : m.Status.Status;
             }
         }
 
+        public ManagerStatus Manager
+        {
+            get
+            {
+                CorrectionSourceManager m = manager;
+                return m == null ? null : m.Status;
+            }
+        }
+
+        /// <summary>The main service.</summary>
         public NtripProfile Profile
         {
-            get { NtripClient c = client; return c == null ? null : c.Profile; }
+            get { return mainProfile; }
         }
 
         /// <summary>Bytes waiting in the paced queue.</summary>
@@ -78,14 +96,61 @@ namespace AgIO
             get { return Interlocked.Read(ref bytesOut); }
         }
 
+        public void SwitchToFallback()
+        {
+            CorrectionSourceManager m = manager;
+            if (m != null) m.SwitchToFallbackNow();
+        }
+
+        public void SwitchBackToMain()
+        {
+            CorrectionSourceManager m = manager;
+            if (m != null) m.SwitchBackToMain();
+        }
+
+        public void TryMainAgain()
+        {
+            CorrectionSourceManager m = manager;
+            if (m != null) m.TryMainAgain();
+        }
+
+        /// <summary>The active profile's main service as connection settings, or null while it has no address.</summary>
+        public static NtripProfile MainProfile(NtripProfileSet set)
+        {
+            return set == null ? null : set.MainProfile(Properties.Settings.Default.setNTRIP_sendGGAInterval);
+        }
+
+        private static FallbackPlan BuildFallback(NtripProfileSet set, NtripProfile main)
+        {
+            if (set == null || set.Fallback == null || !set.Fallback.Enabled) return null;
+            FallbackDefinition f = set.Fallback;
+
+            if (f.Type == FallbackType.SerialRadio)
+            {
+                string port = f.RadioPort;
+                int baud = f.RadioBaud;
+                if (string.IsNullOrWhiteSpace(port)) return null;
+                return FallbackPlan.ForRadio(port, () => new SerialRadioStream(port, baud), f.SwitchAfterFailures, f.AutoSwitch);
+            }
+
+            NtripProfile fallback = set.FallbackProfile(Properties.Settings.Default.setNTRIP_sendGGAInterval);
+            if (fallback == null) return null;
+
+            // The same login on the same caster: a second connection may push the first one off,
+            // so the main service is not tried in the background while the fallback is in use.
+            bool keepMain = !FallbackPlan.SameAccount(main, fallback);
+            return FallbackPlan.ForNtrip(fallback, f.SwitchAfterFailures, f.AutoSwitch, keepMain);
+        }
         /// <summary>Starts (or restarts) with the current settings.</summary>
         public void Start()
         {
             Stop();
 
             var s = Properties.Settings.Default;
-            string host = !string.IsNullOrWhiteSpace(s.setNTRIP_casterURL) ? s.setNTRIP_casterURL : s.setNTRIP_casterIP;
-            if (string.IsNullOrWhiteSpace(host)) return;
+            NtripProfileSet set = NtripProfiles.LoadActive();
+            NtripProfile main = MainProfile(set);
+            if (main == null) return;
+            mainProfile = main;
 
             manualPosition = s.setNTRIP_isGGAManual;
             manualLat = s.setNTRIP_manualLat;
@@ -94,19 +159,15 @@ namespace AgIO
             toSerial = s.setNTRIP_sendToSerial;
             toUdp = s.setNTRIP_sendToUDP;
 
-            // "HTTP 1.0" in the old window means the NTRIP 1.0 request; 1.1 means try 2.0 first.
-            NtripVersion version = s.setNTRIP_isHTTP10 ? NtripVersion.V1 : NtripVersion.Auto;
-            var profile = new NtripProfile(host, s.setNTRIP_casterPort, s.setNTRIP_mount, s.setNTRIP_userName,
-                s.setNTRIP_userPassword, version, s.setNTRIP_sendGGAInterval, s.setNTRIP_isTCP);
-
-            // Serial ports take ~5 KB/s in the old metering (256 bytes per 50 ms); UDP alone can go faster.
-            queue = new RtcmQueue(null, s.setNTRIP_packetSize, toSerial ? 50 : RtcmQueue.IntervalMs);
+            // Serial ports take about 5 KB/s in the old metering (256 bytes per 50 ms); UDP alone can go faster.
+            queue = new RtcmQueue(null, PacketSize, toSerial ? 50 : RtcmQueue.IntervalMs);
             mf.SetNtripEndpoint(s.setNTRIP_sendToUDPPort);
 
-            client = new NtripClient(profile, BuildGga);
-            client.FrameReceived += OnFrame;
-            client.RawDataReceived += OnRaw;
-            client.StatusChanged += OnStatusChanged;
+            manager = new CorrectionSourceManager(main, BuildFallback(set, main), BuildGga);
+            manager.FrameReceived += OnFrame;
+            manager.RawDataReceived += OnRaw;
+            manager.StatusChanged += OnStatusChanged;
+            manager.Notice += OnNotice;
             lastNotified = null;
 
             pumpStop = false;
@@ -115,7 +176,7 @@ namespace AgIO
 
             cts = new CancellationTokenSource();
             CancellationToken token = cts.Token;
-            NtripClient started = client;
+            CorrectionSourceManager started = manager;
             lock (sync) run = Task.Run(() => started.RunAsync(token));
         }
 
@@ -127,7 +188,7 @@ namespace AgIO
             cts = null;
 
             if (c != null) c.Cancel();
-            try { if (r != null) r.Wait(2000); } catch (Exception) { /* cancelled */ }
+            try { if (r != null) r.Wait(3000); } catch (Exception) { /* cancelled */ }
 
             pumpStop = true;
             wake.Set();
@@ -135,12 +196,13 @@ namespace AgIO
             if (p != null) p.Join(1000);
             pump = null;
 
-            NtripClient old = client;
+            CorrectionSourceManager old = manager;
             if (old != null)
             {
                 old.FrameReceived -= OnFrame;
                 old.RawDataReceived -= OnRaw;
                 old.StatusChanged -= OnStatusChanged;
+                old.Notice -= OnNotice;
             }
             if (c != null) c.Dispose();
             lock (sync) run = null;
@@ -208,12 +270,23 @@ namespace AgIO
             wake.Set();
         }
 
-        private void OnStatusChanged(NtripStatus status)
+        private void OnNotice(NoticeKind kind, string title, string message)
         {
+            Action<NoticeKind, string, string> handler = Notice;
+            if (handler != null) handler(kind, title, message);
+        }
+
+        private void OnStatusChanged(ManagerStatus ms)
+        {
+            NtripStatus status = ms.Status;
+
             // One notice per kind of problem, not one per attempt.
             if (status.State == NtripState.Streaming) { lastNotified = null; return; }
             if (status.LastError == null || status.LastError == lastNotified) return;
             if (status.State != NtripState.Waiting && status.State != NtripState.GaveUp) return;
+
+            // With a fallback the switching notice tells the story; a second popup for the same failure would only confuse.
+            if (ms.FallbackConfigured && ms.Active == SourceRole.Main) return;
 
             lastNotified = status.LastError;
             Action<string, string> handler = Problem;
