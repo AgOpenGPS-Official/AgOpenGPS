@@ -57,6 +57,7 @@ namespace AgIO
             this.segAuto = new AgIO.SegmentedControl();
             this.lblAfter = new System.Windows.Forms.Label();
             this.numAfter = new AgIO.NumberField();
+            this.lblAfter2 = new System.Windows.Forms.Label();
             this.pnlFbService = new System.Windows.Forms.Panel();
             this.lblFbHost = new System.Windows.Forms.Label();
             this.txtFbHost = new System.Windows.Forms.TextBox();
@@ -353,34 +354,44 @@ namespace AgIO
             this.segAuto.ItemsText = "Switch by itself|I switch myself";
             this.segAuto.Location = new System.Drawing.Point(0, 124);
             this.segAuto.Name = "segAuto";
-            this.segAuto.Size = new System.Drawing.Size(600, 52);
+            this.segAuto.Size = new System.Drawing.Size(440, 52);
             this.segAuto.TabIndex = 26;
             // 
             // lblAfter
             // 
             this.lblAfter.AutoSize = false;
             this.lblAfter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblAfter.Location = new System.Drawing.Point(620, 132);
+            this.lblAfter.Location = new System.Drawing.Point(460, 132);
             this.lblAfter.Name = "lblAfter";
-            this.lblAfter.Size = new System.Drawing.Size(250, 30);
+            this.lblAfter.Size = new System.Drawing.Size(150, 30);
             this.lblAfter.TabIndex = 27;
-            this.lblAfter.Text = "after failed tries";
+            this.lblAfter.Text = "Switch after";
             // 
             // numAfter
             // 
             this.numAfter.Minimum = 1;
             this.numAfter.Maximum = 20;
-            this.numAfter.Location = new System.Drawing.Point(820, 124);
+            this.numAfter.Location = new System.Drawing.Point(620, 124);
             this.numAfter.Name = "numAfter";
-            this.numAfter.Size = new System.Drawing.Size(140, 48);
+            this.numAfter.Size = new System.Drawing.Size(120, 48);
             this.numAfter.TabIndex = 28;
+            // 
+            // lblAfter2
+            // 
+            this.lblAfter2.AutoSize = false;
+            this.lblAfter2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblAfter2.Location = new System.Drawing.Point(750, 132);
+            this.lblAfter2.Name = "lblAfter2";
+            this.lblAfter2.Size = new System.Drawing.Size(200, 30);
+            this.lblAfter2.TabIndex = 29;
+            this.lblAfter2.Text = "failed tries";
             // 
             // pnlFbService
             // 
             this.pnlFbService.Location = new System.Drawing.Point(0, 196);
             this.pnlFbService.Name = "pnlFbService";
             this.pnlFbService.Size = new System.Drawing.Size(960, 210);
-            this.pnlFbService.TabIndex = 29;
+            this.pnlFbService.TabIndex = 30;
             // 
             // lblFbHost
             // 
@@ -389,7 +400,7 @@ namespace AgIO
             this.lblFbHost.Location = new System.Drawing.Point(0, 8);
             this.lblFbHost.Name = "lblFbHost";
             this.lblFbHost.Size = new System.Drawing.Size(200, 30);
-            this.lblFbHost.TabIndex = 30;
+            this.lblFbHost.TabIndex = 31;
             this.lblFbHost.Text = "Address";
             // 
             // txtFbHost
@@ -401,7 +412,7 @@ namespace AgIO
             this.txtFbHost.Location = new System.Drawing.Point(210, 8);
             this.txtFbHost.Name = "txtFbHost";
             this.txtFbHost.Size = new System.Drawing.Size(740, 31);
-            this.txtFbHost.TabIndex = 31;
+            this.txtFbHost.TabIndex = 32;
             this.txtFbHost.Click += new System.EventHandler(this.txtFbHost_Click);
             // 
             // lblFbPort
@@ -411,7 +422,7 @@ namespace AgIO
             this.lblFbPort.Location = new System.Drawing.Point(0, 64);
             this.lblFbPort.Name = "lblFbPort";
             this.lblFbPort.Size = new System.Drawing.Size(200, 30);
-            this.lblFbPort.TabIndex = 32;
+            this.lblFbPort.TabIndex = 33;
             this.lblFbPort.Text = "Port";
             // 
             // numFbPort
@@ -421,7 +432,7 @@ namespace AgIO
             this.numFbPort.Location = new System.Drawing.Point(210, 56);
             this.numFbPort.Name = "numFbPort";
             this.numFbPort.Size = new System.Drawing.Size(160, 48);
-            this.numFbPort.TabIndex = 33;
+            this.numFbPort.TabIndex = 34;
             // 
             // lblFbMount
             // 
@@ -430,7 +441,7 @@ namespace AgIO
             this.lblFbMount.Location = new System.Drawing.Point(400, 64);
             this.lblFbMount.Name = "lblFbMount";
             this.lblFbMount.Size = new System.Drawing.Size(140, 30);
-            this.lblFbMount.TabIndex = 34;
+            this.lblFbMount.TabIndex = 35;
             this.lblFbMount.Text = "Mountpoint";
             // 
             // txtFbMount
@@ -442,7 +453,7 @@ namespace AgIO
             this.txtFbMount.Location = new System.Drawing.Point(550, 64);
             this.txtFbMount.Name = "txtFbMount";
             this.txtFbMount.Size = new System.Drawing.Size(400, 31);
-            this.txtFbMount.TabIndex = 35;
+            this.txtFbMount.TabIndex = 36;
             this.txtFbMount.Click += new System.EventHandler(this.txtFbMount_Click);
             // 
             // lblFbUser
@@ -452,7 +463,7 @@ namespace AgIO
             this.lblFbUser.Location = new System.Drawing.Point(0, 128);
             this.lblFbUser.Name = "lblFbUser";
             this.lblFbUser.Size = new System.Drawing.Size(200, 30);
-            this.lblFbUser.TabIndex = 36;
+            this.lblFbUser.TabIndex = 37;
             this.lblFbUser.Text = "User name";
             // 
             // txtFbUser
@@ -464,7 +475,7 @@ namespace AgIO
             this.txtFbUser.Location = new System.Drawing.Point(210, 128);
             this.txtFbUser.Name = "txtFbUser";
             this.txtFbUser.Size = new System.Drawing.Size(330, 31);
-            this.txtFbUser.TabIndex = 37;
+            this.txtFbUser.TabIndex = 38;
             this.txtFbUser.Click += new System.EventHandler(this.txtFbUser_Click);
             // 
             // lblFbPassword
@@ -474,7 +485,7 @@ namespace AgIO
             this.lblFbPassword.Location = new System.Drawing.Point(560, 128);
             this.lblFbPassword.Name = "lblFbPassword";
             this.lblFbPassword.Size = new System.Drawing.Size(120, 30);
-            this.lblFbPassword.TabIndex = 38;
+            this.lblFbPassword.TabIndex = 39;
             this.lblFbPassword.Text = "Password";
             // 
             // txtFbPassword
@@ -487,7 +498,7 @@ namespace AgIO
             this.txtFbPassword.Location = new System.Drawing.Point(690, 128);
             this.txtFbPassword.Name = "txtFbPassword";
             this.txtFbPassword.Size = new System.Drawing.Size(260, 31);
-            this.txtFbPassword.TabIndex = 39;
+            this.txtFbPassword.TabIndex = 40;
             this.txtFbPassword.Click += new System.EventHandler(this.txtFbPassword_Click);
             // 
             // btnFbMounts
@@ -495,7 +506,7 @@ namespace AgIO
             this.btnFbMounts.Location = new System.Drawing.Point(710, 168);
             this.btnFbMounts.Name = "btnFbMounts";
             this.btnFbMounts.Size = new System.Drawing.Size(240, 40);
-            this.btnFbMounts.TabIndex = 40;
+            this.btnFbMounts.TabIndex = 41;
             this.btnFbMounts.Text = "Choose from list...";
             this.btnFbMounts.Click += new System.EventHandler(this.btnFbMounts_Click);
             // 
@@ -504,7 +515,7 @@ namespace AgIO
             this.pnlFbRadio.Location = new System.Drawing.Point(0, 196);
             this.pnlFbRadio.Name = "pnlFbRadio";
             this.pnlFbRadio.Size = new System.Drawing.Size(960, 210);
-            this.pnlFbRadio.TabIndex = 41;
+            this.pnlFbRadio.TabIndex = 42;
             // 
             // lblRadioPort
             // 
@@ -513,7 +524,7 @@ namespace AgIO
             this.lblRadioPort.Location = new System.Drawing.Point(0, 12);
             this.lblRadioPort.Name = "lblRadioPort";
             this.lblRadioPort.Size = new System.Drawing.Size(200, 30);
-            this.lblRadioPort.TabIndex = 42;
+            this.lblRadioPort.TabIndex = 43;
             this.lblRadioPort.Text = "Radio on port";
             // 
             // cboRadioPort
@@ -524,7 +535,7 @@ namespace AgIO
             this.cboRadioPort.Location = new System.Drawing.Point(210, 8);
             this.cboRadioPort.Name = "cboRadioPort";
             this.cboRadioPort.Size = new System.Drawing.Size(260, 38);
-            this.cboRadioPort.TabIndex = 43;
+            this.cboRadioPort.TabIndex = 44;
             // 
             // lblRadioBaud
             // 
@@ -533,7 +544,7 @@ namespace AgIO
             this.lblRadioBaud.Location = new System.Drawing.Point(0, 76);
             this.lblRadioBaud.Name = "lblRadioBaud";
             this.lblRadioBaud.Size = new System.Drawing.Size(200, 30);
-            this.lblRadioBaud.TabIndex = 44;
+            this.lblRadioBaud.TabIndex = 45;
             this.lblRadioBaud.Text = "Speed (baud)";
             // 
             // cboRadioBaud
@@ -545,14 +556,14 @@ namespace AgIO
             this.cboRadioBaud.Location = new System.Drawing.Point(210, 72);
             this.cboRadioBaud.Name = "cboRadioBaud";
             this.cboRadioBaud.Size = new System.Drawing.Size(260, 38);
-            this.cboRadioBaud.TabIndex = 45;
+            this.cboRadioBaud.TabIndex = 46;
             // 
             // pnlOutput
             // 
             this.pnlOutput.Location = new System.Drawing.Point(20, 142);
             this.pnlOutput.Name = "pnlOutput";
-            this.pnlOutput.Size = new System.Drawing.Size(960, 410);
-            this.pnlOutput.TabIndex = 46;
+            this.pnlOutput.Size = new System.Drawing.Size(960, 418);
+            this.pnlOutput.TabIndex = 47;
             // 
             // lblPos
             // 
@@ -561,7 +572,7 @@ namespace AgIO
             this.lblPos.Location = new System.Drawing.Point(0, 14);
             this.lblPos.Name = "lblPos";
             this.lblPos.Size = new System.Drawing.Size(220, 30);
-            this.lblPos.TabIndex = 47;
+            this.lblPos.TabIndex = 48;
             this.lblPos.Text = "Position sent";
             // 
             // segPosition
@@ -570,7 +581,7 @@ namespace AgIO
             this.segPosition.Location = new System.Drawing.Point(230, 4);
             this.segPosition.Name = "segPosition";
             this.segPosition.Size = new System.Drawing.Size(720, 52);
-            this.segPosition.TabIndex = 48;
+            this.segPosition.TabIndex = 49;
             this.segPosition.SelectedIndexChanged += new System.EventHandler(this.segPosition_SelectedIndexChanged);
             // 
             // lblLat
@@ -580,7 +591,7 @@ namespace AgIO
             this.lblLat.Location = new System.Drawing.Point(0, 72);
             this.lblLat.Name = "lblLat";
             this.lblLat.Size = new System.Drawing.Size(220, 30);
-            this.lblLat.TabIndex = 49;
+            this.lblLat.TabIndex = 50;
             this.lblLat.Text = "Latitude";
             // 
             // numLat
@@ -591,7 +602,7 @@ namespace AgIO
             this.numLat.Location = new System.Drawing.Point(230, 64);
             this.numLat.Name = "numLat";
             this.numLat.Size = new System.Drawing.Size(260, 48);
-            this.numLat.TabIndex = 50;
+            this.numLat.TabIndex = 51;
             // 
             // lblLon
             // 
@@ -600,7 +611,7 @@ namespace AgIO
             this.lblLon.Location = new System.Drawing.Point(0, 130);
             this.lblLon.Name = "lblLon";
             this.lblLon.Size = new System.Drawing.Size(220, 30);
-            this.lblLon.TabIndex = 51;
+            this.lblLon.TabIndex = 52;
             this.lblLon.Text = "Longitude";
             // 
             // numLon
@@ -611,7 +622,7 @@ namespace AgIO
             this.numLon.Location = new System.Drawing.Point(230, 122);
             this.numLon.Name = "numLon";
             this.numLon.Size = new System.Drawing.Size(260, 48);
-            this.numLon.TabIndex = 52;
+            this.numLon.TabIndex = 53;
             // 
             // lblAlt
             // 
@@ -620,7 +631,7 @@ namespace AgIO
             this.lblAlt.Location = new System.Drawing.Point(0, 188);
             this.lblAlt.Name = "lblAlt";
             this.lblAlt.Size = new System.Drawing.Size(220, 30);
-            this.lblAlt.TabIndex = 53;
+            this.lblAlt.TabIndex = 54;
             this.lblAlt.Text = "Altitude (m)";
             // 
             // numAlt
@@ -631,7 +642,7 @@ namespace AgIO
             this.numAlt.Location = new System.Drawing.Point(230, 180);
             this.numAlt.Name = "numAlt";
             this.numAlt.Size = new System.Drawing.Size(260, 48);
-            this.numAlt.TabIndex = 54;
+            this.numAlt.TabIndex = 55;
             // 
             // lblInterval
             // 
@@ -640,7 +651,7 @@ namespace AgIO
             this.lblInterval.Location = new System.Drawing.Point(0, 246);
             this.lblInterval.Name = "lblInterval";
             this.lblInterval.Size = new System.Drawing.Size(220, 30);
-            this.lblInterval.TabIndex = 55;
+            this.lblInterval.TabIndex = 56;
             this.lblInterval.Text = "Send every (s)";
             // 
             // numInterval
@@ -650,7 +661,7 @@ namespace AgIO
             this.numInterval.Location = new System.Drawing.Point(230, 238);
             this.numInterval.Name = "numInterval";
             this.numInterval.Size = new System.Drawing.Size(260, 48);
-            this.numInterval.TabIndex = 56;
+            this.numInterval.TabIndex = 57;
             // 
             // lblOutput
             // 
@@ -659,7 +670,7 @@ namespace AgIO
             this.lblOutput.Location = new System.Drawing.Point(0, 314);
             this.lblOutput.Name = "lblOutput";
             this.lblOutput.Size = new System.Drawing.Size(220, 30);
-            this.lblOutput.TabIndex = 57;
+            this.lblOutput.TabIndex = 58;
             this.lblOutput.Text = "Corrections go to";
             // 
             // segOutput
@@ -668,7 +679,7 @@ namespace AgIO
             this.segOutput.Location = new System.Drawing.Point(230, 304);
             this.segOutput.Name = "segOutput";
             this.segOutput.Size = new System.Drawing.Size(720, 52);
-            this.segOutput.TabIndex = 58;
+            this.segOutput.TabIndex = 59;
             this.segOutput.SelectedIndexChanged += new System.EventHandler(this.segOutput_SelectedIndexChanged);
             // 
             // lblNetPort
@@ -678,7 +689,7 @@ namespace AgIO
             this.lblNetPort.Location = new System.Drawing.Point(0, 372);
             this.lblNetPort.Name = "lblNetPort";
             this.lblNetPort.Size = new System.Drawing.Size(220, 30);
-            this.lblNetPort.TabIndex = 59;
+            this.lblNetPort.TabIndex = 60;
             this.lblNetPort.Text = "Network port";
             // 
             // numNetPort
@@ -688,7 +699,7 @@ namespace AgIO
             this.numNetPort.Location = new System.Drawing.Point(230, 364);
             this.numNetPort.Name = "numNetPort";
             this.numNetPort.Size = new System.Drawing.Size(260, 48);
-            this.numNetPort.TabIndex = 60;
+            this.numNetPort.TabIndex = 61;
             // 
             // txtLog
             // 
@@ -701,14 +712,14 @@ namespace AgIO
             this.txtLog.Location = new System.Drawing.Point(20, 562);
             this.txtLog.Name = "txtLog";
             this.txtLog.Size = new System.Drawing.Size(600, 128);
-            this.txtLog.TabIndex = 61;
+            this.txtLog.TabIndex = 62;
             // 
             // btnCheck
             // 
             this.btnCheck.Location = new System.Drawing.Point(640, 562);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(340, 56);
-            this.btnCheck.TabIndex = 62;
+            this.btnCheck.TabIndex = 63;
             this.btnCheck.Text = "Check connection";
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
@@ -718,7 +729,7 @@ namespace AgIO
             this.btnCancel.Location = new System.Drawing.Point(640, 628);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(160, 62);
-            this.btnCancel.TabIndex = 63;
+            this.btnCancel.TabIndex = 64;
             this.btnCancel.Text = "Cancel";
             // 
             // btnSave
@@ -727,7 +738,7 @@ namespace AgIO
             this.btnSave.Location = new System.Drawing.Point(820, 628);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(160, 62);
-            this.btnSave.TabIndex = 64;
+            this.btnSave.TabIndex = 65;
             this.btnSave.Text = "Save";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             this.pnlFallback.Controls.Add(this.tglFallback);
@@ -736,6 +747,7 @@ namespace AgIO
             this.pnlFallback.Controls.Add(this.segAuto);
             this.pnlFallback.Controls.Add(this.lblAfter);
             this.pnlFallback.Controls.Add(this.numAfter);
+            this.pnlFallback.Controls.Add(this.lblAfter2);
             this.pnlFallback.Controls.Add(this.pnlFbService);
             this.pnlFallback.Controls.Add(this.pnlFbRadio);
             this.pnlFbRadio.Controls.Add(this.lblRadioPort);
@@ -852,6 +864,7 @@ namespace AgIO
         private AgIO.SegmentedControl segAuto;
         private System.Windows.Forms.Label lblAfter;
         private AgIO.NumberField numAfter;
+        private System.Windows.Forms.Label lblAfter2;
         private System.Windows.Forms.Panel pnlFbService;
         private System.Windows.Forms.Label lblFbHost;
         private System.Windows.Forms.TextBox txtFbHost;

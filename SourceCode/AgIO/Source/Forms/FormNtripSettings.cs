@@ -117,7 +117,7 @@ namespace AgIO
             numNetPort.Enabled = segOutput.SelectedIndex == 1;
 
             bool fallbackOn = tglFallback.Checked;
-            segFbType.Enabled = segAuto.Enabled = numAfter.Enabled = pnlFbService.Enabled = pnlFbRadio.Enabled = fallbackOn;
+            segFbType.Enabled = segAuto.Enabled = numAfter.Enabled = lblAfter.Enabled = lblAfter2.Enabled = pnlFbService.Enabled = pnlFbRadio.Enabled = fallbackOn;
             pnlFbService.Visible = segFbType.SelectedIndex == 0;
             pnlFbRadio.Visible = segFbType.SelectedIndex == 1;
         }
@@ -127,7 +127,7 @@ namespace AgIO
             pnlMain.Visible = segPage.SelectedIndex == 0;
             pnlFallback.Visible = segPage.SelectedIndex == 1;
             pnlOutput.Visible = segPage.SelectedIndex == 2;
-            btnCheck.Visible = segPage.SelectedIndex != 2;
+            btnCheck.Visible = txtLog.Visible = segPage.SelectedIndex != 2;
             UpdateEnabled();
         }
 
