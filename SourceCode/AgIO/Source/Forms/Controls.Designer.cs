@@ -411,13 +411,12 @@ namespace AgIO
             }
 
 
-            using (var form = new FormNtrip(this))
+            using (var form = new FormNtripSettings(this))
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
                     //reconnect with the new settings
-                    SettingsShutDownNTRIP();
-                    Settings.Default.Save();
+                    ConfigureNTRIP();
                 }
             }
         }

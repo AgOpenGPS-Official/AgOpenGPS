@@ -20,7 +20,6 @@ namespace AgIO
         private int ntripCounter = 10;
 
         //the settings window stores the address it resolved here
-        public string broadCasterIP;
 
         public uint tripBytes = 0;
         private int toUDP_Port = 0;
