@@ -29,6 +29,7 @@ namespace AgLibrary.Ntrip.Tests
         public Task RunAsync(CancellationToken ct)
         {
             Interlocked.Increment(ref Runs);
+            Stopped = false;
             var done = new TaskCompletionSource<bool>();
             ct.Register(() => { Stopped = true; done.TrySetResult(true); });
             return done.Task;
@@ -74,7 +75,7 @@ namespace AgLibrary.Ntrip.Tests
             private readonly CancellationTokenSource _cts = new CancellationTokenSource();
             private readonly Task _run;
 
-            public Rig(bool withFallback = true, int switchAfter = 2)
+            public Rig(bool withFallback = true, int switchAfter = 2, bool autoSwitch = true, bool keepMain = true)
             {
                 Func<ICorrectionSource> factory = null;
                 if (withFallback)
@@ -86,10 +87,11 @@ namespace AgLibrary.Ntrip.Tests
                         return f;
                     };
                 }
-                Manager = new CorrectionSourceManager(Main, factory, switchAfter);
+                Manager = new CorrectionSourceManager(Main, factory, switchAfter, autoSwitch, keepMain);
                 Manager.FrameReceived += (type, frame) => { lock (Frames) Frames.Add(type); };
                 Manager.Notice += (title, message) => { lock (Notices) Notices.Add(title + "|" + message); };
                 _run = Task.Run(() => Manager.RunAsync(_cts.Token));
+                WaitFor(() => Main.Runs == 1);
             }
 
             public FakeSource Fallback => Fallbacks[Fallbacks.Count - 1];
@@ -315,6 +317,125 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(s.Status.State, Is.EqualTo(NtripState.Streaming), "the card shows the source in use");
                 Assert.That(s.Main.State, Is.EqualTo(NtripState.Waiting));
             }
+        }
+
+        [Test]
+        public void ManualMode_DoesNotSwitchByItself_ButAsksOnce()
+        {
+            using (var rig = new Rig(autoSwitch: false))
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 3);
+
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.Fallbacks, Is.Empty);
+                Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(1), "asks once, not per attempt");
+                Assert.That(rig.Manager.Status.MainFailing, Is.True);
+
+                rig.Manager.SwitchToFallbackNow();
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
+                Assert.That(rig.Manager.Status.MainFailing, Is.False);
+            }
+        }
+
+        [Test]
+        public void ManualMode_AsksAgainAfterTheMainServiceHasWorkedInBetween()
+        {
+            using (var rig = new Rig(autoSwitch: false))
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Main.Set(NtripState.Streaming);
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(2));
+                Assert.That(rig.Manager.Status.MainFailing, Is.True);
+            }
+        }
+
+        [Test]
+        public void SwitchingByHand_WorksAtAnyTime_AndDoesNotAskToGoBack()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Streaming);
+                rig.Manager.SwitchToFallbackNow();
+
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
+                Assert.That(rig.Notices[0], Does.StartWith("Switched to the fallback"));
+                Assert.That(rig.Notices[0], Does.Contain("You switched to the fallback."));
+
+                rig.Main.Set(NtripState.Streaming);                       // the main service is fine: no "it is back"
+                Assert.That(rig.NoticeCount("The main service is back"), Is.EqualTo(0));
+                Assert.That(rig.Manager.Status.MainBack, Is.False);
+
+                rig.Manager.SwitchBackToMain();
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+            }
+        }
+
+        [Test]
+        public void SwitchingByHand_WithoutAFallback_DoesNothing()
+        {
+            using (var rig = new Rig(withFallback: false))
+            {
+                rig.Manager.SwitchToFallbackNow();
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.Notices, Is.Empty);
+            }
+        }
+
+        [Test]
+        public void SameLogin_MainIsPausedOnTheFallback_AndTriedAgainOnRequest()
+        {
+            using (var rig = new Rig(keepMain: false))
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                Assert.That(rig.WaitFor(() => rig.Main.Stopped), Is.True, "the main service is not tried in the background");
+                Assert.That(rig.Manager.Status.MainPaused, Is.True);
+
+                rig.Manager.TryMainAgain();
+                Assert.That(rig.WaitFor(() => rig.Main.Runs == 2 && !rig.Main.Stopped), Is.True, "tried again on request");
+                Assert.That(rig.Manager.Status.MainPaused, Is.False);
+
+                rig.Main.Set(NtripState.Streaming);
+                Assert.That(rig.NoticeCount("The main service is back"), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void SwitchingBack_WhileTheMainServiceIsPaused_StartsIt()
+        {
+            using (var rig = new Rig(keepMain: false))
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.WaitFor(() => rig.Main.Stopped);
+
+                rig.Manager.SwitchBackToMain();
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.WaitFor(() => rig.Main.Runs == 2 && !rig.Main.Stopped), Is.True);
+            }
+        }
+
+        [Test]
+        public void TryMainAgain_WhenNothingIsPaused_DoesNothing()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Manager.TryMainAgain();
+                Thread.Sleep(100);
+                Assert.That(rig.Main.Runs, Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void SameAccount_IsDecidedOnHostPortAndUser()
+        {
+            var main = new NtripProfile("rtk2go.com", 2101, "A", "me@example.org", "x");
+            Assert.That(FallbackPlan.SameAccount(main, new NtripProfile("RTK2GO.com", 2101, "B", "me@example.org", "y")), Is.True);
+            Assert.That(FallbackPlan.SameAccount(main, new NtripProfile("rtk2go.com", 2101, "B", "other@example.org")), Is.False);
+            Assert.That(FallbackPlan.SameAccount(main, new NtripProfile("caster.centipede.fr", 2101, "B", "me@example.org")), Is.False);
+            Assert.That(FallbackPlan.SameAccount(main, new NtripProfile("rtk2go.com", 2102, "B", "me@example.org")), Is.False);
+            Assert.That(FallbackPlan.SameAccount(main, null), Is.False);
         }
 
         [Test]

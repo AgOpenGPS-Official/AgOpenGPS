@@ -119,6 +119,16 @@ namespace AgLibrary.Ntrip
             }
         }
 
+        /// <summary>The answer is a sourcetable (a list of mountpoints) and not a stream.</summary>
+        public static bool IsSourcetable(string header, ReadOnlySpan<byte> firstBody = default)
+        {
+            string[] lines = (header ?? "").Replace("\r", "").Split('\n');
+            string first = lines[0].Trim();
+            if (first.StartsWith("SOURCETABLE", StringComparison.OrdinalIgnoreCase)) return true;
+            if (ContentType(lines).IndexOf("sourcetable", StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return BodyLooksLikeSourcetable(firstBody);
+        }
+
         /// <summary>The header announces Transfer-Encoding: chunked.</summary>
         public static bool IsChunked(string header)
         {

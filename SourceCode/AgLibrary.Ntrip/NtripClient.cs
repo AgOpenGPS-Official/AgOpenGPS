@@ -110,13 +110,13 @@ namespace AgLibrary.Ntrip
                     string text = Describe(outcome, row, decision);
                     if (decision.GiveUp)
                     {
-                        Update(s => { s.State = NtripState.GaveUp; s.LastError = outcome.Category; s.Message = text; s.FailuresInRow = row; s.ConsecutiveFailures = anyRow; s.FirstLine = outcome.FirstLine; });
+                        Update(s => { s.State = NtripState.GaveUp; s.LastError = outcome.Category; s.Message = text; s.Reason = outcome.Message; s.FailuresInRow = row; s.ConsecutiveFailures = anyRow; s.FirstLine = outcome.FirstLine; });
                         return;
                     }
 
                     Update(s =>
                     {
-                        s.State = NtripState.Waiting; s.LastError = outcome.Category; s.Message = text;
+                        s.State = NtripState.Waiting; s.LastError = outcome.Category; s.Message = text; s.Reason = outcome.Message;
                         s.FailuresInRow = row; s.ConsecutiveFailures = anyRow; s.RetryInSeconds = decision.Delay.TotalSeconds; s.FirstLine = outcome.FirstLine;
                     });
                     // The 1.0 fallback was only a probe: start the next round with 2.0 again.

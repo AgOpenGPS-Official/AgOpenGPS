@@ -175,6 +175,7 @@ namespace AgLibrary.Ntrip
                 s.State = NtripState.Waiting;
                 s.LastError = NtripCategory.CasterUnreachable;
                 s.Message = message;
+                s.Reason = message;
                 s.FailuresInRow = failures;
                 s.ConsecutiveFailures = failures;
                 s.RetryInSeconds = _retry.TotalSeconds;
