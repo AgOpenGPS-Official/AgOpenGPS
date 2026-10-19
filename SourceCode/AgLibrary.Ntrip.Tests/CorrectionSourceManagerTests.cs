@@ -89,7 +89,7 @@ namespace AgLibrary.Ntrip.Tests
                 }
                 Manager = new CorrectionSourceManager(Main, factory, switchAfter, autoSwitch, keepMain);
                 Manager.FrameReceived += (type, frame) => { lock (Frames) Frames.Add(type); };
-                Manager.Notice += (title, message) => { lock (Notices) Notices.Add(title + "|" + message); };
+                Manager.Notice += (kind, title, message) => { lock (Notices) Notices.Add(title + "|" + message); };
                 _run = Task.Run(() => Manager.RunAsync(_cts.Token));
                 WaitFor(() => Main.Runs == 1);
             }

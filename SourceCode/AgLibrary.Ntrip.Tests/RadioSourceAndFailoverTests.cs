@@ -190,7 +190,7 @@ namespace AgLibrary.Ntrip.Tests
             var types = new List<int>();
             string notice = null;
             manager.FrameReceived += (t, f) => { lock (types) types.Add(t); };
-            manager.Notice += (title, message) => notice = title + "|" + message;
+            manager.Notice += (kind, title, message) => notice = title + "|" + message;
 
             using (var cts = new CancellationTokenSource())
             {
@@ -263,7 +263,7 @@ namespace AgLibrary.Ntrip.Tests
                 var types = new List<int>();
                 var notices = new List<string>();
                 manager.FrameReceived += (t, f) => { lock (types) types.Add(t); };
-                manager.Notice += (title, message) => { lock (notices) notices.Add(title); };
+                manager.Notice += (kind, title, message) => { lock (notices) notices.Add(title); };
 
                 using (var cts = new CancellationTokenSource())
                 {
