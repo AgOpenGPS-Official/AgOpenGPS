@@ -68,7 +68,6 @@ namespace AgIO
             this.lblSerialPorts = new System.Windows.Forms.Label();
             this.lblMount = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
-            this.ntripMeterTimer = new System.Windows.Forms.Timer(this.components);
             this.lblMessages = new System.Windows.Forms.Label();
             this.lblWASCounts = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -511,11 +510,6 @@ namespace AgIO
             this.lblIP.Text = "288.288.288.288";
             this.lblIP.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lblIP.Click += new System.EventHandler(this.lblIP_Click);
-            // 
-            // ntripMeterTimer
-            // 
-            this.ntripMeterTimer.Interval = 50;
-            this.ntripMeterTimer.Tick += new System.EventHandler(this.ntripMeterTimer_Tick);
             // 
             // lblMessages
             // 
@@ -1207,7 +1201,6 @@ namespace AgIO
         private System.Windows.Forms.Button btnUDP;
         private System.Windows.Forms.Button btnRunAOG;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Timer ntripMeterTimer;
         private System.Windows.Forms.Label lblMount;
         private System.Windows.Forms.Label lblIP;
         private System.Windows.Forms.Label lblSerialPorts;

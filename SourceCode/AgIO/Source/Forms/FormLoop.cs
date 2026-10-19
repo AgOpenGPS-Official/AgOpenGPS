@@ -44,8 +44,6 @@ namespace AgIO
         public StringBuilder logUDPSentence = new StringBuilder();
         public bool isLogNMEA, isLogMonitorOn, isUDPMonitorOn, isGPSLogOn, isNTRIPLogOn;
 
-        private StringBuilder sbRTCM = new StringBuilder();
-
         public bool isKeyboardOn = true;
 
         public bool isSendToSerial = true, isSendToUDP = false;
@@ -231,14 +229,6 @@ namespace AgIO
             pictureBox1.Top = 0;
             //pictureBox1.Dock = DockStyle.Fill;:
 
-            //update Caster IP from URL in the background, start from the last known one meanwhile
-            //(the first connect attempt is ~10 s away, the lookup normally finishes long before)
-            if (isNTRIP_RequiredOn)
-            {
-                broadCasterIP = Properties.Settings.Default.setNTRIP_casterIP;
-                ResolveCasterIPAsync();
-            }
-
             this.Text =
             "AgIO  v" + Program.Version + " Profile: " + RegistrySettings.profileName;
 
@@ -288,6 +278,12 @@ namespace AgIO
             }
 
             isobusForm.StopAogTaskControllerProcess();
+
+            if (ntripHost != null)
+            {
+                ntripHost.Dispose();
+                ntripHost = null;
+            }
 
             if (loopBackSocket != null)
             {
@@ -396,19 +392,10 @@ namespace AgIO
                 threeMinuteTimer = secondsSinceStart;
             }
 
-            // 1 Second Loop Part2
-            if (isViewAdvanced)
-            {
-                if (isNTRIP_RequiredOn)
-                {
-                    sbRTCM.Append(".");
-                    lblMessages.Text = sbRTCM.ToString();
-                }
-            }
-
             if (focusSkipCounter != 0)
             {
-                if (ntripCounter > 30)
+                //blink while corrections arrive
+                if (isNTRIP_RequiredOn ? (ntripHost != null && ntripHost.Status.State == AgLibrary.Ntrip.NtripState.Streaming) : ntripCounter > 30)
                 {
                     isNTRIPToggle = !isNTRIPToggle;
                     if (isNTRIPToggle) lblNTRIPBytes.BackColor = Color.CornflowerBlue;
@@ -469,52 +456,6 @@ namespace AgIO
                     {
                         _ = IPA.ToString();
                         lblIP.Text += IPA.ToString() + "\r\n";
-                    }
-                }
-
-                if (isViewAdvanced && isNTRIP_RequiredOn)
-                {
-                    try
-                    {
-                        //add the uniques messages to all the new ones
-                        foreach (var item in aList)
-                        {
-                            rList.Add(item);
-                        }
-
-                        //sort and group using Linq
-                        sbRTCM.Clear();
-
-                        var g = rList.GroupBy(i => i)
-                            .OrderBy(grp => grp.Key);
-                        int count = 0;
-                        aList.Clear();
-
-                        //Create the text box of unique message numbers
-                        foreach (var grp in g)
-                        {
-                            aList.Add(grp.Key);
-                            sbRTCM.AppendLine(grp.Key + " - " + (grp.Count() - 1));
-                            count++;
-                        }
-
-                        rList?.Clear();
-
-                        //too many messages or trash
-                        if (count > 25)
-                        {
-                            aList?.Clear();
-                            sbRTCM.Clear();
-                            sbRTCM.Append("Reset..");
-                        }
-
-                        lblMessagesFound.Text = count.ToString();
-                    }
-                    catch
-                    {
-                        sbRTCM.Clear();
-                        sbRTCM.Append("Error");
-                        Log.EventWriter("RTCM List compilation error");
                     }
                 }
 

@@ -38,24 +38,17 @@ namespace AgIO
                 this.Width = 760;
                 isViewAdvanced = true;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnLeft;
-                sbRTCM.Clear();
                 lblMessages.Text = "Reading...";
                 threeMinuteTimer = secondsSinceStart;
                 lblMessagesFound.Text = "-";
-                aList.Clear();
-                rList.Clear();
             }
             else
             {
                 this.Width = 428;
                 isViewAdvanced = false;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnRight;
-                aList.Clear();
-                rList.Clear();
                 lblMessages.Text = "Reading...";
                 lblMessagesFound.Text = "-";
-                aList.Clear();
-                rList.Clear();
             }
         }
 
@@ -63,6 +56,13 @@ namespace AgIO
         {
             if (Properties.Settings.Default.setNTRIP_isOn || Properties.Settings.Default.setRadio_isOn)
             {
+                // The client gave up (wrong login or mountpoint): the button starts it again
+                if (isNTRIP_RequiredOn && ntripHost != null && ntripHost.Status.State == AgLibrary.Ntrip.NtripState.GaveUp)
+                {
+                    StartNtripHost();
+                    return;
+                }
+
                 if (isNTRIP_RequiredOn || isRadio_RequiredOn)
                 {
                     ShutDownNTRIP();
@@ -80,6 +80,7 @@ namespace AgIO
                     lblWatch.Text = "Waiting";
                     lblNTRIP_IP.Text = "--";
                     lblMount.Text = "--";
+                    if (isNTRIP_RequiredOn) StartNtripHost();
                 }
             }
             else
@@ -185,9 +186,7 @@ namespace AgIO
         }
         private void lblMessages_Click(object sender, EventArgs e)
         {
-            aList?.Clear();
-            sbRTCM.Clear();
-            sbRTCM.Append("Reset..");
+            //the list comes from the client's own statistics for the whole session; nothing to reset
         }
 
         private void lblNTRIPBytes_Click(object sender, EventArgs e)
@@ -428,10 +427,8 @@ namespace AgIO
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
-                    if (isNTRIP_Connected)
-                    {
-                        SettingsShutDownNTRIP();
-                    }
+                    //reconnect with the new settings
+                    SettingsShutDownNTRIP();
                     Settings.Default.Save();
                 }
             }

@@ -268,6 +268,33 @@ namespace AgIO
 
         #region Send UDP
 
+        // Corrections from the NTRIP client go out from its own thread. Unlike SendUDPMessage this
+        // never touches the UI-thread-only monitor log, so it is safe to call from there.
+        public void SendNtripDatagram(byte[] data)
+        {
+            IPEndPoint endPoint = epNtrip;
+            Socket socket = UDPSocket;
+            if (!isUDPNetworkConnected || endPoint == null || socket == null || data.Length == 0) return;
+
+            try
+            {
+                socket.BeginSendTo(data, 0, data.Length, SocketFlags.None, endPoint, new AsyncCallback(SendDataUDPAsync), null);
+            }
+            catch (Exception)
+            {
+                //the socket is closing or the network is gone; the client keeps running
+            }
+        }
+
+        /// <summary>Where the NTRIP datagrams go: the module subnet's broadcast address on the given port.</summary>
+        public void SetNtripEndpoint(int port)
+        {
+            epNtrip = new IPEndPoint(IPAddress.Parse(
+                Properties.Settings.Default.etIP_SubnetOne.ToString() + "." +
+                Properties.Settings.Default.etIP_SubnetTwo.ToString() + "." +
+                Properties.Settings.Default.etIP_SubnetThree.ToString() + ".255"), port);
+        }
+
         public void SendUDPMessage(byte[] byteData, IPEndPoint endPoint)
         {
             if (isUDPNetworkConnected)
