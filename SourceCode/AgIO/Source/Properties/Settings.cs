@@ -40,6 +40,7 @@ namespace AgIO.Properties
         public bool setNTRIP_isGGAManual = false;
         public bool setNTRIP_isTCP = false;
         public bool setNTRIP_isHTTP10 = false;
+        public double setNTRIP_manualAltitude = 0;
         public bool setPgm_isFirstRun = true;
         public string setPort_portNameGPS2 = "GPS2";
         public int setPort_baudRateGPS2 = 9600;

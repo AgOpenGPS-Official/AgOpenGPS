@@ -712,6 +712,30 @@ namespace AgIO
 
         #region GPS SerialPort --------------------------------------------------------------------------
 
+        // Same target as SendGPSPort, for the NTRIP client's own thread: no logging, because the
+        // event log may only be written from the UI thread. Returns false when nothing was written.
+        public bool WriteGpsPortQuiet(byte[] data)
+        {
+            try
+            {
+                if (spRtcm.IsOpen)
+                {
+                    spRtcm.Write(data, 0, data.Length);
+                    return true;
+                }
+                else if (spGPS.IsOpen)
+                {
+                    spGPS.Write(data, 0, data.Length);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                //the port was closed or unplugged meanwhile
+            }
+            return false;
+        }
+
         public void SendGPSPort(byte[] data)
         {
             try
