@@ -199,20 +199,6 @@ namespace AgIO
 
             ConfigureNTRIP();
 
-            string[] ports = System.IO.Ports.SerialPort.GetPortNames();
-
-            if (ports.Length == 0)
-            {
-                lblSerialPorts.Text = "None";
-            }
-            else
-            {
-                for (int i = 0; i < ports.Length; i++)
-                {
-                    lblSerialPorts.Text = ports[i] + "\r\n";
-                }
-            }
-
             isConnectedIMU = cboxIsIMUModule.Checked = Properties.Settings.Default.setMod_isIMUConnected;
             isConnectedSteer = cboxIsSteerModule.Checked = Properties.Settings.Default.setMod_isSteerConnected;
             isConnectedMachine = cboxIsMachineModule.Checked = Properties.Settings.Default.setMod_isMachineConnected;
@@ -392,20 +378,6 @@ namespace AgIO
                 threeMinuteTimer = secondsSinceStart;
             }
 
-            if (focusSkipCounter != 0)
-            {
-                //blink while corrections arrive
-                if (isNTRIP_RequiredOn ? (ntripHost != null && ntripHost.Status.State == AgLibrary.Ntrip.NtripState.Streaming) : ntripCounter > 30)
-                {
-                    isNTRIPToggle = !isNTRIPToggle;
-                    if (isNTRIPToggle) lblNTRIPBytes.BackColor = Color.CornflowerBlue;
-                    else lblNTRIPBytes.BackColor = Color.DarkOrange;
-                }
-                else
-                {
-                    lblNTRIPBytes.BackColor = Color.Transparent;
-                }
-            }
         }
 
         private void TwoSecondLoop()
@@ -683,21 +655,5 @@ namespace AgIO
 
         // Buttons, Checkboxes and Clicks  ***************************************************
 
-        private void RescanPorts()
-        {
-            string[] ports = System.IO.Ports.SerialPort.GetPortNames();
-
-            if (ports.Length == 0)
-            {
-                lblSerialPorts.Text = "None";
-            }
-            else
-            {
-                for (int i = 0; i < ports.Length; i++)
-                {
-                    lblSerialPorts.Text = ports[i] + " ";
-                }
-            }
-        }
     }
 }
