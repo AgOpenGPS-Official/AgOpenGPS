@@ -78,6 +78,13 @@ namespace AgLibrary.Ntrip
 
             _stream = _client.GetStream();
             Reader = new TimedReader(_stream);
+            if (p.RawTcp)
+            {
+                // No request and no header: whatever arrives is the stream.
+                HeaderMs = ConnectMs;
+                Outcome = new NtripOutcome(NtripCategory.Accepted, "", "raw TCP", false);
+                return;
+            }
             byte[] request = Encoding.ASCII.GetBytes(NtripRequest.Build(p, version, gga));
             await _stream.WriteAsync(request, 0, request.Length).ConfigureAwait(false);
 

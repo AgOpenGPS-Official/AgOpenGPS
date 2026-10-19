@@ -10,6 +10,22 @@ namespace AgLibrary.Ntrip
         /// <summary>Multiple Signal Messages: 1071-1137, the last digit 1-7 being the MSM level.</summary>
         public static bool IsMsm(int type) => type >= 1071 && type <= 1137 && type % 10 >= 1 && type % 10 <= 7;
 
+        /// <summary>The satellite systems of MSM messages, in the order of the message numbers (1071, 1081, ...).</summary>
+        public static readonly string[] SystemNames = { "GPS", "GLONASS", "Galileo", "SBAS", "QZSS", "BeiDou", "NavIC" };
+
+        /// <summary>Index into <see cref="SystemNames"/> for an observation message, or -1.</summary>
+        public static int SystemIndex(int type)
+        {
+            if (IsMsm(type)) return (type - 1070) / 10;
+            if (type >= 1001 && type <= 1004) return 0;
+            if (type >= 1009 && type <= 1012) return 1;
+            return -1;
+        }
+
+        /// <summary>The message carries the reference station ID in bits 12 to 23 of its payload.</summary>
+        public static bool HasStationId(int type) =>
+            (type >= 1001 && type <= 1013) || IsMsm(type) || type == 1029 || type == 1033;
+
         public static string Describe(int type)
         {
             if (IsMsm(type))

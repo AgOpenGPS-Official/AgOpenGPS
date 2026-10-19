@@ -26,9 +26,9 @@ namespace AgLibrary.Ntrip.Tests
         };
 
         public Harness(int port, NtripVersion version = NtripVersion.V2, string mount = "MOUNT", string user = "",
-            string password = "", Func<string> gga = null, int ggaInterval = 0, NtripTimeouts timeouts = null)
+            string password = "", Func<string> gga = null, int ggaInterval = 0, NtripTimeouts timeouts = null, bool rawTcp = false)
         {
-            var profile = new NtripProfile("127.0.0.1", port, mount, user, password, version, ggaInterval);
+            var profile = new NtripProfile("127.0.0.1", port, mount, user, password, version, ggaInterval, rawTcp);
             Client = new NtripClient(profile, gga, timeouts ?? QuickTimeouts(),
                 (span, ct) =>
                 {
