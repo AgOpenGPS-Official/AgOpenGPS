@@ -51,6 +51,10 @@ namespace AgLibrary.Ntrip
         public RtcmStreamSnapshot Rtcm { get; internal set; } = new RtcmStreamSnapshot(0, 0, 0, 0, new RtcmTypeStat[0]);
         /// <summary>The stream has no RTCM 3 frames and its bytes are forwarded as they come.</summary>
         public bool Unframed { get; internal set; }
+        /// <summary>What delivers the corrections, for the headline: "NTRIP" or "Radio".</summary>
+        public string SourceName { get; internal set; } = "NTRIP";
+        /// <summary>Failed attempts in a row of any kind, not counting a missing network. 0 after corrections arrived.</summary>
+        public int ConsecutiveFailures { get; internal set; }
 
         /// <summary>One short sentence for the big status line, in words a farmer uses.</summary>
         public string Headline
@@ -59,7 +63,7 @@ namespace AgLibrary.Ntrip
             {
                 switch (State)
                 {
-                    case NtripState.Streaming: return "NTRIP Active";
+                    case NtripState.Streaming: return SourceName + " Active";
                     case NtripState.Connected: return "Connected, waiting for data";
                     case NtripState.Connecting: return "Connecting...";
                     case NtripState.GaveUp: return LastError == NtripCategory.UnknownMountpoint ? "Mountpoint not found" : "Cannot log in";
