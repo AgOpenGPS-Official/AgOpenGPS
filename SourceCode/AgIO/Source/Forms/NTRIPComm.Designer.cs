@@ -184,13 +184,13 @@ namespace AgIO
         private bool ntripQuestionOpen;
 
         //a question with Yes and Cancel; a second question while one is open is skipped
-        private void AskNtrip(string title, string message, Action onYes)
+        private void AskNtrip(string title, string message, Action onYes, bool showCancel = true)
         {
             if (ntripQuestionOpen) return;
             ntripQuestionOpen = true;
             try
             {
-                using (var dialog = new FormYes(title + "\r\n\r\n" + message, true))
+                using (var dialog = new FormYes(title + "\r\n\r\n" + message, showCancel))
                 {
                     if (dialog.ShowDialog(this) == DialogResult.OK) onYes();
                 }
@@ -213,7 +213,7 @@ namespace AgIO
                     Log.EventWriter("NTRIP - " + title + ": " + message);
                     if (kind == NoticeKind.MainBack) AskNtrip(title, message, () => ntripHost.SwitchBackToMain());
                     else if (kind == NoticeKind.MainFailing) AskNtrip(title, message, () => ntripHost.SwitchToFallback());
-                    else TimedMessageBox(5000, title, message);
+                    else AskNtrip(title, message, () => { }, false);
                 }));
             }
             catch (InvalidOperationException)
