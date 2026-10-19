@@ -13,7 +13,7 @@ namespace AgLibrary.Ntrip.Tests
             NtripOutcome o = ConnectionErrors.Classify(SocketError.ConnectionRefused, "100.89.71.53", 2101);
             Assert.That(o.Category, Is.EqualTo(NtripCategory.CasterUnreachable));
             Assert.That(o.Message, Does.Contain("100.89.71.53:2101"));
-            Assert.That(o.Message, Does.Contain("refused"));
+            Assert.That(o.Message, Does.Contain("switched on"));
         }
 
         [TestCase(SocketError.HostNotFound)]

@@ -92,7 +92,7 @@ namespace AgLibrary.Ntrip
 
                         if (outcome.IsAccepted)
                         {
-                            Update(s => { s.State = NtripState.Connected; s.LastError = null; s.Message = "Connected, waiting for corrections"; });
+                            Update(s => { s.State = NtripState.Connected; s.LastError = null; s.Message = "Connected. Waiting for corrections."; });
                             outcome = await StreamAsync(conn, version, ct).ConfigureAwait(false);
                             streamed = _stats.Snapshot().Messages > 0 || Status.Unframed;
                         }
@@ -191,16 +191,16 @@ namespace AgLibrary.Ntrip
                     if (lastData.Elapsed >= _timeouts.NoData)
                     {
                         return _framesTotal > 0 || unframed
-                            ? Outcome(NtripCategory.StreamLost, "Corrections stopped, reconnecting")
-                            : Outcome(NtripCategory.NoCorrections, "Connected, but no corrections: check the position (GGA)");
+                            ? Outcome(NtripCategory.StreamLost, "Corrections stopped. Reconnecting.")
+                            : Outcome(NtripCategory.NoCorrections, "Connected, but nothing is coming in. Some services need your position: check that your GPS position is switched on.");
                     }
                     continue;
                 }
                 if (n == 0)
                 {
                     return _framesTotal > 0 || unframed
-                        ? Outcome(NtripCategory.StreamLost, "The caster closed the connection, reconnecting")
-                        : Outcome(NtripCategory.NoCorrections, "The caster closed the connection without sending corrections");
+                        ? Outcome(NtripCategory.StreamLost, "The service closed the connection. Reconnecting.")
+                        : Outcome(NtripCategory.NoCorrections, "The service closed the connection without sending corrections.");
                 }
 
                 _bytes += n;
@@ -262,8 +262,8 @@ namespace AgLibrary.Ntrip
         {
             string text = o.Message;
             if (d.MaxAttempts > 0)
-                text += d.GiveUp ? " - stopped after " + d.MaxAttempts + " attempts, check the settings"
-                                 : " (attempt " + row + " of " + d.MaxAttempts + ")";
+                text += d.GiveUp ? " AgIO stopped trying: check the settings and press Start."
+                                 : " Try " + row + " of " + d.MaxAttempts + ".";
             return text;
         }
 

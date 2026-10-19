@@ -54,7 +54,7 @@ namespace AgLibrary.Ntrip
             }
             catch (Exception ex) when (ex is IOException || ex is ObjectDisposedException || ex is InvalidOperationException)
             {
-                c.Fail(new NtripOutcome(NtripCategory.CasterUnreachable, p.Host + ":" + p.Port + " closed the connection", ex.GetType().Name, false));
+                c.Fail(new NtripOutcome(NtripCategory.CasterUnreachable, p.Host + ":" + p.Port + " closed the connection.", ex.GetType().Name, false));
             }
             return c;
         }
@@ -96,7 +96,7 @@ namespace AgLibrary.Ntrip
                 TimeSpan remaining = t.Header - headerClock.Elapsed;
                 if (remaining <= TimeSpan.Zero)
                 {
-                    Fail(new NtripOutcome(NtripCategory.CasterUnreachable, p.Host + ":" + p.Port + " did not answer the request", "", false));
+                    Fail(new NtripOutcome(NtripCategory.CasterUnreachable, "No answer from " + p.Host + ":" + p.Port + ".", "", false));
                     return;
                 }
                 bool icyOnly = NtripHeaderScanner.IsIcyStatusLineOnly(header.ToArray());
@@ -112,7 +112,7 @@ namespace AgLibrary.Ntrip
                 {
                     // Closed before the header was complete: judge what there is.
                     if (header.Count == 0)
-                        Fail(new NtripOutcome(NtripCategory.CasterUnreachable, p.Host + ":" + p.Port + " closed the connection without an answer", "", false));
+                        Fail(new NtripOutcome(NtripCategory.CasterUnreachable, p.Host + ":" + p.Port + " closed the connection without answering.", "", false));
                     else
                         Complete(header.ToArray(), header.Count, header.Count, sw);
                     return;
@@ -120,7 +120,7 @@ namespace AgLibrary.Ntrip
                 for (int i = 0; i < n; i++) header.Add(Reader.Buffer[i]);
                 if (header.Count > 16384)
                 {
-                    Fail(new NtripOutcome(NtripCategory.NotUnderstood, "The caster's answer has no end of header", "", false));
+                    Fail(new NtripOutcome(NtripCategory.NotUnderstood, "The service sent an answer AgIO cannot read.", "", false));
                     return;
                 }
                 byte[] all = header.ToArray();

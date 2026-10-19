@@ -15,23 +15,23 @@ namespace AgLibrary.Ntrip
             switch (code)
             {
                 case SocketError.ConnectionRefused:
-                    return Unreachable(where + " refused the connection (is the caster or base station running?)", code);
+                    return Unreachable("Cannot reach " + where + ". Is the base station or caster switched on?", code);
                 case SocketError.HostNotFound:
                 case SocketError.NoData:
                 case SocketError.TryAgain:
-                    return Unreachable("Cannot find " + host + " (name lookup failed)", code);
+                    return Unreachable("Cannot find " + host + ". Check the address and your internet connection.", code);
                 case SocketError.TimedOut:
-                    return Unreachable(where + " did not answer (timed out)", code);
+                    return Unreachable("No answer from " + where + ".", code);
                 case SocketError.HostUnreachable:
-                    return Unreachable("No route to " + where, code);
+                    return Unreachable("Cannot reach " + where + " (no route).", code);
                 case SocketError.NetworkDown:
                 case SocketError.NetworkUnreachable:
-                    return new NtripOutcome(NtripCategory.NoNetwork, "No network connection", code.ToString(), false);
+                    return new NtripOutcome(NtripCategory.NoNetwork, "No network connection.", code.ToString(), false);
                 case SocketError.ConnectionReset:
                 case SocketError.ConnectionAborted:
-                    return Unreachable(where + " closed the connection while connecting", code);
+                    return Unreachable(where + " closed the connection.", code);
                 default:
-                    return Unreachable("Cannot connect to " + where + " (" + code + ")", code);
+                    return Unreachable("Cannot connect to " + where + " (" + code + ").", code);
             }
         }
 

@@ -255,7 +255,7 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(h.WaitFor(s => s.State == NtripState.GaveUp), Is.True);
                 NtripStatus st = h.Client.Status;
                 Assert.That(st.LastError, Is.EqualTo(NtripCategory.LoginRejected));
-                Assert.That(st.Message, Does.Contain("stopped after 3 attempts"));
+                Assert.That(st.Message, Does.Contain("stopped trying"));
                 Assert.That(caster.Connections, Is.EqualTo(3));
                 Assert.That(h.DelaySeconds(), Is.EqualTo(new[] { 5.0, 5.0 }));
                 Assert.That(h.Run.Wait(2000), Is.True, "the run ends by itself");
@@ -269,7 +269,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var h = new Harness(caster.Port).Start())
             {
                 Assert.That(h.WaitFor(s => s.State == NtripState.Waiting && s.FailuresInRow == 2), Is.True);
-                Assert.That(h.Client.Status.Message, Does.Contain("attempt 2 of 3"));
+                Assert.That(h.Client.Status.Message, Does.Contain("Try 2 of 3"));
             }
         }
 
@@ -326,7 +326,7 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(h.WaitForDelays(2, 20000), Is.True);
                 Assert.That(h.DelaySeconds().GetRange(0, 2), Is.EqualTo(new[] { 5.0, 10.0 }));
                 Assert.That(h.Client.Status.LastError, Is.EqualTo(NtripCategory.CasterUnreachable));
-                Assert.That(h.Client.Status.Message, Does.Contain("refused the connection"));
+                Assert.That(h.Client.Status.Message, Does.Contain("switched on"));
             }
         }
 
@@ -338,7 +338,7 @@ namespace AgLibrary.Ntrip.Tests
             {
                 Assert.That(h.WaitFor(s => s.State == NtripState.Waiting, 4000), Is.True);
                 Assert.That(h.Client.Status.LastError, Is.EqualTo(NtripCategory.CasterUnreachable));
-                Assert.That(h.Client.Status.Message, Does.Contain("did not answer"));
+                Assert.That(h.Client.Status.Message, Does.Contain("No answer"));
             }
         }
 
@@ -349,7 +349,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var h = new Harness(caster.Port).Start())
             {
                 Assert.That(h.WaitFor(s => s.State == NtripState.Waiting), Is.True);
-                Assert.That(h.Client.Status.Message, Does.Contain("without an answer"));
+                Assert.That(h.Client.Status.Message, Does.Contain("without answering"));
             }
         }
 
@@ -362,7 +362,7 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(h.WaitForDelays(2), Is.True);
                 Assert.That(h.DelaySeconds().GetRange(0, 2), Is.EqualTo(new[] { 10.0, 20.0 }));
                 Assert.That(h.Client.Status.LastError, Is.EqualTo(NtripCategory.NoCorrections));
-                Assert.That(h.Client.Status.Message, Does.Contain("no corrections"));
+                Assert.That(h.Client.Status.Message, Does.Contain("nothing is coming in"));
             }
         }
 
