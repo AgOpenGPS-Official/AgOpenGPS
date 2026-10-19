@@ -68,7 +68,6 @@ namespace AgIO
             this.lblSerialPorts = new System.Windows.Forms.Label();
             this.lblMount = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
-            this.lblMessages = new System.Windows.Forms.Label();
             this.lblWASCounts = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -77,14 +76,10 @@ namespace AgIO
             this.lblWorkSwitchStatus = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.btnStartStopNtrip = new System.Windows.Forms.Button();
-            this.lblMessagesFound = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.lbl1To8 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lbl9To16 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.lblStationID = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.lblCount = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblToGPS = new System.Windows.Forms.Label();
@@ -108,6 +103,8 @@ namespace AgIO
             this.btnGPSData = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.ntripCard = new AgIO.NtripStatusCard();
+            this.ntripChecks = new AgIO.NtripChecksPanel();
             this.SuspendLayout();
             // 
             // oneSecondLoopTimer
@@ -511,20 +508,6 @@ namespace AgIO
             this.lblIP.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lblIP.Click += new System.EventHandler(this.lblIP_Click);
             // 
-            // lblMessages
-            // 
-            this.lblMessages.BackColor = System.Drawing.Color.Transparent;
-            this.lblMessages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMessages.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessages.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblMessages.Location = new System.Drawing.Point(643, 97);
-            this.lblMessages.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMessages.Name = "lblMessages";
-            this.lblMessages.Size = new System.Drawing.Size(88, 298);
-            this.lblMessages.TabIndex = 474;
-            this.lblMessages.Text = "1888 - 18";
-            this.lblMessages.Click += new System.EventHandler(this.lblMessages_Click);
-            // 
             // lblWASCounts
             // 
             this.lblWASCounts.AutoSize = true;
@@ -633,33 +616,6 @@ namespace AgIO
             this.btnStartStopNtrip.UseVisualStyleBackColor = false;
             this.btnStartStopNtrip.Click += new System.EventHandler(this.btnStartStopNtrip_Click);
             // 
-            // lblMessagesFound
-            // 
-            this.lblMessagesFound.AutoSize = true;
-            this.lblMessagesFound.BackColor = System.Drawing.Color.Transparent;
-            this.lblMessagesFound.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMessagesFound.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblMessagesFound.Location = new System.Drawing.Point(695, 75);
-            this.lblMessagesFound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblMessagesFound.Name = "lblMessagesFound";
-            this.lblMessagesFound.Size = new System.Drawing.Size(18, 18);
-            this.lblMessagesFound.TabIndex = 491;
-            this.lblMessagesFound.Text = "0";
-            this.lblMessagesFound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(643, 69);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 18);
-            this.label5.TabIndex = 492;
-            this.label5.Text = "Found:";
-            // 
             // lbl1To8
             // 
             this.lbl1To8.AutoSize = true;
@@ -711,33 +667,6 @@ namespace AgIO
             this.label12.Size = new System.Drawing.Size(105, 19);
             this.label12.TabIndex = 501;
             this.label12.Text = "16    <<     9";
-            // 
-            // lblStationID
-            // 
-            this.lblStationID.AutoSize = true;
-            this.lblStationID.BackColor = System.Drawing.Color.Transparent;
-            this.lblStationID.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStationID.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblStationID.Location = new System.Drawing.Point(671, 48);
-            this.lblStationID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblStationID.Name = "lblStationID";
-            this.lblStationID.Size = new System.Drawing.Size(18, 18);
-            this.lblStationID.TabIndex = 507;
-            this.lblStationID.Text = "0";
-            this.lblStationID.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label13.Location = new System.Drawing.Point(642, 48);
-            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(29, 18);
-            this.label13.TabIndex = 508;
-            this.label13.Text = "ID:";
             // 
             // lblCount
             // 
@@ -1094,6 +1023,26 @@ namespace AgIO
             this.btnGPSData.UseVisualStyleBackColor = false;
             this.btnGPSData.Click += new System.EventHandler(this.btnGPSData_Click);
             // 
+            // ntripCard
+            // 
+            this.ntripCard.BackColor = System.Drawing.Color.Transparent;
+            this.ntripCard.Location = new System.Drawing.Point(10, 84);
+            this.ntripCard.Name = "ntripCard";
+            this.ntripCard.Size = new System.Drawing.Size(150, 196);
+            this.ntripCard.TabIndex = 520;
+            this.ntripCard.Visible = false;
+            this.ntripCard.ButtonClicked += new System.EventHandler(this.ntripCard_ButtonClicked);
+            // 
+            // ntripChecks
+            // 
+            this.ntripChecks.BackColor = System.Drawing.Color.Transparent;
+            this.ntripChecks.Location = new System.Drawing.Point(636, 44);
+            this.ntripChecks.Name = "ntripChecks";
+            this.ntripChecks.Size = new System.Drawing.Size(330, 430);
+            this.ntripChecks.TabIndex = 521;
+            this.ntripChecks.Visible = false;
+            this.ntripChecks.DetailsClicked += new System.EventHandler(this.ntripChecks_DetailsClicked);
+            // 
             // FormLoop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -1102,6 +1051,8 @@ namespace AgIO
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(734, 486);
             this.ControlBox = false;
+            this.Controls.Add(this.ntripCard);
+            this.Controls.Add(this.ntripChecks);
             this.Controls.Add(this.btnMinimizeMainForm);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.lblPingMachine);
@@ -1109,8 +1060,6 @@ namespace AgIO
             this.Controls.Add(this.btnGPS_Out);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.lblCount);
-            this.Controls.Add(this.lblStationID);
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.lbl9To16);
             this.Controls.Add(this.lbl1To8);
             this.Controls.Add(this.label10);
@@ -1128,7 +1077,6 @@ namespace AgIO
             this.Controls.Add(this.btnSteer);
             this.Controls.Add(this.btnMachine);
             this.Controls.Add(this.btnGPS);
-            this.Controls.Add(this.lblMessagesFound);
             this.Controls.Add(this.lblWorkSwitchStatus);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.lblSwitchStatus);
@@ -1145,8 +1093,6 @@ namespace AgIO
             this.Controls.Add(this.lblMod1Comm);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lblIMUComm);
-            this.Controls.Add(this.lblMessages);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnRunAOG);
             this.Controls.Add(this.statusStrip1);
@@ -1207,7 +1153,6 @@ namespace AgIO
         private System.Windows.Forms.Label lblNTRIP_IP;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblSteerAngle;
-        private System.Windows.Forms.Label lblMessages;
         private System.Windows.Forms.Button btnSlide;
         private System.Windows.Forms.Label lblWASCounts;
         private System.Windows.Forms.Label label3;
@@ -1216,8 +1161,6 @@ namespace AgIO
         private System.Windows.Forms.Label lblSwitchStatus;
         private System.Windows.Forms.Label lblWorkSwitchStatus;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblMessagesFound;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cboxIsMachineModule;
         private System.Windows.Forms.CheckBox cboxIsIMUModule;
         private System.Windows.Forms.CheckBox cboxIsSteerModule;
@@ -1225,10 +1168,10 @@ namespace AgIO
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lbl9To16;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label lblStationID;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolStripMenuItem serialPassThroughToolStripMenuItem;
         private System.Windows.Forms.Label lblCount;
+        private AgIO.NtripStatusCard ntripCard;
+        private AgIO.NtripChecksPanel ntripChecks;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblToGPS;
         private System.Windows.Forms.Button btnGPSData;

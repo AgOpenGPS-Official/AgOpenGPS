@@ -35,20 +35,18 @@ namespace AgIO
         {
             if (this.Width < 600)
             {
-                this.Width = 760;
+                ntripChecks.Visible = ntripCard.Visible;
+                this.Width = FlyOutWidth();
                 isViewAdvanced = true;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnLeft;
-                lblMessages.Text = "Reading...";
                 threeMinuteTimer = secondsSinceStart;
-                lblMessagesFound.Text = "-";
             }
             else
             {
                 this.Width = 428;
+                ntripChecks.Visible = false;
                 isViewAdvanced = false;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnRight;
-                lblMessages.Text = "Reading...";
-                lblMessagesFound.Text = "-";
             }
         }
 
@@ -60,6 +58,7 @@ namespace AgIO
                 if (isNTRIP_RequiredOn && ntripHost != null && ntripHost.Status.State == AgLibrary.Ntrip.NtripState.GaveUp)
                 {
                     StartNtripHost();
+                    RefreshNtripCard();
                     return;
                 }
 
@@ -82,6 +81,8 @@ namespace AgIO
                     lblMount.Text = "--";
                     if (isNTRIP_RequiredOn) StartNtripHost();
                 }
+
+                RefreshNtripCard();
             }
             else
             {
@@ -184,11 +185,6 @@ namespace AgIO
                 }
             }
         }
-        private void lblMessages_Click(object sender, EventArgs e)
-        {
-            //the list comes from the client's own statistics for the whole session; nothing to reset
-        }
-
         private void lblNTRIPBytes_Click(object sender, EventArgs e)
         {
             tripBytes = 0;
