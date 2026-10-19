@@ -17,7 +17,7 @@ namespace AgIO
         private IReadOnlyList<CheckItem> items = new CheckItem[0];
         private string signature = "";
 
-        private readonly Button details;
+        private readonly RoundedButton details;
         private readonly Font headerFont = new Font("Tahoma", 14.25F, FontStyle.Bold);
         private readonly Font titleFont = new Font("Tahoma", 13.5F, FontStyle.Bold);
         private readonly Font detailFont = new Font("Tahoma", 11.25F, FontStyle.Regular);
@@ -36,18 +36,13 @@ namespace AgIO
                 | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.Transparent;
 
-            details = new Button
+            details = new RoundedButton
             {
                 Dock = DockStyle.Bottom,
                 Height = 64,
                 Text = "Technical details...",
-                FlatStyle = FlatStyle.Flat,
                 Font = new Font("Tahoma", 14.25F, FontStyle.Bold),
-                BackColor = Color.WhiteSmoke,
-                UseVisualStyleBackColor = false,
-                TabStop = false,
             };
-            details.FlatAppearance.BorderColor = Color.Black;
             details.Click += (s, e) =>
             {
                 EventHandler handler = DetailsClicked;

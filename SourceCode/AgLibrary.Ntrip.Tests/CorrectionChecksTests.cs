@@ -104,7 +104,7 @@ namespace AgLibrary.Ntrip.Tests
         private static NtripStatus S(NtripState state, NtripCategory? error = null, string message = "") =>
             new NtripStatus { State = state, LastError = error, Message = message };
 
-        [TestCase(NtripState.Streaming, null, "Corrections coming in", NtripLight.Ok)]
+        [TestCase(NtripState.Streaming, null, "NTRIP Active", NtripLight.Ok)]
         [TestCase(NtripState.Connecting, null, "Connecting...", NtripLight.Info)]
         [TestCase(NtripState.Connected, null, "Connected, waiting for data", NtripLight.Info)]
         [TestCase(NtripState.Stopped, null, "Stopped", NtripLight.Off)]

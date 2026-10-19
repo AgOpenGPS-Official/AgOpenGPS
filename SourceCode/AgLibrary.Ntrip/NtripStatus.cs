@@ -59,7 +59,7 @@ namespace AgLibrary.Ntrip
             {
                 switch (State)
                 {
-                    case NtripState.Streaming: return "Corrections coming in";
+                    case NtripState.Streaming: return "NTRIP Active";
                     case NtripState.Connected: return "Connected, waiting for data";
                     case NtripState.Connecting: return "Connecting...";
                     case NtripState.GaveUp: return LastError == NtripCategory.UnknownMountpoint ? "Mountpoint not found" : "Cannot log in";

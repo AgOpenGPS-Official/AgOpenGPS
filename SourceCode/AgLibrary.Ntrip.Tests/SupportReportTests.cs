@@ -32,7 +32,7 @@ namespace AgLibrary.Ntrip.Tests
             var status = Status();
             string report = SupportReport.Build(status, profile, CorrectionChecks.Build(status, 4, 1.2));
 
-            Assert.That(report, Does.Contain("status: Corrections coming in (Streaming)"));
+            Assert.That(report, Does.Contain("status: NTRIP Active (Streaming)"));
             Assert.That(report, Does.Contain("service: caster.example.org:2101, mountpoint: MOUNT"));
             Assert.That(report, Does.Contain("user: farmer@example.org, password: set"));
             Assert.That(report, Does.Not.Contain("TopSecret99"));
