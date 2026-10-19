@@ -39,6 +39,8 @@ namespace AgLibrary.Ntrip
         public NtripCategory? LastError { get; internal set; }
         /// <summary>One plain sentence for the user, including "attempt 2 of 3" where it applies.</summary>
         public string Message { get; internal set; } = "";
+        /// <summary>The problem alone, without "Try 1 of 3." or what AgIO does next.</summary>
+        public string Reason { get; internal set; } = "";
         /// <summary>The caster's first response line, for the log only.</summary>
         public string FirstLine { get; internal set; } = "";
         public int FailuresInRow { get; internal set; }
