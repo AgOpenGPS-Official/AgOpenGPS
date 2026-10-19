@@ -59,31 +59,10 @@ namespace AgIO
                 }
             }
 
-            if (isRadio_RequiredOn)
+            //radio and serial pass-through show on the same status card as NTRIP
+            if (isRadio_RequiredOn || isSerialPass_RequiredOn)
             {
-                lblNTRIPBytes.Text = ((tripBytes >> 10)).ToString("###,###,### kb");
-
-                //Bypass if sleeping
-                if (focusSkipCounter != 0)
-                {
-                    //update byte counter and up counter
-                    if (ntripCounter > 59) btnStartStopNtrip.Text = (ntripCounter >> 6) + " Min";
-                    else if (ntripCounter < 60 && ntripCounter > 25) btnStartStopNtrip.Text = ntripCounter + " Secs";
-                    else btnStartStopNtrip.Text = "In " + (Math.Abs(ntripCounter - 25)) + " secs";
-
-                    if (isNTRIP_Connecting) lblWatch.Text = "Authourizing";
-                    else if (NTRIP_Watchdog > 10) lblWatch.Text = "Waiting";
-                    else lblWatch.Text = "Listening Radio";
-                }
-            }
-            else if (isSerialPass_RequiredOn)
-            {
-                lblNTRIPBytes.Text = ((tripBytes >> 10)).ToString("###,###,### kb");
-
-                //update byte counter and up counter
-                if (ntripCounter > 59) btnStartStopNtrip.Text = (ntripCounter >> 6) + " Min";
-                else if (ntripCounter < 60 && ntripCounter > 22) btnStartStopNtrip.Text = ntripCounter + " Secs";
-                else btnStartStopNtrip.Text = "In " + (Math.Abs(ntripCounter - 22)) + " secs";
+                RefreshNtripCard();
             }
         }
 
@@ -128,9 +107,17 @@ namespace AgIO
         {
             if (ntripCard == null || !ntripCard.Visible) return;
 
+            if (isRadio_RequiredOn || isSerialPass_RequiredOn)
+            {
+                RefreshRadioCard();
+                return;
+            }
+
             if (!isNTRIP_RequiredOn || ntripHost == null)
             {
-                ntripCard.SetStatus("NTRIP is off", NtripLight.Off, "", "", "Start");
+                var s = Properties.Settings.Default;
+                string off = s.setNTRIP_isOn ? "NTRIP is off" : s.setRadio_isOn ? "Radio is off" : "Serial pass is off";
+                ntripCard.SetStatus(off, NtripLight.Off, "", "", "Start");
                 if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
                 return;
             }
@@ -144,6 +131,23 @@ namespace AgIO
 
             ntripCard.SetStatus(st.Headline, st.Light, source, received, running ? "Stop" : "Start");
             if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(st, fixQualityData, ageData));
+        }
+
+        //the status card for a serial radio or serial pass-through (no internet involved)
+        private void RefreshRadioCard()
+        {
+            string name = isRadio_RequiredOn ? "Radio" : "Serial pass";
+            string port = Properties.Settings.Default.setPort_portNameRadio;
+            string received = (tripBytes >> 10).ToString("###,###,##0") + " kb received";
+
+            if (!isNTRIP_Connected)
+                ntripCard.SetStatus("Opening " + name + "...", NtripLight.Info, port, received, "Stop");
+            else if (isRadio_RequiredOn && NTRIP_Watchdog > 10)
+                ntripCard.SetStatus(name + " waiting for data", NtripLight.Warn, port, received, "Stop");
+            else
+                ntripCard.SetStatus(name + " Active", NtripLight.Ok, port, received, "Stop");
+
+            if (ntripChecks.Visible) ntripChecks.SetChecks(new CheckItem[0]);
         }
 
         private void ntripCard_ButtonClicked(object sender, EventArgs e)
@@ -172,7 +176,6 @@ namespace AgIO
 
         public void ConfigureNTRIP()
         {
-            lblWatch.Text = "Wait GPS";
             lblNTRIP_IP.Text = "";
             lblMount.Text = "";
 
@@ -192,17 +195,12 @@ namespace AgIO
             bool anySource = isNTRIP_RequiredOn || isRadio_RequiredOn || isSerialPass_RequiredOn;
             bool radioOrPass = isRadio_RequiredOn || isSerialPass_RequiredOn;
 
-            //NTRIP over the internet has its own card; the old small controls stay for radio and serial pass-through
-            ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn && !radioOrPass;
-            ntripChecks.Visible = ntripCard.Visible && isViewAdvanced;
-            btnStartStopNtrip.Visible = radioOrPass;
-            lblWatch.Visible = radioOrPass;
-            lblNTRIPBytes.Visible = radioOrPass;
+            //one status card for NTRIP, radio and serial pass-through
+            ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn || radioOrPass;
+            ntripChecks.Visible = isNTRIP_RequiredOn && isViewAdvanced;
             lblToGPS.Visible = anySource;
             lblMount.Visible = anySource;
             lblNTRIP_IP.Visible = anySource;
-
-            btnStartStopNtrip.Text = "Off";
 
             if (isNTRIP_RequiredOn) StartNtripHost();
             RefreshNtripCard();
@@ -303,7 +301,6 @@ namespace AgIO
                     spRadio.DataReceived += NtripPort_DataReceived;
                     isNTRIP_Connecting = false;
                     isNTRIP_Connected = true;
-                    lblWatch.Text = "RTCM Serial";
 
                     try
                     {

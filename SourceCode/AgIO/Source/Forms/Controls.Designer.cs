@@ -65,8 +65,6 @@ namespace AgIO
                 if (isNTRIP_RequiredOn || isRadio_RequiredOn)
                 {
                     ShutDownNTRIP();
-                    lblWatch.Text = "Stopped";
-                    btnStartStopNtrip.Text = "OffLine";
                     isNTRIP_RequiredOn = false;
                     isRadio_RequiredOn = false;
                     lblNTRIP_IP.Text = "--";
@@ -76,7 +74,6 @@ namespace AgIO
                 {
                     isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
                     isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
-                    lblWatch.Text = "Waiting";
                     lblNTRIP_IP.Text = "--";
                     lblMount.Text = "--";
                     if (isNTRIP_RequiredOn) StartNtripHost();
@@ -116,7 +113,6 @@ namespace AgIO
         private void btnBringUpCommSettings_Click(object sender, EventArgs e)
         {
             SettingsCommunicationGPS();
-            RescanPorts();
         }
 
         private void btnUDP_Click(object sender, EventArgs e)
@@ -447,8 +443,6 @@ namespace AgIO
             if (isRadio_RequiredOn && isNTRIP_Connected)
             {
                 ShutDownNTRIP();
-                lblWatch.Text = "Stopped";
-                btnStartStopNtrip.Text = "OffLine";
                 isRadio_RequiredOn = false;
             }
 
