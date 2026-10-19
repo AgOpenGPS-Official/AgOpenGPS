@@ -11,6 +11,19 @@ namespace AgLibrary.Ntrip
         Fallback,
     }
 
+    /// <summary>What a notice from the manager is about, so the UI can ask a question or just show a message.</summary>
+    public enum NoticeKind
+    {
+        /// <summary>AgIO or the user switched to the fallback.</summary>
+        SwitchedToFallback,
+        /// <summary>Back on the main service.</summary>
+        SwitchedToMain,
+        /// <summary>The main service is back; the user is asked whether to switch back.</summary>
+        MainBack,
+        /// <summary>Manual mode: the main service has a problem; the user is asked whether to switch.</summary>
+        MainFailing,
+    }
+
     /// <summary>What to switch to when the main service fails: another NTRIP service or a serial radio.</summary>
     public sealed class FallbackPlan
     {
@@ -134,7 +147,7 @@ namespace AgLibrary.Ntrip
         public event Action<ManagerStatus> StatusChanged;
 
         /// <summary>A title and a message for the user. Raised on a worker thread.</summary>
-        public event Action<string, string> Notice;
+        public event Action<NoticeKind, string, string> Notice;
 
         public CorrectionSourceManager(NtripProfile main, FallbackPlan fallback, Func<string> ggaProvider,
             NtripTimeouts timeouts = null, Func<TimeSpan, CancellationToken, Task> delay = null, Func<double> random = null)
@@ -225,7 +238,7 @@ namespace AgLibrary.Ntrip
 
             if (cts != null) cts.Cancel();
             if (restartMain) StartMain();
-            RaiseNotice("Back on the main service", "Corrections now come from the main service again.");
+            RaiseNotice(NoticeKind.SwitchedToMain, "Back on the main service", "Corrections now come from the main service again.");
             RaiseStatus();
         }
 
@@ -294,12 +307,12 @@ namespace AgLibrary.Ntrip
             if (switchNow) SwitchToFallback(st, false);
             if (askNow)
             {
-                RaiseNotice("The main service has a problem",
+                RaiseNotice(NoticeKind.MainFailing, "The main service has a problem",
                     st.Headline + ". Switch to the fallback? You can do that in the NTRIP panel.");
             }
             if (mainBackNow)
             {
-                RaiseNotice("The main service is back",
+                RaiseNotice(NoticeKind.MainBack, "The main service is back",
                     "Switch back to it? Your GPS may lose RTK for a moment. AgIO never switches back by itself.");
             }
             RaiseStatus();
@@ -332,7 +345,7 @@ namespace AgLibrary.Ntrip
             if (!_keepMainRunning) PauseMain();
 
             string why = byUser ? "You switched to the fallback." : "The main service has a problem (" + reason.Headline + ").";
-            RaiseNotice("Switched to the fallback",
+            RaiseNotice(NoticeKind.SwitchedToFallback, "Switched to the fallback",
                 why + " Now using " + fallback.Description
                 + ". Your GPS may lose RTK for a moment, and your position can shift a little if the two base stations use different coordinates.");
             RaiseStatus();
@@ -397,9 +410,9 @@ namespace AgLibrary.Ntrip
             StatusChanged?.Invoke(snapshot);
         }
 
-        private void RaiseNotice(string title, string message)
+        private void RaiseNotice(NoticeKind kind, string title, string message)
         {
-            Notice?.Invoke(title, message);
+            Notice?.Invoke(kind, title, message);
         }
     }
 }
