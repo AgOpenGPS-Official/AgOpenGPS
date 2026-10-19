@@ -93,11 +93,7 @@ namespace AgIO
             //Bypass if sleeping
             if (focusSkipCounter == 0) return;
 
-            NtripProfile profile = host.Profile;
-            lblNTRIP_IP.Text = profile == null ? "--" : profile.Host;
-            lblMount.Text = profile == null ? "--" : profile.Mount;
             lblToGPS.Text = bytesPerSecond < 1 ? "---" : bytesOut.ToString();
-            lblCount.Text = host.QueuedBytes.ToString();
 
             RefreshNtripCard();
         }
@@ -176,8 +172,6 @@ namespace AgIO
 
         public void ConfigureNTRIP()
         {
-            lblNTRIP_IP.Text = "";
-            lblMount.Text = "";
 
             StopNtripHost();
 
@@ -199,8 +193,6 @@ namespace AgIO
             ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn || radioOrPass;
             ntripChecks.Visible = isNTRIP_RequiredOn && isViewAdvanced;
             lblToGPS.Visible = anySource;
-            lblMount.Visible = anySource;
-            lblNTRIP_IP.Visible = anySource;
 
             if (isNTRIP_RequiredOn) StartNtripHost();
             RefreshNtripCard();
