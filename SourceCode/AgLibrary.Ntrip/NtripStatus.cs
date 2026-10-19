@@ -1,5 +1,20 @@
+using System;
+
 namespace AgLibrary.Ntrip
 {
+    /// <summary>The colour of the status light next to the headline.</summary>
+    public enum NtripLight
+    {
+        Off,
+        /// <summary>Busy connecting.</summary>
+        Info,
+        Ok,
+        /// <summary>A problem that fixes itself or is being retried.</summary>
+        Warn,
+        /// <summary>The user has to do something.</summary>
+        Bad,
+    }
+
     public enum NtripState
     {
         /// <summary>Not started, or stopped by the user.</summary>
@@ -36,6 +51,57 @@ namespace AgLibrary.Ntrip
         public RtcmStreamSnapshot Rtcm { get; internal set; } = new RtcmStreamSnapshot(0, 0, 0, 0, new RtcmTypeStat[0]);
         /// <summary>The stream has no RTCM 3 frames and its bytes are forwarded as they come.</summary>
         public bool Unframed { get; internal set; }
+
+        /// <summary>One short sentence for the big status line, in words a farmer uses.</summary>
+        public string Headline
+        {
+            get
+            {
+                switch (State)
+                {
+                    case NtripState.Streaming: return "Corrections coming in";
+                    case NtripState.Connected: return "Connected, waiting for data";
+                    case NtripState.Connecting: return "Connecting...";
+                    case NtripState.GaveUp: return LastError == NtripCategory.UnknownMountpoint ? "Mountpoint not found" : "Cannot log in";
+                    case NtripState.Waiting: return WaitingHeadline();
+                    default: return "Stopped";
+                }
+            }
+        }
+
+        private string WaitingHeadline()
+        {
+            switch (LastError)
+            {
+                case NtripCategory.LoginRejected: return "Cannot log in";
+                case NtripCategory.UnknownMountpoint: return "Mountpoint not found";
+                case NtripCategory.CasterBusy: return Message.IndexOf("starting up", StringComparison.Ordinal) >= 0 ? "Service is starting up" : "Service is busy";
+                case NtripCategory.NoCorrections: return "Connected, nothing coming in";
+                case NtripCategory.NoNetwork: return "No network";
+                case NtripCategory.StreamLost: return "Reconnecting...";
+                case NtripCategory.NotUnderstood: return "Service not understood";
+                default: return "Cannot reach the service";
+            }
+        }
+
+        /// <summary>The colour of the status light.</summary>
+        public NtripLight Light
+        {
+            get
+            {
+                switch (State)
+                {
+                    case NtripState.Streaming: return NtripLight.Ok;
+                    case NtripState.Connecting:
+                    case NtripState.Connected: return NtripLight.Info;
+                    case NtripState.GaveUp: return NtripLight.Bad;
+                    case NtripState.Waiting:
+                        return LastError == NtripCategory.LoginRejected || LastError == NtripCategory.UnknownMountpoint
+                            ? NtripLight.Bad : NtripLight.Warn;
+                    default: return NtripLight.Off;
+                }
+            }
+        }
 
         internal NtripStatus Clone() => (NtripStatus)MemberwiseClone();
     }

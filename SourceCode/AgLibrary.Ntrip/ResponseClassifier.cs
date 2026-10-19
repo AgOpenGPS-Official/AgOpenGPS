@@ -70,14 +70,14 @@ namespace AgLibrary.Ntrip
             bool chunked = IsChunked(lines);
 
             if (first.Length == 0)
-                return Out(NtripCategory.NotUnderstood, "The caster sent an empty answer", first, chunked);
+                return Out(NtripCategory.NotUnderstood, "The service sent an empty answer.", first, chunked);
 
             if (first.StartsWith("SOURCETABLE", StringComparison.OrdinalIgnoreCase))
-                return Out(NtripCategory.UnknownMountpoint, "The caster sent its sourcetable instead of a stream", first, chunked);
+                return Out(NtripCategory.UnknownMountpoint, "This mountpoint does not exist on the service. Pick one from the list.", first, chunked);
 
             if (first.StartsWith("ICY 200", StringComparison.Ordinal))
                 return BodyLooksLikeSourcetable(firstBody)
-                    ? Out(NtripCategory.UnknownMountpoint, "The caster sent its sourcetable instead of a stream", first, chunked)
+                    ? Out(NtripCategory.UnknownMountpoint, "This mountpoint does not exist on the service. Pick one from the list.", first, chunked)
                     : Accepted(first, chunked);
 
             if (first.StartsWith("ERROR", StringComparison.OrdinalIgnoreCase))
@@ -93,22 +93,22 @@ namespace AgLibrary.Ntrip
                 case "200":
                     if (ContentType(lines).IndexOf("sourcetable", StringComparison.OrdinalIgnoreCase) >= 0
                         || BodyLooksLikeSourcetable(firstBody))
-                        return Out(NtripCategory.UnknownMountpoint, "The caster sent its sourcetable instead of a stream", first, chunked);
+                        return Out(NtripCategory.UnknownMountpoint, "This mountpoint does not exist on the service. Pick one from the list.", first, chunked);
                     if (firstBody.Length > 0 && firstBody[0] == (byte)'<')
-                        return Out(NtripCategory.NotUnderstood, "The caster answered with a web page", first, chunked);
+                        return Out(NtripCategory.NotUnderstood, "This address answered with a web page, not an NTRIP service. Check the address and port.", first, chunked);
                     return Accepted(first, chunked);
                 case "401":
                     // Some casters (AgOpenNtripCaster) also answer 401 for an unknown mountpoint.
-                    return Out(NtripCategory.LoginRejected, "Login rejected: check user name, password and mountpoint name", first, chunked);
+                    return Out(NtripCategory.LoginRejected, "User name, password or mountpoint is not correct.", first, chunked);
                 case "403":
                     return ClassifyText(first + " " + BodyText(firstBody), first, chunked, NtripCategory.LoginRejected);
                 case "404":
-                    return Out(NtripCategory.UnknownMountpoint, "Mountpoint not found (names are case-sensitive)", first, chunked);
+                    return Out(NtripCategory.UnknownMountpoint, "This mountpoint does not exist on the service. Check the spelling, capitals matter.", first, chunked);
                 case "429":
                 case "502":
                 case "503":
                 case "504":
-                    return Out(NtripCategory.CasterBusy, "The caster refuses new connections now (full, or account in use)", first, chunked);
+                    return Out(NtripCategory.CasterBusy, "The service cannot take another connection right now. It is busy, or this login is already in use.", first, chunked);
                 case "406":
                     return ClassifyText(first + " " + BodyText(firstBody), first, chunked, NtripCategory.NotUnderstood);
                 case "400":
@@ -173,18 +173,18 @@ namespace AgLibrary.Ntrip
             string t = text.ToLowerInvariant();
             // SNIP answers 406 for a minute or so after a restart, while the base stations reconnect.
             if (t.IndexOf("start up", StringComparison.Ordinal) >= 0 || t.IndexOf("starting up", StringComparison.Ordinal) >= 0)
-                return Out(NtripCategory.CasterBusy, "The caster is starting up, try again in about a minute", first, chunked);
+                return Out(NtripCategory.CasterBusy, "The service is starting up. AgIO tries again in about a minute.", first, chunked);
             if (ContainsAny(t, BusyWords))
-                return Out(NtripCategory.CasterBusy, "The caster refuses new connections now (full, or account in use)", first, chunked);
+                return Out(NtripCategory.CasterBusy, "The service cannot take another connection right now. It is busy, or this login is already in use.", first, chunked);
             if (t.IndexOf("email", StringComparison.Ordinal) >= 0 || t.IndexOf("e-mail", StringComparison.Ordinal) >= 0)
-                return Out(NtripCategory.LoginRejected, "This caster needs an e-mail address as user name", first, chunked);
+                return Out(NtripCategory.LoginRejected, "This service needs your e-mail address as user name.", first, chunked);
             if (ContainsAny(t, LoginWords))
-                return Out(NtripCategory.LoginRejected, "Login rejected: check user name and password", first, chunked);
+                return Out(NtripCategory.LoginRejected, "User name or password is not correct.", first, chunked);
             if (ContainsAny(t, MountWords))
-                return Out(NtripCategory.UnknownMountpoint, "Mountpoint not found (names are case-sensitive)", first, chunked);
+                return Out(NtripCategory.UnknownMountpoint, "This mountpoint does not exist on the service. Check the spelling, capitals matter.", first, chunked);
             if (fallback == NtripCategory.LoginRejected)
-                return Out(NtripCategory.LoginRejected, "Access denied by the caster", first, chunked);
-            return Out(NtripCategory.NotUnderstood, "The caster answered something this client does not understand", first, chunked);
+                return Out(NtripCategory.LoginRejected, "The service denied access.", first, chunked);
+            return Out(NtripCategory.NotUnderstood, "The service answered something AgIO does not understand.", first, chunked);
         }
 
         private static bool ContainsAny(string text, IEnumerable<string> words)
