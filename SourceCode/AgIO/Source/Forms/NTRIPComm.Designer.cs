@@ -112,7 +112,7 @@ namespace AgIO
             if (!isNTRIP_RequiredOn || ntripHost == null)
             {
                 var s = Properties.Settings.Default;
-                string off = s.setNTRIP_isOn ? "NTRIP is off" : s.setRadio_isOn ? "Radio is off" : "Serial pass is off";
+                string off = s.setNTRIP_isOn ? "NTRIP Off" : s.setRadio_isOn ? "Radio Off" : "Serial pass Off";
                 ntripCard.SetStatus(off, NtripLight.Off, "", "", "Start");
                 if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
                 return;
