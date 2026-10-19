@@ -73,6 +73,9 @@ namespace AgLibrary.Ntrip.Tests
 
         public int Port { get; }
 
+        /// <summary>False for a raw TCP stream: the client sends no request, so none is waited for.</summary>
+        public bool ReadRequest { get; set; } = true;
+
         /// <summary>The requests received, in connection order.</summary>
         public IReadOnlyList<string> Requests
         {
@@ -131,16 +134,19 @@ namespace AgLibrary.Ntrip.Tests
                     var session = new FakeSession(stream, _stop.Token);
                     lock (_sessions) _sessions.Add(session);
 
-                    // Read the request up to the blank line.
-                    var sb = new StringBuilder();
-                    var buf = new byte[1];
-                    while (!sb.ToString().EndsWith("\r\n\r\n"))
+                    if (ReadRequest)
                     {
-                        int n = await stream.ReadAsync(buf, 0, 1, _stop.Token);
-                        if (n == 0) return;
-                        sb.Append((char)buf[0]);
+                        // Read the request up to the blank line.
+                        var sb = new StringBuilder();
+                        var buf = new byte[1];
+                        while (!sb.ToString().EndsWith("\r\n\r\n"))
+                        {
+                            int n = await stream.ReadAsync(buf, 0, 1, _stop.Token);
+                            if (n == 0) return;
+                            sb.Append((char)buf[0]);
+                        }
+                        session.Request = sb.ToString();
                     }
-                    session.Request = sb.ToString();
                     session.Pump(_stop.Token);
 
                     if (_scripts.TryDequeue(out Func<FakeSession, Task> script))

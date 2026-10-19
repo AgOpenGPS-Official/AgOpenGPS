@@ -21,9 +21,11 @@ namespace AgLibrary.Ntrip
         public NtripVersion Version { get; }
         /// <summary>Seconds between GGA sentences; 0 sends one with the request only.</summary>
         public int GgaIntervalSeconds { get; }
+        /// <summary>Connect and read the stream as it comes: no request, no header (the old "use TCP" setting).</summary>
+        public bool RawTcp { get; }
 
         public NtripProfile(string host, int port, string mount, string user = "", string password = "",
-            NtripVersion version = NtripVersion.Auto, int ggaIntervalSeconds = 0)
+            NtripVersion version = NtripVersion.Auto, int ggaIntervalSeconds = 0, bool rawTcp = false)
         {
             if (string.IsNullOrWhiteSpace(host)) throw new ArgumentException("host is empty", nameof(host));
             Host = host.Trim();
@@ -33,6 +35,7 @@ namespace AgLibrary.Ntrip
             Password = password ?? "";
             Version = version;
             GgaIntervalSeconds = Math.Max(0, ggaIntervalSeconds);
+            RawTcp = rawTcp;
         }
 
         /// <summary>Short name for messages and the log: mount@host:port.</summary>

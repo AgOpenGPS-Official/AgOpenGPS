@@ -63,7 +63,8 @@ namespace AgLibrary.Ntrip
         /// <summary>Runs until cancelled or until the caster keeps rejecting the login or mountpoint.</summary>
         public async Task RunAsync(CancellationToken ct)
         {
-            var version = _profile.Version == NtripVersion.V1 ? NtripVersion.V1 : NtripVersion.V2;
+            // Raw TCP has no request, so the position goes out the way NTRIP 1.0 does it: right after connecting.
+            var version = _profile.Version == NtripVersion.V1 || _profile.RawTcp ? NtripVersion.V1 : NtripVersion.V2;
             NtripCategory? rowCategory = null;
             int row = 0;
 

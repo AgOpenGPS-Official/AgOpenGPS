@@ -32,7 +32,7 @@ namespace AgLibrary.Ntrip
     /// Pure logic, thread-safe; time comes from a injectable clock so tests do not sleep.
     /// Ported from AgOpenWeb (RtcmQueue).
     /// </summary>
-    internal sealed class RtcmQueue
+    public sealed class RtcmQueue
     {
         /// <summary>Largest datagram sent. The AiO firmwares cannot take a 2233 datagram over 512 bytes.</summary>
         public const int ChunkSize = 256;
@@ -75,10 +75,20 @@ namespace AgLibrary.Ntrip
         private long _datagrams, _catchUpDatagrams;
         private double _maxLateMs;
 
+        private readonly int _chunkSize;
+        private readonly double _intervalMs, _minGapMs, _maxCreditMs;
+
         /// <param name="millisecondsClock">Monotonic time in ms; null uses a Stopwatch.</param>
-        public RtcmQueue(Func<double> millisecondsClock = null)
+        /// <param name="chunkSize">Largest datagram, 1 to 512 (the AiO firmwares cannot take more).</param>
+        /// <param name="intervalMs">Nominal gap between datagrams. The shortest catch-up gap and the
+        /// most credit follow from it in the same proportions as the defaults.</param>
+        public RtcmQueue(Func<double> millisecondsClock = null, int chunkSize = ChunkSize, double intervalMs = IntervalMs)
         {
             _ms = millisecondsClock ?? StopwatchMs;
+            _chunkSize = Math.Max(1, Math.Min(512, chunkSize));
+            _intervalMs = Math.Max(5.0, intervalMs);
+            _minGapMs = _intervalMs * (MinGapMs / IntervalMs);
+            _maxCreditMs = _intervalMs * (MaxCreditMs / IntervalMs);
         }
 
         private static double StopwatchMs() => Stopwatch.GetTimestamp() * 1000.0 / Stopwatch.Frequency;
@@ -175,13 +185,13 @@ namespace AgLibrary.Ntrip
                     double gap = Gap;
                     double sinceLast = now - _lastSendMs;
                     double late = Math.Max(0, Math.Min(sinceLast - gap, now - _nonEmptySinceMs));
-                    _creditMs = Clamp(_creditMs - (IntervalMs - gap) + late, 0, MaxCreditMs);
-                    if (gap < IntervalMs - 0.5) _catchUpDatagrams++;
+                    _creditMs = Clamp(_creditMs - (_intervalMs - gap) + late, 0, _maxCreditMs);
+                    if (gap < _intervalMs - 0.5) _catchUpDatagrams++;
                     if (late > _maxLateMs) _maxLateMs = late;
                 }
                 _datagrams++;
 
-                int size = Math.Min(_count, ChunkSize);
+                int size = Math.Min(_count, _chunkSize);
                 chunk = new byte[size];
                 int filled = 0;
                 while (filled < size)
@@ -223,7 +233,7 @@ namespace AgLibrary.Ntrip
         }
 
         // The gap the next datagram must keep: shorter while there is lateness to make up.
-        private double Gap => Math.Max(MinGapMs, IntervalMs - _creditMs);
+        private double Gap => Math.Max(_minGapMs, _intervalMs - _creditMs);
 
         private bool IsDue(double now) => !_hasSent || now - _lastSendMs >= Gap;
 

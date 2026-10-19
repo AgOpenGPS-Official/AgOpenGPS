@@ -32,15 +32,59 @@ namespace AgLibrary.Ntrip
         public long BytesSkipped { get; }
         public double SessionSeconds { get; }
         public IReadOnlyList<RtcmTypeStat> Types { get; }
+        /// <summary>The reference station ID from the latest message that carries one, or -1.</summary>
+        public int StationId { get; }
 
         public RtcmStreamSnapshot(long messages, long checksumFailures, long bytesSkipped,
-            double sessionSeconds, IReadOnlyList<RtcmTypeStat> types)
+            double sessionSeconds, IReadOnlyList<RtcmTypeStat> types, int stationId = -1)
         {
             Messages = messages;
             ChecksumFailures = checksumFailures;
             BytesSkipped = bytesSkipped;
             SessionSeconds = sessionSeconds;
             Types = types;
+            StationId = stationId;
+        }
+
+        /// <summary>Observation messages (legacy or MSM) have arrived.</summary>
+        public bool HasObservations
+        {
+            get
+            {
+                foreach (RtcmTypeStat t in Types)
+                    if (RtcmMessages.IsObservation(t.Type)) return true;
+                return false;
+            }
+        }
+
+        /// <summary>The satellite systems in the observations, e.g. "GPS + GLONASS + Galileo + BeiDou"; empty when none.</summary>
+        public string Constellations
+        {
+            get
+            {
+                bool[] seen = new bool[RtcmMessages.SystemNames.Length];
+                foreach (RtcmTypeStat t in Types)
+                {
+                    int s = RtcmMessages.SystemIndex(t.Type);
+                    if (s >= 0) seen[s] = true;
+                }
+                var names = new List<string>();
+                for (int i = 0; i < seen.Length; i++)
+                    if (seen[i]) names.Add(RtcmMessages.SystemNames[i]);
+                return string.Join(" + ", names);
+            }
+        }
+
+        /// <summary>The highest MSM level seen (4 or 7 are common), or 0 without MSM observations.</summary>
+        public int MsmLevel
+        {
+            get
+            {
+                int level = 0;
+                foreach (RtcmTypeStat t in Types)
+                    if (RtcmMessages.IsMsm(t.Type)) level = Math.Max(level, t.Type % 10);
+                return level;
+            }
         }
 
         /// <summary>The base position (1005 or 1006) has arrived. Without it there is no RTK solution.</summary>
@@ -70,6 +114,7 @@ namespace AgLibrary.Ntrip
         private readonly Rtcm3Framer _framer = new Rtcm3Framer();
         private readonly SortedDictionary<int, Entry> _types = new SortedDictionary<int, Entry>();
         private double _sessionStart;
+        private int _stationId = -1;
 
         /// <param name="secondsClock">Monotonic time in seconds; null uses a Stopwatch.</param>
         public RtcmStreamStats(Func<double> secondsClock = null)
@@ -87,6 +132,7 @@ namespace AgLibrary.Ntrip
             {
                 _framer.Reset();
                 _types.Clear();
+                _stationId = -1;
                 _sessionStart = _seconds();
             }
         }
@@ -104,6 +150,8 @@ namespace AgLibrary.Ntrip
                     e.Count++;
                     e.Bytes += message.Length;
                     e.Last = now;
+                    if (RtcmMessages.HasStationId(type) && message.Length >= 9)
+                        _stationId = (message[4] & 0x0F) << 8 | message[5];
                     onMessage?.Invoke(type, message);
                 });
             }
@@ -122,7 +170,7 @@ namespace AgLibrary.Ntrip
                     types.Add(new RtcmTypeStat(kv.Key, e.Count, e.Bytes, now - e.Last, mean));
                 }
                 return new RtcmStreamSnapshot(_framer.Messages, _framer.ChecksumFailures,
-                    _framer.BytesSkipped, now - _sessionStart, types);
+                    _framer.BytesSkipped, now - _sessionStart, types, _stationId);
             }
         }
     }
