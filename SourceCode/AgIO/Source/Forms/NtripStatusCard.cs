@@ -17,7 +17,7 @@ namespace AgIO
         private string received = "";
         private NtripLight light = NtripLight.Off;
 
-        private readonly Button button;
+        private readonly RoundedButton button;
         private readonly Font smallFont = new Font("Tahoma", 11.25F, FontStyle.Regular);
 
         public event EventHandler ButtonClicked;
@@ -29,18 +29,14 @@ namespace AgIO
             BackColor = Color.Transparent;
             Font = new Font("Tahoma", 13.5F, FontStyle.Bold);
 
-            button = new Button
+            button = new RoundedButton
             {
                 Dock = DockStyle.Bottom,
                 Height = 64,
                 Text = "Start",
-                FlatStyle = FlatStyle.Flat,
                 Font = new Font("Tahoma", 16.5F, FontStyle.Bold),
-                BackColor = Color.WhiteSmoke,
-                UseVisualStyleBackColor = false,
-                TabStop = false,
+                Tone = ButtonTone.Positive,
             };
-            button.FlatAppearance.BorderColor = Color.Black;
             button.Click += (s, e) =>
             {
                 EventHandler handler = ButtonClicked;
@@ -62,6 +58,7 @@ namespace AgIO
             subline = sublineText;
             received = receivedText;
             button.Text = buttonText;
+            button.Tone = buttonText == "Start" ? ButtonTone.Positive : ButtonTone.Negative;
             Invalidate();
         }
 

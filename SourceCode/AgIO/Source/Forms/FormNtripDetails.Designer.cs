@@ -39,8 +39,8 @@ namespace AgIO
             this.rowHeight = new System.Windows.Forms.ImageList(this.components);
             this.info = new System.Windows.Forms.Label();
             this.bar = new System.Windows.Forms.Panel();
-            this.btnCopy = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.btnCopy = new AgIO.RoundedButton();
+            this.btnClose = new AgIO.RoundedButton();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.right.SuspendLayout();
             this.bar.SuspendLayout();
@@ -141,31 +141,25 @@ namespace AgIO
             //
             // btnCopy
             //
-            this.btnCopy.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnCopy.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCopy.Font = new System.Drawing.Font("Tahoma", 13.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCopy.Location = new System.Drawing.Point(0, 8);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(250, 68);
             this.btnCopy.TabIndex = 0;
             this.btnCopy.Text = "Copy for support";
-            this.btnCopy.UseVisualStyleBackColor = false;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             //
             // btnClose
             //
-            this.btnClose.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Tahoma", 13.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Location = new System.Drawing.Point(364, 8);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(180, 68);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = false;
             //
             // timer
             //
@@ -210,8 +204,8 @@ namespace AgIO
         private System.Windows.Forms.ImageList rowHeight;
         private System.Windows.Forms.Label info;
         private System.Windows.Forms.Panel bar;
-        private System.Windows.Forms.Button btnCopy;
-        private System.Windows.Forms.Button btnClose;
+        private AgIO.RoundedButton btnCopy;
+        private AgIO.RoundedButton btnClose;
         private System.Windows.Forms.Timer timer;
     }
 }
