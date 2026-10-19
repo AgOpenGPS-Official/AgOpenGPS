@@ -11,7 +11,7 @@ namespace AgLibrary.Ntrip
     /// Runs on its own task and never touches the UI thread: frames go to <see cref="FrameReceived"/>
     /// on the receive loop, status snapshots to <see cref="StatusChanged"/>.
     /// </summary>
-    public sealed class NtripClient
+    public sealed class NtripClient : ICorrectionSource
     {
         /// <summary>One whole RTCM 3 message. The span is only valid during the call.</summary>
         public delegate void FrameHandler(int messageType, ReadOnlySpan<byte> frame);
@@ -54,6 +54,8 @@ namespace AgLibrary.Ntrip
 
         public NtripProfile Profile => _profile;
 
+        public string Description => _profile.Mount + " on " + _profile.Host;
+
         /// <summary>The latest snapshot.</summary>
         public NtripStatus Status
         {
@@ -67,6 +69,7 @@ namespace AgLibrary.Ntrip
             var version = _profile.Version == NtripVersion.V1 || _profile.RawTcp ? NtripVersion.V1 : NtripVersion.V2;
             NtripCategory? rowCategory = null;
             int row = 0;
+            int anyRow = 0;
 
             try
             {
@@ -99,21 +102,22 @@ namespace AgLibrary.Ntrip
                     }
 
                     // A session that delivered corrections ends the earlier run of failures.
-                    if (streamed) { rowCategory = null; row = 0; }
+                    if (streamed) { rowCategory = null; row = 0; anyRow = 0; }
+                    if (outcome.Category != NtripCategory.NoNetwork) anyRow++;
                     if (outcome.Category == rowCategory) row++; else { rowCategory = outcome.Category; row = 1; }
 
                     RetryDecision decision = _policy.Next(outcome.Category, row);
                     string text = Describe(outcome, row, decision);
                     if (decision.GiveUp)
                     {
-                        Update(s => { s.State = NtripState.GaveUp; s.LastError = outcome.Category; s.Message = text; s.FailuresInRow = row; s.FirstLine = outcome.FirstLine; });
+                        Update(s => { s.State = NtripState.GaveUp; s.LastError = outcome.Category; s.Message = text; s.FailuresInRow = row; s.ConsecutiveFailures = anyRow; s.FirstLine = outcome.FirstLine; });
                         return;
                     }
 
                     Update(s =>
                     {
                         s.State = NtripState.Waiting; s.LastError = outcome.Category; s.Message = text;
-                        s.FailuresInRow = row; s.RetryInSeconds = decision.Delay.TotalSeconds; s.FirstLine = outcome.FirstLine;
+                        s.FailuresInRow = row; s.ConsecutiveFailures = anyRow; s.RetryInSeconds = decision.Delay.TotalSeconds; s.FirstLine = outcome.FirstLine;
                     });
                     // The 1.0 fallback was only a probe: start the next round with 2.0 again.
                     if (_profile.Version == NtripVersion.Auto && !streamed) version = NtripVersion.V2;
@@ -236,7 +240,7 @@ namespace AgLibrary.Ntrip
                         if (s.State != NtripState.Streaming)
                         {
                             s.State = NtripState.Streaming; s.Message = "Receiving corrections";
-                            s.LastError = null; s.FailuresInRow = 0; s.RetryInSeconds = 0;
+                            s.LastError = null; s.FailuresInRow = 0; s.ConsecutiveFailures = 0; s.RetryInSeconds = 0;
                         }
                     });
                 }
