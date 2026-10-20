@@ -27,6 +27,7 @@ namespace AgIO
 
         private CorrectionSourceManager manager;
         private NtripProfile mainProfile;
+        private NtripProfile fallbackProfile;
         private CancellationTokenSource cts;
         private Task run;
         private RtcmQueue queue;
@@ -83,6 +84,22 @@ namespace AgIO
         public NtripProfile Profile
         {
             get { return mainProfile; }
+        }
+
+        /// <summary>True while the fallback delivers the corrections.</summary>
+        public bool FallbackActive
+        {
+            get
+            {
+                ManagerStatus ms = Manager;
+                return ms != null && ms.Active == SourceRole.Fallback;
+            }
+        }
+
+        /// <summary>The service the corrections come from now: the fallback while it is in use. Null for a radio fallback.</summary>
+        public NtripProfile ActiveProfile
+        {
+            get { return FallbackActive ? fallbackProfile : mainProfile; }
         }
 
         /// <summary>Bytes waiting in the paced queue.</summary>

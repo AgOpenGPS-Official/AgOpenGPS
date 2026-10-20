@@ -124,7 +124,7 @@ namespace AgIO
             this.info.Dock = System.Windows.Forms.DockStyle.Top;
             this.info.Location = new System.Drawing.Point(8, 8);
             this.info.Name = "info";
-            this.info.Size = new System.Drawing.Size(544, 104);
+            this.info.Size = new System.Drawing.Size(544, 132);
             this.info.TabIndex = 1;
             this.info.Text = "info";
             //

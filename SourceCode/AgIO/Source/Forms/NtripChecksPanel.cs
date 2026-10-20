@@ -26,6 +26,20 @@ namespace AgIO
         public event EventHandler DetailsClicked;
         public event EventHandler SwitchClicked;
 
+        private bool alert;
+
+        /// <summary>True while the fallback is in use: the title says so, in red.</summary>
+        public bool Alert
+        {
+            get { return alert; }
+            set
+            {
+                if (alert == value) return;
+                alert = value;
+                Invalidate();
+            }
+        }
+
         public bool ShowDetailsButton
         {
             get { return details.Visible; }
@@ -109,7 +123,7 @@ namespace AgIO
             int left = 4 + dot + 10;
             int width = Math.Max(40, Width - left - 6);
 
-            TextRenderer.DrawText(g, "Are the corrections good?", headerFont, new Point(4, 2), Color.Black);
+            TextRenderer.DrawText(g, alert ? "FALLBACK IN USE" : "Are the corrections good?", headerFont, new Point(4, 2), alert ? NtripStatusCard.LightColor(NtripLight.Bad) : Color.Black);
             int y = headerFont.Height + 14;
 
             foreach (CheckItem item in items)
