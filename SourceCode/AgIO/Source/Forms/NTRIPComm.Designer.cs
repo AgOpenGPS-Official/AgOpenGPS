@@ -194,7 +194,8 @@ namespace AgIO
             {
                 using (var dialog = new FormYes(title + "\r\n\r\n" + message, showCancel))
                 {
-                    if (dialog.ShowDialog(this) == DialogResult.OK) onYes();
+                    // No owner: a dialog owned by a minimized AgIO stays hidden. It is topmost, so it shows over AgOpenGPS.
+                    if (dialog.ShowDialog() == DialogResult.OK) onYes();
                 }
             }
             finally
@@ -303,7 +304,7 @@ namespace AgIO
                 BeginInvoke((MethodInvoker)(() =>
                 {
                     Log.EventWriter("NTRIP - " + title + ": " + message);
-                    TimedMessageBox(2500, title, message);
+                    TimedMessageBox(8000, title, message);
                 }));
             }
             catch (InvalidOperationException)
