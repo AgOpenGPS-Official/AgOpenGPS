@@ -281,6 +281,17 @@ namespace AgIO
                 return;
             }
 
+            if (work.Fallback.Enabled)
+            {
+                bool radio = work.Fallback.Type == FallbackType.SerialRadio;
+                bool missing = radio ? work.Fallback.RadioPort.Length == 0 : !work.Fallback.Service.IsComplete;
+                if (missing)
+                {
+                    segPage.SelectedIndex = 1;
+                    mf.YesMessageBox(radio ? "Choose the radio port to use Fallback" : "Fill in Caster information to use Fallback");
+                    return;
+                }
+            }
             if (work.Name.Length == 0) work.Name = NtripProfiles.Store.UniqueName("Default");
             try
             {

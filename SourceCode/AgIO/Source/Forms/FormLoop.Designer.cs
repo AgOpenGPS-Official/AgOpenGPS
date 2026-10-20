@@ -39,7 +39,6 @@ namespace AgIO
             this.label8 = new System.Windows.Forms.Label();
             this.lblCurentLon = new System.Windows.Forms.Label();
             this.lblCurrentLat = new System.Windows.Forms.Label();
-            this.lblWatch = new System.Windows.Forms.Label();
             this.lblMod2Comm = new System.Windows.Forms.Label();
             this.lblMod1Comm = new System.Windows.Forms.Label();
             this.lblIMUComm = new System.Windows.Forms.Label();
@@ -70,7 +69,6 @@ namespace AgIO
             this.lblSwitchStatus = new System.Windows.Forms.Label();
             this.lblWorkSwitchStatus = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.btnStartStopNtrip = new System.Windows.Forms.Button();
             this.lbl1To8 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lbl9To16 = new System.Windows.Forms.Label();
@@ -157,19 +155,6 @@ namespace AgIO
             this.lblCurrentLat.Size = new System.Drawing.Size(90, 18);
             this.lblCurrentLat.TabIndex = 153;
             this.lblCurrentLat.Text = "-53.1234567";
-            // 
-            // lblWatch
-            // 
-            this.lblWatch.BackColor = System.Drawing.Color.Transparent;
-            this.lblWatch.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWatch.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblWatch.Location = new System.Drawing.Point(14, 96);
-            this.lblWatch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblWatch.Name = "lblWatch";
-            this.lblWatch.Size = new System.Drawing.Size(105, 18);
-            this.lblWatch.TabIndex = 146;
-            this.lblWatch.Text = "Watch";
-            this.lblWatch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblMod2Comm
             // 
@@ -278,7 +263,7 @@ namespace AgIO
             this.toolStripSettings.Font = new System.Drawing.Font("Tahoma", 21F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripSettings.Image = global::AgIO.Properties.Resources.Settings48;
             this.toolStripSettings.Name = "toolStripSettings";
-            this.toolStripSettings.Size = new System.Drawing.Size(345, 40);
+            this.toolStripSettings.Size = new System.Drawing.Size(393, 70);
             this.toolStripSettings.Text = "Advanced Settings";
             this.toolStripSettings.Click += new System.EventHandler(this.toolStripSettings_Click);
             // 
@@ -287,7 +272,7 @@ namespace AgIO
             this.toolStripMenuProfiles.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuProfiles.Image = global::AgIO.Properties.Resources.VehFileSave;
             this.toolStripMenuProfiles.Name = "toolStripMenuProfiles";
-            this.toolStripMenuProfiles.Size = new System.Drawing.Size(345, 40);
+            this.toolStripMenuProfiles.Size = new System.Drawing.Size(393, 70);
             this.toolStripMenuProfiles.Text = "Profiles";
             this.toolStripMenuProfiles.Click += new System.EventHandler(this.toolStripMenuProfiles_Click);
             // 
@@ -296,7 +281,7 @@ namespace AgIO
             this.toolStripLogViewer.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripLogViewer.Image = global::AgIO.Properties.Resources.LogViewer;
             this.toolStripLogViewer.Name = "toolStripLogViewer";
-            this.toolStripLogViewer.Size = new System.Drawing.Size(345, 40);
+            this.toolStripLogViewer.Size = new System.Drawing.Size(393, 70);
             this.toolStripLogViewer.Text = "Log Viewer";
             this.toolStripLogViewer.Click += new System.EventHandler(this.toolStripLogViewer_Click);
             // 
@@ -305,7 +290,7 @@ namespace AgIO
             this.toolStripUDPMonitor.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripUDPMonitor.Image = global::AgIO.Properties.Resources.ScanNetwork;
             this.toolStripUDPMonitor.Name = "toolStripUDPMonitor";
-            this.toolStripUDPMonitor.Size = new System.Drawing.Size(345, 40);
+            this.toolStripUDPMonitor.Size = new System.Drawing.Size(393, 70);
             this.toolStripUDPMonitor.Text = "UDP Monitor";
             this.toolStripUDPMonitor.Click += new System.EventHandler(this.toolStripUDPMonitor_Click);
             // 
@@ -314,7 +299,7 @@ namespace AgIO
             this.toolStripSerialMonitor.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripSerialMonitor.Image = global::AgIO.Properties.Resources.SerialMonitor;
             this.toolStripSerialMonitor.Name = "toolStripSerialMonitor";
-            this.toolStripSerialMonitor.Size = new System.Drawing.Size(345, 40);
+            this.toolStripSerialMonitor.Size = new System.Drawing.Size(393, 70);
             this.toolStripSerialMonitor.Text = "Serial Monitor";
             this.toolStripSerialMonitor.Click += new System.EventHandler(this.toolStripSerialMonitor_Click);
             // 
@@ -323,7 +308,7 @@ namespace AgIO
             this.toolStripAgDiag.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold);
             this.toolStripAgDiag.Image = global::AgIO.Properties.Resources.AgDiag;
             this.toolStripAgDiag.Name = "toolStripAgDiag";
-            this.toolStripAgDiag.Size = new System.Drawing.Size(345, 40);
+            this.toolStripAgDiag.Size = new System.Drawing.Size(393, 70);
             this.toolStripAgDiag.Text = "AgDiag";
             this.toolStripAgDiag.Click += new System.EventHandler(this.toolStripAgDiag_Click);
             // 
@@ -332,7 +317,7 @@ namespace AgIO
             this.modSimToolStrip.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.modSimToolStrip.Image = global::AgIO.Properties.Resources.ModuleSim2;
             this.modSimToolStrip.Name = "modSimToolStrip";
-            this.modSimToolStrip.Size = new System.Drawing.Size(345, 40);
+            this.modSimToolStrip.Size = new System.Drawing.Size(393, 70);
             this.modSimToolStrip.Text = "Module Sim";
             this.modSimToolStrip.Click += new System.EventHandler(this.modSimToolStrip_Click);
             // 
@@ -341,7 +326,7 @@ namespace AgIO
             this.toolStripEthernet.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripEthernet.Image = global::AgIO.Properties.Resources.EthernetSetup;
             this.toolStripEthernet.Name = "toolStripEthernet";
-            this.toolStripEthernet.Size = new System.Drawing.Size(345, 40);
+            this.toolStripEthernet.Size = new System.Drawing.Size(393, 70);
             this.toolStripEthernet.Text = "Linux Users";
             this.toolStripEthernet.Click += new System.EventHandler(this.toolStripEthernet_Click);
             // 
@@ -350,7 +335,7 @@ namespace AgIO
             this.deviceManagerToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deviceManagerToolStripMenuItem.Image = global::AgIO.Properties.Resources.DeviceManager;
             this.deviceManagerToolStripMenuItem.Name = "deviceManagerToolStripMenuItem";
-            this.deviceManagerToolStripMenuItem.Size = new System.Drawing.Size(345, 40);
+            this.deviceManagerToolStripMenuItem.Size = new System.Drawing.Size(393, 70);
             this.deviceManagerToolStripMenuItem.Text = "Device Manager";
             this.deviceManagerToolStripMenuItem.Click += new System.EventHandler(this.deviceManagerToolStripMenuItem_Click);
             // 
@@ -359,7 +344,7 @@ namespace AgIO
             this.isobusToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.isobusToolStripMenuItem.Image = global::AgIO.Properties.Resources.Isobus;
             this.isobusToolStripMenuItem.Name = "isobusToolStripMenuItem";
-            this.isobusToolStripMenuItem.Size = new System.Drawing.Size(345, 40);
+            this.isobusToolStripMenuItem.Size = new System.Drawing.Size(393, 70);
             this.isobusToolStripMenuItem.Text = "ISOBUS";
             this.isobusToolStripMenuItem.Click += new System.EventHandler(this.isobusToolStripMenuItem_Click);
             // 
@@ -384,7 +369,7 @@ namespace AgIO
             this.saveToolStrip.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveToolStrip.Image = global::AgIO.Properties.Resources.NTRIP_Client;
             this.saveToolStrip.Name = "saveToolStrip";
-            this.saveToolStrip.Size = new System.Drawing.Size(288, 34);
+            this.saveToolStrip.Size = new System.Drawing.Size(336, 70);
             this.saveToolStrip.Text = "NTRIP";
             this.saveToolStrip.Click += new System.EventHandler(this.btnNTRIP_Click);
             // 
@@ -393,7 +378,7 @@ namespace AgIO
             this.loadToolStrip.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loadToolStrip.Image = global::AgIO.Properties.Resources.RadioSettings;
             this.loadToolStrip.Name = "loadToolStrip";
-            this.loadToolStrip.Size = new System.Drawing.Size(288, 34);
+            this.loadToolStrip.Size = new System.Drawing.Size(336, 70);
             this.loadToolStrip.Text = "Radio (Not XBee)";
             this.loadToolStrip.Click += new System.EventHandler(this.btnRadio_Click);
             // 
@@ -402,7 +387,7 @@ namespace AgIO
             this.serialPassThroughToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serialPassThroughToolStripMenuItem.Image = global::AgIO.Properties.Resources.NTRIP_Serial;
             this.serialPassThroughToolStripMenuItem.Name = "serialPassThroughToolStripMenuItem";
-            this.serialPassThroughToolStripMenuItem.Size = new System.Drawing.Size(288, 34);
+            this.serialPassThroughToolStripMenuItem.Size = new System.Drawing.Size(336, 70);
             this.serialPassThroughToolStripMenuItem.Text = "Serial Port";
             this.serialPassThroughToolStripMenuItem.Click += new System.EventHandler(this.serialPassThroughToolStripMenuItem_Click);
             // 
@@ -523,23 +508,6 @@ namespace AgIO
             this.label9.Size = new System.Drawing.Size(52, 19);
             this.label9.TabIndex = 483;
             this.label9.Text = "Work:";
-            // 
-            // btnStartStopNtrip
-            // 
-            this.btnStartStopNtrip.BackColor = System.Drawing.Color.LightGray;
-            this.btnStartStopNtrip.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.btnStartStopNtrip.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStartStopNtrip.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartStopNtrip.ForeColor = System.Drawing.Color.Black;
-            this.btnStartStopNtrip.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnStartStopNtrip.Location = new System.Drawing.Point(25, 121);
-            this.btnStartStopNtrip.Margin = new System.Windows.Forms.Padding(4);
-            this.btnStartStopNtrip.Name = "btnStartStopNtrip";
-            this.btnStartStopNtrip.Size = new System.Drawing.Size(80, 27);
-            this.btnStartStopNtrip.TabIndex = 147;
-            this.btnStartStopNtrip.Text = "StartStop";
-            this.btnStartStopNtrip.UseVisualStyleBackColor = false;
-            this.btnStartStopNtrip.Click += new System.EventHandler(this.btnStartStopNtrip_Click);
             // 
             // lbl1To8
             // 
@@ -939,7 +907,7 @@ namespace AgIO
             // 
             this.ntripCard.BackColor = System.Drawing.Color.Transparent;
             this.ntripCard.Font = new System.Drawing.Font("Tahoma", 13.5F, System.Drawing.FontStyle.Bold);
-            this.ntripCard.Location = new System.Drawing.Point(6, 51);
+            this.ntripCard.Location = new System.Drawing.Point(6, 50);
             this.ntripCard.Name = "ntripCard";
             this.ntripCard.Size = new System.Drawing.Size(150, 196);
             this.ntripCard.TabIndex = 520;
@@ -976,9 +944,7 @@ namespace AgIO
             this.Controls.Add(this.lbl9To16);
             this.Controls.Add(this.lbl1To8);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.btnStartStopNtrip);
             this.Controls.Add(this.cboxIsSteerModule);
-            this.Controls.Add(this.lblWatch);
             this.Controls.Add(this.cboxIsIMUModule);
             this.Controls.Add(this.cboxIsMachineModule);
             this.Controls.Add(this.btnIMU);
@@ -1040,8 +1006,6 @@ namespace AgIO
         private System.Windows.Forms.Label lblCurentLon;
         private System.Windows.Forms.Label lblCurrentLat;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblWatch;
-        private System.Windows.Forms.Button btnStartStopNtrip;
         private System.Windows.Forms.Label lblMod2Comm;
         private System.Windows.Forms.Label lblMod1Comm;
         private System.Windows.Forms.Label lblIMUComm;
