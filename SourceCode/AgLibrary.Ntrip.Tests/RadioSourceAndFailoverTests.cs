@@ -202,7 +202,8 @@ namespace AgLibrary.Ntrip.Tests
                 feed.Feed(Rtcm.Message(1077, 60));
                 Assert.That(WaitFor(() => manager.Status.Status.Frames >= 1), Is.True);
                 lock (types) Assert.That(types, Is.EqualTo(new[] { 1077 }));
-                Assert.That(manager.Status.Status.Headline, Is.EqualTo("Radio Active"));
+                // The frame count and the state are updated one after the other, so wait for the state.
+                Assert.That(WaitFor(() => manager.Status.Status.Headline == "Radio Active"), Is.True, manager.Status.Status.Headline);
                 Assert.That(manager.Status.Using, Is.EqualTo("Fallback: Radio COM5"));
 
                 cts.Cancel();
