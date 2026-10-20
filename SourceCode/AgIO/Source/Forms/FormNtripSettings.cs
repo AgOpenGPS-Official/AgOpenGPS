@@ -17,9 +17,13 @@ namespace AgIO
         private NtripProfileSet work;
         private CancellationTokenSource checkCts;
 
-        public FormNtripSettings(FormLoop callingForm)
+        private readonly NtripProfileSet initial;
+
+        /// <param name="profile">The profile to edit; null for the one in use.</param>
+        internal FormNtripSettings(FormLoop callingForm, NtripProfileSet profile = null)
         {
             mf = callingForm;
+            initial = profile;
             InitializeComponent();
         }
 
@@ -29,7 +33,7 @@ namespace AgIO
 
             foreach (string port in SerialPort.GetPortNames()) cboRadioPort.Items.Add(port);
 
-            work = NtripProfiles.LoadActive().Clone();
+            work = (initial ?? NtripProfiles.LoadActive()).Clone();
             if (string.IsNullOrEmpty(work.Name)) work.Name = "";
             ToUi();
             ShowPage();
@@ -48,7 +52,7 @@ namespace AgIO
             var s = Properties.Settings.Default;
 
             tglUse.Checked = s.setNTRIP_isOn;
-            btnProfile.Text = work.Name.Length > 0 ? work.Name : "(not saved yet)";
+            lblProfileName.Text = work.Name.Length > 0 ? work.Name : "(not saved yet)";
 
             txtHost.Text = work.Main.Host;
             numPort.IntValue = work.Main.Port;
@@ -162,23 +166,6 @@ namespace AgIO
         {
             txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
             btnShowPassword.Text = txtPassword.UseSystemPasswordChar ? "Show" : "Hide";
-        }
-
-        private void btnProfile_Click(object sender, EventArgs e)
-        {
-            FromUi();
-            using (var form = new FormNtripProfiles(mf, work))
-            {
-                if (form.ShowDialog(this) == DialogResult.OK && form.Chosen != null)
-                {
-                    work = form.Chosen.Clone();
-                    ToUi();
-
-                    // An existing profile that is filled in is used right away, as if Save was pressed.
-                    // A new profile stays open for filling in.
-                    if (NtripProfiles.Store.Exists(work.Name) && work.Main.IsComplete) btnSave_Click(this, EventArgs.Empty);
-                }
-            }
         }
 
         private void btnMounts_Click(object sender, EventArgs e) { ChooseMount(work.Main, txtHost, numPort, txtMount, txtUser, txtPassword); }
