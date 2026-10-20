@@ -43,6 +43,8 @@ namespace AgIO.Properties
         public double setNTRIP_manualAltitude = 0;
         //the NTRIP profile (main and fallback service) this settings file uses; the profile itself is its own file
         public string setNTRIP_profileName = "";
+        //run the NTRIP client from before the rewrite (LegacyNtripClient) instead of the new one, as a way out in the field
+        public bool setNTRIP_useLegacyClient = false;
         public bool setPgm_isFirstRun = true;
         public string setPort_portNameGPS2 = "GPS2";
         public int setPort_baudRateGPS2 = 9600;
