@@ -377,7 +377,9 @@ namespace AgIO
 
             using (var pick = new FormNtripProfiles(this, Settings.Default.setNTRIP_profileName))
             {
-                if (pick.ShowDialog(this) != DialogResult.OK) return;
+                DialogResult picked = pick.ShowDialog(this);
+                if (pick.ActiveChanged) ConfigureNTRIP();   // the profile in use was deleted
+                if (picked != DialogResult.OK) return;
 
                 if (pick.Action == ProfileAction.Use)
                 {

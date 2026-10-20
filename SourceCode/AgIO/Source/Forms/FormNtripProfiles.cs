@@ -25,6 +25,9 @@ namespace AgIO
 
         internal ProfileAction Action { get; private set; }
 
+        /// <summary>The profile in use was deleted, so the settings changed even if the window is cancelled.</summary>
+        internal bool ActiveChanged { get; private set; }
+
         /// <summary>The profile the action is about.</summary>
         internal NtripProfileSet Chosen { get; private set; }
 
@@ -207,7 +210,10 @@ namespace AgIO
             {
                 var rest = new System.Collections.Generic.List<string>(store.Names());
                 settings.setNTRIP_profileName = rest.Count > 0 ? rest[0] : "";
+                // No profile left: NTRIP is off until the user makes a new one.
+                if (rest.Count == 0) settings.setNTRIP_isOn = false;
                 settings.Save();
+                ActiveChanged = true;
             }
             Fill("");
         }
