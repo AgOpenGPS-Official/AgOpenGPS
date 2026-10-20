@@ -46,14 +46,19 @@ namespace AgIO
         {
             NtripStatus st = CurrentStatus();
             NtripHost host = mf.ntripHost;
-            NtripProfile profile = host == null ? null : host.Profile;
+            NtripProfile profile = host == null ? null : host.ActiveProfile;
+            ManagerStatus ms = host == null ? null : host.Manager;
+            bool fallback = host != null && host.FallbackActive;
             var ci = CultureInfo.InvariantCulture;
 
+            checks.Alert = fallback;
+            info.ForeColor = fallback ? NtripStatusCard.LightColor(NtripLight.Bad) : System.Drawing.SystemColors.ControlText;
+            info.BackColor = fallback ? System.Drawing.Color.FromArgb(255, 226, 222) : System.Drawing.SystemColors.Control;
             checks.SetChecks(CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
 
-            string where = profile == null ? "-" : profile.Mount + " on " + profile.Host + ":" + profile.Port.ToString(ci);
+            string where = profile == null ? (fallback && ms != null ? ms.Using.Replace("Fallback: ", "") : "-") : profile.Mount + " on " + profile.Host + ":" + profile.Port.ToString(ci);
             string station = st.Rtcm.StationId >= 0 ? st.Rtcm.StationId.ToString(ci) : "unknown";
-            info.Text = st.Headline + "\r\n" + where + "\r\n"
+            info.Text = (fallback ? "FALLBACK IN USE: the main service is not used now\r\n" : "") + st.Headline + "\r\n" + where + "\r\n"
                 + "Base station ID: " + station + "   Damaged data: " + (st.Rtcm.ChecksumFailures == 0 ? "none" : st.Rtcm.ChecksumFailures.ToString(ci))
                 + "   Service answered: " + (st.FirstLine.Length > 0 ? st.FirstLine : "-");
 
@@ -76,7 +81,7 @@ namespace AgIO
         {
             NtripStatus st = CurrentStatus();
             NtripHost host = mf.ntripHost;
-            string report = SupportReport.Build(st, host == null ? null : host.Profile, CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
+            string report = SupportReport.Build(st, host == null ? null : host.ActiveProfile, CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
             try
             {
                 Clipboard.SetText(report);
