@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using System.Windows.Forms;
 using AgLibrary.Ntrip;
 
@@ -65,53 +64,51 @@ namespace AgIO
 
             if (!any)
             {
-                lblProfileDetails.Text = "No profiles yet.\r\n\r\nTap New profile to make one.";
+                profileSummary.SetProfile(null, false, "No profiles yet.\r\n\r\nTap New profile to make one.");
                 return;
             }
 
             NtripProfileSet set = store.Load(name);
             if (set == null)
             {
-                lblProfileDetails.Text = "This profile file could not be read.";
+                profileSummary.SetProfile(null, false, "This profile file could not be read.");
                 return;
             }
 
-            var sb = new StringBuilder();
-            if (string.Equals(name, activeName, StringComparison.OrdinalIgnoreCase)) sb.Append("In use now\r\n\r\n");
-
-            sb.Append("Main service\r\n");
-            if (set.Main.IsComplete)
-            {
-                sb.Append(set.Main.Host).Append(':').Append(set.Main.Port).Append("\r\n");
-                sb.Append(set.Main.Mount.Length > 0 ? "Mountpoint: " + set.Main.Mount : "No mountpoint").Append("\r\n");
-            }
-            else
-            {
-                sb.Append("Not filled in\r\n");
-            }
-
-            sb.Append("\r\nFallback\r\n");
-            FallbackDefinition f = set.Fallback;
-            if (!f.Enabled)
-            {
-                sb.Append("Off");
-            }
-            else if (f.Type == FallbackType.SerialRadio)
-            {
-                sb.Append("Serial radio on ").Append(f.RadioPort.Length > 0 ? f.RadioPort : "(no port)");
-            }
-            else if (f.Service.IsComplete)
-            {
-                sb.Append(f.Service.Host).Append(':').Append(f.Service.Port).Append("\r\n");
-                sb.Append(f.Service.Mount.Length > 0 ? "Mountpoint: " + f.Service.Mount : "No mountpoint");
-            }
-            else
-            {
-                sb.Append("Not filled in");
-            }
-            lblProfileDetails.Text = sb.ToString();
+            profileSummary.SetProfile(set, IsActive(name), "");
         }
 
+        private bool IsActive(string name)
+        {
+            return string.Equals(name, activeName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Big rows with a line between them; the chosen row is green.
+        private void lstProfiles_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            string name = (string)lstProfiles.Items[e.Index];
+            bool selected = (e.State & DrawItemState.Selected) != 0;
+
+            using (var back = new System.Drawing.SolidBrush(selected ? System.Drawing.Color.FromArgb(21, 110, 75) : System.Drawing.Color.White))
+                e.Graphics.FillRectangle(back, e.Bounds);
+            using (var line = new System.Drawing.Pen(System.Drawing.Color.FromArgb(150, 150, 150), 1F))
+                e.Graphics.DrawLine(line, e.Bounds.Left, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+
+            System.Drawing.Color ink = selected ? System.Drawing.Color.White : System.Drawing.Color.Black;
+            bool active = IsActive(name);
+            var textArea = new System.Drawing.Rectangle(e.Bounds.Left + 14, e.Bounds.Top, e.Bounds.Width - (active ? 110 : 28), e.Bounds.Height - 1);
+            TextRenderer.DrawText(e.Graphics, name, e.Font, textArea, ink,
+                TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding);
+
+            if (active)
+            {
+                using (var small = new System.Drawing.Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold))
+                    TextRenderer.DrawText(e.Graphics, "IN USE", small, new System.Drawing.Rectangle(e.Bounds.Right - 92, e.Bounds.Top, 84, e.Bounds.Height - 1),
+                        selected ? System.Drawing.Color.White : System.Drawing.Color.FromArgb(21, 110, 75),
+                        TextFormatFlags.VerticalCenter | TextFormatFlags.Right | TextFormatFlags.NoPadding);
+            }
+        }
         private string AskName(string start)
         {
             if (!mf.isKeyboardOn) return null;
