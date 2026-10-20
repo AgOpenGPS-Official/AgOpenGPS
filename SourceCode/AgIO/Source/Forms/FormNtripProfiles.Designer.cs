@@ -30,7 +30,7 @@ namespace AgIO
         {
             this.lblProfilesInfo = new System.Windows.Forms.Label();
             this.lstProfiles = new System.Windows.Forms.ListBox();
-            this.lblProfileDetails = new System.Windows.Forms.Label();
+            this.profileSummary = new AgIO.NtripProfileSummary();
             this.btnProfNew = new AgIO.RoundedButton();
             this.btnProfCopy = new AgIO.RoundedButton();
             this.btnProfRename = new AgIO.RoundedButton();
@@ -52,33 +52,29 @@ namespace AgIO
             // 
             // lstProfiles
             // 
-            this.lstProfiles.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstProfiles.Font = new System.Drawing.Font("Tahoma", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstProfiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lstProfiles.FormattingEnabled = true;
             this.lstProfiles.IntegralHeight = false;
-            this.lstProfiles.ItemHeight = 29;
+            this.lstProfiles.ItemHeight = 64;
             this.lstProfiles.Location = new System.Drawing.Point(20, 52);
             this.lstProfiles.Name = "lstProfiles";
-            this.lstProfiles.Size = new System.Drawing.Size(400, 430);
+            this.lstProfiles.Size = new System.Drawing.Size(400, 508);
             this.lstProfiles.TabIndex = 1;
             this.lstProfiles.SelectedIndexChanged += new System.EventHandler(this.lstProfiles_SelectedIndexChanged);
             this.lstProfiles.DoubleClick += new System.EventHandler(this.lstProfiles_DoubleClick);
+            this.lstProfiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstProfiles_DrawItem);
             // 
-            // lblProfileDetails
+            // profileSummary
             // 
-            this.lblProfileDetails.AutoSize = false;
-            this.lblProfileDetails.BackColor = System.Drawing.Color.White;
-            this.lblProfileDetails.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProfileDetails.Font = new System.Drawing.Font("Tahoma", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProfileDetails.Padding = new System.Windows.Forms.Padding(8);
-            this.lblProfileDetails.Location = new System.Drawing.Point(440, 52);
-            this.lblProfileDetails.Name = "lblProfileDetails";
-            this.lblProfileDetails.Size = new System.Drawing.Size(440, 226);
-            this.lblProfileDetails.TabIndex = 2;
-            this.lblProfileDetails.Text = "";
+            this.profileSummary.Location = new System.Drawing.Point(440, 52);
+            this.profileSummary.Name = "profileSummary";
+            this.profileSummary.Size = new System.Drawing.Size(440, 250);
+            this.profileSummary.TabIndex = 2;
             // 
             // btnProfNew
             // 
-            this.btnProfNew.Location = new System.Drawing.Point(440, 294);
+            this.btnProfNew.Location = new System.Drawing.Point(440, 318);
             this.btnProfNew.Name = "btnProfNew";
             this.btnProfNew.Size = new System.Drawing.Size(210, 60);
             this.btnProfNew.TabIndex = 3;
@@ -87,7 +83,7 @@ namespace AgIO
             // 
             // btnProfCopy
             // 
-            this.btnProfCopy.Location = new System.Drawing.Point(670, 294);
+            this.btnProfCopy.Location = new System.Drawing.Point(670, 318);
             this.btnProfCopy.Name = "btnProfCopy";
             this.btnProfCopy.Size = new System.Drawing.Size(210, 60);
             this.btnProfCopy.TabIndex = 4;
@@ -96,7 +92,7 @@ namespace AgIO
             // 
             // btnProfRename
             // 
-            this.btnProfRename.Location = new System.Drawing.Point(440, 364);
+            this.btnProfRename.Location = new System.Drawing.Point(440, 388);
             this.btnProfRename.Name = "btnProfRename";
             this.btnProfRename.Size = new System.Drawing.Size(210, 60);
             this.btnProfRename.TabIndex = 5;
@@ -106,7 +102,7 @@ namespace AgIO
             // btnProfDelete
             // 
             this.btnProfDelete.Tone = AgIO.ButtonTone.Negative;
-            this.btnProfDelete.Location = new System.Drawing.Point(670, 364);
+            this.btnProfDelete.Location = new System.Drawing.Point(670, 388);
             this.btnProfDelete.Name = "btnProfDelete";
             this.btnProfDelete.Size = new System.Drawing.Size(210, 60);
             this.btnProfDelete.TabIndex = 6;
@@ -148,7 +144,7 @@ namespace AgIO
             this.ClientSize = new System.Drawing.Size(900, 580);
             this.Controls.Add(this.lblProfilesInfo);
             this.Controls.Add(this.lstProfiles);
-            this.Controls.Add(this.lblProfileDetails);
+            this.Controls.Add(this.profileSummary);
             this.Controls.Add(this.btnProfNew);
             this.Controls.Add(this.btnProfCopy);
             this.Controls.Add(this.btnProfRename);
@@ -175,7 +171,7 @@ namespace AgIO
 
         private System.Windows.Forms.Label lblProfilesInfo;
         private System.Windows.Forms.ListBox lstProfiles;
-        private System.Windows.Forms.Label lblProfileDetails;
+        private AgIO.NtripProfileSummary profileSummary;
         private AgIO.RoundedButton btnProfNew;
         private AgIO.RoundedButton btnProfCopy;
         private AgIO.RoundedButton btnProfRename;
