@@ -31,7 +31,7 @@ namespace AgIO
             this.tglUse = new AgIO.ToggleSwitch();
             this.lblUse = new System.Windows.Forms.Label();
             this.lblProfile = new System.Windows.Forms.Label();
-            this.btnProfile = new AgIO.RoundedButton();
+            this.lblProfileName = new System.Windows.Forms.Label();
             this.segPage = new AgIO.SegmentedControl();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.lblHost = new System.Windows.Forms.Label();
@@ -125,18 +125,20 @@ namespace AgIO
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProfile.Location = new System.Drawing.Point(440, 20);
             this.lblProfile.Name = "lblProfile";
-            this.lblProfile.Size = new System.Drawing.Size(120, 30);
+            this.lblProfile.Size = new System.Drawing.Size(110, 30);
             this.lblProfile.TabIndex = 2;
             this.lblProfile.Text = "Profile";
             // 
-            // btnProfile
+            // lblProfileName
             // 
-            this.btnProfile.Location = new System.Drawing.Point(560, 8);
-            this.btnProfile.Name = "btnProfile";
-            this.btnProfile.Size = new System.Drawing.Size(420, 56);
-            this.btnProfile.TabIndex = 3;
-            this.btnProfile.Text = "Default";
-            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
+            this.lblProfileName.AutoSize = false;
+            this.lblProfileName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblProfileName.Location = new System.Drawing.Point(560, 20);
+            this.lblProfileName.Name = "lblProfileName";
+            this.lblProfileName.Size = new System.Drawing.Size(420, 30);
+            this.lblProfileName.TabIndex = 3;
+            this.lblProfileName.Text = "Default";
             // 
             // segPage
             // 
@@ -804,7 +806,7 @@ namespace AgIO
             this.Controls.Add(this.tglUse);
             this.Controls.Add(this.lblUse);
             this.Controls.Add(this.lblProfile);
-            this.Controls.Add(this.btnProfile);
+            this.Controls.Add(this.lblProfileName);
             this.Controls.Add(this.segPage);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlFallback);
@@ -838,7 +840,7 @@ namespace AgIO
         private AgIO.ToggleSwitch tglUse;
         private System.Windows.Forms.Label lblUse;
         private System.Windows.Forms.Label lblProfile;
-        private AgIO.RoundedButton btnProfile;
+        private System.Windows.Forms.Label lblProfileName;
         private AgIO.SegmentedControl segPage;
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Label lblHost;

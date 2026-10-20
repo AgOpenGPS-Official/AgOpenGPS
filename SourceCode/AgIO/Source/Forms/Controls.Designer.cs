@@ -411,16 +411,30 @@ namespace AgIO
             }
 
 
-            using (var form = new FormNtripSettings(this))
+            using (var pick = new FormNtripProfiles(this, Settings.Default.setNTRIP_profileName))
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
+                if (pick.ShowDialog(this) != DialogResult.OK) return;
+
+                if (pick.Action == ProfileAction.Use)
                 {
-                    //reconnect with the new settings
+                    //quick change of profile: use it and switch NTRIP on
+                    Settings.Default.setNTRIP_profileName = pick.Chosen.Name;
+                    Settings.Default.setNTRIP_isOn = true;
+                    Settings.Default.Save();
                     ConfigureNTRIP();
+                    return;
+                }
+
+                using (var form = new FormNtripSettings(this, pick.Chosen))
+                {
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        //reconnect with the new settings
+                        ConfigureNTRIP();
+                    }
                 }
             }
         }
-
         private void SettingsRadio()
         {
             if (isSerialPass_RequiredOn)
