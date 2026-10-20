@@ -35,7 +35,7 @@ namespace AgIO
         {
             if (this.Width < 600)
             {
-                ntripChecks.Visible = ntripCard.Visible;
+                ntripChecks.Visible = ntripCard.Visible && !UseLegacyNtrip;
                 this.Width = FlyOutWidth();
                 isViewAdvanced = true;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnLeft;

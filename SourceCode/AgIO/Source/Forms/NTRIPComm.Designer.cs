@@ -16,6 +16,12 @@ namespace AgIO
         // Serial radio and serial pass-through still use the flags and counters below.
         internal NtripHost ntripHost;
 
+        // The client from before the rewrite, for users who need a way out in the field
+        // (Settings -> NTRIP -> "Use the old NTRIP client"). Internet NTRIP only, no fallback.
+        internal LegacyNtripClient legacyNtrip;
+
+        private static bool UseLegacyNtrip => Properties.Settings.Default.setNTRIP_useLegacyClient;
+
         //counts seconds for the radio / serial pass-through connect and watchdog
         private int ntripCounter = 10;
 
@@ -44,7 +50,8 @@ namespace AgIO
         {
             if (isNTRIP_RequiredOn)
             {
-                UpdateNtripFromHost();
+                if (legacyNtrip != null && legacyNtrip.IsRunning) UpdateNtripFromLegacy();
+                else UpdateNtripFromHost();
             }
 
             //count up the clock only if everything is alive
@@ -97,6 +104,37 @@ namespace AgIO
             RefreshNtripCard();
         }
 
+        //the old client: its one-second routine, then the same counters and card as the new one
+        private void UpdateNtripFromLegacy()
+        {
+            LegacyNtripClient legacy = legacyNtrip;
+            legacy.DoSecondRoutine();
+
+            uint received = legacy.BytesReceived;
+            tripBytes += received >= lastNtripBytesReceived ? (uint)(received - lastNtripBytesReceived) : received;
+            lastNtripBytesReceived = received;
+
+            isNTRIP_Connected = legacy.IsConnected;
+
+            int bytesOut = legacy.TakeBytesToGps();
+
+            //Bypass if sleeping
+            if (focusSkipCounter == 0) return;
+
+            lblToGPS.Text = bytesOut == 0 ? "---" : bytesOut.ToString();
+
+            RefreshNtripCard();
+        }
+
+        //the status card for the old client
+        private void RefreshLegacyCard()
+        {
+            legacyNtrip.GetStatus(out string headline, out NtripLight light);
+            string received = (tripBytes >> 10).ToString("###,###,##0") + " kb received";
+            ntripCard.Alert = false;
+            ntripCard.SetStatus(headline + " (old client)", light, legacyNtrip.Host + "\n" + legacyNtrip.Mount, received, "Stop");
+        }
+
         //the status card in the main window and the "are the corrections good?" panel in the fly-out
         private void RefreshNtripCard()
         {
@@ -105,6 +143,12 @@ namespace AgIO
             if (isRadio_RequiredOn || isSerialPass_RequiredOn)
             {
                 RefreshRadioCard();
+                return;
+            }
+
+            if (isNTRIP_RequiredOn && legacyNtrip != null && legacyNtrip.IsRunning)
+            {
+                RefreshLegacyCard();
                 return;
             }
 
@@ -296,7 +340,8 @@ namespace AgIO
 
             //one status card for NTRIP, radio and serial pass-through
             ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn || radioOrPass;
-            ntripChecks.Visible = isNTRIP_RequiredOn && isViewAdvanced;
+            //the checks and the switch belong to the new client
+            ntripChecks.Visible = isNTRIP_RequiredOn && isViewAdvanced && !UseLegacyNtrip;
             lblToGPS.Visible = anySource;
 
             if (isNTRIP_RequiredOn) StartNtripHost();
@@ -305,6 +350,12 @@ namespace AgIO
 
         private void StartNtripHost()
         {
+            if (UseLegacyNtrip)
+            {
+                StartLegacyNtrip();
+                return;
+            }
+
             if (ntripHost == null)
             {
                 ntripHost = new NtripHost(this);
@@ -320,6 +371,20 @@ namespace AgIO
         private void StopNtripHost()
         {
             if (ntripHost != null) ntripHost.Stop();
+            if (legacyNtrip != null) legacyNtrip.Stop();
+        }
+
+        private void StartLegacyNtrip()
+        {
+            if (ntripHost != null) ntripHost.Stop();
+            if (legacyNtrip == null) legacyNtrip = new LegacyNtripClient(this);
+
+            lastNtripBytesReceived = 0;
+            if (!legacyNtrip.Start())
+            {
+                isNTRIP_RequiredOn = false;
+                TimedMessageBox(3000, "NTRIP", "Fill in the address of the main service first.");
+            }
         }
 
         //one notice per kind of problem; the client raises it on a worker thread
