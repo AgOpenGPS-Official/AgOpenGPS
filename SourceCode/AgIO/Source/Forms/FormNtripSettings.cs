@@ -173,6 +173,10 @@ namespace AgIO
                 {
                     work = form.Chosen.Clone();
                     ToUi();
+
+                    // An existing profile that is filled in is used right away, as if Save was pressed.
+                    // A new profile stays open for filling in.
+                    if (NtripProfiles.Store.Exists(work.Name) && work.Main.IsComplete) btnSave_Click(this, EventArgs.Empty);
                 }
             }
         }
