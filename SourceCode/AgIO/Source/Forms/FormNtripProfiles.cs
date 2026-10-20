@@ -200,6 +200,15 @@ namespace AgIO
                 if (ask.ShowDialog(this) != DialogResult.OK) return;
             }
             store.Delete(name);
+
+            // The profile in use is gone: point to another one, or to none (then the old loose settings apply).
+            var settings = Properties.Settings.Default;
+            if (string.Equals(settings.setNTRIP_profileName, name, StringComparison.OrdinalIgnoreCase))
+            {
+                var rest = new System.Collections.Generic.List<string>(store.Names());
+                settings.setNTRIP_profileName = rest.Count > 0 ? rest[0] : "";
+                settings.Save();
+            }
             Fill("");
         }
     }

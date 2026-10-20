@@ -279,6 +279,10 @@ namespace AgIO
 
         private void OnNotice(NoticeKind kind, string title, string message)
         {
+            // Corrections of the source that was left must not be sent after the switch.
+            if (kind == NoticeKind.SwitchedToFallback || kind == NoticeKind.SwitchedToMain)
+                queue?.Clear();
+
             Action<NoticeKind, string, string> handler = Notice;
             if (handler != null) handler(kind, title, message);
         }

@@ -92,7 +92,7 @@ namespace AgLibrary.Ntrip.Tests
     public class RawTcpTests
     {
         [Test]
-        public void RawTcp_SendsNoRequest_ReadsFramesAtOnce_AndSendsGga()
+        public void RawTcp_SendsNoRequest_ReadsFramesAtOnce_AndSendsNoGga()
         {
             var body = new List<byte>();
             body.AddRange(Rtcm.Message(1005, 19));
@@ -109,9 +109,8 @@ namespace AgLibrary.Ntrip.Tests
                     Assert.That(h.WaitFor(s => s.State == NtripState.Streaming && s.Frames >= 2), Is.True, h.Client.Status.Message);
                     Assert.That(h.FrameTypes(), Is.EqualTo(new[] { 1005, 1077 }));
                     Assert.That(caster.Requests[0], Is.Empty, "nothing is sent as a request");
-                    var until = DateTime.UtcNow.AddSeconds(3);
-                    while (DateTime.UtcNow < until && !caster.Sessions[0].ReceivedAfterRequest.Contains("$GPGGA,RAW")) Thread.Sleep(20);
-                    Assert.That(caster.Sessions[0].ReceivedAfterRequest, Does.Contain("$GPGGA,RAW"));
+                    Thread.Sleep(1500);
+                    Assert.That(caster.Sessions[0].ReceivedAfterRequest, Does.Not.Contain("$GPGGA"), "a raw connection gets no position");
                 }
             }
         }

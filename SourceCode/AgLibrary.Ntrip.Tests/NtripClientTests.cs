@@ -240,6 +240,8 @@ namespace AgLibrary.Ntrip.Tests
             {
                 Assert.That(h.WaitFor(s => s.Unframed && s.State == NtripState.Streaming), Is.True);
                 Assert.That(SpinUntil(() => Interlocked.Read(ref h.RawBytes) > 1000), Is.True);
+                // Nothing is lost: the bytes seen before the stream was recognised as unframed come along too.
+                Assert.That(SpinUntil(() => Interlocked.Read(ref h.RawBytes) >= 6 * junk.Length), Is.True);
                 Assert.That(caster.Connections, Is.EqualTo(1));
             }
         }

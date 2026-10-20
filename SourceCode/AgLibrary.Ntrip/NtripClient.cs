@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -153,11 +153,17 @@ namespace AgLibrary.Ntrip
                 _sinceLastFrame = Stopwatch.StartNew();
                 FrameReceived?.Invoke(type, frame);
             };
-            var lastData = Stopwatch.StartNew();   // last frame, or the last bytes while the stream is unframed
+            var probe = new System.Collections.Generic.List<byte>();   // bytes seen before the first frame
+            ChunkedDecoder.DataHandler sink = d =>
+            {
+                if (unframed) { RawDataReceived?.Invoke(d); return; }
+                _stats.Feed(d, onFrame);
+                if (_framesTotal == 0 && probe != null) probe.AddRange(d.ToArray());
+            }; var lastData = Stopwatch.StartNew();   // last frame, or the last bytes while the stream is unframed
             bool first = true;
 
             // N9: NTRIP 1.0 has no header for the position; send it right after the answer.
-            if (version == NtripVersion.V1) await SendGgaAsync(conn, sinceGga).ConfigureAwait(false);
+            if (version == NtripVersion.V1 && !_profile.RawTcp) await SendGgaAsync(conn, sinceGga).ConfigureAwait(false);
             sinceGga.Restart();
 
             while (true)
@@ -210,25 +216,20 @@ namespace AgLibrary.Ntrip
                 _bytes += n;
                 bodyBytes += n;
                 long framesBefore = _framesTotal;
-                if (unframed)
-                {
-                    RawDataReceived?.Invoke(new ReadOnlySpan<byte>(data, 0, n));
-                    lastData.Restart();
-                }
-                else if (decoder != null && !decoder.IsBroken)
-                {
-                    decoder.Feed(new ReadOnlySpan<byte>(data, 0, n), d => _stats.Feed(d, onFrame));
-                }
+                if (decoder != null && !decoder.IsBroken)
+                    decoder.Feed(new ReadOnlySpan<byte>(data, 0, n), sink);
                 else
-                {
-                    _stats.Feed(new ReadOnlySpan<byte>(data, 0, n), onFrame);
-                }
-                if (_framesTotal > framesBefore) lastData.Restart();
+                    sink(new ReadOnlySpan<byte>(data, 0, n));
+                if (unframed) lastData.Restart();
+                if (_framesTotal > framesBefore) { lastData.Restart(); probe = null; }
 
                 if (!unframed && _framesTotal == 0 && bodyBytes >= UnframedAfterBytes)
                 {
-                    // Not RTCM 3 (RTCM 2, CMR, ...): forward the bytes as the old client did.
+                    // Not RTCM 3 (RTCM 2, CMR, ...): forward the bytes as the old client did,
+                    // starting with the bytes collected while we were looking for frames.
                     unframed = true;
+                    if (probe != null && probe.Count > 0) RawDataReceived?.Invoke(new ReadOnlySpan<byte>(probe.ToArray()));
+                    probe = null;
                     Update(s => s.Unframed = true);
                     lastData.Restart();
                 }
@@ -253,6 +254,7 @@ namespace AgLibrary.Ntrip
         private async Task SendGgaAsync(NtripConnection conn, Stopwatch sinceGga)
         {
             sinceGga.Restart();
+            if (_profile.RawTcp) return;   // a raw connection is not an NTRIP session: never inject a position
             string gga = _ggaProvider();
             if (gga == null) return;
             try { await conn.WriteAsync(gga).ConfigureAwait(false); }
