@@ -102,17 +102,6 @@ namespace AgIO
             get { return FallbackActive ? fallbackProfile : mainProfile; }
         }
 
-        /// <summary>Bytes waiting in the paced queue.</summary>
-        public int QueuedBytes
-        {
-            get { RtcmQueue q = queue; return q == null ? 0 : q.Count; }
-        }
-
-        public long BytesOut
-        {
-            get { return Interlocked.Read(ref bytesOut); }
-        }
-
         public void SwitchToFallback()
         {
             CorrectionSourceManager m = manager;
@@ -168,6 +157,7 @@ namespace AgIO
             NtripProfile main = MainProfile(set);
             if (main == null) return;
             mainProfile = main;
+            fallbackProfile = set.Fallback != null && set.Fallback.Enabled ? set.FallbackProfile(s.setNTRIP_sendGGAInterval) : null;
 
             manualPosition = s.setNTRIP_isGGAManual;
             manualLat = s.setNTRIP_manualLat;

@@ -50,38 +50,6 @@ namespace AgIO
             }
         }
 
-        private void btnStartStopNtrip_Click(object sender, EventArgs e)
-        {
-            if (Properties.Settings.Default.setNTRIP_isOn || Properties.Settings.Default.setRadio_isOn)
-            {
-                // The client gave up (wrong login or mountpoint): the button starts it again
-                if (isNTRIP_RequiredOn && ntripHost != null && ntripHost.Status.State == AgLibrary.Ntrip.NtripState.GaveUp)
-                {
-                    StartNtripHost();
-                    RefreshNtripCard();
-                    return;
-                }
-
-                if (isNTRIP_RequiredOn || isRadio_RequiredOn)
-                {
-                    ShutDownNTRIP();
-                    isNTRIP_RequiredOn = false;
-                    isRadio_RequiredOn = false;
-                }
-                else
-                {
-                    isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
-                    isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
-                    if (isNTRIP_RequiredOn) StartNtripHost();
-                }
-
-                RefreshNtripCard();
-            }
-            else
-            {
-                TimedMessageBox(2000, "Turn on NTRIP", "NTRIP Client Not Set Up");
-            }
-        }
 
         private void btnMinimizeMainForm_Click(object sender, EventArgs e)
         {
@@ -176,10 +144,6 @@ namespace AgIO
                     lblIP.Text += IPA.ToString() + "\r\n";
                 }
             }
-        }
-        private void lblNTRIPBytes_Click(object sender, EventArgs e)
-        {
-            tripBytes = 0;
         }
 
         #endregion
