@@ -112,6 +112,7 @@ namespace AgIO
             {
                 var s = Properties.Settings.Default;
                 string off = s.setNTRIP_isOn ? "NTRIP Off" : s.setRadio_isOn ? "Radio Off" : "Serial pass Off";
+                ntripCard.Alert = false;
                 ntripCard.SetStatus(off, NtripLight.Off, "", "", "Start");
                 if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
                 return;
@@ -126,6 +127,7 @@ namespace AgIO
             bool running = st.State == NtripState.Streaming || st.State == NtripState.Connecting
                 || st.State == NtripState.Connected || st.State == NtripState.Waiting;
 
+            ntripCard.Alert = ms != null && ms.Active == SourceRole.Fallback;
             ntripCard.SetStatus(st.Headline, st.Light, source, received, running ? "Stop" : "Start");
             if (ntripChecks.Visible)
             {

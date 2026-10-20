@@ -22,6 +22,20 @@ namespace AgIO
 
         public event EventHandler ButtonClicked;
 
+        private bool alert;
+
+        /// <summary>True while the fallback delivers the corrections: the lines under the headline turn red.</summary>
+        public bool Alert
+        {
+            get { return alert; }
+            set
+            {
+                if (alert == value) return;
+                alert = value;
+                Invalidate();
+            }
+        }
+
         public NtripStatusCard()
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer
@@ -113,13 +127,18 @@ namespace AgIO
             if (subline.Length > 0)
             {
                 int h = Math.Min(remaining, 2 * smallFont.Height);
-                TextRenderer.DrawText(g, subline, smallFont, new Rectangle(pad, y, box.Width - 2 * pad, h), Color.FromArgb(30, 30, 30), flags);
+                TextRenderer.DrawText(g, subline, smallFont, new Rectangle(pad, y, box.Width - 2 * pad, h), TextColor(), flags);
                 y += h + 2;
             }
             if (received.Length > 0 && y + smallFont.Height <= box.Bottom)
             {
-                TextRenderer.DrawText(g, received, smallFont, new Rectangle(pad, y, box.Width - 2 * pad, smallFont.Height), Color.FromArgb(30, 30, 30), flags);
+                TextRenderer.DrawText(g, received, smallFont, new Rectangle(pad, y, box.Width - 2 * pad, smallFont.Height), TextColor(), flags);
             }
+        }
+
+        private Color TextColor()
+        {
+            return alert ? LightColor(NtripLight.Bad) : Color.FromArgb(30, 30, 30);
         }
 
         protected override void Dispose(bool disposing)
