@@ -83,9 +83,19 @@ namespace AgIO.Properties
         public int isobus_canAdapterIndex = 0;
         public int isobus_canChannelIndex = 0;
 
+        private void ResetToDefaults()
+        {
+            var defaults = new Settings();
+            foreach (System.Reflection.FieldInfo field in typeof(Settings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                field.SetValue(this, field.GetValue(defaults));
+        }
+
         public LoadResult Load()
         {
             string path = Path.Combine(RegistrySettings.profileDirectory, RegistrySettings.profileName + ".XML");
+            // A file only holds the settings it knew about: without this a setting missing from an older file
+            // keeps the value of the profile that was loaded before (and is then saved into this one).
+            ResetToDefaults();
             var result = XmlSettingsHandler.LoadXMLFile(path, this);
             bool loadedFromBackup = false;
 
