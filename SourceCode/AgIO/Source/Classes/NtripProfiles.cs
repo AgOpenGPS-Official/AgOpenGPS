@@ -15,8 +15,8 @@ namespace AgIO
             get { return new NtripProfileStore(Path.Combine(RegistrySettings.profileDirectory, "NtripProfiles")); }
         }
 
-        /// <summary>The profile this settings file points to. When there is none (an older settings file, or the
-        /// file is not on this computer), the loose settings of the old window are used.</summary>
+        /// <summary>The profile this settings file points to. When there is none (an older settings file that is not
+        /// migrated yet), the loose settings of the old window are used.</summary>
         public static NtripProfileSet LoadActive()
         {
             string name = Properties.Settings.Default.setNTRIP_profileName;
@@ -24,6 +24,9 @@ namespace AgIO
             {
                 NtripProfileSet set = Store.Load(name);
                 if (set != null) return set;
+
+                // The profile this settings file points to is not on this computer: do not guess a service.
+                return new NtripProfileSet { Name = name };
             }
             return FromLooseSettings();
         }
@@ -49,26 +52,55 @@ namespace AgIO
             };
         }
 
-        /// <summary>An older settings file has the service in the loose settings only: make a profile of it once.</summary>
+        /// <summary>An older AgIO profile keeps the service in the loose settings only: make an NTRIP profile of it
+        /// once, named after the AgIO profile, and empty the loose settings so it is never done twice.</summary>
         public static void MigrateLooseSettings()
         {
             var s = Properties.Settings.Default;
-            if (!s.setNTRIP_isOn || !string.IsNullOrWhiteSpace(s.setNTRIP_profileName)) return;
+            if (!string.IsNullOrWhiteSpace(s.setNTRIP_profileName)) return;
 
             NtripProfileSet set = FromLooseSettings();
             if (!set.Main.IsComplete) return;
+            if (!s.setNTRIP_isOn && !LooseSettingsWereChanged(s)) return;   // only the factory values: nothing to keep
 
+            string wanted = string.IsNullOrWhiteSpace(RegistrySettings.profileName) ? "Default" : RegistrySettings.profileName;
             NtripProfileStore store = Store;
-            set.Name = store.UniqueName("Default");
             try
             {
+                set.Name = store.UniqueName(wanted);
                 store.Save(set);
-                s.setNTRIP_profileName = set.Name;
             }
             catch (System.Exception)
             {
                 // The folder cannot be written: keep working from the loose settings.
+                return;
             }
+
+            s.setNTRIP_profileName = set.Name;
+            ClearLooseSettings(s);
+
+            // Save at once, so a crash cannot make the next start migrate the same service again.
+            if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Ok) s.Save();
+        }
+
+        private static bool LooseSettingsWereChanged(Properties.Settings s)
+        {
+            var factory = new Properties.Settings();
+            return s.setNTRIP_casterURL != factory.setNTRIP_casterURL || s.setNTRIP_casterIP != factory.setNTRIP_casterIP
+                || s.setNTRIP_mount != factory.setNTRIP_mount || !string.IsNullOrEmpty(s.setNTRIP_userName);
+        }
+
+        private static void ClearLooseSettings(Properties.Settings s)
+        {
+            var factory = new Properties.Settings();
+            s.setNTRIP_casterURL = factory.setNTRIP_casterURL;
+            s.setNTRIP_casterIP = factory.setNTRIP_casterIP;
+            s.setNTRIP_casterPort = factory.setNTRIP_casterPort;
+            s.setNTRIP_mount = factory.setNTRIP_mount;
+            s.setNTRIP_userName = "";
+            s.setNTRIP_userPassword = "";
+            s.setNTRIP_isHTTP10 = false;
+            s.setNTRIP_isTCP = false;
         }
 
         /// <summary>Save the profile and make it the one this settings file uses.</summary>
