@@ -61,6 +61,7 @@ namespace AgIO
             txtPassword.Text = work.Main.Password;
             segVersion.SelectedIndex = (int)work.Main.Version;
             tglRaw.Checked = work.Main.RawTcp;
+            tglLegacy.Checked = s.setNTRIP_useLegacyClient;
 
             FallbackDefinition f = work.Fallback;
             tglFallback.Checked = f.Enabled;
@@ -304,6 +305,7 @@ namespace AgIO
             s.setNTRIP_sendToSerial = segOutput.SelectedIndex == 0;
             s.setNTRIP_sendToUDP = segOutput.SelectedIndex == 1;
             s.setNTRIP_sendToUDPPort = numNetPort.IntValue;
+            s.setNTRIP_useLegacyClient = tglLegacy.Checked;
             s.Save();
 
             DialogResult = DialogResult.OK;

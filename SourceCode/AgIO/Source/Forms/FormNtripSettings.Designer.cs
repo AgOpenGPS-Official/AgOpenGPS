@@ -50,6 +50,8 @@ namespace AgIO
             this.segVersion = new AgIO.SegmentedControl();
             this.lblRaw = new System.Windows.Forms.Label();
             this.tglRaw = new AgIO.ToggleSwitch();
+            this.lblLegacy = new System.Windows.Forms.Label();
+            this.tglLegacy = new AgIO.ToggleSwitch();
             this.pnlFallback = new System.Windows.Forms.Panel();
             this.tglFallback = new AgIO.ToggleSwitch();
             this.lblFallbackOn = new System.Windows.Forms.Label();
@@ -316,6 +318,23 @@ namespace AgIO
             this.tglRaw.Name = "tglRaw";
             this.tglRaw.Size = new System.Drawing.Size(84, 46);
             this.tglRaw.TabIndex = 21;
+            // 
+            // lblLegacy
+            // 
+            this.lblLegacy.AutoSize = false;
+            this.lblLegacy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblLegacy.Location = new System.Drawing.Point(340, 362);
+            this.lblLegacy.Name = "lblLegacy";
+            this.lblLegacy.Size = new System.Drawing.Size(400, 30);
+            this.lblLegacy.TabIndex = 22;
+            this.lblLegacy.Text = "Use the old NTRIP client";
+            // 
+            // tglLegacy
+            // 
+            this.tglLegacy.Location = new System.Drawing.Point(760, 354);
+            this.tglLegacy.Name = "tglLegacy";
+            this.tglLegacy.Size = new System.Drawing.Size(84, 46);
+            this.tglLegacy.TabIndex = 23;
             // 
             // pnlFallback
             // 
@@ -783,6 +802,8 @@ namespace AgIO
             this.pnlMain.Controls.Add(this.segVersion);
             this.pnlMain.Controls.Add(this.lblRaw);
             this.pnlMain.Controls.Add(this.tglRaw);
+            this.pnlMain.Controls.Add(this.lblLegacy);
+            this.pnlMain.Controls.Add(this.tglLegacy);
             this.pnlOutput.Controls.Add(this.lblPos);
             this.pnlOutput.Controls.Add(this.segPosition);
             this.pnlOutput.Controls.Add(this.lblLat);
@@ -859,6 +880,8 @@ namespace AgIO
         private AgIO.SegmentedControl segVersion;
         private System.Windows.Forms.Label lblRaw;
         private AgIO.ToggleSwitch tglRaw;
+        private System.Windows.Forms.Label lblLegacy;
+        private AgIO.ToggleSwitch tglLegacy;
         private System.Windows.Forms.Panel pnlFallback;
         private AgIO.ToggleSwitch tglFallback;
         private System.Windows.Forms.Label lblFallbackOn;

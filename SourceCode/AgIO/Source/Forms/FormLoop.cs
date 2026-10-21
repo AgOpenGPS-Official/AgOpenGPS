@@ -270,6 +270,12 @@ namespace AgIO
                 ntripHost = null;
             }
 
+            if (legacyNtrip != null)
+            {
+                legacyNtrip.Dispose();
+                legacyNtrip = null;
+            }
+
             if (loopBackSocket != null)
             {
                 try

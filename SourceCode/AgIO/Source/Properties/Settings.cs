@@ -43,6 +43,8 @@ namespace AgIO.Properties
         public double setNTRIP_manualAltitude = 0;
         //the NTRIP profile (main and fallback service) this settings file uses; the profile itself is its own file
         public string setNTRIP_profileName = "";
+        //run the NTRIP client from before the rewrite (LegacyNtripClient) instead of the new one, as a way out in the field
+        public bool setNTRIP_useLegacyClient = false;
         public bool setPgm_isFirstRun = true;
         public string setPort_portNameGPS2 = "GPS2";
         public int setPort_baudRateGPS2 = 9600;
@@ -81,9 +83,19 @@ namespace AgIO.Properties
         public int isobus_canAdapterIndex = 0;
         public int isobus_canChannelIndex = 0;
 
+        private void ResetToDefaults()
+        {
+            var defaults = new Settings();
+            foreach (System.Reflection.FieldInfo field in typeof(Settings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                field.SetValue(this, field.GetValue(defaults));
+        }
+
         public LoadResult Load()
         {
             string path = Path.Combine(RegistrySettings.profileDirectory, RegistrySettings.profileName + ".XML");
+            // A file only holds the settings it knew about: without this a setting missing from an older file
+            // keeps the value of the profile that was loaded before (and is then saved into this one).
+            ResetToDefaults();
             var result = XmlSettingsHandler.LoadXMLFile(path, this);
             bool loadedFromBackup = false;
 
