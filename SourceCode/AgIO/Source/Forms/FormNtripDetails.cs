@@ -63,18 +63,42 @@ namespace AgIO
                 + "   Service answered: " + (st.FirstLine.Length > 0 ? st.FirstLine : "-");
 
             list.BeginUpdate();
-            list.Items.Clear();
+
+            // Update the rows in place: clearing the list would scroll it back to the top at every refresh.
+            int row = 0;
             foreach (RtcmTypeStat t in st.Rtcm.Types)
             {
                 string what = RtcmMessages.Describe(t.Type);
                 string every = double.IsNaN(t.MeanIntervalSeconds) ? "-" : t.MeanIntervalSeconds.ToString("0.#", ci) + " s";
-                var item = new ListViewItem((what.Length > 0 ? what + " " : "") + "(" + t.Type.ToString(ci) + ")");
-                item.SubItems.Add(t.Count.ToString(ci));
-                item.SubItems.Add(every);
-                item.SubItems.Add(t.SecondsSinceLast.ToString("0.#", ci) + " s");
-                list.Items.Add(item);
+                string name = (what.Length > 0 ? what + " " : "") + "(" + t.Type.ToString(ci) + ")";
+                string count = t.Count.ToString(ci);
+                string last = t.SecondsSinceLast.ToString("0.#", ci) + " s";
+
+                if (row < list.Items.Count)
+                {
+                    ListViewItem item = list.Items[row];
+                    SetText(item.SubItems[0], name);
+                    SetText(item.SubItems[1], count);
+                    SetText(item.SubItems[2], every);
+                    SetText(item.SubItems[3], last);
+                }
+                else
+                {
+                    var item = new ListViewItem(name);
+                    item.SubItems.Add(count);
+                    item.SubItems.Add(every);
+                    item.SubItems.Add(last);
+                    list.Items.Add(item);
+                }
+                row++;
             }
+            while (list.Items.Count > row) list.Items.RemoveAt(list.Items.Count - 1);
             list.EndUpdate();
+        }
+
+        private static void SetText(ListViewItem.ListViewSubItem sub, string text)
+        {
+            if (sub.Text != text) sub.Text = text;
         }
 
         private void btnCopy_Click(object sender, EventArgs e)
