@@ -248,117 +248,142 @@ namespace AgOpenGPS
             tramList?.Clear();
             tramArr?.Clear();
 
-            int refCount = gTemp[indx].curvePts.Count;
-
-            int cntr = startPass;
-
-            double widd;
+            //the reference curve is only extended ~100 m past its ends, so on a short curve the
+            //tramlines stopped long before the boundary - extend it like BuildABTram does
+            List<vec3> refPts = BuildExtendedCurveRef(gTemp[indx].curvePts, mf.bnd.bndList[0].fenceLineEar);
 
             //draw on correct side
             double sideHeading = 0;
             if (gTemp[indx].isVisible) sideHeading = Math.PI;
 
-            for (int i = cntr; i <= (passes + startPass) - 1; i++)
+            //inner wheel tracks of every pass
+            for (int i = startPass; i <= (passes + startPass) - 1; i++)
             {
-                tramArr = new List<vec2>
-                {
-                    Capacity = 128
-                };
-
-                tramList.Add(tramArr);
-
-                widd = (mf.tram.tramWidth * 0.5) - mf.tram.halfWheelTrack;
+                double widd = (mf.tram.tramWidth * 0.5) - mf.tram.halfWheelTrack;
                 widd += (mf.tram.tramWidth * i);
-
-                double distSqAway = widd * widd * 0.999999;
-
-                for (int j = 0; j < refCount; j += 1)
-                {
-                    vec2 point = new vec2(
-                    (Math.Sin(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd) + gTemp[indx].curvePts[j].easting,
-                    (Math.Cos(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd) + gTemp[indx].curvePts[j].northing
-                        );
-
-                    bool Add = true;
-                    for (int t = 0; t < refCount; t++)
-                    {
-                        //distance check to be not too close to ref line
-                        double dist = ((point.easting - gTemp[indx].curvePts[t].easting) * (point.easting - gTemp[indx].curvePts[t].easting))
-                            + ((point.northing - gTemp[indx].curvePts[t].northing) * (point.northing - gTemp[indx].curvePts[t].northing));
-                        if (dist < distSqAway)
-                        {
-                            Add = false;
-                            break;
-                        }
-                    }
-                    if (Add)
-                    {
-                        //a new point only every 2 meters
-                        double dist = tramArr.Count > 0 ? ((point.easting - tramArr[tramArr.Count - 1].easting) * (point.easting - tramArr[tramArr.Count - 1].easting))
-                            + ((point.northing - tramArr[tramArr.Count - 1].northing) * (point.northing - tramArr[tramArr.Count - 1].northing)) : 3.0;
-                        if (dist > 1.2)
-                        {
-                            //if inside the boundary, add
-                            if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
-                            {
-                                tramArr.Add(point);
-                            }
-                        }
-                    }
-                }
+                AddCurveTramPass(refPts, widd, sideHeading);
             }
 
-            for (int i = cntr; i <= (passes + startPass) - 1; i++)
+            //outer wheel tracks of every pass
+            for (int i = startPass; i <= (passes + startPass) - 1; i++)
             {
-                tramArr = new List<vec2>
-                {
-                    Capacity = 128
-                };
-
-                tramList.Add(tramArr);
-
-                widd = (mf.tram.tramWidth * 0.5) + mf.tram.halfWheelTrack;
+                double widd = (mf.tram.tramWidth * 0.5) + mf.tram.halfWheelTrack;
                 widd += (mf.tram.tramWidth * i);
-                double distSqAway = widd * widd * 0.999999;
+                AddCurveTramPass(refPts, widd, sideHeading);
+            }
+        }
 
-                for (int j = 0; j < refCount; j += 1)
+        /// <summary>
+        /// Copy of the reference curve with straight extensions at both ends, following the
+        /// heading of the first and last point (every 2 m, same as BuildABTram), long enough
+        /// that every offset tramline is guaranteed to leave the boundary.
+        /// </summary>
+        private static List<vec3> BuildExtendedCurveRef(List<vec3> curvePts, List<vec2> boundary)
+        {
+            if (curvePts.Count < 2)
+            {
+                return new List<vec3>(curvePts);
+            }
+
+            vec3 first = curvePts[0];
+            vec3 last = curvePts[curvePts.Count - 1];
+            double startExtend = DistanceToLeaveBoundary(first, boundary);
+            double endExtend = DistanceToLeaveBoundary(last, boundary);
+
+            List<vec3> refPts = new List<vec3>(curvePts.Count + (int)((startExtend + endExtend) * 0.5) + 2);
+
+            //extension before the start, added from far away towards the curve to keep the order
+            double fsin = Math.Sin(first.heading);
+            double fcos = Math.Cos(first.heading);
+            for (double d = startExtend; d >= 2; d -= 2)
+            {
+                refPts.Add(new vec3(first.easting - (fsin * d), first.northing - (fcos * d), first.heading));
+            }
+
+            refPts.AddRange(curvePts);
+
+            //extension past the end
+            double lsin = Math.Sin(last.heading);
+            double lcos = Math.Cos(last.heading);
+            for (double d = 2; d <= endExtend; d += 2)
+            {
+                refPts.Add(new vec3(last.easting + (lsin * d), last.northing + (lcos * d), last.heading));
+            }
+
+            return refPts;
+        }
+
+        /// <summary>
+        /// Distance from pt to the farthest boundary vertex. The whole boundary lies within that
+        /// radius, so any point farther away is outside it - including the offset tramline points,
+        /// which are even farther from pt than the extended reference point they belong to.
+        /// Works for any heading, unlike an axis-aligned field size (e.g. diagonal curves).
+        /// </summary>
+        private static double DistanceToLeaveBoundary(vec3 pt, List<vec2> boundary)
+        {
+            double maxDistSq = 0;
+            for (int i = 0; i < boundary.Count; i++)
+            {
+                double de = boundary[i].easting - pt.easting;
+                double dn = boundary[i].northing - pt.northing;
+                double distSq = (de * de) + (dn * dn);
+                if (distSq > maxDistSq) maxDistSq = distSq;
+            }
+
+            //small margin, and a sane upper limit for corrupt boundary data
+            return Math.Min(Math.Sqrt(maxDistSq) + 4, 20000);
+        }
+
+        /// <summary>
+        /// Builds one tramline at distance widd from the reference curve and adds it to tramList.
+        /// </summary>
+        private void AddCurveTramPass(List<vec3> refPts, double widd, double sideHeading)
+        {
+            tramArr = new List<vec2>
+            {
+                Capacity = 128
+            };
+
+            tramList.Add(tramArr);
+
+            int refCount = refPts.Count;
+            double distSqAway = widd * widd * 0.999999;
+
+            for (int j = 0; j < refCount; j++)
+            {
+                vec2 point = new vec2(
+                    (Math.Sin(glm.PIBy2 + refPts[j].heading + sideHeading) * widd) + refPts[j].easting,
+                    (Math.Cos(glm.PIBy2 + refPts[j].heading + sideHeading) * widd) + refPts[j].northing);
+
+                //all three checks must pass - cheapest first, so the many extension points
+                //outside the boundary don't pay for the full reference line distance scan
+
+                //a new point only every ~1.1 meters
+                if (tramArr.Count > 0)
                 {
-                    vec2 point = new vec2(
-                    Math.Sin(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd + gTemp[indx].curvePts[j].easting,
-                    Math.Cos(glm.PIBy2 + gTemp[indx].curvePts[j].heading + sideHeading) *
-                        widd + gTemp[indx].curvePts[j].northing
-                        );
+                    vec2 lastAdded = tramArr[tramArr.Count - 1];
+                    double spacing = ((point.easting - lastAdded.easting) * (point.easting - lastAdded.easting))
+                        + ((point.northing - lastAdded.northing) * (point.northing - lastAdded.northing));
+                    if (spacing <= 1.2) continue;
+                }
 
-                    bool Add = true;
-                    for (int t = 0; t < refCount; t++)
+                //only inside the boundary
+                if (!mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point)) continue;
+
+                //distance check to be not too close to ref line
+                bool isTooClose = false;
+                for (int t = 0; t < refCount; t++)
+                {
+                    double dist = ((point.easting - refPts[t].easting) * (point.easting - refPts[t].easting))
+                        + ((point.northing - refPts[t].northing) * (point.northing - refPts[t].northing));
+                    if (dist < distSqAway)
                     {
-                        //distance check to be not too close to ref line
-                        double dist = ((point.easting - gTemp[indx].curvePts[t].easting) * (point.easting - gTemp[indx].curvePts[t].easting))
-                            + ((point.northing - gTemp[indx].curvePts[t].northing) * (point.northing - gTemp[indx].curvePts[t].northing));
-                        if (dist < distSqAway)
-                        {
-                            Add = false;
-                            break;
-                        }
-                    }
-                    if (Add)
-                    {
-                        //a new point only every 2 meters
-                        double dist = tramArr.Count > 0 ? ((point.easting - tramArr[tramArr.Count - 1].easting) * (point.easting - tramArr[tramArr.Count - 1].easting))
-                            + ((point.northing - tramArr[tramArr.Count - 1].northing) * (point.northing - tramArr[tramArr.Count - 1].northing)) : 3.0;
-                        if (dist > 1.2)
-                        {
-                            //if inside the boundary, add
-                            if (mf.bnd.bndList[0].fenceLineEar.IsPointInPolygon(point))
-                            {
-                                tramArr.Add(point);
-                            }
-                        }
+                        isTooClose = true;
+                        break;
                     }
                 }
+
+                if (!isTooClose) tramArr.Add(point);
             }
         }
 
