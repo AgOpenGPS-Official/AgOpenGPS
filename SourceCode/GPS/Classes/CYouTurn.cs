@@ -1219,17 +1219,22 @@ namespace AgOpenGPS
                     }
 
                     //calculate the new points headings based on fore and aft of point - smoother turns
+                    //keep the first and last points, they are the only ones exactly on the AB lines and the
+                    //in and out legs are extended from them. Dropping them put the legs about 1% of the turn
+                    //radius beside the lines, so the XTE jumped toward the turn side at the trigger.
                     cnt = ytList.Count;
                     vec3[] arr = new vec3[cnt];
-                    cnt -= 2;
                     ytList.CopyTo(arr);
                     ytList.Clear();
 
-                    for (int i = 2; i < cnt; i++)
+                    for (int i = 0; i < cnt; i++)
                     {
+                        int prev = Math.Max(i - 1, 0);
+                        int next = Math.Min(i + 1, cnt - 1);
+
                         vec3 pt3 = new vec3(arr[i]);
-                        pt3.heading = Math.Atan2(arr[i + 1].easting - arr[i - 1].easting,
-                            arr[i + 1].northing - arr[i - 1].northing);
+                        pt3.heading = Math.Atan2(arr[next].easting - arr[prev].easting,
+                            arr[next].northing - arr[prev].northing);
                         if (pt3.heading < 0) pt3.heading += glm.twoPI;
                         ytList.Add(pt3);
                     }
