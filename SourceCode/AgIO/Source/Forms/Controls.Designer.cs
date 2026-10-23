@@ -35,58 +35,21 @@ namespace AgIO
         {
             if (this.Width < 600)
             {
-                this.Width = 760;
+                ntripChecks.Visible = ntripCard.Visible && !UseLegacyNtrip;
+                this.Width = FlyOutWidth();
                 isViewAdvanced = true;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnLeft;
-                sbRTCM.Clear();
-                lblMessages.Text = "Reading...";
                 threeMinuteTimer = secondsSinceStart;
-                lblMessagesFound.Text = "-";
-                aList.Clear();
-                rList.Clear();
             }
             else
             {
                 this.Width = 428;
+                ntripChecks.Visible = false;
                 isViewAdvanced = false;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnRight;
-                aList.Clear();
-                rList.Clear();
-                lblMessages.Text = "Reading...";
-                lblMessagesFound.Text = "-";
-                aList.Clear();
-                rList.Clear();
             }
         }
 
-        private void btnStartStopNtrip_Click(object sender, EventArgs e)
-        {
-            if (Properties.Settings.Default.setNTRIP_isOn || Properties.Settings.Default.setRadio_isOn)
-            {
-                if (isNTRIP_RequiredOn || isRadio_RequiredOn)
-                {
-                    ShutDownNTRIP();
-                    lblWatch.Text = "Stopped";
-                    btnStartStopNtrip.Text = "OffLine";
-                    isNTRIP_RequiredOn = false;
-                    isRadio_RequiredOn = false;
-                    lblNTRIP_IP.Text = "--";
-                    lblMount.Text = "--";
-                }
-                else
-                {
-                    isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
-                    isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
-                    lblWatch.Text = "Waiting";
-                    lblNTRIP_IP.Text = "--";
-                    lblMount.Text = "--";
-                }
-            }
-            else
-            {
-                TimedMessageBox(2000, "Turn on NTRIP", "NTRIP Client Not Set Up");
-            }
-        }
 
         private void btnMinimizeMainForm_Click(object sender, EventArgs e)
         {
@@ -114,7 +77,6 @@ namespace AgIO
         private void btnBringUpCommSettings_Click(object sender, EventArgs e)
         {
             SettingsCommunicationGPS();
-            RescanPorts();
         }
 
         private void btnUDP_Click(object sender, EventArgs e)
@@ -182,17 +144,6 @@ namespace AgIO
                     lblIP.Text += IPA.ToString() + "\r\n";
                 }
             }
-        }
-        private void lblMessages_Click(object sender, EventArgs e)
-        {
-            aList?.Clear();
-            sbRTCM.Clear();
-            sbRTCM.Append("Reset..");
-        }
-
-        private void lblNTRIPBytes_Click(object sender, EventArgs e)
-        {
-            tripBytes = 0;
         }
 
         #endregion
@@ -424,19 +375,32 @@ namespace AgIO
             }
 
 
-            using (var form = new FormNtrip(this))
+            using (var pick = new FormNtripProfiles(this, Settings.Default.setNTRIP_profileName))
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
+                DialogResult picked = pick.ShowDialog(this);
+                if (pick.ActiveChanged) ConfigureNTRIP();   // the profile in use was deleted
+                if (picked != DialogResult.OK) return;
+
+                if (pick.Action == ProfileAction.Use)
                 {
-                    if (isNTRIP_Connected)
-                    {
-                        SettingsShutDownNTRIP();
-                    }
+                    //quick change of profile: use it and switch NTRIP on
+                    Settings.Default.setNTRIP_profileName = pick.Chosen.Name;
+                    Settings.Default.setNTRIP_isOn = true;
                     Settings.Default.Save();
+                    ConfigureNTRIP();
+                    return;
+                }
+
+                using (var form = new FormNtripSettings(this, pick.Chosen))
+                {
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        //reconnect with the new settings
+                        ConfigureNTRIP();
+                    }
                 }
             }
         }
-
         private void SettingsRadio()
         {
             if (isSerialPass_RequiredOn)
@@ -454,8 +418,6 @@ namespace AgIO
             if (isRadio_RequiredOn && isNTRIP_Connected)
             {
                 ShutDownNTRIP();
-                lblWatch.Text = "Stopped";
-                btnStartStopNtrip.Text = "OffLine";
                 isRadio_RequiredOn = false;
             }
 
