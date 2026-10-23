@@ -393,7 +393,7 @@ namespace AgOpenGPS
 
                 //Fix the circular error
                 if (steerHeadingError > Math.PI) steerHeadingError -= Math.PI;
-                else if (steerHeadingError < Math.PI) steerHeadingError += Math.PI;
+                else if (steerHeadingError < -Math.PI) steerHeadingError += Math.PI;
 
                 if (steerHeadingError > glm.PIBy2) steerHeadingError -= Math.PI;
                 else if (steerHeadingError < -glm.PIBy2) steerHeadingError += Math.PI;
