@@ -467,5 +467,40 @@ namespace AgLibrary.Ntrip.Tests
             while ((at = text.IndexOf(needle, at, StringComparison.Ordinal)) >= 0) { count++; at += needle.Length; }
             return count;
         }
+
+        [Test]
+        public void ANetworkChange_EndsTheRetryPauseAtOnce()
+        {
+            int port;
+            using (var gone = new FakeCaster()) port = gone.Port;   // nothing listens here any more
+            var slowConnect = Harness.QuickTimeouts();
+            slowConnect.Connect = TimeSpan.FromSeconds(8);
+            var changed = new TaskCompletionSource<bool>();
+            var spans = new List<TimeSpan>();
+            // A real 30 s pause for the 5 s step: the second try must come from the network change, not from the pause.
+            Func<TimeSpan, CancellationToken, Task> delay = (span, ct) =>
+            {
+                lock (spans) spans.Add(span);
+                return Task.Delay(span >= TimeSpan.FromSeconds(5) ? TimeSpan.FromSeconds(30) : TimeSpan.FromMilliseconds(50), ct);
+            };
+            var client = new NtripClient(new NtripProfile("127.0.0.1", port, "MOUNT"), null, slowConnect, delay, () => 0.5)
+            {
+                NetworkChanged = () => changed.Task,
+            };
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => client.RunAsync(cts.Token));
+                Assert.That(SpinUntil(() => client.Status.State == NtripState.Waiting, 20000), Is.True);
+                lock (spans) Assert.That(spans.Count, Is.EqualTo(1), "waiting out the first pause");
+
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                changed.SetResult(true);
+
+                Assert.That(SpinUntil(() => { lock (spans) return spans.Count >= 3; }, 20000), Is.True, "settle, then a new try that fails again");
+                Assert.That(watch.Elapsed, Is.LessThan(TimeSpan.FromSeconds(25)), "not the 30 s of the pause");
+                cts.Cancel();
+                Assert.That(run.Wait(5000), Is.True);
+            }
+        }
     }
 }

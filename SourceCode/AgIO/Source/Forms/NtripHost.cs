@@ -1,4 +1,5 @@
 using System;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using AgLibrary.Ntrip;
@@ -55,6 +56,14 @@ namespace AgIO
         public NtripHost(FormLoop form)
         {
             mf = form;
+            // A retry waiting out its pause tries at once when the network changes (a hotspot that came back).
+            NetworkChange.NetworkAddressChanged += OnNetworkChanged;
+            NetworkChange.NetworkAvailabilityChanged += OnNetworkChanged;
+        }
+
+        private static void OnNetworkChanged(object sender, EventArgs e)
+        {
+            NetworkWake.Signal();
         }
 
         public bool IsRunning
@@ -238,6 +247,8 @@ namespace AgIO
 
         public void Dispose()
         {
+            NetworkChange.NetworkAddressChanged -= OnNetworkChanged;
+            NetworkChange.NetworkAvailabilityChanged -= OnNetworkChanged;
             Stop();
             wake.Dispose();
         }

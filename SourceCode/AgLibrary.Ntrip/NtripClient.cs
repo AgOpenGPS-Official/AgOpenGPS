@@ -27,6 +27,10 @@ namespace AgLibrary.Ntrip
         private readonly NtripTimeouts _timeouts;
         private readonly Func<TimeSpan, CancellationToken, Task> _delay;
         private readonly RetryPolicy _policy;
+        /// <summary>Completes when the network changes; the pause before a retry then ends early. Tests replace it.</summary>
+        internal Func<Task> NetworkChanged { get; set; } = () => NetworkWake.Next;
+        /// <summary>After a network change the link needs a moment before the first try; changes in that moment count as one.</summary>
+        private static readonly TimeSpan NetworkSettle = TimeSpan.FromSeconds(1);
         private readonly RtcmStreamStats _stats;
         private readonly object _statusLock = new object();
         private NtripStatus _status = new NtripStatus();
@@ -62,6 +66,26 @@ namespace AgLibrary.Ntrip
             get { lock (_statusLock) return RefreshCounters(_status.Clone()); }
         }
 
+        // The retry pause, which ends early when the network changes (a hotspot that came back).
+        private async Task WaitBeforeRetryAsync(TimeSpan delay, Task networkChanged, CancellationToken ct)
+        {
+            using (var pause = CancellationTokenSource.CreateLinkedTokenSource(ct))
+            {
+                Task timer = _delay(delay, pause.Token);
+                Task first = await Task.WhenAny(timer, networkChanged).ConfigureAwait(false);
+                if (first == timer)
+                {
+                    await timer.ConfigureAwait(false);
+                    return;
+                }
+
+                pause.Cancel();
+                try { await timer.ConfigureAwait(false); }
+                catch (OperationCanceledException) { ct.ThrowIfCancellationRequested(); }
+                await _delay(NetworkSettle, ct).ConfigureAwait(false);
+            }
+        }
+
         /// <summary>Runs until cancelled or until the caster keeps rejecting the login or mountpoint.</summary>
         public async Task RunAsync(CancellationToken ct)
         {
@@ -75,6 +99,8 @@ namespace AgLibrary.Ntrip
             {
                 while (!ct.IsCancellationRequested)
                 {
+                    // Taken before the attempt: a change during it ends the next pause at once.
+                    Task networkChanged = NetworkChanged();
                     Update(s => { s.State = NtripState.Connecting; s.RetryInSeconds = 0; s.VersionUsed = version; });
 
                     NtripOutcome outcome;
@@ -121,7 +147,7 @@ namespace AgLibrary.Ntrip
                     });
                     // The 1.0 fallback was only a probe: start the next round with 2.0 again.
                     if (_profile.Version == NtripVersion.Auto && !streamed) version = NtripVersion.V2;
-                    if (decision.Delay > TimeSpan.Zero) await _delay(decision.Delay, ct).ConfigureAwait(false);
+                    if (decision.Delay > TimeSpan.Zero) await WaitBeforeRetryAsync(decision.Delay, networkChanged, ct).ConfigureAwait(false);
                 }
             }
             catch (OperationCanceledException)
