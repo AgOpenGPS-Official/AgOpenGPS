@@ -197,6 +197,9 @@ namespace AgOpenGPS
             hsbarIntegralPurePursuit.Value = (int)(Properties.ToolSettings.Default.purePursuitIntegralGainAB * 100);
             lblPureIntegral.Text = ((int)(mf.vehicle.purePursuitIntegralGain * 100)).ToString();
 
+            cboxCrabCompensation.Checked = Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn;
+            UpdateCrabCompensationText();
+
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
             hsbarSideHillComp.Value = (int)(Properties.VehicleSettings.Default.setAS_sideHillComp * 100);
 
@@ -493,6 +496,8 @@ namespace AgOpenGPS
 
             // Update Smart WAS Calibration status
             UpdateSmartWASStatus();
+
+            UpdateCrabCompensationText();
         }
 
         #region Tab Sensors
@@ -972,6 +977,28 @@ namespace AgOpenGPS
         {
             mf.vehicle.purePursuitIntegralGain = hsbarIntegralPurePursuit.Value * 0.01;
             lblPureIntegral.Text = hsbarIntegralPurePursuit.Value.ToString();
+        }
+
+        private void cboxCrabCompensation_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn = cboxCrabCompensation.Checked;
+            if (!cboxCrabCompensation.Checked) mf.crab.Reset();
+            UpdateCrabCompensationText();
+        }
+
+        private void UpdateCrabCompensationText()
+        {
+            string text = gStr.gsCrabCompensation;
+
+            // Show the measured crab angle while it is active, "--" when on but no dual heading
+            if (cboxCrabCompensation.Checked)
+            {
+                text += "\r\n" + (mf.crab.isActive
+                    ? glm.toDegrees(mf.crab.crabAngle).ToString("N1") + "°"
+                    : "--");
+            }
+
+            if (cboxCrabCompensation.Text != text) cboxCrabCompensation.Text = text;
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)

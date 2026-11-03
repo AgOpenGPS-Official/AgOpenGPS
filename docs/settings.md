@@ -239,6 +239,7 @@ RGB color for each section display.
 | `stanleyHeadingErrorGain` | double | 1.0 | Stanley heading gain |
 | `stanleyIntegralGainAB` | double | 0.0 | Stanley integral gain |
 | `setVehicle_isStanleyUsed` | bool | false | Use Stanley algorithm |
+| `setVehicle_isCrabCompensationOn` | bool | false | Pure Pursuit crab (side slip) compensation, dual antenna heading only |
 
 ## Tool Specific Steer Parameters
 

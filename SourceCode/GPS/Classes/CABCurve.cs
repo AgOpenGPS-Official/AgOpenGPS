@@ -992,8 +992,8 @@ namespace AgOpenGPS
                     //double localHeading = glm.twoPI - mf.fixHeading;
 
                     double localHeading;
-                    if (ReverseHeading) localHeading = glm.twoPI - mf.fixHeading + inty;
-                    else localHeading = glm.twoPI - mf.fixHeading - inty;
+                    if (ReverseHeading) localHeading = glm.twoPI - mf.guidanceHeading + inty;
+                    else localHeading = glm.twoPI - mf.guidanceHeading - inty;
 
                     ppRadiusCu = goalPointDistanceSquared / (2 * (((goalPointCu.easting - pivot.easting) * Math.Cos(localHeading)) + ((goalPointCu.northing - pivot.northing) * Math.Sin(localHeading))));
 

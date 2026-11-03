@@ -195,6 +195,8 @@ steerAngle = atan2(2 * wheelbase * sin(error), lookahead)
 - `goalPointLookAheadHold` - Lookahead when holding
 - `goalPointLookAheadMult` - Lookahead multiplier
 
+**Crab compensation (dual antenna only):** when `setVehicle_isCrabCompensationOn = true` and the dual antenna heading is active, pure pursuit uses `guidanceHeading` (body heading + measured crab angle of the rear axle) instead of `fixHeading`. See `Classes/CCrabCompensation.cs`.
+
 **Code location:** `Classes/CTrackMethods.cs` - `GoalPoint()`
 
 ### Steering Parameters (Vehicle)

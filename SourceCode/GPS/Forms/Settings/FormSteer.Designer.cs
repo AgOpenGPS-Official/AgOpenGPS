@@ -50,6 +50,7 @@
             this.tabPP = new System.Windows.Forms.TabPage();
             this.labelAcquire = new System.Windows.Forms.Label();
             this.labelIntegralInfo = new System.Windows.Forms.Label();
+            this.cboxCrabCompensation = new System.Windows.Forms.CheckBox();
             this.labelSlow = new System.Windows.Forms.Label();
             this.labelFast = new System.Windows.Forms.Label();
             this.labelSteerResponse = new System.Windows.Forms.Label();
@@ -503,6 +504,7 @@
             this.tabPP.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tabPP.Controls.Add(this.labelAcquire);
             this.tabPP.Controls.Add(this.labelIntegralInfo);
+            this.tabPP.Controls.Add(this.cboxCrabCompensation);
             this.tabPP.Controls.Add(this.labelSlow);
             this.tabPP.Controls.Add(this.labelFast);
             this.tabPP.Controls.Add(this.labelSteerResponse);
@@ -541,10 +543,28 @@
             this.labelIntegralInfo.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.labelIntegralInfo.Location = new System.Drawing.Point(6, 290);
             this.labelIntegralInfo.Name = "labelIntegralInfo";
-            this.labelIntegralInfo.Size = new System.Drawing.Size(288, 46);
+            this.labelIntegralInfo.Size = new System.Drawing.Size(196, 52);
             this.labelIntegralInfo.TabIndex = 361;
             this.labelIntegralInfo.Text = "It will slowly increase steer angle to reduce cross track error";
             this.labelIntegralInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // cboxCrabCompensation
+            // 
+            this.cboxCrabCompensation.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxCrabCompensation.BackColor = System.Drawing.Color.White;
+            this.cboxCrabCompensation.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxCrabCompensation.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxCrabCompensation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxCrabCompensation.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxCrabCompensation.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxCrabCompensation.Location = new System.Drawing.Point(208, 286);
+            this.cboxCrabCompensation.Name = "cboxCrabCompensation";
+            this.cboxCrabCompensation.Size = new System.Drawing.Size(150, 54);
+            this.cboxCrabCompensation.TabIndex = 362;
+            this.cboxCrabCompensation.Text = "Crab Comp (Dual)";
+            this.cboxCrabCompensation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxCrabCompensation.UseVisualStyleBackColor = false;
+            this.cboxCrabCompensation.Click += new System.EventHandler(this.cboxCrabCompensation_Click);
             // 
             // labelSlow
             // 
@@ -3308,6 +3328,7 @@
         private System.Windows.Forms.Label lblHoldLookAhead;
         private System.Windows.Forms.HScrollBar hsbarHoldLookAhead;
         private System.Windows.Forms.Label labelIntegralInfo;
+        private System.Windows.Forms.CheckBox cboxCrabCompensation;
         private System.Windows.Forms.Label labelOnOff;
         private System.Windows.Forms.Label labelOnDelay;
         private NudlessNumericUpDown nudDeadZoneDelay;

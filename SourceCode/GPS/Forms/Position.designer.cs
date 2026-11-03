@@ -39,6 +39,12 @@ namespace AgOpenGPS
         //for heading or Atan2 as camera
         public string headingFromSource, headingFromSourceBak;
 
+        /// <summary>
+        /// Heading used by pure pursuit: the direction the rear axle actually travels.
+        /// Equals fixHeading unless crab compensation is active (dual antenna only).
+        /// </summary>
+        public double guidanceHeading => crab != null && crab.isActive ? fixHeading + crab.crabAngle : fixHeading;
+
         public vec3 pivotAxlePos = new vec3(0, 0, 0);
         public vec3 steerAxlePos = new vec3(0, 0, 0);
         public vec3 toolPivotPos = new vec3(0, 0, 0);
@@ -1220,6 +1226,9 @@ namespace AgOpenGPS
             pivotAxlePos.easting = pn.fix.easting - (Math.Sin(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
             pivotAxlePos.northing = pn.fix.northing - (Math.Cos(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
             pivotAxlePos.heading = fixHeading;
+
+            //measure crab (side slip) of the rear axle, dual antenna heading only
+            crab.Update(pivotAxlePos, fixHeading, headingFromSource == "Dual");
 
             steerAxlePos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * vehicle.VehicleConfig.Wheelbase);
             steerAxlePos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * vehicle.VehicleConfig.Wheelbase);

@@ -934,6 +934,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crab Comp (Dual).
+        /// </summary>
+        public static string gsCrabCompensation {
+            get {
+                return ResourceManager.GetString("gsCrabCompensation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string gsCreate {

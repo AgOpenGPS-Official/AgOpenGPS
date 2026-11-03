@@ -123,6 +123,9 @@ namespace AgOpenGPS.Properties
         public double stanleyIntegralGainAB = 0;
         public bool setVehicle_isStanleyUsed = false;
 
+        // Crab (side slip) compensation for pure pursuit, dual antenna heading only
+        public bool setVehicle_isCrabCompensationOn = false;
+
         // Tool specific Steer Parameters
         public double setVehicle_goalPointLookAheadHold = 3;
         public double setVehicle_toolOffDelay = 0;
@@ -144,6 +147,9 @@ namespace AgOpenGPS.Properties
             set_uTurnStyle = Unread;
             setAS_uTurnSmoothing = double.NaN;
             setAS_uTurnCompensation = double.NaN;
+
+            // Added later: a profile without this key must load as off, not keep the previous profile's value
+            setVehicle_isCrabCompensationOn = false;
 
             LoadResult result = LoadProfile(toolFileName);
             SeedUTurnFromEnvironment();

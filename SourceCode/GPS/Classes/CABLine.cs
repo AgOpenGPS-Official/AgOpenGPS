@@ -276,8 +276,8 @@ namespace AgOpenGPS
                 //calculate the the new x in local coordinates and steering angle degrees based on wheelbase
                 double localHeading;
 
-                if (isHeadingSameWay) localHeading = glm.twoPI - mf.fixHeading + inty;
-                else localHeading = glm.twoPI - mf.fixHeading - inty;
+                if (isHeadingSameWay) localHeading = glm.twoPI - mf.guidanceHeading + inty;
+                else localHeading = glm.twoPI - mf.guidanceHeading - inty;
 
                 ppRadiusAB = goalPointDistanceDSquared / (2 * (((goalPointAB.easting - pivot.easting) * Math.Cos(localHeading))
                     + ((goalPointAB.northing - pivot.northing) * Math.Sin(localHeading))));
