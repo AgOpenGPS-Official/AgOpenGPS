@@ -145,8 +145,10 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main), "one failure is not enough");
 
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterBusy, 2);   // another kind of failure still counts
+                Assert.That(rig.Fallbacks.Count, Is.EqualTo(1), "the fallback is tried in the background");
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main), "and used only when it delivers corrections");
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
-                Assert.That(rig.Fallbacks.Count, Is.EqualTo(1));
                 Assert.That(rig.WaitFor(() => rig.Fallback.Runs == 1), Is.True, "the fallback is started");
                 Assert.That(rig.Notices[0], Does.StartWith("Switched to the fallback"));
                 Assert.That(rig.Notices[0], Does.Contain("FALLBACK on fallback.example"));
@@ -162,16 +164,19 @@ namespace AgLibrary.Ntrip.Tests
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 3);
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 4);
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
             }
         }
 
         [Test]
-        public void MainGivingUp_SwitchesAtOnce()
+        public void MainGivingUp_TriesTheFallbackAtOnce()
         {
             using (var rig = new Rig(switchAfter: 5))
             {
                 rig.Main.Set(NtripState.GaveUp, NtripCategory.LoginRejected, 3);
+                Assert.That(rig.Fallbacks.Count, Is.EqualTo(1));
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
             }
         }
@@ -194,6 +199,7 @@ namespace AgLibrary.Ntrip.Tests
             {
                 rig.Main.Frame();                                         // main is active
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Frame();                                         // main is only watched now
                 rig.Fallback.Frame();
                 rig.Fallback.Frame();
@@ -212,6 +218,7 @@ namespace AgLibrary.Ntrip.Tests
                 rig.Manager.RawDataReceived += data => Interlocked.Add(ref bytes, data.Length);
                 rig.Main.Raw(10);
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Raw(100);
                 rig.Fallback.Raw(1000);
                 Assert.That(Interlocked.Read(ref bytes), Is.EqualTo(1010));
@@ -224,6 +231,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig())
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);                       // a second update does not ask again
 
@@ -245,6 +253,7 @@ namespace AgLibrary.Ntrip.Tests
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
                 FakeSource first = rig.Fallback;
+                first.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);
 
                 rig.Manager.SwitchBackToMain();
@@ -258,6 +267,42 @@ namespace AgLibrary.Ntrip.Tests
                 first.Frame();
                 Assert.That(rig.FrameCount(MainType), Is.EqualTo(1));
                 Assert.That(rig.FrameCount(FallbackType), Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void AFallbackThatDoesNotWork_IsNotSwitchedTo_SoADroppedConnectionChangesNothing()
+        {
+            // A phone hotspot drops: the main service fails and so does the fallback.
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 5);
+                rig.Fallback.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 5);
+                rig.Fallback.Set(NtripState.Connecting);
+                rig.Fallback.Set(NtripState.Connected);   // accepted, but no corrections yet
+
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.Notices, Is.Empty);
+                rig.Main.Frame();
+                Assert.That(rig.FrameCount(MainType), Is.EqualTo(1), "the main service still passes its data on");
+            }
+        }
+
+        [Test]
+        public void TheMainServiceReturningFirst_StopsTheFallbackThatWasTried()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                FakeSource tried = rig.Fallback;
+
+                rig.Main.Set(NtripState.Streaming);
+
+                Assert.That(rig.WaitFor(() => tried.Stopped), Is.True);
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                tried.Set(NtripState.Streaming);   // a late report of the stopped one changes nothing
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.Notices, Is.Empty);
             }
         }
 
@@ -277,10 +322,12 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig())
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);
                 rig.Manager.SwitchBackToMain();
 
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
 
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
                 Assert.That(rig.Fallbacks.Count, Is.EqualTo(2));
@@ -294,6 +341,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig())
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 1);
                 Assert.That(rig.Manager.Status.MainBack, Is.False);
@@ -320,19 +368,23 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
-        public void ManualMode_DoesNotSwitchByItself_ButAsksOnce()
+        public void ManualMode_DoesNotSwitchByItself_ButAsksOnce_WhenTheFallbackWorks()
         {
             using (var rig = new Rig(autoSwitch: false))
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 3);
+                Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(0), "no question while the fallback is not known to work");
 
+                rig.Fallback.Set(NtripState.Streaming);
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
-                Assert.That(rig.Fallbacks, Is.Empty);
-                Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(1), "asks once, not per attempt");
+                Assert.That(rig.Fallbacks.Count, Is.EqualTo(1));
+                Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(1), "asks once, not per update");
                 Assert.That(rig.Manager.Status.MainFailing, Is.True);
 
                 rig.Manager.SwitchToFallbackNow();
+                Assert.That(rig.Fallbacks.Count, Is.EqualTo(1), "the fallback that works is the one used");
                 Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
                 Assert.That(rig.Manager.Status.MainFailing, Is.False);
             }
@@ -344,8 +396,10 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig(autoSwitch: false))
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Streaming);
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.NoticeCount("The main service has a problem"), Is.EqualTo(2));
                 Assert.That(rig.Manager.Status.MainFailing, Is.True);
             }
@@ -389,6 +443,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig(keepMain: false))
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 Assert.That(rig.WaitFor(() => rig.Main.Stopped), Is.True, "the main service is not tried in the background");
                 Assert.That(rig.Manager.Status.MainPaused, Is.True);
 
@@ -407,6 +462,7 @@ namespace AgLibrary.Ntrip.Tests
             using (var rig = new Rig(keepMain: false))
             {
                 rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
                 rig.WaitFor(() => rig.Main.Stopped);
 
                 rig.Manager.SwitchBackToMain();

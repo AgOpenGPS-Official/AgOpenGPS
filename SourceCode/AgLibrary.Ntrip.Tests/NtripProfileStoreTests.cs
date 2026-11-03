@@ -210,5 +210,67 @@ namespace AgLibrary.Ntrip.Tests
             Assert.That(a.Main.Mount, Is.EqualTo("NEAR"));
             Assert.That(a.Fallback.Service.Mount, Is.EqualTo("Basisdepeel"));
         }
+
+        [Test]
+        public void ASerialRadioAsTheMainSource_IsSavedAndLoaded()
+        {
+            NtripProfileSet set = Sample("Field radio");
+            set.MainType = FallbackType.SerialRadio;
+            set.MainRadioPort = "COM7";
+            set.MainRadioBaud = 57600;
+            _store.Save(set);
+
+            NtripProfileSet r = _store.Load("Field radio");
+
+            Assert.That(r.MainIsRadio, Is.True);
+            Assert.That(r.MainRadioPort, Is.EqualTo("COM7"));
+            Assert.That(r.MainRadioBaud, Is.EqualTo(57600));
+            Assert.That(r.MainIsComplete, Is.True);
+            Assert.That(r.MainProfile(10), Is.Null, "a radio is not an NTRIP profile");
+        }
+
+        [Test]
+        public void ARadioWithoutAPort_IsNotComplete_AndAServiceNeedsAnAddress()
+        {
+            var set = new NtripProfileSet { MainType = FallbackType.SerialRadio };
+            Assert.That(set.MainIsComplete, Is.False);
+            set.MainRadioPort = "COM3";
+            Assert.That(set.MainIsComplete, Is.True);
+
+            set.MainType = FallbackType.NtripService;
+            Assert.That(set.MainIsComplete, Is.False, "no address yet");
+            set.Main.Host = "caster.example.org";
+            Assert.That(set.MainIsComplete, Is.True);
+        }
+
+        [Test]
+        public void AProfileFileFromBeforeTheRadioMain_StaysAnNtripService()
+        {
+            _store.Save(Sample("Old"));
+            string path = Directory.GetFiles(_folder, "*" + NtripProfileStore.Extension)[0];
+            string xml = File.ReadAllText(path);
+            foreach (string tag in new[] { "MainType", "MainRadioPort", "MainRadioBaud" })
+                xml = System.Text.RegularExpressions.Regex.Replace(xml, "<" + tag + ">[^<]*</" + tag + ">\\s*", "");
+            File.WriteAllText(path, xml);
+
+            NtripProfileSet r = _store.Load("Old");
+
+            Assert.That(r, Is.Not.Null);
+            Assert.That(r.MainIsRadio, Is.False);
+            Assert.That(r.MainProfile(10).Host, Is.EqualTo("caster.example.org"));
+        }
+
+        [Test]
+        public void RawTcpOnTheFallback_IsSavedAndReachesTheConnectionSettings()
+        {
+            NtripProfileSet set = Sample("Raw");
+            set.Fallback.Service.RawTcp = true;
+            _store.Save(set);
+
+            NtripProfileSet r = _store.Load("Raw");
+
+            Assert.That(r.Fallback.Service.RawTcp, Is.True);
+            Assert.That(r.FallbackProfile(10).RawTcp, Is.True);
+        }
     }
 }

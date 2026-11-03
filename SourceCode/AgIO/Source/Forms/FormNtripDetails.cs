@@ -56,7 +56,7 @@ namespace AgIO
             info.BackColor = fallback ? System.Drawing.Color.FromArgb(255, 226, 222) : System.Drawing.SystemColors.Control;
             checks.SetChecks(CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
 
-            string where = profile == null ? (fallback && ms != null ? ms.Using.Replace("Fallback: ", "") : "-") : profile.Mount + " on " + profile.Host + ":" + profile.Port.ToString(ci);
+            string where = profile == null ? (fallback && ms != null ? ms.Using.Replace("Fallback: ", "") : host != null && host.MainRadio != null ? "Radio " + host.MainRadio : "-") : profile.Mount + " on " + profile.Host + ":" + profile.Port.ToString(ci);
             string station = st.Rtcm.StationId >= 0 ? st.Rtcm.StationId.ToString(ci) : "unknown";
             info.Text = (fallback ? "FALLBACK IN USE: the main service is not used now\r\n" : "") + st.Headline + "\r\n" + where + "\r\n"
                 + "Base station ID: " + station + "   Damaged data: " + (st.Rtcm.ChecksumFailures == 0 ? "none" : st.Rtcm.ChecksumFailures.ToString(ci))

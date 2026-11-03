@@ -119,6 +119,10 @@ namespace AgLibrary.Ntrip
     /// switch yourself, which you can do at any time. The main service keeps trying in the background and
     /// the user is asked before switching back; the manager never switches back by itself, because a switch
     /// changes the base station and the receiver loses its RTK fix.
+    /// Make before break: when the main service has failed enough, the fallback is started in the
+    /// background and AgIO switches (or asks) only once the fallback delivers corrections itself. A lost
+    /// internet connection (a phone hotspot that drops) fails both, so nothing is switched and the main
+    /// service simply resumes.
     /// </summary>
     public sealed class CorrectionSourceManager
     {
@@ -152,6 +156,17 @@ namespace AgLibrary.Ntrip
         public CorrectionSourceManager(NtripProfile main, FallbackPlan fallback, Func<string> ggaProvider,
             NtripTimeouts timeouts = null, Func<TimeSpan, CancellationToken, Task> delay = null, Func<double> random = null)
             : this(new NtripClient(main, ggaProvider, timeouts, delay, random),
+                  fallback == null ? (Func<ICorrectionSource>)null : () => fallback.Create(ggaProvider, timeouts, delay, random),
+                  fallback == null ? 2 : fallback.SwitchAfterFailures,
+                  fallback == null || fallback.AutoSwitch,
+                  fallback == null || fallback.KeepMainRunning)
+        {
+        }
+
+        /// <summary>The main service is a plan too, so it can be a serial radio instead of an NTRIP service.</summary>
+        public CorrectionSourceManager(FallbackPlan main, FallbackPlan fallback, Func<string> ggaProvider,
+            NtripTimeouts timeouts = null, Func<TimeSpan, CancellationToken, Task> delay = null, Func<double> random = null)
+            : this(main.Create(ggaProvider, timeouts, delay, random),
                   fallback == null ? (Func<ICorrectionSource>)null : () => fallback.Create(ggaProvider, timeouts, delay, random),
                   fallback == null ? 2 : fallback.SwitchAfterFailures,
                   fallback == null || fallback.AutoSwitch,
@@ -271,8 +286,7 @@ namespace AgLibrary.Ntrip
 
         private void OnMainStatus(NtripStatus st)
         {
-            bool switchNow = false;
-            bool askNow = false;
+            bool stopCandidate = false;
             bool mainBackNow = false;
 
             lock (_sync)
@@ -283,15 +297,11 @@ namespace AgLibrary.Ntrip
                         || (st.State == NtripState.Waiting && st.ConsecutiveFailures >= _switchAfter);
                     _mainFailing = failing && _fallbackFactory != null && !_autoSwitch;
 
-                    if (failing && _fallbackFactory != null)
-                    {
-                        if (_autoSwitch) switchNow = true;
-                        else if (!_failureNotified) { _failureNotified = true; askNow = true; }
-                    }
-                    else if (!failing)
-                    {
-                        _failureNotified = false;
-                    }
+                    if (failing && _fallbackFactory != null) StartFallbackLocked();
+                    else if (!failing) _failureNotified = false;
+
+                    // The main service delivers again before the fallback was needed.
+                    stopCandidate = st.State == NtripState.Streaming && _fallback != null;
                 }
                 else if (st.State == NtripState.Streaming)
                 {
@@ -304,17 +314,70 @@ namespace AgLibrary.Ntrip
                 }
             }
 
-            if (switchNow) SwitchToFallback(st, false);
-            if (askNow)
-            {
-                RaiseNotice(NoticeKind.MainFailing, "The main service has a problem",
-                    st.Headline + ". Switch to the fallback? You can do that in the NTRIP panel.");
-            }
+            if (stopCandidate) StopCandidate();
             if (mainBackNow)
             {
                 RaiseNotice(NoticeKind.MainBack, "The main service is back",
                     "Switch back to it? Your GPS may lose RTK for a moment. AgIO never switches back by itself.");
             }
+            RaiseStatus();
+        }
+
+        // The fallback is delivering corrections while still on the main service: it is a service that works.
+        private void OnFallbackStatus(NtripStatus st)
+        {
+            bool switchNow = false;
+            bool askNow = false;
+            NtripStatus reason = null;
+
+            lock (_sync)
+            {
+                if (_active == (int)SourceRole.Main && _fallback != null && st.State == NtripState.Streaming)
+                {
+                    reason = _main.Status;
+                    if (_autoSwitch) switchNow = true;
+                    else if (!_failureNotified) { _failureNotified = true; askNow = true; }
+                }
+            }
+
+            if (switchNow) SwitchToFallback(reason, false);
+            if (askNow)
+            {
+                RaiseNotice(NoticeKind.MainFailing, "The main service has a problem",
+                    reason.Headline + ". The fallback works. Switch to it? You can do that in the NTRIP panel.");
+            }
+            RaiseStatus();
+        }
+
+        // Starts the fallback without using its corrections yet. Called with the lock held.
+        private void StartFallbackLocked()
+        {
+            if (_fallback != null || _fallbackFactory == null) return;
+
+            ICorrectionSource fallback = _fallbackFactory();
+            _fallback = fallback;
+            _fallbackCts = new CancellationTokenSource();
+
+            // Its frames are ignored until it is the active source (OnFrame).
+            fallback.FrameReceived += OnFallbackFrame;
+            fallback.RawDataReceived += OnFallbackRaw;
+            fallback.StatusChanged += OnFallbackStatus;
+
+            CancellationToken token = _fallbackCts.Token;
+            _fallbackTask = Task.Run(() => fallback.RunAsync(token));
+        }
+
+        // The main service is streaming again: the fallback that was started in the background is not needed.
+        private void StopCandidate()
+        {
+            CancellationTokenSource cts;
+            lock (_sync)
+            {
+                if (_active != (int)SourceRole.Main || _fallback == null) return;
+                cts = _fallbackCts;
+                DetachFallback();
+            }
+            if (cts != null) cts.Cancel();
             RaiseStatus();
         }
 
@@ -325,26 +388,17 @@ namespace AgLibrary.Ntrip
             {
                 if (_active != (int)SourceRole.Main || _fallbackFactory == null) return;
 
-                fallback = _fallbackFactory();
-                _fallback = fallback;
-                _fallbackCts = new CancellationTokenSource();
+                StartFallbackLocked();   // already running when it was tried in the background first
+                fallback = _fallback;
                 _active = (int)SourceRole.Fallback;
                 _mainBack = false;
                 _mainFailing = false;
                 _switchedByUser = byUser;
-
-                fallback.FrameReceived += OnFallbackFrame;
-                fallback.RawDataReceived += OnFallbackRaw;
-                fallback.StatusChanged += OnFallbackStatus;
-
-                CancellationToken token = _fallbackCts.Token;
-                ICorrectionSource started = fallback;
-                _fallbackTask = Task.Run(() => started.RunAsync(token));
             }
 
             if (!_keepMainRunning) PauseMain();
 
-            string why = byUser ? "You switched to the fallback." : "The main service has a problem (" + reason.Headline + ").";
+            string why = byUser ? "You switched to the fallback." : "The main service has a problem (" + (reason == null ? "no corrections" : reason.Headline) + ").";
             RaiseNotice(NoticeKind.SwitchedToFallback, "Switched to the fallback",
                 why + " Now using " + fallback.Description
                 + ". Your GPS may lose RTK for a moment, and your position can shift a little if the two base stations use different coordinates.");
@@ -368,8 +422,6 @@ namespace AgLibrary.Ntrip
         private void OnFallbackFrame(int type, ReadOnlySpan<byte> frame) => OnFrame(SourceRole.Fallback, type, frame);
 
         private void OnFallbackRaw(ReadOnlySpan<byte> data) => OnRaw(SourceRole.Fallback, data);
-
-        private void OnFallbackStatus(NtripStatus st) => RaiseStatus();
 
         // Only the active source passes its data on; the other one is only watched.
         private void OnFrame(SourceRole role, int type, ReadOnlySpan<byte> frame)

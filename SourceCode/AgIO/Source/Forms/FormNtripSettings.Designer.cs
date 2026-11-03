@@ -50,6 +50,15 @@ namespace AgIO
             this.segVersion = new AgIO.SegmentedControl();
             this.lblRaw = new System.Windows.Forms.Label();
             this.tglRaw = new AgIO.ToggleSwitch();
+            this.segMainType = new AgIO.SegmentedControl();
+            this.pnlMainRadio = new System.Windows.Forms.Panel();
+            this.lblMainRadioPort = new System.Windows.Forms.Label();
+            this.cboMainRadioPort = new System.Windows.Forms.ComboBox();
+            this.lblMainRadioBaud = new System.Windows.Forms.Label();
+            this.cboMainRadioBaud = new System.Windows.Forms.ComboBox();
+            this.lblMainRadioNote = new System.Windows.Forms.Label();
+            this.lblFbRaw = new System.Windows.Forms.Label();
+            this.tglFbRaw = new AgIO.ToggleSwitch();
             this.lblLegacy = new System.Windows.Forms.Label();
             this.tglLegacy = new AgIO.ToggleSwitch();
             this.pnlFallback = new System.Windows.Forms.Panel();
@@ -99,6 +108,7 @@ namespace AgIO
             this.pnlFallback.SuspendLayout();
             this.pnlFbRadio.SuspendLayout();
             this.pnlFbService.SuspendLayout();
+            this.pnlMainRadio.SuspendLayout();
             this.pnlMain.SuspendLayout();
             this.pnlOutput.SuspendLayout();
             this.SuspendLayout();
@@ -162,7 +172,7 @@ namespace AgIO
             // 
             this.lblHost.AutoSize = false;
             this.lblHost.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblHost.Location = new System.Drawing.Point(0, 8);
+            this.lblHost.Location = new System.Drawing.Point(0, 68);
             this.lblHost.Name = "lblHost";
             this.lblHost.Size = new System.Drawing.Size(220, 30);
             this.lblHost.TabIndex = 6;
@@ -174,7 +184,7 @@ namespace AgIO
             this.txtHost.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHost.ReadOnly = true;
             this.txtHost.BackColor = System.Drawing.Color.White;
-            this.txtHost.Location = new System.Drawing.Point(230, 8);
+            this.txtHost.Location = new System.Drawing.Point(230, 66);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(720, 31);
             this.txtHost.TabIndex = 7;
@@ -184,7 +194,7 @@ namespace AgIO
             // 
             this.lblPort.AutoSize = false;
             this.lblPort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPort.Location = new System.Drawing.Point(0, 64);
+            this.lblPort.Location = new System.Drawing.Point(0, 116);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(220, 30);
             this.lblPort.TabIndex = 8;
@@ -194,7 +204,7 @@ namespace AgIO
             // 
             this.numPort.Minimum = 1;
             this.numPort.Maximum = 65535;
-            this.numPort.Location = new System.Drawing.Point(230, 56);
+            this.numPort.Location = new System.Drawing.Point(230, 108);
             this.numPort.Name = "numPort";
             this.numPort.Size = new System.Drawing.Size(160, 48);
             this.numPort.TabIndex = 9;
@@ -203,7 +213,7 @@ namespace AgIO
             // 
             this.lblMount.AutoSize = false;
             this.lblMount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblMount.Location = new System.Drawing.Point(0, 120);
+            this.lblMount.Location = new System.Drawing.Point(0, 164);
             this.lblMount.Name = "lblMount";
             this.lblMount.Size = new System.Drawing.Size(220, 30);
             this.lblMount.TabIndex = 10;
@@ -215,7 +225,7 @@ namespace AgIO
             this.txtMount.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMount.ReadOnly = true;
             this.txtMount.BackColor = System.Drawing.Color.White;
-            this.txtMount.Location = new System.Drawing.Point(230, 120);
+            this.txtMount.Location = new System.Drawing.Point(230, 164);
             this.txtMount.Name = "txtMount";
             this.txtMount.Size = new System.Drawing.Size(510, 31);
             this.txtMount.TabIndex = 11;
@@ -223,7 +233,7 @@ namespace AgIO
             // 
             // btnMounts
             // 
-            this.btnMounts.Location = new System.Drawing.Point(760, 108);
+            this.btnMounts.Location = new System.Drawing.Point(760, 152);
             this.btnMounts.Name = "btnMounts";
             this.btnMounts.Size = new System.Drawing.Size(200, 56);
             this.btnMounts.TabIndex = 12;
@@ -234,7 +244,7 @@ namespace AgIO
             // 
             this.lblUser.AutoSize = false;
             this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblUser.Location = new System.Drawing.Point(0, 184);
+            this.lblUser.Location = new System.Drawing.Point(0, 208);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(220, 30);
             this.lblUser.TabIndex = 13;
@@ -246,7 +256,7 @@ namespace AgIO
             this.txtUser.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUser.ReadOnly = true;
             this.txtUser.BackColor = System.Drawing.Color.White;
-            this.txtUser.Location = new System.Drawing.Point(230, 184);
+            this.txtUser.Location = new System.Drawing.Point(230, 208);
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(720, 31);
             this.txtUser.TabIndex = 14;
@@ -256,7 +266,7 @@ namespace AgIO
             // 
             this.lblPassword.AutoSize = false;
             this.lblPassword.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPassword.Location = new System.Drawing.Point(0, 240);
+            this.lblPassword.Location = new System.Drawing.Point(0, 252);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(220, 30);
             this.lblPassword.TabIndex = 15;
@@ -269,7 +279,7 @@ namespace AgIO
             this.txtPassword.ReadOnly = true;
             this.txtPassword.BackColor = System.Drawing.Color.White;
             this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.Location = new System.Drawing.Point(230, 240);
+            this.txtPassword.Location = new System.Drawing.Point(230, 252);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(510, 31);
             this.txtPassword.TabIndex = 16;
@@ -277,7 +287,7 @@ namespace AgIO
             // 
             // btnShowPassword
             // 
-            this.btnShowPassword.Location = new System.Drawing.Point(760, 228);
+            this.btnShowPassword.Location = new System.Drawing.Point(760, 240);
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(200, 56);
             this.btnShowPassword.TabIndex = 17;
@@ -288,7 +298,7 @@ namespace AgIO
             // 
             this.lblVersion.AutoSize = false;
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblVersion.Location = new System.Drawing.Point(0, 304);
+            this.lblVersion.Location = new System.Drawing.Point(0, 310);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(220, 30);
             this.lblVersion.TabIndex = 18;
@@ -297,7 +307,7 @@ namespace AgIO
             // segVersion
             // 
             this.segVersion.ItemsText = "Automatic|1.0|2.0";
-            this.segVersion.Location = new System.Drawing.Point(230, 294);
+            this.segVersion.Location = new System.Drawing.Point(230, 300);
             this.segVersion.Name = "segVersion";
             this.segVersion.Size = new System.Drawing.Size(510, 52);
             this.segVersion.TabIndex = 19;
@@ -306,7 +316,7 @@ namespace AgIO
             // 
             this.lblRaw.AutoSize = false;
             this.lblRaw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblRaw.Location = new System.Drawing.Point(0, 362);
+            this.lblRaw.Location = new System.Drawing.Point(0, 364);
             this.lblRaw.Name = "lblRaw";
             this.lblRaw.Size = new System.Drawing.Size(220, 30);
             this.lblRaw.TabIndex = 20;
@@ -314,7 +324,7 @@ namespace AgIO
             // 
             // tglRaw
             // 
-            this.tglRaw.Location = new System.Drawing.Point(230, 354);
+            this.tglRaw.Location = new System.Drawing.Point(230, 356);
             this.tglRaw.Name = "tglRaw";
             this.tglRaw.Size = new System.Drawing.Size(84, 46);
             this.tglRaw.TabIndex = 21;
@@ -323,7 +333,7 @@ namespace AgIO
             // 
             this.lblLegacy.AutoSize = false;
             this.lblLegacy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblLegacy.Location = new System.Drawing.Point(340, 362);
+            this.lblLegacy.Location = new System.Drawing.Point(340, 364);
             this.lblLegacy.Name = "lblLegacy";
             this.lblLegacy.Size = new System.Drawing.Size(400, 30);
             this.lblLegacy.TabIndex = 22;
@@ -331,7 +341,7 @@ namespace AgIO
             // 
             // tglLegacy
             // 
-            this.tglLegacy.Location = new System.Drawing.Point(760, 354);
+            this.tglLegacy.Location = new System.Drawing.Point(760, 356);
             this.tglLegacy.Name = "tglLegacy";
             this.tglLegacy.Size = new System.Drawing.Size(84, 46);
             this.tglLegacy.TabIndex = 23;
@@ -343,6 +353,89 @@ namespace AgIO
             this.pnlFallback.Size = new System.Drawing.Size(960, 410);
             this.pnlFallback.TabIndex = 22;
             // 
+            // segMainType
+            //
+            this.segMainType.ItemsText = "NTRIP service|Serial radio";
+            this.segMainType.Location = new System.Drawing.Point(0, 0);
+            this.segMainType.Name = "segMainType";
+            this.segMainType.Size = new System.Drawing.Size(960, 52);
+            this.segMainType.TabIndex = 66;
+            this.segMainType.SelectedIndexChanged += new System.EventHandler(this.segMainType_SelectedIndexChanged);
+            //
+            // pnlMainRadio
+            //
+            this.pnlMainRadio.Location = new System.Drawing.Point(0, 66);
+            this.pnlMainRadio.Name = "pnlMainRadio";
+            this.pnlMainRadio.Size = new System.Drawing.Size(960, 330);
+            this.pnlMainRadio.TabIndex = 67;
+            //
+            // lblMainRadioPort
+            //
+            this.lblMainRadioPort.AutoSize = false;
+            this.lblMainRadioPort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMainRadioPort.Location = new System.Drawing.Point(0, 12);
+            this.lblMainRadioPort.Name = "lblMainRadioPort";
+            this.lblMainRadioPort.Size = new System.Drawing.Size(200, 30);
+            this.lblMainRadioPort.TabIndex = 68;
+            this.lblMainRadioPort.Text = "Radio on port";
+            //
+            // cboMainRadioPort
+            //
+            this.cboMainRadioPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainRadioPort.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboMainRadioPort.FormattingEnabled = true;
+            this.cboMainRadioPort.Location = new System.Drawing.Point(210, 8);
+            this.cboMainRadioPort.Name = "cboMainRadioPort";
+            this.cboMainRadioPort.Size = new System.Drawing.Size(260, 38);
+            this.cboMainRadioPort.TabIndex = 69;
+            //
+            // lblMainRadioBaud
+            //
+            this.lblMainRadioBaud.AutoSize = false;
+            this.lblMainRadioBaud.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMainRadioBaud.Location = new System.Drawing.Point(0, 76);
+            this.lblMainRadioBaud.Name = "lblMainRadioBaud";
+            this.lblMainRadioBaud.Size = new System.Drawing.Size(200, 30);
+            this.lblMainRadioBaud.TabIndex = 70;
+            this.lblMainRadioBaud.Text = "Speed (baud)";
+            //
+            // cboMainRadioBaud
+            //
+            this.cboMainRadioBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMainRadioBaud.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboMainRadioBaud.FormattingEnabled = true;
+            this.cboMainRadioBaud.Items.AddRange(new object[] { "4800", "9600", "19200", "38400", "57600", "115200" });
+            this.cboMainRadioBaud.Location = new System.Drawing.Point(210, 72);
+            this.cboMainRadioBaud.Name = "cboMainRadioBaud";
+            this.cboMainRadioBaud.Size = new System.Drawing.Size(260, 38);
+            this.cboMainRadioBaud.TabIndex = 71;
+            //
+            // lblMainRadioNote
+            //
+            this.lblMainRadioNote.AutoSize = false;
+            this.lblMainRadioNote.Location = new System.Drawing.Point(0, 140);
+            this.lblMainRadioNote.Name = "lblMainRadioNote";
+            this.lblMainRadioNote.Size = new System.Drawing.Size(950, 90);
+            this.lblMainRadioNote.TabIndex = 72;
+            this.lblMainRadioNote.Text = "A serial radio is not an NTRIP service. Its corrections are used as they arrive. A fallback service takes over when the radio goes quiet.";
+            //
+            // lblFbRaw
+            //
+            this.lblFbRaw.AutoSize = false;
+            this.lblFbRaw.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblFbRaw.Location = new System.Drawing.Point(0, 176);
+            this.lblFbRaw.Name = "lblFbRaw";
+            this.lblFbRaw.Size = new System.Drawing.Size(200, 30);
+            this.lblFbRaw.TabIndex = 73;
+            this.lblFbRaw.Text = "Raw TCP stream";
+            //
+            // tglFbRaw
+            //
+            this.tglFbRaw.Location = new System.Drawing.Point(210, 164);
+            this.tglFbRaw.Name = "tglFbRaw";
+            this.tglFbRaw.Size = new System.Drawing.Size(84, 46);
+            this.tglFbRaw.TabIndex = 74;
+            //
             // tglFallback
             // 
             this.tglFallback.Location = new System.Drawing.Point(0, 4);
@@ -786,6 +879,8 @@ namespace AgIO
             this.pnlFbService.Controls.Add(this.lblFbPassword);
             this.pnlFbService.Controls.Add(this.txtFbPassword);
             this.pnlFbService.Controls.Add(this.btnFbMounts);
+            this.pnlFbService.Controls.Add(this.lblFbRaw);
+            this.pnlFbService.Controls.Add(this.tglFbRaw);
             this.pnlMain.Controls.Add(this.lblHost);
             this.pnlMain.Controls.Add(this.txtHost);
             this.pnlMain.Controls.Add(this.lblPort);
@@ -804,6 +899,13 @@ namespace AgIO
             this.pnlMain.Controls.Add(this.tglRaw);
             this.pnlMain.Controls.Add(this.lblLegacy);
             this.pnlMain.Controls.Add(this.tglLegacy);
+            this.pnlMain.Controls.Add(this.segMainType);
+            this.pnlMain.Controls.Add(this.pnlMainRadio);
+            this.pnlMainRadio.Controls.Add(this.lblMainRadioPort);
+            this.pnlMainRadio.Controls.Add(this.cboMainRadioPort);
+            this.pnlMainRadio.Controls.Add(this.lblMainRadioBaud);
+            this.pnlMainRadio.Controls.Add(this.cboMainRadioBaud);
+            this.pnlMainRadio.Controls.Add(this.lblMainRadioNote);
             this.pnlOutput.Controls.Add(this.lblPos);
             this.pnlOutput.Controls.Add(this.segPosition);
             this.pnlOutput.Controls.Add(this.lblLat);
@@ -850,6 +952,7 @@ namespace AgIO
             this.pnlFallback.ResumeLayout(false);
             this.pnlFbRadio.ResumeLayout(false);
             this.pnlFbService.ResumeLayout(false);
+            this.pnlMainRadio.ResumeLayout(false);
             this.pnlMain.ResumeLayout(false);
             this.pnlOutput.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -880,6 +983,15 @@ namespace AgIO
         private AgIO.SegmentedControl segVersion;
         private System.Windows.Forms.Label lblRaw;
         private AgIO.ToggleSwitch tglRaw;
+        private AgIO.SegmentedControl segMainType;
+        private System.Windows.Forms.Panel pnlMainRadio;
+        private System.Windows.Forms.Label lblMainRadioPort;
+        private System.Windows.Forms.ComboBox cboMainRadioPort;
+        private System.Windows.Forms.Label lblMainRadioBaud;
+        private System.Windows.Forms.ComboBox cboMainRadioBaud;
+        private System.Windows.Forms.Label lblMainRadioNote;
+        private System.Windows.Forms.Label lblFbRaw;
+        private AgIO.ToggleSwitch tglFbRaw;
         private System.Windows.Forms.Label lblLegacy;
         private AgIO.ToggleSwitch tglLegacy;
         private System.Windows.Forms.Panel pnlFallback;

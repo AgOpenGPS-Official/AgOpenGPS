@@ -1,8 +1,9 @@
 namespace AgLibrary.Ntrip
 {
+    /// <summary>The kind of a source of corrections. Used for the fallback and for the main source.</summary>
     public enum FallbackType
     {
-        /// <summary>Another NTRIP service.</summary>
+        /// <summary>An NTRIP service (or a raw TCP stream).</summary>
         NtripService,
         /// <summary>A serial radio.</summary>
         SerialRadio,
@@ -65,6 +66,10 @@ namespace AgLibrary.Ntrip
         /// <summary>The name of the profile. It is also the name of its file.</summary>
         public string Name { get; set; } = "";
         public ServiceDefinition Main { get; set; } = new ServiceDefinition();
+        /// <summary>What the main source is: an NTRIP service (<see cref="Main"/>) or a serial radio. A radio is not NTRIP.</summary>
+        public FallbackType MainType { get; set; } = FallbackType.NtripService;
+        public string MainRadioPort { get; set; } = "";
+        public int MainRadioBaud { get; set; } = 9600;
         public FallbackDefinition Fallback { get; set; } = new FallbackDefinition();
 
         public NtripProfileSet Clone()
@@ -73,12 +78,20 @@ namespace AgLibrary.Ntrip
             {
                 Name = Name,
                 Main = Main == null ? new ServiceDefinition() : Main.Clone(),
+                MainType = MainType,
+                MainRadioPort = MainRadioPort,
+                MainRadioBaud = MainRadioBaud,
                 Fallback = Fallback == null ? new FallbackDefinition() : Fallback.Clone(),
             };
         }
 
-        /// <summary>The main service as connection settings, or null while it has no address.</summary>
-        public NtripProfile MainProfile(int ggaIntervalSeconds) => Main?.ToProfile(ggaIntervalSeconds);
+        public bool MainIsRadio => MainType == FallbackType.SerialRadio;
+
+        /// <summary>The main source can be started: a port for a radio, an address for a service.</summary>
+        public bool MainIsComplete => MainIsRadio ? !string.IsNullOrWhiteSpace(MainRadioPort) : Main != null && Main.IsComplete;
+
+        /// <summary>The main service as connection settings, or null while it has no address, or when the main source is a radio.</summary>
+        public NtripProfile MainProfile(int ggaIntervalSeconds) => MainIsRadio ? null : Main?.ToProfile(ggaIntervalSeconds);
 
         /// <summary>The fallback as connection settings, or null when it is off, a radio, or incomplete.</summary>
         public NtripProfile FallbackProfile(int ggaIntervalSeconds)

@@ -135,7 +135,7 @@ namespace AgIO
                 return;
             }
 
-            if (action == ProfileAction.Use && !set.Main.IsComplete)
+            if (action == ProfileAction.Use && !set.MainIsComplete)
             {
                 mf.YesMessageBox("This profile is not filled in yet.\r\nTap Edit to fill in the main service.");
                 return;

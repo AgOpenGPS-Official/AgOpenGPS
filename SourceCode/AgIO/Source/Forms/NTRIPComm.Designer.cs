@@ -165,7 +165,7 @@ namespace AgIO
             ManagerStatus ms = ntripHost.Manager;
             NtripStatus st = ms != null ? ms.Status : ntripHost.Status;
             NtripProfile profile = ntripHost.Profile;
-            string source = profile == null ? "" : profile.Host + "\n" + profile.Mount;
+            string source = profile == null ? (ntripHost.MainRadio == null ? "" : "Radio\n" + ntripHost.MainRadio) : profile.Host + "\n" + profile.Mount;
             if (ms != null && ms.Active == SourceRole.Fallback) source = ms.Using.Replace("Fallback: ", "Fallback:\n");
             string received = (tripBytes >> 10).ToString("###,###,##0") + " kb received";
             bool running = st.State == NtripState.Streaming || st.State == NtripState.Connecting

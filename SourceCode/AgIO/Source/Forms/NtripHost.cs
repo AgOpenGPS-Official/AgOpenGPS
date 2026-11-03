@@ -27,6 +27,7 @@ namespace AgIO
 
         private CorrectionSourceManager manager;
         private NtripProfile mainProfile;
+        private string mainRadio;
         private NtripProfile fallbackProfile;
         private CancellationTokenSource cts;
         private Task run;
@@ -84,6 +85,12 @@ namespace AgIO
         public NtripProfile Profile
         {
             get { return mainProfile; }
+        }
+
+        /// <summary>The port of the main radio, e.g. COM5; null when the main source is an NTRIP service.</summary>
+        public string MainRadio
+        {
+            get { return mainRadio; }
         }
 
         /// <summary>True while the fallback delivers the corrections.</summary>
@@ -155,7 +162,21 @@ namespace AgIO
             var s = Properties.Settings.Default;
             NtripProfileSet set = NtripProfiles.LoadActive();
             NtripProfile main = MainProfile(set);
-            if (main == null) return;
+            FallbackPlan mainPlan;
+            if (set.MainIsRadio)
+            {
+                string port = set.MainRadioPort;
+                int baud = set.MainRadioBaud;
+                if (string.IsNullOrWhiteSpace(port)) return;
+                mainPlan = FallbackPlan.ForRadio(port, () => new SerialRadioStream(port, baud));
+                mainRadio = port;
+            }
+            else
+            {
+                if (main == null) return;
+                mainPlan = FallbackPlan.ForNtrip(main);
+                mainRadio = null;
+            }
             mainProfile = main;
             fallbackProfile = set.Fallback != null && set.Fallback.Enabled ? set.FallbackProfile(s.setNTRIP_sendGGAInterval) : null;
 
@@ -170,7 +191,7 @@ namespace AgIO
             queue = new RtcmQueue(null, PacketSize, toSerial ? 50 : RtcmQueue.IntervalMs);
             mf.SetNtripEndpoint(s.setNTRIP_sendToUDPPort);
 
-            manager = new CorrectionSourceManager(main, BuildFallback(set, main), BuildGga);
+            manager = new CorrectionSourceManager(mainPlan, BuildFallback(set, main), BuildGga);
             manager.FrameReceived += OnFrame;
             manager.RawDataReceived += OnRaw;
             manager.StatusChanged += OnStatusChanged;

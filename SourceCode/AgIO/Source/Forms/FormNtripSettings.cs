@@ -31,7 +31,7 @@ namespace AgIO
         {
             base.OnLoad(e);
 
-            foreach (string port in SerialPort.GetPortNames()) cboRadioPort.Items.Add(port);
+            foreach (string port in SerialPort.GetPortNames()) { cboRadioPort.Items.Add(port); cboMainRadioPort.Items.Add(port); }
 
             work = (initial ?? NtripProfiles.LoadActive()).Clone();
             if (string.IsNullOrEmpty(work.Name)) work.Name = "";
@@ -62,6 +62,11 @@ namespace AgIO
             segVersion.SelectedIndex = (int)work.Main.Version;
             tglRaw.Checked = work.Main.RawTcp;
             tglLegacy.Checked = s.setNTRIP_useLegacyClient;
+            segMainType.SelectedIndex = work.MainIsRadio ? 1 : 0;
+            if (work.MainRadioPort.Length > 0 && !cboMainRadioPort.Items.Contains(work.MainRadioPort)) cboMainRadioPort.Items.Add(work.MainRadioPort);
+            cboMainRadioPort.SelectedItem = work.MainRadioPort.Length > 0 ? work.MainRadioPort : null;
+            cboMainRadioBaud.SelectedItem = work.MainRadioBaud.ToString();
+            if (cboMainRadioBaud.SelectedIndex < 0) cboMainRadioBaud.SelectedItem = "9600";
 
             FallbackDefinition f = work.Fallback;
             tglFallback.Checked = f.Enabled;
@@ -73,6 +78,7 @@ namespace AgIO
             txtFbMount.Text = f.Service.Mount;
             txtFbUser.Text = f.Service.User;
             txtFbPassword.Text = f.Service.Password;
+            tglFbRaw.Checked = f.Service.RawTcp;
             if (f.RadioPort.Length > 0 && !cboRadioPort.Items.Contains(f.RadioPort)) cboRadioPort.Items.Add(f.RadioPort);
             cboRadioPort.SelectedItem = f.RadioPort.Length > 0 ? f.RadioPort : null;
             cboRadioBaud.SelectedItem = f.RadioBaud.ToString();
@@ -99,6 +105,10 @@ namespace AgIO
             work.Main.Password = txtPassword.Text;
             work.Main.Version = (NtripVersion)segVersion.SelectedIndex;
             work.Main.RawTcp = tglRaw.Checked;
+            work.MainType = segMainType.SelectedIndex == 1 ? FallbackType.SerialRadio : FallbackType.NtripService;
+            work.MainRadioPort = cboMainRadioPort.SelectedItem == null ? "" : cboMainRadioPort.SelectedItem.ToString();
+            int mainBaud;
+            work.MainRadioBaud = int.TryParse(cboMainRadioBaud.SelectedItem as string, out mainBaud) ? mainBaud : 9600;
 
             FallbackDefinition f = work.Fallback;
             f.Enabled = tglFallback.Checked;
@@ -110,6 +120,7 @@ namespace AgIO
             f.Service.Mount = txtFbMount.Text.Trim();
             f.Service.User = txtFbUser.Text.Trim();
             f.Service.Password = txtFbPassword.Text;
+            f.Service.RawTcp = tglFbRaw.Checked;
             f.RadioPort = cboRadioPort.SelectedItem == null ? "" : cboRadioPort.SelectedItem.ToString();
             int baud;
             f.RadioBaud = int.TryParse(cboRadioBaud.SelectedItem as string, out baud) ? baud : 9600;
@@ -120,6 +131,13 @@ namespace AgIO
             bool fixedPosition = segPosition.SelectedIndex == 1;
             numLat.Enabled = numLon.Enabled = numAlt.Enabled = fixedPosition;
             numNetPort.Enabled = segOutput.SelectedIndex == 1;
+
+            // The service fields give way to the radio's when the main source is a serial radio.
+            bool mainRadio = segMainType.SelectedIndex == 1;
+            pnlMainRadio.Visible = mainRadio;
+            foreach (Control c in new Control[] { lblHost, txtHost, lblPort, numPort, lblMount, txtMount, btnMounts, lblUser, txtUser,
+                lblPassword, txtPassword, btnShowPassword, lblVersion, segVersion, lblRaw, tglRaw, lblLegacy, tglLegacy })
+                c.Visible = !mainRadio;
 
             bool fallbackOn = tglFallback.Checked;
             segFbType.Enabled = segAuto.Enabled = numAfter.Enabled = lblAfter.Enabled = lblAfter2.Enabled = pnlFbService.Enabled = pnlFbRadio.Enabled = fallbackOn;
@@ -141,6 +159,7 @@ namespace AgIO
         private void segPage_SelectedIndexChanged(object sender, EventArgs e) { ShowPage(); }
         private void tglUse_CheckedChanged(object sender, EventArgs e) { }
         private void tglFallback_CheckedChanged(object sender, EventArgs e) { UpdateEnabled(); }
+        private void segMainType_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
         private void segFbType_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
         private void segPosition_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
         private void segOutput_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
@@ -227,10 +246,12 @@ namespace AgIO
             try
             {
                 ConnectionCheckResult result;
-                if (segPage.SelectedIndex == 1 && work.Fallback.Type == FallbackType.SerialRadio)
+                bool fallbackPage = segPage.SelectedIndex == 1;
+                bool radioCheck = fallbackPage ? work.Fallback.Type == FallbackType.SerialRadio : work.MainIsRadio;
+                if (radioCheck)
                 {
-                    string port = work.Fallback.RadioPort;
-                    int baud = work.Fallback.RadioBaud;
+                    string port = fallbackPage ? work.Fallback.RadioPort : work.MainRadioPort;
+                    int baud = fallbackPage ? work.Fallback.RadioBaud : work.MainRadioBaud;
                     if (port.Length == 0) { Log("Choose the port of the radio first."); return; }
                     result = await ConnectionCheck.RunRadioAsync(port, () => new SerialRadioStream(port, baud), Log, cts.Token);
                 }
@@ -266,9 +287,10 @@ namespace AgIO
             FromUi();
             CancelCheck();
 
-            if (tglUse.Checked && !work.Main.IsComplete)
+            if (tglUse.Checked && !work.MainIsComplete)
             {
-                mf.TimedMessageBox(3000, "No address", "Fill in the address of the main service first.");
+                mf.TimedMessageBox(3000, work.MainIsRadio ? "No port" : "No address",
+                    work.MainIsRadio ? "Choose the port of the main radio first." : "Fill in the address of the main service first.");
                 segPage.SelectedIndex = 0;
                 return;
             }

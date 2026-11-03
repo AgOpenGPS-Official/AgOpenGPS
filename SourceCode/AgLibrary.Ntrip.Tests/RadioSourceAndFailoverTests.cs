@@ -182,6 +182,28 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void ASerialRadioAsTheMainSource_PassesItsCorrectionsOn()
+        {
+            var feed = new FeedStream();
+            var manager = new CorrectionSourceManager(FallbackPlan.ForRadio("COM5", () => feed), null, () => null);
+            var types = new List<int>();
+            manager.FrameReceived += (t, f) => { lock (types) types.Add(t); };
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => manager.RunAsync(cts.Token));
+                feed.Feed(Rtcm.Message(1077, 60));
+
+                Assert.That(WaitFor(() => { lock (types) return types.Count == 1; }), Is.True);
+                Assert.That(manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(WaitFor(() => manager.Status.Status.Headline == "Radio Active"), Is.True, manager.Status.Status.Headline);
+
+                cts.Cancel();
+                Assert.That(run.Wait(3000), Is.True);
+            }
+        }
+
+        [Test]
         public void ManagerWithRadioFallback_SwitchesToTheRadio_WhenMainFails()
         {
             var feed = new FeedStream();
@@ -196,7 +218,9 @@ namespace AgLibrary.Ntrip.Tests
             {
                 Task run = Task.Run(() => manager.RunAsync(cts.Token));
                 main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
-                Assert.That(manager.Active, Is.EqualTo(SourceRole.Fallback));
+                Assert.That(manager.Active, Is.EqualTo(SourceRole.Main), "the radio is tried first");
+                feed.Feed(Rtcm.Message(1077, 60));   // the first corrections show that the radio works; they are not used yet
+                Assert.That(WaitFor(() => manager.Active == SourceRole.Fallback), Is.True);
                 Assert.That(notice, Does.Contain("Radio COM5"));
 
                 feed.Feed(Rtcm.Message(1077, 60));
