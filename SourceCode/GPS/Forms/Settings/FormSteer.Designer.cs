@@ -50,7 +50,6 @@
             this.tabPP = new System.Windows.Forms.TabPage();
             this.labelAcquire = new System.Windows.Forms.Label();
             this.labelIntegralInfo = new System.Windows.Forms.Label();
-            this.cboxCrabCompensation = new System.Windows.Forms.CheckBox();
             this.labelSlow = new System.Windows.Forms.Label();
             this.labelFast = new System.Windows.Forms.Label();
             this.labelSteerResponse = new System.Windows.Forms.Label();
@@ -126,6 +125,8 @@
             this.lblMinPWM = new System.Windows.Forms.Label();
             this.hsbarHighSteerPWM = new System.Windows.Forms.HScrollBar();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.cboxCrabCompensation = new System.Windows.Forms.CheckBox();
+            this.cboxCrabToolOnLine = new System.Windows.Forms.CheckBox();
             this.lblSideHillComp = new System.Windows.Forms.Label();
             this.hsbarSideHillComp = new System.Windows.Forms.HScrollBar();
             this.labelSideHill = new System.Windows.Forms.Label();
@@ -504,7 +505,6 @@
             this.tabPP.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tabPP.Controls.Add(this.labelAcquire);
             this.tabPP.Controls.Add(this.labelIntegralInfo);
-            this.tabPP.Controls.Add(this.cboxCrabCompensation);
             this.tabPP.Controls.Add(this.labelSlow);
             this.tabPP.Controls.Add(this.labelFast);
             this.tabPP.Controls.Add(this.labelSteerResponse);
@@ -541,30 +541,12 @@
             this.labelIntegralInfo.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelIntegralInfo.ForeColor = System.Drawing.Color.Black;
             this.labelIntegralInfo.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.labelIntegralInfo.Location = new System.Drawing.Point(6, 290);
+            this.labelIntegralInfo.Location = new System.Drawing.Point(6, 280);
             this.labelIntegralInfo.Name = "labelIntegralInfo";
-            this.labelIntegralInfo.Size = new System.Drawing.Size(196, 52);
+            this.labelIntegralInfo.Size = new System.Drawing.Size(172, 60);
             this.labelIntegralInfo.TabIndex = 361;
             this.labelIntegralInfo.Text = "It will slowly increase steer angle to reduce cross track error";
             this.labelIntegralInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // cboxCrabCompensation
-            // 
-            this.cboxCrabCompensation.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cboxCrabCompensation.BackColor = System.Drawing.Color.White;
-            this.cboxCrabCompensation.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.cboxCrabCompensation.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
-            this.cboxCrabCompensation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxCrabCompensation.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cboxCrabCompensation.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cboxCrabCompensation.Location = new System.Drawing.Point(208, 286);
-            this.cboxCrabCompensation.Name = "cboxCrabCompensation";
-            this.cboxCrabCompensation.Size = new System.Drawing.Size(150, 54);
-            this.cboxCrabCompensation.TabIndex = 362;
-            this.cboxCrabCompensation.Text = "Crab Comp (Dual)";
-            this.cboxCrabCompensation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cboxCrabCompensation.UseVisualStyleBackColor = false;
-            this.cboxCrabCompensation.Click += new System.EventHandler(this.cboxCrabCompensation_Click);
             // 
             // labelSlow
             // 
@@ -1511,6 +1493,42 @@
             this.imageList1.Images.SetKeyName(3, "Sf_PPTab.png");
             this.imageList1.Images.SetKeyName(4, "ST_NerdAdv.png");
             // 
+            // cboxCrabCompensation
+            // 
+            this.cboxCrabCompensation.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxCrabCompensation.BackColor = System.Drawing.Color.White;
+            this.cboxCrabCompensation.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxCrabCompensation.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxCrabCompensation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxCrabCompensation.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxCrabCompensation.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxCrabCompensation.Location = new System.Drawing.Point(9, 409);
+            this.cboxCrabCompensation.Name = "cboxCrabCompensation";
+            this.cboxCrabCompensation.Size = new System.Drawing.Size(176, 53);
+            this.cboxCrabCompensation.TabIndex = 362;
+            this.cboxCrabCompensation.Text = "Crab Comp (Dual)";
+            this.cboxCrabCompensation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxCrabCompensation.UseVisualStyleBackColor = false;
+            this.cboxCrabCompensation.Click += new System.EventHandler(this.cboxCrabCompensation_Click);
+            // 
+            // cboxCrabToolOnLine
+            // 
+            this.cboxCrabToolOnLine.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxCrabToolOnLine.BackColor = System.Drawing.Color.White;
+            this.cboxCrabToolOnLine.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxCrabToolOnLine.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxCrabToolOnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxCrabToolOnLine.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxCrabToolOnLine.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxCrabToolOnLine.Location = new System.Drawing.Point(199, 409);
+            this.cboxCrabToolOnLine.Name = "cboxCrabToolOnLine";
+            this.cboxCrabToolOnLine.Size = new System.Drawing.Size(136, 53);
+            this.cboxCrabToolOnLine.TabIndex = 363;
+            this.cboxCrabToolOnLine.Text = "Tool on line";
+            this.cboxCrabToolOnLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxCrabToolOnLine.UseVisualStyleBackColor = false;
+            this.cboxCrabToolOnLine.Click += new System.EventHandler(this.cboxCrabToolOnLine_Click);
+            // 
             // lblSideHillComp
             // 
             this.lblSideHillComp.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1957,7 +1975,7 @@
             this.label34.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label34.ForeColor = System.Drawing.Color.Black;
             this.label34.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label34.Location = new System.Drawing.Point(283, 213);
+            this.label34.Location = new System.Drawing.Point(298, 213);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(201, 24);
             this.label34.TabIndex = 527;
@@ -2194,6 +2212,8 @@
             this.tabSettings.BackColor = System.Drawing.Color.LightGray;
             this.tabSettings.Controls.Add(this.grpSmartWAS);
             this.tabSettings.Controls.Add(this.labelSteerInReverse);
+            this.tabSettings.Controls.Add(this.cboxCrabCompensation);
+            this.tabSettings.Controls.Add(this.cboxCrabToolOnLine);
             this.tabSettings.Controls.Add(this.label41);
             this.tabSettings.Controls.Add(this.label39);
             this.tabSettings.Controls.Add(this.hsbarUTurnCompensation);
@@ -2227,7 +2247,7 @@
             this.grpSmartWAS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.grpSmartWAS.Location = new System.Drawing.Point(23, 251);
             this.grpSmartWAS.Name = "grpSmartWAS";
-            this.grpSmartWAS.Size = new System.Drawing.Size(220, 200);
+            this.grpSmartWAS.Size = new System.Drawing.Size(220, 147);
             this.grpSmartWAS.TabIndex = 535;
             this.grpSmartWAS.TabStop = false;
             this.grpSmartWAS.Text = "Smart WAS";
@@ -2236,7 +2256,7 @@
             // 
             this.lblSmartCalStatus.AutoSize = true;
             this.lblSmartCalStatus.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSmartCalStatus.Location = new System.Drawing.Point(10, 150);
+            this.lblSmartCalStatus.Location = new System.Drawing.Point(10, 105);
             this.lblSmartCalStatus.Name = "lblSmartCalStatus";
             this.lblSmartCalStatus.Size = new System.Drawing.Size(43, 13);
             this.lblSmartCalStatus.TabIndex = 343;
@@ -2264,7 +2284,7 @@
             this.lblSmartCalConfidence.AutoSize = true;
             this.lblSmartCalConfidence.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSmartCalConfidence.ForeColor = System.Drawing.Color.Gray;
-            this.lblSmartCalConfidence.Location = new System.Drawing.Point(110, 170);
+            this.lblSmartCalConfidence.Location = new System.Drawing.Point(110, 125);
             this.lblSmartCalConfidence.Name = "lblSmartCalConfidence";
             this.lblSmartCalConfidence.Size = new System.Drawing.Size(85, 13);
             this.lblSmartCalConfidence.TabIndex = 342;
@@ -2275,7 +2295,7 @@
             this.lblSmartCalSamples.AutoSize = true;
             this.lblSmartCalSamples.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSmartCalSamples.ForeColor = System.Drawing.Color.Gray;
-            this.lblSmartCalSamples.Location = new System.Drawing.Point(10, 170);
+            this.lblSmartCalSamples.Location = new System.Drawing.Point(10, 125);
             this.lblSmartCalSamples.Name = "lblSmartCalSamples";
             this.lblSmartCalSamples.Size = new System.Drawing.Size(59, 13);
             this.lblSmartCalSamples.TabIndex = 341;
@@ -2286,7 +2306,7 @@
             this.labelSteerInReverse.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSteerInReverse.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.labelSteerInReverse.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelSteerInReverse.Location = new System.Drawing.Point(283, 347);
+            this.labelSteerInReverse.Location = new System.Drawing.Point(298, 347);
             this.labelSteerInReverse.Name = "labelSteerInReverse";
             this.labelSteerInReverse.Size = new System.Drawing.Size(201, 24);
             this.labelSteerInReverse.TabIndex = 534;
@@ -2366,7 +2386,7 @@
             this.cboxSteerInReverse.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxSteerInReverse.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cboxSteerInReverse.Image = global::AgOpenGPS.Properties.Resources.ConV_RevSteer;
-            this.cboxSteerInReverse.Location = new System.Drawing.Point(340, 374);
+            this.cboxSteerInReverse.Location = new System.Drawing.Point(355, 374);
             this.cboxSteerInReverse.Name = "cboxSteerInReverse";
             this.cboxSteerInReverse.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.cboxSteerInReverse.Size = new System.Drawing.Size(86, 90);
@@ -3329,6 +3349,7 @@
         private System.Windows.Forms.HScrollBar hsbarHoldLookAhead;
         private System.Windows.Forms.Label labelIntegralInfo;
         private System.Windows.Forms.CheckBox cboxCrabCompensation;
+        private System.Windows.Forms.CheckBox cboxCrabToolOnLine;
         private System.Windows.Forms.Label labelOnOff;
         private System.Windows.Forms.Label labelOnDelay;
         private NudlessNumericUpDown nudDeadZoneDelay;

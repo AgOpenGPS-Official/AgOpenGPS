@@ -846,12 +846,12 @@ namespace AgOpenGPS
                     if (trk.gArr[trk.idx].mode == TrackMode.AB)
                     {
                         ABLine.BuildCurrentABLineList(pivotAxlePos);
-                        ABLine.GetCurrentABLine(pivotAxlePos, steerAxlePos);
+                        ABLine.GetCurrentABLine(crab.GetGuidancePivot(pivotAxlePos), steerAxlePos);
                     }
                     else
                     {
                         curve.BuildCurveCurrentList(pivotAxlePos);
-                        curve.GetCurrentCurveLine(pivotAxlePos, steerAxlePos);
+                        curve.GetCurrentCurveLine(crab.GetGuidancePivot(pivotAxlePos), steerAxlePos);
                     }
                 }
             }

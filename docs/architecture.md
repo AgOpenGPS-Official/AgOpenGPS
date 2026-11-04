@@ -196,6 +196,7 @@ steerAngle = atan2(2 * wheelbase * sin(error), lookahead)
 - `goalPointLookAheadMult` - Lookahead multiplier
 
 **Crab compensation (dual antenna only):** when `setVehicle_isCrabCompensationOn = true` and the dual antenna heading is active, pure pursuit uses `guidanceHeading` (body heading + measured crab angle of the rear axle) instead of `fixHeading`. See `Classes/CCrabCompensation.cs`.
+n**Tool on line:** with `setVehicle_isCrabToolOnLine` the AB line and curve guidance receive `crab.GetGuidancePivot(pivotAxlePos)`, the pivot shifted sideways by `-hitchLength * sin(crabAngle)`, so the hitch sits on the line and the rear axle runs beside it. Contour and recorded path keep the rear axle.
 
 **Code location:** `Classes/CTrackMethods.cs` - `GoalPoint()`
 

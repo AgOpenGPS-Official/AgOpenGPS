@@ -198,6 +198,8 @@ namespace AgOpenGPS
             lblPureIntegral.Text = ((int)(mf.vehicle.purePursuitIntegralGain * 100)).ToString();
 
             cboxCrabCompensation.Checked = Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn;
+            cboxCrabToolOnLine.Checked = Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine;
+            cboxCrabToolOnLine.Text = gStr.gsCrabToolOnLine;
             UpdateCrabCompensationText();
 
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
@@ -986,6 +988,11 @@ namespace AgOpenGPS
             UpdateCrabCompensationText();
         }
 
+        private void cboxCrabToolOnLine_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine = cboxCrabToolOnLine.Checked;
+        }
+
         private void UpdateCrabCompensationText()
         {
             string text = gStr.gsCrabCompensation;
@@ -993,7 +1000,7 @@ namespace AgOpenGPS
             // Show the measured crab angle while it is active, "--" when on but no dual heading
             if (cboxCrabCompensation.Checked)
             {
-                text += "\r\n" + (mf.crab.isActive
+                text += " " + (mf.crab.isActive
                     ? glm.toDegrees(mf.crab.crabAngle).ToString("N1") + "°"
                     : "--");
             }

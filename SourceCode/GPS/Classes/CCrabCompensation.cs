@@ -144,6 +144,32 @@ namespace AgOpenGPS
             else if (crabAngle < -maxCrab) crabAngle = -maxCrab;
         }
 
+        /// <summary>
+        /// Pivot to steer onto the line. Normally the rear axle. With the tool-on-line option it is shifted
+        /// sideways so the hitch, and with it the tool, ends up on the line in steady state while the rear
+        /// axle runs beside it.
+        ///
+        /// The hitch sits hitchLength from the pivot along the body (negative = behind). The pivot travels
+        /// along body heading + crabAngle, so the hitch lies hitchLength * sin(crabAngle) to the left of the
+        /// travelled track (behind the pivot) and the pivot must be moved the opposite way.
+        ///
+        /// Only correct for a real crab. A dual heading offset error gives the same measurement but no
+        /// real crab, so enable it only when the crab reads about zero on flat ground.
+        /// </summary>
+        public vec3 GetGuidancePivot(vec3 pivot)
+        {
+            if (!isActive || !Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine) return pivot;
+
+            // Positive = to the right of the travel direction
+            double lateral = -mf.tool.GetHitchLengthFromVehiclePivot() * Math.Sin(crabAngle);
+            double travelHeading = mf.guidanceHeading;
+
+            return new vec3(
+                pivot.easting + Math.Cos(travelHeading) * lateral,
+                pivot.northing - Math.Sin(travelHeading) * lateral,
+                pivot.heading);
+        }
+
         // Straight distance from window[first] to the newest point
         private double Span(int first)
         {
