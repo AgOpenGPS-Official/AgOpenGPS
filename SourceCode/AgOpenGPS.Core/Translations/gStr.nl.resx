@@ -369,6 +369,9 @@ De volgorde waarin u ze indrukt, is de volgorde waarin ze van onder naar boven i
   <data name="gsCrabToolOnLine" xml:space="preserve">
     <value>Werktuig op lijn</value>
   </data>
+  <data name="gsCrabToolCurves" xml:space="preserve">
+    <value>Werktuig in bocht</value>
+  </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Creër</value>
   </data>

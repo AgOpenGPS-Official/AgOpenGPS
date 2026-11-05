@@ -127,6 +127,8 @@ namespace AgOpenGPS.Properties
         public bool setVehicle_isCrabCompensationOn = false;
         // Steer the hitch (tool) onto the line instead of the rear axle, needs crab compensation
         public bool setVehicle_isCrabToolOnLine = false;
+        // Steer a rigid tool behind the rear axle onto a curve: pure pursuit follows a precomputed pivot path
+        public bool setVehicle_isToolCurveComp = false;
 
         // Tool specific Steer Parameters
         public double setVehicle_goalPointLookAheadHold = 3;
@@ -153,6 +155,7 @@ namespace AgOpenGPS.Properties
             // Added later: a profile without this key must load as off, not keep the previous profile's value
             setVehicle_isCrabCompensationOn = false;
             setVehicle_isCrabToolOnLine = false;
+            setVehicle_isToolCurveComp = false;
 
             LoadResult result = LoadProfile(toolFileName);
             SeedUTurnFromEnvironment();

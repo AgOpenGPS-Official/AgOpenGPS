@@ -127,6 +127,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.cboxCrabCompensation = new System.Windows.Forms.CheckBox();
             this.cboxCrabToolOnLine = new System.Windows.Forms.CheckBox();
+            this.cboxToolCurveComp = new System.Windows.Forms.CheckBox();
             this.lblSideHillComp = new System.Windows.Forms.Label();
             this.hsbarSideHillComp = new System.Windows.Forms.HScrollBar();
             this.labelSideHill = new System.Windows.Forms.Label();
@@ -1529,6 +1530,24 @@
             this.cboxCrabToolOnLine.UseVisualStyleBackColor = false;
             this.cboxCrabToolOnLine.Click += new System.EventHandler(this.cboxCrabToolOnLine_Click);
             // 
+            // cboxToolCurveComp
+            // 
+            this.cboxToolCurveComp.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxToolCurveComp.BackColor = System.Drawing.Color.White;
+            this.cboxToolCurveComp.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxToolCurveComp.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxToolCurveComp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxToolCurveComp.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxToolCurveComp.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxToolCurveComp.Location = new System.Drawing.Point(349, 409);
+            this.cboxToolCurveComp.Name = "cboxToolCurveComp";
+            this.cboxToolCurveComp.Size = new System.Drawing.Size(150, 53);
+            this.cboxToolCurveComp.TabIndex = 364;
+            this.cboxToolCurveComp.Text = "Tool in curves";
+            this.cboxToolCurveComp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxToolCurveComp.UseVisualStyleBackColor = false;
+            this.cboxToolCurveComp.Click += new System.EventHandler(this.cboxToolCurveComp_Click);
+            // 
             // lblSideHillComp
             // 
             this.lblSideHillComp.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2214,6 +2233,7 @@
             this.tabSettings.Controls.Add(this.labelSteerInReverse);
             this.tabSettings.Controls.Add(this.cboxCrabCompensation);
             this.tabSettings.Controls.Add(this.cboxCrabToolOnLine);
+            this.tabSettings.Controls.Add(this.cboxToolCurveComp);
             this.tabSettings.Controls.Add(this.label41);
             this.tabSettings.Controls.Add(this.label39);
             this.tabSettings.Controls.Add(this.hsbarUTurnCompensation);
@@ -3350,6 +3370,7 @@
         private System.Windows.Forms.Label labelIntegralInfo;
         private System.Windows.Forms.CheckBox cboxCrabCompensation;
         private System.Windows.Forms.CheckBox cboxCrabToolOnLine;
+        private System.Windows.Forms.CheckBox cboxToolCurveComp;
         private System.Windows.Forms.Label labelOnOff;
         private System.Windows.Forms.Label labelOnDelay;
         private NudlessNumericUpDown nudDeadZoneDelay;

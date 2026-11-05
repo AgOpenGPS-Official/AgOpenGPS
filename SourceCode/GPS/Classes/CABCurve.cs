@@ -721,6 +721,102 @@ namespace AgOpenGPS
             return newGuideLL;
         }
 
+        // Path that the rear axle must follow to keep a rigid tool behind it on the line.
+        // The tool sits hitch metres behind the pivot on the body axis, the pivot cannot move sideways.
+        // With theta the body heading and alpha the direction of the line, the body must satisfy
+        //   dtheta/ds = sin(theta - alpha) / d     (d = distance from pivot to tool)
+        // which is unstable forward in time but stable when integrated backwards along the line. The line is known,
+        // so it is integrated from its end to its start. The pivot path is then tool point + d along the body.
+        public List<vec3> toolRefList = new List<vec3>();
+        public bool isToolRefActive;
+        private List<vec3> guideList;
+        private List<vec3> toolRefSource;
+        private int toolRefSourceCount;
+        private bool toolRefSameWay;
+        private double toolRefHitch;
+        private bool toolRefValid;
+
+        private bool UpdateToolReference()
+        {
+            double hitch = mf.tool.GetHitchLengthFromVehiclePivot();
+            double d = -hitch;
+            // Only a tool behind the rear axle
+            if (d < 0.5 || curList.Count < 5) return false;
+
+            if (!ReferenceEquals(toolRefSource, curList) || toolRefSourceCount != curList.Count
+                || toolRefSameWay != isHeadingSameWay || Math.Abs(toolRefHitch - d) > 0.01)
+            {
+                toolRefSource = curList;
+                toolRefSourceCount = curList.Count;
+                toolRefSameWay = isHeadingSameWay;
+                toolRefHitch = d;
+                toolRefValid = BuildToolReference(d);
+            }
+            return toolRefValid && toolRefList.Count == curList.Count;
+        }
+
+        private bool BuildToolReference(double d)
+        {
+            int n = curList.Count;
+            bool same = isHeadingSameWay;
+
+            // points in the order of travel
+            var e = new double[n]; var nn = new double[n];
+            for (int k = 0; k < n; k++)
+            {
+                vec3 p = curList[same ? k : n - 1 - k];
+                e[k] = p.easting; nn[k] = p.northing;
+            }
+
+            // direction of the line at each point, compass angle
+            var alpha = new double[n];
+            for (int k = 0; k < n; k++)
+            {
+                int a = Math.Max(0, k - 1), b = Math.Min(n - 1, k + 1);
+                alpha[k] = Math.Atan2(e[b] - e[a], nn[b] - nn[a]);
+            }
+
+            // integrate the body heading backwards along the line
+            var theta = new double[n];
+            theta[n - 1] = alpha[n - 1];
+            for (int k = n - 1; k > 0; k--)
+            {
+                double ds = Math.Sqrt(Sq(e[k] - e[k - 1]) + Sq(nn[k] - nn[k - 1]));
+                double da = WrapPi(alpha[k - 1] - alpha[k]);
+                int steps = Math.Max(1, (int)Math.Ceiling(ds / (0.2 * d)));
+                double h = ds / steps;
+                double th = theta[k];
+                for (int j = 1; j <= steps; j++)
+                {
+                    double aMid = alpha[k] + da * (j - 0.5) / steps;
+                    th -= h * Math.Sin(th - aMid) / d;
+                }
+                theta[k - 1] = th;
+
+                // a tool that cannot follow this line (curve tighter than the hitch allows): do not use it
+                if (double.IsNaN(th) || Math.Abs(WrapPi(th - alpha[k - 1])) > 0.6) return false;
+            }
+
+            var list = new List<vec3>(n);
+            for (int i = 0; i < n; i++) list.Add(new vec3(0, 0, 0));
+            for (int k = 0; k < n; k++)
+            {
+                int idx = same ? k : n - 1 - k;
+                list[idx] = new vec3(e[k] + d * Math.Sin(theta[k]), nn[k] + d * Math.Cos(theta[k]), 0);
+            }
+            CalculateHeadings(ref list);
+            toolRefList = list;
+            return list.Count == n;
+        }
+
+        private static double Sq(double v) => v * v;
+
+        private static double WrapPi(double angle)
+        {
+            while (angle > Math.PI) angle -= glm.twoPI;
+            while (angle < -Math.PI) angle += glm.twoPI;
+            return angle;
+        }
         // Signed distance of a point to the nearest part of curList, searched from segment aroundIndex
         // over reach metres in both directions. Same sign convention as distanceFromCurrentLinePivot
         // before the heading flip. NaN when there is no usable segment.
@@ -813,6 +909,11 @@ namespace AgOpenGPS
                 }
                 else// Pure Pursuit ------------------------------------------
                 {
+                    // Rigid tool behind the rear axle: follow the pivot path that puts the tool on the line
+                    bool useToolRef = Properties.ToolSettings.Default.setVehicle_isToolCurveComp
+                        && mf.crab.IsRigidTool && !mf.isReverse && UpdateToolReference();
+                    guideList = useToolRef ? toolRefList : curList;
+                    isToolRefActive = useToolRef;
                     double minDistA;
                     double minDistB;
 
@@ -842,13 +943,13 @@ namespace AgOpenGPS
 
                         minDistA = double.MaxValue;
 
-                        dd = cc + 8; if (dd > curList.Count - 1) dd = curList.Count;
+                        dd = cc + 8; if (dd > guideList.Count - 1) dd = guideList.Count;
                         cc -= 8; if (cc < 0) cc = 0;
 
                         //find the closest 2 points to current close call
                         for (int j = cc; j < dd; j++)
                         {
-                            dist = glm.DistanceSquared(pivot, curList[j]);
+                            dist = glm.DistanceSquared(pivot, guideList[j]);
                             if (dist < minDistA)
                             {
                                 minDistB = minDistA;
@@ -868,7 +969,7 @@ namespace AgOpenGPS
 
                         currentLocationIndex = A;
 
-                        if (A > curList.Count - 1 || B > curList.Count - 1)
+                        if (A > guideList.Count - 1 || B > guideList.Count - 1)
                             return;
                     }
                     else
@@ -892,21 +993,21 @@ namespace AgOpenGPS
 
                         currentLocationIndex = A;
 
-                        if (A > curList.Count - 1)
+                        if (A > guideList.Count - 1)
                             return;
 
                         //initial forward Test if pivot InRange AB
-                        if (A == curList.Count - 1) B = 0;
+                        if (A == guideList.Count - 1) B = 0;
                         else B = A + 1;
 
-                        if (glm.InRangeBetweenAB(curList[A].easting, curList[A].northing,
-                             curList[B].easting, curList[B].northing, pivot.easting, pivot.northing))
+                        if (glm.InRangeBetweenAB(guideList[A].easting, guideList[A].northing,
+                             guideList[B].easting, guideList[B].northing, pivot.easting, pivot.northing))
                             goto SegmentFound;
 
                         //step back one
                         if (A == 0)
                         {
-                            A = curList.Count - 1;
+                            A = guideList.Count - 1;
                             B = 0;
                         }
                         else
@@ -915,8 +1016,8 @@ namespace AgOpenGPS
                             B = A + 1;
                         }
 
-                        if (glm.InRangeBetweenAB(curList[A].easting, curList[A].northing,
-                            curList[B].easting, curList[B].northing, pivot.easting, pivot.northing))
+                        if (glm.InRangeBetweenAB(guideList[A].easting, guideList[A].northing,
+                            guideList[B].easting, guideList[B].northing, pivot.easting, pivot.northing))
                             goto SegmentFound;
 
                         //realy really lost
@@ -927,16 +1028,16 @@ namespace AgOpenGPS
 
                     //get the distance from currently active AB line
 
-                    dx = curList[B].easting - curList[A].easting;
-                    dz = curList[B].northing - curList[A].northing;
+                    dx = guideList[B].easting - guideList[A].easting;
+                    dz = guideList[B].northing - guideList[A].northing;
 
                     if (Math.Abs(dx) < Double.Epsilon && Math.Abs(dz) < Double.Epsilon) return;
 
                     //abHeading = Math.Atan2(dz, dx);
 
                     //how far from current AB Line is fix
-                    distanceFromCurrentLinePivot = ((dz * pivot.easting) - (dx * pivot.northing) + (curList[B].easting
-                                * curList[A].northing) - (curList[B].northing * curList[A].easting))
+                    distanceFromCurrentLinePivot = ((dz * pivot.easting) - (dx * pivot.northing) + (guideList[B].easting
+                                * guideList[A].northing) - (guideList[B].northing * guideList[A].easting))
                                     / Math.Sqrt((dz * dz) + (dx * dx));
 
                     //integral slider is set to 0
@@ -981,37 +1082,37 @@ namespace AgOpenGPS
                     else inty = 0;
 
                     // ** Pure pursuit ** - calc point on ABLine closest to current position
-                    double U = (((pivot.easting - curList[A].easting) * dx)
-                                + ((pivot.northing - curList[A].northing) * dz))
+                    double U = (((pivot.easting - guideList[A].easting) * dx)
+                                + ((pivot.northing - guideList[A].northing) * dz))
                                 / ((dx * dx) + (dz * dz));
 
-                    rEastCu = curList[A].easting + (U * dx);
-                    rNorthCu = curList[A].northing + (U * dz);
-                    manualUturnHeading = curList[A].heading;
+                    rEastCu = guideList[A].easting + (U * dx);
+                    rNorthCu = guideList[A].northing + (U * dz);
+                    manualUturnHeading = guideList[A].heading;
 
                     int count = ReverseHeading ? 1 : -1;
                     vec3 start = new vec3(rEastCu, rNorthCu, 0);
                     double distSoFar = 0;
 
-                    for (int i = ReverseHeading ? B : A; i < curList.Count && i >= 0;)
+                    for (int i = ReverseHeading ? B : A; i < guideList.Count && i >= 0;)
                     {
                         // used for calculating the length squared of next segment.
-                        double tempDist = glm.Distance(start, curList[i]);
+                        double tempDist = glm.Distance(start, guideList[i]);
 
                         //will we go too far?
                         if ((tempDist + distSoFar) > goalPointDistance)
                         {
                             double j = (goalPointDistance - distSoFar) / tempDist; // the remainder to yet travel
 
-                            goalPointCu.easting = (((1 - j) * start.easting) + (j * curList[i].easting));
-                            goalPointCu.northing = (((1 - j) * start.northing) + (j * curList[i].northing));
+                            goalPointCu.easting = (((1 - j) * start.easting) + (j * guideList[i].easting));
+                            goalPointCu.northing = (((1 - j) * start.northing) + (j * guideList[i].northing));
                             break;
                         }
                         else distSoFar += tempDist;
-                        start = curList[i];
+                        start = guideList[i];
                         i += count;
-                        if (i < 0) i = curList.Count - 1;
-                        if (i > curList.Count - 1) i = 0;
+                        if (i < 0) i = guideList.Count - 1;
+                        if (i > guideList.Count - 1) i = 0;
                     }
 
                     if (mf.trk.gArr[mf.trk.idx].mode <= TrackMode.Curve)
@@ -1020,7 +1121,7 @@ namespace AgOpenGPS
                         {
                             if (isHeadingSameWay)
                             {
-                                if (glm.Distance(goalPointCu, curList[(curList.Count - 1)]) < 0.5)
+                                if (glm.Distance(goalPointCu, guideList[(guideList.Count - 1)]) < 0.5)
                                 {
                                     mf.btnAutoSteer.PerformClick();
                                     mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsPastEndOfCurve);
@@ -1030,7 +1131,7 @@ namespace AgOpenGPS
                             }
                             else
                             {
-                                if (glm.Distance(goalPointCu, curList[0]) < 0.5)
+                                if (glm.Distance(goalPointCu, guideList[0]) < 0.5)
                                 {
                                     mf.btnAutoSteer.PerformClick();
                                     mf.TimedMessageBox(2000, gStr.gsGuidanceStopped, gStr.gsPastEndOfCurve);
@@ -1067,7 +1168,7 @@ namespace AgOpenGPS
                     //used for acquire/hold mode
                     mf.vehicle.modeActualXTE = (distanceFromCurrentLinePivot);
 
-                    double steerHeadingError = (pivot.heading - curList[A].heading);
+                    double steerHeadingError = (pivot.heading - guideList[A].heading);
                     //Fix the circular error
                     if (steerHeadingError > Math.PI)
                         steerHeadingError -= Math.PI;
@@ -1083,8 +1184,19 @@ namespace AgOpenGPS
 
                     //Convert to millimeters
                     double lookReach = Math.Abs(mf.tool.GetHitchLengthFromVehiclePivot()) + 3.0;
-                    mf.guidanceLineDistanceOff = (short)Math.Round((distanceFromCurrentLinePivot - mf.crab.AppliedShift) * 1000.0, MidpointRounding.AwayFromZero);
-
+                    if (useToolRef)
+                    {
+                        // The control distance above is relative to the tool reference path. Report the rear axle
+                        // against the real line, as the main XTE.
+                        double rearDistance = SignedDistanceToCurve(mf.pivotAxlePos.easting, mf.pivotAxlePos.northing, A, lookReach);
+                        if (double.IsNaN(rearDistance)) rearDistance = distanceFromCurrentLinePivot;
+                        else if (!isHeadingSameWay) rearDistance *= -1.0;
+                        mf.guidanceLineDistanceOff = (short)Math.Max(-28999, Math.Min(28999, Math.Round(rearDistance * 1000.0, MidpointRounding.AwayFromZero)));
+                    }
+                    else
+                    {
+                        mf.guidanceLineDistanceOff = (short)Math.Round((distanceFromCurrentLinePivot - mf.crab.AppliedShift) * 1000.0, MidpointRounding.AwayFromZero);
+                    }
 
                     // Distance of the tool (hitch) point to the real line, at the position of the tool
                     mf.crab.GetToolPoint(out double toolE, out double toolN);
@@ -1731,9 +1843,9 @@ namespace AgOpenGPS
             double minDist = double.MaxValue;
             int minDistIndex = 0;
 
-            for (int i = 0; i < curList.Count; i += increment)
+            for (int i = 0; i < guideList.Count; i += increment)
             {
-                double dist = glm.DistanceSquared(refPoint, curList[i]);
+                double dist = glm.DistanceSquared(refPoint, guideList[i]);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -1744,25 +1856,25 @@ namespace AgOpenGPS
         }
 
         // Searches for the nearest "local" curve point to the refPoint by traversing forward and backward on the curve
-        // startIndex means the starting point (index to curList) of the search.
+        // startIndex means the starting point (index to guideList) of the search.
         // Return: index to the nearest (local) point
         private int findNearestLocalCurvePoint(vec3 refPoint, int startIndex, double minSearchDistance, bool reverseSearchDirection)
         {
-            double minDist = glm.DistanceSquared(refPoint, curList[(startIndex + curList.Count) % curList.Count]);
+            double minDist = glm.DistanceSquared(refPoint, guideList[(startIndex + guideList.Count) % guideList.Count]);
             int minDistIndex = startIndex;
 
             int directionMultiplier = reverseSearchDirection ? 1 : -1;
             double distSoFar = 0;
-            vec3 start = curList[startIndex];
+            vec3 start = guideList[startIndex];
 
             // First: search forward in the direction of travel
             // This prevents jumping backwards to closer points
             int offset = 1;
 
-            while (offset < curList.Count)
+            while (offset < guideList.Count)
             {
-                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;
-                double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
+                int pointIndex = (startIndex + (offset * directionMultiplier) + guideList.Count) % guideList.Count;
+                double dist = glm.DistanceSquared(refPoint, guideList[pointIndex]);
 
                 if (dist < minDist)
                 {
@@ -1770,8 +1882,8 @@ namespace AgOpenGPS
                     minDistIndex = pointIndex;
                 }
 
-                distSoFar += glm.Distance(start, curList[pointIndex]);
-                start = curList[pointIndex];
+                distSoFar += glm.Distance(start, guideList[pointIndex]);
+                start = guideList[pointIndex];
 
                 offset++;
 
@@ -1782,10 +1894,10 @@ namespace AgOpenGPS
             }
 
             // Continue traversing forward until the distance starts growing
-            while (offset < curList.Count)
+            while (offset < guideList.Count)
             {
-                int pointIndex = (startIndex + (offset * directionMultiplier) + curList.Count) % curList.Count;
-                double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
+                int pointIndex = (startIndex + (offset * directionMultiplier) + guideList.Count) % guideList.Count;
+                double dist = glm.DistanceSquared(refPoint, guideList[pointIndex]);
                 if (dist < minDist)
                 {
                     minDist = dist;
@@ -1804,19 +1916,19 @@ namespace AgOpenGPS
             // We limit backwards search to a small distance to avoid jumping to parallel lines
             double backwardSearchLimit = 3.0; // Only search 3 meters backward
             distSoFar = 0;
-            start = curList[startIndex];
+            start = guideList[startIndex];
 
-            for (offset = 1; offset < curList.Count && distSoFar < backwardSearchLimit; offset++)
+            for (offset = 1; offset < guideList.Count && distSoFar < backwardSearchLimit; offset++)
             {
-                int pointIndex = (startIndex + (offset * (-directionMultiplier)) + curList.Count) % curList.Count;
+                int pointIndex = (startIndex + (offset * (-directionMultiplier)) + guideList.Count) % guideList.Count;
 
-                distSoFar += glm.Distance(start, curList[pointIndex]);
-                start = curList[pointIndex];
+                distSoFar += glm.Distance(start, guideList[pointIndex]);
+                start = guideList[pointIndex];
 
                 if (distSoFar >= backwardSearchLimit)
                     break;
 
-                double dist = glm.DistanceSquared(refPoint, curList[pointIndex]);
+                double dist = glm.DistanceSquared(refPoint, guideList[pointIndex]);
 
                 // Only accept backwards point if it's significantly closer (20% threshold)
                 if (dist < minDist * 0.8)

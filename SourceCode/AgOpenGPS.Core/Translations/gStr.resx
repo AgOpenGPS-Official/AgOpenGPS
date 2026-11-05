@@ -399,6 +399,9 @@ The order you push them will be the order they appear on the menu from bottom up
   <data name="gsCrabToolOnLine" xml:space="preserve">
     <value>Tool on line</value>
   </data>
+  <data name="gsCrabToolCurves" xml:space="preserve">
+    <value>Tool in curves</value>
+  </data>
   <data name="gsCreate" xml:space="preserve">
     <value>Create</value>
   </data>

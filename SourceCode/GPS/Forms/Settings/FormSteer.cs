@@ -201,6 +201,7 @@ namespace AgOpenGPS
             cboxCrabCompensation.Checked = Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn;
             cboxCrabToolOnLine.Checked = Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine;
             cboxCrabToolOnLine.Text = gStr.gsCrabToolOnLine;
+            cboxToolCurveComp.Checked = Properties.ToolSettings.Default.setVehicle_isToolCurveComp;
             UpdateCrabCompensationText();
 
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
@@ -994,6 +995,11 @@ namespace AgOpenGPS
             Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine = cboxCrabToolOnLine.Checked;
         }
 
+        private void cboxToolCurveComp_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isToolCurveComp = cboxToolCurveComp.Checked;
+        }
+
         private void UpdateCrabCompensationText()
         {
             string text = gStr.gsCrabCompensation;
@@ -1017,6 +1023,14 @@ namespace AgOpenGPS
                     : (mf.crab.toolShift * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + " cm");
             }
             if (cboxCrabToolOnLine.Text != toolText) cboxCrabToolOnLine.Text = toolText;
+
+            // Tool in curves: show whether the reference path is in use (rigid tool behind the axle, on a curve)
+            string curveText = gStr.gsCrabToolCurves;
+            if (cboxToolCurveComp.Checked)
+            {
+                curveText += " " + (mf.curve.isToolRefActive ? "on" : "--");
+            }
+            if (cboxToolCurveComp.Text != curveText) cboxToolCurveComp.Text = curveText;
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)

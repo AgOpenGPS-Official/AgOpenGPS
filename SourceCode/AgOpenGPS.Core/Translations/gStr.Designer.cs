@@ -934,6 +934,15 @@ namespace AgOpenGPS.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool in curves.
+        /// </summary>
+        public static string gsCrabToolCurves {
+            get {
+                return ResourceManager.GetString("gsCrabToolCurves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tool on line.
         /// </summary>
         public static string gsCrabToolOnLine {
