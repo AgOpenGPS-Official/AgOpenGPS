@@ -721,6 +721,61 @@ namespace AgOpenGPS
             return newGuideLL;
         }
 
+        // Signed distance of a point to the nearest part of curList, searched from segment aroundIndex
+        // over reach metres in both directions. Same sign convention as distanceFromCurrentLinePivot
+        // before the heading flip. NaN when there is no usable segment.
+        private double SignedDistanceToCurve(double e, double n, int aroundIndex, double reach)
+        {
+            int count = curList.Count;
+            if (count < 2) return double.NaN;
+            if (aroundIndex < 0) aroundIndex = 0;
+            if (aroundIndex > count - 1) aroundIndex = count - 1;
+
+            int lo = aroundIndex;
+            double sum = 0;
+            while (lo > 0 && sum < reach)
+            {
+                sum += glm.Distance(curList[lo], curList[lo - 1]);
+                lo--;
+            }
+
+            int hi = aroundIndex;
+            sum = 0;
+            while (hi < count - 1 && sum < reach)
+            {
+                sum += glm.Distance(curList[hi], curList[hi + 1]);
+                hi++;
+            }
+
+            int best = -1;
+            double bestSq = double.MaxValue;
+            for (int i = lo; i < hi; i++)
+            {
+                double sx = curList[i + 1].easting - curList[i].easting;
+                double sz = curList[i + 1].northing - curList[i].northing;
+                double lenSq = sx * sx + sz * sz;
+                if (lenSq < 1e-12) continue;
+
+                double t = ((e - curList[i].easting) * sx + (n - curList[i].northing) * sz) / lenSq;
+                if (t < 0) t = 0; else if (t > 1) t = 1;
+                double px = curList[i].easting + t * sx - e;
+                double pz = curList[i].northing + t * sz - n;
+                double dSq = px * px + pz * pz;
+                if (dSq < bestSq)
+                {
+                    bestSq = dSq;
+                    best = i;
+                }
+            }
+            if (best < 0) return double.NaN;
+
+            double dx = curList[best + 1].easting - curList[best].easting;
+            double dz = curList[best + 1].northing - curList[best].northing;
+            return ((dz * e) - (dx * n) + (curList[best + 1].easting * curList[best].northing)
+                        - (curList[best + 1].northing * curList[best].easting))
+                        / Math.Sqrt((dz * dz) + (dx * dx));
+        }
+
         public void GetCurrentCurveLine(vec3 pivot, vec3 steer)
         {
             if (mf.trk.gArr[mf.trk.idx].curvePts == null || mf.trk.gArr[mf.trk.idx].curvePts.Count < 5)
@@ -1026,8 +1081,19 @@ namespace AgOpenGPS
 
                     mf.vehicle.modeActualHeadingError = glm.toDegrees(steerHeadingError);
 
-                    //Convert to centimeters
-                    mf.guidanceLineDistanceOff = (short)Math.Round(distanceFromCurrentLinePivot * 1000.0, MidpointRounding.AwayFromZero);
+                    //Convert to millimeters
+                    double lookReach = Math.Abs(mf.tool.GetHitchLengthFromVehiclePivot()) + 3.0;
+                    mf.guidanceLineDistanceOff = (short)Math.Round((distanceFromCurrentLinePivot - mf.crab.AppliedShift) * 1000.0, MidpointRounding.AwayFromZero);
+
+
+                    // Distance of the tool (hitch) point to the real line, at the position of the tool
+                    mf.crab.GetToolPoint(out double toolE, out double toolN);
+                    double toolDistance = SignedDistanceToCurve(toolE, toolN, A, lookReach);
+                    if (!double.IsNaN(toolDistance))
+                    {
+                        if (!isHeadingSameWay) toolDistance *= -1.0;
+                        mf.toolLineDistanceOff = (short)Math.Max(-28999, Math.Min(28999, Math.Round(toolDistance * 1000.0, MidpointRounding.AwayFromZero)));
+                    }
                     mf.guidanceLineSteerAngle = (short)(steerAngleCu * 100);
                 }
             }

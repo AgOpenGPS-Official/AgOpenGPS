@@ -482,6 +482,8 @@ namespace AgOpenGPS
                         if (isLightbarOn) DrawSteerBarText();
                     }
 
+                    DrawToolXteBar();
+
                     if (trk.idx > -1 && !ct.isContourBtnOn) DrawTrackInfo();
 
                     if (bnd.bndList.Count > 0 && yt.isYouTurnBtnOn) DrawUTurnBtn();
@@ -2215,6 +2217,55 @@ namespace AgOpenGPS
                     GL.End();
                 }
             }
+        }
+
+        private double avgToolDistance;
+
+        // Cross track error of the tool, same box as the main XTE but below it. Only with crab tool-on-line.
+        private void DrawToolXteBar()
+        {
+            // Temporarily always shown while a line is active, also with the option off or far from the line
+            if (toolLineDistanceOff >= 29000
+                || !(ct.isContourBtnOn || trk.idx > -1)) return;
+
+            GL.Disable(EnableCap.DepthTest);
+
+            avgToolDistance = avgToolDistance * 0.5 + toolLineDistanceOff * 0.5;
+            double avgToolCm = avgToolDistance * (isMetric ? 0.1 : 0.03937);
+
+            double textSize = (100.0 + (oglMain.Height - 600.0)) * 0.0012;
+            int wide = (int)(oglMain.Width / 18.0);
+            if (wide < 64) wide = 64;
+
+            // Below the main box. The steer bar has the steer angle arrows under its box, the light bar a small average.
+            double shift = isLightBarNotSteerBar
+                ? 35 * (1 + textSize) + 28
+                : 58 + (oglMain.Height - 600) / 17.0 + oglMain.Height / 40.0 + 14;
+
+            GL.PushMatrix();
+            GL.Translate(0, shift, 0);
+
+            double shown = Math.Max(-999, Math.Min(999, avgToolCm));
+            string hede = Math.Abs(shown) < 0.9999
+                ? "> 0 <"
+                : (shown < 0 ? Math.Abs(shown).ToString("N0") + " >" : "< " + Math.Abs(shown).ToString("N0"));
+            int center = -(int)((hede.Length * 0.5) * (18 * (1.0 + textSize)));
+
+            double green = Math.Min(Math.Abs(avgToolDistance), 400);
+            double red = 0.002 * green;
+            green = (0.4 - green * 0.001) + 0.58;
+            GL.Color4(red, green, 0.3, 1.0);
+
+            ScreenTextures.CrossTrackBackground.Draw(new XyCoord(-wide, 35 * (1 + textSize)), new XyCoord(wide, 3));
+
+            GL.Color4(0.12f, 0.12770f, 0.120f, 1);
+            font.DrawText(center, 2, hede, 1.0 + textSize);
+
+            // Mark it as the tool, so it is not mistaken for the main XTE
+            GL.Color4(0.950f, 0.952f, 0.3f, 1);
+            font.DrawText(wide + 6, 2, "T", 1.0 + textSize);
+
+            GL.PopMatrix();
         }
 
         private void DrawSteerBarText()

@@ -7,6 +7,7 @@ using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -1006,6 +1007,16 @@ namespace AgOpenGPS
             }
 
             if (cboxCrabCompensation.Text != text) cboxCrabCompensation.Text = text;
+
+            // Tool on line: only for rigid tools; show the applied shift while it is on
+            string toolText = gStr.gsCrabToolOnLine;
+            if (cboxCrabToolOnLine.Checked)
+            {
+                toolText += " " + (!mf.crab.IsRigidTool
+                    ? "--"
+                    : (mf.crab.toolShift * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + " cm");
+            }
+            if (cboxCrabToolOnLine.Text != toolText) cboxCrabToolOnLine.Text = toolText;
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)

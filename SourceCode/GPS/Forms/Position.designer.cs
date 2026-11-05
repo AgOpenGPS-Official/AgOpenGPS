@@ -25,6 +25,10 @@ namespace AgOpenGPS
 
         // autosteer variables for sending serial
         public short guidanceLineDistanceOff, guidanceLineSteerAngle;
+
+        // Cross track error of the tool (hitch) in mm, only set with crab tool-on-line. 32000 = not available.
+        // guidanceLineDistanceOff is always the rear axle.
+        public short toolLineDistanceOff = 32000;
         public double avGuidanceSteerAngle;
 
         public short errorAngVel;
@@ -820,6 +824,7 @@ namespace AgOpenGPS
 
             //preset the values
             guidanceLineDistanceOff = 32000;
+            toolLineDistanceOff = 32000;
 
             if (ct.isContourBtnOn)
             {

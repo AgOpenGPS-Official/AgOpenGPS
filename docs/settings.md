@@ -240,7 +240,7 @@ RGB color for each section display.
 | `stanleyIntegralGainAB` | double | 0.0 | Stanley integral gain |
 | `setVehicle_isStanleyUsed` | bool | false | Use Stanley algorithm |
 | `setVehicle_isCrabCompensationOn` | bool | false | Pure Pursuit crab (side slip) compensation, dual antenna heading only |
-| `setVehicle_isCrabToolOnLine` | bool | false | With crab compensation: steer the hitch (tool) onto the line instead of the rear axle. Only valid for a real crab, not for a dual heading offset error |
+| `setVehicle_isCrabToolOnLine` | bool | false | With crab compensation: steer the hitch of a rigid tool (three point, front linkage) onto the line instead of the rear axle. Shift limited to 10 cm, built up at 2 cm per metre. The tool XTE is shown in a second box below the main XTE. Only valid for a real crab, not for a dual heading offset error |
 
 ## Tool Specific Steer Parameters
 

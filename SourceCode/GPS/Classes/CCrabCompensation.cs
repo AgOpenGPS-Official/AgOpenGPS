@@ -47,7 +47,12 @@ namespace AgOpenGPS
             public double easting, northing, heading;
         }
 
+        /// <summary>Sideways shift of the guidance pivot in metres, positive to the right. Zero unless tool-on-line is active.</summary>
+        public double toolShift;
+
         private readonly List<Sample> window = new List<Sample>();
+        private vec3 lastShiftPivot;
+        private bool hasLastShiftPivot;
         private double distanceSinceUpdate;
 
         // Length of rear axle track used for one fit
@@ -71,6 +76,12 @@ namespace AgOpenGPS
         // Do not learn in sharp turns: body yaw over the window (6 degrees over 3 m = radius below about 29 m)
         private const double maxYawInWindow = 6.0 * Math.PI / 180.0;
 
+        // Largest sideways shift of the guidance pivot for tool-on-line
+        private const double maxToolShift = 0.10;
+
+        // The shift may change by this much per metre travelled, so switching on or leaving a headland is no step
+        private const double toolShiftRampPerMetre = 0.02;
+
         // Minimum speed in km/h to learn
         private const double minSpeed = 2.0;
 
@@ -83,6 +94,8 @@ namespace AgOpenGPS
         {
             crabAngle = 0;
             crabAngleRaw = 0;
+            toolShift = 0;
+            hasLastShiftPivot = false;
             isActive = false;
             ClearWindow();
         }
@@ -108,6 +121,7 @@ namespace AgOpenGPS
             }
 
             isActive = true;
+            UpdateToolShift(pivot);
 
             if (mf.isReverse || mf.avgSpeed < minSpeed || mf.yt.isYouTurnTriggered)
             {
@@ -145,31 +159,69 @@ namespace AgOpenGPS
         }
 
         /// <summary>
+        /// True for a tool that is mounted rigidly on the tractor (three point, front linkage). Only then the
+        /// tool position follows exactly from the tractor position and heading.
+        /// </summary>
+        /// <summary>Shift actually applied to the guidance pivot. Stanley uses the plain pivot.</summary>
+        public double AppliedShift => mf.isStanleyUsed ? 0 : toolShift;
+
+        /// <summary>True when the tool XTE is shown: tool-on-line is on and in use.</summary>
+        public bool isToolOnLineActive =>
+            isActive && !mf.isStanleyUsed && IsRigidTool && Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine;
+
+        /// <summary>
+        /// Position of the hitch of a rigid tool: the rear axle plus the hitch length along the body heading.
+        /// </summary>
+        public void GetToolPoint(out double easting, out double northing)
+        {
+            double hitch = mf.tool.GetHitchLengthFromVehiclePivot();
+            easting = mf.pivotAxlePos.easting + Math.Sin(mf.fixHeading) * hitch;
+            northing = mf.pivotAxlePos.northing + Math.Cos(mf.fixHeading) * hitch;
+        }
+
+        public bool IsRigidTool => !mf.tool.isToolTrailing && !mf.tool.isToolTBT;
+
+        // Move toolShift towards its target, limited per metre travelled
+        private void UpdateToolShift(vec3 pivot)
+        {
+            double step = hasLastShiftPivot
+                ? Math.Sqrt(Sq(pivot.easting - lastShiftPivot.easting) + Sq(pivot.northing - lastShiftPivot.northing))
+                : 0;
+            lastShiftPivot = pivot;
+            hasLastShiftPivot = true;
+
+            double target = 0;
+            if (Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine && IsRigidTool)
+            {
+                // Lateral offset of the hitch relative to the track of the pivot, positive to the right of travel.
+                // Uses the filtered crab angle, not the live heading, so the steering loop stays stable.
+                target = -mf.tool.GetHitchLengthFromVehiclePivot() * Math.Sin(crabAngle);
+                target = Math.Max(-maxToolShift, Math.Min(maxToolShift, target));
+            }
+
+            double maxChange = toolShiftRampPerMetre * step;
+            toolShift += Math.Max(-maxChange, Math.Min(maxChange, target - toolShift));
+        }
+
+        /// <summary>
         /// Pivot to steer onto the line. Normally the rear axle. With the tool-on-line option it is shifted
-        /// sideways so the hitch, and with it the tool, ends up on the line in steady state while the rear
-        /// axle runs beside it.
-        ///
-        /// The hitch sits hitchLength from the pivot along the body (negative = behind). The pivot travels
-        /// along body heading + crabAngle, so the hitch lies hitchLength * sin(crabAngle) to the left of the
-        /// travelled track (behind the pivot) and the pivot must be moved the opposite way.
+        /// sideways so the hitch, and with it a rigidly mounted tool, ends up on the line in steady state while
+        /// the rear axle runs beside it. The shift is limited and built up slowly, see UpdateToolShift.
         ///
         /// Only correct for a real crab. A dual heading offset error gives the same measurement but no
         /// real crab, so enable it only when the crab reads about zero on flat ground.
         /// </summary>
         public vec3 GetGuidancePivot(vec3 pivot)
         {
-            if (!isActive || !Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine) return pivot;
+            if (glm.IsZero(AppliedShift)) return pivot;
 
-            // Positive = to the right of the travel direction
-            double lateral = -mf.tool.GetHitchLengthFromVehiclePivot() * Math.Sin(crabAngle);
             double travelHeading = mf.guidanceHeading;
 
             return new vec3(
-                pivot.easting + Math.Cos(travelHeading) * lateral,
-                pivot.northing - Math.Sin(travelHeading) * lateral,
+                pivot.easting + Math.Cos(travelHeading) * AppliedShift,
+                pivot.northing - Math.Sin(travelHeading) * AppliedShift,
                 pivot.heading);
         }
-
         // Straight distance from window[first] to the newest point
         private double Span(int first)
         {
