@@ -206,6 +206,7 @@ namespace AgOpenGPS
         /// Crab (side slip) compensation for dual antenna heading
         /// </summary>
         public CCrabCompensation crab;
+        public CCrabLog crabLog;
 
         /// <summary>
         /// Just the tool attachment that includes the sections
@@ -342,6 +343,7 @@ namespace AgOpenGPS
             vehicle = new CVehicle(this);
 
             crab = new CCrabCompensation(this);
+            crabLog = new CCrabLog(this);
 
             tool = new CTool(this);
 

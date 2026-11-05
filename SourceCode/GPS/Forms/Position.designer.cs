@@ -861,6 +861,8 @@ namespace AgOpenGPS
                 }
             }
 
+            crabLog.Write();
+
             // autosteer at full speed of updates
 
             //if the whole path driving driving process is green
