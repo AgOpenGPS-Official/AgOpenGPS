@@ -212,7 +212,7 @@ namespace AgOpenGPS
 
             lblAcquirePP.Text = (mf.vehicle.goalPointLookAheadHold * mf.vehicle.goalPointAcquireFactor).ToString("N1");
 
-            hsbarUTurnCompensation.Value = (Int16)(Properties.Settings.Default.setAS_uTurnCompensation * 10);
+            hsbarUTurnCompensation.Value = (Int16)(Properties.ToolSettings.Default.setAS_uTurnCompensation * 10);
             lblUTurnCompensation.Text = (hsbarUTurnCompensation.Value - 10).ToString();
 
             //make sure free drive is off
@@ -372,7 +372,7 @@ namespace AgOpenGPS
 
             Properties.Settings.Default.setWindow_steerSettingsLocation = Location;
 
-            Properties.Settings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
+            Properties.ToolSettings.Default.setAS_uTurnCompensation = mf.vehicle.uturnCompensation;
 
             // Do not persist settings in Easy Drive mode
             if (!mf.isEasyDriveMode)
@@ -1246,7 +1246,7 @@ namespace AgOpenGPS
 
                 Properties.VehicleSettings.Default.setAS_sideHillComp = 0;
 
-                Properties.Settings.Default.setAS_uTurnCompensation = 1;
+                Properties.ToolSettings.Default.setAS_uTurnCompensation = 1;
 
                 Properties.VehicleSettings.Default.setIMU_invertRoll = false;
 
@@ -1259,7 +1259,7 @@ namespace AgOpenGPS
                 Properties.Settings.Default.setDisplay_lineWidth = 2;
                 Properties.ToolSettings.Default.setAS_snapDistance = 20;
                 Properties.Settings.Default.setAS_guidanceLookAheadTime = 1.5;
-                Properties.Settings.Default.setAS_uTurnCompensation = 1;
+                Properties.ToolSettings.Default.setAS_uTurnCompensation = 1;
 
                 Properties.ToolSettings.Default.setVehicle_isStanleyUsed = false;
                 mf.isStanleyUsed = false;

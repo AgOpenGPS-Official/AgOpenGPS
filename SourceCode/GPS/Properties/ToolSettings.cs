@@ -90,6 +90,16 @@ namespace AgOpenGPS.Properties
         public double setAS_snapDistance = 20.0;
         public double setAS_snapDistanceRef = 5.0;
 
+        // U-turn settings belong to the implement (width, offset, how it is lifted and turned).
+        // They used to be one global value in the environment file, see SeedUTurnFromEnvironment.
+        public double set_youTurnDistanceFromBoundary = 2;
+        public int set_youSkipWidth = 1;
+        public double set_youTurnRadius = 8.1;
+        public int set_youTurnExtensionLength = 20;
+        public int set_uTurnStyle = 0;
+        public double setAS_uTurnSmoothing = 14;
+        public double setAS_uTurnCompensation = 1;
+
         // Headland
         public bool setHeadland_isSectionControlled = true;
 
@@ -124,6 +134,41 @@ namespace AgOpenGPS.Properties
         public bool setF_isSteerWorkSwitchEnabled = false;
 
         public LoadResult Load(string toolFileName)
+        {
+            // Mark the U-turn values as unread, so a profile saved before they moved here does not keep
+            // the values of the previously loaded profile (missing keys leave the fields untouched).
+            set_youTurnDistanceFromBoundary = double.NaN;
+            set_youSkipWidth = Unread;
+            set_youTurnRadius = double.NaN;
+            set_youTurnExtensionLength = Unread;
+            set_uTurnStyle = Unread;
+            setAS_uTurnSmoothing = double.NaN;
+            setAS_uTurnCompensation = double.NaN;
+
+            LoadResult result = LoadProfile(toolFileName);
+            SeedUTurnFromEnvironment();
+            return result;
+        }
+
+        private const int Unread = int.MinValue;
+
+        // Profiles from before the move get the old global value, so nothing changes until the user edits it.
+        private void SeedUTurnFromEnvironment()
+        {
+            Settings env = Settings.Default;
+            if (double.IsNaN(set_youTurnDistanceFromBoundary)) set_youTurnDistanceFromBoundary = env.set_youTurnDistanceFromBoundary;
+            if (set_youSkipWidth == Unread) set_youSkipWidth = env.set_youSkipWidth;
+            if (double.IsNaN(set_youTurnRadius)) set_youTurnRadius = env.set_youTurnRadius;
+            if (set_youTurnExtensionLength == Unread) set_youTurnExtensionLength = env.set_youTurnExtensionLength;
+            if (set_uTurnStyle == Unread) set_uTurnStyle = env.set_uTurnStyle;
+            if (double.IsNaN(setAS_uTurnSmoothing)) setAS_uTurnSmoothing = env.setAS_uTurnSmoothing;
+            if (double.IsNaN(setAS_uTurnCompensation)) setAS_uTurnCompensation = env.setAS_uTurnCompensation;
+
+            // The skip box shows 1 and up
+            if (set_youSkipWidth < 1) set_youSkipWidth = 1;
+        }
+
+        private LoadResult LoadProfile(string toolFileName)
         {
             string path = Path.Combine(RegistrySettings.toolsDirectory, toolFileName + ".xml");
             var result = XmlSettingsHandler.LoadXMLFile(path, this);

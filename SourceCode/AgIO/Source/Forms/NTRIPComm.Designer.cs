@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO.Ports;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AgLibrary.Logging;
 
 // Declare the delegate prototype to send data back to the form
@@ -208,70 +209,112 @@ namespace AgIO
             btnStartStopNtrip.Text = "Off";
         }
 
-        //once we have a known caster IP, only re-resolve this often - a blocking DNS
-        //lookup on every single reconnect attempt can freeze the UI thread during
-        //a network/DNS outage
+        //once we have a known caster IP, only re-resolve this often
         private static readonly TimeSpan casterResolveInterval = TimeSpan.FromSeconds(30);
         private DateTime lastCasterResolveTime = DateTime.MinValue;
+        private bool isCasterResolving = false;
 
-        // Resolve the caster hostname/URL to an IPv4 address. Updates broadCasterIP (and
-        // persists the setting) only when a new address is found; on failure the previous
-        // broadCasterIP is left untouched so a temporary DNS hiccup doesn't stop reconnects.
-        private bool ResolveCasterIP()
+        // Resolve the caster hostname/URL to an IPv4 address on a worker thread. With no internet
+        // a DNS lookup can hang for several seconds, and this UI thread also relays all module UDP
+        // traffic - blocking it here stops autosteer. Never call Dns.GetHostAddresses on the UI thread.
+        // broadCasterIP is only replaced when a new address is found; on failure the previous one is
+        // kept so a temporary DNS hiccup doesn't stop reconnects.
+        private void ResolveCasterIPAsync()
         {
+            if (isCasterResolving) return;
+
             if (!string.IsNullOrEmpty(broadCasterIP) && DateTime.UtcNow - lastCasterResolveTime < casterResolveInterval)
             {
-                return true;
+                return;
             }
 
+            isCasterResolving = true;
             lastCasterResolveTime = DateTime.UtcNow;
-            string actualIP = Properties.Settings.Default.setNTRIP_casterURL.Trim();
+            string casterURL = Properties.Settings.Default.setNTRIP_casterURL.Trim();
 
-            try
+            Task.Run(() =>
             {
-                IPAddress[] addresslist = Dns.GetHostAddresses(actualIP);
-                foreach (IPAddress address in addresslist)
+                string resolvedIP = null;
+                string error = null;
+
+                try
                 {
-                    if (address.AddressFamily == AddressFamily.InterNetwork)
+                    foreach (IPAddress address in Dns.GetHostAddresses(casterURL))
                     {
-                        string resolvedIP = address.ToString().Trim();
-                        if (resolvedIP != broadCasterIP)
+                        if (address.AddressFamily == AddressFamily.InterNetwork)
                         {
-                            broadCasterIP = resolvedIP;
-                            Properties.Settings.Default.setNTRIP_casterIP = broadCasterIP;
-                            Properties.Settings.Default.Save();
-                            Log.EventWriter("NTRIP - Caster IP resolved to: " + broadCasterIP);
+                            resolvedIP = address.ToString().Trim();
+                            break;
                         }
-                        return true;
                     }
+                    if (resolvedIP == null) error = "no IPv4 address found";
                 }
-            }
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    error = ex.ToString();
+                }
+
+                try
+                {
+                    BeginInvoke((MethodInvoker)(() => OnCasterResolved(casterURL, resolvedIP, error)));
+                }
+                catch (InvalidOperationException)
+                {
+                    //form already closed
+                }
+            });
+        }
+
+        //back on the UI thread with the result of ResolveCasterIPAsync
+        private void OnCasterResolved(string casterURL, string resolvedIP, string error)
+        {
+            isCasterResolving = false;
+
+            //caster URL was changed in the settings meanwhile - resolve the new one on the next attempt
+            if (casterURL != Properties.Settings.Default.setNTRIP_casterURL.Trim())
             {
-                Log.EventWriter("Catch -> NTRIP Resolve Caster IP: " + ex.ToString());
+                lastCasterResolveTime = DateTime.MinValue;
+                return;
             }
 
-            return false;
+            if (resolvedIP == null)
+            {
+                Log.EventWriter("NTRIP - Cannot resolve caster URL: " + casterURL + " -> " + error);
+                Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
+                TimedMessageBox(2500, "NTRIP Connection Failed", "Cannot resolve caster URL: " + casterURL);
+                return;
+            }
+
+            bool hadNoIP = string.IsNullOrEmpty(broadCasterIP);
+
+            if (resolvedIP != broadCasterIP)
+            {
+                broadCasterIP = resolvedIP;
+                Properties.Settings.Default.setNTRIP_casterIP = broadCasterIP;
+                Properties.Settings.Default.Save();
+                Log.EventWriter("NTRIP - Caster IP resolved to: " + broadCasterIP);
+            }
+
+            //was waiting on this lookup to have anything to connect to - start on the next second tick
+            if (hadNoIP && isNTRIP_RequiredOn && !isNTRIP_Connected && !isNTRIP_Connecting && ntripCounter < 20)
+            {
+                ntripCounter = 20;
+            }
         }
 
         public void StartNTRIP()
         {
             if (isNTRIP_RequiredOn)
             {
-                // Re-resolve the caster hostname in case its IP changed (e.g. dynamic DNS)
-                if (!ResolveCasterIP())
-                {
-                    Log.EventWriter("NTRIP - Cannot resolve caster URL: " + Properties.Settings.Default.setNTRIP_casterURL);
-                    Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
-                    TimedMessageBox(2500, "NTRIP Connection Failed", "Cannot resolve caster URL: " + Properties.Settings.Default.setNTRIP_casterURL);
+                // Re-resolve the caster hostname in case its IP changed (e.g. dynamic DNS).
+                // Runs in the background - this attempt uses the last known IP.
+                ResolveCasterIPAsync();
 
-                    if (string.IsNullOrEmpty(broadCasterIP))
-                    {
-                        //no previously known IP to fall back on - nothing to connect to
-                        ReconnectRequest();
-                        return;
-                    }
-                    //otherwise fall back to the last known IP and try anyway
+                if (string.IsNullOrEmpty(broadCasterIP))
+                {
+                    //no known IP yet - nothing to connect to, try again once the lookup is done
+                    ReconnectRequest();
+                    return;
                 }
 
                 broadCasterPort = Properties.Settings.Default.setNTRIP_casterPort; //Select correct port (usually 80 or 2101)
@@ -434,7 +477,11 @@ namespace AgIO
 
             //Thinks is connected but not receiving anything
             if (NTRIP_Watchdog++ > 30 && isNTRIP_Connected)
+            {
+                Log.EventWriter("NTRIP - No data from caster for 30 s, reconnecting");
+                Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
                 ReconnectRequest();
+            }
 
             //Once all connected set the timer GGA to NTRIP Settings
             if (sendGGAInterval > 0 && ntripCounter == 40) tmr.Interval = sendGGAInterval * 1000;
@@ -742,7 +789,8 @@ namespace AgIO
                     Log.EventWriter("Catch -> NTRIP OnConnect: " + exDetails);
                     Log.FileSaveSystemEvents(); //flush immediately for live diagnostics
 
-                    if (isCurrent)
+                    //re-check here - a newer attempt may have replaced clientSocket since the callback ran
+                    if (isCurrent && sock == clientSocket)
                     {
                         TimedMessageBox(2500, "NTRIP Connection Failed", message);
                         ReconnectRequest();
@@ -767,7 +815,11 @@ namespace AgIO
                     byte[] localMsg = new byte[nBytesRec];
                     Array.Copy(casterRecBuffer, localMsg, nBytesRec);
 
-                    BeginInvoke((MethodInvoker)(() => OnAddMessage(localMsg)));
+                    BeginInvoke((MethodInvoker)(() =>
+                    {
+                        //drop data from a socket a newer connection attempt has replaced meanwhile
+                        if (sock == clientSocket) OnAddMessage(localMsg);
+                    }));
                     sock.BeginReceive(casterRecBuffer, 0, casterRecBuffer.Length, SocketFlags.None, new AsyncCallback(OnRecievedData), sock);
                 }
                 else
@@ -783,6 +835,11 @@ namespace AgIO
                     //(e.g. a rejection response that arrived just before this close notification)
                     BeginInvoke((MethodInvoker)(() =>
                     {
+                        //StartNTRIP() shuts the previous socket down itself, which completes its pending
+                        //receive with 0 bytes while it is still clientSocket. By the time this runs a new
+                        //attempt is already connecting - it must not be torn down by the old socket's close.
+                        if (sock != clientSocket) return;
+
                         //this attempt was already handled by another event (typically the caster's
                         //rejection text, processed a moment before this close notification)
                         if (!isNTRIP_Connecting && !isNTRIP_Connected)

@@ -202,6 +202,18 @@ RGB color for each section display.
 |----------|------|---------|-------------|
 | `setHeadland_isSectionControlled` | bool | true | Section control in headland |
 
+## U-Turn Settings (per Tool)
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `set_youTurnExtensionLength` | int | 20 | U-turn extension (meters) |
+| `set_youTurnDistanceFromBoundary` | double | 2.0 | Distance from boundary (meters) |
+| `set_youSkipWidth` | int | 1 | Skip width (passes) |
+| `set_youTurnRadius` | double | 8.1 | Turn radius (meters) |
+| `set_uTurnStyle` | int | 0 | U-turn style (0-2) |
+| `setAS_uTurnSmoothing` | double | 14.0 | U-turn smoothing |
+| `setAS_uTurnCompensation` | double | 1.0 | U-turn compensation |
+
 ## Arduino Machine Settings
 
 | Property | Type | Default | Description |
@@ -391,18 +403,13 @@ RGB color for each section display.
 | `setGPS_ageAlarm` | int | 20 | GPS age alarm |
 | `setGPS_jumpFixAlarmDistance` | int | 0 | Jump fix alarm distance |
 
-## U-Turn Settings
+## Guide Lines
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `set_youTurnExtensionLength` | int | 20 | U-turn extension (meters) |
-| `set_youTurnDistanceFromBoundary` | double | 2.0 | Distance from boundary (meters) |
-| `set_youSkipWidth` | int | 1 | Skip width (passes) |
-| `set_youTurnRadius` | double | 8.1 | Turn radius (meters) |
-| `set_uTurnStyle` | int | 0 | U-turn style (0-2) |
-| `setAS_uTurnSmoothing` | double | 14.0 | U-turn smoothing |
-| `setAS_uTurnCompensation` | double | 1.0 | U-turn compensation |
 | `setAS_numGuideLines` | int | 10 | Number of guide lines |
+
+The U-turn settings moved to the tool profile. Their old entries are still read from the environment file, but no longer written: a tool profile saved before the move takes its U-turn values from there on load.
 
 ## Tram Settings
 

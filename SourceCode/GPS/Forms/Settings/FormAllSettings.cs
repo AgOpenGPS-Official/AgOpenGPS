@@ -229,6 +229,15 @@ namespace AgOpenGPS
             AddHeader(right, "── Work Switch");
             AddRow(right, "Steer Work Switch", tsDefault.setF_isSteerWorkSwitchEnabled, ts.setF_isSteerWorkSwitchEnabled);
             AddRow(right, "Min Coverage", tsDefault.setVehicle_minCoverage, ts.setVehicle_minCoverage);
+
+            AddHeader(right, "── U-Turn (per Tool)");
+            AddRow(right, "Turn Radius", tsDefault.set_youTurnRadius, ts.set_youTurnRadius);
+            AddRow(right, "Dist From Boundary", tsDefault.set_youTurnDistanceFromBoundary, ts.set_youTurnDistanceFromBoundary);
+            AddRow(right, "Skip Width", tsDefault.set_youSkipWidth, ts.set_youSkipWidth);
+            AddRow(right, "Extension Length", tsDefault.set_youTurnExtensionLength, ts.set_youTurnExtensionLength);
+            AddRow(right, "U-Turn Style", tsDefault.set_uTurnStyle, ts.set_uTurnStyle);
+            AddRow(right, "U-Turn Smoothing", tsDefault.setAS_uTurnSmoothing, ts.setAS_uTurnSmoothing);
+            AddRow(right, "U-Turn Compensation", tsDefault.setAS_uTurnCompensation, ts.setAS_uTurnCompensation);
         }
 
         // ── Environment: L = Display/Menu, M = AutoSteer + UTurn + GPS, R = Sound + Global + Work Switch ──
@@ -273,14 +282,7 @@ namespace AgOpenGPS
             AddRow(mid, "AutoSteer Auto On", esDefault.setAS_isAutoSteerAutoOn, es.setAS_isAutoSteerAutoOn);
             AddRow(mid, "Constant Contour", esDefault.setAS_isConstantContourOn, es.setAS_isConstantContourOn);
 
-            AddHeader(mid, "── U-Turn");
-            AddRow(mid, "Turn Radius", esDefault.set_youTurnRadius, es.set_youTurnRadius);
-            AddRow(mid, "Extension Length", esDefault.set_youTurnExtensionLength, es.set_youTurnExtensionLength);
-            AddRow(mid, "Dist From Boundary", esDefault.set_youTurnDistanceFromBoundary, es.set_youTurnDistanceFromBoundary);
-            AddRow(mid, "Skip Width", esDefault.set_youSkipWidth, es.set_youSkipWidth);
-            AddRow(mid, "U-Turn Style", esDefault.set_uTurnStyle, es.set_uTurnStyle);
-            AddRow(mid, "U-Turn Smoothing", esDefault.setAS_uTurnSmoothing, es.setAS_uTurnSmoothing);
-            AddRow(mid, "U-Turn Compensation", esDefault.setAS_uTurnCompensation, es.setAS_uTurnCompensation);
+            AddHeader(mid, "── Guide Lines");
             AddRow(mid, "Num Guide Lines", esDefault.setAS_numGuideLines, es.setAS_numGuideLines);
 
             AddHeader(mid, "── GPS");

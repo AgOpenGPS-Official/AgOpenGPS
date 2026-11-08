@@ -741,26 +741,45 @@ namespace AgOpenGPS
                 tmrWatchdog.Enabled = false;
                 fileSaveCounter = 0;
 
-                //don't save if no gps, and never persist in Easy Drive mode
-                if (isJobStarted && !isEasyDriveMode)
+                string autoSaveStep = "";
+                try
                 {
-                    DistanceToFieldOriginCheck();
+                    //don't save if no gps, and never persist in Easy Drive mode
+                    if (isJobStarted && !isEasyDriveMode)
+                    {
+                        autoSaveStep = "origin check";
+                        DistanceToFieldOriginCheck();
 
-                    //auto save the field patches, contours accumulated so far
-                    FileSaveSections();
-                    FileSaveContour();
+                        //auto save the field patches, contours accumulated so far
+                        autoSaveStep = "sections";
+                        FileSaveSections();
+                        autoSaveStep = "contour";
+                        FileSaveContour();
 
-                    //NMEA elevation file
-                    if (isLogElevation && sbGrid.Length > 0) FileSaveElevation();
+                        //NMEA elevation file
+                        if (isLogElevation && sbGrid.Length > 0)
+                        {
+                            autoSaveStep = "elevation";
+                            FileSaveElevation();
+                        }
 
-                    //ExportFieldAs_KML();
+                        //ExportFieldAs_KML();
+                    }
                 }
-
-                //set saving flag off
-                isSavingFile = false;
-
-                //go see if data ready for draw and position updates
-                tmrWatchdog.Enabled = true;
+                catch (Exception ex)
+                {
+                    //log the failing step, then rethrow so the error is still shown
+                    Log.EventWriter($"Autosave failed at step '{autoSaveStep}' in '{currentFieldDirectory}': " +
+                        $"{ex.GetType().FullName} (HResult 0x{ex.HResult:X8}): {ex.Message.Replace('\r', ' ').Replace('\n', ' ')}");
+                    throw;
+                }
+                finally
+                {
+                    //set saving flag off and always restart the watchdog timer, even if a save failed.
+                    //Otherwise the timer stays off, secondsSinceStart stops and the guidance lines stop updating.
+                    isSavingFile = false;
+                    tmrWatchdog.Enabled = true;
+                }
 
                 //calc overlap
                 oglZoom.Refresh();

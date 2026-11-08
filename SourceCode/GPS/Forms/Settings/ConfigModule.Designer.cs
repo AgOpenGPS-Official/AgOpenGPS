@@ -394,11 +394,11 @@ namespace AgOpenGPS
 
             lblSmoothing.Text = mf.yt.uTurnSmoothing.ToString();
 
-            double bob = Properties.Settings.Default.set_youTurnDistanceFromBoundary * mf.m2FtOrM;
+            double bob = Properties.ToolSettings.Default.set_youTurnDistanceFromBoundary * mf.m2FtOrM;
             if (bob < 0.2) bob = 0.2;
             nudTurnDistanceFromBoundary.Value = (decimal)(Math.Round(bob, 2));
 
-            bob = Properties.Settings.Default.set_youTurnRadius * mf.m2FtOrM;
+            bob = Properties.ToolSettings.Default.set_youTurnRadius * mf.m2FtOrM;
             if (bob < 2) bob = 2;
             nudYouTurnRadius.Value = (decimal)(Math.Round(bob, 2));
 
@@ -407,13 +407,13 @@ namespace AgOpenGPS
 
         private void tabUTurn_Leave(object sender, EventArgs e)
         {
-            Properties.Settings.Default.setAS_uTurnSmoothing = mf.yt.uTurnSmoothing;
-            Properties.Settings.Default.set_youTurnExtensionLength = mf.yt.youTurnStartOffset;
+            Properties.ToolSettings.Default.setAS_uTurnSmoothing = mf.yt.uTurnSmoothing;
+            Properties.ToolSettings.Default.set_youTurnExtensionLength = mf.yt.youTurnStartOffset;
 
-            Properties.Settings.Default.set_youTurnRadius = mf.yt.youTurnRadius;
-            Properties.Settings.Default.set_youTurnDistanceFromBoundary = mf.yt.uturnDistanceFromBoundary;
+            Properties.ToolSettings.Default.set_youTurnRadius = mf.yt.youTurnRadius;
+            Properties.ToolSettings.Default.set_youTurnDistanceFromBoundary = mf.yt.uturnDistanceFromBoundary;
 
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.Save();
 
             mf.bnd.BuildTurnLines();
             mf.yt.ResetCreatedYouTurn();

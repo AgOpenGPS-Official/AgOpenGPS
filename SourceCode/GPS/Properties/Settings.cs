@@ -129,6 +129,8 @@ namespace AgOpenGPS.Properties
         public int setGPS_jumpFixAlarmDistance = 0;
 
         // ===== UTURN SETTINGS =====
+        // The U-turn settings now live in the tool profile (except numGuideLines). These are no longer
+        // written; they only seed tool profiles saved before the move.
         public int set_youTurnExtensionLength = 20;
         public double set_youTurnDistanceFromBoundary = 2;
         public int set_youSkipWidth = 1;
