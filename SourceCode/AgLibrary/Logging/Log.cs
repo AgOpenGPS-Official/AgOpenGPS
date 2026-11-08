@@ -56,7 +56,7 @@ namespace AgLibrary.Logging
             }
         }
 
-        public static void CheckLogSize(string logFile, int maxLines = 100)
+        public static void CheckLogSize(string logFile, int maxLines = 250)
         {
             logsDirectory = logFile;
 

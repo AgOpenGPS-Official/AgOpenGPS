@@ -21,6 +21,8 @@ namespace AgLibrary.Settings
         public static LoadResult LoadXMLFile(string filePath, object obj)
         {
             bool Errors = false;
+            // Last setting name seen, so a file-level failure can say where it stopped
+            string lastField = "";
             try
             {
                 if (!File.Exists(filePath))
@@ -39,6 +41,7 @@ namespace AgLibrary.Settings
                                 if (reader.Name == "setting")
                                 {
                                     name = reader.GetAttribute("name");
+                                    lastField = name ?? "";
                                 }
                                 else if (reader.Name == "value")
                                 {
@@ -47,15 +50,17 @@ namespace AgLibrary.Settings
                                         var pinfo = obj.GetType().GetField(name);
                                         if (pinfo != null)
                                         {
+                                            string rawValue = null;
                                             try
                                             {
-                                                SetFieldValue(pinfo, reader, obj);
+                                                SetFieldValue(pinfo, reader, obj, out rawValue);
                                             }
-                                            catch (Exception)
+                                            catch (Exception ex)
                                             {
                                                 if (Debugger.IsAttached)
                                                     throw;// Re-throws the original exception
                                                 Errors = true;
+                                                LogLoadError($"XML field '{name}' in '{filePath}' (type {pinfo.FieldType.Name}, raw value '{OneLine(rawValue, 200)}', line {reader.LineNumber}): {DescribeException(ex)}");
                                             }
                                         }
                                     }
@@ -69,20 +74,60 @@ namespace AgLibrary.Settings
                     reader.Close();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (Debugger.IsAttached)
                     throw;// Re-throws the original exception
                 Errors = true;
+                LogLoadError($"XML file '{filePath}' could not be read completely (last field '{lastField}'): {DescribeException(ex)}");
             }
             return Errors ? LoadResult.Failed : LoadResult.Ok;
         }
 
-        private static bool SetFieldValue(FieldInfo pinfo, XmlTextReader reader, object obj)
+        /// <summary>
+        /// Writes one load error line to the events log. The log is line based, so the text is kept on one line.
+        /// </summary>
+        private static void LogLoadError(string message)
+        {
+            Log.EventWriter("XML load error: " + OneLine(message, 1000));
+        }
+
+        /// <summary>
+        /// Full description of an exception and its inner exceptions, on one line, including the HResult
+        /// (e.g. 0x80070020 = file in use by another process).
+        /// </summary>
+        private static string DescribeException(Exception ex)
+        {
+            var sb = new StringBuilder();
+            int depth = 0;
+            for (Exception e = ex; e != null && depth < 5; e = e.InnerException, depth++)
+            {
+                if (depth > 0) sb.Append(" <- inner: ");
+                sb.Append(e.GetType().FullName).Append(": ").Append(OneLine(e.Message, 300));
+                sb.Append(" (HResult 0x").Append(e.HResult.ToString("X8", CultureInfo.InvariantCulture)).Append(')');
+
+                if (e is XmlException xml)
+                    sb.Append(" [XML line ").Append(xml.LineNumber).Append(", position ").Append(xml.LinePosition).Append(']');
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Replaces line breaks with spaces and shortens long text. Null becomes "&lt;null&gt;".
+        /// </summary>
+        private static string OneLine(string text, int maxLength)
+        {
+            if (text == null) return "<null>";
+            string single = text.Replace("\r\n", " ").Replace('\r', ' ').Replace('\n', ' ').Trim();
+            return single.Length > maxLength ? single.Substring(0, maxLength) + "..." : single;
+        }
+
+        private static bool SetFieldValue(FieldInfo pinfo, XmlTextReader reader, object obj, out string rawValue)
         {
             Type fieldType = pinfo.FieldType;
             // Read string values
             string value = reader.ReadString();
+            rawValue = value;
 
             if (fieldType == typeof(string))
             {

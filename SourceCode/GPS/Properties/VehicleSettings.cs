@@ -1,3 +1,4 @@
+using AgLibrary.Logging;
 using AgLibrary.Settings;
 using AgOpenGPS.Core.Models;
 using System.IO;
@@ -83,8 +84,13 @@ namespace AgOpenGPS.Properties
                     var backupResult = XmlSettingsHandler.LoadXMLFile(backupPath, this);
                     if (backupResult == LoadResult.Ok)
                     {
+                        Log.EventWriter($"Vehicle profile '{vehicleFileName}': main file failed ({result}), loaded from backup '{backupPath}'");
                         result = LoadResult.Ok;
                         loadedFromBackup = true;
+                    }
+                    else
+                    {
+                        Log.EventWriter($"Vehicle profile '{vehicleFileName}': backup '{backupPath}' also failed ({backupResult})");
                     }
                 }
             }
