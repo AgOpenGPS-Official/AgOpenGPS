@@ -176,6 +176,9 @@ namespace AgOpenGPS
                         btnAutoSteer.Image = trk.isAutoSnapToPivot ? Properties.Resources.AutoSteerOffSnapToPivot : Properties.Resources.AutoSteerOff;
                         //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                         if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
+
+                        ABLine.isABValid = false;
+                        curve.isCurveValid = false;
                     }
 
                     Log.EventWriter("Steer Off, Above Max Safe Speed for Autosteer");
@@ -195,6 +198,10 @@ namespace AgOpenGPS
                 btnAutoSteer.Image = trk.isAutoSnapToPivot ? Properties.Resources.AutoSteerOffSnapToPivot : Properties.Resources.AutoSteerOff;
                 //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                 if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
+
+                // Force the AB line and curve to recalculate now that they are no longer locked to autosteer
+                ABLine.isABValid = false;
+                curve.isCurveValid = false;
             }
             else
             {
