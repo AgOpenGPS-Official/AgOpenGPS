@@ -37,6 +37,7 @@ namespace AgOpenGPS
             mf.isSectionlinesOn = chkSectionLines.Checked;
             mf.isLineSmooth = chkLineSmooth.Checked;
             mf.isHeadlandDistanceOn = chkboxHeadlandDist.Checked;
+            mf.isDebugOn = chkboxDebug.Checked;
 
             //mf.timeToShowMenus = (int)nudMenusOnTime.Value;
 
@@ -54,6 +55,7 @@ namespace AgOpenGPS
             Properties.Settings.Default.setDisplay_isKeyboardOn = mf.isKeyboardOn;
             Properties.Settings.Default.isHeadlandDistanceOn = mf.isHeadlandDistanceOn;
             Properties.Settings.Default.setDisplay_isLogElevation = mf.isLogElevation;
+            Properties.Settings.Default.setDisplay_isDebugOn = mf.isDebugOn;
 
             Properties.Settings.Default.setMenu_isMetric = rbtnDisplayMetric.Checked;
             mf.isMetric = rbtnDisplayMetric.Checked;

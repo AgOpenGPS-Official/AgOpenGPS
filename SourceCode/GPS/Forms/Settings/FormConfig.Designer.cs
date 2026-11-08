@@ -443,6 +443,8 @@ namespace AgOpenGPS
             this.cboxFeatureHeadland = new System.Windows.Forms.CheckBox();
             this.cboxFeatureTram = new System.Windows.Forms.CheckBox();
             this.tabDisplay = new System.Windows.Forms.TabPage();
+            this.lblDebug = new System.Windows.Forms.Label();
+            this.chkboxDebug = new System.Windows.Forms.CheckBox();
             this.lblHeadlandDist = new System.Windows.Forms.Label();
             this.chkboxHeadlandDist = new System.Windows.Forms.CheckBox();
             this.labelLineSmoothOnOff = new System.Windows.Forms.Label();
@@ -7904,6 +7906,8 @@ namespace AgOpenGPS
             // tabDisplay
             // 
             this.tabDisplay.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabDisplay.Controls.Add(this.lblDebug);
+            this.tabDisplay.Controls.Add(this.chkboxDebug);
             this.tabDisplay.Controls.Add(this.lblHeadlandDist);
             this.tabDisplay.Controls.Add(this.chkboxHeadlandDist);
             this.tabDisplay.Controls.Add(this.labelLineSmoothOnOff);
@@ -7943,12 +7947,45 @@ namespace AgOpenGPS
             this.tabDisplay.Enter += new System.EventHandler(this.tabDisplay_Enter);
             this.tabDisplay.Leave += new System.EventHandler(this.tabDisplay_Leave);
             // 
+            // lblDebug
+            // 
+            this.lblDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDebug.BackColor = System.Drawing.Color.Transparent;
+            this.lblDebug.ForeColor = System.Drawing.Color.Black;
+            this.lblDebug.Location = new System.Drawing.Point(691, 108);
+            this.lblDebug.Name = "lblDebug";
+            this.lblDebug.Size = new System.Drawing.Size(100, 16);
+            this.lblDebug.TabIndex = 543;
+            this.lblDebug.Text = "Debug Values";
+            this.lblDebug.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // chkboxDebug
+            // 
+            this.chkboxDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkboxDebug.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkboxDebug.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chkboxDebug.BackgroundImage = global::AgOpenGPS.Properties.Resources.debug;
+            this.chkboxDebug.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.chkboxDebug.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.chkboxDebug.FlatAppearance.BorderSize = 2;
+            this.chkboxDebug.FlatAppearance.CheckedBackColor = System.Drawing.Color.Orange;
+            this.chkboxDebug.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkboxDebug.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkboxDebug.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkboxDebug.Location = new System.Drawing.Point(691, 36);
+            this.chkboxDebug.Name = "chkboxDebug";
+            this.chkboxDebug.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkboxDebug.Size = new System.Drawing.Size(100, 69);
+            this.chkboxDebug.TabIndex = 542;
+            this.chkboxDebug.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkboxDebug.UseVisualStyleBackColor = false;
+            // 
             // lblHeadlandDist
             // 
             this.lblHeadlandDist.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblHeadlandDist.BackColor = System.Drawing.Color.Transparent;
             this.lblHeadlandDist.ForeColor = System.Drawing.Color.Black;
-            this.lblHeadlandDist.Location = new System.Drawing.Point(609, 108);
+            this.lblHeadlandDist.Location = new System.Drawing.Point(520, 108);
             this.lblHeadlandDist.Name = "lblHeadlandDist";
             this.lblHeadlandDist.Size = new System.Drawing.Size(100, 16);
             this.lblHeadlandDist.TabIndex = 541;
@@ -7967,7 +8004,7 @@ namespace AgOpenGPS
             this.chkboxHeadlandDist.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkboxHeadlandDist.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkboxHeadlandDist.Image = global::AgOpenGPS.Properties.Resources.HeadlandDistance;
-            this.chkboxHeadlandDist.Location = new System.Drawing.Point(609, 36);
+            this.chkboxHeadlandDist.Location = new System.Drawing.Point(520, 36);
             this.chkboxHeadlandDist.Name = "chkboxHeadlandDist";
             this.chkboxHeadlandDist.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkboxHeadlandDist.Size = new System.Drawing.Size(100, 69);
@@ -8016,7 +8053,7 @@ namespace AgOpenGPS
             this.labelElevationOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelElevationOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelElevationOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelElevationOnOff.Location = new System.Drawing.Point(612, 232);
+            this.labelElevationOnOff.Location = new System.Drawing.Point(523, 232);
             this.labelElevationOnOff.Name = "labelElevationOnOff";
             this.labelElevationOnOff.Size = new System.Drawing.Size(100, 16);
             this.labelElevationOnOff.TabIndex = 531;
@@ -8083,7 +8120,7 @@ namespace AgOpenGPS
             this.labelSvenArrowOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelSvenArrowOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelSvenArrowOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelSvenArrowOnOff.Location = new System.Drawing.Point(231, 232);
+            this.labelSvenArrowOnOff.Location = new System.Drawing.Point(201, 232);
             this.labelSvenArrowOnOff.Name = "labelSvenArrowOnOff";
             this.labelSvenArrowOnOff.Size = new System.Drawing.Size(100, 16);
             this.labelSvenArrowOnOff.TabIndex = 529;
@@ -8131,7 +8168,7 @@ namespace AgOpenGPS
             this.labelKeyboardOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelKeyboardOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelKeyboardOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelKeyboardOnOff.Location = new System.Drawing.Point(425, 111);
+            this.labelKeyboardOnOff.Location = new System.Drawing.Point(368, 111);
             this.labelKeyboardOnOff.Name = "labelKeyboardOnOff";
             this.labelKeyboardOnOff.Size = new System.Drawing.Size(100, 16);
             this.labelKeyboardOnOff.TabIndex = 521;
@@ -8143,7 +8180,7 @@ namespace AgOpenGPS
             this.labelFullscreenOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelFullscreenOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelFullscreenOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelFullscreenOnOff.Location = new System.Drawing.Point(395, 232);
+            this.labelFullscreenOnOff.Location = new System.Drawing.Point(338, 232);
             this.labelFullscreenOnOff.Name = "labelFullscreenOnOff";
             this.labelFullscreenOnOff.Size = new System.Drawing.Size(162, 16);
             this.labelFullscreenOnOff.TabIndex = 518;
@@ -8155,7 +8192,7 @@ namespace AgOpenGPS
             this.labelSpeedoOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelSpeedoOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelSpeedoOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelSpeedoOnOff.Location = new System.Drawing.Point(231, 112);
+            this.labelSpeedoOnOff.Location = new System.Drawing.Point(201, 112);
             this.labelSpeedoOnOff.Name = "labelSpeedoOnOff";
             this.labelSpeedoOnOff.Size = new System.Drawing.Size(100, 16);
             this.labelSpeedoOnOff.TabIndex = 516;
@@ -8167,7 +8204,7 @@ namespace AgOpenGPS
             this.labelGuideLinesOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelGuideLinesOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelGuideLinesOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelGuideLinesOnOff.Location = new System.Drawing.Point(398, 350);
+            this.labelGuideLinesOnOff.Location = new System.Drawing.Point(341, 350);
             this.labelGuideLinesOnOff.Name = "labelGuideLinesOnOff";
             this.labelGuideLinesOnOff.Size = new System.Drawing.Size(159, 16);
             this.labelGuideLinesOnOff.TabIndex = 519;
@@ -8179,7 +8216,7 @@ namespace AgOpenGPS
             this.labelGridOnOff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelGridOnOff.BackColor = System.Drawing.Color.Transparent;
             this.labelGridOnOff.ForeColor = System.Drawing.Color.Black;
-            this.labelGridOnOff.Location = new System.Drawing.Point(231, 354);
+            this.labelGridOnOff.Location = new System.Drawing.Point(201, 354);
             this.labelGridOnOff.Name = "labelGridOnOff";
             this.labelGridOnOff.Size = new System.Drawing.Size(100, 16);
             this.labelGridOnOff.TabIndex = 515;
@@ -8193,7 +8230,7 @@ namespace AgOpenGPS
             this.nudNumGuideLines.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.nudNumGuideLines.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudNumGuideLines.InterceptArrowKeys = false;
-            this.nudNumGuideLines.Location = new System.Drawing.Point(531, 285);
+            this.nudNumGuideLines.Location = new System.Drawing.Point(474, 285);
             this.nudNumGuideLines.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -8250,7 +8287,7 @@ namespace AgOpenGPS
             this.chkSectionLines.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chkSectionLines.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSectionLines.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.chkSectionLines.Location = new System.Drawing.Point(425, 403);
+            this.chkSectionLines.Location = new System.Drawing.Point(368, 403);
             this.chkSectionLines.Name = "chkSectionLines";
             this.chkSectionLines.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkSectionLines.Size = new System.Drawing.Size(100, 69);
@@ -8273,7 +8310,7 @@ namespace AgOpenGPS
             this.chkDirectionMarkers.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDirectionMarkers.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDirectionMarkers.Image = global::AgOpenGPS.Properties.Resources.ConD_DirectionMarker;
-            this.chkDirectionMarkers.Location = new System.Drawing.Point(234, 403);
+            this.chkDirectionMarkers.Location = new System.Drawing.Point(204, 403);
             this.chkDirectionMarkers.Name = "chkDirectionMarkers";
             this.chkDirectionMarkers.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDirectionMarkers.Size = new System.Drawing.Size(100, 69);
@@ -8293,7 +8330,7 @@ namespace AgOpenGPS
             this.chkDisplayLogElevation.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplayLogElevation.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplayLogElevation.Image = global::AgOpenGPS.Properties.Resources.ConD_LogElevation;
-            this.chkDisplayLogElevation.Location = new System.Drawing.Point(612, 160);
+            this.chkDisplayLogElevation.Location = new System.Drawing.Point(523, 160);
             this.chkDisplayLogElevation.Name = "chkDisplayLogElevation";
             this.chkDisplayLogElevation.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplayLogElevation.Size = new System.Drawing.Size(100, 69);
@@ -8313,7 +8350,7 @@ namespace AgOpenGPS
             this.chkSvennArrow.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSvennArrow.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkSvennArrow.Image = global::AgOpenGPS.Properties.Resources.SvennArrow;
-            this.chkSvennArrow.Location = new System.Drawing.Point(231, 160);
+            this.chkSvennArrow.Location = new System.Drawing.Point(201, 160);
             this.chkSvennArrow.Name = "chkSvennArrow";
             this.chkSvennArrow.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkSvennArrow.Size = new System.Drawing.Size(100, 69);
@@ -8376,7 +8413,7 @@ namespace AgOpenGPS
             this.chkDisplayKeyboard.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplayKeyboard.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplayKeyboard.Image = global::AgOpenGPS.Properties.Resources.ConD_KeyBoard;
-            this.chkDisplayKeyboard.Location = new System.Drawing.Point(425, 39);
+            this.chkDisplayKeyboard.Location = new System.Drawing.Point(368, 39);
             this.chkDisplayKeyboard.Name = "chkDisplayKeyboard";
             this.chkDisplayKeyboard.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplayKeyboard.Size = new System.Drawing.Size(100, 69);
@@ -8418,7 +8455,7 @@ namespace AgOpenGPS
             this.chkDisplayStartFullScreen.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplayStartFullScreen.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplayStartFullScreen.Image = global::AgOpenGPS.Properties.Resources.ConD_FullScreenBegin;
-            this.chkDisplayStartFullScreen.Location = new System.Drawing.Point(425, 160);
+            this.chkDisplayStartFullScreen.Location = new System.Drawing.Point(368, 160);
             this.chkDisplayStartFullScreen.Name = "chkDisplayStartFullScreen";
             this.chkDisplayStartFullScreen.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplayStartFullScreen.Size = new System.Drawing.Size(100, 69);
@@ -8440,7 +8477,7 @@ namespace AgOpenGPS
             this.chkDisplayGrid.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplayGrid.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplayGrid.Image = global::AgOpenGPS.Properties.Resources.ConD_Grid;
-            this.chkDisplayGrid.Location = new System.Drawing.Point(231, 282);
+            this.chkDisplayGrid.Location = new System.Drawing.Point(201, 282);
             this.chkDisplayGrid.Name = "chkDisplayGrid";
             this.chkDisplayGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplayGrid.Size = new System.Drawing.Size(100, 69);
@@ -8460,7 +8497,7 @@ namespace AgOpenGPS
             this.chkDisplaySpeedo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplaySpeedo.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplaySpeedo.Image = global::AgOpenGPS.Properties.Resources.ConD_Speedometer;
-            this.chkDisplaySpeedo.Location = new System.Drawing.Point(231, 39);
+            this.chkDisplaySpeedo.Location = new System.Drawing.Point(201, 39);
             this.chkDisplaySpeedo.Name = "chkDisplaySpeedo";
             this.chkDisplaySpeedo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplaySpeedo.Size = new System.Drawing.Size(100, 69);
@@ -8480,7 +8517,7 @@ namespace AgOpenGPS
             this.chkDisplayExtraGuides.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDisplayExtraGuides.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkDisplayExtraGuides.Image = global::AgOpenGPS.Properties.Resources.ConD_ExtraGuides;
-            this.chkDisplayExtraGuides.Location = new System.Drawing.Point(425, 278);
+            this.chkDisplayExtraGuides.Location = new System.Drawing.Point(368, 278);
             this.chkDisplayExtraGuides.Name = "chkDisplayExtraGuides";
             this.chkDisplayExtraGuides.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDisplayExtraGuides.Size = new System.Drawing.Size(100, 69);
@@ -8502,9 +8539,9 @@ namespace AgOpenGPS
             this.labelCurrentVehicle.TabIndex = 450;
             this.labelCurrentVehicle.Text = "Current Vehicle";
             this.labelCurrentVehicle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
             // labelCurrentTool
-            //
+            // 
             this.labelCurrentTool.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelCurrentTool.AutoSize = true;
             this.labelCurrentTool.BackColor = System.Drawing.Color.Transparent;
@@ -8513,11 +8550,11 @@ namespace AgOpenGPS
             this.labelCurrentTool.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.labelCurrentTool.Location = new System.Drawing.Point(21, 32);
             this.labelCurrentTool.Name = "labelCurrentTool";
-            this.labelCurrentTool.Size = new System.Drawing.Size(138, 23);
+            this.labelCurrentTool.Size = new System.Drawing.Size(114, 23);
             this.labelCurrentTool.TabIndex = 451;
             this.labelCurrentTool.Text = "Current Tool";
             this.labelCurrentTool.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblInchesCm
             // 
             this.lblInchesCm.AutoSize = true;
@@ -8530,14 +8567,14 @@ namespace AgOpenGPS
             this.lblInchesCm.TabIndex = 303;
             this.lblInchesCm.Text = "Inches";
             // 
-            // lblSecTotalWidthMeters
+            // lblSecTotalWidth
             // 
             this.lblSecTotalWidth.AutoSize = true;
             this.lblSecTotalWidth.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSecTotalWidth.ForeColor = System.Drawing.Color.Black;
             this.lblSecTotalWidth.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblSecTotalWidth.Location = new System.Drawing.Point(632, 32);
-            this.lblSecTotalWidth.Name = "lblSecTotalWidthMeters";
+            this.lblSecTotalWidth.Name = "lblSecTotalWidth";
             this.lblSecTotalWidth.Size = new System.Drawing.Size(32, 25);
             this.lblSecTotalWidth.TabIndex = 302;
             this.lblSecTotalWidth.Text = "II";
@@ -9219,5 +9256,7 @@ namespace AgOpenGPS
         private System.Windows.Forms.CheckBox chkboxHeadlandDist;
         private Forms.Config.ConfigSummaryControl configSummaryControl;
         private Forms.Config.ConfigVehicleControl configVehicleControl;
+        private System.Windows.Forms.Label lblDebug;
+        private System.Windows.Forms.CheckBox chkboxDebug;
     }
 }

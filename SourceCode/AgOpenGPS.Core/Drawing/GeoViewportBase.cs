@@ -85,7 +85,8 @@ namespace AgOpenGPS.Core.Drawing
             double scaleViewportToBoundingBox = 1.0 / scaleBoundingBoxToViewport;
             XyCoord xyCenteredCoord = xyClientCoord - 0.5 * ViewportSize;
             // Magic number 0.903
-            GeoDelta delta = (scaleViewportToBoundingBox / Zoom / 0.903) * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
+            // Smaller Zoom means zoomed in (camera closer), so fewer meters per pixel: multiply by Zoom
+            GeoDelta delta = (scaleViewportToBoundingBox * Zoom / 0.903) * new GeoDelta(-xyCenteredCoord.Y, xyCenteredCoord.X);
             return ViewportCenter + delta;
         }
 

@@ -212,6 +212,11 @@ namespace AgIO
                     ParseTRA();
                 }
 
+                else if (words[0] == "$PASHR" && words.Length > 11)
+                {
+                    ParsePASHR();
+                }
+
                 else if (words[0] == "$PSTI" && words[1] == "032" && !isSti035Available && !isSti036Available) //PSTI,032 and 035 messages are kind of outdated, but stay here for supporting older SkyTraq setups with two receivers.
                 {
                     ParseSTI032STI035();
@@ -948,6 +953,38 @@ namespace AgIO
                 if (trasolution != 4) rollK = 0;
                 rollData = rollK;
                 roll = (float)(rollK);
+            }
+        }
+
+        private void ParsePASHR()
+        {
+            #region PASHR Message
+            //$PASHR,093919.201,212.952,T,-1.916,0.427,0.000,0.000,0.000,0.000,4,0*30
+
+            //(0)  Message ID $PASHR
+            //(1)  UTC time hhmmss.ss
+            //(2)  True heading, degrees
+            //(3)  T = heading relative to True North
+            //(4)  Roll angle, degrees
+            //(5)  Pitch angle, degrees
+            //(6)  Heave, meters
+            //(7)  Roll angle accuracy estimate, degrees
+            //(8)  Pitch angle accuracy estimate, degrees
+            //(9)  Heading angle accuracy estimate, degrees
+            //(10) GNSS quality indicator
+            //(11) INS alignment status
+            //(12) Checksum
+            #endregion PASHR Message
+
+            if (!string.IsNullOrEmpty(words[2]) && !string.IsNullOrEmpty(words[4]))
+            {
+                //True heading from GNSS/INS
+                float.TryParse(words[2], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrueDual);
+                headingTrueDualData = headingTrueDual;
+
+                //Roll angle
+                float.TryParse(words[4], NumberStyles.Float, CultureInfo.InvariantCulture, out roll);
+                rollData = roll;
             }
         }
 

@@ -94,7 +94,7 @@ namespace AgOpenGPS
             maxSteerSpeed = Properties.VehicleSettings.Default.setAS_maxSteerSpeed;
             minSteerSpeed = Properties.VehicleSettings.Default.setAS_minSteerSpeed;
 
-            uturnCompensation = Properties.Settings.Default.setAS_uTurnCompensation;
+            uturnCompensation = Properties.ToolSettings.Default.setAS_uTurnCompensation;
         }
 
         public int modeTimeCounter = 0;

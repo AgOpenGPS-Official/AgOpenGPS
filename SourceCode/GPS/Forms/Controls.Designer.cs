@@ -176,6 +176,9 @@ namespace AgOpenGPS
                         btnAutoSteer.Image = trk.isAutoSnapToPivot ? Properties.Resources.AutoSteerOffSnapToPivot : Properties.Resources.AutoSteerOff;
                         //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                         if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
+
+                        ABLine.isABValid = false;
+                        curve.isCurveValid = false;
                     }
 
                     Log.EventWriter("Steer Off, Above Max Safe Speed for Autosteer");
@@ -195,6 +198,10 @@ namespace AgOpenGPS
                 btnAutoSteer.Image = trk.isAutoSnapToPivot ? Properties.Resources.AutoSteerOffSnapToPivot : Properties.Resources.AutoSteerOff;
                 //if (yt.isYouTurnBtnOn) btnAutoYouTurn.PerformClick();
                 if (sounds.isSteerSoundOn) sounds.sndAutoSteerOff.Play();
+
+                // Force the AB line and curve to recalculate now that they are no longer locked to autosteer
+                ABLine.isABValid = false;
+                curve.isCurveValid = false;
             }
             else
             {
@@ -246,7 +253,7 @@ namespace AgOpenGPS
             else
             {
                 yt.isYouTurnBtnOn = false;
-                //yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
+                //yt.rowSkipsWidth = Properties.ToolSettings.Default.set_youSkipWidth;
                 //yt.Set_Alternate_skips();
 
                 btnAutoYouTurn.Image = Properties.Resources.YouTurnNo;
@@ -706,7 +713,7 @@ namespace AgOpenGPS
                     Properties.Settings.Default.Load();
 
                     // Re-apply live variables from freshly loaded Settings.Default
-                    vehicle.uturnCompensation = Properties.Settings.Default.setAS_uTurnCompensation;
+                    vehicle.uturnCompensation = Properties.ToolSettings.Default.setAS_uTurnCompensation;
                     guidanceLookAheadTime = Properties.Settings.Default.setAS_guidanceLookAheadTime;
                     isLightBarNotSteerBar = Properties.Settings.Default.setMenu_isLightbarNotSteerBar;
                     isLightbarOn = Properties.Settings.Default.setMenu_isLightbarOn;
@@ -1890,7 +1897,7 @@ namespace AgOpenGPS
         }
         private void btnYouSkipEnable_Click(object sender, EventArgs e)
         {
-            yt.rowSkipsWidth = Properties.Settings.Default.set_youSkipWidth;
+            yt.rowSkipsWidth = Properties.ToolSettings.Default.set_youSkipWidth;
             switch (yt.skipMode)
             {
                 case SkipMode.Normal:
@@ -1930,8 +1937,8 @@ namespace AgOpenGPS
             yt.rowSkipsWidth = cboxpRowWidth.SelectedIndex + 1;
             yt.Set_Alternate_skips();
             if (!yt.isYouTurnTriggered) yt.ResetCreatedYouTurn();
-            Properties.Settings.Default.set_youSkipWidth = yt.rowSkipsWidth;
-            Properties.Settings.Default.Save();
+            Properties.ToolSettings.Default.set_youSkipWidth = yt.rowSkipsWidth;
+            Properties.ToolSettings.Default.Save();
         }
         private void btnHeadlandOnOff_Click(object sender, EventArgs e)
         {

@@ -387,6 +387,7 @@ namespace AgOpenGPS
             chkSectionLines.Checked = Properties.Settings.Default.setDisplay_isSectionLinesOn;
             chkLineSmooth.Checked = Properties.Settings.Default.setDisplay_isLineSmooth;
             chkboxHeadlandDist.Checked = Properties.Settings.Default.isHeadlandDistanceOn;
+            chkboxDebug.Checked = mf.isDebugOn;
 
             if (mf.isMetric) rbtnDisplayMetric.Checked = true;
             else rbtnDisplayImperial.Checked = true;

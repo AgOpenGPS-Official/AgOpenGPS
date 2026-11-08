@@ -54,6 +54,7 @@ namespace AgOpenGPS
         public bool isKeyboardOn = true, isAutoStartAgIO = true, isSvennArrowOn = true;
         public bool isSectionlinesOn = true, isLineSmooth = true;
         public bool isHeadlandDistanceOn;
+        public bool isDebugOn = false;
 
         public bool isLightBarNotSteerBar = false;
 
@@ -463,8 +464,20 @@ namespace AgOpenGPS
             //OGL control
             isUTurnOn = Properties.Settings.Default.setFeatures.isUTurnOn;
             isLateralOn = Properties.Settings.Default.setFeatures.isLateralOn;
-            cboxpRowWidth.SelectedIndex = (Properties.Settings.Default.set_youSkipWidth - 1);
+            cboxpRowWidth.SelectedIndex = (Properties.ToolSettings.Default.set_youSkipWidth - 1);
             btnYouSkipEnable.Image = Resources.YouSkipOff;
+
+            // The U-turn settings come from the loaded tool profile
+            yt.youTurnRadius = Properties.ToolSettings.Default.set_youTurnRadius;
+            yt.youTurnStartOffset = Properties.ToolSettings.Default.set_youTurnExtensionLength;
+            yt.uTurnStyle = Properties.ToolSettings.Default.set_uTurnStyle;
+            double turnDistance = Properties.ToolSettings.Default.set_youTurnDistanceFromBoundary;
+            if (yt.uturnDistanceFromBoundary != turnDistance)
+            {
+                yt.uturnDistanceFromBoundary = turnDistance;
+                bnd.BuildTurnLines();
+                yt.ResetCreatedYouTurn();
+            }
             isNudgeOn = Properties.Settings.Default.setFeatures.isABLineOn;
 
             isSectionlinesOn = Properties.Settings.Default.setDisplay_isSectionLinesOn;
@@ -528,6 +541,7 @@ namespace AgOpenGPS
             isTextureOn = Settings.Default.setDisplay_isTextureOn;
             isLogElevation = Settings.Default.setDisplay_isLogElevation;
             isLineSmooth = Properties.Settings.Default.setDisplay_isLineSmooth;
+            isDebugOn = Properties.Settings.Default.setDisplay_isDebugOn;
 
             isGridOn = Settings.Default.setMenu_isGridOn;
             isBrightnessOn = Settings.Default.setDisplay_isBrightnessOn;
@@ -694,7 +708,7 @@ namespace AgOpenGPS
 
             fd.workedAreaTotalUser = Settings.Default.setF_UserTotalArea;
 
-            yt.uTurnSmoothing = (int)Settings.Default.setAS_uTurnSmoothing;
+            yt.uTurnSmoothing = (int)Properties.ToolSettings.Default.setAS_uTurnSmoothing;
 
             tool.halfWidth = (tool.width - tool.overlap) / 2.0;
             tool.contourWidth = (tool.width - tool.overlap) / 3.0;
@@ -1242,8 +1256,8 @@ namespace AgOpenGPS
                                 if (yt.uTurnStyle > 1) yt.uTurnStyle = 0;
                                 yt.ResetCreatedYouTurn();
 
-                                Properties.Settings.Default.set_uTurnStyle = yt.uTurnStyle;
-                                Properties.Settings.Default.Save();
+                                Properties.ToolSettings.Default.set_uTurnStyle = yt.uTurnStyle;
+                                Properties.ToolSettings.Default.Save();
 
                                 return;
                             }
