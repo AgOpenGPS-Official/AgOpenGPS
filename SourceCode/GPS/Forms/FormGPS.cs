@@ -677,7 +677,7 @@ namespace AgOpenGPS
             e.Cancel = true; // Prevent immediate close
 
             // Close subforms
-            string[] formNames = { "FormGPSData", "FormFieldData", "FormPan", "FormTimedMessage", "FormWebCam" };
+            string[] formNames = { "FormGPSData", "FormFieldData", "FormPan", "FormTimedMessage" };
             foreach (string name in formNames)
             {
                 Form f = Application.OpenForms[name];
@@ -685,6 +685,12 @@ namespace AgOpenGPS
                 {
                     try { f.Close(); } catch { }
                 }
+            }
+
+            // Several webcam windows can be open, Application.OpenForms[name] only finds the first
+            foreach (FormWebCam webCam in this.OwnedForms.OfType<FormWebCam>().ToArray())
+            {
+                try { webCam.Close(); } catch { }
             }
 
             // Cancel shutdown if owned forms are still open
