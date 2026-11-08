@@ -687,6 +687,12 @@ namespace AgOpenGPS
                 }
             }
 
+            // Several webcam windows can be open, Application.OpenForms[name] only finds the first
+            foreach (FormWebCam webCam in this.OwnedForms.OfType<FormWebCam>().ToArray())
+            {
+                try { webCam.Close(); } catch { }
+            }
+
             // Cancel shutdown if owned forms are still open
             if (this.OwnedForms.Any())
             {
