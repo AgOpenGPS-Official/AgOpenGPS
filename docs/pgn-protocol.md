@@ -220,12 +220,12 @@ Sent when:
 |-----|------|-------------|
 | 0 | Valid | `1` = data is valid (active guidance track exists). `0` = no active guidance; track fields should be ignored. |
 | 1 | Heading Same Way | `1` = vehicle is travelling in the same direction as the guidance reference heading. `0` = vehicle is travelling opposite to the reference heading. |
-| 2 | Mode | `0` = AB line guidance, `1` = curve guidance. |
+| 2 | Mode | `0` = AB line guidance, `1` = any curve based track (curve, boundary curve, water pivot). |
 | 3-7 | Reserved | Reserved for future use, always `0`. |
 
 **Behaviour and timing:**
 
-- Sent whenever the track context **changes** (pass number, reference ID, heading direction, swath width, or validity).
+- Sent whenever the track context **changes** (pass number, reference ID, heading direction, swath width, or validity), and re-sent at least once per second so a lost datagram or a listener that starts mid-pass recovers.
 - Minimum send interval: **100 ms** (rate-limited to avoid flooding).
 - **U-turn:** AOG switches to the next pass internally when the U-turn is triggered, before the vehicle leaves the current pass. PGN 0xF4 keeps reporting the pass being finished (track number and heading) until the U-turn completes, then switches to the new pass. A cancelled U-turn keeps the original pass throughout.
 - When no guidance track is active (e.g. field just opened, no AB line created), the message is sent with `Flags = 0x00` and `Guidance Reference ID = 0`.

@@ -220,8 +220,8 @@ namespace AgOpenGPS
                 CTrk track = mf.trk.gArr[mf.trk.idx];
                 refId = (ushort)(mf.trk.idx + 1);
 
-                // Mode bits (bits 2-3): 0=AB, 1=Curve
-                if (track.mode == TrackMode.Curve)
+                // Mode bit (bit 2): 0=AB, 1=any curve based track (curve, boundary curve, water pivot)
+                if (track.mode != TrackMode.AB)
                     flags |= 0x04;
 
                 int pathsAway;
@@ -283,13 +283,15 @@ namespace AgOpenGPS
                 flags |= 0x01;
             }
 
-            // Change detection — only send when something changed, with 100 ms minimum interval
+            // Send on change (100 ms minimum interval) and at least once per second, this is UDP so
+            // a lost datagram or a listener that starts mid-pass must not wait for the next pass change
             if (refId == lastTrackContextRefId
                 && currentTrack == lastTrackContextCurrent
                 && trackLeft == lastTrackContextLeft
                 && trackRight == lastTrackContextRight
                 && swathWidthMm == lastTrackContextWidth
-                && flags == lastTrackContextFlags)
+                && flags == lastTrackContextFlags
+                && DateTimeOffset.Now - trackContextTime < TimeSpan.FromSeconds(1))
             {
                 return;
             }

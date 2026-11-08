@@ -855,6 +855,9 @@ namespace AgOpenGPS
             //if the whole path driving driving process is green
             if (recPath.isDrivingRecordedPath) recPath.UpdatePosition();
 
+            // Outside the free drive check, listeners need the track context in both modes
+            isobus.SendGuidanceTrackContext();
+
             // If Drive button off - normal autosteer 
             if (!vehicle.isInFreeDriveMode)
             {
@@ -873,7 +876,6 @@ namespace AgOpenGPS
                 }
                 isobus.SetActualSpeed(currentSpeed);
                 isobus.SetTotalDistance((int)(fd.distanceUser * 1000)); // convert from meter to mm
-                isobus.SendGuidanceTrackContext();
 
                 if (!isBtnAutoSteerOn) //32020 means auto steer is off
                 {
