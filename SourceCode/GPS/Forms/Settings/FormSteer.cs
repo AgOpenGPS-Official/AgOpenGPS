@@ -202,6 +202,7 @@ namespace AgOpenGPS
             cboxCrabToolOnLine.Checked = Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine;
             cboxCrabToolOnLine.Text = gStr.gsCrabToolOnLine;
             cboxToolCurveComp.Checked = Properties.ToolSettings.Default.setVehicle_isToolCurveComp;
+            cboxToolTrim.Checked = Properties.ToolSettings.Default.setVehicle_isToolTrim;
             UpdateCrabCompensationText();
 
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
@@ -1000,6 +1001,12 @@ namespace AgOpenGPS
             Properties.ToolSettings.Default.setVehicle_isToolCurveComp = cboxToolCurveComp.Checked;
         }
 
+        private void cboxToolTrim_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isToolTrim = cboxToolTrim.Checked;
+            if (!cboxToolTrim.Checked) mf.crab.ResetTrim();
+        }
+
         private void UpdateCrabCompensationText()
         {
             string text = gStr.gsCrabCompensation;
@@ -1031,6 +1038,16 @@ namespace AgOpenGPS
                 curveText += " " + (mf.curve.isToolRefActive ? "on" : "--");
             }
             if (cboxToolCurveComp.Text != curveText) cboxToolCurveComp.Text = curveText;
+
+            // Tool trim (debug/test, not translated yet): show the sideways trim of the guidance pivot while it is on
+            string trimText = "Tool trim";
+            if (cboxToolTrim.Checked)
+            {
+                trimText += " " + (mf.crab.isTrimActive
+                    ? (mf.crab.trimShift * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + " cm"
+                    : "--");
+            }
+            if (cboxToolTrim.Text != trimText) cboxToolTrim.Text = trimText;
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)

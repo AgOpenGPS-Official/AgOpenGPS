@@ -129,6 +129,8 @@ namespace AgOpenGPS.Properties
         public bool setVehicle_isCrabToolOnLine = false;
         // Steer a rigid tool behind the rear axle onto a curve: pure pursuit follows a precomputed pivot path
         public bool setVehicle_isToolCurveComp = false;
+        // Slow outer loop: trims the guidance pivot until the measured tool error is zero. Debug/test option.
+        public bool setVehicle_isToolTrim = false;
 
         // Tool specific Steer Parameters
         public double setVehicle_goalPointLookAheadHold = 3;
@@ -156,6 +158,7 @@ namespace AgOpenGPS.Properties
             setVehicle_isCrabCompensationOn = false;
             setVehicle_isCrabToolOnLine = false;
             setVehicle_isToolCurveComp = false;
+            setVehicle_isToolTrim = false;
 
             LoadResult result = LoadProfile(toolFileName);
             SeedUTurnFromEnvironment();

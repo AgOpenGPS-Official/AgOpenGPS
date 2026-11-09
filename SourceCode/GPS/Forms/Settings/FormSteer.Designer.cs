@@ -127,6 +127,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.cboxCrabCompensation = new System.Windows.Forms.CheckBox();
             this.cboxCrabToolOnLine = new System.Windows.Forms.CheckBox();
+            this.cboxToolTrim = new System.Windows.Forms.CheckBox();
             this.cboxToolCurveComp = new System.Windows.Forms.CheckBox();
             this.lblSideHillComp = new System.Windows.Forms.Label();
             this.hsbarSideHillComp = new System.Windows.Forms.HScrollBar();
@@ -1505,7 +1506,7 @@
             this.cboxCrabCompensation.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cboxCrabCompensation.Location = new System.Drawing.Point(9, 409);
             this.cboxCrabCompensation.Name = "cboxCrabCompensation";
-            this.cboxCrabCompensation.Size = new System.Drawing.Size(176, 53);
+            this.cboxCrabCompensation.Size = new System.Drawing.Size(122, 53);
             this.cboxCrabCompensation.TabIndex = 362;
             this.cboxCrabCompensation.Text = "Crab Comp (Dual)";
             this.cboxCrabCompensation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1521,9 +1522,9 @@
             this.cboxCrabToolOnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cboxCrabToolOnLine.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxCrabToolOnLine.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cboxCrabToolOnLine.Location = new System.Drawing.Point(199, 409);
+            this.cboxCrabToolOnLine.Location = new System.Drawing.Point(137, 409);
             this.cboxCrabToolOnLine.Name = "cboxCrabToolOnLine";
-            this.cboxCrabToolOnLine.Size = new System.Drawing.Size(136, 53);
+            this.cboxCrabToolOnLine.Size = new System.Drawing.Size(118, 53);
             this.cboxCrabToolOnLine.TabIndex = 363;
             this.cboxCrabToolOnLine.Text = "Tool on line";
             this.cboxCrabToolOnLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1539,14 +1540,32 @@
             this.cboxToolCurveComp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cboxToolCurveComp.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxToolCurveComp.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cboxToolCurveComp.Location = new System.Drawing.Point(349, 409);
+            this.cboxToolCurveComp.Location = new System.Drawing.Point(261, 409);
             this.cboxToolCurveComp.Name = "cboxToolCurveComp";
-            this.cboxToolCurveComp.Size = new System.Drawing.Size(150, 53);
+            this.cboxToolCurveComp.Size = new System.Drawing.Size(118, 53);
             this.cboxToolCurveComp.TabIndex = 364;
             this.cboxToolCurveComp.Text = "Tool in curves";
             this.cboxToolCurveComp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cboxToolCurveComp.UseVisualStyleBackColor = false;
             this.cboxToolCurveComp.Click += new System.EventHandler(this.cboxToolCurveComp_Click);
+            // 
+            // cboxToolTrim
+            // 
+            this.cboxToolTrim.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxToolTrim.BackColor = System.Drawing.Color.White;
+            this.cboxToolTrim.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.cboxToolTrim.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
+            this.cboxToolTrim.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxToolTrim.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxToolTrim.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cboxToolTrim.Location = new System.Drawing.Point(385, 409);
+            this.cboxToolTrim.Name = "cboxToolTrim";
+            this.cboxToolTrim.Size = new System.Drawing.Size(118, 53);
+            this.cboxToolTrim.TabIndex = 365;
+            this.cboxToolTrim.Text = "Tool trim";
+            this.cboxToolTrim.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxToolTrim.UseVisualStyleBackColor = false;
+            this.cboxToolTrim.Click += new System.EventHandler(this.cboxToolTrim_Click);
             // 
             // lblSideHillComp
             // 
@@ -2234,6 +2253,7 @@
             this.tabSettings.Controls.Add(this.cboxCrabCompensation);
             this.tabSettings.Controls.Add(this.cboxCrabToolOnLine);
             this.tabSettings.Controls.Add(this.cboxToolCurveComp);
+            this.tabSettings.Controls.Add(this.cboxToolTrim);
             this.tabSettings.Controls.Add(this.label41);
             this.tabSettings.Controls.Add(this.label39);
             this.tabSettings.Controls.Add(this.hsbarUTurnCompensation);
@@ -3371,6 +3391,7 @@
         private System.Windows.Forms.CheckBox cboxCrabCompensation;
         private System.Windows.Forms.CheckBox cboxCrabToolOnLine;
         private System.Windows.Forms.CheckBox cboxToolCurveComp;
+        private System.Windows.Forms.CheckBox cboxToolTrim;
         private System.Windows.Forms.Label labelOnOff;
         private System.Windows.Forms.Label labelOnDelay;
         private NudlessNumericUpDown nudDeadZoneDelay;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AgOpenGPS
 {
@@ -50,6 +51,40 @@ namespace AgOpenGPS
         /// <summary>Sideways shift of the guidance pivot in metres, positive to the right. Zero unless tool-on-line is active.</summary>
         public double toolShift;
 
+        /// <summary>
+        /// Sideways trim of the guidance pivot in metres, positive to the right, from the slow outer loop
+        /// (tool trim). It is added to toolShift and removes what is left of the measured tool error.
+        /// </summary>
+        public double trimShift;
+
+        /// <summary>True while the outer loop is integrating, for the button text and the log.</summary>
+        public bool isTrimActive;
+
+        // Outer loop state
+        private double trimErrorFiltered;
+        public double trimFilteredError => trimErrorFiltered;
+        private readonly Stopwatch trimClock = Stopwatch.StartNew();
+        private double lastTrimTime;
+        private double trimActiveSince = -1;
+
+        // Largest trim of the guidance pivot
+        private const double maxTrimShift = 0.25;
+
+        // Time constant of the outer loop in units of hitch / speed. A rigid tool behind the axle cannot be
+        // corrected faster than about hitch / speed, the loop turns unstable below roughly 4. Simulated with 4.
+        private const double trimTimeFactor = 6.0;
+        private const double minTrimTc = 10.0;
+        private const double maxTrimTc = 90.0;
+
+        // Low pass on the measured tool error, seconds
+        private const double trimFilterTime = 1.5;
+
+        // Integrate only after this many seconds of valid conditions, and only close to the line
+        private const double trimWarmUp = 3.0;
+        private const double maxTrimError = 0.30;
+        private const double maxTrimHeadingError = 10.0 * Math.PI / 180.0;
+        private const double minTrimSpeed = 3.0;
+
         private readonly List<Sample> window = new List<Sample>();
         private vec3 lastShiftPivot;
         private bool hasLastShiftPivot;
@@ -97,7 +132,16 @@ namespace AgOpenGPS
             toolShift = 0;
             hasLastShiftPivot = false;
             isActive = false;
+            ResetTrim();
             ClearWindow();
+        }
+
+        public void ResetTrim()
+        {
+            trimShift = 0;
+            trimErrorFiltered = 0;
+            isTrimActive = false;
+            trimActiveSince = -1;
         }
 
         private void ClearWindow()
@@ -122,6 +166,7 @@ namespace AgOpenGPS
 
             isActive = true;
             UpdateToolShift(pivot);
+            UpdateTrim();
 
             if (mf.isReverse || mf.avgSpeed < minSpeed || mf.yt.isYouTurnTriggered)
             {
@@ -163,7 +208,7 @@ namespace AgOpenGPS
         /// tool position follows exactly from the tractor position and heading.
         /// </summary>
         /// <summary>Shift actually applied to the guidance pivot. Stanley uses the plain pivot.</summary>
-        public double AppliedShift => mf.isStanleyUsed ? 0 : toolShift;
+        public double AppliedShift => mf.isStanleyUsed ? 0 : toolShift + trimShift;
 
         /// <summary>True when the tool XTE is shown: tool-on-line is on and in use.</summary>
         public bool isToolOnLineActive =>
@@ -201,6 +246,53 @@ namespace AgOpenGPS
 
             double maxChange = toolShiftRampPerMetre * step;
             toolShift += Math.Max(-maxChange, Math.Min(maxChange, target - toolShift));
+        }
+
+        /// <summary>
+        /// Slow outer loop. mf.toolLineDistanceOff is the measured distance of the hitch point to the real line
+        /// (positive to the right of travel), already including the effect of toolShift and the reference path.
+        /// The trim integrates what is left of it, so hitch length errors, noise and unknown side drift are
+        /// removed without a faster loop than the tool can follow.
+        /// Outside its conditions the trim fades back to zero: a headland turn or a pass in the other direction
+        /// has a different side force, so a stale value would be wrong.
+        /// </summary>
+        private void UpdateTrim()
+        {
+            double now = trimClock.Elapsed.TotalSeconds;
+            double dt = Math.Min(0.5, Math.Max(0, now - lastTrimTime));
+            lastTrimTime = now;
+
+            double hitch = Math.Abs(mf.tool.GetHitchLengthFromVehiclePivot());
+            double error = mf.toolLineDistanceOff * 0.001;
+
+            bool canTrim = Properties.ToolSettings.Default.setVehicle_isToolTrim
+                && IsRigidTool && !mf.isStanleyUsed && mf.isBtnAutoSteerOn
+                && !mf.isReverse && !mf.yt.isYouTurnTriggered
+                && mf.avgSpeed >= minTrimSpeed && hitch >= 1.0
+                && Math.Abs(mf.toolLineDistanceOff) < 28999
+                && Math.Abs(error) < maxTrimError
+                && Math.Abs(mf.vehicle.modeActualHeadingError * Math.PI / 180.0) < maxTrimHeadingError;
+
+            if (!canTrim)
+            {
+                isTrimActive = false;
+                trimActiveSince = -1;
+                trimErrorFiltered = 0;
+                trimShift *= 0.99;
+                if (Math.Abs(trimShift) < 0.0005) trimShift = 0;
+                return;
+            }
+
+            if (trimActiveSince < 0) trimActiveSince = now;
+            isTrimActive = true;
+            if (now - trimActiveSince < trimWarmUp || dt <= 0) return;
+
+            double speed = mf.avgSpeed / 3.6;
+            double tc = Math.Max(minTrimTc, Math.Min(maxTrimTc, trimTimeFactor * hitch / speed));
+
+            trimErrorFiltered += (error - trimErrorFiltered) * (1.0 - Math.Exp(-dt / trimFilterTime));
+            trimShift += trimErrorFiltered * dt / tc;
+            trimShift = Math.Max(-maxTrimShift, Math.Min(maxTrimShift, trimShift));
         }
 
         /// <summary>
