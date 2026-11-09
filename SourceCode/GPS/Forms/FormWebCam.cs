@@ -28,6 +28,18 @@ namespace AgOpenGPS
             }
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            //don't leave the camera running behind a closed window
+            if (videoSourcePlayer.IsRunning)
+            {
+                videoSourcePlayer.SignalToStop();
+                videoSourcePlayer.WaitForStop();
+            }
+
+            base.OnFormClosing(e);
+        }
+
         private void UpdateButtons()
         {
             startButton.Enabled = deviceComboBox.SelectedItem != null;
