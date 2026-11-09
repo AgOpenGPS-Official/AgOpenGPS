@@ -28,7 +28,10 @@ namespace AgOpenGPS
         private const string header =
             "t_s,mode,autosteer,speed_kmh,easting,northing,fixHeading_deg,guidanceHeading_deg,yawRate_deg_s," +
             "crab_deg,crabRaw_deg,toolShift_m,toolRef,hitch_m,rigid,crabOn,toolOnLineOn,toolCurveOn,headingErr_deg," +
-            "xteRear_mm,xteTool_mm,lookAhead_m,steerReq_deg,steerAct_deg,integral,sameWay";
+            "xteRear_mm,xteTool_mm,lookAhead_m,steerReq_deg,steerAct_deg,integral,sameWay," +
+            // Outer loop (tool trim) and the heading sources, to measure the gyro drift against the dual heading:
+            // drift = unwrap(imuRaw - dualTrue) over time. 99999 = no IMU, 32000 = no value.
+            "trim_m,trimOn,trimFiltErr_mm,imuRaw_deg,imuGpsOffset_deg,dualTrue_deg,gpsHeading_deg,imuRoll_deg";
 
         public void Write()
         {
@@ -97,7 +100,15 @@ namespace AgOpenGPS
                   .Append((mf.guidanceLineSteerAngle * 0.01).ToString("F2", c)).Append(',')
                   .Append(mf.mc.actualSteerAngleDegrees.ToString("F2", c)).Append(',')
                   .Append((isAB ? mf.ABLine.inty : mf.curve.inty).ToString("F4", c)).Append(',')
-                  .Append((isAB ? mf.ABLine.isHeadingSameWay : mf.curve.isHeadingSameWay) ? 1 : 0);
+                  .Append((isAB ? mf.ABLine.isHeadingSameWay : mf.curve.isHeadingSameWay) ? 1 : 0).Append(',')
+                  .Append(mf.crab.trimShift.ToString("F4", c)).Append(',')
+                  .Append(mf.crab.isTrimActive ? 1 : 0).Append(',')
+                  .Append((mf.crab.trimFilteredError * 1000.0).ToString("F1", c)).Append(',')
+                  .Append(mf.ahrs.imuHeading.ToString("F3", c)).Append(',')
+                  .Append(glm.toDegrees(mf.imuGPS_Offset).ToString("F3", c)).Append(',')
+                  .Append(mf.pn.headingTrueDual.ToString("F3", c)).Append(',')
+                  .Append(glm.toDegrees(mf.gpsHeading).ToString("F3", c)).Append(',')
+                  .Append(mf.ahrs.imuRoll.ToString("F2", c));
                 writer.WriteLine(sb.ToString());
             }
             catch (Exception)
