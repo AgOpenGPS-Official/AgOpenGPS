@@ -202,6 +202,7 @@ namespace AgLibrary.Ntrip
             bool startMain;
             lock (_sync) { _runToken = ct; startMain = !_mainPaused; }
             if (startMain) StartMain();
+            if (_fallbackFactory != null) _ = Task.Run(() => WatchNetworkAsync(ct));
 
             Task main;
             lock (_sync) main = _mainTask;
@@ -235,7 +236,11 @@ namespace AgLibrary.Ntrip
         }
 
         /// <summary>The user goes back to the main service (after being asked, or by choice).</summary>
-        public void SwitchBackToMain()
+        public void SwitchBackToMain() => SwitchBackToMain(false);
+
+        // quiet: the manager itself goes back to the main service to try it first; no "back on main" message,
+        // because it is not known to work yet.
+        private void SwitchBackToMain(bool quiet)
         {
             CancellationTokenSource cts;
             bool restartMain;
@@ -253,8 +258,59 @@ namespace AgLibrary.Ntrip
 
             if (cts != null) cts.Cancel();
             if (restartMain) StartMain();
-            RaiseNotice(NoticeKind.SwitchedToMain, "Back on the main service", "Corrections now come from the main service again.");
+            if (!quiet) RaiseNotice(NoticeKind.SwitchedToMain, "Back on the main service", "Corrections now come from the main service again.");
             RaiseStatus();
+        }
+
+        // The network came back. When nothing delivers, the main service is the first to be tried again; the
+        // fallback only gets its turn when the main service fails again (OnMainStatus starts it then).
+        // A source that still delivers is left alone: network changes also happen while all is well.
+        private void OnNetworkBack()
+        {
+            CancellationTokenSource stop = null;
+            bool backToMain = false;
+
+            lock (_sync)
+            {
+                if (_fallbackFactory == null) return;
+                // A main service that gave up (wrong login) is not running: the network changes nothing for it.
+                if (_main.Status.State == NtripState.GaveUp) return;
+
+                if (_active == (int)SourceRole.Main)
+                {
+                    // Both were failing: drop the fallback that was tried in the background, so it cannot win the race.
+                    if (_fallback != null && _fallback.Status.State != NtripState.Streaming
+                        && _main.Status.State != NtripState.Streaming)
+                    {
+                        stop = _fallbackCts;
+                        DetachFallback();
+                    }
+                }
+                else if (!_switchedByUser && _fallback != null && _fallback.Status.State != NtripState.Streaming)
+                {
+                    // On the fallback, which lost its connection too. A fallback chosen by hand stays the user's choice.
+                    backToMain = true;
+                }
+            }
+
+            if (stop != null) stop.Cancel();
+            if (backToMain) SwitchBackToMain(true);
+            else if (stop != null) RaiseStatus();
+        }
+
+        private async Task WatchNetworkAsync(CancellationToken ct)
+        {
+            while (!ct.IsCancellationRequested)
+            {
+                try
+                {
+                    Task changed = NetworkWake.Next;
+                    await Task.WhenAny(changed, Task.Delay(Timeout.Infinite, ct)).ConfigureAwait(false);
+                    if (ct.IsCancellationRequested) return;
+                    OnNetworkBack();
+                }
+                catch (OperationCanceledException) { return; }
+            }
         }
 
         /// <summary>Try the main service again while on the fallback, when it is not being tried in the background.</summary>

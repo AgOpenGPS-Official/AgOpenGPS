@@ -289,6 +289,79 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void NetworkBack_WhenBothFail_TriesTheMainServiceFirst_AndTheFallbackOnlyWhenMainFailsAgain()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                FakeSource first = rig.Fallback;
+                first.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                Thread.Sleep(100);   // the watcher is waiting for the signal
+
+                NetworkWake.Signal();
+
+                Assert.That(rig.WaitFor(() => first.Stopped), Is.True, "the fallback must not race the main service");
+                first.Set(NtripState.Streaming);   // a late report of the stopped one changes nothing
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+
+                // Main tries and fails again: only now the fallback gets its turn.
+                rig.Main.Set(NtripState.Connecting);
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 3);
+                Assert.That(rig.Fallbacks.Count, Is.EqualTo(2));
+                rig.Fallback.Set(NtripState.Streaming);
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
+            }
+        }
+
+        [Test]
+        public void NetworkBack_WhileTheMainServiceDelivers_ChangesNothing()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Streaming);
+                Thread.Sleep(100);
+                NetworkWake.Signal();
+                Thread.Sleep(100);
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Main));
+                Assert.That(rig.Notices, Is.Empty);
+            }
+        }
+
+        [Test]
+        public void NetworkBack_OnAFallbackThatLostItsConnection_GoesBackToMainQuietly()
+        {
+            using (var rig = new Rig(keepMain: false))
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                rig.Fallback.Set(NtripState.Streaming);
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
+                Assert.That(rig.Manager.Status.MainPaused, Is.True);
+
+                rig.Fallback.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 1);   // internet gone
+                Thread.Sleep(100);
+                NetworkWake.Signal();
+
+                Assert.That(rig.WaitFor(() => rig.Manager.Active == SourceRole.Main), Is.True);
+                Assert.That(rig.WaitFor(() => rig.Main.Runs == 2), Is.True, "the paused main service is started again");
+                Assert.That(rig.NoticeCount("Back on the main service"), Is.EqualTo(0), "not known to work yet");
+            }
+        }
+
+        [Test]
+        public void NetworkBack_OnAFallbackChosenByHand_StaysThere()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Manager.SwitchToFallbackNow();
+                rig.Fallback.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 1);
+                Thread.Sleep(100);
+                NetworkWake.Signal();
+                Thread.Sleep(150);
+                Assert.That(rig.Manager.Active, Is.EqualTo(SourceRole.Fallback));
+            }
+        }
+
+        [Test]
         public void TheMainServiceReturningFirst_StopsTheFallbackThatWasTried()
         {
             using (var rig = new Rig())
