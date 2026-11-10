@@ -109,9 +109,10 @@ namespace AgIO
             isHttp10 = main.Version == NtripVersion.V1;
             isRawTcp = main.RawTcp;
             sendGGAInterval = s.setNTRIP_sendGGAInterval;
-            isGgaManual = s.setNTRIP_isGGAManual;
-            manualLat = s.setNTRIP_manualLat;
-            manualLon = s.setNTRIP_manualLon;
+            //the Fixed Position belongs to the profile
+            isGgaManual = set.FixedPosition != null && set.FixedPosition.Enabled;
+            manualLat = set.FixedPosition == null ? 0 : set.FixedPosition.Latitude;
+            manualLon = set.FixedPosition == null ? 0 : set.FixedPosition.Longitude;
 
             //an address typed as an IP needs no lookup; else start from the last known one, as before
             broadCasterIP = IPAddress.TryParse(casterHost, out _) ? casterHost : s.setNTRIP_casterIP;

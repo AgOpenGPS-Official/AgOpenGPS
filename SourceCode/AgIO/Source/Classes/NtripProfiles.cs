@@ -23,12 +23,47 @@ namespace AgIO
             if (!string.IsNullOrWhiteSpace(name))
             {
                 NtripProfileSet set = Store.Load(name);
-                if (set != null) return set;
+                if (set != null)
+                {
+                    AdoptLooseFixedPosition(set);
+                    return set;
+                }
 
                 // The profile this settings file points to is not on this computer: do not guess a service.
                 return new NtripProfileSet { Name = name };
             }
             return FromLooseSettings();
+        }
+
+        /// <summary>
+        /// The Fixed Position used to be one setting for all profiles. The first profile that is loaded without a
+        /// position of its own takes it over once, and the loose setting is switched off, so no other profile
+        /// inherits the position of the one before it.
+        /// </summary>
+        private static void AdoptLooseFixedPosition(NtripProfileSet set)
+        {
+            var s = Properties.Settings.Default;
+            if (set.FixedPosition != null || !s.setNTRIP_isGGAManual) return;
+
+            set.FixedPosition = new FixedPositionDefinition
+            {
+                Enabled = true,
+                Latitude = s.setNTRIP_manualLat,
+                Longitude = s.setNTRIP_manualLon,
+                Altitude = s.setNTRIP_manualAltitude,
+            };
+            try
+            {
+                Store.Save(set);
+            }
+            catch (System.Exception)
+            {
+                // The folder cannot be written: the position is used this time, and adopted again next time.
+                return;
+            }
+
+            s.setNTRIP_isGGAManual = false;
+            if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Ok) s.Save();
         }
 
         /// <summary>The main service as the old settings window kept it. Never has a fallback.</summary>

@@ -84,10 +84,13 @@ namespace AgIO
             cboRadioBaud.SelectedItem = f.RadioBaud.ToString();
             if (cboRadioBaud.SelectedIndex < 0) cboRadioBaud.SelectedItem = "9600";
 
-            segPosition.SelectedIndex = s.setNTRIP_isGGAManual ? 1 : 0;
-            numLat.Value = s.setNTRIP_manualLat;
-            numLon.Value = s.setNTRIP_manualLon;
-            numAlt.Value = s.setNTRIP_manualAltitude;
+            //the Fixed Position belongs to the profile; one without its own starts as the GPS position, with the
+            //numbers last used as a starting point
+            FixedPositionDefinition position = work.FixedPosition;
+            segPosition.SelectedIndex = position != null && position.Enabled ? 1 : 0;
+            numLat.Value = position != null ? position.Latitude : s.setNTRIP_manualLat;
+            numLon.Value = position != null ? position.Longitude : s.setNTRIP_manualLon;
+            numAlt.Value = position != null ? position.Altitude : s.setNTRIP_manualAltitude;
             numInterval.IntValue = s.setNTRIP_sendGGAInterval;
             segOutput.SelectedIndex = s.setNTRIP_sendToSerial && !s.setNTRIP_sendToUDP ? 0 : 1;
             if (s.setNTRIP_sendToSerial && s.setNTRIP_sendToUDP) segOutput.SelectedIndex = 1;
@@ -124,6 +127,14 @@ namespace AgIO
             f.RadioPort = cboRadioPort.SelectedItem == null ? "" : cboRadioPort.SelectedItem.ToString();
             int baud;
             f.RadioBaud = int.TryParse(cboRadioBaud.SelectedItem as string, out baud) ? baud : 9600;
+
+            work.FixedPosition = new FixedPositionDefinition
+            {
+                Enabled = segPosition.SelectedIndex == 1,
+                Latitude = numLat.Value,
+                Longitude = numLon.Value,
+                Altitude = numAlt.Value,
+            };
         }
 
         private void UpdateEnabled()
@@ -319,7 +330,8 @@ namespace AgIO
 
             var s = Properties.Settings.Default;
             s.setNTRIP_isOn = tglUse.Checked;
-            s.setNTRIP_isGGAManual = segPosition.SelectedIndex == 1;
+            //the Fixed Position was saved with the profile; the numbers stay as the start for a profile without one
+            s.setNTRIP_isGGAManual = false;
             s.setNTRIP_manualLat = numLat.Value;
             s.setNTRIP_manualLon = numLon.Value;
             s.setNTRIP_manualAltitude = numAlt.Value;

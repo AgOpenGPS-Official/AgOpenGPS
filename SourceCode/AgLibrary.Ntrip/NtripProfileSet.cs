@@ -33,6 +33,21 @@ namespace AgLibrary.Ntrip
         public ServiceDefinition Clone() => (ServiceDefinition)MemberwiseClone();
     }
 
+    /// <summary>
+    /// The position AgIO gives the caster instead of the GPS position ("Fixed Position"). It belongs to the
+    /// profile: a service near another field needs another position.
+    /// </summary>
+    public sealed class FixedPositionDefinition
+    {
+        /// <summary>True: the position below is sent. False: the position of the GPS receiver is.</summary>
+        public bool Enabled { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Altitude { get; set; }
+
+        public FixedPositionDefinition Clone() => (FixedPositionDefinition)MemberwiseClone();
+    }
+
     /// <summary>What AgIO uses when the main service fails.</summary>
     public sealed class FallbackDefinition
     {
@@ -71,11 +86,14 @@ namespace AgLibrary.Ntrip
         public string MainRadioPort { get; set; } = "";
         public int MainRadioBaud { get; set; } = 9600;
         public FallbackDefinition Fallback { get; set; } = new FallbackDefinition();
+        /// <summary>The Fixed Position of this profile; null in a profile file from before it was kept here (the GPS position is used).</summary>
+        public FixedPositionDefinition FixedPosition { get; set; }
 
         public NtripProfileSet Clone()
         {
             return new NtripProfileSet
             {
+                FixedPosition = FixedPosition?.Clone(),
                 Name = Name,
                 Main = Main == null ? new ServiceDefinition() : Main.Clone(),
                 MainType = MainType,

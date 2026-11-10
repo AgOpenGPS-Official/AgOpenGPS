@@ -62,6 +62,32 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void FixedPosition_BelongsToTheProfile_AndIsKept()
+        {
+            NtripProfileSet a = Sample("Field A");
+            a.FixedPosition = new FixedPositionDefinition { Enabled = true, Latitude = 52.123456, Longitude = 5.654321, Altitude = 12.5 };
+            NtripProfileSet b = Sample("Field B");
+            b.FixedPosition = new FixedPositionDefinition { Enabled = false, Latitude = 51.0, Longitude = 4.0, Altitude = 1 };
+            _store.Save(a);
+            _store.Save(b);
+
+            FixedPositionDefinition ra = _store.Load("Field A").FixedPosition;
+            Assert.That(ra.Enabled, Is.True);
+            Assert.That(ra.Latitude, Is.EqualTo(52.123456));
+            Assert.That(ra.Longitude, Is.EqualTo(5.654321));
+            Assert.That(ra.Altitude, Is.EqualTo(12.5));
+            Assert.That(_store.Load("Field B").FixedPosition.Enabled, Is.False, "another profile has its own");
+            Assert.That(_store.Load("Field B").FixedPosition.Latitude, Is.EqualTo(51.0));
+        }
+
+        [Test]
+        public void AProfileFromBeforeTheFixedPositionWasKeptHere_HasNone()
+        {
+            _store.Save(Sample("Old"));   // Sample sets no fixed position, like a file written before
+            Assert.That(_store.Load("Old").FixedPosition, Is.Null);
+        }
+
+        [Test]
         public void SerialRadioFallback_IsKept()
         {
             NtripProfileSet set = Sample("Radio");
@@ -209,6 +235,11 @@ namespace AgLibrary.Ntrip.Tests
             b.Fallback.Service.Mount = "CHANGED";
             Assert.That(a.Main.Mount, Is.EqualTo("NEAR"));
             Assert.That(a.Fallback.Service.Mount, Is.EqualTo("Basisdepeel"));
+
+            a.FixedPosition = new FixedPositionDefinition { Enabled = true, Latitude = 52 };
+            NtripProfileSet c = a.Clone();
+            c.FixedPosition.Latitude = 10;
+            Assert.That(a.FixedPosition.Latitude, Is.EqualTo(52));
         }
 
         [Test]

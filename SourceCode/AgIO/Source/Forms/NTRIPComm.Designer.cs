@@ -141,10 +141,10 @@ namespace AgIO
         //The caster is given the fixed position when NTRIP is set to Fixed Position, so the distance to the base is measured from there.
         internal System.Collections.Generic.IReadOnlyList<CheckItem> BuildNtripChecks(NtripStatus st)
         {
-            var cfg = Properties.Settings.Default;
-            bool fixedPosition = cfg.setNTRIP_isGGAManual;
-            double fromLat = fixedPosition ? cfg.setNTRIP_manualLat : latitude;
-            double fromLon = fixedPosition ? cfg.setNTRIP_manualLon : longitude;
+            NtripHost host = ntripHost;
+            bool fixedPosition = host != null && host.UsesFixedPosition;
+            double fromLat = fixedPosition ? host.FixedLatitude : latitude;
+            double fromLon = fixedPosition ? host.FixedLongitude : longitude;
             return CorrectionChecks.Build(st, fixQualityData, ageData, fromLat, fromLon, fixedPosition);
         }
 

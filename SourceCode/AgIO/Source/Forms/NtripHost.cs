@@ -116,6 +116,22 @@ namespace AgIO
             }
         }
 
+        /// <summary>The caster gets the Fixed Position of the profile instead of the GPS position.</summary>
+        public bool UsesFixedPosition
+        {
+            get { return manualPosition; }
+        }
+
+        public double FixedLatitude
+        {
+            get { return manualLat; }
+        }
+
+        public double FixedLongitude
+        {
+            get { return manualLon; }
+        }
+
         /// <summary>The main service.</summary>
         public NtripProfile Profile
         {
@@ -215,10 +231,12 @@ namespace AgIO
             mainProfile = main;
             fallbackProfile = set.Fallback != null && set.Fallback.Enabled ? set.FallbackProfile(s.setNTRIP_sendGGAInterval) : null;
 
-            manualPosition = s.setNTRIP_isGGAManual;
-            manualLat = s.setNTRIP_manualLat;
-            manualLon = s.setNTRIP_manualLon;
-            manualAlt = s.setNTRIP_manualAltitude;
+            //the Fixed Position belongs to the profile
+            FixedPositionDefinition fixedPosition = set.FixedPosition;
+            manualPosition = fixedPosition != null && fixedPosition.Enabled;
+            manualLat = fixedPosition == null ? 0 : fixedPosition.Latitude;
+            manualLon = fixedPosition == null ? 0 : fixedPosition.Longitude;
+            manualAlt = fixedPosition == null ? 0 : fixedPosition.Altitude;
             toSerial = s.setNTRIP_sendToSerial;
             toUdp = s.setNTRIP_sendToUDP;
 
