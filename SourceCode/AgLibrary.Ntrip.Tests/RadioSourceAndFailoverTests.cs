@@ -182,6 +182,71 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void Radio_NotRtcm3_NoByteIsLostWhileTheStreamIsRecognised()
+        {
+            var feed = new FeedStream();
+            var radio = new RadioSource("COM5", () => feed);
+            long raw = 0;
+            radio.RawDataReceived += data => Interlocked.Add(ref raw, data.Length);
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => radio.RunAsync(cts.Token));
+                var junk = new byte[1500];
+                for (int i = 0; i < junk.Length; i++) junk[i] = 0x55;
+                for (int i = 0; i < 6; i++) feed.Feed(junk);
+
+                // The first 4096+ bytes are only collected until the stream is recognised, then forwarded with the rest.
+                Assert.That(WaitFor(() => Interlocked.Read(ref raw) == 9000), Is.True, "forwarded: " + Interlocked.Read(ref raw));
+                cts.Cancel();
+                run.Wait(2000);
+            }
+        }
+
+        [Test]
+        public void Radio_Silence_IsAFailure_ThatCountsUp_AndEndsWithTheFirstData()
+        {
+            var feed = new FeedStream();
+            var radio = new RadioSource("COM5", () => feed, null, TimeSpan.FromMilliseconds(100));
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => radio.RunAsync(cts.Token));
+                Assert.That(WaitFor(() => radio.Status.State == NtripState.Waiting && radio.Status.ConsecutiveFailures >= 2, 6000), Is.True);
+                Assert.That(radio.Status.LastError, Is.EqualTo(NtripCategory.NoCorrections));
+                Assert.That(radio.Status.Message, Is.EqualTo("The radio is open, but nothing arrives."));
+
+                feed.Feed(Rtcm.Message(1077, 60));
+                Assert.That(WaitFor(() => radio.Status.State == NtripState.Streaming), Is.True);
+                Assert.That(radio.Status.ConsecutiveFailures, Is.EqualTo(0));
+                cts.Cancel();
+                run.Wait(2000);
+            }
+        }
+
+        [Test]
+        public void AMainRadioThatGoesSilent_StartsTheFallback()
+        {
+            var feed = new FeedStream();
+            var radio = new RadioSource("COM5", () => feed, null, TimeSpan.FromMilliseconds(100));
+            var fallbacks = new List<FakeSource>();
+            var manager = new CorrectionSourceManager(radio, () =>
+            {
+                var f = new FakeSource("FALLBACK", 1077);
+                lock (fallbacks) fallbacks.Add(f);
+                return f;
+            }, 2);
+
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => manager.RunAsync(cts.Token));
+                Assert.That(WaitFor(() => { lock (fallbacks) return fallbacks.Count == 1; }, 6000), Is.True, "the fallback is tried");
+                lock (fallbacks) fallbacks[0].Set(NtripState.Streaming);
+                Assert.That(WaitFor(() => manager.Active == SourceRole.Fallback), Is.True);
+                cts.Cancel();
+                run.Wait(3000);
+            }
+        }
+
+        [Test]
         public void ASerialRadioAsTheMainSource_PassesItsCorrectionsOn()
         {
             var feed = new FeedStream();

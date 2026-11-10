@@ -109,12 +109,14 @@ namespace AgLibrary.Ntrip
             bool unframed = false;
             long bodyBytes = 0;
             bool delivered = false;
+            int silentRounds = 0;   // how many times the silence limit has passed since the last data
             Rtcm3Framer.MessageHandler onFrame = (type, frame) =>
             {
                 _frames++;
                 _sinceLastFrame = Stopwatch.StartNew();
                 FrameReceived?.Invoke(type, frame);
             };
+            var probe = new System.Collections.Generic.List<byte>();   // bytes seen before the first frame
 
             while (true)
             {
@@ -127,14 +129,29 @@ namespace AgLibrary.Ntrip
                 if (n == 0) { reader.Abandon(); return delivered; }
                 if (n < 0)
                 {
-                    if (silent.Elapsed >= _silence)
+                    // Silence is a failure like any other: every time the limit passes the failures count one more,
+                    // so the manager can start the fallback when this radio is the main source. The port stays open;
+                    // the first data after it ends the failure.
+                    if (silent.Elapsed.Ticks >= _silence.Ticks * (silentRounds + 1))
                     {
-                        Update(s => { s.State = NtripState.Connected; s.Message = "The radio is open, but nothing arrives."; });
+                        silentRounds++;
+                        int rounds = silentRounds;
+                        Update(s =>
+                        {
+                            s.State = NtripState.Waiting;
+                            s.LastError = NtripCategory.NoCorrections;
+                            s.Message = "The radio is open, but nothing arrives.";
+                            s.Reason = s.Message;
+                            s.FailuresInRow = rounds;
+                            s.ConsecutiveFailures = rounds;
+                            s.RetryInSeconds = 0;
+                        });
                     }
                     continue;
                 }
 
                 silent.Restart();
+                silentRounds = 0;
                 _bytes += n;
                 bodyBytes += n;
                 long before = _frames;
@@ -145,11 +162,17 @@ namespace AgLibrary.Ntrip
                 else
                 {
                     _stats.Feed(new ReadOnlySpan<byte>(reader.Buffer, 0, n), onFrame);
+                    if (_frames == 0 && probe != null) probe.AddRange(new ArraySegment<byte>(reader.Buffer, 0, n));
                 }
+                if (_frames > before) probe = null;
 
                 if (!unframed && _frames == 0 && bodyBytes >= UnframedAfterBytes)
                 {
+                    // Not RTCM 3 (RTCM 2, CMR, ...): forward the bytes as they come, starting with the ones
+                    // collected while looking for frames, so no initialisation or station data is lost.
                     unframed = true;
+                    if (probe != null && probe.Count > 0) RawDataReceived?.Invoke(new ReadOnlySpan<byte>(probe.ToArray()));
+                    probe = null;
                     Update(s => s.Unframed = true);
                 }
 
