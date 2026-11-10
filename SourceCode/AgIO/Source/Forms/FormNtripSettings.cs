@@ -328,6 +328,18 @@ namespace AgIO
             s.setNTRIP_sendToUDP = segOutput.SelectedIndex == 1;
             s.setNTRIP_sendToUDPPort = numNetPort.IntValue;
             s.setNTRIP_useLegacyClient = tglLegacy.Checked;
+
+            //NTRIP, a standalone radio and serial pass-through are alternatives: using NTRIP switches the others off,
+            //also when they were only stopped with the status card (the setting stays on then)
+            if (s.setNTRIP_isOn)
+            {
+                s.setRadio_isOn = false;
+                s.setPass_isOn = false;
+            }
+
+            //the old client sends by these flags, which are otherwise only read at start-up
+            mf.isSendToSerial = s.setNTRIP_sendToSerial;
+            mf.isSendToUDP = s.setNTRIP_sendToUDP;
             s.Save();
 
             DialogResult = DialogResult.OK;

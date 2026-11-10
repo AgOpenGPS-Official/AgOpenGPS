@@ -388,6 +388,9 @@ namespace AgIO
                     //quick change of profile: use it and switch NTRIP on
                     Settings.Default.setNTRIP_profileName = pick.Chosen.Name;
                     Settings.Default.setNTRIP_isOn = true;
+                    //NTRIP and a standalone radio or serial pass-through are alternatives
+                    Settings.Default.setRadio_isOn = false;
+                    Settings.Default.setPass_isOn = false;
                     Settings.Default.Save();
                     ConfigureNTRIP();
                     return;
