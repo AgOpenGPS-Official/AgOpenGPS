@@ -214,25 +214,24 @@ namespace GPS_Out
         {
             get
             {
+                float Result = 0;
                 if (Connected())
                 {
-                    if (cSpeed < 100)
-                    {
-                        return cSpeed;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                    if (cSpeed < 100) Result = cSpeed;
                 }
                 else if (Properties.Settings.Default.Simulate)
                 {
-                    return 4.8F;
+                    // simulated speed: AOG's, when it sends it, else a fixed one
+                    if (mf.AutoSteerPGN.Connected())
+                    {
+                        Result = (float)mf.AutoSteerPGN.Speed_KMH();
+                    }
+                    else
+                    {
+                        Result = 4.8F;
+                    }
                 }
-                else
-                {
-                    return 0;
-                }
+                return Result;
             }
         }
 

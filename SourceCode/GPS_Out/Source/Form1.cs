@@ -69,6 +69,7 @@ namespace GPS_Out
         public PGN_GGA GGA;
         public string GGAsentence = "";
         public PGN_GSA GSA;
+        public PGN254 AutoSteerPGN;
         public string GSAsentence = "";
         public PGN_RMC RMC;
         public string RMCsentence = "";
@@ -97,6 +98,7 @@ namespace GPS_Out
             backgroundWorker1.WorkerSupportsCancellation = true;
             ZDA = new PGN_ZDA(this);
             GSA = new PGN_GSA(this);
+            AutoSteerPGN = new PGN254(this);
         }
 
         public int CheckSum(string Data)

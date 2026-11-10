@@ -60,12 +60,16 @@ namespace GPS_Out
                             int SubPGN = Data[3] << 8 | Data[2];
                             switch (SubPGN)
                             {
-                                case 54908: // 0xD67C, AGIO NEMA translation
+                                case 0xD67C: // AGIO NEMA translation
                                     mf.AGIOdata.ParseByteData(Data);
                                     break;
 
-                                case 25727: // 0x647F, AOG roll corrected lat,lon
+                                case 0x647F: // AOG roll corrected lat,lon
                                     mf.AOGdata.ParseByteData(Data);
+                                    break;
+
+                                case 0xFE7F: // AutoSteer data from AOG for simulated speed
+                                    mf.AutoSteerPGN.ParseByteData(Data);
                                     break;
                             }
                             break;
