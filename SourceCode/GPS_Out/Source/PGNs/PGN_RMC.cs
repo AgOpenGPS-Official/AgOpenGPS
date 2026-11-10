@@ -51,7 +51,14 @@ namespace GPS_Out
             cSentence = Properties.Settings.Default.SentenceStart + "RMC";
             cSentence += "," + DateTime.UtcNow.ToString("HHmmss.ff", CultureInfo.InvariantCulture);
 
-            cSentence += ",A";
+            if (mf.AGIOdata.FixQuality == 0)
+            {
+                cSentence += ",V";
+            }
+            else
+            {
+                cSentence += ",A";
+            }
 
             string NS = ",N";
             if (lat < 0) NS = ",S";
@@ -78,8 +85,7 @@ namespace GPS_Out
 
             cSentence += ",0.0,W";
 
-            cSentence += ",*";
-            //cSentence += "*";
+            cSentence += "," + mf.ModeIndicator(mf.AGIOdata.FixQuality) + "*";
             string Hex = mf.CheckSum(cSentence).ToString("X2");
             cSentence += Hex;
 

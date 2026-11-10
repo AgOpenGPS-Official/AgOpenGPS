@@ -37,7 +37,7 @@ namespace GPS_Out
 
             cSentence += "," + mf.AGIOdata.Speed.ToString("000.0", CultureInfo.InvariantCulture) + ",K";
 
-            cSentence += ",*";
+            cSentence += "," + mf.ModeIndicator(mf.AGIOdata.FixQuality) + "*";
             //cSentence += "*";
             string Hex = mf.CheckSum(cSentence).ToString("X2");
             cSentence += Hex;

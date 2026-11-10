@@ -154,6 +154,41 @@ namespace GPS_Out
             return Result;
         }
 
+        public string ModeIndicator(byte Qu)
+        {
+            // NMEA 2.3+ mode indicator, last field of RMC and VTG
+            // A = autonomous, D = differential, E = estimated (dead reckoning),
+            // M = manual input, S = simulator, N = data not valid
+            // RTK fix and float are reported as D. The R and F values are NMEA 4.x only.
+            String Result = "N";
+            switch (Qu)
+            {
+                case 1:
+                case 3:
+                    Result = "A";
+                    break;
+
+                case 2:
+                case 4:
+                case 5:
+                    Result = "D";
+                    break;
+
+                case 6:
+                    Result = "E";
+                    break;
+
+                case 7:
+                    Result = "M";
+                    break;
+
+                case 8:
+                    Result = "S";
+                    break;
+            }
+            return Result;
+        }
+
         public double Heading()
         {
             double Result = 0;
