@@ -63,7 +63,7 @@ namespace AgOpenGPS
             if (idx < 0 || gArr.Count == 0 || idx >= gArr.Count) { ResetAutoTrackPending(); isAutoTrackHoldingPass = false; return -1; }
 
             AutoTrackScore(gArr[idx], pivot, true, out _, out double selectedDiff, out _);
-            isAutoTrackHoldingPass = selectedDiff > AutoTrackGate;
+            isAutoTrackHoldingPass = gArr[idx].mode != TrackMode.waterPivot && selectedDiff > AutoTrackGate;
 
             if (Math.Abs(speedKmh) < AutoTrackMinSpeed) { ResetAutoTrackPending(); return idx; }
 
@@ -137,7 +137,7 @@ namespace AgOpenGPS
                 if (len < 0.01) return false;
                 dx /= len; dy /= len;
                 double px = pivot.easting - trk.ptA.easting, py = pivot.northing - trk.ptA.northing;
-                lateral = Math.Abs(dx * py - dy * px);
+                lateral = dy * px - dx * py;
                 beyond = 0;
             }
             else
@@ -163,7 +163,7 @@ namespace AgOpenGPS
                     {
                         best = d;
                         trackHeading = Math.Atan2(dx, dy);
-                        lateral = Math.Abs(dx * py - dy * px) / l;
+                        lateral = (dy * px - dx * py) / l;
                         beyond = Math.Sqrt(Math.Max(0, d * d - lateral * lateral));
                     }
                 }
@@ -175,14 +175,16 @@ namespace AgOpenGPS
             diff = Math.Min(raw, Math.PI - raw);
             if (diff > AutoTrackGate) return false;
 
-            //passes lie at +-W/2 + k*W from the reference line; other tracks also pay for the distance
-            //to their first pass, and only compete when that first pass is near
+            //same pass geometry as CABLine / CABCurve: W * k + W/2 + offset + nudge, right of the track
             double w = mf.tool.width - mf.tool.overlap;
-            double xte = lateral, firstPass = lateral;
+            double xte = Math.Abs(lateral), firstPass = Math.Abs(lateral);
             if (w > 0.1)
             {
-                xte = Math.Abs((lateral % w) - 0.5 * w);
-                firstPass = Math.Abs(lateral - 0.5 * w);
+                double shift = (raw < glm.PIBy2 ? -mf.tool.offset : mf.tool.offset) + trk.nudgeDistance;
+                double refDist = (lateral - 0.5 * w - shift) / w;
+                int k = refDist < 0 ? (int)(refDist - 0.5) : (int)(refDist + 0.5);
+                xte = Math.Abs(lateral - (w * k + 0.5 * w + shift));
+                firstPass = Math.Min(Math.Abs(lateral - (0.5 * w + shift)), Math.Abs(lateral + 0.5 * w - shift));
             }
 
             firstPassDist = Math.Sqrt(firstPass * firstPass + beyond * beyond);
