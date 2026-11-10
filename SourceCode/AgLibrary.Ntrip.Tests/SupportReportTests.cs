@@ -44,6 +44,17 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void Report_HasTheBaseStationPosition_AndTheDistanceLine()
+        {
+            var status = Status();
+            status.Rtcm = new RtcmStreamSnapshot(157, 0, 0, 120, status.Rtcm.Types, 7, 52.0, 5.0);
+            string report = SupportReport.Build(status, null, CorrectionChecks.Build(status, 4, 0, 52.3, 5.0));
+
+            Assert.That(report, Does.Contain("base station position: 52.000000, 5.000000"));
+            Assert.That(report, Does.Contain("[Ok] Distance to base station: 33."));
+        }
+
+        [Test]
         public void Report_WorksWithoutAProfile_OrAnyData()
         {
             var status = new NtripStatus { State = NtripState.Connecting, Rtcm = new RtcmStreamSnapshot(0, 0, 0, 0, new List<RtcmTypeStat>()) };

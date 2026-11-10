@@ -34,10 +34,19 @@ namespace AgLibrary.Ntrip
         public IReadOnlyList<RtcmTypeStat> Types { get; }
         /// <summary>The reference station ID from the latest message that carries one, or -1.</summary>
         public int StationId { get; }
+        /// <summary>The base station position from message 1005 or 1006 in degrees, NaN until one arrived.</summary>
+        public double BaseLatitude { get; }
+        public double BaseLongitude { get; }
+
+        /// <summary>The position of the base station is known.</summary>
+        public bool HasBaseCoordinates => !double.IsNaN(BaseLatitude) && !double.IsNaN(BaseLongitude);
 
         public RtcmStreamSnapshot(long messages, long checksumFailures, long bytesSkipped,
-            double sessionSeconds, IReadOnlyList<RtcmTypeStat> types, int stationId = -1)
+            double sessionSeconds, IReadOnlyList<RtcmTypeStat> types, int stationId = -1,
+            double baseLatitude = double.NaN, double baseLongitude = double.NaN)
         {
+            BaseLatitude = baseLatitude;
+            BaseLongitude = baseLongitude;
             Messages = messages;
             ChecksumFailures = checksumFailures;
             BytesSkipped = bytesSkipped;
@@ -115,6 +124,8 @@ namespace AgLibrary.Ntrip
         private readonly SortedDictionary<int, Entry> _types = new SortedDictionary<int, Entry>();
         private double _sessionStart;
         private int _stationId = -1;
+        private double _baseLatitude = double.NaN;
+        private double _baseLongitude = double.NaN;
 
         /// <param name="secondsClock">Monotonic time in seconds; null uses a Stopwatch.</param>
         public RtcmStreamStats(Func<double> secondsClock = null)
@@ -133,6 +144,7 @@ namespace AgLibrary.Ntrip
                 _framer.Reset();
                 _types.Clear();
                 _stationId = -1;
+                _baseLatitude = _baseLongitude = double.NaN;
                 _sessionStart = _seconds();
             }
         }
@@ -152,6 +164,11 @@ namespace AgLibrary.Ntrip
                     e.Last = now;
                     if (RtcmMessages.HasStationId(type) && message.Length >= 9)
                         _stationId = (message[4] & 0x0F) << 8 | message[5];
+                    if ((type == 1005 || type == 1006) && RtcmBasePosition.TryDecode(message, out double lat, out double lon))
+                    {
+                        _baseLatitude = lat;
+                        _baseLongitude = lon;
+                    }
                     onMessage?.Invoke(type, message);
                 });
             }
@@ -170,7 +187,7 @@ namespace AgLibrary.Ntrip
                     types.Add(new RtcmTypeStat(kv.Key, e.Count, e.Bytes, now - e.Last, mean));
                 }
                 return new RtcmStreamSnapshot(_framer.Messages, _framer.ChecksumFailures,
-                    _framer.BytesSkipped, now - _sessionStart, types, _stationId);
+                    _framer.BytesSkipped, now - _sessionStart, types, _stationId, _baseLatitude, _baseLongitude);
             }
         }
     }

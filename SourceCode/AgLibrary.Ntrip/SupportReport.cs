@@ -30,6 +30,8 @@ namespace AgLibrary.Ntrip
             sb.AppendLine("received: " + status.BytesReceived.ToString(ci) + " bytes, " + status.Frames.ToString(ci) + " messages");
             sb.AppendLine("checksum errors: " + rtcm.ChecksumFailures.ToString(ci) + ", skipped bytes: " + rtcm.BytesSkipped.ToString(ci)
                 + ", base station ID: " + (rtcm.StationId >= 0 ? rtcm.StationId.ToString(ci) : "unknown"));
+            if (rtcm.HasBaseCoordinates)
+                sb.AppendLine("base station position: " + rtcm.BaseLatitude.ToString("F6", ci) + ", " + rtcm.BaseLongitude.ToString("F6", ci));
             if (status.Unframed) sb.AppendLine("stream: not RTCM 3, forwarded as it comes");
 
             sb.AppendLine();

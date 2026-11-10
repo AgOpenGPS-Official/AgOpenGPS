@@ -37,9 +37,18 @@ namespace AgLibrary.Ntrip
         /// <summary>The base station position (1005 or 1006) normally comes every 10 seconds.</summary>
         private const double BasePositionGraceSeconds = 12;
 
+        /// <summary>RTK gets worse with distance to the base station: orange above this many kilometres...</summary>
+        public const double FarKm = 40;
+        /// <summary>... and red above this.</summary>
+        public const double TooFarKm = 60;
+
         /// <param name="receiverFixQuality">GGA fix quality of the GPS receiver (4 = RTK fixed, 5 = RTK float).</param>
         /// <param name="differentialAgeSeconds">The receiver's age of corrections, 0 when unknown.</param>
-        public static IReadOnlyList<CheckItem> Build(NtripStatus status, int receiverFixQuality, double differentialAgeSeconds)
+        /// <param name="receiverLatitude">Where the machine is, in degrees; NaN or left out to skip the distance to the base station.
+        /// With a fixed position in the NTRIP settings this is that position, the one the caster is given.</param>
+        /// <param name="receiverPositionIsFixed">The position above is the fixed one from the settings, not the GPS.</param>
+        public static IReadOnlyList<CheckItem> Build(NtripStatus status, int receiverFixQuality, double differentialAgeSeconds,
+            double receiverLatitude = double.NaN, double receiverLongitude = double.NaN, bool receiverPositionIsFixed = false)
         {
             var items = new List<CheckItem>();
             RtcmStreamSnapshot rtcm = status.Rtcm;
@@ -61,6 +70,10 @@ namespace AgLibrary.Ntrip
                 items.Add(new CheckItem(CheckLevel.Bad, "Base station position is missing", "RTK cannot start without it."));
             else
                 items.Add(new CheckItem(CheckLevel.Bad, "Base station position", "Not received yet."));
+
+            // 1b. How far the base station is from the receiver (from the position in message 1005 or 1006)
+            CheckItem distance = DistanceItem(rtcm, receiverLatitude, receiverLongitude, receiverPositionIsFixed);
+            if (distance != null) items.Add(distance);
 
             // 2. The satellite data
             if (rtcm.HasObservations)
@@ -84,6 +97,26 @@ namespace AgLibrary.Ntrip
             // 4. What the receiver makes of it
             items.Add(GpsItem(receiverFixQuality, differentialAgeSeconds));
             return items;
+        }
+
+        // Null while the base station position is not known, or when the caller gave no receiver position at all.
+        private static CheckItem DistanceItem(RtcmStreamSnapshot rtcm, double latitude, double longitude, bool positionIsFixed)
+        {
+            if (!rtcm.HasBaseCoordinates || double.IsNaN(latitude) || double.IsNaN(longitude)) return null;
+
+            // The receiver has no position yet: say so instead of leaving the line out.
+            if (latitude == 0 && longitude == 0)
+                return new CheckItem(CheckLevel.Warn, "Distance to base station", "Waiting for your GPS position.");
+
+            double km = RtcmBasePosition.DistanceKm(rtcm.BaseLatitude, rtcm.BaseLongitude, latitude, longitude);
+            string text = km < 1
+                ? Math.Round(km * 1000).ToString("0", CultureInfo.InvariantCulture) + " m"
+                : km.ToString("0.0", CultureInfo.InvariantCulture) + " km";
+            string title = "Distance to base station: " + text;
+
+            if (km > TooFarKm) return new CheckItem(CheckLevel.Bad, title, "Too far for good RTK. Choose a base station closer by.");
+            if (km > FarKm) return new CheckItem(CheckLevel.Warn, title, "Far away. RTK is less accurate at this distance.");
+            return new CheckItem(CheckLevel.Ok, title, positionIsFixed ? "From the fixed position in the NTRIP settings." : "");
         }
 
         private static CheckItem GpsItem(int fixQuality, double differentialAgeSeconds)
