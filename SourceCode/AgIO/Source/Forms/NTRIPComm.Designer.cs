@@ -20,7 +20,17 @@ namespace AgIO
         // (Settings -> NTRIP -> "Use the old NTRIP client"). Internet NTRIP only, no fallback.
         internal LegacyNtripClient legacyNtrip;
 
-        private static bool UseLegacyNtrip => Properties.Settings.Default.setNTRIP_useLegacyClient;
+        // The legacy client reads the main service of the profile and cannot open a radio, so a profile with a serial radio as
+        // main source always uses the new client, whatever the (global) preference for the old one says.
+        private static bool UseLegacyNtrip
+        {
+            get
+            {
+                if (!Properties.Settings.Default.setNTRIP_useLegacyClient) return false;
+                NtripProfileSet active = NtripProfiles.LoadActive();
+                return active == null || !active.MainIsRadio;
+            }
+        }
 
         //counts seconds for the radio / serial pass-through connect and watchdog
         private int ntripCounter = 10;
