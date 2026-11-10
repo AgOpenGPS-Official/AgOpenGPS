@@ -46,7 +46,7 @@ namespace GPS_Out
         {
             double lat;
             double lon;
-            if (mf.AOGdata.Connected() && Properties.Settings.Default.UseRollCorrected)
+            if (mf.UseAOGposition())
             {
                 lat = mf.AOGdata.Latitude;
                 lon = mf.AOGdata.Longitude;

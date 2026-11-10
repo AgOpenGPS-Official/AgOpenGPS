@@ -45,7 +45,7 @@ namespace GPS_Out.PGNs
         {
             get
             {
-                if (Connected() && Properties.Settings.Default.UseRollCorrected && ExtendedPGN)
+                if (mf.UseAOGposition() && ExtendedPGN)
                 {
                     return cFix2Fix;
                 }

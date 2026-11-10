@@ -189,6 +189,14 @@ namespace GPS_Out
             return Result;
         }
 
+        public bool UseAOGposition()
+        {
+            // AOG position when Roll Corrected is on, or in simulation when AgIO has no position to give.
+            // Without Simulate nothing of AOG's simulator may show: the Simulate switch decides.
+            return AOGdata.Connected() && (Properties.Settings.Default.UseRollCorrected
+                || (Properties.Settings.Default.Simulate && !AGIOdata.Connected()));
+        }
+
         public double Heading()
         {
             double Result = 0;
@@ -649,7 +657,7 @@ namespace GPS_Out
         {
             if (this.WindowState != FormWindowState.Minimized)
             {
-                if (AOGdata.Connected() && (AGIOdata.Connected() || Properties.Settings.Default.Simulate))
+                if (UseAOGposition())
                 {
                     lbLon.Text = AOGdata.Longitude.ToString(Properties.Settings.Default.DisplayPrecisionFormat);
                     lbLat.Text = AOGdata.Latitude.ToString(Properties.Settings.Default.DisplayPrecisionFormat);
