@@ -380,7 +380,9 @@ namespace AgIO
             using (var pick = new FormNtripProfiles(this, Settings.Default.setNTRIP_profileName))
             {
                 DialogResult picked = pick.ShowDialog(this);
-                if (pick.ActiveChanged) ConfigureNTRIP();   // the profile in use was deleted
+                bool useAction = picked == DialogResult.OK && pick.Action == ProfileAction.Use;
+                // The profile in use was deleted, or NTRIP was switched on or off (the use action configures it below)
+                if ((pick.ActiveChanged || pick.UseChanged) && !useAction) ConfigureNTRIP();
                 if (picked != DialogResult.OK) return;
 
                 if (pick.Action == ProfileAction.Use)

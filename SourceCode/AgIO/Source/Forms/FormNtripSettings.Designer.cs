@@ -28,8 +28,6 @@ namespace AgIO
         /// </summary>
         private void InitializeComponent()
         {
-            this.tglUse = new AgIO.ToggleSwitch();
-            this.lblUse = new System.Windows.Forms.Label();
             this.lblProfile = new System.Windows.Forms.Label();
             this.lblProfileName = new System.Windows.Forms.Label();
             this.segPage = new AgIO.SegmentedControl();
@@ -113,29 +111,11 @@ namespace AgIO
             this.pnlOutput.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tglUse
-            // 
-            this.tglUse.Location = new System.Drawing.Point(20, 12);
-            this.tglUse.Name = "tglUse";
-            this.tglUse.Size = new System.Drawing.Size(84, 46);
-            this.tglUse.TabIndex = 0;
-            this.tglUse.CheckedChanged += new System.EventHandler(this.tglUse_CheckedChanged);
-            // 
-            // lblUse
-            // 
-            this.lblUse.AutoSize = false;
-            this.lblUse.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblUse.Location = new System.Drawing.Point(116, 20);
-            this.lblUse.Name = "lblUse";
-            this.lblUse.Size = new System.Drawing.Size(300, 30);
-            this.lblUse.TabIndex = 1;
-            this.lblUse.Text = "Use NTRIP corrections";
-            // 
             // lblProfile
             // 
             this.lblProfile.AutoSize = false;
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblProfile.Location = new System.Drawing.Point(440, 20);
+            this.lblProfile.Location = new System.Drawing.Point(20, 20);
             this.lblProfile.Name = "lblProfile";
             this.lblProfile.Size = new System.Drawing.Size(110, 30);
             this.lblProfile.TabIndex = 2;
@@ -146,9 +126,9 @@ namespace AgIO
             this.lblProfileName.AutoSize = false;
             this.lblProfileName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblProfileName.Location = new System.Drawing.Point(560, 20);
+            this.lblProfileName.Location = new System.Drawing.Point(140, 20);
             this.lblProfileName.Name = "lblProfileName";
-            this.lblProfileName.Size = new System.Drawing.Size(420, 30);
+            this.lblProfileName.Size = new System.Drawing.Size(840, 30);
             this.lblProfileName.TabIndex = 3;
             this.lblProfileName.Text = "Default";
             // 
@@ -789,7 +769,7 @@ namespace AgIO
             // 
             // segOutput
             // 
-            this.segOutput.ItemsText = "My GPS Receiver (Serial)|My AIO Board (Network)";
+            this.segOutput.ItemsText = "My GPS Receiver (Serial)|My AIO Board (Network)|Both";
             this.segOutput.Location = new System.Drawing.Point(230, 304);
             this.segOutput.Name = "segOutput";
             this.segOutput.Size = new System.Drawing.Size(720, 52);
@@ -926,8 +906,6 @@ namespace AgIO
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 706);
-            this.Controls.Add(this.tglUse);
-            this.Controls.Add(this.lblUse);
             this.Controls.Add(this.lblProfile);
             this.Controls.Add(this.lblProfileName);
             this.Controls.Add(this.segPage);
@@ -961,8 +939,6 @@ namespace AgIO
 
         #endregion
 
-        private AgIO.ToggleSwitch tglUse;
-        private System.Windows.Forms.Label lblUse;
         private System.Windows.Forms.Label lblProfile;
         private System.Windows.Forms.Label lblProfileName;
         private AgIO.SegmentedControl segPage;
