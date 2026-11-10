@@ -367,6 +367,9 @@ namespace AgIO
             //an older settings file keeps the service in loose settings: make an NTRIP profile of it once
             NtripProfiles.MigrateLooseSettings();
 
+            //NTRIP, a radio and serial pass-through are alternatives: never more than one of them runs
+            OneCorrectionSourceOnly();
+
             //start NTRIP if required
             isNTRIP_RequiredOn = Properties.Settings.Default.setNTRIP_isOn;
             isRadio_RequiredOn = Properties.Settings.Default.setRadio_isOn;
@@ -388,7 +391,28 @@ namespace AgIO
             lblToGPS.Visible = anySource;
 
             if (isNTRIP_RequiredOn) StartNtripHost();
+
+            //a client that could not start leaves the list empty and the card on "NTRIP Off", with the reason on the screen
+            ntripChecks.Visible = isNTRIP_RequiredOn && !UseLegacyNtrip;
             RefreshNtripCard();
+        }
+
+        // Settings files can have more than one source switched on (a hand-edited or very old file; the settings windows
+        // of all versions switch the others off). Two sources on the same receiver is worse than one, so one stays:
+        // serial pass-through before the radio before NTRIP, the order in which the old windows switched the others off.
+        private void OneCorrectionSourceOnly()
+        {
+            var s = Properties.Settings.Default;
+            int on = (s.setPass_isOn ? 1 : 0) + (s.setRadio_isOn ? 1 : 0) + (s.setNTRIP_isOn ? 1 : 0);
+            if (on < 2) return;
+
+            string kept = s.setPass_isOn ? "Serial pass-through" : s.setRadio_isOn ? "Radio" : "NTRIP";
+            if (s.setPass_isOn) { s.setRadio_isOn = false; s.setNTRIP_isOn = false; }
+            else if (s.setRadio_isOn) s.setNTRIP_isOn = false;
+            if (RegistrySettings.profileLoadResult == AgLibrary.Settings.LoadResult.Ok) s.Save();
+
+            NtripErrorBox(7000, "More than one correction source",
+                "NTRIP, radio and serial pass-through cannot run together. Using " + kept + ", the others are switched off.");
         }
 
         private void StartNtripHost()
@@ -411,6 +435,15 @@ namespace AgIO
 
             lastNtripBytesReceived = 0;
             ntripHost.Start();
+            if (!ntripHost.IsRunning)
+            {
+                // Nothing to connect to (no profile, a profile that is not on this computer, no address, no radio port):
+                // say what is missing instead of a card that just says Stopped.
+                isNTRIP_RequiredOn = false;
+                Log.EventWriter("NTRIP - Not started: " + ntripHost.StartProblem);
+                NtripErrorBox(7000, "NTRIP not started", ntripHost.StartProblem);
+                return;
+            }
             Log.EventWriter("NTRIP - Client started");
         }
 
@@ -429,7 +462,7 @@ namespace AgIO
             if (!legacyNtrip.Start())
             {
                 isNTRIP_RequiredOn = false;
-                TimedMessageBox(3000, "NTRIP", "Fill in the address of the main service first.");
+                NtripErrorBox(5000, "NTRIP not started", "Fill in the address of the main service first.");
             }
         }
 
