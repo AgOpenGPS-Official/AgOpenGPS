@@ -217,7 +217,7 @@ namespace GPS_Out.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
         public int SentencePrecisionIndex {
             get {
                 return ((int)(this["SentencePrecisionIndex"]));

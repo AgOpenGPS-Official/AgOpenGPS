@@ -606,7 +606,8 @@
             "4",
             "5",
             "6",
-            "7"});
+            "7",
+            "8"});
             this.cboPrecision.Location = new System.Drawing.Point(481, 425);
             this.cboPrecision.Name = "cboPrecision";
             this.cboPrecision.Size = new System.Drawing.Size(71, 47);

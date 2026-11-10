@@ -51,7 +51,7 @@
       <Value Profile="(Default)">00.0000000</Value>
     </Setting>
     <Setting Name="SentencePrecisionIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
+      <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="Simulate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
