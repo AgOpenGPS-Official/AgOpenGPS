@@ -94,8 +94,9 @@ namespace AgIO
             numLon.Value = position != null ? position.Longitude : s.setNTRIP_manualLon;
             numAlt.Value = position != null ? position.Altitude : s.setNTRIP_manualAltitude;
             numInterval.IntValue = s.setNTRIP_sendGGAInterval;
-            segOutput.SelectedIndex = s.setNTRIP_sendToSerial && !s.setNTRIP_sendToUDP ? 0 : 1;
-            if (s.setNTRIP_sendToSerial && s.setNTRIP_sendToUDP) segOutput.SelectedIndex = 1;
+            // Serial, network or both (the AgIO default is both). Both must stay a choice: showing it as "network" would drop
+            // the serial output of a GPS receiver the moment the settings are saved.
+            segOutput.SelectedIndex = s.setNTRIP_sendToSerial && s.setNTRIP_sendToUDP ? 2 : s.setNTRIP_sendToSerial ? 0 : 1;
             numNetPort.IntValue = s.setNTRIP_sendToUDPPort;
 
             UpdateEnabled();
@@ -143,7 +144,7 @@ namespace AgIO
         {
             bool fixedPosition = segPosition.SelectedIndex == 1;
             numLat.Enabled = numLon.Enabled = numAlt.Enabled = fixedPosition;
-            numNetPort.Enabled = segOutput.SelectedIndex == 1;
+            numNetPort.Enabled = segOutput.SelectedIndex >= 1;   // network or both
 
             // The service fields give way to the radio's when the main source is a serial radio.
             bool mainRadio = segMainType.SelectedIndex == 1;
@@ -346,8 +347,8 @@ namespace AgIO
             s.setNTRIP_manualLon = numLon.Value;
             s.setNTRIP_manualAltitude = numAlt.Value;
             s.setNTRIP_sendGGAInterval = numInterval.IntValue;
-            s.setNTRIP_sendToSerial = segOutput.SelectedIndex == 0;
-            s.setNTRIP_sendToUDP = segOutput.SelectedIndex == 1;
+            s.setNTRIP_sendToSerial = segOutput.SelectedIndex == 0 || segOutput.SelectedIndex == 2;
+            s.setNTRIP_sendToUDP = segOutput.SelectedIndex >= 1;
             s.setNTRIP_sendToUDPPort = numNetPort.IntValue;
             s.setNTRIP_useLegacyClient = tglLegacy.Checked;
 

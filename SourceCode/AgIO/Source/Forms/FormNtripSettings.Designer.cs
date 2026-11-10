@@ -789,7 +789,7 @@ namespace AgIO
             // 
             // segOutput
             // 
-            this.segOutput.ItemsText = "My GPS Receiver (Serial)|My AIO Board (Network)";
+            this.segOutput.ItemsText = "My GPS Receiver (Serial)|My AIO Board (Network)|Both";
             this.segOutput.Location = new System.Drawing.Point(230, 304);
             this.segOutput.Name = "segOutput";
             this.segOutput.Size = new System.Drawing.Size(720, 52);
