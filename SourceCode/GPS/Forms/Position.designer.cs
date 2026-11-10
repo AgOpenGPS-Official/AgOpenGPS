@@ -822,17 +822,17 @@ namespace AgOpenGPS
             else
             {
                 //auto track routine
-                if (trk.isAutoTrack && !isBtnAutoSteerOn && trk.autoTrack3SecTimer >= 1)
+                if (trk.isAutoTrack && !isBtnAutoSteerOn)
                 {
-                    trk.autoTrack3SecTimer = 0;
                     int lastIndex = trk.idx;
-                    trk.idx = trk.FindClosestRefTrack(steerAxlePos);
+                    trk.idx = trk.UpdateAutoTrack(pivotAxlePos, isReverse, avgSpeed);
                     if (lastIndex != trk.idx)
                     {
                         curve.isCurveValid = false;
                         ABLine.isABValid = false;
                     }
                 }
+                else trk.isAutoTrackHoldingPass = false;
 
                 //like normal
                 if (trk.gArr != null && trk.gArr.Count > 0 && trk.idx >= 0 && trk.idx < trk.gArr.Count)

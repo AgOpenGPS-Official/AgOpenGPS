@@ -89,7 +89,8 @@ namespace AgOpenGPS
 
             CTrk track = mf.trk.gArr[mf.trk.idx];
 
-            if (!isABValid || ((mf.secondsSinceStart - lastSecond) > 0.66 && (!mf.isBtnAutoSteerOn || mf.mc.steerSwitchHigh)))
+            if (!isABValid || ((mf.secondsSinceStart - lastSecond) > 0.66 && (!mf.isBtnAutoSteerOn || mf.mc.steerSwitchHigh)
+                && !mf.trk.isAutoTrackHoldingPass))
             {
                 lastSecond = mf.secondsSinceStart;
 
