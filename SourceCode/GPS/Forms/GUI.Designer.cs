@@ -294,8 +294,6 @@ namespace AgOpenGPS
                 twoSecondCounter++;
                 fourSecondCounter++;
 
-                //keeps autoTrack from changing too fast
-                trk.autoTrack3SecTimer++;
                 vehicle.deadZoneDelayCounter++;
 
                 lblFix.Text = FixQuality + "Age: " + pn.age.ToString("N1");

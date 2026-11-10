@@ -18,7 +18,7 @@ namespace AgOpenGPS
 
         public List<CTrk> gArr = new List<CTrk>();
 
-        public int idx, autoTrack3SecTimer;
+        public int idx;
 
         public bool isAutoTrack = false, isAutoSnapToPivot = false, isAutoSnapped;
 
@@ -29,102 +29,171 @@ namespace AgOpenGPS
             idx = -1;
         }
 
-        public int FindClosestRefTrack(vec3 pivot)
+        #region Auto track
+
+        // Picks the track the vehicle drives along while autosteer is off: heading gate first, then
+        // cross track error to the nearest pass. Held at standstill; when reversing only a clear heading
+        // match can switch, so backing into a corner never flips back to the previous track.
+        private const double AutoTrackGate = 25.0 * Math.PI / 180.0;
+        private const double AutoTrackSnap = 20.0 * Math.PI / 180.0;
+        private const double AutoTrackSnapReverse = 10.0 * Math.PI / 180.0;
+        private const double AutoTrackSnapBetter = 15.0 * Math.PI / 180.0;
+        private const double AutoTrackMargin = 1.0;          // m
+        private const double AutoTrackConfirmDist = 2.0;     // m
+        private const double AutoTrackMinSpeed = 1.0;        // km/h
+        private const double AutoTrackPenaltyPerDeg = 0.1;   // m per degree
+        private const double AutoTrackEndMargin = 10.0;      // m past curve ends
+        private const double AutoTrackFirstPassWeight = 0.5;
+        private const double AutoTrackNearMin = 50.0;        // m
+
+        //true while turning away from the selected track: AB line and curve keep their pass
+        public bool isAutoTrackHoldingPass;
+
+        private int autoTrackPending = -1;
+        private double autoTrackTravel;
+        private vec2 autoTrackLastPos;
+        private bool autoTrackHasLastPos;
+
+        public int UpdateAutoTrack(vec3 pivot, bool isReverse, double speedKmh)
         {
-            if (idx < 0 || gArr.Count == 0) return -1;
+            double step = autoTrackHasLastPos ? glm.Distance(autoTrackLastPos, new vec2(pivot.easting, pivot.northing)) : 0;
+            autoTrackLastPos = new vec2(pivot.easting, pivot.northing);
+            autoTrackHasLastPos = true;
 
-            //only 1 track
-            if (gArr.Count == 1) return idx;
+            if (idx < 0 || gArr.Count == 0 || idx >= gArr.Count) { ResetAutoTrackPending(); isAutoTrackHoldingPass = false; return -1; }
 
-            int trak = -1;
-            int cntr = 0;
+            AutoTrackScore(gArr[idx], pivot, true, out _, out double selectedDiff, out _);
+            isAutoTrackHoldingPass = gArr[idx].mode != TrackMode.waterPivot && selectedDiff > AutoTrackGate;
 
-            //Count visible
-            for (int i = 0; i < gArr.Count; i++)
-            {
-                if (gArr[i].isVisible)
-                {
-                    cntr++;
-                    trak = i;
-                }
-            }
+            if (Math.Abs(speedKmh) < AutoTrackMinSpeed) { ResetAutoTrackPending(); return idx; }
 
-            //only 1 track visible of the group
-            if (cntr == 1) return trak;
-
-            //no visible tracks
-            if (cntr == 0) return -1;
-
-            //determine if any aligned reasonably close
-            bool[] isAlignedArr = new bool[gArr.Count];
-            for (int i = 0; i < gArr.Count; i++)
-            {
-                if (gArr[i].mode == TrackMode.Curve) isAlignedArr[i] = true;
-                else
-                {
-                    double diff = Math.PI - Math.Abs(Math.Abs(pivot.heading - gArr[i].heading) - Math.PI);
-                    if (diff < 1 || diff > 2.14)
-                        isAlignedArr[i] = true;
-                    else
-                        isAlignedArr[i] = false;
-                }
-            }
-
-            double minDistA = double.MaxValue;
-            double dist;
-
-            vec2 endPtA, endPtB;
+            double nearLimit = Math.Max(2.0 * mf.tool.width, AutoTrackNearMin);
+            int best = -1;
+            double bestScore = double.MaxValue, bestDiff = Math.PI;
+            double curScore = double.MaxValue, curDiff = Math.PI;
+            bool curEligible = false;
 
             for (int i = 0; i < gArr.Count; i++)
             {
-                if (!isAlignedArr[i]) continue;
                 if (!gArr[i].isVisible) continue;
-
-                if (gArr[i].mode == TrackMode.AB)
+                if (!AutoTrackScore(gArr[i], pivot, i == idx, out double score, out double diff, out double firstPassDist))
                 {
-                    double abHeading = mf.trk.gArr[i].heading;
-
-                    endPtA.easting = mf.trk.gArr[i].ptA.easting - (Math.Sin(abHeading) * 2000);
-                    endPtA.northing = mf.trk.gArr[i].ptA.northing - (Math.Cos(abHeading) * 2000);
-
-                    endPtB.easting = mf.trk.gArr[i].ptB.easting + (Math.Sin(abHeading) * 2000);
-                    endPtB.northing = mf.trk.gArr[i].ptB.northing + (Math.Cos(abHeading) * 2000);
-
-                    //x2-x1
-                    double dx = endPtB.easting - endPtA.easting;
-                    //z2-z1
-                    double dy = endPtB.northing - endPtA.northing;
-
-                    dist = ((dy * mf.steerAxlePos.easting) - (dx * mf.steerAxlePos.northing) + (endPtB.easting
-                                            * endPtA.northing) - (endPtB.northing * endPtA.easting))
-                                                / Math.Sqrt((dy * dy) + (dx * dx));
-
-                    dist *= dist;
-
-                    if (dist < minDistA)
-                    {
-                        minDistA = dist;
-                        trak = i;
-                    }
+                    if (i == idx) curDiff = diff;
+                    continue;
                 }
-                else
-                {
-                    for (int j = 0; j < gArr[i].curvePts.Count; j++)
-                    {
+                if (i != idx && firstPassDist > nearLimit) continue;
 
-                        dist = glm.DistanceSquared(gArr[i].curvePts[j], pivot);
-
-                        if (dist < minDistA)
-                        {
-                            minDistA = dist;
-                            trak = i;
-                        }
-                    }
-                }
+                if (i == idx) { curEligible = true; curScore = score; curDiff = diff; }
+                if (score < bestScore) { bestScore = score; best = i; bestDiff = diff; }
             }
 
-            return trak;
+            if (best < 0 || best == idx) { ResetAutoTrackPending(); return idx; }
+
+            //heading clearly fits another track better: switch now
+            if (bestDiff <= (isReverse ? AutoTrackSnapReverse : AutoTrackSnap) && curDiff >= bestDiff + AutoTrackSnapBetter)
+            {
+                ResetAutoTrackPending();
+                isAutoTrackHoldingPass = false;
+                return best;
+            }
+
+            if (isReverse) { ResetAutoTrackPending(); return idx; }
+
+            if (curEligible && bestScore > curScore - AutoTrackMargin) { ResetAutoTrackPending(); return idx; }
+
+            //otherwise switch when clearly better over a short distance forward
+            if (best != autoTrackPending) { autoTrackPending = best; autoTrackTravel = 0; }
+            autoTrackTravel += step;
+            if (autoTrackTravel >= AutoTrackConfirmDist)
+            {
+                ResetAutoTrackPending();
+                isAutoTrackHoldingPass = false;
+                return best;
+            }
+            return idx;
         }
+
+        public void ResetAutoTrackPending()
+        {
+            autoTrackPending = -1;
+            autoTrackTravel = 0;
+        }
+
+        //false when outside the heading gate; diff is always set
+        private bool AutoTrackScore(CTrk trk, vec3 pivot, bool isSelected, out double score, out double diff, out double firstPassDist)
+        {
+            score = double.MaxValue;
+            diff = Math.PI;
+            firstPassDist = double.MaxValue;
+            double lateral, beyond, trackHeading;
+            double margin = AutoTrackEndMargin;
+
+            if (trk.mode == TrackMode.AB)
+            {
+                trackHeading = trk.heading;
+                double dx = trk.ptB.easting - trk.ptA.easting;
+                double dy = trk.ptB.northing - trk.ptA.northing;
+                double len = Math.Sqrt(dx * dx + dy * dy);
+                if (len < 0.01) return false;
+                dx /= len; dy /= len;
+                double px = pivot.easting - trk.ptA.easting, py = pivot.northing - trk.ptA.northing;
+                lateral = dy * px - dx * py;
+                beyond = 0;
+            }
+            else
+            {
+                int n = trk.curvePts.Count;
+                if (n < 2) return false;
+                double best = double.MaxValue;
+                lateral = beyond = 0;
+                trackHeading = 0;
+                for (int j = 0; j < n - 1; j++)
+                {
+                    vec3 a = trk.curvePts[j], b = trk.curvePts[j + 1];
+                    double dx = b.easting - a.easting, dy = b.northing - a.northing;
+                    double l2 = dx * dx + dy * dy;
+                    if (l2 < 1e-6) continue;
+                    double l = Math.Sqrt(l2);
+                    double px = pivot.easting - a.easting, py = pivot.northing - a.northing;
+                    double t = (px * dx + py * dy) / l2;
+                    double ext = margin / l;
+                    double tc = Math.Max(j == 0 ? -ext : 0, Math.Min(j == n - 2 ? 1 + ext : 1, t));
+                    double d = glm.Distance(pivot.easting, pivot.northing, a.easting + tc * dx, a.northing + tc * dy);
+                    if (d < best)
+                    {
+                        best = d;
+                        trackHeading = Math.Atan2(dx, dy);
+                        lateral = (dy * px - dx * py) / l;
+                        beyond = Math.Sqrt(Math.Max(0, d * d - lateral * lateral));
+                    }
+                }
+                if (best == double.MaxValue) return false;
+            }
+
+            if (trackHeading < 0) trackHeading += glm.twoPI;
+            double raw = Math.PI - Math.Abs(Math.Abs(pivot.heading - trackHeading) - Math.PI);
+            diff = Math.Min(raw, Math.PI - raw);
+            if (diff > AutoTrackGate) return false;
+
+            //same pass geometry as CABLine / CABCurve: W * k + W/2 + offset + nudge, right of the track
+            double w = mf.tool.width - mf.tool.overlap;
+            double xte = Math.Abs(lateral), firstPass = Math.Abs(lateral);
+            if (w > 0.1)
+            {
+                double shift = (raw < glm.PIBy2 ? -mf.tool.offset : mf.tool.offset) + trk.nudgeDistance;
+                double refDist = (lateral - 0.5 * w - shift) / w;
+                int k = refDist < 0 ? (int)(refDist - 0.5) : (int)(refDist + 0.5);
+                xte = Math.Abs(lateral - (w * k + 0.5 * w + shift));
+                firstPass = Math.Min(Math.Abs(lateral - (0.5 * w + shift)), Math.Abs(lateral + 0.5 * w - shift));
+            }
+
+            firstPassDist = Math.Sqrt(firstPass * firstPass + beyond * beyond);
+            score = Math.Sqrt(xte * xte + beyond * beyond) + AutoTrackPenaltyPerDeg * glm.toDegrees(diff);
+            if (!isSelected) score += AutoTrackFirstPassWeight * firstPass;
+            return true;
+        }
+
+        #endregion
 
         public void NudgeTrack(double dist)
         {
