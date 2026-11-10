@@ -64,6 +64,11 @@ namespace AgIO
         //is the fly out displayed
         public bool isViewAdvanced = false;
 
+        //Window widths: the main part with the corrections list, and the same plus the slide-out
+        //with the steer angle, switches, section switches and pings
+        private const int CollapsedWidth = 812;
+        private const int ExpandedWidth = 966;
+
         //used to hide the window and not update text fields and most counters
         public bool isAppInFocus = true, isLostFocus;
 
@@ -133,7 +138,7 @@ namespace AgIO
             }
 
             //small view
-            this.Width = 420;
+            this.Width = CollapsedWidth;
 
             LoadLoopback();
 
@@ -208,7 +213,7 @@ namespace AgIO
             oneSecondLoopTimer.Enabled = true;
             pictureBox1.Visible = true;
             pictureBox1.BringToFront();
-            pictureBox1.Width = 430;
+            pictureBox1.Width = ClientSize.Width;
             pictureBox1.Height = 500;
             pictureBox1.Left = 0;
             pictureBox1.Top = 0;
@@ -313,7 +318,7 @@ namespace AgIO
                 Controls.Remove(pictureBox1);
                 pictureBox1.Dispose();
                 oneSecondLoopTimer.Interval = 1000;
-                this.Width = 428;
+                this.Width = CollapsedWidth;
                 this.Height = 530;
                 return;
             }

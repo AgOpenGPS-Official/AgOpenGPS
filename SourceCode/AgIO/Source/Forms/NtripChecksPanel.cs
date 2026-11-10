@@ -46,6 +46,30 @@ namespace AgIO
             set { details.Visible = value; }
         }
 
+        // Room right of the bottom button for the Extend view button of the main window, which sits over this panel.
+        private const int RightInset = 95;
+        private const int ButtonHeight = 64;
+
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+            LayoutButtons();
+        }
+
+        // The details button sits at the bottom left, the switch button full width above it.
+        private void LayoutButtons()
+        {
+            if (details == null || switchButton == null) return;
+
+            int bottom = Height;
+            if (details.Visible)
+            {
+                details.SetBounds(0, bottom - ButtonHeight, Math.Max(40, Width - RightInset), ButtonHeight);
+                bottom -= ButtonHeight;
+            }
+            if (switchButton.Visible) switchButton.SetBounds(0, bottom - ButtonHeight, Width, ButtonHeight);
+        }
+
         public NtripChecksPanel()
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer
@@ -54,8 +78,7 @@ namespace AgIO
 
             switchButton = new RoundedButton
             {
-                Dock = DockStyle.Bottom,
-                Height = 64,
+                Height = ButtonHeight,
                 Text = "Switch to fallback",
                 Font = new Font("Tahoma", 14.25F, FontStyle.Bold),
                 Visible = false,
@@ -69,9 +92,8 @@ namespace AgIO
 
             details = new RoundedButton
             {
-                Dock = DockStyle.Bottom,
-                Height = 64,
-                Text = "Technical details...",
+                Height = ButtonHeight,
+                Text = "NTRIP Details",
                 Font = new Font("Tahoma", 14.25F, FontStyle.Bold),
             };
             details.Click += (s, e) =>

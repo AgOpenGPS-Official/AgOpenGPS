@@ -33,21 +33,23 @@ namespace AgIO
 
         private void btnSlide_Click(object sender, EventArgs e)
         {
-            if (this.Width < 600)
+            //the slide-out holds the steer angle, switches and pings; the corrections list is always in view
+            if (!isViewAdvanced)
             {
-                ntripChecks.Visible = ntripCard.Visible && !UseLegacyNtrip;
-                this.Width = FlyOutWidth();
+                this.Width = ExpandedWidth;
                 isViewAdvanced = true;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnLeft;
                 threeMinuteTimer = secondsSinceStart;
             }
             else
             {
-                this.Width = 428;
-                ntripChecks.Visible = false;
+                this.Width = CollapsedWidth;
                 isViewAdvanced = false;
                 btnSlide.BackgroundImage = Properties.Resources.ArrowGrnRight;
             }
+
+            //the module on/off boxes belong to the extended view; hidden, their state stays as it is
+            cboxIsSteerModule.Visible = cboxIsIMUModule.Visible = cboxIsMachineModule.Visible = isViewAdvanced;
         }
 
 

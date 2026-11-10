@@ -54,12 +54,14 @@ namespace AgIO
             checks.Alert = fallback;
             info.ForeColor = fallback ? NtripStatusCard.LightColor(NtripLight.Bad) : System.Drawing.SystemColors.ControlText;
             info.BackColor = fallback ? System.Drawing.Color.FromArgb(255, 226, 222) : System.Drawing.SystemColors.Control;
-            checks.SetChecks(CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
+            checks.SetChecks(mf.BuildNtripChecks(st));
 
             string where = profile == null ? (fallback && ms != null ? ms.Using.Replace("Fallback: ", "") : host != null && host.MainRadio != null ? "Radio " + host.MainRadio : "-") : profile.Mount + " on " + profile.Host + ":" + profile.Port.ToString(ci);
             string station = st.Rtcm.StationId >= 0 ? st.Rtcm.StationId.ToString(ci) : "unknown";
             info.Text = (fallback ? "FALLBACK IN USE: the main service is not used now\r\n" : "") + st.Headline + "\r\n" + where + "\r\n"
-                + "Base station ID: " + station + "   Damaged data: " + (st.Rtcm.ChecksumFailures == 0 ? "none" : st.Rtcm.ChecksumFailures.ToString(ci))
+                + "Base station ID: " + station
+                + (st.Rtcm.HasBaseCoordinates ? "   Position: " + st.Rtcm.BaseLatitude.ToString("F6", ci) + ", " + st.Rtcm.BaseLongitude.ToString("F6", ci) : "")
+                + "   Damaged data: " + (st.Rtcm.ChecksumFailures == 0 ? "none" : st.Rtcm.ChecksumFailures.ToString(ci))
                 + "   Service answered: " + (st.FirstLine.Length > 0 ? st.FirstLine : "-");
 
             list.BeginUpdate();
@@ -105,7 +107,7 @@ namespace AgIO
         {
             NtripStatus st = CurrentStatus();
             NtripHost host = mf.ntripHost;
-            string report = SupportReport.Build(st, host == null ? null : host.ActiveProfile, CorrectionChecks.Build(st, mf.fixQualityData, mf.ageData));
+            string report = SupportReport.Build(st, host == null ? null : host.ActiveProfile, mf.BuildNtripChecks(st));
             try
             {
                 Clipboard.SetText(report);

@@ -87,7 +87,9 @@ namespace AgIO
             traffic.cntrGPSIn += datagrams;
             traffic.cntrGPSInBytes += bytesOut;
 
-            NtripStatus st = host.Status;
+            //one snapshot of the client per cycle: every look at the status copies it, so the card gets this one too
+            ManagerStatus snapshot = host.Manager;
+            NtripStatus st = snapshot != null ? snapshot.Status : new NtripStatus();
 
             //bytes from the caster since the last look (the client counts per session)
             long received = st.BytesReceived;
@@ -101,7 +103,7 @@ namespace AgIO
 
             lblToGPS.Text = bytesPerSecond < 1 ? "---" : bytesOut.ToString();
 
-            RefreshNtripCard();
+            RefreshNtripCard(snapshot);
         }
 
         //the old client: its one-second routine, then the same counters and card as the new one
@@ -135,8 +137,20 @@ namespace AgIO
             ntripCard.SetStatus(headline + " (old client)", light, legacyNtrip.Host + "\n" + legacyNtrip.Mount, received, "Stop");
         }
 
-        //the status card in the main window and the "are the corrections good?" panel in the fly-out
-        private void RefreshNtripCard()
+        //the lines of the "are the corrections good?" list, also used by the details and the support report.
+        //The caster is given the fixed position when NTRIP is set to Fixed Position, so the distance to the base is measured from there.
+        internal System.Collections.Generic.IReadOnlyList<CheckItem> BuildNtripChecks(NtripStatus st)
+        {
+            var cfg = Properties.Settings.Default;
+            bool fixedPosition = cfg.setNTRIP_isGGAManual;
+            double fromLat = fixedPosition ? cfg.setNTRIP_manualLat : latitude;
+            double fromLon = fixedPosition ? cfg.setNTRIP_manualLon : longitude;
+            return CorrectionChecks.Build(st, fixQualityData, ageData, fromLat, fromLon, fixedPosition);
+        }
+
+        //the status card and the "are the corrections good?" list in the main window;
+        //the once-a-second update hands in its snapshot of the client, other callers get a fresh one
+        private void RefreshNtripCard(ManagerStatus snapshot = null)
         {
             if (ntripCard == null || !ntripCard.Visible) return;
 
@@ -162,8 +176,8 @@ namespace AgIO
                 return;
             }
 
-            ManagerStatus ms = ntripHost.Manager;
-            NtripStatus st = ms != null ? ms.Status : ntripHost.Status;
+            ManagerStatus ms = snapshot ?? ntripHost.Manager;
+            NtripStatus st = ms != null ? ms.Status : new NtripStatus();
             NtripProfile profile = ntripHost.Profile;
             string source = profile == null ? (ntripHost.MainRadio == null ? "" : "Radio\n" + ntripHost.MainRadio) : profile.Host + "\n" + profile.Mount;
             if (ms != null && ms.Active == SourceRole.Fallback) source = ms.Using.Replace("Fallback: ", "Fallback:\n");
@@ -175,7 +189,7 @@ namespace AgIO
             ntripCard.SetStatus(st.Headline, st.Light, source, received, running ? "Stop" : "Start");
             if (ntripChecks.Visible)
             {
-                ntripChecks.SetChecks(CorrectionChecks.Build(st, fixQualityData, ageData));
+                ntripChecks.SetChecks(BuildNtripChecks(st));
                 if (ms == null || !ms.FallbackConfigured) ntripChecks.SetSwitch("", false, ButtonTone.Neutral);
                 else if (ms.Active == SourceRole.Main) ntripChecks.SetSwitch("Switch to fallback", true, ButtonTone.Neutral);
                 else if (ms.MainPaused) ntripChecks.SetSwitch("Try the main service again", true, ButtonTone.Neutral);
@@ -329,12 +343,6 @@ namespace AgIO
             }
         }
 
-        //the fly-out is wider when the NTRIP panel is shown
-        private int FlyOutWidth()
-        {
-            return ntripChecks != null && ntripChecks.Visible ? 1030 : 760;
-        }
-
         public void ConfigureNTRIP()
         {
 
@@ -359,8 +367,8 @@ namespace AgIO
 
             //one status card for NTRIP, radio and serial pass-through
             ntripCard.Visible = Properties.Settings.Default.setNTRIP_isOn || radioOrPass;
-            //the checks and the switch belong to the new client
-            ntripChecks.Visible = isNTRIP_RequiredOn && isViewAdvanced && !UseLegacyNtrip;
+            //the checks and the switch belong to the new client; the list is part of the main window
+            ntripChecks.Visible = isNTRIP_RequiredOn && !UseLegacyNtrip;
             lblToGPS.Visible = anySource;
 
             if (isNTRIP_RequiredOn) StartNtripHost();
