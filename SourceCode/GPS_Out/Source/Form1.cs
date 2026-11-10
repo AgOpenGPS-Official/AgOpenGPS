@@ -86,8 +86,8 @@ namespace GPS_Out
         {
             InitializeComponent();
             Tls = new clsTools(this);
-            AGIOcomm = new UDPComm(this, 15555, 8000, 7120, "AGIO", "127.103.104.105", "127.255.255.255");
-            AOGcomm = new UDPComm(this, 17777, 8500, 9010, "AOG", "127.100.101.102", "127.255.255.255");
+            AGIOcomm = new UDPComm(this, 15555, "127.103.104.105");
+            AOGcomm = new UDPComm(this, 17777, "127.100.101.102");
             AGIOdata = new PGN54908(this);
             GGA = new PGN_GGA(this);
             VTG = new PGN_VTG(this);

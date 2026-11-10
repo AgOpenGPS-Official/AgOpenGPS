@@ -34,12 +34,8 @@ namespace GPS_Out
         private ushort cHdopX100;
         private float cHeadingDual;
         private float cImuHeading;
-        private short cImuPitch;
-        private short cImuRoll;
-        private ushort cImuYaw;
         private double cLatitude;
         private double cLongitude;
-        private float cRoll;
         private ushort cSatellites;
         private float cSpeed;
         private float cTrueHeading;
@@ -165,36 +161,6 @@ namespace GPS_Out
             }
         }
 
-        public float IMUpitch
-        {
-            get
-            {
-                float Result = 0;
-                if (Math.Abs(cImuPitch / 10.0) < 30) Result = ((float)(cImuPitch / 10.0));
-                return Result;
-            }
-        }
-
-        public float IMUroll
-        {
-            get
-            {
-                float Result = 0;
-                if (Math.Abs(cImuRoll / 10.0) < 30) Result = ((float)(cImuRoll / 10.0));
-                return Result;
-            }
-        }
-
-        public ushort IMUyawRate
-        {
-            get
-            {
-                ushort Result = 0;
-                if (cImuYaw < 30) Result = cImuYaw;
-                return Result;
-            }
-        }
-
         public double Latitude
         {
             get
@@ -222,25 +188,6 @@ namespace GPS_Out
                 {
                     return 0;
                 }
-            }
-        }
-
-        public float Roll
-        {
-            get
-            {
-                float Result = 0;
-
-                if (Math.Abs(cRoll) < 30)
-                {
-                    Result = cRoll;
-                }
-                else if (Math.Abs(cImuRoll / 10.0) < 30)
-                {
-                    Result = (float)(cImuRoll / 10.0);
-                }
-
-                return Result;
             }
         }
 
@@ -323,16 +270,12 @@ namespace GPS_Out
                 cHeadingDual = BitConverter.ToSingle(Data, 21);
                 cTrueHeading = BitConverter.ToSingle(Data, 25);
                 cSpeed = BitConverter.ToSingle(Data, 29);
-                cRoll = BitConverter.ToSingle(Data, 33);
                 cAltitude = BitConverter.ToSingle(Data, 37);
                 cSatellites = BitConverter.ToUInt16(Data, 41);
                 cFixQuality = Data[43];
                 cHdopX100 = BitConverter.ToUInt16(Data, 44);
                 cAgeX100 = BitConverter.ToUInt16(Data, 46);
                 cImuHeading = (float)(BitConverter.ToUInt16(Data, 48) / 10.0);
-                cImuRoll = (short)BitConverter.ToInt16(Data, 50);
-                cImuPitch = (short)BitConverter.ToInt16(Data, 52);
-                cImuYaw = BitConverter.ToUInt16(Data, 54);
 
                 ReceiveTime = DateTime.Now;
                 Result = true;

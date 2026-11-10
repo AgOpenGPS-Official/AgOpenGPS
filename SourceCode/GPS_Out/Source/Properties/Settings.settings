@@ -44,12 +44,6 @@
     <Setting Name="SerialSuccessful" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="EndPointAOG" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.255.255.255</Value>
-    </Setting>
-    <Setting Name="EndPointAGIO" Type="System.String" Scope="User">
-      <Value Profile="(Default)">127.255.255.255</Value>
-    </Setting>
     <Setting Name="SentenceStart" Type="System.String" Scope="User">
       <Value Profile="(Default)">$GP</Value>
     </Setting>

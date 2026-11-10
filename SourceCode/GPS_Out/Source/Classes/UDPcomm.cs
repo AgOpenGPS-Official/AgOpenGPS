@@ -8,51 +8,20 @@ namespace GPS_Out
     {
         private readonly frmStart mf;
         private byte[] buffer = new byte[1024];
-        private string cConnectionName;
-        private bool cIsUDPSendConnected;
-        private string cLog;
-        private IPAddress cNetworkEP;
         private int cReceivePort;   // local ports must be unique for each app on same pc and each class instance
-        private int cSendFromPort;
-        private int cSendToPort;
         private IPAddress cSourceIP;
-        private string cSubNet;
         private HandleDataDelegateObj HandleDataDelegate = null;
         private Socket recvSocket;
-        private Socket sendSocket;
 
-        public UDPComm(frmStart CallingForm, int ReceivePort, int SendToPort, int SendFromPort,
-            string ConnectionName, string SourceIPaddress, string DestinationEndPoint = "")
+        public UDPComm(frmStart CallingForm, int ReceivePort, string SourceIPaddress)
         {
             mf = CallingForm;
             cReceivePort = ReceivePort;
-            cSendToPort = SendToPort;
-            cSendFromPort = SendFromPort;
-            cConnectionName = ConnectionName;
-            SetEP(DestinationEndPoint);
             SetSourceIP(SourceIPaddress);
         }
 
         // Status delegate
         private delegate void HandleDataDelegateObj(int port, byte[] msg);
-
-        public bool IsUDPSendConnected { get => cIsUDPSendConnected; set => cIsUDPSendConnected = value; }
-
-        public string NetworkEP
-        {
-            get { return cNetworkEP.ToString(); }
-            set
-            {
-                string[] data;
-                if (IPAddress.TryParse(value, out IPAddress IP))
-                {
-                    data = value.Split('.');
-                    cNetworkEP = IPAddress.Parse(data[0] + "." + data[1] + "." + data[2] + ".255");
-                    Properties.Settings.Default["EndPoint" + cConnectionName] = cNetworkEP.ToString();
-                    cSubNet = data[0].ToString() + "." + data[1].ToString() + "." + data[2].ToString();
-                }
-            }
-        }
 
         public void StartUDPServer()
         {
@@ -65,34 +34,16 @@ namespace GPS_Out
                 recvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 recvSocket.Bind(new IPEndPoint(cSourceIP, cReceivePort));
 
-                // initialize the send socket
-                sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-
-                // Initialise the IPEndPoint for the server to send on port
-                IPEndPoint server = new IPEndPoint(IPAddress.Any, cSendFromPort);
-                sendSocket.Bind(server);
-
                 // Initialise the IPEndPoint for the client - async listner client only!
                 EndPoint client = new IPEndPoint(IPAddress.Any, 0);
 
                 // Start listening for incoming data
                 recvSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref client, new AsyncCallback(ReceiveData), recvSocket);
-                IsUDPSendConnected = true;
             }
             catch (Exception e)
             {
                 mf.Tls.WriteErrorLog("UDPcomm/StartUDPServer: \n" + e.Message);
             }
-        }
-
-        private void AddToLog(string NewData)
-        {
-            cLog += DateTime.Now.Second.ToString() + "  " + NewData + Environment.NewLine;
-            if (cLog.Length > 100000)
-            {
-                cLog = cLog.Substring(cLog.Length - 98000, 98000);
-            }
-            cLog = cLog.Replace("\0", string.Empty);
         }
 
         private void HandleData(int Port, byte[] Data)
@@ -102,7 +53,6 @@ namespace GPS_Out
                 if (Data.Length > 1)
                 {
                     int PGN = Data[1] << 8 | Data[0];
-                    AddToLog("< " + PGN.ToString());
 
                     switch (PGN)
                     {
@@ -156,45 +106,6 @@ namespace GPS_Out
             {
                 //mf.Tls.ShowHelp("ReceiveData Error \n" + e.Message, "Comm", 3000, true);
                 mf.Tls.WriteErrorLog("UDPcomm/ReceiveData " + ex.Message);
-            }
-        }
-
-        private void SendData(IAsyncResult asyncResult)
-        {
-            try
-            {
-                sendSocket.EndSend(asyncResult);
-            }
-            catch (Exception ex)
-            {
-                mf.Tls.WriteErrorLog(" UDP Send Data" + ex.ToString());
-            }
-        }
-
-        private void SetEP(string DestinationEndPoint)
-        {
-            try
-            {
-                if (IPAddress.TryParse(DestinationEndPoint, out _))
-                {
-                    NetworkEP = DestinationEndPoint;
-                }
-                else
-                {
-                    string EP = mf.Tls.LoadProperty("EndPoint_" + cConnectionName);
-                    if (IPAddress.TryParse(EP, out _))
-                    {
-                        NetworkEP = EP;
-                    }
-                    else
-                    {
-                        NetworkEP = "192.168.1.255";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                mf.Tls.WriteErrorLog("UDPcomm/SetEP " + ex.Message);
             }
         }
 
