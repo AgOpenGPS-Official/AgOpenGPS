@@ -381,7 +381,7 @@ namespace AgIO
                     {
 
                         traffic.helloFromAutoSteer = 0;
-                        if (isViewAdvanced)
+                        if (isViewAdvanced && isUiActive)
                         {
                             lblPing.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
                             double actualSteerAngle = (Int16)((data[6] << 8) + data[5]);
@@ -398,7 +398,7 @@ namespace AgIO
 
                         traffic.helloFromMachine = 0;
 
-                        if (isViewAdvanced)
+                        if (isViewAdvanced && isUiActive)
                         {
                             lblPingMachine.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
                             lbl1To8.Text = Convert.ToString(data[5], 2).PadLeft(8, '0');

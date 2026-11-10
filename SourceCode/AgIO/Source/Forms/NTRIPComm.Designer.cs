@@ -66,7 +66,7 @@ namespace AgIO
             }
 
             //radio and serial pass-through show on the same status card as NTRIP
-            if (isRadio_RequiredOn || isSerialPass_RequiredOn)
+            if ((isRadio_RequiredOn || isSerialPass_RequiredOn) && isUiActive)
             {
                 RefreshNtripCard();
             }
@@ -98,8 +98,8 @@ namespace AgIO
 
             isNTRIP_Connected = st.State == NtripState.Streaming || st.State == NtripState.Connected;
 
-            //Bypass if sleeping
-            if (focusSkipCounter == 0) return;
+            //nobody looks at the labels: minimized, or another window is in use
+            if (!isUiActive) return;
 
             lblToGPS.Text = bytesPerSecond < 1 ? "---" : bytesOut.ToString();
 
@@ -120,8 +120,8 @@ namespace AgIO
 
             int bytesOut = legacy.TakeBytesToGps();
 
-            //Bypass if sleeping
-            if (focusSkipCounter == 0) return;
+            //nobody looks at the labels: minimized, or another window is in use
+            if (!isUiActive) return;
 
             lblToGPS.Text = bytesOut == 0 ? "---" : bytesOut.ToString();
 
@@ -639,7 +639,7 @@ namespace AgIO
             //reset watchdog since we have updated data
             NTRIP_Watchdog = 0;
 
-            lblToGPS.Text = data.Length.ToString();
+            if (isUiActive) lblToGPS.Text = data.Length.ToString();
 
             //send it
             SendNTRIP(data);

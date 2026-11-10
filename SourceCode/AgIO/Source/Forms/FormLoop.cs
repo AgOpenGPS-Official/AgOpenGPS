@@ -74,10 +74,30 @@ namespace AgIO
 
         public int focusSkipCounter = 310;
 
+        //True while the window is on screen, that is not minimized (it minimizes itself after 310 seconds without focus,
+        //and can start minimized). Only then are labels, lights and lists brought up to date; the work behind
+        //them (alarms, counters, NTRIP) always runs. Having no focus does not count: it may still be in view.
+        public bool isUiActive = true;
+
         public FormLoop()
         {
             InitializeComponent();
             ntripChecks.SwitchClicked += ntripChecks_SwitchClicked;
+        }
+
+        private void SetUiActive(bool active)
+        {
+            if (active == isUiActive) return;
+            isUiActive = active;
+            if (active) RefreshUiNow();
+        }
+
+        //what the user sees, brought up to date at once when the window is used again (not after up to a second)
+        private void RefreshUiNow()
+        {
+            lblCurentLon.Text = longitude.ToString("N7");
+            lblCurrentLat.Text = latitude.ToString("N7");
+            if (isNTRIP_RequiredOn && ntripHost != null) RefreshNtripCard();
         }
 
         //First run
@@ -327,7 +347,10 @@ namespace AgIO
 
             secondsSinceStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
 
-            if (focusSkipCounter != 0)
+            //in case a resize event was missed, e.g. when the window starts minimized
+            SetUiActive(WindowState != FormWindowState.Minimized);
+
+            if (isUiActive)
             {
                 lblCurentLon.Text = longitude.ToString("N7");
                 lblCurrentLat.Text = latitude.ToString("N7");
@@ -397,7 +420,7 @@ namespace AgIO
 
             DoTraffic();
 
-            if (isViewAdvanced)
+            if (isViewAdvanced && isUiActive)
             {
                 pingSecondsStart = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds;
                 lblPing.Text = lblPingMachine.Text = "*";
@@ -430,14 +453,17 @@ namespace AgIO
 
             if (focusSkipCounter != 0)
             {
-                //update connections
-                lblIP.Text = "";
-                foreach (IPAddress IPA in Dns.GetHostAddresses(Dns.GetHostName()))
+                //update connections (a DNS lookup, so only when somebody looks at it)
+                if (isUiActive)
                 {
-                    if (IPA.AddressFamily == AddressFamily.InterNetwork)
+                    lblIP.Text = "";
+                    foreach (IPAddress IPA in Dns.GetHostAddresses(Dns.GetHostName()))
                     {
-                        _ = IPA.ToString();
-                        lblIP.Text += IPA.ToString() + "\r\n";
+                        if (IPA.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            _ = IPA.ToString();
+                            lblIP.Text += IPA.ToString() + "\r\n";
+                        }
                     }
                 }
 
@@ -551,6 +577,9 @@ namespace AgIO
 
         private void FormLoop_Resize(object sender, EventArgs e)
         {
+            //restored: bring everything up to date at once; minimized: stop updating it
+            SetUiActive(this.WindowState != FormWindowState.Minimized);
+
             if (this.WindowState == FormWindowState.Minimized)
             {
                 if (isViewAdvanced) btnSlide.PerformClick();
@@ -651,16 +680,16 @@ namespace AgIO
             traffic.helloFromAutoSteer++;
             traffic.helloFromIMU++;
 
-            if (focusSkipCounter != 0)
+            if (isUiActive)
             {
                 lblFromGPS.Text = traffic.cntrGPSOut == 0 ? "---" : ((traffic.cntrGPSOut >> 1)).ToString();
-
-                //reset all counters
-                traffic.cntrGPSOut = 0;
 
                 lblCurentLon.Text = longitude.ToString("N7");
                 lblCurrentLat.Text = latitude.ToString("N7");
             }
+
+            //reset the counter whatever the window does: the GPS alarm reads it, also while nobody looks
+            traffic.cntrGPSOut = 0;
         }
 
         // Buttons, Checkboxes and Clicks  ***************************************************
