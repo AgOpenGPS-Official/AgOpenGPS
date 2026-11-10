@@ -25,6 +25,8 @@ namespace AgIO
             mf = callingForm;
             initial = profile;
             InitializeComponent();
+            tglRaw.CheckedChanged += (s, e) => UpdateEnabled();
+            tglFbRaw.CheckedChanged += (s, e) => UpdateEnabled();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -149,6 +151,14 @@ namespace AgIO
             foreach (Control c in new Control[] { lblHost, txtHost, lblPort, numPort, lblMount, txtMount, btnMounts, lblUser, txtUser,
                 lblPassword, txtPassword, btnShowPassword, lblVersion, segVersion, lblRaw, tglRaw, lblLegacy, tglLegacy })
                 c.Visible = !mainRadio;
+
+            // A raw TCP stream has no NTRIP request: no mountpoint and no login (the values are kept, in case it is switched off again).
+            bool mainRaw = tglRaw.Checked;
+            foreach (Control c in new Control[] { lblMount, txtMount, btnMounts, lblUser, txtUser, lblPassword, txtPassword, btnShowPassword })
+                c.Enabled = !mainRaw;
+            bool fallbackRaw = tglFbRaw.Checked;
+            foreach (Control c in new Control[] { lblFbMount, txtFbMount, btnFbMounts, lblFbUser, txtFbUser, lblFbPassword, txtFbPassword })
+                c.Enabled = !fallbackRaw;
 
             bool fallbackOn = tglFallback.Checked;
             segFbType.Enabled = segAuto.Enabled = numAfter.Enabled = lblAfter.Enabled = lblAfter2.Enabled = pnlFbService.Enabled = pnlFbRadio.Enabled = fallbackOn;

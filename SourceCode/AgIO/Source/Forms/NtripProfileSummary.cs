@@ -118,7 +118,12 @@ namespace AgIO
                     TextRenderer.DrawText(g, service.Host + ":" + service.Port, hostFont, new Point(left, y), Color.Black, TextFormatFlags.NoPadding);
                     y += hostFont.Height + 1;
 
-                    if (service.Mount.Length > 0)
+                    if (service.RawTcp)
+                    {
+                        // No NTRIP request: there is no mountpoint or login to show
+                        TextRenderer.DrawText(g, "Raw TCP (no mountpoint or login)", noteFont, new Point(left, y + 2), Muted, TextFormatFlags.NoPadding);
+                    }
+                    else if (service.Mount.Length > 0)
                     {
                         TextRenderer.DrawText(g, "Mountpoint ", labelFont, new Point(left, y + 2), Muted, TextFormatFlags.NoPadding);
                         int labelWidth = TextRenderer.MeasureText(g, "Mountpoint ", labelFont, new Size(width, 0), TextFormatFlags.NoPadding).Width;
