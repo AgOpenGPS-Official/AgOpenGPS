@@ -395,6 +395,23 @@ namespace AgIO
             //a client that could not start leaves the list empty and the card on "NTRIP Off", with the reason on the screen
             ntripChecks.Visible = isNTRIP_RequiredOn && !UseLegacyNtrip;
             RefreshNtripCard();
+            UpdateSourceMenus();
+        }
+
+        // NTRIP, a standalone radio and serial pass-through are alternatives. While one of them is switched on in the settings,
+        // the settings of the others are greyed out, with the way out in the hint: switch the one that is on off first.
+        // (The switch of NTRIP is in its profile list, which stays open while NTRIP is on.)
+        private void UpdateSourceMenus()
+        {
+            var s = Properties.Settings.Default;
+            bool ntrip = s.setNTRIP_isOn, radio = s.setRadio_isOn, pass = s.setPass_isOn;
+
+            saveToolStrip.Enabled = !radio && !pass;
+            saveToolStrip.ToolTipText = saveToolStrip.Enabled ? "" : (radio ? "Radio is on. Switch it off in the radio settings first." : "Serial pass-through is on. Switch it off first.");
+            loadToolStrip.Enabled = !ntrip && !pass;
+            loadToolStrip.ToolTipText = loadToolStrip.Enabled ? "" : (ntrip ? "NTRIP is on. Switch it off in the NTRIP profile list first." : "Serial pass-through is on. Switch it off first.");
+            serialPassThroughToolStripMenuItem.Enabled = !ntrip && !radio;
+            serialPassThroughToolStripMenuItem.ToolTipText = serialPassThroughToolStripMenuItem.Enabled ? "" : (ntrip ? "NTRIP is on. Switch it off in the NTRIP profile list first." : "Radio is on. Switch it off in the radio settings first.");
         }
 
         // Settings files can have more than one source switched on (a hand-edited or very old file; the settings windows
