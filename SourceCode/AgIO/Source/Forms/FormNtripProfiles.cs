@@ -28,6 +28,11 @@ namespace AgIO
         /// <summary>The profile in use was deleted, so the settings changed even if the window is cancelled.</summary>
         internal bool ActiveChanged { get; private set; }
 
+        /// <summary>NTRIP was switched on or off with the switch, so the settings changed even if the window is cancelled.</summary>
+        internal bool UseChanged { get; private set; }
+
+        private bool loading = true;
+
         /// <summary>The profile the action is about.</summary>
         internal NtripProfileSet Chosen { get; private set; }
 
@@ -41,7 +46,52 @@ namespace AgIO
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            ShowUse();
+            loading = false;
             Fill(activeName);
+        }
+
+        // The switch shows the setting (it is for NTRIP as a whole, not for one profile).
+        private void ShowUse()
+        {
+            bool was = loading;
+            loading = true;
+            tglUse.Checked = Properties.Settings.Default.setNTRIP_isOn;
+            loading = was;
+        }
+
+        private void tglUse_CheckedChanged(object sender, EventArgs e)
+        {
+            if (loading) return;
+
+            var settings = Properties.Settings.Default;
+            if (tglUse.Checked)
+            {
+                // NTRIP runs the profile in use: it must exist and have something to connect to
+                NtripProfileSet active = string.IsNullOrWhiteSpace(settings.setNTRIP_profileName) ? null : store.Load(settings.setNTRIP_profileName);
+                if (active == null || !active.MainIsComplete)
+                {
+                    mf.TimedMessageBox(4000, "Cannot use NTRIP yet", active == null
+                        ? "Choose a profile and tap Use first."
+                        : "The profile in use has no service address or radio port yet. Edit it first.");
+                    loading = true;
+                    tglUse.Checked = false;
+                    loading = false;
+                    return;
+                }
+
+                // NTRIP, a standalone radio and serial pass-through are alternatives
+                settings.setNTRIP_isOn = true;
+                settings.setRadio_isOn = false;
+                settings.setPass_isOn = false;
+            }
+            else
+            {
+                settings.setNTRIP_isOn = false;
+            }
+
+            settings.Save();
+            UseChanged = true;
         }
 
         private void Fill(string select)
@@ -214,6 +264,7 @@ namespace AgIO
                 if (rest.Count == 0) settings.setNTRIP_isOn = false;
                 settings.Save();
                 ActiveChanged = true;
+                ShowUse();
             }
             Fill("");
         }

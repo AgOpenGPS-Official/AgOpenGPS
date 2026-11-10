@@ -53,7 +53,6 @@ namespace AgIO
         {
             var s = Properties.Settings.Default;
 
-            tglUse.Checked = s.setNTRIP_isOn;
             lblProfileName.Text = work.Name.Length > 0 ? work.Name : "(not saved yet)";
 
             txtHost.Text = work.Main.Host;
@@ -179,7 +178,6 @@ namespace AgIO
         // ---- events
 
         private void segPage_SelectedIndexChanged(object sender, EventArgs e) { ShowPage(); }
-        private void tglUse_CheckedChanged(object sender, EventArgs e) { }
         private void tglFallback_CheckedChanged(object sender, EventArgs e) { UpdateEnabled(); }
         private void segMainType_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
         private void segFbType_SelectedIndexChanged(object sender, EventArgs e) { UpdateEnabled(); }
@@ -309,10 +307,13 @@ namespace AgIO
             FromUi();
             CancelCheck();
 
-            if (tglUse.Checked && !work.MainIsComplete)
+            // NTRIP is switched on or off in the profile list. Saving makes this profile the one in use, so it must be able to
+            // run when NTRIP is on.
+            if (Properties.Settings.Default.setNTRIP_isOn && !work.MainIsComplete)
             {
-                mf.TimedMessageBox(3000, work.MainIsRadio ? "No port" : "No address",
-                    work.MainIsRadio ? "Choose the port of the main radio first." : "Fill in the address of the main service first.");
+                mf.TimedMessageBox(4000, work.MainIsRadio ? "No port" : "No address",
+                    (work.MainIsRadio ? "Choose the port of the main radio first." : "Fill in the address of the main service first.")
+                    + " Or switch NTRIP off in the profile list.");
                 segPage.SelectedIndex = 0;
                 return;
             }
@@ -340,7 +341,6 @@ namespace AgIO
             }
 
             var s = Properties.Settings.Default;
-            s.setNTRIP_isOn = tglUse.Checked;
             //the Fixed Position was saved with the profile; the numbers stay as the start for a profile without one
             s.setNTRIP_isGGAManual = false;
             s.setNTRIP_manualLat = numLat.Value;
@@ -351,14 +351,6 @@ namespace AgIO
             s.setNTRIP_sendToUDP = segOutput.SelectedIndex >= 1;
             s.setNTRIP_sendToUDPPort = numNetPort.IntValue;
             s.setNTRIP_useLegacyClient = tglLegacy.Checked;
-
-            //NTRIP, a standalone radio and serial pass-through are alternatives: using NTRIP switches the others off,
-            //also when they were only stopped with the status card (the setting stays on then)
-            if (s.setNTRIP_isOn)
-            {
-                s.setRadio_isOn = false;
-                s.setPass_isOn = false;
-            }
 
             //the old client sends by these flags, which are otherwise only read at start-up
             mf.isSendToSerial = s.setNTRIP_sendToSerial;

@@ -29,6 +29,8 @@ namespace AgIO
         private void InitializeComponent()
         {
             this.lblProfilesInfo = new System.Windows.Forms.Label();
+            this.lblUse = new System.Windows.Forms.Label();
+            this.tglUse = new AgIO.ToggleSwitch();
             this.lstProfiles = new System.Windows.Forms.ListBox();
             this.profileSummary = new AgIO.NtripProfileSummary();
             this.btnProfNew = new AgIO.RoundedButton();
@@ -46,9 +48,28 @@ namespace AgIO
             this.lblProfilesInfo.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProfilesInfo.Location = new System.Drawing.Point(20, 12);
             this.lblProfilesInfo.Name = "lblProfilesInfo";
-            this.lblProfilesInfo.Size = new System.Drawing.Size(860, 34);
+            this.lblProfilesInfo.Size = new System.Drawing.Size(560, 34);
             this.lblProfilesInfo.TabIndex = 0;
             this.lblProfilesInfo.Text = "Choose an NTRIP profile";
+            // 
+            // lblUse
+            // 
+            this.lblUse.AutoSize = false;
+            this.lblUse.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUse.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblUse.Location = new System.Drawing.Point(560, 12);
+            this.lblUse.Name = "lblUse";
+            this.lblUse.Size = new System.Drawing.Size(226, 34);
+            this.lblUse.TabIndex = 10;
+            this.lblUse.Text = "Use NTRIP client";
+            // 
+            // tglUse
+            // 
+            this.tglUse.Location = new System.Drawing.Point(796, 6);
+            this.tglUse.Name = "tglUse";
+            this.tglUse.Size = new System.Drawing.Size(84, 46);
+            this.tglUse.TabIndex = 11;
+            this.tglUse.CheckedChanged += new System.EventHandler(this.tglUse_CheckedChanged);
             // 
             // lstProfiles
             // 
@@ -143,6 +164,8 @@ namespace AgIO
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 580);
             this.Controls.Add(this.lblProfilesInfo);
+            this.Controls.Add(this.lblUse);
+            this.Controls.Add(this.tglUse);
             this.Controls.Add(this.lstProfiles);
             this.Controls.Add(this.profileSummary);
             this.Controls.Add(this.btnProfNew);
@@ -170,6 +193,8 @@ namespace AgIO
         #endregion
 
         private System.Windows.Forms.Label lblProfilesInfo;
+        private System.Windows.Forms.Label lblUse;
+        private AgIO.ToggleSwitch tglUse;
         private System.Windows.Forms.ListBox lstProfiles;
         private AgIO.NtripProfileSummary profileSummary;
         private AgIO.RoundedButton btnProfNew;
