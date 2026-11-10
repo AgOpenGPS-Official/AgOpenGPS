@@ -140,6 +140,11 @@ namespace AgLibrary.Ntrip
         private CancellationTokenSource _mainCts;
         private Task _mainTask;
         private CancellationToken _runToken;
+
+        // Stopped by the caller: nothing may be started or switched any more. Without this a switch asked for after
+        // the stop would start a source that nobody stops again.
+        private bool Stopped => _runToken.IsCancellationRequested;
+
         private volatile int _active;                 // SourceRole as int, read on every frame
         private bool _mainBack;
         private bool _mainPaused;
@@ -247,7 +252,7 @@ namespace AgLibrary.Ntrip
             bool restartMain;
             lock (_sync)
             {
-                if (_active != (int)SourceRole.Fallback) return;
+                if (_active != (int)SourceRole.Fallback || Stopped) return;
                 _active = (int)SourceRole.Main;
                 _mainBack = false;
                 _switchedByUser = false;
@@ -319,7 +324,7 @@ namespace AgLibrary.Ntrip
         public void TryMainAgain()
         {
             bool start;
-            lock (_sync) start = _active == (int)SourceRole.Fallback && _mainPaused;
+            lock (_sync) start = _active == (int)SourceRole.Fallback && _mainPaused && !Stopped;
             if (start) StartMain();
             RaiseStatus();
         }
@@ -410,11 +415,12 @@ namespace AgLibrary.Ntrip
         // Starts the fallback without using its corrections yet. Called with the lock held.
         private void StartFallbackLocked()
         {
-            if (_fallback != null || _fallbackFactory == null) return;
+            if (_fallback != null || _fallbackFactory == null || Stopped) return;
 
             ICorrectionSource fallback = _fallbackFactory();
             _fallback = fallback;
-            _fallbackCts = new CancellationTokenSource();
+            // Linked to the run: stopping the manager always stops the fallback too.
+            _fallbackCts = CancellationTokenSource.CreateLinkedTokenSource(_runToken);
 
             // Its frames are ignored until it is the active source (OnFrame).
             fallback.FrameReceived += OnFallbackFrame;
@@ -444,10 +450,11 @@ namespace AgLibrary.Ntrip
             ICorrectionSource fallback;
             lock (_sync)
             {
-                if (_active != (int)SourceRole.Main || _fallbackFactory == null) return;
+                if (_active != (int)SourceRole.Main || _fallbackFactory == null || Stopped) return;
 
                 StartFallbackLocked();   // already running when it was tried in the background first
                 fallback = _fallback;
+                if (fallback == null) return;
                 _active = (int)SourceRole.Fallback;
                 _mainBack = false;
                 _mainFailing = false;

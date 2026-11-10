@@ -163,19 +163,20 @@ namespace AgIO
         public void SwitchToFallback()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.SwitchToFallbackNow();
+            // A stopped host keeps its manager: switching it would start a source that nothing stops again.
+            if (m != null && IsRunning) m.SwitchToFallbackNow();
         }
 
         public void SwitchBackToMain()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.SwitchBackToMain();
+            if (m != null && IsRunning) m.SwitchBackToMain();
         }
 
         public void TryMainAgain()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.TryMainAgain();
+            if (m != null && IsRunning) m.TryMainAgain();
         }
 
         /// <summary>The active profile's main service as connection settings, or null while it has no address.</summary>

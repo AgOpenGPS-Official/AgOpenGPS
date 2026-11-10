@@ -446,6 +446,48 @@ namespace AgLibrary.Ntrip.Tests
         }
 
         [Test]
+        public void AfterTheStop_NoSwitchStartsAnythingAnymore()
+        {
+            var fallbacks = new List<FakeSource>();
+            var main = new FakeSource("MAIN", MainType);
+            var manager = new CorrectionSourceManager(main, () =>
+            {
+                var f = new FakeSource("FALLBACK", FallbackType);
+                lock (fallbacks) fallbacks.Add(f);
+                return f;
+            }, 2, true, false);   // the same login: the main service is paused on the fallback
+
+            var cts = new CancellationTokenSource();
+            Task run = Task.Run(() => manager.RunAsync(cts.Token));
+            Thread.Sleep(50);
+            cts.Cancel();
+            Assert.That(run.Wait(3000), Is.True, "stopped");
+
+            // a switch button that was still on the screen, confirmed after the stop
+            manager.SwitchToFallbackNow();
+            manager.TryMainAgain();
+            manager.SwitchBackToMain();
+
+            lock (fallbacks) Assert.That(fallbacks, Is.Empty, "no fallback was started: nothing would stop it");
+            Assert.That(manager.Active, Is.EqualTo(SourceRole.Main));
+            Assert.That(manager.Status.Using, Is.EqualTo("Main"));
+        }
+
+        [Test]
+        public void TheFallback_StopsWithTheManager()
+        {
+            using (var rig = new Rig())
+            {
+                rig.Main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);   // the fallback is tried
+                FakeSource tried = rig.Fallback;
+                Assert.That(rig.WaitFor(() => tried.Runs == 1), Is.True, "the fallback runs");
+
+                rig.Dispose();   // the run is cancelled
+                Assert.That(rig.WaitFor(() => tried.Stopped), Is.True, "the fallback stops with the run");
+            }
+        }
+
+        [Test]
         public void SwitchBack_WhenNotOnTheFallback_DoesNothing()
         {
             using (var rig = new Rig())

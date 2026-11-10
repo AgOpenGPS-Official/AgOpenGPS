@@ -172,7 +172,12 @@ namespace AgIO
                 string off = s.setNTRIP_isOn ? "NTRIP Off" : s.setRadio_isOn ? "Radio Off" : "Serial pass Off";
                 ntripCard.Alert = false;
                 ntripCard.SetStatus(off, NtripLight.Off, "", "", "Start");
-                if (ntripChecks.Visible) ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
+                if (ntripChecks.Visible)
+                {
+                    ntripChecks.SetChecks(CorrectionChecks.Build(new NtripStatus(), fixQualityData, ageData));
+                    // stopped: nothing to switch (the host keeps its manager, but must not be asked to switch)
+                    ntripChecks.SetSwitch("", false, ButtonTone.Neutral);
+                }
                 return;
             }
 
@@ -250,7 +255,8 @@ namespace AgIO
         private void ntripChecks_SwitchClicked(object sender, EventArgs e)
         {
             NtripHost host = ntripHost;
-            ManagerStatus ms = host == null ? null : host.Manager;
+            if (host == null || !host.IsRunning) return;
+            ManagerStatus ms = host.Manager;
             if (ms == null) return;
 
             if (ms.Active == SourceRole.Main)
