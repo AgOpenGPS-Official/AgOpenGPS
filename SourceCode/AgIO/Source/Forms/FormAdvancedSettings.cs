@@ -12,6 +12,12 @@ namespace AgIO.Forms
             cboxAutoRunGPS_Out.Checked = Settings.Default.setDisplay_isAutoRunGPS_Out;
             cboxStartMinimized.Checked = Settings.Default.setDisplay_StartMinimized;
             cboxShowOnWarning.Checked = Settings.Default.setDisplay_ShowOnWarning;
+            cboxNtripErrors.Checked = Settings.Default.setNTRIP_showErrors;
+        }
+
+        private void cboxNtripErrors_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.setNTRIP_showErrors = cboxNtripErrors.Checked;
         }
 
         private void cboxStartMinimized_CheckedChanged(object sender, EventArgs e)
