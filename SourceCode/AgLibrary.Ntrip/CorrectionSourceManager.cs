@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -259,6 +260,7 @@ namespace AgLibrary.Ntrip
             if (cts != null) cts.Cancel();
             if (restartMain) StartMain();
             if (!quiet) RaiseNotice(NoticeKind.SwitchedToMain, "Back on the main service", "Corrections now come from the main service again.");
+            ReplayStartupData(SourceRole.Main);
             RaiseStatus();
         }
 
@@ -458,6 +460,7 @@ namespace AgLibrary.Ntrip
             RaiseNotice(NoticeKind.SwitchedToFallback, "Switched to the fallback",
                 why + " Now using " + fallback.Description
                 + ". Your GPS may lose RTK for a moment, and your position can shift a little if the two base stations use different coordinates.");
+            ReplayStartupData(SourceRole.Fallback);
             RaiseStatus();
         }
 
@@ -473,6 +476,7 @@ namespace AgLibrary.Ntrip
             }
             _fallback = null;
             _fallbackCts = null;
+            ForgetRetained(SourceRole.Fallback);   // a new fallback starts from scratch
         }
 
         private void OnFallbackFrame(int type, ReadOnlySpan<byte> frame) => OnFrame(SourceRole.Fallback, type, frame);
@@ -480,16 +484,79 @@ namespace AgLibrary.Ntrip
         private void OnFallbackRaw(ReadOnlySpan<byte> data) => OnRaw(SourceRole.Fallback, data);
 
         // Only the active source passes its data on; the other one is only watched.
+        // What a source sends first (the base station position, antenna and station messages, the first bytes of
+        // a stream that is not RTCM 3) arrives before the manager switches to it, so the latest of each is kept
+        // and replayed after the switch: the receiver does not wait for the next broadcast, up to 10 seconds.
         private void OnFrame(SourceRole role, int type, ReadOnlySpan<byte> frame)
         {
+            if (!RtcmMessages.IsObservation(type)) RetainFrame(role, type, frame);
             if (_active != (int)role) return;
             FrameReceived?.Invoke(type, frame);
         }
 
         private void OnRaw(SourceRole role, ReadOnlySpan<byte> data)
         {
-            if (_active != (int)role) return;
+            if (_active != (int)role)
+            {
+                RetainRaw(role, data);
+                return;
+            }
             RawDataReceived?.Invoke(data);
+        }
+
+        private const int MaxRetainedTypes = 64;
+        private const int MaxRetainedRawBytes = 8192;
+        private readonly object _retainLock = new object();
+        private readonly SortedDictionary<int, byte[]>[] _retainedFrames =
+            { new SortedDictionary<int, byte[]>(), new SortedDictionary<int, byte[]>() };
+        private readonly List<byte>[] _retainedRaw = { new List<byte>(), new List<byte>() };
+
+        private void RetainFrame(SourceRole role, int type, ReadOnlySpan<byte> frame)
+        {
+            lock (_retainLock)
+            {
+                SortedDictionary<int, byte[]> kept = _retainedFrames[(int)role];
+                if (kept.Count >= MaxRetainedTypes && !kept.ContainsKey(type)) return;
+                kept[type] = frame.ToArray();
+            }
+        }
+
+        private void RetainRaw(SourceRole role, ReadOnlySpan<byte> data)
+        {
+            lock (_retainLock)
+            {
+                List<byte> kept = _retainedRaw[(int)role];
+                kept.AddRange(data.ToArray());
+                if (kept.Count > MaxRetainedRawBytes) kept.RemoveRange(0, kept.Count - MaxRetainedRawBytes);
+            }
+        }
+
+        private void ForgetRetained(SourceRole role)
+        {
+            lock (_retainLock)
+            {
+                _retainedFrames[(int)role].Clear();
+                _retainedRaw[(int)role].Clear();
+            }
+        }
+
+        // Called after a switch, when the output queue was cleared for the notice: what the new source sent
+        // before it became the active one goes out now.
+        private void ReplayStartupData(SourceRole role)
+        {
+            KeyValuePair<int, byte[]>[] frames;
+            byte[] raw;
+            lock (_retainLock)
+            {
+                frames = new KeyValuePair<int, byte[]>[_retainedFrames[(int)role].Count];
+                int i = 0;
+                foreach (KeyValuePair<int, byte[]> kv in _retainedFrames[(int)role]) frames[i++] = kv;
+                raw = _retainedRaw[(int)role].ToArray();
+                _retainedRaw[(int)role].Clear();
+            }
+
+            foreach (KeyValuePair<int, byte[]> kv in frames) FrameReceived?.Invoke(kv.Key, kv.Value);
+            if (raw.Length > 0) RawDataReceived?.Invoke(raw);
         }
 
         private ManagerStatus Build()

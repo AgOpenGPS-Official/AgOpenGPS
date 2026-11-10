@@ -288,6 +288,72 @@ namespace AgLibrary.Ntrip.Tests
             }
         }
 
+        // A fallback whose first messages (base station position, raw bytes) come before it reports Streaming.
+        private static CorrectionSourceManager ManagerWithAStationFallback(List<FakeSource> fallbacks, List<int> types, long[] raw)
+        {
+            var main = new FakeSource("MAIN", 1005);
+            var manager = new CorrectionSourceManager(main, () =>
+            {
+                var f = new FakeSource("FALLBACK", 1005);
+                lock (fallbacks) fallbacks.Add(f);
+                return f;
+            }, 2);
+            manager.FrameReceived += (t, f) => { lock (types) types.Add(t); };
+            manager.RawDataReceived += d => Interlocked.Add(ref raw[0], d.Length);
+            main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);   // starts the fallback
+            return manager;
+        }
+
+        [Test]
+        public void WhatTheFallbackSentBeforeTheSwitch_IsReplayedAfterIt_NotLost()
+        {
+            var fallbacks = new List<FakeSource>();
+            var types = new List<int>();
+            var raw = new long[1];
+            using (var cts = new CancellationTokenSource())
+            {
+                CorrectionSourceManager manager = ManagerWithAStationFallback(fallbacks, types, raw);
+                Task run = Task.Run(() => manager.RunAsync(cts.Token));
+                Thread.Sleep(50);
+                FakeSource f = fallbacks[0];
+
+                f.Frame();      // the base position, before the fallback says it streams
+                f.Frame();      // the same message again: only the latest of a type is kept
+                f.Raw(300);
+                lock (types) Assert.That(types, Is.Empty, "not the active source yet");
+
+                f.Set(NtripState.Streaming);   // the switch
+                Assert.That(manager.Active, Is.EqualTo(SourceRole.Fallback));
+                lock (types) Assert.That(types, Is.EqualTo(new[] { 1005 }));
+                Assert.That(Interlocked.Read(ref raw[0]), Is.EqualTo(300));
+
+                cts.Cancel();
+                run.Wait(2000);
+            }
+        }
+
+        [Test]
+        public void ObservationsOfTheFallback_AreNotReplayed_TheyAreOldBeforeLong()
+        {
+            var main = new FakeSource("MAIN", 1005);
+            var fallback = new FakeSource("FALLBACK", 1077);   // observations
+            var manager = new CorrectionSourceManager(main, () => fallback, 2);
+            var types = new List<int>();
+            manager.FrameReceived += (t, f) => { lock (types) types.Add(t); };
+            using (var cts = new CancellationTokenSource())
+            {
+                Task run = Task.Run(() => manager.RunAsync(cts.Token));
+                main.Set(NtripState.Waiting, NtripCategory.CasterUnreachable, 2);
+                Thread.Sleep(50);
+                fallback.Frame();
+                fallback.Set(NtripState.Streaming);
+                Assert.That(manager.Active, Is.EqualTo(SourceRole.Fallback));
+                lock (types) Assert.That(types, Is.Empty);
+                cts.Cancel();
+                run.Wait(2000);
+            }
+        }
+
         [Test]
         public void NetworkBack_WhenBothFail_TriesTheMainServiceFirst_AndTheFallbackOnlyWhenMainFailsAgain()
         {
