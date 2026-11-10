@@ -187,7 +187,7 @@ namespace AgIO
                 if (ntripCounter > 29)
                 {
                     Log.EventWriter("NTRIP - Not connecting to caster (generic connecting-phase timeout)");
-                    mf.TimedMessageBox(1500, "Connection Problem", "Not Connecting To Caster");
+                    mf.NtripErrorBox(1500, "Connection Problem", "Not Connecting To Caster");
                     ReconnectRequest();
                 }
                 if (clientSocket != null && clientSocket.Connected)
@@ -267,7 +267,7 @@ namespace AgIO
             if (resolvedIP == null)
             {
                 Log.EventWriter("NTRIP - Cannot resolve caster URL: " + casterURL + " -> " + error);
-                mf.TimedMessageBox(2500, "NTRIP Connection Failed", "Cannot resolve caster URL: " + casterURL);
+                mf.NtripErrorBox(2500, "NTRIP Connection Failed", "Cannot resolve caster URL: " + casterURL);
                 return;
             }
 
@@ -476,7 +476,7 @@ namespace AgIO
                 {
                     string firstLine = response.Split('\r')[0];
                     Log.EventWriter("NTRIP - Caster rejected connection: " + firstLine);
-                    mf.TimedMessageBox(2500, "NTRIP Connection Rejected", firstLine);
+                    mf.NtripErrorBox(2500, "NTRIP Connection Rejected", firstLine);
                     ReconnectRequest();
                     return;
                 }
@@ -605,7 +605,7 @@ namespace AgIO
                     //re-check here - a newer attempt may have replaced clientSocket since the callback ran
                     if (isCurrent && sock == clientSocket)
                     {
-                        mf.TimedMessageBox(2500, "NTRIP Connection Failed", message);
+                        mf.NtripErrorBox(2500, "NTRIP Connection Failed", message);
                         ReconnectRequest();
                     }
                 });
@@ -659,7 +659,7 @@ namespace AgIO
                         if (wasAwaitingResponse)
                         {
                             Log.EventWriter("NTRIP - Caster closed connection without sending any RTCM data (check mountpoint/credentials)");
-                            mf.TimedMessageBox(2500, "NTRIP Connection Rejected", "Caster closed the connection without sending any data (check mountpoint/credentials)");
+                            mf.NtripErrorBox(2500, "NTRIP Connection Rejected", "Caster closed the connection without sending any data (check mountpoint/credentials)");
                         }
                         else
                         {

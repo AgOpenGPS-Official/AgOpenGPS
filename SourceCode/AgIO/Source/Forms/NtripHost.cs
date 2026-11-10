@@ -47,8 +47,34 @@ namespace AgIO
         private DateTime lastTake = DateTime.UtcNow;
         private NtripCategory? lastNotified;
 
+        // How long the corrections must be missing before the user is told; the check runs once a second.
+        private static readonly TimeSpan AlertAfter = TimeSpan.FromSeconds(60);
+        private static readonly TimeSpan AlertAfterHard = TimeSpan.FromSeconds(15);
+        private Timer alertTimer;
+        private readonly object alertSync = new object();
+        private DateTime? downSince;        // when the corrections stopped (or never started); null while streaming
+        private bool alerted;              // an alert was shown in this outage
+        private bool alertOpen;            // the user has not closed it yet
+        private bool retriedSinceAlert;    // a new attempt started after the alert was shown
+        private SourceRole alertRole;      // the source the outage clock belongs to
+        private int alertDismissals;       // times the user clicked the alert away in this outage
+        private const int MaxDismissals = 2;   // after this the user knows, and the alert stays away
+
         /// <summary>A problem the user should hear about once: title and plain message. Raised on a worker thread.</summary>
         public event Action<string, string> Problem;
+
+        /// <summary>
+        /// The corrections have been missing for a minute or more (no network, caster unreachable, or connected
+        /// without data). Raised again after every retry that fails, until corrections flow again.
+        /// Title and plain message. Raised on a worker thread.
+        /// </summary>
+        public event Action<string, string> Alert;
+
+        /// <summary>Corrections flow again, so an open alert can go away. Raised on a worker thread.</summary>
+        public event Action AlertCleared;
+
+        /// <summary>Corrections flow again after the user was told about the outage. Title and message. Raised on a worker thread.</summary>
+        public event Action<string, string> Recovered;
 
         /// <summary>A notice from the switching between main and fallback. Raised on a worker thread.</summary>
         public event Action<NoticeKind, string, string> Notice;
@@ -206,6 +232,8 @@ namespace AgIO
             manager.StatusChanged += OnStatusChanged;
             manager.Notice += OnNotice;
             lastNotified = null;
+            ResetAlert(true);
+            alertTimer = new Timer(_ => CheckAlert(), null, 1000, 1000);
 
             pumpStop = false;
             pump = new Thread(PumpLoop) { IsBackground = true, Name = "NTRIP output" };
@@ -219,6 +247,11 @@ namespace AgIO
 
         public void Stop()
         {
+            Timer t = alertTimer;
+            alertTimer = null;
+            if (t != null) t.Dispose();
+            ResetAlert(false);
+
             CancellationTokenSource c = cts;
             Task r;
             lock (sync) r = run;
@@ -323,10 +356,19 @@ namespace AgIO
         {
             NtripStatus status = ms.Status;
 
+            TrackOutage(ms);
+
             // One notice per kind of problem, not one per attempt.
             if (status.State == NtripState.Streaming) { lastNotified = null; return; }
             if (status.LastError == null || status.LastError == lastNotified) return;
             if (status.State != NtripState.Waiting && status.State != NtripState.GaveUp) return;
+
+            // Trouble that may pass (no network, caster down or busy, no data) is reported by the one-minute
+            // alert. Only what the user has to fix is shown at once.
+            if (status.State != NtripState.GaveUp
+                && status.LastError != NtripCategory.LoginRejected
+                && status.LastError != NtripCategory.UnknownMountpoint
+                && status.LastError != NtripCategory.NotUnderstood) return;
 
             // With a fallback the switching notice tells the story; a second popup for the same failure would only confuse.
             if (ms.FallbackConfigured && ms.Active == SourceRole.Main) return;
@@ -334,6 +376,121 @@ namespace AgIO
             lastNotified = status.LastError;
             Action<string, string> handler = Problem;
             if (handler != null) handler(Title(status.LastError.Value), status.Message);
+        }
+
+        private void ResetAlert(bool outage)
+        {
+            lock (alertSync)
+            {
+                alertRole = SourceRole.Main;
+                alertDismissals = 0;
+                downSince = outage ? DateTime.UtcNow : (DateTime?)null;
+                alerted = false;
+                alertOpen = false;
+                retriedSinceAlert = false;
+            }
+        }
+
+        /// <summary>
+        /// Called by the form when the alert is gone. <paramref name="byUser"/> is true when the user clicked it
+        /// away; after two of those in one outage the alert stays away, the user knows.
+        /// </summary>
+        public void AlertClosed(bool byUser)
+        {
+            lock (alertSync)
+            {
+                alertOpen = false;
+                if (byUser) alertDismissals++;
+            }
+        }
+
+        // Keeps track of when the corrections stopped and whether a new attempt started since the last alert.
+        private void TrackOutage(ManagerStatus ms)
+        {
+            NtripState state = ms.Status.State;
+            bool cleared = false;
+            bool recovered = false;
+            lock (alertSync)
+            {
+                // A switch between main and fallback ends the outage of the source that was left: the switching
+                // notice tells that story, and the new source gets its own minute before it is called a problem.
+                bool switched = alertRole != ms.Active;
+                alertRole = ms.Active;
+
+                if (state == NtripState.Streaming || switched)
+                {
+                    cleared = alerted;
+                    // Back online after the user was told about the outage; a switch has its own notice.
+                    recovered = alerted && state == NtripState.Streaming && !switched;
+                    downSince = state == NtripState.Streaming ? (DateTime?)null : DateTime.UtcNow;
+                    alerted = false;
+                    alertDismissals = 0;
+                    alertOpen = false;
+                    retriedSinceAlert = false;
+                }
+                else
+                {
+                    if (downSince == null) downSince = DateTime.UtcNow;
+                    if (alerted && state == NtripState.Connecting) retriedSinceAlert = true;
+                }
+            }
+            if (cleared)
+            {
+                Action handler = AlertCleared;
+                if (handler != null) handler();
+            }
+            if (recovered)
+            {
+                Action<string, string> back = Recovered;
+                if (back != null) back("NTRIP is back online", "Corrections are coming in again.");
+            }
+        }
+
+        // Runs once a second: tells the user when the corrections have been missing for a minute, and again
+        // after every retry that fails, so a long outage cannot go unnoticed behind another window.
+        private void CheckAlert()
+        {
+            if (!Properties.Settings.Default.setNTRIP_showErrors) return;   // Advanced settings: NTRIP error messages off
+            ManagerStatus ms = Manager;
+            if (ms == null) return;
+            NtripStatus status = ms.Status;
+
+            // The fallback delivers while the main service is still the active one: the switching notice
+            // (automatic switch, or the question in manual mode) is already on its way. Only when the
+            // fallback fails too, or on the fallback itself, is there nothing else to tell the user.
+            if (ms.Active == SourceRole.Main && ms.Fallback != null && ms.Fallback.State == NtripState.Streaming) return;
+            // Waiting for the user to fix the login or the mountpoint: that was shown already.
+            if (status.State == NtripState.GaveUp || status.State == NtripState.Stopped) return;
+
+            double secondsDown;
+            lock (alertSync)
+            {
+                if (downSince == null || alertOpen || alertDismissals >= MaxDismissals) return;
+                TimeSpan down = DateTime.UtcNow - downSince.Value;
+                // No network, or main and fallback both failing: nothing can fix itself soon, so say it earlier.
+                bool bothFailing = ms.Active == SourceRole.Main && ms.Fallback != null;
+                bool hard = status.LastError == NtripCategory.NoNetwork || bothFailing;
+                if (down < (hard ? AlertAfterHard : AlertAfter)) return;
+                // After the first alert, wait for a retry that failed again.
+                if (alerted && !(retriedSinceAlert && status.State == NtripState.Waiting)) return;
+
+                alerted = true;
+                alertOpen = true;
+                retriedSinceAlert = false;
+                secondsDown = down.TotalSeconds;
+            }
+
+            int seconds = (int)secondsDown;
+            string title = Title(status.LastError ?? NtripCategory.CasterUnreachable);
+            string message = status.Message;
+            // With both services down the user should hear about both.
+            if (ms.Active == SourceRole.Main && ms.Fallback != null)
+                message += "\r\nThe fallback does not work either: " + ms.Fallback.Headline + ".";
+            string howLong = seconds < 90 ? seconds + " seconds" : (seconds / 60) + " minutes";
+            message += "\r\n\r\nNo corrections for " + howLong + "."
+                + " AgIO keeps trying.";
+            Action<string, string> handler = Alert;
+            if (handler != null) handler(title, message);
         }
 
         private static string Title(NtripCategory c)

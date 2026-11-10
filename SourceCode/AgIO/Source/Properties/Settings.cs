@@ -79,6 +79,8 @@ namespace AgIO.Properties
         public bool setDisplay_isAutoRunGPS_Out = false;
         public bool setDisplay_StartMinimized = false;
         public bool setDisplay_ShowOnWarning = true;
+        //all NTRIP error messages and notices (outage alerts, switching to the fallback, problems); the log still gets them
+        public bool setNTRIP_showErrors = true;
         public bool isobus_isOn = false;
         public int isobus_canAdapterIndex = 0;
         public int isobus_canChannelIndex = 0;

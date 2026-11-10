@@ -31,6 +31,8 @@
             this.cboxStartMinimized = new System.Windows.Forms.CheckBox();
             this.cboxAutoRunGPS_Out = new System.Windows.Forms.CheckBox();
             this.cboxShowOnWarning = new System.Windows.Forms.CheckBox();
+            this.cboxNtripErrors = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -89,9 +91,37 @@
             this.cboxShowOnWarning.Text = "Show\r\nOn\r\nWarn";
             this.cboxShowOnWarning.UseVisualStyleBackColor = false;
             this.cboxShowOnWarning.CheckedChanged += new System.EventHandler(this.cboxShowOnWarning_CheckedChanged);
-            // 
+            //
+            // cboxNtripErrors
+            //
+            this.cboxNtripErrors.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cboxNtripErrors.BackColor = System.Drawing.Color.Transparent;
+            this.cboxNtripErrors.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cboxNtripErrors.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
+            this.cboxNtripErrors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxNtripErrors.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxNtripErrors.Image = global::AgIO.Properties.Resources.NTRIP_Client;
+            this.cboxNtripErrors.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cboxNtripErrors.Location = new System.Drawing.Point(12, 541);
+            this.cboxNtripErrors.Name = "cboxNtripErrors";
+            this.cboxNtripErrors.Size = new System.Drawing.Size(143, 128);
+            this.cboxNtripErrors.TabIndex = 536;
+            this.cboxNtripErrors.Text = "Error\r\nMsg";
+            this.cboxNtripErrors.UseVisualStyleBackColor = false;
+            this.cboxNtripErrors.CheckedChanged += new System.EventHandler(this.cboxNtripErrors_CheckedChanged);
+            //
+            // label4
+            //
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(161, 587);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(180, 31);
+            this.label4.TabIndex = 537;
+            this.label4.Text = "NTRIP Errors";
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(161, 58);
@@ -125,7 +155,7 @@
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Image = global::AgIO.Properties.Resources.OK64;
-            this.btnClose.Location = new System.Drawing.Point(367, 520);
+            this.btnClose.Location = new System.Drawing.Point(367, 696);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(64, 64);
             this.btnClose.TabIndex = 533;
@@ -136,9 +166,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 596);
+            this.ClientSize = new System.Drawing.Size(480, 772);
             this.ControlBox = false;
             this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cboxNtripErrors);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -146,8 +178,8 @@
             this.Controls.Add(this.cboxStartMinimized);
             this.Controls.Add(this.cboxAutoRunGPS_Out);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximumSize = new System.Drawing.Size(500, 639);
-            this.MinimumSize = new System.Drawing.Size(500, 639);
+            this.MaximumSize = new System.Drawing.Size(500, 815);
+            this.MinimumSize = new System.Drawing.Size(500, 815);
             this.Name = "FormAdvancedSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Advanced Settings";
@@ -161,6 +193,8 @@
         private System.Windows.Forms.CheckBox cboxAutoRunGPS_Out;
         private System.Windows.Forms.CheckBox cboxStartMinimized;
         private System.Windows.Forms.CheckBox cboxShowOnWarning;
+        private System.Windows.Forms.CheckBox cboxNtripErrors;
+        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

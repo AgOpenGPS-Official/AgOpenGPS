@@ -257,10 +257,24 @@ namespace AgIO
 
         private bool ntripQuestionOpen;
 
+        //Advanced settings: all NTRIP error messages and notices can be turned off; the log still gets them
+        internal static bool NtripMessagesOn => Properties.Settings.Default.setNTRIP_showErrors;
+
+        //an error message of the old NTRIP client, which obeys the same setting
+        public void NtripErrorBox(int timeout, string title, string message)
+        {
+            Log.EventWriter("NTRIP - " + title + ": " + message);
+            if (NtripMessagesOn) TimedMessageBox(timeout, title, message);
+        }
+
         //a question with Yes and Cancel; a second question while one is open is skipped
         private void AskNtrip(string title, string message, Action onYes, bool showCancel = true)
         {
             if (ntripQuestionOpen) return;
+
+            // One FormYes at a time: a question or notice always takes the place of an open outage alert.
+            CloseNtripAlert();
+
             ntripQuestionOpen = true;
             try
             {
@@ -286,6 +300,11 @@ namespace AgIO
                 BeginInvoke((MethodInvoker)(() =>
                 {
                     Log.EventWriter("NTRIP - " + title + ": " + message);
+                    if (!NtripMessagesOn) return;
+
+                    // The switching notice is the better story: it replaces an open outage alert.
+                    CloseNtripAlert();
+
                     if (kind == NoticeKind.MainBack) AskNtrip(title, message, () => ntripHost.SwitchBackToMain());
                     else if (kind == NoticeKind.MainFailing) AskNtrip(title, message, () => ntripHost.SwitchToFallback());
                     else AskNtrip(title, message, () => { }, false);
@@ -361,6 +380,9 @@ namespace AgIO
                 ntripHost = new NtripHost(this);
                 ntripHost.Problem += OnNtripProblem;
                 ntripHost.Notice += OnNtripNotice;
+                ntripHost.Alert += OnNtripAlert;
+                ntripHost.AlertCleared += OnNtripAlertCleared;
+                ntripHost.Recovered += OnNtripRecovered;
             }
 
             lastNtripBytesReceived = 0;
@@ -397,7 +419,104 @@ namespace AgIO
                 BeginInvoke((MethodInvoker)(() =>
                 {
                     Log.EventWriter("NTRIP - " + title + ": " + message);
-                    TimedMessageBox(8000, title, message);
+                    if (NtripMessagesOn) TimedMessageBox(8000, title, message);
+                }));
+            }
+            catch (InvalidOperationException)
+            {
+                //closing
+            }
+        }
+
+        private FormYes ntripAlertForm;
+        private bool ntripAlertClosedByCode;
+
+        //closes an open alert from code; this does not count as the user dismissing it
+        private void CloseNtripAlert()
+        {
+            FormYes open = ntripAlertForm;
+            if (open == null || open.IsDisposed) return;
+            ntripAlertClosedByCode = true;
+            open.Close();
+        }
+
+        //the corrections have been missing for a minute: a topmost message that comes back after every failed retry
+        private void OnNtripAlert(string title, string message)
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+
+            try
+            {
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    Log.EventWriter("NTRIP - " + title + ": " + message.Replace("\r\n", " "));
+                    if (!NtripMessagesOn)
+                    {
+                        if (ntripHost != null) ntripHost.AlertClosed(false);
+                        return;
+                    }
+
+                    // A question or switching notice is open: never stack a second FormYes on it.
+                    // The alert comes back after the next failed retry.
+                    if (ntripQuestionOpen || ntripAlertForm != null)
+                    {
+                        if (ntripHost != null) ntripHost.AlertClosed(false);
+                        return;
+                    }
+
+                    var dialog = new FormYes(title + "\r\n\r\n" + message);
+                    ntripAlertForm = dialog;
+                    ntripAlertClosedByCode = false;
+                    try
+                    {
+                        // No owner, so it also shows when AgIO is minimized; the form itself is topmost.
+                        dialog.ShowDialog();
+                    }
+                    finally
+                    {
+                        ntripAlertForm = null;
+                        dialog.Dispose();
+                        // Only a click by the user counts; the program closing it (switch, recovery) does not.
+                        if (ntripHost != null) ntripHost.AlertClosed(!ntripAlertClosedByCode);
+                    }
+                }));
+            }
+            catch (InvalidOperationException)
+            {
+                //closing
+            }
+        }
+
+        //the corrections are back: the alert has done its job
+        private void OnNtripAlertCleared()
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+
+            try
+            {
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    CloseNtripAlert();
+                }));
+            }
+            catch (InvalidOperationException)
+            {
+                //closing
+            }
+        }
+
+        //the corrections are back after an outage the user was told about: say so, also when the alert was clicked away
+        private void OnNtripRecovered(string title, string message)
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+
+            try
+            {
+                BeginInvoke((MethodInvoker)(() =>
+                {
+                    Log.EventWriter("NTRIP - " + title + ": " + message);
+                    CloseNtripAlert();
+                    if (NtripMessagesOn) AskNtrip(title, message, () => { }, false);
                 }));
             }
             catch (InvalidOperationException)
