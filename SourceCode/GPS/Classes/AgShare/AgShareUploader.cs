@@ -11,6 +11,7 @@ using AgLibrary.Logging;
 using AgOpenGPS.Core.AgShare;
 using AgOpenGPS.Core.AgShare.Models;
 using AgOpenGPS.Core.Models;
+using AgOpenGPS.Properties;
 
 namespace AgOpenGPS
 {
@@ -93,7 +94,8 @@ namespace AgOpenGPS
 
                 AgShareSyncState previous = AgShareSyncStore.Load(snapshot.FieldDirectory);
 
-                if (previous == null || previous.FieldId != snapshot.FieldId)
+                // A baseline from another server says nothing about this one, so upload everything again.
+                if (previous == null || previous.FieldId != snapshot.FieldId || previous.Server != CurrentServer())
                 {
                     return await DoFullUploadAsync(snapshot, gps, boundaryHash, lineHashes);
                 }
@@ -161,6 +163,7 @@ namespace AgOpenGPS
                 AgShareSyncStore.Save(snapshot.FieldDirectory, new AgShareSyncState
                 {
                     FieldId = snapshot.FieldId,
+                    Server = CurrentServer(),
                     BoundaryHash = boundaryHash,
                     LineHashes = lineHashes
                 });
@@ -222,6 +225,7 @@ namespace AgOpenGPS
             AgShareSyncStore.Save(snapshot.FieldDirectory, new AgShareSyncState
             {
                 FieldId = snapshot.FieldId,
+                Server = CurrentServer(),
                 BoundaryHash = boundaryHash,
                 LineHashes = lineHashes
             });
@@ -236,6 +240,11 @@ namespace AgOpenGPS
         {
             if (changed) AgShareSyncStore.Delete(snapshot.FieldDirectory);
             return AgShareUploadOutcome.Failed;
+        }
+
+        private static string CurrentServer()
+        {
+            return AgShareSyncStore.NormalizeServer(Settings.Default.AgShareServer);
         }
 
         private static bool IsNotFound(AgShareResult result)

@@ -90,6 +90,29 @@ namespace AgOpenGPS.Tests.Classes.AgShare
         }
 
         [Test]
+        public void Test_SaveThenLoad_RoundTripsServer()
+        {
+            AgShareSyncStore.Save(_fieldDirectory, new AgShareSyncState { FieldId = Guid.NewGuid(), Server = "https://a.example", BoundaryHash = "abc" });
+
+            Assert.That(AgShareSyncStore.Load(_fieldDirectory).Server, Is.EqualTo("https://a.example"));
+        }
+
+        [Test]
+        public void Test_Load_Version1File_ReturnsNull()
+        {
+            File.WriteAllText(Path.Combine(_fieldDirectory, "agshare_sync.txt"), "$AgShareSync\n" + Guid.NewGuid() + "\nhash\n0\n");
+
+            Assert.That(AgShareSyncStore.Load(_fieldDirectory), Is.Null);
+        }
+
+        [Test]
+        public void Test_NormalizeServer_IgnoresCaseSpacesAndTrailingSlash()
+        {
+            Assert.That(AgShareSyncStore.NormalizeServer(" HTTPS://AgShare.Example/ "), Is.EqualTo("https://agshare.example"));
+            Assert.That(AgShareSyncStore.NormalizeServer(null), Is.EqualTo(string.Empty));
+        }
+
+        [Test]
         public void Test_Delete_RemovesSavedState()
         {
             AgShareSyncStore.Save(_fieldDirectory, new AgShareSyncState { FieldId = Guid.NewGuid(), BoundaryHash = "abc" });

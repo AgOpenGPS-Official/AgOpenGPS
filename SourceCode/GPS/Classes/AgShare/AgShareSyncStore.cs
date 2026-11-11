@@ -14,6 +14,8 @@ namespace AgOpenGPS
     public class AgShareSyncState
     {
         public Guid FieldId { get; set; }
+        // Normalized URL of the AgShare server this baseline belongs to (see NormalizeServer).
+        public string Server { get; set; }
         public string BoundaryHash { get; set; }
         public Dictionary<string, string> LineHashes { get; set; } = new Dictionary<string, string>();
     }
@@ -21,6 +23,10 @@ namespace AgOpenGPS
     public static class AgShareSyncStore
     {
         private const string FileName = "agshare_sync.txt";
+
+        // Version 2 added the server line. A version 1 file is treated as unknown state, which just
+        // means one full upload that writes the new format.
+        private const string HeaderV2 = "$AgShareSync2";
 
         // Returns null when the sidecar file is missing or malformed - callers treat that as
         // "no known sync state", which safely falls back to a full upload.
@@ -34,9 +40,10 @@ namespace AgOpenGPS
                 using (var reader = new StreamReader(path))
                 {
                     var header = reader.ReadLine();
-                    if (header == null || header.Trim() != "$AgShareSync") return null;
+                    if (header == null || header.Trim() != HeaderV2) return null;
 
                     var fieldId = Guid.Parse(reader.ReadLine().Trim());
+                    var server = reader.ReadLine() ?? string.Empty;
                     var boundaryHash = reader.ReadLine() ?? string.Empty;
                     var lineCount = int.Parse(reader.ReadLine().Trim(), CultureInfo.InvariantCulture);
 
@@ -53,6 +60,7 @@ namespace AgOpenGPS
                     return new AgShareSyncState
                     {
                         FieldId = fieldId,
+                        Server = server,
                         BoundaryHash = boundaryHash,
                         LineHashes = lineHashes
                     };
@@ -63,6 +71,13 @@ namespace AgOpenGPS
                 // Corrupt sidecar file - treat as unknown state rather than failing the upload.
                 return null;
             }
+        }
+
+        // A baseline is only valid for the server it was uploaded to. Compare servers through this, so
+        // that case and a trailing slash do not count as a different server.
+        public static string NormalizeServer(string server)
+        {
+            return (server ?? string.Empty).Trim().TrimEnd('/').ToLowerInvariant();
         }
 
         // Forgets the sync baseline so the next upload is a full replace. Used when the baseline can no
@@ -85,8 +100,9 @@ namespace AgOpenGPS
             var path = Path.Combine(fieldDirectory, FileName);
             using (var writer = new StreamWriter(path, false))
             {
-                writer.WriteLine("$AgShareSync");
+                writer.WriteLine(HeaderV2);
                 writer.WriteLine(state.FieldId.ToString());
+                writer.WriteLine(state.Server ?? string.Empty);
                 writer.WriteLine(state.BoundaryHash ?? string.Empty);
                 writer.WriteLine(state.LineHashes.Count.ToString(CultureInfo.InvariantCulture));
                 foreach (var kvp in state.LineHashes)
