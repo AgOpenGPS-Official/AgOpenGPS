@@ -65,6 +65,21 @@ namespace AgOpenGPS
             }
         }
 
+        // Forgets the sync baseline so the next upload is a full replace. Used when the baseline can no
+        // longer be trusted (the local data was replaced by a download, or an upload partly failed).
+        public static void Delete(string fieldDirectory)
+        {
+            try
+            {
+                var path = Path.Combine(fieldDirectory, FileName);
+                if (File.Exists(path)) File.Delete(path);
+            }
+            catch (Exception)
+            {
+                // Best effort; a stale sidecar only costs a missed cleanup, never data.
+            }
+        }
+
         public static void Save(string fieldDirectory, AgShareSyncState state)
         {
             var path = Path.Combine(fieldDirectory, FileName);

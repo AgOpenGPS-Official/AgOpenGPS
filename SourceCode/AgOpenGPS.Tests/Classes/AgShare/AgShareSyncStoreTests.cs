@@ -90,6 +90,22 @@ namespace AgOpenGPS.Tests.Classes.AgShare
         }
 
         [Test]
+        public void Test_Delete_RemovesSavedState()
+        {
+            AgShareSyncStore.Save(_fieldDirectory, new AgShareSyncState { FieldId = Guid.NewGuid(), BoundaryHash = "abc" });
+
+            AgShareSyncStore.Delete(_fieldDirectory);
+
+            Assert.That(AgShareSyncStore.Load(_fieldDirectory), Is.Null);
+        }
+
+        [Test]
+        public void Test_Delete_WithoutSidecar_DoesNotThrow()
+        {
+            Assert.DoesNotThrow(() => AgShareSyncStore.Delete(_fieldDirectory));
+        }
+
+        [Test]
         public void Test_Save_Twice_OverwritesPreviousState()
         {
             AgShareSyncStore.Save(_fieldDirectory, new AgShareSyncState
