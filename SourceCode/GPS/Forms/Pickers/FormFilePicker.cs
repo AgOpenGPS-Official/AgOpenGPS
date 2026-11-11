@@ -370,8 +370,19 @@ namespace AgOpenGPS
 
             if (cloudFieldId.HasValue)
             {
-                var result = await mf.agShareClient.DeleteFieldAsync(cloudFieldId.Value);
-                if (!result.IsSuccessful)
+                bool cloudDeleted;
+                try
+                {
+                    cloudDeleted = (await mf.agShareClient.DeleteFieldAsync(cloudFieldId.Value)).IsSuccessful;
+                }
+                catch (Exception ex)
+                {
+                    // Timeouts and other unexpected failures must not block the local delete.
+                    Log.EventWriter("AgShare field delete threw: " + ex.Message);
+                    cloudDeleted = false;
+                }
+
+                if (!cloudDeleted)
                 {
                     Log.EventWriter("AgShare field delete failed for '" + fieldName + "' (" + cloudFieldId.Value + ")");
                     FormDialog.Show("AgShare",

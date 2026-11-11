@@ -213,6 +213,11 @@ namespace AgOpenGPS.Core.AgShare
             {
                 return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
             }
+            catch (TaskCanceledException ex)
+            {
+                // HttpClient reports a timeout as a cancellation; surface it like any other request failure.
+                return AgShareResult.Failure(AgShareError.HttpRequestException(new HttpRequestException("Request timed out", ex)));
+            }
         }
 
         /// <summary>
