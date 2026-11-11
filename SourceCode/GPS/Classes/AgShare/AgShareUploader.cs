@@ -81,6 +81,7 @@ namespace AgOpenGPS
         // individual guidance lines that actually changed on every upload after that.
         public async Task<AgShareUploadOutcome> UploadAsync(FieldSnapshot snapshot, FormGPS gps)
         {
+            bool changed = false;
             try
             {
                 string boundaryHash = AgShareSyncStore.ComputeBoundaryHash(snapshot.Boundaries);
@@ -97,8 +98,6 @@ namespace AgOpenGPS
                     return await DoFullUploadAsync(snapshot, gps, boundaryHash, lineHashes);
                 }
 
-                bool changed = false;
-
                 if (boundaryHash != previous.BoundaryHash)
                 {
                     var (outer, holes) = BuildBoundaryParts(snapshot);
@@ -110,7 +109,7 @@ namespace AgOpenGPS
                     if (!result.IsSuccessful)
                     {
                         Log.EventWriter("Error patching AgShare boundary for '" + snapshot.FieldName + "': " + DescribeError(result.Error));
-                        return AgShareUploadOutcome.Failed;
+                        return FailIncremental(snapshot, changed);
                     }
                     changed = true;
                 }
@@ -131,7 +130,7 @@ namespace AgOpenGPS
                     if (!result.IsSuccessful)
                     {
                         Log.EventWriter("Error upserting AgShare guidance line '" + track.name + "' for '" + snapshot.FieldName + "': " + DescribeError(result.Error));
-                        return AgShareUploadOutcome.Failed;
+                        return FailIncremental(snapshot, changed);
                     }
                     changed = true;
                 }
@@ -148,7 +147,7 @@ namespace AgOpenGPS
                     if (!result.IsSuccessful)
                     {
                         Log.EventWriter("Error deleting AgShare guidance line '" + existingName + "' for '" + snapshot.FieldName + "': " + DescribeError(result.Error));
-                        return AgShareUploadOutcome.Failed;
+                        return FailIncremental(snapshot, changed);
                     }
                     changed = true;
                 }
@@ -172,6 +171,8 @@ namespace AgOpenGPS
             catch (Exception ex)
             {
                 Log.EventWriter("Error uploading field to AgShare: " + ex.Message);
+                // An earlier request in this run may already have changed the cloud copy; do not trust the old baseline.
+                if (changed) AgShareSyncStore.Delete(snapshot.FieldDirectory);
                 return AgShareUploadOutcome.Failed;
             }
         }
@@ -227,6 +228,14 @@ namespace AgOpenGPS
 
             Log.EventWriter("Field uploaded to AgShare: " + snapshot.FieldName + " (" + snapshot.FieldId + ")");
             return AgShareUploadOutcome.FullUpload;
+        }
+
+        // An earlier request in this run may already have changed the cloud copy, so the sidecar no longer
+        // describes it. Dropping it makes the next upload a full replace that reconciles everything.
+        private static AgShareUploadOutcome FailIncremental(FieldSnapshot snapshot, bool changed)
+        {
+            if (changed) AgShareSyncStore.Delete(snapshot.FieldDirectory);
+            return AgShareUploadOutcome.Failed;
         }
 
         private static bool IsNotFound(AgShareResult result)
