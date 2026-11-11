@@ -371,6 +371,10 @@ namespace AgOpenGPS
             if (cloudFieldId.HasValue)
             {
                 bool cloudDeleted;
+
+                // Lock the picker while the request runs, so the field cannot be opened (or the form closed)
+                // and then have its folder deleted underneath it when the request returns.
+                Enabled = false;
                 try
                 {
                     cloudDeleted = (await mf.agShareClient.DeleteFieldAsync(cloudFieldId.Value)).IsSuccessful;
@@ -380,6 +384,10 @@ namespace AgOpenGPS
                     // Timeouts and other unexpected failures must not block the local delete.
                     Log.EventWriter("AgShare field delete threw: " + ex.Message);
                     cloudDeleted = false;
+                }
+                finally
+                {
+                    Enabled = true;
                 }
 
                 if (!cloudDeleted)
