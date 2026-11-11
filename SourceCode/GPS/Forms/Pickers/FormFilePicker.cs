@@ -3,6 +3,7 @@ using AgOpenGPS.Core.Models;
 using AgOpenGPS.Core.Streamers;
 using AgOpenGPS.Core.Translations;
 using AgOpenGPS.Forms;
+using AgOpenGPS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -321,7 +322,7 @@ namespace AgOpenGPS
             mf.filePickerFileAndDirectory = "";
         }
 
-        private void btnDeleteField_Click(object sender, EventArgs e)
+        private async void btnDeleteField_Click(object sender, EventArgs e)
         {
             if (lvLines.SelectedItems.Count == 0) return;
 
@@ -333,6 +334,18 @@ namespace AgOpenGPS
                 return;
 
             string dir2Delete = Path.Combine(RegistrySettings.fieldsDirectory, fieldName);
+
+            // If this field was ever uploaded to AgShare, it also needs to be removed there.
+            Guid? cloudFieldId = null;
+            if (Settings.Default.AgShareEnabled)
+            {
+                string idPath = Path.Combine(dir2Delete, "agshare.txt");
+                if (File.Exists(idPath) && Guid.TryParse(File.ReadAllText(idPath).Trim(), out Guid parsedId))
+                {
+                    cloudFieldId = parsedId;
+                }
+            }
+
             int maxLength = 45;
             string multiLineDir = dir2Delete;
             // Split directory name if it is too long for 1 line
@@ -344,9 +357,47 @@ namespace AgOpenGPS
                     multiLineDir = dir2Delete.Insert(sep + 1, "\n");
                 }
             }
+
+            string confirmMessage = multiLineDir;
+            if (cloudFieldId.HasValue)
+            {
+                confirmMessage += "\n\nThis field is also on AgShare and will be deleted there too.";
+            }
+
             // Keep this dialog here; it is a user action (delete confirmation), not loader validation.
-            if (FormDialog.ShowQuestion(gStr.gsDeleteForSure, multiLineDir) != DialogResult.OK)
+            if (FormDialog.ShowQuestion(gStr.gsDeleteForSure, confirmMessage) != DialogResult.OK)
                 return;
+
+            if (cloudFieldId.HasValue)
+            {
+                bool cloudDeleted;
+
+                // Lock the picker while the request runs, so the field cannot be opened (or the form closed)
+                // and then have its folder deleted underneath it when the request returns.
+                Enabled = false;
+                try
+                {
+                    cloudDeleted = (await mf.agShareClient.DeleteFieldAsync(cloudFieldId.Value)).IsSuccessful;
+                }
+                catch (Exception ex)
+                {
+                    // Timeouts and other unexpected failures must not block the local delete.
+                    Log.EventWriter("AgShare field delete threw: " + ex.Message);
+                    cloudDeleted = false;
+                }
+                finally
+                {
+                    Enabled = true;
+                }
+
+                if (!cloudDeleted)
+                {
+                    Log.EventWriter("AgShare field delete failed for '" + fieldName + "' (" + cloudFieldId.Value + ")");
+                    FormDialog.Show("AgShare",
+                        "The field was deleted locally, but could not be removed from AgShare.\nPlease remove it manually.",
+                        DialogSeverity.Warning);
+                }
+            }
 
             try
             {

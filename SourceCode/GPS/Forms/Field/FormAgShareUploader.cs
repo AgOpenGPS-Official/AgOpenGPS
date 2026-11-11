@@ -273,6 +273,7 @@ namespace AgOpenGPS.Forms
             progressBar.Value = 0;
 
             int successCount = 0;
+            int skippedCount = 0;
             int failCount = 0;
 
             try
@@ -284,9 +285,17 @@ namespace AgOpenGPS.Forms
 
                     try
                     {
-                        await UploadField(fieldInfo);
-                        successCount++;
-                        lblStatus.Text = $"Uploaded: {fieldInfo.Name} ✓";
+                        var outcome = await UploadField(fieldInfo);
+                        if (outcome == AgShareUploadOutcome.Skipped)
+                        {
+                            skippedCount++;
+                            lblStatus.Text = $"Skipped: {fieldInfo.Name} (already up to date)";
+                        }
+                        else
+                        {
+                            successCount++;
+                            lblStatus.Text = $"Uploaded: {fieldInfo.Name} ✓";
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -312,14 +321,14 @@ namespace AgOpenGPS.Forms
                 }
 
                 // Build summary message
-                string summary = $"Upload Complete\n\nSuccessful: {successCount}\nFailed: {failCount}";
+                string summary = $"Upload Complete\n\nSuccessful: {successCount}\nSkipped: {skippedCount}\nFailed: {failCount}";
 
                 if (failCount > 0)
                 {
                     summary += "\n\nCheck Log Viewer to view problems";
                 }
 
-                lblStatus.Text = $"Upload complete: {successCount} succeeded, {failCount} failed";
+                lblStatus.Text = $"Upload complete: {successCount} succeeded, {skippedCount} skipped, {failCount} failed";
                 FormDialog.Show("Upload Complete", summary, failCount > 0 ? DialogSeverity.Warning : DialogSeverity.Info);
             }
             finally
@@ -332,7 +341,7 @@ namespace AgOpenGPS.Forms
             }
         }
 
-        private async Task UploadField(FieldInfo fieldInfo)
+        private async Task<AgShareUploadOutcome> UploadField(FieldInfo fieldInfo)
         {
             // Load field data from directory
             var snapshot = await LoadFieldSnapshot(fieldInfo);
@@ -413,7 +422,12 @@ namespace AgOpenGPS.Forms
             }
 
             // Use existing upload logic
-            await uploader.UploadAsync(snapshot, null);
+            var outcome = await uploader.UploadAsync(snapshot, null);
+            if (outcome == AgShareUploadOutcome.Failed)
+            {
+                throw new Exception("AgShare upload failed - check the log for details.");
+            }
+            return outcome;
         }
 
         private async Task<Guid?> FindFieldByNameOnCloud(string fieldName)
