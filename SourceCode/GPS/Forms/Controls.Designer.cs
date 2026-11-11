@@ -1545,6 +1545,9 @@ namespace AgOpenGPS
 
         private void AgShareApiMenuItem_Click(object sender, EventArgs e)
         {
+            // Safety net next to the greyed out menu item
+            if (isJobStarted) return;
+
             var form = new FormAgShareSettings(agShareClient);
             form.ShowDialog(this);
         }
