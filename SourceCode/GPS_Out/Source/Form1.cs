@@ -69,6 +69,7 @@ namespace GPS_Out
         public PGN_GGA GGA;
         public string GGAsentence = "";
         public PGN_GSA GSA;
+        public PGN254 AutoSteerPGN;
         public string GSAsentence = "";
         public PGN_RMC RMC;
         public string RMCsentence = "";
@@ -86,8 +87,8 @@ namespace GPS_Out
         {
             InitializeComponent();
             Tls = new clsTools(this);
-            AGIOcomm = new UDPComm(this, 15555, 8000, 7120, "AGIO", "127.103.104.105", "127.255.255.255");
-            AOGcomm = new UDPComm(this, 17777, 8500, 9010, "AOG", "127.100.101.102", "127.255.255.255");
+            AGIOcomm = new UDPComm(this, 15555, "127.103.104.105");
+            AOGcomm = new UDPComm(this, 17777, "127.100.101.102");
             AGIOdata = new PGN54908(this);
             GGA = new PGN_GGA(this);
             VTG = new PGN_VTG(this);
@@ -97,6 +98,7 @@ namespace GPS_Out
             backgroundWorker1.WorkerSupportsCancellation = true;
             ZDA = new PGN_ZDA(this);
             GSA = new PGN_GSA(this);
+            AutoSteerPGN = new PGN254(this);
         }
 
         public int CheckSum(string Data)
@@ -152,6 +154,51 @@ namespace GPS_Out
                     break;
             }
             return Result;
+        }
+
+        public string ModeIndicator(byte Qu)
+        {
+            // NMEA 2.3+ mode indicator, last field of RMC and VTG
+            // A = autonomous, D = differential, E = estimated (dead reckoning),
+            // M = manual input, S = simulator, N = data not valid
+            // RTK fix and float are reported as D. The R and F values are NMEA 4.x only.
+            String Result = "N";
+            switch (Qu)
+            {
+                case 1:
+                case 3:
+                    Result = "A";
+                    break;
+
+                case 2:
+                case 4:
+                case 5:
+                    Result = "D";
+                    break;
+
+                case 6:
+                    Result = "E";
+                    break;
+
+                case 7:
+                    Result = "M";
+                    break;
+
+                case 8:
+                    Result = "S";
+                    break;
+            }
+            return Result;
+        }
+
+        public bool UseAOGposition()
+        {
+            // AOG position when Roll Corrected is on, or in simulation when AgIO has no position to give.
+            // Without live AgIO data or Simulate nothing of AOG may show, also not with Roll Corrected:
+            // AOG's own simulator keeps sending its position, but the title says NO DATA and nothing is sent.
+            return AOGdata.Connected()
+                && (AGIOdata.Connected() || Properties.Settings.Default.Simulate)
+                && (Properties.Settings.Default.UseRollCorrected || !AGIOdata.Connected());
         }
 
         public double Heading()
@@ -614,7 +661,7 @@ namespace GPS_Out
         {
             if (this.WindowState != FormWindowState.Minimized)
             {
-                if (AOGdata.Connected() && (AGIOdata.Connected() || Properties.Settings.Default.Simulate))
+                if (UseAOGposition())
                 {
                     lbLon.Text = AOGdata.Longitude.ToString(Properties.Settings.Default.DisplayPrecisionFormat);
                     lbLat.Text = AOGdata.Latitude.ToString(Properties.Settings.Default.DisplayPrecisionFormat);

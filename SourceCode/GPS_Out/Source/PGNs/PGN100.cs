@@ -45,7 +45,7 @@ namespace GPS_Out.PGNs
         {
             get
             {
-                if (Connected() && Properties.Settings.Default.UseRollCorrected && ExtendedPGN)
+                if (mf.UseAOGposition() && ExtendedPGN)
                 {
                     return cFix2Fix;
                 }
@@ -104,7 +104,6 @@ namespace GPS_Out.PGNs
                         cLatitude = BitConverter.ToDouble(Data, 13);
                         if (Data[4] == 24) cFix2Fix = BitConverter.ToDouble(Data, 21);  // alternate pgn
                         ReceiveTime = DateTime.Now;
-                        //mf.Tls.WriteByteFile(Data, "AOGdata.txt");
                     }
                 }
             }

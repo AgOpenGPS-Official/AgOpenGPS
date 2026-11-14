@@ -193,30 +193,6 @@ namespace GPS_Out.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.255.255.255")]
-        public string EndPointAOG {
-            get {
-                return ((string)(this["EndPointAOG"]));
-            }
-            set {
-                this["EndPointAOG"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.255.255.255")]
-        public string EndPointAGIO {
-            get {
-                return ((string)(this["EndPointAGIO"]));
-            }
-            set {
-                this["EndPointAGIO"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("$GP")]
         public string SentenceStart {
             get {
@@ -241,7 +217,7 @@ namespace GPS_Out.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
         public int SentencePrecisionIndex {
             get {
                 return ((int)(this["SentencePrecisionIndex"]));
