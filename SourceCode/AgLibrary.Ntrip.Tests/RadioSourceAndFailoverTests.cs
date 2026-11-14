@@ -286,10 +286,13 @@ namespace AgLibrary.Ntrip.Tests
                 Assert.That(manager.Active, Is.EqualTo(SourceRole.Main), "the radio is tried first");
                 feed.Feed(Rtcm.Message(1077, 60));   // the first corrections show that the radio works; they are not used yet
                 Assert.That(WaitFor(() => manager.Active == SourceRole.Fallback), Is.True);
+                // Active is set before the notice is raised, so wait for the notice.
+                Assert.That(WaitFor(() => notice != null), Is.True);
                 Assert.That(notice, Does.Contain("Radio COM5"));
 
                 feed.Feed(Rtcm.Message(1077, 60));
-                Assert.That(WaitFor(() => manager.Status.Status.Frames >= 1), Is.True);
+                // The frame count includes the first frame of before the switch, so wait for the frame itself.
+                Assert.That(WaitFor(() => { lock (types) return types.Count >= 1; }), Is.True);
                 lock (types) Assert.That(types, Is.EqualTo(new[] { 1077 }));
                 // The frame count and the state are updated one after the other, so wait for the state.
                 Assert.That(WaitFor(() => manager.Status.Status.Headline == "Radio Active"), Is.True, manager.Status.Status.Headline);
