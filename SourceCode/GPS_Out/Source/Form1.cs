@@ -194,9 +194,11 @@ namespace GPS_Out
         public bool UseAOGposition()
         {
             // AOG position when Roll Corrected is on, or in simulation when AgIO has no position to give.
-            // Without Simulate nothing of AOG's simulator may show: the Simulate switch decides.
-            return AOGdata.Connected() && (Properties.Settings.Default.UseRollCorrected
-                || (Properties.Settings.Default.Simulate && !AGIOdata.Connected()));
+            // Without live AgIO data or Simulate nothing of AOG may show, also not with Roll Corrected:
+            // AOG's own simulator keeps sending its position, but the title says NO DATA and nothing is sent.
+            return AOGdata.Connected()
+                && (AGIOdata.Connected() || Properties.Settings.Default.Simulate)
+                && (Properties.Settings.Default.UseRollCorrected || !AGIOdata.Connected());
         }
 
         public double Heading()
