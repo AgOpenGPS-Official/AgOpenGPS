@@ -89,7 +89,8 @@ namespace AgOpenGPS
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        //area in m2 of the points recorded so far, as driven
+        private double RecordedArea()
         {
             int ptCount = mf.bnd.bndBeingMadePts.Count;
             double area = 0;
@@ -104,6 +105,13 @@ namespace AgOpenGPS
                 }
                 area = Math.Abs(area / 2);
             }
+
+            return area;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            double area = RecordedArea();
             if (mf.isMetric)
             {
                 lblArea.Text = Math.Round(area * 0.0001, 2).ToString();
@@ -135,9 +143,19 @@ namespace AgOpenGPS
                         New.fenceLine.Add(mf.bnd.bndBeingMadePts[i]);
                     }
 
+                    double recordedArea = RecordedArea();
                     New.CalculateFenceArea(mf.bnd.bndList.Count);
                     New.FixFenceLine(mf.bnd.bndList.Count);
                     mf.bnd.bndList.Add(New);
+
+                    //removing a crossing should only ever cut off a small loop - make it visible
+                    //in the log if the cleanup changed the recorded field a lot
+                    if (New.area < recordedArea * 0.5)
+                    {
+                        Log.EventWriter("Driven Boundary: cleanup reduced the area from "
+                            + Math.Round(recordedArea * 0.0001, 2) + " ha to " + Math.Round(New.area * 0.0001, 2)
+                            + " ha (" + mf.bnd.bndBeingMadePts.Count + " -> " + New.fenceLine.Count + " points)");
+                    }
 
                     // Update field GUI and boundaries
                     mf.fd.UpdateFieldBoundaryGUIAreas();
