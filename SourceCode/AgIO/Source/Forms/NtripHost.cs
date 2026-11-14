@@ -163,19 +163,20 @@ namespace AgIO
         public void SwitchToFallback()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.SwitchToFallbackNow();
+            // A stopped host keeps its manager: switching it would start a source that nothing stops again.
+            if (m != null && IsRunning) m.SwitchToFallbackNow();
         }
 
         public void SwitchBackToMain()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.SwitchBackToMain();
+            if (m != null && IsRunning) m.SwitchBackToMain();
         }
 
         public void TryMainAgain()
         {
             CorrectionSourceManager m = manager;
-            if (m != null) m.TryMainAgain();
+            if (m != null && IsRunning) m.TryMainAgain();
         }
 
         /// <summary>The active profile's main service as connection settings, or null while it has no address.</summary>
@@ -205,10 +206,24 @@ namespace AgIO
             bool keepMain = !FallbackPlan.SameAccount(main, fallback);
             return FallbackPlan.ForNtrip(fallback, f.SwitchAfterFailures, f.AutoSwitch, keepMain);
         }
-        /// <summary>Starts (or restarts) with the current settings.</summary>
+        // The profile the settings point to is missing on this computer, or has no address yet.
+        private static string NoServiceReason(NtripProfileSet set)
+        {
+            string name = Properties.Settings.Default.setNTRIP_profileName;
+            if (string.IsNullOrWhiteSpace(name)) return "No NTRIP profile is chosen yet. Choose or make one in the NTRIP settings.";
+            if (!NtripProfiles.Store.Exists(name))
+                return "The NTRIP profile \"" + name + "\" is not on this computer. Choose or make a profile in the NTRIP settings.";
+            return "The NTRIP profile \"" + name + "\" has no service address yet.";
+        }
+
+        /// <summary>Why the last <see cref="Start"/> did not start anything, in a sentence for the user; empty when it did.</summary>
+        public string StartProblem { get; private set; } = "";
+
+        /// <summary>Starts (or restarts) with the current settings. Check <see cref="IsRunning"/> and <see cref="StartProblem"/> afterwards.</summary>
         public void Start()
         {
             Stop();
+            StartProblem = "";
 
             var s = Properties.Settings.Default;
             NtripProfileSet set = NtripProfiles.LoadActive();
@@ -218,13 +233,21 @@ namespace AgIO
             {
                 string port = set.MainRadioPort;
                 int baud = set.MainRadioBaud;
-                if (string.IsNullOrWhiteSpace(port)) return;
+                if (string.IsNullOrWhiteSpace(port))
+                {
+                    StartProblem = "Choose the port of the main radio in the NTRIP profile.";
+                    return;
+                }
                 mainPlan = FallbackPlan.ForRadio(port, () => new SerialRadioStream(port, baud));
                 mainRadio = port;
             }
             else
             {
-                if (main == null) return;
+                if (main == null)
+                {
+                    StartProblem = NoServiceReason(set);
+                    return;
+                }
                 mainPlan = FallbackPlan.ForNtrip(main);
                 mainRadio = null;
             }

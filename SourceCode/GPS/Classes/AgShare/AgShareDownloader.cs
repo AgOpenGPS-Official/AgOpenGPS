@@ -197,6 +197,10 @@ namespace AgOpenGPS
             BoundaryFiles.Save(fieldDir, field.Boundaries);
             TrackFiles.Save(fieldDir, field.Tracks);
 
+            // The local data now mirrors the cloud copy, so any earlier sync baseline is stale. Drop it so the
+            // next upload compares against the downloaded state instead of silently skipping deletions.
+            AgShareSyncStore.Delete(fieldDir);
+
             // These files are local user data - only create if they don't exist yet
             if (!File.Exists(Path.Combine(fieldDir, "Flags.txt")))
                 FlagsFiles.Save(fieldDir, new List<CFlag>());

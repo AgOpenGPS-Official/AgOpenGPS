@@ -108,6 +108,119 @@ namespace AgOpenGPS.Core.AgShare
         }
 
         /// <summary>
+        /// Replaces only the boundary of an existing field, leaving guidance lines untouched.
+        /// </summary>
+        public async Task<AgShareResult> PatchBoundaryAsync(Guid fieldId, PolygonDto boundary)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(boundary);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"/api/fields/{fieldId}/boundary")
+                {
+                    Content = content
+                };
+                var response = await _client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return AgShareResult.Success();
+                }
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
+            }
+        }
+
+        /// <summary>
+        /// Creates or replaces a single guidance line on an existing field, identified by its name.
+        /// </summary>
+        public async Task<AgShareResult> UpsertGuidanceLineAsync(Guid fieldId, GuidanceTrackDto line)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(line);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _client.PutAsync($"/api/fields/{fieldId}/ablines", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return AgShareResult.Success();
+                }
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
+            }
+        }
+
+        /// <summary>
+        /// Removes a single guidance line from an existing field, identified by its name.
+        /// </summary>
+        public async Task<AgShareResult> DeleteGuidanceLineAsync(Guid fieldId, string name)
+        {
+            try
+            {
+                var response = await _client.DeleteAsync($"/api/fields/{fieldId}/ablines?name={Uri.EscapeDataString(name)}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return AgShareResult.Success();
+                }
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
+            }
+        }
+
+        /// <summary>
+        /// Deletes a field and all its data from AgShare.
+        /// </summary>
+        public async Task<AgShareResult> DeleteFieldAsync(Guid fieldId)
+        {
+            try
+            {
+                var response = await _client.DeleteAsync($"/api/fields/{fieldId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return AgShareResult.Success();
+                }
+                else
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return AgShareResult.Failure(AgShareError.WrongStatusCode(response.StatusCode, responseBody));
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return AgShareResult.Failure(AgShareError.HttpRequestException(ex));
+            }
+            catch (TaskCanceledException ex)
+            {
+                // HttpClient reports a timeout as a cancellation; surface it like any other request failure.
+                return AgShareResult.Failure(AgShareError.HttpRequestException(new HttpRequestException("Request timed out", ex)));
+            }
+        }
+
+        /// <summary>
         /// Retrieves a list of fields owned by the current user
         /// </summary>
         public async Task<AgShareResult<List<GetOwnFieldDto>>> GetOwnFieldsAsync()
