@@ -277,8 +277,8 @@ namespace AgOpenGPS
                 //calculate the the new x in local coordinates and steering angle degrees based on wheelbase
                 double localHeading;
 
-                if (isHeadingSameWay) localHeading = glm.twoPI - mf.fixHeading + inty;
-                else localHeading = glm.twoPI - mf.fixHeading - inty;
+                if (isHeadingSameWay) localHeading = glm.twoPI - mf.guidanceHeading + inty;
+                else localHeading = glm.twoPI - mf.guidanceHeading - inty;
 
                 ppRadiusAB = goalPointDistanceDSquared / (2 * (((goalPointAB.easting - pivot.easting) * Math.Cos(localHeading))
                     + ((goalPointAB.northing - pivot.northing) * Math.Sin(localHeading))));
@@ -336,7 +336,16 @@ namespace AgOpenGPS
                 mf.vehicle.modeActualHeadingError = glm.toDegrees(steerHeadingError);
 
                 //Convert to millimeters
-                mf.guidanceLineDistanceOff = (short)Math.Round(distanceFromCurrentLinePivot * 1000.0, MidpointRounding.AwayFromZero);
+                // The line distance is measured at the guidance pivot, which is the tool (hitch) when tool-on-line
+                // is active. Report the rear axle as the main XTE and the tool separately.
+                mf.guidanceLineDistanceOff = (short)Math.Round((distanceFromCurrentLinePivot - mf.crab.AppliedShift) * 1000.0, MidpointRounding.AwayFromZero);
+                // Distance of the tool (hitch) point to the line, measured like the pivot
+                mf.crab.GetToolPoint(out double toolE, out double toolN);
+                double toolDistance = ((dy * toolE) - (dx * toolN) + (currentLinePtB.easting
+                            * currentLinePtA.northing) - (currentLinePtB.northing * currentLinePtA.easting))
+                            / Math.Sqrt((dy * dy) + (dx * dx));
+                if (!isHeadingSameWay) toolDistance *= -1.0;
+                mf.toolLineDistanceOff = (short)Math.Max(-28999, Math.Min(28999, Math.Round(toolDistance * 1000.0, MidpointRounding.AwayFromZero)));
                 mf.guidanceLineSteerAngle = (short)(steerAngleAB * 100);
             }
 

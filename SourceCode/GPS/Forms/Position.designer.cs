@@ -25,6 +25,10 @@ namespace AgOpenGPS
 
         // autosteer variables for sending serial
         public short guidanceLineDistanceOff, guidanceLineSteerAngle;
+
+        // Cross track error of the tool (hitch) in mm, only set with crab tool-on-line. 32000 = not available.
+        // guidanceLineDistanceOff is always the rear axle.
+        public short toolLineDistanceOff = 32000;
         public double avGuidanceSteerAngle;
 
         public short errorAngVel;
@@ -38,6 +42,12 @@ namespace AgOpenGPS
 
         //for heading or Atan2 as camera
         public string headingFromSource, headingFromSourceBak;
+
+        /// <summary>
+        /// Heading used by pure pursuit: the direction the rear axle actually travels.
+        /// Equals fixHeading unless crab compensation is active (dual antenna only).
+        /// </summary>
+        public double guidanceHeading => crab != null && crab.isActive ? fixHeading + crab.crabAngle : fixHeading;
 
         public vec3 pivotAxlePos = new vec3(0, 0, 0);
         public vec3 steerAxlePos = new vec3(0, 0, 0);
@@ -814,6 +824,7 @@ namespace AgOpenGPS
 
             //preset the values
             guidanceLineDistanceOff = 32000;
+            toolLineDistanceOff = 32000;
 
             if (ct.isContourBtnOn)
             {
@@ -840,15 +851,17 @@ namespace AgOpenGPS
                     if (trk.gArr[trk.idx].mode == TrackMode.AB)
                     {
                         ABLine.BuildCurrentABLineList(pivotAxlePos);
-                        ABLine.GetCurrentABLine(pivotAxlePos, steerAxlePos);
+                        ABLine.GetCurrentABLine(crab.GetGuidancePivot(pivotAxlePos), steerAxlePos);
                     }
                     else
                     {
                         curve.BuildCurveCurrentList(pivotAxlePos);
-                        curve.GetCurrentCurveLine(pivotAxlePos, steerAxlePos);
+                        curve.GetCurrentCurveLine(crab.GetGuidancePivot(pivotAxlePos), steerAxlePos);
                     }
                 }
             }
+
+            crabLog.Write();
 
             // autosteer at full speed of updates
 
@@ -1223,6 +1236,9 @@ namespace AgOpenGPS
             pivotAxlePos.easting = pn.fix.easting - (Math.Sin(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
             pivotAxlePos.northing = pn.fix.northing - (Math.Cos(fixHeading) * vehicle.VehicleConfig.AntennaPivot);
             pivotAxlePos.heading = fixHeading;
+
+            //measure crab (side slip) of the rear axle, dual antenna heading only
+            crab.Update(pivotAxlePos, fixHeading, headingFromSource == "Dual");
 
             steerAxlePos.easting = pivotAxlePos.easting + (Math.Sin(fixHeading) * vehicle.VehicleConfig.Wheelbase);
             steerAxlePos.northing = pivotAxlePos.northing + (Math.Cos(fixHeading) * vehicle.VehicleConfig.Wheelbase);

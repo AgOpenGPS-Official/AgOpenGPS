@@ -196,6 +196,11 @@ steerAngle = atan2(2 * wheelbase * sin(error), lookahead)
 - `goalPointLookAheadHold` - Lookahead when holding
 - `goalPointLookAheadMult` - Lookahead multiplier
 
+**Crab compensation (dual antenna only):** when `setVehicle_isCrabCompensationOn = true` and the dual antenna heading is active, pure pursuit uses `guidanceHeading` (body heading + measured crab angle of the rear axle) instead of `fixHeading`. See `Classes/CCrabCompensation.cs`.
+
+**Tool on line:** with `setVehicle_isCrabToolOnLine` and a rigid tool (not trailing, not TBT) the AB line and curve guidance receive `crab.GetGuidancePivot(pivotAxlePos)`, the pivot shifted sideways by `-hitchLength * sin(crabAngle)` (limited to 10 cm, ramped at 2 cm per metre travelled), so the hitch sits on the line and the rear axle runs beside it. `guidanceLineDistanceOff` (the main XTE bar) always stays the rear axle; the tool XTE is `toolLineDistanceOff` and is shown in a second box (no arrows) with a "T" below the main one, only while the option is in use. Contour, recorded path and Stanley keep the rear axle.
+n**Tool in curves:** with `setVehicle_isToolCurveComp` and a rigid tool behind the rear axle, `CABCurve` builds `toolRefList`: the path the pivot must follow so that the tool stays on the curve. It follows from the body heading theta, which obeys `dtheta/ds = sin(theta - alpha) / d` (unstable forward, stable when integrated backwards along the line). Pure pursuit steers on this list; `guidanceLineDistanceOff` and `toolLineDistanceOff` are still measured against the real line.
+
 **Code location:** `Classes/CTrackMethods.cs` - `GoalPoint()`
 
 ### Steering Parameters (Vehicle)

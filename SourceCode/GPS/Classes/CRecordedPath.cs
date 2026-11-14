@@ -441,7 +441,7 @@ namespace AgOpenGPS
             double goalPointDistanceSquared = glm.DistanceSquared(goalPointRP.northing, goalPointRP.easting, pivotAxlePosRP.northing, pivotAxlePosRP.easting);
 
             //calculate the the delta x in local coordinates and steering angle degrees based on wheelbase
-            double localHeading = glm.twoPI - mf.fixHeading + inty;
+            double localHeading = glm.twoPI - mf.guidanceHeading + inty;
 
             ppRadiusRP = goalPointDistanceSquared / (2 * (((goalPointRP.easting - pivotAxlePosRP.easting) * Math.Cos(localHeading)) + ((goalPointRP.northing - pivotAxlePosRP.northing) * Math.Sin(localHeading))));
 
@@ -590,7 +590,7 @@ namespace AgOpenGPS
             //calculate the the delta x in local coordinates and steering angle degrees based on wheelbase
             //double localHeading = glm.twoPI - mf.fixHeading;
 
-            double localHeading = glm.twoPI - mf.fixHeading + inty;
+            double localHeading = glm.twoPI - mf.guidanceHeading + inty;
 
             ppRadiusRP = goalPointDistanceSquared / (2 * (((goalPointRP.easting - pivotAxlePosRP.easting) * Math.Cos(localHeading)) + ((goalPointRP.northing - pivotAxlePosRP.northing) * Math.Sin(localHeading))));
 

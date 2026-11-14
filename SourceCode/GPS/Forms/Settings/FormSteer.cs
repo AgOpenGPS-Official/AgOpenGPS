@@ -7,6 +7,7 @@ using AgOpenGPS.Helpers;
 using AgOpenGPS.Properties;
 using System;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -196,6 +197,13 @@ namespace AgOpenGPS
             mf.vehicle.purePursuitIntegralGain = Properties.ToolSettings.Default.purePursuitIntegralGainAB;
             hsbarIntegralPurePursuit.Value = (int)(Properties.ToolSettings.Default.purePursuitIntegralGainAB * 100);
             lblPureIntegral.Text = ((int)(mf.vehicle.purePursuitIntegralGain * 100)).ToString();
+
+            cboxCrabCompensation.Checked = Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn;
+            cboxCrabToolOnLine.Checked = Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine;
+            cboxCrabToolOnLine.Text = gStr.gsCrabToolOnLine;
+            cboxToolCurveComp.Checked = Properties.ToolSettings.Default.setVehicle_isToolCurveComp;
+            cboxToolTrim.Checked = Properties.ToolSettings.Default.setVehicle_isToolTrim;
+            UpdateCrabCompensationText();
 
             mf.gyd.sideHillCompFactor = Properties.VehicleSettings.Default.setAS_sideHillComp;
             hsbarSideHillComp.Value = (int)(Properties.VehicleSettings.Default.setAS_sideHillComp * 100);
@@ -493,6 +501,8 @@ namespace AgOpenGPS
 
             // Update Smart WAS Calibration status
             UpdateSmartWASStatus();
+
+            UpdateCrabCompensationText();
         }
 
         #region Tab Sensors
@@ -972,6 +982,72 @@ namespace AgOpenGPS
         {
             mf.vehicle.purePursuitIntegralGain = hsbarIntegralPurePursuit.Value * 0.01;
             lblPureIntegral.Text = hsbarIntegralPurePursuit.Value.ToString();
+        }
+
+        private void cboxCrabCompensation_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isCrabCompensationOn = cboxCrabCompensation.Checked;
+            if (!cboxCrabCompensation.Checked) mf.crab.Reset();
+            UpdateCrabCompensationText();
+        }
+
+        private void cboxCrabToolOnLine_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isCrabToolOnLine = cboxCrabToolOnLine.Checked;
+        }
+
+        private void cboxToolCurveComp_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isToolCurveComp = cboxToolCurveComp.Checked;
+        }
+
+        private void cboxToolTrim_Click(object sender, EventArgs e)
+        {
+            Properties.ToolSettings.Default.setVehicle_isToolTrim = cboxToolTrim.Checked;
+            if (!cboxToolTrim.Checked) mf.crab.ResetTrim();
+        }
+
+        private void UpdateCrabCompensationText()
+        {
+            string text = gStr.gsCrabCompensation;
+
+            // Show the measured crab angle while it is active, "--" when on but no dual heading
+            if (cboxCrabCompensation.Checked)
+            {
+                text += " " + (mf.crab.isActive
+                    ? glm.toDegrees(mf.crab.crabAngle).ToString("N1") + "°"
+                    : "--");
+            }
+
+            if (cboxCrabCompensation.Text != text) cboxCrabCompensation.Text = text;
+
+            // Tool on line: only for rigid tools; show the applied shift while it is on
+            string toolText = gStr.gsCrabToolOnLine;
+            if (cboxCrabToolOnLine.Checked)
+            {
+                toolText += " " + (!mf.crab.IsRigidTool
+                    ? "--"
+                    : (mf.crab.toolShift * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + " cm");
+            }
+            if (cboxCrabToolOnLine.Text != toolText) cboxCrabToolOnLine.Text = toolText;
+
+            // Tool in curves: show whether the reference path is in use (rigid tool behind the axle, on a curve)
+            string curveText = gStr.gsCrabToolCurves;
+            if (cboxToolCurveComp.Checked)
+            {
+                curveText += " " + (mf.curve.isToolRefActive ? "on" : "--");
+            }
+            if (cboxToolCurveComp.Text != curveText) cboxToolCurveComp.Text = curveText;
+
+            // Tool trim (debug/test, not translated yet): show the sideways trim of the guidance pivot while it is on
+            string trimText = "Tool trim";
+            if (cboxToolTrim.Checked)
+            {
+                trimText += " " + (mf.crab.isTrimActive
+                    ? (mf.crab.trimShift * 100).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + " cm"
+                    : "--");
+            }
+            if (cboxToolTrim.Text != trimText) cboxToolTrim.Text = trimText;
         }
 
         private void hsbarLookAheadMult_ValueChanged(object sender, EventArgs e)
