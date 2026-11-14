@@ -53,6 +53,9 @@ jobs:
     - name: Publish
       run: dotnet publish --no-restore --configuration ${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
+    - name: TC log queue regression
+      run: powershell.exe -NoProfile -NonInteractive -STA -ExecutionPolicy Bypass -File tests/Test-TcLogQueue.ps1 -AgIOPath "${{env.PUBLISH_DIR}}/AgIO.exe"
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:

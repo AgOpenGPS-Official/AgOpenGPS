@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 namespace AgIO
@@ -11,10 +12,19 @@ namespace AgIO
     {
         // TODO: separate the logic in this Form into another class
         private Process aogTaskControllerProcess;
+        private readonly object logLock = new object();
+        private readonly Queue<string> pendingLog = new Queue<string>();
+        private int pendingLogLength;
+        private int omittedLogLines;
+        private readonly Timer logTimer;
 
         public FormISOBUS()
         {
             InitializeComponent();
+            if (components == null) components = new System.ComponentModel.Container();
+            logTimer = new Timer(components) { Interval = 200 };
+            logTimer.Tick += (_, __) => FlushPendingLog();
+            logTimer.Start();
             cboxRadioAdapter.SelectedIndex = Properties.Settings.Default.isobus_canAdapterIndex;
             cboxRadioChannel.SelectedIndex = Properties.Settings.Default.isobus_canChannelIndex;
         }
@@ -32,6 +42,12 @@ namespace AgIO
 
         public void StartAogTaskController()
         {
+            lock (logLock)
+            {
+                pendingLog.Clear();
+                pendingLogLength = 0;
+                omittedLogLines = 0;
+            }
             textBoxRcv.Clear();
             try
             {
@@ -75,6 +91,7 @@ namespace AgIO
                 };
                 aogTaskControllerProcess.Start();
                 aogTaskControllerProcess.BeginOutputReadLine();
+                aogTaskControllerProcess.BeginErrorReadLine();
 
                 UpdateComponentVisibility();
 
@@ -132,23 +149,50 @@ namespace AgIO
         private const int MaxLogLength = 100000; // Limit to 100,000 characters
         private void AppendLog(string message)
         {
-            if (InvokeRequired)
+            if (IsDisposed || Disposing || string.IsNullOrEmpty(message)) return;
+            if (message.Length > 8192) message = message.Substring(0, 8192) + " [truncated]";
+            string line = message + Environment.NewLine;
+            // stdout/stderr readers must never wait for the WinForms message loop.
+            lock (logLock)
             {
-                Invoke(new Action<string>(AppendLog), message);
-            }
-            else
-            {
-                textBoxRcv.AppendText(message + Environment.NewLine);
-
-                // Trim log if it exceeds the maximum allowed length
-                if (textBoxRcv.TextLength > MaxLogLength)
+                pendingLog.Enqueue(line);
+                pendingLogLength += line.Length;
+                while (pendingLogLength > MaxLogLength)
                 {
-                    // Remove oldest lines to keep memory usage low
-                    int excess = textBoxRcv.TextLength - MaxLogLength;
-                    textBoxRcv.Select(0, excess);
-                    textBoxRcv.SelectedText = string.Empty;
+                    pendingLogLength -= pendingLog.Dequeue().Length;
+                    omittedLogLines++;
                 }
             }
+        }
+
+        private void FlushPendingLog()
+        {
+            if (IsDisposed || Disposing || !Visible) return;
+            var batch = new StringBuilder();
+            lock (logLock)
+            {
+                if (omittedLogLines > 0)
+                {
+                    batch.AppendLine(">>> Log view skipped " + omittedLogLines + " older lines; see TC log file.");
+                    omittedLogLines = 0;
+                }
+                while (pendingLog.Count > 0 && batch.Length < 16384)
+                {
+                    string line = pendingLog.Dequeue();
+                    pendingLogLength -= line.Length;
+                    batch.Append(line);
+                }
+            }
+            if (batch.Length == 0) return;
+            // Trim in chunks instead of rewriting the textbox for each CAN message.
+            if (textBoxRcv.TextLength + batch.Length > MaxLogLength)
+            {
+                int remove = Math.Min(textBoxRcv.TextLength,
+                    Math.Max(MaxLogLength / 4, textBoxRcv.TextLength + batch.Length - MaxLogLength));
+                textBoxRcv.Select(0, remove);
+                textBoxRcv.SelectedText = string.Empty;
+            }
+            textBoxRcv.AppendText(batch.ToString());
         }
 
         private void btnIsobusOK_Click(object sender, EventArgs e)
@@ -194,9 +238,12 @@ namespace AgIO
 
         private void UpdateComponentVisibility()
         {
+            if (IsDisposed || Disposing) return;
             if (InvokeRequired)
             {
-                Invoke(new Action(UpdateComponentVisibility));
+                if (!IsHandleCreated) return;
+                try { BeginInvoke(new Action(UpdateComponentVisibility)); }
+                catch (InvalidOperationException) { /* The window closed during process exit. */ }
             }
             else
             {
