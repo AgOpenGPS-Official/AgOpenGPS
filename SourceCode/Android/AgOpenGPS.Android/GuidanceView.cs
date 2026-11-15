@@ -26,6 +26,13 @@ namespace AgOpenGPS.Droid
         private readonly Paint _goalLine = Stroke("#FFFFFF", 1.5f);
         private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#B0BEC5"), TextAlign = Paint.Align.Center };
         private GuidanceSnapshot _snap;
+        /// <summary>Draw the worked area (Settings).</summary>
+        public bool ShowCoverage { get; set; } = true;
+        private readonly Dictionary<long, (int Version, Bitmap Bitmap)> _tileCache = new Dictionary<long, (int, Bitmap)>();
+        private CoverageMap _cachedMap;
+        private readonly Paint _tilePaint = new Paint { FilterBitmap = false };
+        private static readonly int Worked = Color.Argb(110, 102, 187, 106).ToArgb();
+        private static readonly int Twice = Color.Argb(140, 239, 83, 80).ToArgb();
         private float _density;
 
         public GuidanceView(Context context) : base(context)
@@ -93,6 +100,8 @@ namespace AgOpenGPS.Droid
             DrawLine(s.Boundary, _boundary, closed: true);
             if (s.RecordingBoundary) DrawLine(s.BoundaryPath, _boundaryRec);
 
+            DrawCoverage(canvas, s, v, heading, scale, cx, cy);
+
             int current = s.Result?.Pass ?? 0;
             foreach (PassShape pass in s.Passes)
             {
@@ -134,6 +143,71 @@ namespace AgOpenGPS.Droid
 
             if (s.ActiveLine == null && !s.Recording && !s.RecordingBoundary)
                 canvas.DrawText("No line: press A, drive, press B", Width / 2f, Height * 0.2f, _hint);
+        }
+
+        /// <summary>Worked ground: green, worked twice or more: red. Drawn under the lines.</summary>
+        private void DrawCoverage(Canvas canvas, GuidanceSnapshot s, GeoPoint v, double heading, float scale, float cx, float cy)
+        {
+            CoverageMap map = s.Coverage;
+            if (!ShowCoverage || map == null || s.DrawPlane == null)
+            {
+                if (_tileCache.Count > 0) ClearTileCache(); // give the memory back
+                return;
+            }
+            if (!ReferenceEquals(map, _cachedMap))
+            {
+                ClearTileCache();
+                _cachedMap = map;
+            }
+
+            // The map has its own plane; over a field the planes differ only by a shift.
+            GeoPoint o = s.DrawPlane.ToLocal(map.Plane.OriginLatitude, map.Plane.OriginLongitude);
+            double radius = Math.Sqrt((double)Width * Width + (double)Height * Height) / scale;
+            double vn = v.Northing - o.Northing, ve = v.Easting - o.Easting;
+            List<CoverageTileInfo> tiles = map.TilesIn(vn - radius, vn + radius, ve - radius, ve + radius);
+            if (_tileCache.Count > 600) ClearTileCache();
+
+            canvas.Save();
+            canvas.Translate(cx, cy);
+            canvas.Rotate((float)-heading);
+            float size = (float)(CoverageMap.TileMeters * scale);
+            foreach (CoverageTileInfo t in tiles)
+            {
+                Bitmap bmp = TileBitmap(map, t);
+                if (bmp == null) continue;
+                float left = (float)((t.TileX * CoverageMap.TileMeters - ve) * scale);
+                float bottom = (float)(-(t.TileY * CoverageMap.TileMeters - vn) * scale);
+                // Slightly larger so neighbouring tiles leave no hairline gaps.
+                canvas.DrawBitmap(bmp, null, new RectF(left, bottom - size, left + size + 0.5f, bottom + 0.5f), _tilePaint);
+            }
+            canvas.Restore();
+        }
+
+        private Bitmap TileBitmap(CoverageMap map, CoverageTileInfo t)
+        {
+            long key = ((long)t.TileX << 32) | (uint)t.TileY;
+            if (_tileCache.TryGetValue(key, out var cached) && cached.Version == t.Version) return cached.Bitmap;
+
+            byte[] counts = map.CopyTile(t.TileX, t.TileY);
+            if (counts == null) return null;
+            int n = CoverageMap.TileCells;
+            var pixels = new int[n * n];
+            for (int row = 0; row < n; row++)          // row 0 of the tile is its south edge,
+                for (int col = 0; col < n; col++)      // row 0 of a bitmap is its top: flip
+                {
+                    byte c = counts[row * n + col];
+                    pixels[(n - 1 - row) * n + col] = c == 0 ? 0 : c == 1 ? Worked : Twice;
+                }
+            Bitmap bmp = Bitmap.CreateBitmap(pixels, n, n, Bitmap.Config.Argb8888);
+            cached.Bitmap?.Recycle();
+            _tileCache[key] = (t.Version, bmp);
+            return bmp;
+        }
+
+        private void ClearTileCache()
+        {
+            foreach (var entry in _tileCache.Values) entry.Bitmap?.Recycle();
+            _tileCache.Clear();
         }
 
         private static Paint Stroke(string color, float width)

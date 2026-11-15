@@ -34,7 +34,7 @@ namespace AgOpenGPS.Droid
         private bool _refreshing;
 
         private Spinner _devices;
-        private CheckBox _autoConnect, _ntripEnabled, _rawLog;
+        private CheckBox _autoConnect, _ntripEnabled, _rawLog, _recordCoverage, _showCoverage;
         private EditText _width, _overlap, _host, _port, _mount, _user, _password, _gga;
         private TextView _workingWidth, _status, _raw;
 
@@ -79,8 +79,13 @@ namespace AgOpenGPS.Droid
             s.NtripPassword = _password.Text;
             s.NtripGgaSeconds = _gga.Text.Trim();
             s.ShowRawLog = _rawLog.Checked;
+            if (s.RecordCoverage && !_recordCoverage.Checked) AppState.SetWorking(false); // switched off: stop and save
+            s.RecordCoverage = _recordCoverage.Checked;
+            s.ShowCoverage = _showCoverage.Checked;
             s.Save();
             AppState.Guidance.PassWidth = s.WorkingWidthMeters;
+            AppState.Guidance.ToolWidth = s.ToolWidthMeters;
+            AppState.Guidance.CoverageEnabled = s.RecordCoverage;
 
             string key = s.ConnectionKey;
             if (key != _connectionKeyAtStart)
@@ -104,6 +109,9 @@ namespace AgOpenGPS.Droid
             _password.Text = s.NtripPassword;
             _gga.Text = s.NtripGgaSeconds;
             _rawLog.Checked = s.ShowRawLog;
+            _recordCoverage.Checked = s.RecordCoverage;
+            _showCoverage.Checked = s.ShowCoverage;
+            _showCoverage.Enabled = s.RecordCoverage;
             UpdateWorkingWidth();
         }
 
@@ -234,13 +242,21 @@ namespace AgOpenGPS.Droid
             left.AddView(_autoConnect);
 
             left.AddView(Ui.Heading(this, "Implement"));
-            _width = Ui.Field(this, left, "Working width (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            _width = Ui.Field(this, left, "Implement width (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
             _overlap = Ui.Field(this, left, "Overlap (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
             _workingWidth = Ui.Hint(this, "");
             left.AddView(_workingWidth);
             _width.TextChanged += (s, e) => UpdateWorkingWidth();
             _overlap.TextChanged += (s, e) => UpdateWorkingWidth();
-            left.AddView(Ui.Hint(this, "Passes are this far apart. Guidance is for the antenna position."));
+            left.AddView(Ui.Hint(this, "Passes are width minus overlap apart; the worked area uses the full width. Guidance is for the antenna position."));
+
+            left.AddView(Ui.Heading(this, "Worked area"));
+            _recordCoverage = new CheckBox(this) { Text = "Record worked area (Work button, statistics)" };
+            left.AddView(_recordCoverage);
+            _showCoverage = new CheckBox(this) { Text = "Show worked area on the map" };
+            left.AddView(_showCoverage);
+            _recordCoverage.CheckedChange += (s, e) => _showCoverage.Enabled = e.IsChecked;
+            left.AddView(Ui.Hint(this, "Recording uses very little; on a slow tablet hide it from the map first."));
 
             left.AddView(Ui.Heading(this, "Diagnostics"));
             _status = Ui.Text(this, 14);

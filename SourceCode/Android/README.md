@@ -78,7 +78,9 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
    them). HC-05 modules usually use PIN `1234` or `0000`.
 2. Start the app, allow the *Nearby devices* permission, open **Settings**:
    - **Receiver:** pick the device. *Connect automatically* (on by default) connects at every start.
-   - **Implement:** working width and overlap in metres. Passes are *width − overlap* apart.
+   - **Implement:** implement width and overlap in metres. Passes are *width − overlap* apart;
+     the worked area uses the full width.
+   - **Worked area:** record it or not, show it on the map or not.
    - **NTRIP:** for RTK through the tablet tick *Send NTRIP corrections* and fill in caster, port,
      mountpoint, user and password. For VRS / network mountpoints set *Send GGA every* to e.g. `10`.
    - **Diagnostics:** link and NTRIP status, byte counters, raw NMEA.
@@ -121,6 +123,25 @@ and stays after closing the app or restarting the tablet.
 
 While driving, the boundary is drawn in green. Within half the working width plus 3 m of the edge
 an orange **Field edge 2.4 m** warning shows, outside it a red **OUTSIDE FIELD**.
+
+### Worked area and statistics
+
+Press **Work: ON** when the implement is working (down) and **Work: OFF** when it is lifted, e.g.
+at the headland. While on, the ground under the full implement width is painted green on the map;
+ground worked twice is red. Under the button:
+
+- **Worked**: area worked, counted once (inside the boundary when the field has one),
+- **Left** and **% done**: field area minus worked area (only with a field boundary),
+- **Overlap**: area worked more than once.
+
+The worked area is kept per field and saved every 30 s, when Work is switched off and when another
+field is opened, so a job can be continued another day. *Fields → (field) → Clear worked area*
+starts the next job. Without an open field the worked area is not saved.
+
+*Settings → Worked area* switches recording off completely, or only hides it from the map.
+Recording takes about 0.02 ms per position (measured on a PC; a tablet is slower but still well
+under 1 % CPU); drawing uses cached 16 m tiles. Implement width is the full width; overlap only
+sets the distance between passes.
 
 ### Recording a line
 

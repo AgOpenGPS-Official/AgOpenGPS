@@ -25,6 +25,8 @@ namespace AgOpenGPS.Droid
             ToolWidth = _prefs.GetString("tool.width", "6.0");
             ToolOverlap = _prefs.GetString("tool.overlap", "0.0");
             ShowRawLog = _prefs.GetBoolean("ui.rawlog", false);
+            RecordCoverage = _prefs.GetBoolean("coverage.record", true);
+            ShowCoverage = _prefs.GetBoolean("coverage.show", true);
         }
 
         public string DeviceAddress;
@@ -34,6 +36,10 @@ namespace AgOpenGPS.Droid
         /// <summary>Implement width and overlap in metres, as typed.</summary>
         public string ToolWidth, ToolOverlap;
         public bool ShowRawLog;
+        /// <summary>Record the worked area (Work button and statistics).</summary>
+        public bool RecordCoverage;
+        /// <summary>Draw the worked area on the map.</summary>
+        public bool ShowCoverage;
 
         /// <summary>Distance between passes: implement width minus overlap, like AgOpenGPS.</summary>
         public double WorkingWidthMeters
@@ -45,6 +51,9 @@ namespace AgOpenGPS.Droid
                 return System.Math.Max(0.1, width - overlap);
             }
         }
+
+        /// <summary>Full implement width: the width of the strip painted as worked.</summary>
+        public double ToolWidthMeters => System.Math.Max(0.1, ParseMeters(ToolWidth, 6.0));
 
         public static double ParseMeters(string text, double fallback)
         {
@@ -68,6 +77,8 @@ namespace AgOpenGPS.Droid
                 .PutString("tool.width", ToolWidth)
                 .PutString("tool.overlap", ToolOverlap)
                 .PutBoolean("ui.rawlog", ShowRawLog)
+                .PutBoolean("coverage.record", RecordCoverage)
+                .PutBoolean("coverage.show", ShowCoverage)
                 .Apply();
         }
 

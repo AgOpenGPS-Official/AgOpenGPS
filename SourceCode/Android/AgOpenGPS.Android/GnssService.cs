@@ -78,6 +78,7 @@ namespace AgOpenGPS.Droid
             if (!_running) return;
             try
             {
+                AppState.Tick();
                 var nm = (NotificationManager)GetSystemService(NotificationService);
                 nm.Notify(NotificationId, BuildNotification());
             }
@@ -152,6 +153,7 @@ namespace AgOpenGPS.Droid
             else text = g.ActiveField != null ? g.ActiveField.Name : "No field open";
 
             if (g.InsideField == false) text = "OUTSIDE FIELD  ·  " + text;
+            if (g.WorkedSquareMeters > 0) text += "  ·  " + MainActivity.FormatStats(g).Replace("\n", "  ");
         }
     }
 }

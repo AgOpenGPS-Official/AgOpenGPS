@@ -92,6 +92,19 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>Distance from the antenna to the nearest boundary edge, metres; NaN without one.</summary>
         public double DistanceToBoundary = double.NaN;
 
+        /// <summary>Implement working (coverage is painted).</summary>
+        public bool Working;
+        /// <summary>Worked area, counted once, square metres.</summary>
+        public double WorkedSquareMeters;
+        /// <summary>Area worked more than once, square metres.</summary>
+        public double OverlapSquareMeters;
+        /// <summary>Worked area inside the field boundary; NaN without a boundary.</summary>
+        public double WorkedInsideSquareMeters = double.NaN;
+        /// <summary>Area inside the field boundary; NaN without a boundary.</summary>
+        public double FieldSquareMeters = double.NaN;
+        /// <summary>The coverage map for drawing (it has its own plane), or null.</summary>
+        public CoverageMap Coverage;
+
         /// <summary>True while a boundary is being driven.</summary>
         public bool RecordingBoundary;
         public BoundarySide BoundarySide;
@@ -100,6 +113,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public double BoundaryGapMeters = double.NaN;
 
         // Everything below is on one plane, for drawing. Null/empty when there is nothing to draw.
+        public LocalPlane DrawPlane;
         public GeoPoint? Vehicle;
         public List<PassShape> Passes = new List<PassShape>();
         public List<GeoPoint> RecordingPath = new List<GeoPoint>();
@@ -141,6 +155,14 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         private LocalPlane _fieldPlane;
         private List<GeoPoint> _fieldPoly;
 
+        private CoverageMap _coverage;
+        private bool _working;
+        private bool _coverageEnabled = true;
+        private double _toolWidth = 6.0;
+        private GeoPoint? _prevLeft, _prevRight, _prevCentre;
+        /// <summary>Positions further apart than this are a jump (lost signal), not a strip to paint.</summary>
+        public const double MaxPaintStepMeters = 10.0;
+
         private bool _boundaryRecording;
         private BoundarySide _boundarySide;
         private readonly List<TrackPoint> _boundary = new List<TrackPoint>();
@@ -160,6 +182,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             {
                 _fix = fix;
                 _heading.Update(fix);
+                PaintCoverage(fix);
                 if (_boundaryRecording && fix.HasPosition && _boundary.Count < MaxCurvePoints)
                 {
                     GeoPoint p = _boundaryPlane.ToLocal(fix.Latitude, fix.Longitude);
@@ -183,6 +206,84 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                     }
                 }
             }
+        }
+
+        /// <summary>Full implement width in metres: the width of the painted strip.</summary>
+        public double ToolWidth
+        {
+            get { lock (_lock) return _toolWidth; }
+            set { lock (_lock) _toolWidth = Math.Max(0, value); }
+        }
+
+        /// <summary>False switches worked-area recording off completely (nothing is painted).</summary>
+        public bool CoverageEnabled
+        {
+            get { lock (_lock) return _coverageEnabled; }
+            set
+            {
+                lock (_lock)
+                {
+                    _coverageEnabled = value;
+                    _prevCentre = _prevLeft = _prevRight = null;
+                }
+            }
+        }
+
+        /// <summary>Implement working: while true, the ground under it is painted as worked.</summary>
+        public bool Working
+        {
+            get { lock (_lock) return _working; }
+            set
+            {
+                lock (_lock)
+                {
+                    _working = value;
+                    _prevCentre = _prevLeft = _prevRight = null;
+                }
+            }
+        }
+
+        public CoverageMap Coverage
+        {
+            get { lock (_lock) return _coverage; }
+        }
+
+        /// <summary>Uses a coverage map (e.g. the open field's saved one), or null for a new one on the first strip.</summary>
+        public void SetCoverage(CoverageMap map)
+        {
+            lock (_lock)
+            {
+                _coverage = map;
+                _coverage?.SetBoundary(_field?.Boundary);
+                _prevCentre = _prevLeft = _prevRight = null;
+            }
+        }
+
+        private void PaintCoverage(GnssFix fix)
+        {
+            if (!_working || !_coverageEnabled || !fix.HasPosition || double.IsNaN(_heading.Heading) || _toolWidth < 0.05) return;
+            if (_coverage == null)
+            {
+                _coverage = new CoverageMap(fix.Latitude, fix.Longitude);
+                _coverage.SetBoundary(_field?.Boundary);
+            }
+
+            GeoPoint c = _coverage.Plane.ToLocal(fix.Latitude, fix.Longitude);
+            double h = LocalPlane.ToRad(_heading.Heading);
+            double half = _toolWidth / 2;
+            // Right of the heading is (cos h, -sin h) as (east, north).
+            var left = new GeoPoint(c.Northing + Math.Sin(h) * half, c.Easting - Math.Cos(h) * half);
+            var right = new GeoPoint(c.Northing - Math.Sin(h) * half, c.Easting + Math.Cos(h) * half);
+
+            if (_prevCentre.HasValue)
+            {
+                double step = _prevCentre.Value.DistanceTo(c);
+                if (step < 0.02) return; // standing still: nothing new, keep the old edge
+                if (step <= MaxPaintStepMeters) _coverage.PaintQuad(_prevLeft.Value, _prevRight.Value, right, left);
+            }
+            _prevCentre = c;
+            _prevLeft = left;
+            _prevRight = right;
         }
 
         public double PassWidth
@@ -219,6 +320,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 _field = field;
                 _fieldPlane = field?.CreatePlane();
                 _fieldPoly = _fieldPlane == null ? null : field.BoundaryLocal(_fieldPlane);
+                _coverage?.SetBoundary(field?.Boundary);
             }
         }
 
@@ -420,13 +522,27 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                     ActiveField = _field,
                     RecordingBoundary = _boundaryRecording,
                     BoundarySide = _boundarySide,
+                    Working = _working,
+                    Coverage = _coverage,
                 };
+                if (_coverage != null)
+                {
+                    s.WorkedSquareMeters = _coverage.CoveredSquareMeters;
+                    s.OverlapSquareMeters = _coverage.OverlapSquareMeters;
+                    s.WorkedInsideSquareMeters = _coverage.CoveredInsideSquareMeters;
+                }
+                if (_fieldPoly != null && _fieldPoly.Count >= 3)
+                {
+                    s.FieldSquareMeters = Geometry.Area(_fieldPoly);
+                    if (_coverage == null) s.WorkedInsideSquareMeters = 0;
+                }
 
                 bool hasPos = _fix != null && _fix.HasPosition;
                 // Passes are made on the line's plane, so that one is used for drawing when there is a line.
                 LocalPlane draw = _plane ?? _fieldPlane ?? _recordPlane ?? _boundaryPlane
                     ?? (hasPos ? new LocalPlane(_fix.Latitude, _fix.Longitude) : null);
                 if (draw == null) return s;
+                s.DrawPlane = draw;
 
                 if (hasPos)
                 {

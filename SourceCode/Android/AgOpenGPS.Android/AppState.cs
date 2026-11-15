@@ -40,7 +40,10 @@ namespace AgOpenGPS.Droid
                 Lines = new AbLineStore(Path.Combine(dir, "ablines.json"));
                 Fields = new FieldStore(Path.Combine(dir, "fields.json"));
                 Guidance.PassWidth = Settings.WorkingWidthMeters;
+                Guidance.ToolWidth = Settings.ToolWidthMeters;
+                Guidance.CoverageEnabled = Settings.RecordCoverage;
                 Guidance.SetActiveField(Fields.Active);
+                Guidance.SetCoverage(LoadCoverage(Fields.Active));
                 AbLine line = Lines.Active;
                 Guidance.SetActiveLine(line != null && line.FieldId == Fields.Active?.Id ? line : null);
             }
@@ -54,9 +57,12 @@ namespace AgOpenGPS.Droid
         /// <summary>Opens a field (null closes it). A line of another field is put away.</summary>
         public static void OpenField(Field field)
         {
+            SaveCoverage();
+            Guidance.Working = false;
             Fields.SetActive(field?.Id);
             Field active = Fields.Active;
             Guidance.SetActiveField(active);
+            Guidance.SetCoverage(LoadCoverage(active));
             AbLine line = Guidance.ActiveLine;
             if (line != null && line.FieldId != active?.Id) UseLine(null);
         }
@@ -67,9 +73,52 @@ namespace AgOpenGPS.Droid
         public static void DeleteField(Field field)
         {
             bool wasOpen = Fields.Active?.Id == field.Id;
+            if (wasOpen) Guidance.SetCoverage(null);
+            try { File.Delete(CoveragePath(field)); } catch (IOException) { }
             Lines.DeleteForField(field.Id);
             Fields.Delete(field.Id);
             if (wasOpen) OpenField(null);
+        }
+
+        // ---------------------------------------------------------------- worked area
+
+        private static DateTime _lastCoverageSave = DateTime.UtcNow;
+
+        private static string CoveragePath(Field field)
+            => Path.Combine(_context.FilesDir.AbsolutePath, "coverage", field.Id + ".bin");
+
+        private static CoverageMap LoadCoverage(Field field) => field == null ? null : CoverageMap.Load(CoveragePath(field));
+
+        public static void SetWorking(bool on)
+        {
+            Guidance.Working = on;
+            if (!on) SaveCoverage();
+        }
+
+        /// <summary>Saves the open field's worked area if it changed. Coverage without a field is not kept.</summary>
+        public static void SaveCoverage()
+        {
+            Field field = Fields?.Active;
+            CoverageMap map = Guidance.Coverage;
+            _lastCoverageSave = DateTime.UtcNow;
+            if (field == null || map == null || !map.Dirty) return;
+            try { map.Save(CoveragePath(field)); }
+            catch (IOException) { /* storage full: try again next time */ }
+        }
+
+        /// <summary>Called regularly (screen and background service): saves the worked area every 30 s.</summary>
+        public static void Tick()
+        {
+            if ((DateTime.UtcNow - _lastCoverageSave).TotalSeconds >= 30) SaveCoverage();
+        }
+
+        /// <summary>Forgets the worked area of the open field.</summary>
+        public static void ClearCoverage()
+        {
+            CoverageMap map = Guidance.Coverage;
+            if (map == null) return;
+            map.Clear();
+            SaveCoverage();
         }
 
         public static void UseLine(AbLine line)

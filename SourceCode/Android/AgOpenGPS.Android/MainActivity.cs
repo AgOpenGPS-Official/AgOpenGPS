@@ -34,9 +34,10 @@ namespace AgOpenGPS.Droid
         private bool _autoConnectTried;
         private LineKind _kind = LineKind.Straight;
 
-        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo;
+        private TextView _workLabel;
+        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo, _stats;
         private LightbarView _lightbar;
-        private Button _connect, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
+        private Button _connect, _work, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
         private GuidanceView _view;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -159,7 +160,7 @@ namespace AgOpenGPS.Droid
         {
             new AlertDialog.Builder(this)
                 .SetTitle(field.Name)
-                .SetItems(new[] { "Open", "Rename", "Delete" }, (s, e) =>
+                .SetItems(new[] { "Open", "Rename", "Clear worked area", "Delete" }, (s, e) =>
                 {
                     switch (e.Which)
                     {
@@ -172,6 +173,15 @@ namespace AgOpenGPS.Droid
                             });
                             break;
                         case 2:
+                            if (AppState.Fields.Active?.Id != field.Id)
+                            {
+                                Toast_("Open the field first");
+                                break;
+                            }
+                            Confirm("Clear the worked area of " + field.Name + "?", "Use this to start the next job in this field.",
+                                "Clear", AppState.ClearCoverage);
+                            break;
+                        case 3:
                             Confirm("Delete " + field.Name + "?", "Its boundary and its " + AppState.Lines.LinesFor(field.Id).Count
                                 + " lines are deleted too.", "Delete", () => AppState.DeleteField(field));
                             break;
@@ -394,6 +404,21 @@ namespace AgOpenGPS.Droid
             finally { _ui.PostDelayed(Refresh, 100); }
         }
 
+        /// <summary>"Worked 4.32 ha / Left 8.08 ha (35 %) / Overlap 0.12 ha"; without a boundary only worked and overlap.</summary>
+        public static string FormatStats(GuidanceSnapshot g)
+        {
+            double worked = g.WorkedSquareMeters / 10000.0, overlap = g.OverlapSquareMeters / 10000.0;
+            if (!double.IsNaN(g.FieldSquareMeters) && g.FieldSquareMeters > 0)
+            {
+                double field = g.FieldSquareMeters / 10000.0;
+                double inside = double.IsNaN(g.WorkedInsideSquareMeters) ? 0 : g.WorkedInsideSquareMeters / 10000.0;
+                double left = Math.Max(0, field - inside);
+                return string.Format(Inv, "Worked {0:0.00} ha\nLeft {1:0.00} ha  ({2:0} % done)\nOverlap {3:0.00} ha",
+                    inside, left, Math.Min(100, inside / field * 100), overlap);
+            }
+            return string.Format(Inv, "Worked {0:0.00} ha\nOverlap {1:0.00} ha", worked, overlap);
+        }
+
         /// <summary>"◀ 12 cm" = right of the line, steer left; "12 cm ▶" = steer right.</summary>
         public static string FormatOffset(double meters)
         {
@@ -406,9 +431,20 @@ namespace AgOpenGPS.Droid
 
         private void Render()
         {
+            AppState.Tick();
             LinkSnapshot link = AppState.Link?.GetSnapshot();
             GuidanceSnapshot g = AppState.Guidance.GetSnapshot();
+            bool coverageOn = AppState.Settings.RecordCoverage;
+            _view.ShowCoverage = coverageOn && AppState.Settings.ShowCoverage;
             _view.Show(g);
+
+            _work.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
+            _stats.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
+            _workLabel.Visibility = _work.Visibility;
+            _work.Text = g.Working ? "Work: ON" : "Work: OFF";
+            _work.SetBackgroundColor(Color.ParseColor(g.Working ? "#2E7D32" : "#9E9E9E"));
+            _work.SetTextColor(Color.White);
+            _stats.Text = g.WorkedSquareMeters > 0 || !double.IsNaN(g.FieldSquareMeters) ? FormatStats(g) : "";
 
             _connect.Text = AppState.IsConnected ? "Disconnect" : "Connect";
 
@@ -580,6 +616,14 @@ namespace AgOpenGPS.Droid
             // Right panel.
             var panel = new LinearLayout(this) { Orientation = Orientation.Vertical };
             panel.SetPadding(Dp(8), 0, Dp(8), Dp(8));
+
+            _workLabel = Label("Implement");
+            panel.AddView(_workLabel);
+            _work = Ui.Button(this, "Work: OFF", () => AppState.SetWorking(!AppState.Guidance.Working), 64);
+            _work.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 22);
+            panel.AddView(_work);
+            _stats = Ui.Text(this, 15, false, "#ECEFF1");
+            panel.AddView(_stats);
 
             panel.AddView(Label("Field"));
             _field = Ui.Button(this, "Field: none", ShowFields, 52);
