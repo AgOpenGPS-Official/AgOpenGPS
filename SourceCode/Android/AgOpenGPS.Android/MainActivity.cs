@@ -1,28 +1,24 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using Android;
 using Android.App;
-using Android.Bluetooth;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AgLibrary.Ntrip;
 using AgOpenGPS.Mobile.Core;
+using AgOpenGPS.Mobile.Core.Guidance;
 
 namespace AgOpenGPS.Droid
 {
     /// <summary>
-    /// Bluetooth GNSS / RTK status screen: pick the paired receiver or Raspberry Pi, connect, and see
-    /// the fix. Optionally runs the AgIO NTRIP client and sends the corrections back over the link.
-    /// Built in code (no XML layouts) to keep the first version small.
+    /// Driving screen: fix status, the guidance view with A-B passes, distance off the line, and
+    /// the buttons to record (A / B), pick lines and open the settings.
     /// </summary>
     [Activity(Label = "@string/app_name", MainLauncher = true, Theme = "@android:style/Theme.Material.Light.NoActionBar",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout
@@ -30,34 +26,27 @@ namespace AgOpenGPS.Droid
     public class MainActivity : Activity
     {
         private const int PermissionRequest = 1;
-        private const int RawLogLines = 40;
         private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-        private AppSettings _settings;
-        private LinkSupervisor _supervisor;
-        private readonly List<string> _deviceAddresses = new List<string>();
-        private readonly ConcurrentQueue<string> _rawLines = new ConcurrentQueue<string>();
         private Handler _ui;
         private bool _refreshing;
+        private bool _autoConnectTried;
+        private LineKind _kind = LineKind.Straight;
 
-        private Spinner _devices;
-        private Button _connect;
-        private CheckBox _ntripEnabled, _rawLog;
-        private EditText _host, _port, _mount, _user, _password, _ggaSeconds;
-        private TextView _fixBadge, _position, _details, _linkStatus, _ntripStatus, _counters, _raw;
+        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _recordInfo;
+        private Button _connect, _straight, _curve, _a, _b, _cancel;
+        private GuidanceView _view;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Window.AddFlags(WindowManagerFlags.KeepScreenOn);
-
-            _settings = new AppSettings(this);
+            AppState.Init(this);
             _ui = new Handler(Looper.MainLooper);
             SetContentView(BuildLayout());
-            LoadSettingsIntoFields();
 
-            if (HasBluetoothPermission()) LoadPairedDevices();
-            else RequestBluetoothPermission();
+            if (!HasBluetoothPermission()) RequestBluetoothPermission();
+            else TryAutoConnect();
         }
 
         protected override void OnResume()
@@ -70,14 +59,13 @@ namespace AgOpenGPS.Droid
         protected override void OnPause()
         {
             _refreshing = false;
-            ReadFieldsIntoSettings();
-            _settings.Save();
             base.OnPause();
         }
 
         protected override void OnDestroy()
         {
-            _supervisor?.Stop();
+            // Leaving the app with Back ends the connection; rotating does not recreate this screen.
+            if (IsFinishing) Task.Run(AppState.Disconnect);
             base.OnDestroy();
         }
 
@@ -85,7 +73,7 @@ namespace AgOpenGPS.Droid
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             if (requestCode != PermissionRequest) return;
-            if (HasBluetoothPermission()) LoadPairedDevices();
+            if (HasBluetoothPermission()) TryAutoConnect();
             else Toast.MakeText(this, "Bluetooth permission is needed to talk to the receiver", ToastLength.Long).Show();
         }
 
@@ -101,205 +89,233 @@ namespace AgOpenGPS.Droid
                 RequestPermissions(new[] { Manifest.Permission.BluetoothConnect }, PermissionRequest);
         }
 
-        private BluetoothAdapter Adapter => ((BluetoothManager)GetSystemService(BluetoothService))?.Adapter;
-
-        private void LoadPairedDevices()
+        private void TryAutoConnect()
         {
-            _deviceAddresses.Clear();
-            var names = new List<string>();
-            BluetoothAdapter adapter = Adapter;
-
-            if (adapter == null)
-            {
-                names.Add("This tablet has no Bluetooth");
-            }
-            else if (!adapter.IsEnabled)
-            {
-                names.Add("Bluetooth is off - turn it on and press Refresh");
-            }
-            else
-            {
-                foreach (BluetoothDevice d in adapter.BondedDevices.OrderBy(d => d.Name ?? ""))
-                {
-                    _deviceAddresses.Add(d.Address);
-                    names.Add((string.IsNullOrEmpty(d.Name) ? "(no name)" : d.Name) + "  " + d.Address);
-                }
-                if (names.Count == 0) names.Add("No paired devices - pair the receiver in Bluetooth settings");
-            }
-
-            var adapterView = new ArrayAdapter<string>(this, global::Android.Resource.Layout.SimpleSpinnerItem, names);
-            adapterView.SetDropDownViewResource(global::Android.Resource.Layout.SimpleSpinnerDropDownItem);
-            _devices.Adapter = adapterView;
-
-            int selected = _deviceAddresses.IndexOf(_settings.DeviceAddress);
-            if (selected >= 0) _devices.SetSelection(selected);
+            if (_autoConnectTried) return;
+            _autoConnectTried = true;
+            if (AppState.Settings.AutoConnect && !string.IsNullOrEmpty(AppState.Settings.DeviceAddress)) Connect();
         }
 
-        private void OnConnectClicked()
-        {
-            if (_supervisor != null && _supervisor.IsRunning)
-            {
-                LinkSupervisor s = _supervisor;
-                _supervisor = null;
-                _connect.Enabled = false;
-                System.Threading.Tasks.Task.Run(() => s.Stop()).ContinueWith(_ => RunOnUiThread(() =>
-                {
-                    _connect.Enabled = true;
-                    UpdateConnectButton();
-                }));
-                return;
-            }
+        // ---------------------------------------------------------------- actions
 
+        private void Connect()
+        {
             if (!HasBluetoothPermission())
             {
                 RequestBluetoothPermission();
                 return;
             }
+            string message = AppState.Connect();
+            if (message != null) Toast.MakeText(this, message, ToastLength.Long).Show();
+            if (!AppState.IsConnected && message != null && message.StartsWith("Pick", StringComparison.Ordinal))
+                StartActivity(new Intent(this, typeof(SettingsActivity)));
+        }
 
-            int index = _devices.SelectedItemPosition;
-            if (index < 0 || index >= _deviceAddresses.Count)
+        private void OnConnectClicked()
+        {
+            if (!AppState.IsConnected)
             {
-                Toast.MakeText(this, "Pick a paired device first", ToastLength.Short).Show();
+                Connect();
+                return;
+            }
+            _connect.Enabled = false;
+            Task.Run(AppState.Disconnect).ContinueWith(_ => RunOnUiThread(() => _connect.Enabled = true));
+        }
+
+        private void OnAClicked()
+        {
+            if (!AppState.Guidance.SetA(_kind))
+            {
+                Toast.MakeText(this, "No position yet", ToastLength.Short).Show();
+                return;
+            }
+            Toast.MakeText(this, _kind == LineKind.Curve
+                ? "A set. Drive along the edge, then press B"
+                : "A set. Drive straight along the edge, then press B", ToastLength.Long).Show();
+        }
+
+        private void OnBClicked()
+        {
+            string name = AppState.Lines.NextName();
+            AbLine line = AppState.Guidance.SetB(name, out string error);
+            if (line == null)
+            {
+                Toast.MakeText(this, error, ToastLength.Long).Show();
+                return;
+            }
+            AppState.Lines.Add(line, makeActive: true);
+            AppState.Guidance.SetActiveLine(line);
+            Toast.MakeText(this, string.Format(Inv, "Saved {0} ({1:0} m). Rename it under Lines.", line.Name, line.LengthMeters),
+                ToastLength.Long).Show();
+        }
+
+        private void OnCancelClicked()
+        {
+            AppState.Guidance.CancelAb();
+        }
+
+        private void SetKind(LineKind kind)
+        {
+            _kind = kind;
+            _straight.Alpha = kind == LineKind.Straight ? 1f : 0.45f;
+            _curve.Alpha = kind == LineKind.Curve ? 1f : 0.45f;
+        }
+
+        private void ShowLines()
+        {
+            IReadOnlyList<AbLine> lines = AppState.Lines.Lines;
+            AbLine active = AppState.Lines.Active;
+            if (lines.Count == 0)
+            {
+                Toast.MakeText(this, "No lines yet: press A, drive, press B", ToastLength.Long).Show();
                 return;
             }
 
-            ReadFieldsIntoSettings();
-            _settings.DeviceAddress = _deviceAddresses[index];
-            _settings.Save();
-
-            if (_settings.NtripEnabled && _settings.BuildNtripProfile() == null)
-                Toast.MakeText(this, "NTRIP settings incomplete - connecting without corrections", ToastLength.Long).Show();
-
-            string address = _settings.DeviceAddress;
-            BluetoothAdapter adapter = Adapter;
-            AppSettings settings = _settings;
-            while (_rawLines.TryDequeue(out _)) { }
-
-            _supervisor = new LinkSupervisor(ct => BluetoothLink.Connect(adapter, address, ct), settings.BuildNtripProfile);
-            _supervisor.SentenceReceived += line =>
+            var items = new string[lines.Count];
+            for (int i = 0; i < lines.Count; i++)
             {
-                if (!_settings.ShowRawLog) return;
-                _rawLines.Enqueue(line);
-                while (_rawLines.Count > RawLogLines) _rawLines.TryDequeue(out _);
-            };
-            _supervisor.Start();
-            UpdateConnectButton();
+                AbLine l = lines[i];
+                items[i] = string.Format(Inv, "{0}{1}   {2}, {3:0} m, {4:0}°",
+                    active != null && l.Id == active.Id ? "▶ " : "", l.Name,
+                    l.Kind == LineKind.Curve ? "curve" : "straight", l.LengthMeters, l.HeadingDegrees);
+            }
+
+            new AlertDialog.Builder(this)
+                .SetTitle("Lines")
+                .SetItems(items, (s, e) => ShowLineActions(lines[e.Which]))
+                .SetNeutralButton("No line", (s, e) => Activate(null))
+                .SetNegativeButton("Close", (s, e) => { })
+                .Show();
         }
 
-        private void UpdateConnectButton()
+        private void ShowLineActions(AbLine line)
         {
-            bool running = _supervisor != null && _supervisor.IsRunning;
-            _connect.Text = running ? "Disconnect" : "Connect";
-            _devices.Enabled = !running;
+            new AlertDialog.Builder(this)
+                .SetTitle(line.Name)
+                .SetItems(new[] { "Use this line", "Rename", "Delete" }, (s, e) =>
+                {
+                    switch (e.Which)
+                    {
+                        case 0: Activate(line); break;
+                        case 1: Rename(line); break;
+                        case 2: ConfirmDelete(line); break;
+                    }
+                })
+                .Show();
         }
 
-        // ---------------------------------------------------------------- status refresh, 4 Hz
+        private void Activate(AbLine line)
+        {
+            AppState.Lines.SetActive(line?.Id);
+            AppState.Guidance.SetActiveLine(line == null ? null : AppState.Lines.Active);
+        }
+
+        private void Rename(AbLine line)
+        {
+            var input = new EditText(this) { Text = line.Name };
+            input.SetSingleLine(true);
+            input.SetSelectAllOnFocus(true);
+            var frame = new FrameLayout(this);
+            frame.SetPadding(Ui.Dp(this, 20), Ui.Dp(this, 8), Ui.Dp(this, 20), 0);
+            frame.AddView(input);
+
+            new AlertDialog.Builder(this)
+                .SetTitle("Rename line")
+                .SetView(frame)
+                .SetPositiveButton("OK", (s, e) =>
+                {
+                    AppState.Lines.Rename(line.Id, input.Text);
+                    if (AppState.Guidance.ActiveLine?.Id == line.Id) AppState.Guidance.SetActiveLine(AppState.Lines.Active);
+                })
+                .SetNegativeButton("Cancel", (s, e) => { })
+                .Show();
+        }
+
+        private void ConfirmDelete(AbLine line)
+        {
+            new AlertDialog.Builder(this)
+                .SetTitle("Delete " + line.Name + "?")
+                .SetPositiveButton("Delete", (s, e) =>
+                {
+                    bool wasActive = AppState.Guidance.ActiveLine?.Id == line.Id;
+                    AppState.Lines.Delete(line.Id);
+                    if (wasActive) AppState.Guidance.SetActiveLine(null);
+                })
+                .SetNegativeButton("Cancel", (s, e) => { })
+                .Show();
+        }
+
+        // ---------------------------------------------------------------- refresh, 10 Hz
 
         private void Refresh()
         {
             if (!_refreshing) return;
-            try { Render(_supervisor?.GetSnapshot()); }
-            finally { _ui.PostDelayed(Refresh, 250); }
+            try { Render(); }
+            finally { _ui.PostDelayed(Refresh, 100); }
         }
 
-        private void Render(LinkSnapshot snap)
+        private void Render()
         {
-            if (snap == null)
-            {
-                SetBadge("Not connected", "#757575");
-                _linkStatus.Text = "Bluetooth: not connected";
-                _ntripStatus.Text = _settings.NtripEnabled ? "NTRIP: waits for the link" : "NTRIP: off";
-                return;
-            }
+            LinkSnapshot link = AppState.Link?.GetSnapshot();
+            GuidanceSnapshot g = AppState.Guidance.GetSnapshot();
+            _view.Show(g);
 
-            SessionStats st = snap.Session;
+            _connect.Text = AppState.IsConnected ? "Disconnect" : "Connect";
+
+            // Fix badge and info line.
+            SessionStats st = link?.Session;
             GnssFix fix = st?.Latest;
-            bool fresh = fix != null && st.SecondsSinceFix >= 0 && st.SecondsSinceFix < 3 && snap.State == LinkState.Connected;
+            bool fresh = link != null && link.State == LinkState.Connected && fix != null && st.SecondsSinceFix >= 0 && st.SecondsSinceFix < 3;
+            if (link == null) SetBadge("Not connected", "#757575");
+            else if (link.State != LinkState.Connected) SetBadge(link.State == LinkState.Connecting ? "Connecting" : "Reconnecting", "#757575");
+            else if (!fresh) SetBadge("No position", "#757575");
+            else SetBadge(GnssFix.FixQualityName(fix.FixQuality), Ui.FixColor(fix.FixQuality));
 
-            if (!fresh)
+            if (fresh)
             {
-                SetBadge(snap.State == LinkState.Connected ? "Waiting for position" : StateText(snap.State), "#757575");
+                _fixInfo.Text = string.Format(Inv, "{0} sats   HDOP {1}   {2:0.0} Hz   {3} km/h   {4}",
+                    fix.Satellites, Num(fix.Hdop, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link));
             }
             else
             {
-                SetBadge(GnssFix.FixQualityName(fix.FixQuality), QualityColor(fix.FixQuality));
+                _fixInfo.Text = link == null ? "Press Connect" : link.Message;
             }
 
-            if (fix != null)
+            // Distance off the line.
+            AbGuidanceResult r = g.Result;
+            if (r != null && fresh)
             {
-                _position.Text = fix.HasPosition
-                    ? string.Format(Inv, "{0:0.0000000}°  {1:0.0000000}°", fix.Latitude, fix.Longitude)
-                    : "No position";
-                var d = new StringBuilder();
-                d.Append("Satellites  ").Append(fix.Satellites >= 0 ? fix.Satellites.ToString(Inv) : "-");
-                d.Append("     HDOP  ").Append(Num(fix.Hdop, "0.00"));
-                d.Append("     Age  ").Append(Num(fix.AgeSeconds, "0.0")).Append(" s\n");
-                d.Append("Altitude  ").Append(Num(fix.Altitude, "0.00")).Append(" m");
-                d.Append("     Speed  ").Append(Num(fix.SpeedKmh, "0.0")).Append(" km/h\n");
-                d.Append("Heading  ").Append(Num(fix.HeadingTrue, "0.0")).Append("°");
-                d.Append("     Dual  ").Append(Num(fix.HeadingDual, "0.0")).Append("°");
-                d.Append("     Roll  ").Append(Num(fix.Roll, "0.0")).Append("°\n");
-                d.Append("Rate  ").Append(st.RateHz.ToString("0.0", Inv)).Append(" Hz");
-                d.Append("     Data  ").Append(fix.Source == FixSource.Pgn ? "AgOpenGPS PGN (bridge)" : "NMEA (receiver)");
-                _details.Text = d.ToString();
+                double cm = r.CrossTrackMeters * 100.0;
+                double abs = Math.Abs(cm);
+                string amount = abs < 100 ? abs.ToString("0", Inv) + " cm" : (abs / 100).ToString("0.00", Inv) + " m";
+                // Positive = right of the line: steer left.
+                _xte.Text = abs < 2 ? "▲ on line" : cm > 0 ? "◀ " + amount : amount + " ▶";
+                _xte.SetTextColor(Color.ParseColor(abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
+                _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}",
+                    g.ActiveLine.Name, r.Pass, r.TravelLineHeading,
+                    double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, "   heading err {0:+0.0;-0.0}°", r.HeadingErrorDegrees));
             }
             else
             {
-                _position.Text = "";
-                _details.Text = "";
+                _xte.Text = "";
+                _lineInfo.Text = g.ActiveLine != null ? g.ActiveLine.Name : "No line selected";
             }
 
-            _linkStatus.Text = "Bluetooth: " + StateText(snap.State) + (string.IsNullOrEmpty(snap.Message) ? "" : " - " + snap.Message)
-                + (snap.Connects > 1 ? "  (reconnects: " + (snap.Connects - 1) + ")" : "");
-
-            NtripStatus n = snap.Ntrip;
-            _ntripStatus.Text = n == null
-                ? (_settings.NtripEnabled ? "NTRIP: not running (check settings)" : "NTRIP: off")
-                : "NTRIP: " + n.Headline + "   " + (n.Frames > 0
-                    ? string.Format(Inv, "{0} frames, last {1:0.0} s ago, {2} bytes to receiver", n.Frames, n.SecondsSinceLastFrame, snap.NtripBytesSent)
-                    : n.Message);
-            _ntripStatus.SetTextColor(n == null ? Color.DarkGray : NtripColor(n.Light));
-
-            _counters.Text = st == null ? "" : string.Format(Inv,
-                "In {0:N0} B   out {1:N0} B   NMEA ok {2:N0} / bad {3:N0}   PGN {4:N0}   skipped {5:N0} B",
-                st.BytesIn, st.BytesOut, st.Sentences, st.BadSentences, st.PgnFrames, st.SkippedBytes);
-
-            _raw.Visibility = _settings.ShowRawLog ? ViewStates.Visible : ViewStates.Gone;
-            if (_settings.ShowRawLog) _raw.Text = string.Join("\n", _rawLines.ToArray());
+            // Recording state.
+            _cancel.Visibility = g.Recording ? ViewStates.Visible : ViewStates.Gone;
+            _b.Enabled = g.Recording;
+            _a.Text = g.Recording ? "Restart A" : "A";
+            _recordInfo.Text = g.Recording
+                ? string.Format(Inv, "Recording {0}: {1:0} m from A", g.RecordingKind == LineKind.Curve ? "curve" : "line",
+                    double.IsNaN(g.RecordedMeters) ? 0 : g.RecordedMeters)
+                : "";
         }
 
-        private static string StateText(LinkState s)
+        private static string NtripText(LinkSnapshot link)
         {
-            switch (s)
-            {
-                case LinkState.Connecting: return "connecting";
-                case LinkState.Connected: return "connected";
-                case LinkState.WaitingToRetry: return "retrying";
-                default: return "stopped";
-            }
-        }
-
-        private static string QualityColor(int q)
-        {
-            switch (q)
-            {
-                case 4: return "#2E7D32"; // RTK fix: green
-                case 5: return "#EF6C00"; // RTK float: orange
-                case 2: return "#1565C0"; // DGPS: blue
-                case 0: return "#C62828"; // no fix: red
-                default: return "#6D4C41";
-            }
-        }
-
-        private static Color NtripColor(NtripLight light)
-        {
-            switch (light)
-            {
-                case NtripLight.Ok: return Color.ParseColor("#2E7D32");
-                case NtripLight.Bad: return Color.ParseColor("#C62828");
-                case NtripLight.Warn: return Color.ParseColor("#EF6C00");
-                default: return Color.DarkGray;
-            }
+            NtripStatus n = link.Ntrip;
+            if (n == null) return "";
+            return n.Frames > 0 && n.SecondsSinceLastFrame >= 0 && n.SecondsSinceLastFrame < 10 ? "NTRIP ok" : "NTRIP: " + n.Headline;
         }
 
         private void SetBadge(string text, string color)
@@ -310,162 +326,88 @@ namespace AgOpenGPS.Droid
 
         private static string Num(double v, string format) => double.IsNaN(v) ? "-" : v.ToString(format, Inv);
 
-        // ---------------------------------------------------------------- settings <-> fields
-
-        private void LoadSettingsIntoFields()
-        {
-            _ntripEnabled.Checked = _settings.NtripEnabled;
-            _host.Text = _settings.NtripHost;
-            _port.Text = _settings.NtripPort;
-            _mount.Text = _settings.NtripMount;
-            _user.Text = _settings.NtripUser;
-            _password.Text = _settings.NtripPassword;
-            _ggaSeconds.Text = _settings.NtripGgaSeconds;
-            _rawLog.Checked = _settings.ShowRawLog;
-        }
-
-        private void ReadFieldsIntoSettings()
-        {
-            _settings.NtripEnabled = _ntripEnabled.Checked;
-            _settings.NtripHost = _host.Text.Trim();
-            _settings.NtripPort = _port.Text.Trim();
-            _settings.NtripMount = _mount.Text.Trim();
-            _settings.NtripUser = _user.Text.Trim();
-            _settings.NtripPassword = _password.Text;
-            _settings.NtripGgaSeconds = _ggaSeconds.Text.Trim();
-            _settings.ShowRawLog = _rawLog.Checked;
-        }
-
         // ---------------------------------------------------------------- layout
 
-        private int Dp(float v) => (int)(v * Resources.DisplayMetrics.Density + 0.5f);
+        private int Dp(float v) => Ui.Dp(this, v);
 
         private View BuildLayout()
         {
-            var root = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            root.SetBackgroundColor(Color.ParseColor("#F2F2F2"));
-            root.SetPadding(Dp(12), Dp(12), Dp(12), Dp(12));
+            var root = new LinearLayout(this) { Orientation = Orientation.Vertical };
+            root.SetBackgroundColor(Color.ParseColor("#37474F"));
 
-            // Left: connection and NTRIP settings.
-            var left = Column();
-            left.AddView(Heading("Receiver (Bluetooth)"));
-            _devices = new Spinner(this);
-            left.AddView(_devices);
+            // Top bar: fix, info, connect, settings.
+            var bar = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            bar.SetGravity(GravityFlags.CenterVertical);
+            bar.SetPadding(Dp(8), Dp(4), Dp(8), Dp(4));
+            _fixBadge = Ui.Text(this, 22, true, "#FFFFFF");
+            _fixBadge.Gravity = GravityFlags.Center;
+            _fixBadge.SetPadding(Dp(16), Dp(8), Dp(16), Dp(8));
+            _fixBadge.SetMinWidth(Dp(170));
+            bar.AddView(_fixBadge);
+            _fixInfo = Ui.Text(this, 16, false, "#ECEFF1");
+            _fixInfo.SetPadding(Dp(12), 0, Dp(12), 0);
+            _fixInfo.SetSingleLine(true);
+            _fixInfo.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
+            bar.AddView(_fixInfo, Ui.Weight(1));
+            _connect = Ui.Button(this, "Connect", OnConnectClicked, 48);
+            bar.AddView(_connect);
+            bar.AddView(Ui.Button(this, "Settings", () => StartActivity(new Intent(this, typeof(SettingsActivity))), 48));
+            root.AddView(bar);
 
-            var buttons = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            _connect = BigButton("Connect", OnConnectClicked);
-            buttons.AddView(_connect, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 1));
-            buttons.AddView(BigButton("Refresh", LoadPairedDevices), new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 1));
-            buttons.AddView(BigButton("Pair...", () => StartActivity(new Intent(global::Android.Provider.Settings.ActionBluetoothSettings))),
-                new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 1));
-            left.AddView(buttons);
+            var body = new LinearLayout(this) { Orientation = Orientation.Horizontal };
 
-            left.AddView(Heading("NTRIP corrections"));
-            _ntripEnabled = new CheckBox(this) { Text = "Send NTRIP corrections to the receiver over Bluetooth" };
-            left.AddView(_ntripEnabled);
-            left.AddView(Hint("Turn off if the Raspberry Pi or receiver gets corrections itself."));
-            _host = Field(left, "Caster host", InputTypes.ClassText | InputTypes.TextVariationUri);
-            _port = Field(left, "Port", InputTypes.ClassNumber);
-            _mount = Field(left, "Mountpoint", InputTypes.ClassText);
-            _user = Field(left, "User", InputTypes.ClassText);
-            _password = Field(left, "Password", InputTypes.ClassText | InputTypes.TextVariationPassword);
-            _ggaSeconds = Field(left, "Send GGA every (s, 0 = once)", InputTypes.ClassNumber);
-            left.AddView(Hint("Changes apply on the next Connect."));
+            // Guidance view with the distance overlay.
+            var frame = new FrameLayout(this);
+            _view = new GuidanceView(this);
+            frame.AddView(_view);
+            var overlay = new LinearLayout(this) { Orientation = Orientation.Vertical };
+            overlay.SetGravity(GravityFlags.CenterHorizontal);
+            _xte = Ui.Text(this, 48, true, "#FFFFFF");
+            _xte.Gravity = GravityFlags.Center;
+            _xte.SetShadowLayer(6, 0, 0, Color.Black);
+            overlay.AddView(_xte);
+            _lineInfo = Ui.Text(this, 16, false, "#ECEFF1");
+            _lineInfo.Gravity = GravityFlags.Center;
+            _lineInfo.SetShadowLayer(4, 0, 0, Color.Black);
+            overlay.AddView(_lineInfo);
+            frame.AddView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Top));
+            body.AddView(frame, Ui.Weight(1, ViewGroup.LayoutParams.MatchParent));
 
-            left.AddView(Heading("Diagnostics"));
-            _rawLog = new CheckBox(this) { Text = "Show raw NMEA" };
-            _rawLog.CheckedChange += (s, e) => _settings.ShowRawLog = e.IsChecked;
-            left.AddView(_rawLog);
+            // Right panel: line type, A, B, cancel, lines.
+            var panel = new LinearLayout(this) { Orientation = Orientation.Vertical };
+            panel.SetPadding(Dp(8), Dp(8), Dp(8), Dp(8));
+            TextView typeLabel = Ui.Text(this, 14, false, "#B0BEC5");
+            typeLabel.Text = "New line";
+            panel.AddView(typeLabel);
+            var kinds = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            _straight = Ui.Button(this, "Straight", () => SetKind(LineKind.Straight), 48);
+            _curve = Ui.Button(this, "Curve", () => SetKind(LineKind.Curve), 48);
+            kinds.AddView(_straight, Ui.Weight(1));
+            kinds.AddView(_curve, Ui.Weight(1));
+            panel.AddView(kinds);
 
-            var leftScroll = new ScrollView(this);
-            leftScroll.AddView(left);
-            root.AddView(leftScroll, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 1f));
+            var ab = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            _a = Ui.Button(this, "A", OnAClicked, 88);
+            _b = Ui.Button(this, "B", OnBClicked, 88);
+            _a.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 28);
+            _b.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 28);
+            ab.AddView(_a, Ui.Weight(1));
+            ab.AddView(_b, Ui.Weight(1));
+            panel.AddView(ab);
+            _recordInfo = Ui.Text(this, 14, false, "#FFAB91");
+            panel.AddView(_recordInfo);
+            _cancel = Ui.Button(this, "Cancel recording", OnCancelClicked, 48);
+            panel.AddView(_cancel);
 
-            // Right: live status.
-            var right = Column();
-            _fixBadge = new TextView(this) { Gravity = GravityFlags.Center };
-            _fixBadge.SetTextColor(Color.White);
-            _fixBadge.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 40);
-            _fixBadge.SetTypeface(null, TypefaceStyle.Bold);
-            _fixBadge.SetPadding(Dp(8), Dp(16), Dp(8), Dp(16));
-            right.AddView(_fixBadge);
+            var spacer = new View(this);
+            panel.AddView(spacer, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 0, 1));
+            panel.AddView(Ui.Button(this, "Lines...", ShowLines, 64));
 
-            _position = Text(26, true);
-            right.AddView(_position);
-            _details = Text(19, false);
-            _details.SetLineSpacing(Dp(4), 1f);
-            right.AddView(_details);
-            _linkStatus = Text(16, false);
-            right.AddView(_linkStatus);
-            _ntripStatus = Text(16, false);
-            right.AddView(_ntripStatus);
-            _counters = Text(13, false);
-            _counters.SetTextColor(Color.Gray);
-            right.AddView(_counters);
-            _raw = Text(12, false);
-            _raw.Typeface = Typeface.Monospace;
-            right.AddView(_raw);
+            body.AddView(panel, new LinearLayout.LayoutParams(Dp(240), ViewGroup.LayoutParams.MatchParent));
+            root.AddView(body, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 0, 1));
 
-            var rightScroll = new ScrollView(this);
-            rightScroll.AddView(right);
-            var rightParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 1.4f) { LeftMargin = Dp(12) };
-            root.AddView(rightScroll, rightParams);
-
+            SetKind(LineKind.Straight);
             return root;
-        }
-
-        private LinearLayout Column()
-        {
-            var c = new LinearLayout(this) { Orientation = Orientation.Vertical };
-            c.SetBackgroundColor(Color.White);
-            c.SetPadding(Dp(16), Dp(8), Dp(16), Dp(16));
-            return c;
-        }
-
-        private TextView Heading(string text)
-        {
-            TextView t = Text(18, true);
-            t.Text = text;
-            t.SetPadding(0, Dp(16), 0, Dp(4));
-            return t;
-        }
-
-        private TextView Hint(string text)
-        {
-            TextView t = Text(13, false);
-            t.Text = text;
-            t.SetTextColor(Color.Gray);
-            return t;
-        }
-
-        private TextView Text(float sp, bool bold)
-        {
-            var t = new TextView(this);
-            t.SetTextSize(global::Android.Util.ComplexUnitType.Sp, sp);
-            t.SetTextColor(Color.ParseColor("#212121"));
-            if (bold) t.SetTypeface(null, TypefaceStyle.Bold);
-            t.SetPadding(0, Dp(6), 0, Dp(6));
-            return t;
-        }
-
-        private Button BigButton(string text, Action onClick)
-        {
-            var b = new Button(this) { Text = text };
-            b.SetMinHeight(Dp(56));
-            b.Click += (s, e) => onClick();
-            return b;
-        }
-
-        private EditText Field(LinearLayout parent, string label, InputTypes type)
-        {
-            TextView l = Text(13, false);
-            l.Text = label;
-            l.SetPadding(0, Dp(6), 0, 0);
-            parent.AddView(l);
-            var e = new EditText(this) { InputType = type };
-            e.SetSingleLine(true);
-            parent.AddView(e);
-            return e;
         }
     }
 }

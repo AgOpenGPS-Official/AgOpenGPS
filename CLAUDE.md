@@ -14,9 +14,10 @@ SourceCode/
 ├── ESP32/AgOpenGPS_BT_Bridge/       # ESP32 firmware: receiver UART <-> Bluetooth SPP (Arduino)
 └── Android/
     ├── AgOpenGPS.Android.sln
-    ├── AgOpenGPS.Mobile.Core/       # Platform-neutral: NMEA/PGN decoding, link supervisor, NTRIP forwarding
+    ├── AgOpenGPS.Mobile.Core/       # Platform-neutral: NMEA/PGN decoding, link supervisor, NTRIP forwarding,
+    │                                #   Guidance/ (local plane, straight + curve A-B lines, passes, line store)
     ├── AgOpenGPS.Mobile.Core.Tests/ # NUnit tests (run on any OS)
-    ├── AgOpenGPS.Android/           # Android app: Bluetooth SPP link, tablet UI
+    ├── AgOpenGPS.Android/           # Android app: driving screen, settings screen, Bluetooth SPP link
     └── pi/                          # Raspberry Pi Bluetooth <-> serial bridge (Python)
 ```
 
