@@ -90,9 +90,18 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
   satellites, HDOP, rate, speed, NTRIP state, and **Connect / Disconnect**.
 - **Guidance view**, heading up: the current pass bold yellow, the recorded line (pass 0) blue,
   neighbouring passes grey, the vehicle as a white arrow.
+- **Lightbar** across the top: how much and which way to steer. The app takes a goal point on
+  the pass a few metres ahead (3 m when slow, about 6 m at 12 km/h, up to 15 m) and lights one
+  segment per degree between the tractor's heading and that point, towards the side to steer:
+  green near the centre, then yellow, then red. Only the centre lit = on course. Because it looks
+  ahead, it eases off as soon as you are turning back, instead of showing the full offset until
+  you get there. The goal point is the white dot on the line.
 - **Distance off the line**, large: `◀ 12 cm` means you are 12 cm right of the pass, steer left;
   `12 cm ▶` steer right. Green under 5 cm, yellow under 15 cm, red above. Below it: line name,
   pass number, line heading and heading error.
+- **Accuracy warning:** without RTK Fix an orange *RTK FLOAT* or red *NO RTK* banner shows and the
+  lightbar and distance turn grey: the centimetres are not reliable then. The top bar shows the
+  correction age.
 
 ### Fields and boundaries
 

@@ -22,6 +22,8 @@ namespace AgOpenGPS.Droid
         private readonly Paint _vehicle = Fill("#FFFFFF");
         private readonly Paint _vehicleEdge = Stroke("#212121", 2);
         private readonly Paint _pointA = Fill("#FF7043");
+        private readonly Paint _goal = Fill("#FFFFFF");
+        private readonly Paint _goalLine = Stroke("#FFFFFF", 1.5f);
         private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#B0BEC5"), TextAlign = Paint.Align.Center };
         private GuidanceSnapshot _snap;
         private float _density;
@@ -30,7 +32,7 @@ namespace AgOpenGPS.Droid
         {
             _density = context.Resources.DisplayMetrics.Density;
             _hint.TextSize = global::Android.Util.TypedValue.ApplyDimension(global::Android.Util.ComplexUnitType.Sp, 18, context.Resources.DisplayMetrics);
-            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge }) p.StrokeWidth *= _density;
+            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge, _goalLine }) p.StrokeWidth *= _density;
         }
 
         public void Show(GuidanceSnapshot snap)
@@ -107,6 +109,14 @@ namespace AgOpenGPS.Droid
                 DrawLine(s.RecordingPath, _recording);
                 ToScreen(s.RecordingPath[0], out float ax, out float ay);
                 canvas.DrawCircle(ax, ay, 8 * _density, _pointA);
+            }
+
+            // Goal point ahead on the pass: where the lightbar steers to.
+            if (s.Steer != null)
+            {
+                ToScreen(s.Steer.GoalPoint, out float gx, out float gy);
+                canvas.DrawLine(cx, cy, gx, gy, _goalLine);
+                canvas.DrawCircle(gx, gy, 6 * _density, _goal);
             }
 
             // Vehicle: an arrow pointing up.

@@ -34,7 +34,8 @@ namespace AgOpenGPS.Droid
         private bool _autoConnectTried;
         private LineKind _kind = LineKind.Straight;
 
-        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _recordInfo;
+        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo;
+        private LightbarView _lightbar;
         private Button _connect, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
         private GuidanceView _view;
 
@@ -421,9 +422,22 @@ namespace AgOpenGPS.Droid
             else SetBadge(GnssFix.FixQualityName(fix.FixQuality), Ui.FixColor(fix.FixQuality));
 
             _fixInfo.Text = fresh
-                ? string.Format(Inv, "{0} sats   HDOP {1}   {2:0.0} Hz   {3} km/h   {4}",
-                    fix.Satellites, Num(fix.Hdop, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link))
+                ? string.Format(Inv, "{0} sats   HDOP {1}   age {2} s   {3:0.0} Hz   {4} km/h   {5}",
+                    fix.Satellites, Num(fix.Hdop, "0.0"), Num(fix.AgeSeconds, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link))
                 : link == null ? "Press Connect" : link.Message;
+
+            // Without RTK fix the centimetres are not to be trusted: say so, and grey out the guidance.
+            bool rtk = fresh && fix.FixQuality == 4;
+            if (fresh && !rtk)
+            {
+                _accuracy.Text = fix.FixQuality == 5 ? "RTK FLOAT - accuracy about ±0.3 m"
+                    : "NO RTK - accuracy about ±1-2 m" + (link.Ntrip != null ? "  (corrections lost)" : "");
+                _accuracy.SetBackgroundColor(Color.ParseColor(fix.FixQuality == 5 ? "#EF6C00" : "#C62828"));
+                _accuracy.Visibility = ViewStates.Visible;
+            }
+            else _accuracy.Visibility = ViewStates.Gone;
+
+            _lightbar.Show(fresh && g.Steer != null ? g.Steer.SteerDegrees : double.NaN, !rtk);
 
             // Distance off the line.
             AbGuidanceResult r = g.Result;
@@ -431,7 +445,7 @@ namespace AgOpenGPS.Droid
             {
                 double abs = Math.Abs(r.CrossTrackMeters * 100.0);
                 _xte.Text = FormatOffset(r.CrossTrackMeters);
-                _xte.SetTextColor(Color.ParseColor(abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
+                _xte.SetTextColor(Color.ParseColor(!rtk ? "#90A4AE" : abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
                 _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}",
                     g.ActiveLine.Name, r.Pass, r.TravelLineHeading,
                     double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, "   heading err {0:+0.0;-0.0}°", r.HeadingErrorDegrees));
@@ -541,6 +555,8 @@ namespace AgOpenGPS.Droid
             frame.AddView(_view);
             var overlay = new LinearLayout(this) { Orientation = Orientation.Vertical };
             overlay.SetGravity(GravityFlags.CenterHorizontal);
+            _lightbar = new LightbarView(this);
+            overlay.AddView(_lightbar, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, Dp(44)));
             _xte = Ui.Text(this, 48, true, "#FFFFFF");
             _xte.Gravity = GravityFlags.Center;
             _xte.SetShadowLayer(6, 0, 0, Color.Black);
@@ -553,6 +569,11 @@ namespace AgOpenGPS.Droid
             _edge.SetPadding(Dp(16), Dp(6), Dp(16), Dp(6));
             _edge.Visibility = ViewStates.Gone;
             overlay.AddView(_edge, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent));
+            _accuracy = Ui.Text(this, 20, true, "#FFFFFF");
+            _accuracy.SetPadding(Dp(16), Dp(6), Dp(16), Dp(6));
+            _accuracy.Visibility = ViewStates.Gone;
+            var ap = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent) { TopMargin = Dp(6) };
+            overlay.AddView(_accuracy, ap);
             frame.AddView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Top));
             body.AddView(frame, Ui.Weight(1, ViewGroup.LayoutParams.MatchParent));
 

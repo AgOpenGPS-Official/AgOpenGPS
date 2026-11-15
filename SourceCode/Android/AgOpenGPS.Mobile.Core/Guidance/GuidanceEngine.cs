@@ -75,6 +75,8 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public AbLine ActiveLine;
         /// <summary>Null without an active line or position.</summary>
         public AbGuidanceResult Result;
+        /// <summary>Goal point and steer angle (lightbar); null without a line, position or heading.</summary>
+        public SteerResult Steer;
         public double PassWidth;
 
         /// <summary>True after A was set and before B.</summary>
@@ -436,7 +438,13 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                         s.Result = AbGuidance.Compute(_line, _plane, v, _heading.Heading, _passWidth);
                         int from = s.Result.Pass - DrawPassesEachSide, to = s.Result.Pass + DrawPassesEachSide;
                         for (int pass = from; pass <= to; pass++)
-                            s.Passes.Add(new PassShape { Pass = pass, Points = _line.PassPolyline(_plane, pass, _passWidth) });
+                        {
+                            var shape = new PassShape { Pass = pass, Points = _line.PassPolyline(_plane, pass, _passWidth) };
+                            s.Passes.Add(shape);
+                            if (pass == s.Result.Pass)
+                                s.Steer = Steering.Compute(shape.Points, v, _heading.Heading, s.Result.SameDirectionAsAb,
+                                    Steering.LookaheadMeters(_fix.SpeedKmh));
+                        }
                     }
 
                     if (_fieldPoly != null && _fieldPoly.Count >= 3)
