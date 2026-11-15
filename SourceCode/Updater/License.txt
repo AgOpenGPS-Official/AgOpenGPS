@@ -1,6 +1,0 @@
-AgOpenGPS - License
-
-This software is licensed under the terms specified in the main AgOpenGPS license.
-Please refer to the main application directory for the full license text.
-
-Copyright (c) AgOpenGPS Contributors

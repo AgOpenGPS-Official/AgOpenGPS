@@ -27,7 +27,7 @@ The app works out by itself what the link carries, so either kind of device work
 
 | Folder | What it is |
 |---|---|
-| `AgOpenGPS.Mobile.Core/` | Platform-neutral .NET 10 library: stream decoder (NMEA + PGN in one stream), NMEA/PGN parsers, link supervisor (reconnect, silence watchdog), NTRIP-to-device forwarder. Reuses `SourceCode/AgLibrary.Ntrip` unchanged (now also built for `netstandard2.0`). |
+| `AgOpenGPS.Mobile.Core/` | Platform-neutral .NET 10 library: stream decoder (NMEA + PGN in one stream), NMEA/PGN parsers, link supervisor (reconnect, silence watchdog), NTRIP-to-device forwarder. Uses the NTRIP client in `SourceCode/AgLibrary.Ntrip`, taken unchanged from AgIO. |
 | `AgOpenGPS.Mobile.Core.Tests/` | NUnit tests, including an end-to-end test against a fake NTRIP caster. Runs on Windows/Linux/macOS. |
 | `AgOpenGPS.Android/` | The Android app (`net10.0-android`, Android 8.0+): Bluetooth SPP link and the tablet screen. |
 | `pi/` | Bluetooth-to-serial bridge for a Raspberry Pi, see [pi/README.md](pi/README.md). |
@@ -88,8 +88,9 @@ are sent at up to about 5 KB/s, like AgIO's serial output.
 
 ## Not done yet / next steps
 
-- Guidance, field map, AB lines, section control: needs the logic in `SourceCode/GPS/Classes`
-  separated from `FormGPS` first, and a new touch UI.
+- Guidance, field map, AB lines, section control: port the logic from the Windows AgOpenGPS
+  (`SourceCode/GPS/Classes` in this repository's history before the Windows app was removed, or
+  upstream at agopengps-official/AgOpenGPS) and build a touch UI for it.
 - Sending AutoSteer / machine PGNs to modules (UDP over Wi-Fi or over the same Bluetooth link).
 - Running as a foreground service, so the link keeps going when the screen is off or another app is in front.
 - Release signing, USB-OTG serial receivers, BLE receivers.

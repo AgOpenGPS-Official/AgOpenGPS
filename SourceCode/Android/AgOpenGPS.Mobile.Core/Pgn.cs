@@ -4,7 +4,8 @@ namespace AgOpenGPS.Mobile.Core
 {
     /// <summary>
     /// AgOpenGPS PGN frames: [0x80, 0x81, source, pgn, length, data..., crc] where crc is the
-    /// byte sum of everything from the source byte to the end of the data (see docs/pgn-protocol.md).
+    /// byte sum of everything from the source byte to the end of the data. The same format the Windows
+    /// AgOpenGPS and AgIO use, so existing modules and bridges keep working.
     /// </summary>
     public static class Pgn
     {
@@ -29,7 +30,7 @@ namespace AgOpenGPS.Mobile.Core
             return frame.Length > end && frame[end] == Crc(frame, end);
         }
 
-        /// <summary>Reads a PGN 0xD6 frame the way FormGPS.ReceiveFromAgIO does. Null if it is not one.</summary>
+        /// <summary>Reads a PGN 0xD6 frame the way the Windows AgOpenGPS (FormGPS.ReceiveFromAgIO) does. Null if it is not one.</summary>
         public static GnssFix ParseGpsPosition(byte[] frame, DateTime receivedUtc)
         {
             if (!IsValid(frame) || frame[3] != GpsPosition || frame.Length < 56) return null;
