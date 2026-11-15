@@ -39,7 +39,9 @@ changed at the top of the sketch.
 
 ## Flashing (Arduino IDE)
 
-1. Arduino IDE 2: *Boards Manager* → install **esp32 by Espressif Systems** (2.0.x or 3.x both work).
+1. Arduino IDE 2: *Boards Manager* → install **esp32 by Espressif Systems**, version 2.0.x or 3.x
+   (tested to compile with 2.0.17 and 3.3.12). Do not use 4.x: it drops the Bluetooth serial
+   library by default. A "BluetoothSerial is deprecated" warning with 3.x is expected and harmless.
 2. Open `AgOpenGPS_BT_Bridge/AgOpenGPS_BT_Bridge.ino`.
 3. Board: **ESP32 Dev Module**. Select the USB port of the ESP32.
 4. Check the settings at the top of the sketch (`BT_NAME`, `GNSS_BAUD`, pins).
