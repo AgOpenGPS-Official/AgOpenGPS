@@ -243,12 +243,14 @@ namespace AgOpenGPS.Droid
 
             left.AddView(Ui.Heading(this, "Implement"));
             _width = Ui.Field(this, left, "Implement width (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, "The real full width of the implement. The worked area always uses the full width."));
             _overlap = Ui.Field(this, left, "Overlap (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, "Only for the spacing between passes: passes are implement width minus overlap apart."));
             _workingWidth = Ui.Hint(this, "");
             left.AddView(_workingWidth);
             _width.TextChanged += (s, e) => UpdateWorkingWidth();
             _overlap.TextChanged += (s, e) => UpdateWorkingWidth();
-            left.AddView(Ui.Hint(this, "Passes are width minus overlap apart; the worked area uses the full width. Guidance is for the antenna position."));
+            left.AddView(Ui.Hint(this, "Guidance is for the antenna position."));
 
             left.AddView(Ui.Heading(this, "Worked area"));
             _recordCoverage = new CheckBox(this) { Text = "Record worked area (Work button, statistics)" };
