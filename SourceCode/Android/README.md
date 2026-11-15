@@ -31,6 +31,7 @@ The app works out by itself what the link carries, so either kind of device work
 | `AgOpenGPS.Mobile.Core.Tests/` | NUnit tests, including an end-to-end test against a fake NTRIP caster. Runs on Windows/Linux/macOS. |
 | `AgOpenGPS.Android/` | The Android app (`net10.0-android`, Android 8.0+): Bluetooth SPP link and the tablet screen. |
 | `pi/` | Bluetooth-to-serial bridge for a Raspberry Pi, see [pi/README.md](pi/README.md). |
+| `../ESP32/` | The same bridge as ESP32 firmware, for the tractor, see [../ESP32/README.md](../ESP32/README.md). |
 
 ## Getting the APK
 

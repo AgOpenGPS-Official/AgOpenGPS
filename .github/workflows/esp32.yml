@@ -1,0 +1,41 @@
+name: ESP32
+
+on:
+  push:
+    paths:
+      - 'SourceCode/ESP32/**'
+      - '.github/workflows/esp32.yml'
+  pull_request:
+    paths:
+      - 'SourceCode/ESP32/**'
+      - '.github/workflows/esp32.yml'
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # The last 2.x core and the current 3.x core: people flash with either.
+        core: ['2.0.17', '3.3.12']
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+
+    - name: Compile sketch
+      uses: arduino/compile-sketches@v1
+      with:
+        fqbn: esp32:esp32:esp32
+        platforms: |
+          - name: esp32:esp32
+            source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+            version: ${{ matrix.core }}
+        sketch-paths: |
+          - SourceCode/ESP32/AgOpenGPS_BT_Bridge
+        enable-warnings-report: true
+        cli-compile-flags: |
+          - --warnings
+          - all

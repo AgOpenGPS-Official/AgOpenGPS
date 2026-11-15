@@ -18,6 +18,7 @@ link. Guidance, mapping and section control are not ported yet.
 | Folder | What it is |
 |---|---|
 | [`SourceCode/Android/`](SourceCode/Android/README.md) | The Android app, its platform-neutral core library and tests. **Start here.** |
+| [`SourceCode/ESP32/`](SourceCode/ESP32/README.md) | Bluetooth bridge firmware for an ESP32 in the tractor (low-cost alternative to the Pi). |
 | [`SourceCode/Android/pi/`](SourceCode/Android/pi/README.md) | Bluetooth bridge for a Raspberry Pi next to the receiver. |
 | `SourceCode/AgLibrary.Ntrip/` | The NTRIP client from AgIO, used by the app. |
 

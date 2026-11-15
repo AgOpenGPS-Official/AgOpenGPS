@@ -11,6 +11,7 @@ agopengps-official/AgOpenGPS.
 ```
 SourceCode/
 ├── AgLibrary.Ntrip/                 # NTRIP client from AgIO (netstandard2.0)
+├── ESP32/AgOpenGPS_BT_Bridge/       # ESP32 firmware: receiver UART <-> Bluetooth SPP (Arduino)
 └── Android/
     ├── AgOpenGPS.Android.sln
     ├── AgOpenGPS.Mobile.Core/       # Platform-neutral: NMEA/PGN decoding, link supervisor, NTRIP forwarding
@@ -44,3 +45,6 @@ dotnet test AgOpenGPS.Mobile.Core.Tests
 ```bash
 dotnet publish AgOpenGPS.Android -c Release
 ```
+
+The ESP32 firmware is compiled by `.github/workflows/esp32.yml` (arduino-esp32 2.0.x and 3.x),
+or locally with Arduino IDE / arduino-cli, board `esp32:esp32:esp32`.
