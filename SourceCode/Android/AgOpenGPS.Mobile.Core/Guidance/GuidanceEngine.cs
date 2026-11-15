@@ -83,10 +83,26 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>Distance driven from A (along the path for a curve), metres.</summary>
         public double RecordedMeters = double.NaN;
 
+        /// <summary>The open field, or null.</summary>
+        public Field ActiveField;
+        /// <summary>Inside the field boundary; null without a boundary or position.</summary>
+        public bool? InsideField;
+        /// <summary>Distance from the antenna to the nearest boundary edge, metres; NaN without one.</summary>
+        public double DistanceToBoundary = double.NaN;
+
+        /// <summary>True while a boundary is being driven.</summary>
+        public bool RecordingBoundary;
+        public BoundarySide BoundarySide;
+        public double BoundaryRecordedMeters = double.NaN;
+        /// <summary>Distance back to where the boundary recording started, metres.</summary>
+        public double BoundaryGapMeters = double.NaN;
+
         // Everything below is on one plane, for drawing. Null/empty when there is nothing to draw.
         public GeoPoint? Vehicle;
         public List<PassShape> Passes = new List<PassShape>();
         public List<GeoPoint> RecordingPath = new List<GeoPoint>();
+        public List<GeoPoint> Boundary = new List<GeoPoint>();
+        public List<GeoPoint> BoundaryPath = new List<GeoPoint>();
     }
 
     /// <summary>
@@ -119,6 +135,22 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         private GeoPoint _lastRecorded;
         private double _recordedLength;
 
+        private Field _field;
+        private LocalPlane _fieldPlane;
+        private List<GeoPoint> _fieldPoly;
+
+        private bool _boundaryRecording;
+        private BoundarySide _boundarySide;
+        private readonly List<TrackPoint> _boundary = new List<TrackPoint>();
+        private LocalPlane _boundaryPlane;
+        private GeoPoint _boundaryLast;
+        private double _boundaryLength;
+
+        /// <summary>A boundary must close within this distance of where it started.</summary>
+        public const double MaxBoundaryGapMeters = 30.0;
+        /// <summary>Smallest field accepted, square metres.</summary>
+        public const double MinFieldAreaSquareMeters = 100.0;
+
         public void OnFix(GnssFix fix)
         {
             if (fix == null) return;
@@ -126,6 +158,17 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             {
                 _fix = fix;
                 _heading.Update(fix);
+                if (_boundaryRecording && fix.HasPosition && _boundary.Count < MaxCurvePoints)
+                {
+                    GeoPoint p = _boundaryPlane.ToLocal(fix.Latitude, fix.Longitude);
+                    double step = p.DistanceTo(_boundaryLast);
+                    if (step >= CurveSpacingMeters)
+                    {
+                        _boundary.Add(new TrackPoint(fix.Latitude, fix.Longitude));
+                        _boundaryLength += step;
+                        _boundaryLast = p;
+                    }
+                }
                 if (_recording && _recordKind == LineKind.Curve && fix.HasPosition && _recorded.Count < MaxCurvePoints)
                 {
                     GeoPoint p = _recordPlane.ToLocal(fix.Latitude, fix.Longitude);
@@ -154,6 +197,120 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public bool IsRecording
         {
             get { lock (_lock) return _recording; }
+        }
+
+        public Field ActiveField
+        {
+            get { lock (_lock) return _field; }
+        }
+
+        public bool IsRecordingBoundary
+        {
+            get { lock (_lock) return _boundaryRecording; }
+        }
+
+        /// <summary>Opens a field (null closes it). Its boundary is used for the edge warning.</summary>
+        public void SetActiveField(Field field)
+        {
+            lock (_lock)
+            {
+                _field = field;
+                _fieldPlane = field?.CreatePlane();
+                _fieldPoly = _fieldPlane == null ? null : field.BoundaryLocal(_fieldPlane);
+            }
+        }
+
+        /// <summary>Starts recording a boundary at the current position. False without a position.</summary>
+        public bool StartBoundary(BoundarySide side)
+        {
+            lock (_lock)
+            {
+                if (_fix == null || !_fix.HasPosition) return false;
+                _boundaryRecording = true;
+                _boundarySide = side;
+                _boundary.Clear();
+                _boundary.Add(new TrackPoint(_fix.Latitude, _fix.Longitude));
+                _boundaryPlane = new LocalPlane(_fix.Latitude, _fix.Longitude);
+                _boundaryLast = new GeoPoint(0, 0);
+                _boundaryLength = 0;
+                return true;
+            }
+        }
+
+        public void CancelBoundary()
+        {
+            lock (_lock)
+            {
+                _boundaryRecording = false;
+                _boundary.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Ends the boundary drive and returns the closed boundary, moved sideways for
+        /// <see cref="BoundarySide"/> by <paramref name="halfWidth"/>, and smoothed. Null with a
+        /// reason if it is too small or does not come back near the start; recording then goes on.
+        /// </summary>
+        public List<TrackPoint> FinishBoundary(double halfWidth, out double areaSquareMeters, out string error)
+        {
+            lock (_lock)
+            {
+                areaSquareMeters = 0;
+                error = null;
+                if (!_boundaryRecording) { error = "Start recording the boundary first"; return null; }
+
+                var path = new List<GeoPoint>();
+                foreach (TrackPoint t in _boundary) path.Add(_boundaryPlane.ToLocal(t.Latitude, t.Longitude));
+                if (_fix != null && _fix.HasPosition)
+                {
+                    GeoPoint now = _boundaryPlane.ToLocal(_fix.Latitude, _fix.Longitude);
+                    if (now.DistanceTo(path[path.Count - 1]) > 0.05) path.Add(now);
+                }
+
+                double gap = path[path.Count - 1].DistanceTo(path[0]);
+                if (path.Count < 3 || Geometry.Area(path) < MinFieldAreaSquareMeters)
+                {
+                    error = "Drive all the way round the field first";
+                    return null;
+                }
+                if (gap > MaxBoundaryGapMeters)
+                {
+                    error = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                        "Drive back to where you started ({0:0} m to go)", gap);
+                    return null;
+                }
+
+                double offset = _boundarySide == BoundarySide.LeftOfImplement ? -halfWidth
+                    : _boundarySide == BoundarySide.RightOfImplement ? halfWidth : 0;
+                List<GeoPoint> moved = Geometry.OffsetClosed(path, offset);
+
+                var result = new List<TrackPoint>();
+                foreach (int i in AbGuidance.Simplify(moved, CurveToleranceMeters))
+                {
+                    _boundaryPlane.ToWgs84(moved[i], out double lat, out double lon);
+                    result.Add(new TrackPoint(lat, lon));
+                }
+                // The last point is next to the first: the closing edge is implied.
+                if (result.Count > 3)
+                {
+                    GeoPoint first = _boundaryPlane.ToLocal(result[0].Latitude, result[0].Longitude);
+                    GeoPoint last = _boundaryPlane.ToLocal(result[result.Count - 1].Latitude, result[result.Count - 1].Longitude);
+                    if (first.DistanceTo(last) < 1.0) result.RemoveAt(result.Count - 1);
+                }
+
+                var local = new List<GeoPoint>();
+                foreach (TrackPoint t in result) local.Add(_boundaryPlane.ToLocal(t.Latitude, t.Longitude));
+                areaSquareMeters = Geometry.Area(local);
+                if (result.Count < 3 || areaSquareMeters < MinFieldAreaSquareMeters)
+                {
+                    error = "Drive all the way round the field first";
+                    return null;
+                }
+
+                _boundaryRecording = false;
+                _boundary.Clear();
+                return result;
+            }
         }
 
         public void SetActiveLine(AbLine line)
@@ -258,10 +415,15 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                     PassWidth = _passWidth,
                     Recording = _recording,
                     RecordingKind = _recordKind,
+                    ActiveField = _field,
+                    RecordingBoundary = _boundaryRecording,
+                    BoundarySide = _boundarySide,
                 };
 
                 bool hasPos = _fix != null && _fix.HasPosition;
-                LocalPlane draw = _plane ?? _recordPlane ?? (hasPos ? new LocalPlane(_fix.Latitude, _fix.Longitude) : null);
+                // Passes are made on the line's plane, so that one is used for drawing when there is a line.
+                LocalPlane draw = _plane ?? _fieldPlane ?? _recordPlane ?? _boundaryPlane
+                    ?? (hasPos ? new LocalPlane(_fix.Latitude, _fix.Longitude) : null);
                 if (draw == null) return s;
 
                 if (hasPos)
@@ -276,11 +438,21 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                         for (int pass = from; pass <= to; pass++)
                             s.Passes.Add(new PassShape { Pass = pass, Points = _line.PassPolyline(_plane, pass, _passWidth) });
                     }
+
+                    if (_fieldPoly != null && _fieldPoly.Count >= 3)
+                    {
+                        GeoPoint fv = _fieldPlane.ToLocal(_fix.Latitude, _fix.Longitude);
+                        s.InsideField = Geometry.Contains(_fieldPoly, fv);
+                        s.DistanceToBoundary = Geometry.DistanceToEdge(_fieldPoly, fv);
+                    }
                 }
                 else if (_line != null)
                 {
                     s.Passes.Add(new PassShape { Pass = 0, Points = _line.PassPolyline(_plane, 0, _passWidth) });
                 }
+
+                if (_fieldPoly != null && _fieldPoly.Count >= 3)
+                    s.Boundary = Geometry.Reproject(_fieldPoly, _fieldPlane, draw);
 
                 if (_recording)
                 {
@@ -296,6 +468,17 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                         s.RecordedMeters = _recordPlane.ToLocal(_fix.Latitude, _fix.Longitude).DistanceTo(_recordPlane.ToLocal(a.Latitude, a.Longitude));
                         // A straight line only needs A and the current point.
                         s.RecordingPath = new List<GeoPoint> { draw.ToLocal(a.Latitude, a.Longitude), draw.ToLocal(_fix.Latitude, _fix.Longitude) };
+                    }
+                }
+
+                if (_boundaryRecording)
+                {
+                    foreach (TrackPoint t in _boundary) s.BoundaryPath.Add(draw.ToLocal(t.Latitude, t.Longitude));
+                    s.BoundaryRecordedMeters = _boundaryLength;
+                    if (hasPos)
+                    {
+                        s.BoundaryPath.Add(draw.ToLocal(_fix.Latitude, _fix.Longitude));
+                        s.BoundaryGapMeters = _boundaryPlane.ToLocal(_fix.Latitude, _fix.Longitude).DistanceTo(new GeoPoint(0, 0));
                     }
                 }
                 return s;

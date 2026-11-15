@@ -17,6 +17,8 @@ namespace AgOpenGPS.Droid
         private readonly Paint _other = Stroke("#607D8B", 2);
         private readonly Paint _refLine = Stroke("#4FC3F7", 3);
         private readonly Paint _recording = Stroke("#FF7043", 4);
+        private readonly Paint _boundary = Stroke("#A5D6A7", 3);
+        private readonly Paint _boundaryRec = Stroke("#4DD0E1", 4);
         private readonly Paint _vehicle = Fill("#FFFFFF");
         private readonly Paint _vehicleEdge = Stroke("#212121", 2);
         private readonly Paint _pointA = Fill("#FF7043");
@@ -28,7 +30,7 @@ namespace AgOpenGPS.Droid
         {
             _density = context.Resources.DisplayMetrics.Density;
             _hint.TextSize = global::Android.Util.TypedValue.ApplyDimension(global::Android.Util.ComplexUnitType.Sp, 18, context.Resources.DisplayMetrics);
-            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _vehicleEdge }) p.StrokeWidth *= _density;
+            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge }) p.StrokeWidth *= _density;
         }
 
         public void Show(GuidanceSnapshot snap)
@@ -69,7 +71,7 @@ namespace AgOpenGPS.Droid
                 y = cy - (float)(forward * scale);
             }
 
-            void DrawLine(List<GeoPoint> pts, Paint paint)
+            void DrawLine(List<GeoPoint> pts, Paint paint, bool closed = false)
             {
                 if (pts == null || pts.Count < 2) return;
                 using (var path = new Path())
@@ -81,9 +83,13 @@ namespace AgOpenGPS.Droid
                         ToScreen(pts[i], out x, out y);
                         path.LineTo(x, y);
                     }
+                    if (closed) path.Close();
                     canvas.DrawPath(path, paint);
                 }
             }
+
+            DrawLine(s.Boundary, _boundary, closed: true);
+            if (s.RecordingBoundary) DrawLine(s.BoundaryPath, _boundaryRec);
 
             int current = s.Result?.Pass ?? 0;
             foreach (PassShape pass in s.Passes)
@@ -116,7 +122,7 @@ namespace AgOpenGPS.Droid
                 canvas.DrawPath(arrow, _vehicleEdge);
             }
 
-            if (s.ActiveLine == null && !s.Recording)
+            if (s.ActiveLine == null && !s.Recording && !s.RecordingBoundary)
                 canvas.DrawText("No line: press A, drive, press B", Width / 2f, Height * 0.2f, _hint);
         }
 

@@ -25,21 +25,38 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             get { lock (_lock) return _data.Lines.ToList(); }
         }
 
+        /// <summary>The lines of one field (null = lines without a field).</summary>
+        public IReadOnlyList<AbLine> LinesFor(string fieldId)
+        {
+            lock (_lock) return _data.Lines.Where(l => l.FieldId == fieldId).ToList();
+        }
+
         public AbLine Active
         {
             get { lock (_lock) return _data.Lines.FirstOrDefault(l => l.Id == _data.ActiveId); }
         }
 
-        /// <summary>"AB 1", "AB 2", ...: the first number not used yet.</summary>
-        public string NextName()
+        /// <summary>"AB 1", "AB 2", ...: the first number not used yet in that field.</summary>
+        public string NextName(string fieldId = null)
         {
             lock (_lock)
             {
                 for (int i = 1; ; i++)
                 {
                     string name = "AB " + i;
-                    if (!_data.Lines.Any(l => string.Equals(l.Name, name, StringComparison.OrdinalIgnoreCase))) return name;
+                    if (!_data.Lines.Any(l => l.FieldId == fieldId && string.Equals(l.Name, name, StringComparison.OrdinalIgnoreCase))) return name;
                 }
+            }
+        }
+
+        /// <summary>Deletes all lines of a field (when the field is deleted).</summary>
+        public void DeleteForField(string fieldId)
+        {
+            lock (_lock)
+            {
+                if (_data.Lines.RemoveAll(l => l.FieldId == fieldId) == 0) return;
+                if (!_data.Lines.Any(l => l.Id == _data.ActiveId)) _data.ActiveId = null;
+                Save();
             }
         }
 
@@ -119,6 +136,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
     // Source-generated serializer: works with Android's trimming, no reflection.
     [JsonSourceGenerationOptions(WriteIndented = true)]
     [JsonSerializable(typeof(AbLineStore.StoreFile))]
+    [JsonSerializable(typeof(FieldStore.FieldFile))]
     internal partial class StoreJson : JsonSerializerContext
     {
     }

@@ -12,6 +12,13 @@
   <!-- Android 12+: talk to already paired devices. Scanning is not needed (pair in system settings). -->
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
+  <!-- Keep the link, NTRIP and guidance running with the screen off or another app in front. -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <!-- Android 13+: the notification of the running connection. -->
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
   <!-- NTRIP caster. -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

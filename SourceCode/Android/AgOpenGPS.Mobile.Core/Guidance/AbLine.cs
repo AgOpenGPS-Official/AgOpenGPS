@@ -34,6 +34,8 @@ namespace AgOpenGPS.Mobile.Core.Guidance
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N");
         public string Name { get; set; } = "";
+        /// <summary>The field this line belongs to, or null for a line without a field.</summary>
+        public string FieldId { get; set; }
         public LineKind Kind { get; set; } = LineKind.Straight;
         public double LatitudeA { get; set; }
         public double LongitudeA { get; set; }
@@ -98,14 +100,9 @@ namespace AgOpenGPS.Mobile.Core.Guidance
 
             for (int i = 0; i < pts.Count; i++)
             {
-                // Normal to the right, averaged over the segments meeting at this point.
-                double ne = 0, nn = 0;
-                if (i > 0) AddRightNormal(pts[i - 1], pts[i], ref ne, ref nn);
-                if (i < pts.Count - 1) AddRightNormal(pts[i], pts[i + 1], ref ne, ref nn);
-                double l = Math.Sqrt(ne * ne + nn * nn);
-                if (l < 1e-9) continue;
-                ne /= l; nn /= l;
-                result.Add(new GeoPoint(pts[i].Northing + nn * offset, pts[i].Easting + ne * offset));
+                GeoPoint? prev = i > 0 ? pts[i - 1] : (GeoPoint?)null;
+                GeoPoint? next = i < pts.Count - 1 ? pts[i + 1] : (GeoPoint?)null;
+                result.Add(Geometry.OffsetPoint(pts[i], prev, next, offset));
             }
 
             if (result.Count >= 2 && extend > 0)
@@ -114,16 +111,6 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 result.Add(Extend(result[result.Count - 2], result[result.Count - 1], extend));
             }
             return result;
-        }
-
-        private static void AddRightNormal(GeoPoint a, GeoPoint b, ref double ne, ref double nn)
-        {
-            double de = b.Easting - a.Easting, dn = b.Northing - a.Northing;
-            double l = Math.Sqrt(de * de + dn * dn);
-            if (l < 1e-9) return;
-            // Right of the direction (de, dn) is (dn, -de) as (east, north).
-            ne += dn / l;
-            nn += -de / l;
         }
 
         private static GeoPoint Extend(GeoPoint from, GeoPoint to, double by)

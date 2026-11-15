@@ -94,14 +94,33 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
   `12 cm ▶` steer right. Green under 5 cm, yellow under 15 cm, red above. Below it: line name,
   pass number, line heading and heading error.
 
+### Fields and boundaries
+
+A field has a name, an outer boundary and its own A-B lines. Everything is saved on the tablet
+and stays after closing the app or restarting the tablet.
+
+1. **Field: ...** opens the field list: *New field* (asks for a name), or pick a field to
+   *Open*, *Rename* or *Delete* it (deleting also deletes its boundary and lines). *Close field*
+   drives without a field.
+2. **Record boundary**: choose what follows the field edge while you drive round with the
+   implement up:
+   - *Antenna path*: the antenna is driven along the edge,
+   - *Left / right end of implement*: the boundary is half the working width to that side
+     (e.g. drive counter-clockwise with the right end of the implement on the edge).
+3. Drive all the way round and press **Finish boundary** within 30 m of where you started. The
+   boundary is closed, smoothed and saved, and the area is shown in hectares.
+
+While driving, the boundary is drawn in green. Within half the working width plus 3 m of the edge
+an orange **Field edge 2.4 m** warning shows, outside it a red **OUTSIDE FIELD**.
+
 ### Recording a line
 
 1. Choose **Straight** (A-B line) or **Curve** (follows the path you drive, for fields without a
    straight edge).
 2. Drive to the start and press **A**.
 3. Drive along the edge (straight, or following the curve) and press **B**, at least 5 m from A.
-   The line is saved as *AB 1*, *AB 2*, ... and used straight away.
-4. **Lines...** lists the saved lines: use, rename or delete one, or *No line*.
+   The line is saved in the open field as *AB 1*, *AB 2*, ... and used straight away.
+4. **Lines...** lists the open field's lines: use, rename or delete one, or *No line*.
 
 The recorded line is pass 0; passes ±1, ±2, ... are one working width apart on either side. Both
 ends of a line continue straight, so guidance keeps working past A and B. A curve is recorded
@@ -110,11 +129,15 @@ every metre while driving and smoothed (points within 3 cm of a straight run are
 Guidance is for the **antenna** position: mount the antenna above the middle of the implement's
 working path, or expect a constant offset. Antenna and implement offsets are on the list below.
 
-### Connection
+### Connection and running in the background
+
+While connected, the app keeps running in the background: with the screen off, with another app
+in front, or after Back. A notification shows the fix, NTRIP state and the distance off the line;
+tap it to return to the app, or press **Disconnect** in it. Allow notifications when Android asks
+(Android 13+), otherwise the connection still runs but the notification is hidden.
 
 The link is reconnected automatically when the receiver is switched off and on again, goes out of
-range, or stops sending for 10 s. The screen stays on while the app is open. Leaving the app with
-Back disconnects.
+range, or stops sending for 10 s. The screen stays on while the app is in front.
 
 **Serial speed:** Bluetooth SPP modules have a fixed baud rate to the receiver (HC-05 default
 9600). For RTK at 5–10 Hz set the module and the receiver UART to 115200 or higher. Corrections
@@ -124,7 +147,7 @@ are sent at up to about 5 KB/s, like AgIO's serial output.
 
 - Antenna position (forward/back and sideways offset from the pivot) and implement offset.
 - Nudging a line sideways, snapping to the current position.
-- Fields and boundaries, coverage map, headlands, U-turns, section control.
+- Inner boundaries (obstacles), coverage map, headlands, U-turns, section control.
+- Import and export of fields (AgOpenGPS field folders, KML / shapefiles).
 - Sending AutoSteer / machine PGNs to modules (UDP over Wi-Fi or over the same Bluetooth link).
-- Running as a foreground service, so the link keeps going when the screen is off or another app is in front.
 - Release signing, USB-OTG serial receivers, BLE receivers.

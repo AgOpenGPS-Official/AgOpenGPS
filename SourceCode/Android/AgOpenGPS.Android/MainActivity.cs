@@ -17,10 +17,11 @@ using AgOpenGPS.Mobile.Core.Guidance;
 namespace AgOpenGPS.Droid
 {
     /// <summary>
-    /// Driving screen: fix status, the guidance view with A-B passes, distance off the line, and
-    /// the buttons to record (A / B), pick lines and open the settings.
+    /// Driving screen: fix status, the guidance view with passes and field boundary, distance off
+    /// the line, edge warning, and buttons for fields, boundary recording, A / B and lines.
     /// </summary>
-    [Activity(Label = "@string/app_name", MainLauncher = true, Theme = "@android:style/Theme.Material.Light.NoActionBar",
+    [Activity(Label = "@string/app_name", MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
+        Theme = "@android:style/Theme.Material.Light.NoActionBar",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout
             | ConfigChanges.SmallestScreenSize | ConfigChanges.KeyboardHidden | ConfigChanges.Keyboard)]
     public class MainActivity : Activity
@@ -33,8 +34,8 @@ namespace AgOpenGPS.Droid
         private bool _autoConnectTried;
         private LineKind _kind = LineKind.Straight;
 
-        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _recordInfo;
-        private Button _connect, _straight, _curve, _a, _b, _cancel;
+        private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _recordInfo;
+        private Button _connect, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
         private GuidanceView _view;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -45,8 +46,12 @@ namespace AgOpenGPS.Droid
             _ui = new Handler(Looper.MainLooper);
             SetContentView(BuildLayout());
 
-            if (!HasBluetoothPermission()) RequestBluetoothPermission();
-            else TryAutoConnect();
+            if (!HasBluetoothPermission()) RequestPermissionsNeeded();
+            else
+            {
+                RequestPermissionsNeeded(); // notifications, if not granted yet
+                TryAutoConnect();
+            }
         }
 
         protected override void OnResume()
@@ -62,12 +67,8 @@ namespace AgOpenGPS.Droid
             base.OnPause();
         }
 
-        protected override void OnDestroy()
-        {
-            // Leaving the app with Back ends the connection; rotating does not recreate this screen.
-            if (IsFinishing) Task.Run(AppState.Disconnect);
-            base.OnDestroy();
-        }
+        // The connection is not stopped when this screen closes: it keeps running in the
+        // background (GnssService) until Disconnect, here or in the notification.
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
@@ -83,10 +84,14 @@ namespace AgOpenGPS.Droid
             return CheckSelfPermission(Manifest.Permission.BluetoothConnect) == Permission.Granted;
         }
 
-        private void RequestBluetoothPermission()
+        private void RequestPermissionsNeeded()
         {
-            if (OperatingSystem.IsAndroidVersionAtLeast(31))
-                RequestPermissions(new[] { Manifest.Permission.BluetoothConnect }, PermissionRequest);
+            var wanted = new List<string>();
+            if (OperatingSystem.IsAndroidVersionAtLeast(31) && CheckSelfPermission(Manifest.Permission.BluetoothConnect) != Permission.Granted)
+                wanted.Add(Manifest.Permission.BluetoothConnect);
+            if (OperatingSystem.IsAndroidVersionAtLeast(33) && CheckSelfPermission(Manifest.Permission.PostNotifications) != Permission.Granted)
+                wanted.Add(Manifest.Permission.PostNotifications);
+            if (wanted.Count > 0) RequestPermissions(wanted.ToArray(), PermissionRequest);
         }
 
         private void TryAutoConnect()
@@ -96,17 +101,20 @@ namespace AgOpenGPS.Droid
             if (AppState.Settings.AutoConnect && !string.IsNullOrEmpty(AppState.Settings.DeviceAddress)) Connect();
         }
 
-        // ---------------------------------------------------------------- actions
+        private void Toast_(string text, bool longer = false)
+            => Toast.MakeText(this, text, longer ? ToastLength.Long : ToastLength.Short).Show();
+
+        // ---------------------------------------------------------------- connection
 
         private void Connect()
         {
             if (!HasBluetoothPermission())
             {
-                RequestBluetoothPermission();
+                RequestPermissionsNeeded();
                 return;
             }
             string message = AppState.Connect();
-            if (message != null) Toast.MakeText(this, message, ToastLength.Long).Show();
+            if (message != null) Toast_(message, true);
             if (!AppState.IsConnected && message != null && message.StartsWith("Pick", StringComparison.Ordinal))
                 StartActivity(new Intent(this, typeof(SettingsActivity)));
         }
@@ -122,36 +130,160 @@ namespace AgOpenGPS.Droid
             Task.Run(AppState.Disconnect).ContinueWith(_ => RunOnUiThread(() => _connect.Enabled = true));
         }
 
+        // ---------------------------------------------------------------- fields
+
+        private void ShowFields()
+        {
+            IReadOnlyList<Field> fields = AppState.Fields.Fields;
+            Field open = AppState.Fields.Active;
+            var items = new string[fields.Count];
+            for (int i = 0; i < fields.Count; i++)
+            {
+                Field f = fields[i];
+                items[i] = (open != null && f.Id == open.Id ? "▶ " : "") + f.Name + "   "
+                    + (f.HasBoundary ? f.AreaHectares.ToString("0.00", Inv) + " ha" : "no boundary")
+                    + ", " + AppState.Lines.LinesFor(f.Id).Count + " lines";
+            }
+
+            var b = new AlertDialog.Builder(this)
+                .SetTitle(fields.Count == 0 ? "No fields yet" : "Fields")
+                .SetPositiveButton("New field", (s, e) => NewField(null))
+                .SetNegativeButton("Close", (s, e) => { });
+            if (fields.Count > 0) b.SetItems(items, (s, e) => ShowFieldActions(fields[e.Which]));
+            if (open != null) b.SetNeutralButton("Close field", (s, e) => AppState.OpenField(null));
+            b.Show();
+        }
+
+        private void ShowFieldActions(Field field)
+        {
+            new AlertDialog.Builder(this)
+                .SetTitle(field.Name)
+                .SetItems(new[] { "Open", "Rename", "Delete" }, (s, e) =>
+                {
+                    switch (e.Which)
+                    {
+                        case 0: AppState.OpenField(field); break;
+                        case 1:
+                            AskText("Rename field", field.Name, name =>
+                            {
+                                AppState.Fields.Rename(field.Id, name);
+                                AppState.RefreshField();
+                            });
+                            break;
+                        case 2:
+                            Confirm("Delete " + field.Name + "?", "Its boundary and its " + AppState.Lines.LinesFor(field.Id).Count
+                                + " lines are deleted too.", "Delete", () => AppState.DeleteField(field));
+                            break;
+                    }
+                })
+                .Show();
+        }
+
+        /// <summary>Asks for a name, creates and opens the field, then runs <paramref name="then"/>.</summary>
+        private void NewField(Action then)
+        {
+            AskText("New field", AppState.Fields.NextName(), name =>
+            {
+                Field f = AppState.Fields.Create(name);
+                AppState.OpenField(f);
+                if (then != null) then();
+                else Toast_("Field '" + f.Name + "' created. Record its boundary or an A-B line.", true);
+            });
+        }
+
+        // ---------------------------------------------------------------- boundary
+
+        private void OnBoundaryClicked()
+        {
+            if (AppState.Guidance.IsRecordingBoundary)
+            {
+                FinishBoundary();
+                return;
+            }
+            Field field = AppState.Fields.Active;
+            if (field == null)
+            {
+                NewField(OnBoundaryClicked);
+                return;
+            }
+            if (field.HasBoundary)
+            {
+                Confirm("Replace the boundary of " + field.Name + "?", null, "Record new", ChooseBoundarySide);
+                return;
+            }
+            ChooseBoundarySide();
+        }
+
+        private void ChooseBoundarySide()
+        {
+            double half = AppState.Settings.WorkingWidthMeters / 2;
+            string[] items =
+            {
+                "Antenna path",
+                string.Format(Inv, "Left end of implement ({0:0.0} m left)", half),
+                string.Format(Inv, "Right end of implement ({0:0.0} m right)", half),
+            };
+            new AlertDialog.Builder(this)
+                .SetTitle("What follows the field edge?")
+                .SetItems(items, (s, e) =>
+                {
+                    var side = (BoundarySide)e.Which;
+                    if (!AppState.Guidance.StartBoundary(side))
+                    {
+                        Toast_("No position yet");
+                        return;
+                    }
+                    Toast_("Drive round the field with the implement up, then press Finish near where you started", true);
+                })
+                .Show();
+        }
+
+        private void FinishBoundary()
+        {
+            Field field = AppState.Fields.Active;
+            List<TrackPoint> boundary = AppState.Guidance.FinishBoundary(AppState.Settings.WorkingWidthMeters / 2, out double area, out string error);
+            if (boundary == null)
+            {
+                Toast_(error, true);
+                return;
+            }
+            if (field == null)
+            {
+                Toast_("The field was closed while recording", true);
+                return;
+            }
+            AppState.Fields.SetBoundary(field.Id, boundary);
+            AppState.RefreshField();
+            Toast_(string.Format(Inv, "Boundary of {0} saved: {1:0.00} ha", field.Name, area / 10000), true);
+        }
+
+        // ---------------------------------------------------------------- lines
+
         private void OnAClicked()
         {
             if (!AppState.Guidance.SetA(_kind))
             {
-                Toast.MakeText(this, "No position yet", ToastLength.Short).Show();
+                Toast_("No position yet");
                 return;
             }
-            Toast.MakeText(this, _kind == LineKind.Curve
+            Toast_(_kind == LineKind.Curve
                 ? "A set. Drive along the edge, then press B"
-                : "A set. Drive straight along the edge, then press B", ToastLength.Long).Show();
+                : "A set. Drive straight along the edge, then press B", true);
         }
 
         private void OnBClicked()
         {
-            string name = AppState.Lines.NextName();
-            AbLine line = AppState.Guidance.SetB(name, out string error);
+            string fieldId = AppState.Fields.Active?.Id;
+            AbLine line = AppState.Guidance.SetB(AppState.Lines.NextName(fieldId), out string error);
             if (line == null)
             {
-                Toast.MakeText(this, error, ToastLength.Long).Show();
+                Toast_(error, true);
                 return;
             }
+            line.FieldId = fieldId;
             AppState.Lines.Add(line, makeActive: true);
-            AppState.Guidance.SetActiveLine(line);
-            Toast.MakeText(this, string.Format(Inv, "Saved {0} ({1:0} m). Rename it under Lines.", line.Name, line.LengthMeters),
-                ToastLength.Long).Show();
-        }
-
-        private void OnCancelClicked()
-        {
-            AppState.Guidance.CancelAb();
+            AppState.UseLine(line);
+            Toast_(string.Format(Inv, "Saved {0} ({1:0} m). Rename it under Lines.", line.Name, line.LengthMeters), true);
         }
 
         private void SetKind(LineKind kind)
@@ -163,11 +295,13 @@ namespace AgOpenGPS.Droid
 
         private void ShowLines()
         {
-            IReadOnlyList<AbLine> lines = AppState.Lines.Lines;
-            AbLine active = AppState.Lines.Active;
+            Field field = AppState.Fields.Active;
+            IReadOnlyList<AbLine> lines = AppState.Lines.LinesFor(field?.Id);
+            AbLine active = AppState.Guidance.ActiveLine;
+            string where = field == null ? "without a field" : "in " + field.Name;
             if (lines.Count == 0)
             {
-                Toast.MakeText(this, "No lines yet: press A, drive, press B", ToastLength.Long).Show();
+                Toast_("No lines " + where + " yet: press A, drive, press B", true);
                 return;
             }
 
@@ -181,9 +315,9 @@ namespace AgOpenGPS.Droid
             }
 
             new AlertDialog.Builder(this)
-                .SetTitle("Lines")
+                .SetTitle("Lines " + where)
                 .SetItems(items, (s, e) => ShowLineActions(lines[e.Which]))
-                .SetNeutralButton("No line", (s, e) => Activate(null))
+                .SetNeutralButton("No line", (s, e) => AppState.UseLine(null))
                 .SetNegativeButton("Close", (s, e) => { })
                 .Show();
         }
@@ -196,23 +330,32 @@ namespace AgOpenGPS.Droid
                 {
                     switch (e.Which)
                     {
-                        case 0: Activate(line); break;
-                        case 1: Rename(line); break;
-                        case 2: ConfirmDelete(line); break;
+                        case 0: AppState.UseLine(line); break;
+                        case 1:
+                            AskText("Rename line", line.Name, name =>
+                            {
+                                AppState.Lines.Rename(line.Id, name);
+                                if (AppState.Guidance.ActiveLine?.Id == line.Id) AppState.UseLine(AppState.Lines.Active);
+                            });
+                            break;
+                        case 2:
+                            Confirm("Delete " + line.Name + "?", null, "Delete", () =>
+                            {
+                                bool wasActive = AppState.Guidance.ActiveLine?.Id == line.Id;
+                                AppState.Lines.Delete(line.Id);
+                                if (wasActive) AppState.UseLine(null);
+                            });
+                            break;
                     }
                 })
                 .Show();
         }
 
-        private void Activate(AbLine line)
-        {
-            AppState.Lines.SetActive(line?.Id);
-            AppState.Guidance.SetActiveLine(line == null ? null : AppState.Lines.Active);
-        }
+        // ---------------------------------------------------------------- dialogs
 
-        private void Rename(AbLine line)
+        private void AskText(string title, string initial, Action<string> ok)
         {
-            var input = new EditText(this) { Text = line.Name };
+            var input = new EditText(this) { Text = initial };
             input.SetSingleLine(true);
             input.SetSelectAllOnFocus(true);
             var frame = new FrameLayout(this);
@@ -220,29 +363,25 @@ namespace AgOpenGPS.Droid
             frame.AddView(input);
 
             new AlertDialog.Builder(this)
-                .SetTitle("Rename line")
+                .SetTitle(title)
                 .SetView(frame)
                 .SetPositiveButton("OK", (s, e) =>
                 {
-                    AppState.Lines.Rename(line.Id, input.Text);
-                    if (AppState.Guidance.ActiveLine?.Id == line.Id) AppState.Guidance.SetActiveLine(AppState.Lines.Active);
+                    string text = input.Text?.Trim();
+                    ok(string.IsNullOrEmpty(text) ? initial : text);
                 })
                 .SetNegativeButton("Cancel", (s, e) => { })
                 .Show();
         }
 
-        private void ConfirmDelete(AbLine line)
+        private void Confirm(string title, string message, string yes, Action action)
         {
-            new AlertDialog.Builder(this)
-                .SetTitle("Delete " + line.Name + "?")
-                .SetPositiveButton("Delete", (s, e) =>
-                {
-                    bool wasActive = AppState.Guidance.ActiveLine?.Id == line.Id;
-                    AppState.Lines.Delete(line.Id);
-                    if (wasActive) AppState.Guidance.SetActiveLine(null);
-                })
-                .SetNegativeButton("Cancel", (s, e) => { })
-                .Show();
+            var b = new AlertDialog.Builder(this)
+                .SetTitle(title)
+                .SetPositiveButton(yes, (s, e) => action())
+                .SetNegativeButton("Cancel", (s, e) => { });
+            if (message != null) b.SetMessage(message);
+            b.Show();
         }
 
         // ---------------------------------------------------------------- refresh, 10 Hz
@@ -252,6 +391,16 @@ namespace AgOpenGPS.Droid
             if (!_refreshing) return;
             try { Render(); }
             finally { _ui.PostDelayed(Refresh, 100); }
+        }
+
+        /// <summary>"◀ 12 cm" = right of the line, steer left; "12 cm ▶" = steer right.</summary>
+        public static string FormatOffset(double meters)
+        {
+            double cm = meters * 100.0;
+            double abs = Math.Abs(cm);
+            if (abs < 2) return "▲ on line";
+            string amount = abs < 100 ? abs.ToString("0", Inv) + " cm" : (abs / 100).ToString("0.00", Inv) + " m";
+            return cm > 0 ? "◀ " + amount : amount + " ▶";
         }
 
         private void Render()
@@ -271,25 +420,17 @@ namespace AgOpenGPS.Droid
             else if (!fresh) SetBadge("No position", "#757575");
             else SetBadge(GnssFix.FixQualityName(fix.FixQuality), Ui.FixColor(fix.FixQuality));
 
-            if (fresh)
-            {
-                _fixInfo.Text = string.Format(Inv, "{0} sats   HDOP {1}   {2:0.0} Hz   {3} km/h   {4}",
-                    fix.Satellites, Num(fix.Hdop, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link));
-            }
-            else
-            {
-                _fixInfo.Text = link == null ? "Press Connect" : link.Message;
-            }
+            _fixInfo.Text = fresh
+                ? string.Format(Inv, "{0} sats   HDOP {1}   {2:0.0} Hz   {3} km/h   {4}",
+                    fix.Satellites, Num(fix.Hdop, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link))
+                : link == null ? "Press Connect" : link.Message;
 
             // Distance off the line.
             AbGuidanceResult r = g.Result;
             if (r != null && fresh)
             {
-                double cm = r.CrossTrackMeters * 100.0;
-                double abs = Math.Abs(cm);
-                string amount = abs < 100 ? abs.ToString("0", Inv) + " cm" : (abs / 100).ToString("0.00", Inv) + " m";
-                // Positive = right of the line: steer left.
-                _xte.Text = abs < 2 ? "▲ on line" : cm > 0 ? "◀ " + amount : amount + " ▶";
+                double abs = Math.Abs(r.CrossTrackMeters * 100.0);
+                _xte.Text = FormatOffset(r.CrossTrackMeters);
                 _xte.SetTextColor(Color.ParseColor(abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
                 _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}",
                     g.ActiveLine.Name, r.Pass, r.TravelLineHeading,
@@ -298,17 +439,47 @@ namespace AgOpenGPS.Droid
             else
             {
                 _xte.Text = "";
-                _lineInfo.Text = g.ActiveLine != null ? g.ActiveLine.Name : "No line selected";
+                _lineInfo.Text = g.ActiveLine != null ? g.ActiveLine.Name : "";
             }
 
-            // Recording state.
+            // Field edge: warn within half the working width plus 3 m.
+            if (fresh && g.InsideField == false)
+            {
+                _edge.Text = "OUTSIDE FIELD";
+                _edge.SetBackgroundColor(Color.ParseColor("#C62828"));
+                _edge.Visibility = ViewStates.Visible;
+            }
+            else if (fresh && g.InsideField == true && g.DistanceToBoundary < g.PassWidth / 2 + 3)
+            {
+                _edge.Text = string.Format(Inv, "Field edge {0:0.0} m", g.DistanceToBoundary);
+                _edge.SetBackgroundColor(Color.ParseColor("#EF6C00"));
+                _edge.Visibility = ViewStates.Visible;
+            }
+            else _edge.Visibility = ViewStates.Gone;
+
+            // Field and boundary buttons.
+            Field field = g.ActiveField;
+            _field.Text = field == null ? "Field: none" : "Field: " + field.Name
+                + (field.HasBoundary ? "  " + field.AreaHectares.ToString("0.0", Inv) + " ha" : "");
+            _boundary.Text = g.RecordingBoundary ? "Finish boundary" : field != null && field.HasBoundary ? "New boundary" : "Record boundary";
+            _cancelBoundary.Visibility = g.RecordingBoundary ? ViewStates.Visible : ViewStates.Gone;
+
+            // Line recording state.
             _cancel.Visibility = g.Recording ? ViewStates.Visible : ViewStates.Gone;
             _b.Enabled = g.Recording;
             _a.Text = g.Recording ? "Restart A" : "A";
-            _recordInfo.Text = g.Recording
-                ? string.Format(Inv, "Recording {0}: {1:0} m from A", g.RecordingKind == LineKind.Curve ? "curve" : "line",
-                    double.IsNaN(g.RecordedMeters) ? 0 : g.RecordedMeters)
-                : "";
+
+            if (g.RecordingBoundary)
+            {
+                _recordInfo.Text = string.Format(Inv, "Boundary: {0:0} m driven, {1:0} m to the start",
+                    g.BoundaryRecordedMeters, double.IsNaN(g.BoundaryGapMeters) ? 0 : g.BoundaryGapMeters);
+            }
+            else if (g.Recording)
+            {
+                _recordInfo.Text = string.Format(Inv, "Recording {0}: {1:0} m from A", g.RecordingKind == LineKind.Curve ? "curve" : "line",
+                    double.IsNaN(g.RecordedMeters) ? 0 : g.RecordedMeters);
+            }
+            else _recordInfo.Text = "";
         }
 
         private static string NtripText(LinkSnapshot link)
@@ -329,6 +500,14 @@ namespace AgOpenGPS.Droid
         // ---------------------------------------------------------------- layout
 
         private int Dp(float v) => Ui.Dp(this, v);
+
+        private TextView Label(string text)
+        {
+            TextView t = Ui.Text(this, 14, false, "#B0BEC5");
+            t.Text = text;
+            t.SetPadding(0, Dp(10), 0, 0);
+            return t;
+        }
 
         private View BuildLayout()
         {
@@ -356,7 +535,7 @@ namespace AgOpenGPS.Droid
 
             var body = new LinearLayout(this) { Orientation = Orientation.Horizontal };
 
-            // Guidance view with the distance overlay.
+            // Guidance view with the distance and edge overlay.
             var frame = new FrameLayout(this);
             _view = new GuidanceView(this);
             frame.AddView(_view);
@@ -370,15 +549,27 @@ namespace AgOpenGPS.Droid
             _lineInfo.Gravity = GravityFlags.Center;
             _lineInfo.SetShadowLayer(4, 0, 0, Color.Black);
             overlay.AddView(_lineInfo);
+            _edge = Ui.Text(this, 24, true, "#FFFFFF");
+            _edge.SetPadding(Dp(16), Dp(6), Dp(16), Dp(6));
+            _edge.Visibility = ViewStates.Gone;
+            overlay.AddView(_edge, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent));
             frame.AddView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Top));
             body.AddView(frame, Ui.Weight(1, ViewGroup.LayoutParams.MatchParent));
 
-            // Right panel: line type, A, B, cancel, lines.
+            // Right panel.
             var panel = new LinearLayout(this) { Orientation = Orientation.Vertical };
-            panel.SetPadding(Dp(8), Dp(8), Dp(8), Dp(8));
-            TextView typeLabel = Ui.Text(this, 14, false, "#B0BEC5");
-            typeLabel.Text = "New line";
-            panel.AddView(typeLabel);
+            panel.SetPadding(Dp(8), 0, Dp(8), Dp(8));
+
+            panel.AddView(Label("Field"));
+            _field = Ui.Button(this, "Field: none", ShowFields, 52);
+            _field.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 16);
+            panel.AddView(_field);
+            _boundary = Ui.Button(this, "Record boundary", OnBoundaryClicked, 52);
+            panel.AddView(_boundary);
+            _cancelBoundary = Ui.Button(this, "Cancel boundary", () => AppState.Guidance.CancelBoundary(), 44);
+            panel.AddView(_cancelBoundary);
+
+            panel.AddView(Label("New line"));
             var kinds = new LinearLayout(this) { Orientation = Orientation.Horizontal };
             _straight = Ui.Button(this, "Straight", () => SetKind(LineKind.Straight), 48);
             _curve = Ui.Button(this, "Curve", () => SetKind(LineKind.Curve), 48);
@@ -387,23 +578,22 @@ namespace AgOpenGPS.Droid
             panel.AddView(kinds);
 
             var ab = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            _a = Ui.Button(this, "A", OnAClicked, 88);
-            _b = Ui.Button(this, "B", OnBClicked, 88);
+            _a = Ui.Button(this, "A", OnAClicked, 80);
+            _b = Ui.Button(this, "B", OnBClicked, 80);
             _a.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 28);
             _b.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 28);
             ab.AddView(_a, Ui.Weight(1));
             ab.AddView(_b, Ui.Weight(1));
             panel.AddView(ab);
+            _cancel = Ui.Button(this, "Cancel line", () => AppState.Guidance.CancelAb(), 44);
+            panel.AddView(_cancel);
             _recordInfo = Ui.Text(this, 14, false, "#FFAB91");
             panel.AddView(_recordInfo);
-            _cancel = Ui.Button(this, "Cancel recording", OnCancelClicked, 48);
-            panel.AddView(_cancel);
+            panel.AddView(Ui.Button(this, "Lines...", ShowLines, 56));
 
-            var spacer = new View(this);
-            panel.AddView(spacer, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 0, 1));
-            panel.AddView(Ui.Button(this, "Lines...", ShowLines, 64));
-
-            body.AddView(panel, new LinearLayout.LayoutParams(Dp(240), ViewGroup.LayoutParams.MatchParent));
+            var scroll = new ScrollView(this);
+            scroll.AddView(panel);
+            body.AddView(scroll, new LinearLayout.LayoutParams(Dp(250), ViewGroup.LayoutParams.MatchParent));
             root.AddView(body, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 0, 1));
 
             SetKind(LineKind.Straight);
