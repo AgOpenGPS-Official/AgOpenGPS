@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <!-- Android 8.0: covers practically every tablet still in use. -->
+    <SupportedOSPlatformVersion>26</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AgOpenGPS.Droid</RootNamespace>
+    <ApplicationId>org.agopengps.android</ApplicationId>
+    <ApplicationTitle>AgOpenGPS</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>0.1.0</ApplicationDisplayVersion>
+    <!-- One APK for ARM tablets (most) and x86_64 (Chromebooks, emulators). -->
+    <RuntimeIdentifiers>android-arm64;android-arm;android-x64</RuntimeIdentifiers>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AgOpenGPS.Mobile.Core\AgOpenGPS.Mobile.Core.csproj" />
+  </ItemGroup>
+
+</Project>

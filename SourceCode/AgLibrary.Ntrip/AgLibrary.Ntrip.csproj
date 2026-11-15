@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- netstandard2.0 lets the Android app (SourceCode/Android) reuse the NTRIP client. -->
+    <!-- Clear the single net48 target from Directory.Build.props so the list below applies. -->
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <LangVersion>latest</LangVersion>
     <RootNamespace>AgLibrary.Ntrip</RootNamespace>

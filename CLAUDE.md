@@ -28,7 +28,8 @@ SourceCode/
 ├── GPS_Out/                # NMEA serial output
 ├── AgDiag/                 # Diagnostics
 ├── ModSim/                 # Module simulator
-└── Keypad/                 # Hardware keypad
+├── Keypad/                 # Hardware keypad
+└── Android/                # Android tablet app (Bluetooth RTK MVP), .NET 10 - see Android/README.md
 ```
 
 ## User Preferences
@@ -42,4 +43,10 @@ SourceCode/
 
 ```bash
 msbuild SourceCode/AgOpenGPS.sln /p:Configuration=Release
+```
+
+Android app (separate solution, own `global.json` for .NET 10):
+
+```bash
+cd SourceCode/Android && dotnet test AgOpenGPS.Mobile.Core.Tests && dotnet publish AgOpenGPS.Android -c Release
 ```

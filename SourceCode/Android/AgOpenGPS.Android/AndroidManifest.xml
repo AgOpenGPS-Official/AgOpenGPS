@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application android:allowBackup="true" android:icon="@mipmap/appicon" android:label="@string/app_name"
+               android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true">
+  </application>
+
+  <!-- Bluetooth Classic (SPP) to the RTK receiver / Raspberry Pi. -->
+  <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+  <!-- Android 11 and older. -->
+  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+  <!-- Android 12+: talk to already paired devices. Scanning is not needed (pair in system settings). -->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+  <!-- NTRIP caster. -->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>

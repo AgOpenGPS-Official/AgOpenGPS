@@ -1,0 +1,9 @@
+<Project>
+  <!-- Replaces SourceCode/Directory.Build.props for the Android projects, which do not target net48. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+</Project>
