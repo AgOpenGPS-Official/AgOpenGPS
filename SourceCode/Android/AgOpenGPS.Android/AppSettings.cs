@@ -38,6 +38,7 @@ namespace AgOpenGPS.Droid
             SimLongitude = _prefs.GetString("sim.lon", "");
             ShowMap = _prefs.GetBoolean("map.show", true);
             MapUrl = _prefs.GetString("map.url", AgOpenGPS.Mobile.Core.Guidance.MapTiles.DefaultUrl);
+            MapMaxZoom = _prefs.GetString("map.maxZoom", AgOpenGPS.Mobile.Core.Guidance.MapTiles.MaxZoom.ToString(Inv));
             MapAttribution = _prefs.GetString("map.attribution", AgOpenGPS.Mobile.Core.Guidance.MapTiles.DefaultAttribution);
             ShowCoverage = _prefs.GetBoolean("coverage.show", true);
         }
@@ -56,7 +57,17 @@ namespace AgOpenGPS.Droid
         /// <summary>Simulator start position; empty = the open field, or the last position.</summary>
         public string SimLatitude, SimLongitude;
         public bool ShowMap;
-        public string MapUrl, MapAttribution;
+        public string MapUrl, MapAttribution, MapMaxZoom;
+
+        /// <summary>Most detailed map zoom to request, 10 to 22.</summary>
+        public int MapMaxZoomLevel
+        {
+            get
+            {
+                int.TryParse(MapMaxZoom, NumberStyles.Integer, Inv, out int z);
+                return z < 10 ? AgOpenGPS.Mobile.Core.Guidance.MapTiles.MaxZoom : System.Math.Min(AgOpenGPS.Mobile.Core.Guidance.MapTiles.AbsoluteMaxZoom, z);
+            }
+        }
 
         /// <summary>Record the worked area (Work button and statistics).</summary>
         public bool RecordCoverage;
@@ -138,6 +149,7 @@ namespace AgOpenGPS.Droid
                 .PutBoolean("map.show", ShowMap)
                 .PutString("map.url", MapUrl)
                 .PutString("map.attribution", MapAttribution)
+                .PutString("map.maxZoom", MapMaxZoom)
                 .Apply();
         }
 

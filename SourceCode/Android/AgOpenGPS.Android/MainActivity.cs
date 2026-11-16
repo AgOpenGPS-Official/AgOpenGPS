@@ -508,6 +508,7 @@ namespace AgOpenGPS.Droid
             AppState.Map.UrlTemplate = string.IsNullOrWhiteSpace(settings.MapUrl) ? MapTiles.DefaultUrl : settings.MapUrl;
             _view.Map = settings.ShowMap ? AppState.Map : null;
             _view.MapAttribution = settings.MapAttribution;
+            _view.MapMaxZoom = settings.MapMaxZoomLevel;
             RenderSimulator();
 
             // "Follow" stands out while the map was moved by hand.

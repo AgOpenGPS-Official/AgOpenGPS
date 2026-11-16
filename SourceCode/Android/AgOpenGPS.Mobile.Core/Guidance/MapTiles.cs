@@ -29,7 +29,10 @@ namespace AgOpenGPS.Mobile.Core.Guidance
     {
         public const int TileSize = 256;
         public const int MinZoom = 1;
+        /// <summary>Default most detailed level. Sources go to 19-22 in places; rural areas often stop at 17-18.</summary>
         public const int MaxZoom = 19;
+        /// <summary>Highest level the app will ever ask for.</summary>
+        public const int AbsoluteMaxZoom = 22;
 
         /// <summary>Esri World Imagery: free with attribution (check the terms for commercial use).</summary>
         public const string DefaultUrl = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
@@ -80,6 +83,19 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 for (int x = Math.Max(0, (int)Math.Floor(x0)); x <= Math.Min(max, (int)Math.Floor(x1)); x++)
                     list.Add(new TileId(zoom, x, y));
             return list;
+        }
+
+        /// <summary>
+        /// The tile <paramref name="up"/> levels coarser that contains <paramref name="t"/>, and the
+        /// part of it (in pixels of a 256 px tile) that covers <paramref name="t"/>.
+        /// </summary>
+        public static TileId Parent(TileId t, int up, out int srcX, out int srcY, out int srcSize)
+        {
+            var parent = new TileId(t.Z - up, t.X >> up, t.Y >> up);
+            srcSize = TileSize >> up;
+            srcX = (t.X - (parent.X << up)) * srcSize;
+            srcY = (t.Y - (parent.Y << up)) * srcSize;
+            return parent;
         }
 
         /// <summary>Fills {z}, {x}, {y} (and {s} with a, b or c) in a tile URL template.</summary>

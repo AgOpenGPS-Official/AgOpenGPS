@@ -29,6 +29,8 @@ namespace AgOpenGPS.Droid
         /// <summary>Satellite map source, or null for no map.</summary>
         public MapTileProvider Map { get; set; }
         public string MapAttribution { get; set; } = "";
+        /// <summary>Most detailed zoom level requested from the map source; closer views enlarge it.</summary>
+        public int MapMaxZoom { get; set; } = MapTiles.MaxZoom;
         private readonly Paint _mapPaint = new Paint { FilterBitmap = true };
         private readonly Paint _scaleText = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#CFD8DC") };
         private readonly Paint _attribution = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#CFD8DC"), TextAlign = Paint.Align.Right };
@@ -355,7 +357,7 @@ namespace AgOpenGPS.Droid
             if (map == null || s.DrawPlane == null) return;
 
             s.DrawPlane.ToWgs84(v, out double lat, out double lon); // the camera centre
-            int zoom = MapTiles.ZoomFor(1.0 / scale, lat);
+            int zoom = MapTiles.ZoomFor(1.0 / scale, lat, MapMaxZoom);
             double radius = Math.Sqrt((double)Width * Width + (double)Height * Height) / scale * 0.75;
             double dLat = radius / 111132.0, dLon = radius / (111320.0 * Math.Cos(lat * Math.PI / 180.0));
             List<TileId> tiles = MapTiles.TilesFor(lat - dLat, lon - dLon, lat + dLat, lon + dLon, zoom);
@@ -366,7 +368,19 @@ namespace AgOpenGPS.Droid
             canvas.Rotate((float)-heading);
             foreach (TileId t in tiles)
             {
+                // The tile itself, or (missing at this zoom, or still loading) the matching part of a
+                // coarser one, enlarged: blurry is better than a hole.
                 Bitmap bmp = map.Get(t);
+                Rect src = null;
+                for (int up = 1; bmp == null && up <= 6 && t.Z - up >= MapTiles.MinZoom; up++)
+                {
+                    TileId parent = MapTiles.Parent(t, up, out int sx, out int sy, out int part);
+                    bmp = map.Get(parent);
+                    if (bmp == null) continue;
+                    // Bitmaps may come in at another size than 256: scale the source rectangle.
+                    float k = (float)bmp.Width / MapTiles.TileSize;
+                    src = new Rect((int)(sx * k), (int)(sy * k), (int)((sx + part) * k), (int)((sy + part) * k));
+                }
                 if (bmp == null) continue;
                 MapTiles.ToLatLon(t.X, t.Y, t.Z, out double nLat, out double wLon);
                 MapTiles.ToLatLon(t.X + 1, t.Y + 1, t.Z, out double sLat, out double eLon);
@@ -374,7 +388,7 @@ namespace AgOpenGPS.Droid
                 var dst = new RectF(
                     (float)((nw.Easting - v.Easting) * scale), (float)(-(nw.Northing - v.Northing) * scale),
                     (float)((se.Easting - v.Easting) * scale) + 0.5f, (float)(-(se.Northing - v.Northing) * scale) + 0.5f);
-                canvas.DrawBitmap(bmp, null, dst, _mapPaint);
+                canvas.DrawBitmap(bmp, src, dst, _mapPaint);
             }
             canvas.Restore();
 

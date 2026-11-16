@@ -37,6 +37,7 @@ namespace AgOpenGPS.Droid
 
         private Spinner _devices;
         private CheckBox _autoConnect, _ntripEnabled, _rawLog, _recordCoverage, _showCoverage, _useSim, _showMap;
+        private EditText _mapMaxZoom;
         private EditText _antHeight, _antForward, _antRight, _toolBehind, _toolRight, _wheelbase, _nudgeStep, _simLat, _simLon, _mapUrl, _mapAttribution;
         private TextView _mapStatus;
         private System.Threading.CancellationTokenSource _prefetch;
@@ -97,6 +98,7 @@ namespace AgOpenGPS.Droid
             s.ShowMap = _showMap.Checked;
             s.MapUrl = string.IsNullOrWhiteSpace(_mapUrl.Text) ? MapTiles.DefaultUrl : _mapUrl.Text.Trim();
             s.MapAttribution = _mapAttribution.Text.Trim();
+            s.MapMaxZoom = _mapMaxZoom.Text.Trim();
             if (s.RecordCoverage && !_recordCoverage.Checked) AppState.SetWorking(false); // switched off: stop and save
             s.RecordCoverage = _recordCoverage.Checked;
             s.ShowCoverage = _showCoverage.Checked;
@@ -145,6 +147,7 @@ namespace AgOpenGPS.Droid
             _showMap.Checked = s.ShowMap;
             _mapUrl.Text = s.MapUrl;
             _mapAttribution.Text = s.MapAttribution;
+            _mapMaxZoom.Text = s.MapMaxZoom;
             Task.Run(() =>
             {
                 long bytes = AppState.Map.DiskBytes();
@@ -284,7 +287,7 @@ namespace AgOpenGPS.Droid
             west -= dm; east += dm;
 
             var tiles = new List<TileId>();
-            for (int z = 14; z <= MapTiles.MaxZoom; z++) tiles.AddRange(MapTiles.TilesFor(south, west, north, east, z));
+            for (int z = 14; z <= AppState.Settings.MapMaxZoomLevel; z++) tiles.AddRange(MapTiles.TilesFor(south, west, north, east, z));
             if (tiles.Count > 3000)
             {
                 Toast.MakeText(this, "That area is too large (" + tiles.Count + " tiles)", ToastLength.Long).Show();
@@ -445,6 +448,8 @@ namespace AgOpenGPS.Droid
             right.AddView(_mapStatus);
             _mapUrl = Ui.Field(this, right, "Map source (tile URL with {z} {x} {y})", InputTypes.ClassText | InputTypes.TextVariationUri);
             _mapAttribution = Ui.Field(this, right, "Attribution shown on the map", InputTypes.ClassText);
+            _mapMaxZoom = Ui.Field(this, right, "Most detailed zoom to download (10-22, default 19)", InputTypes.ClassNumber);
+            right.AddView(Ui.Hint(this, "If close-up imagery is missing or grey in your area, try 18 or 17. Closer than this, the map is enlarged."));
             right.AddView(Ui.Hint(this, "Default: Esri World Imagery, free with attribution. Check the source's terms, especially for commercial use."));
 
             var rightScroll = new ScrollView(this);

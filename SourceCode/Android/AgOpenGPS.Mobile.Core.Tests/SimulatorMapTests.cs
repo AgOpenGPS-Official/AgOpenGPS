@@ -128,6 +128,20 @@ namespace AgOpenGPS.Mobile.Core.Tests
         }
 
         [Test]
+        public void Parent_CropsTheRightQuarter()
+        {
+            // Zoom 19 tile (5, 7): one level up is (2, 3); x odd = right half, y odd = bottom half.
+            TileId p = MapTiles.Parent(new TileId(19, 5, 7), 1, out int sx, out int sy, out int size);
+            Assert.That(p, Is.EqualTo(new TileId(18, 2, 3)));
+            Assert.That((sx, sy, size), Is.EqualTo((128, 128, 128)));
+
+            // Two levels up: (1, 1), and (5, 7) is column 1, row 3 of 4 in it, 64 px each.
+            p = MapTiles.Parent(new TileId(19, 5, 7), 2, out sx, out sy, out size);
+            Assert.That(p, Is.EqualTo(new TileId(17, 1, 1)));
+            Assert.That((sx, sy, size), Is.EqualTo((64, 192, 64)));
+        }
+
+        [Test]
         public void TilesFor_AFieldAndUrls()
         {
             // About 300 x 400 m at zoom 18 (tiles about 107 m): 3-5 columns, 4-6 rows.

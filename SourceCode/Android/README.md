@@ -146,6 +146,11 @@ after a minute. **Download map for the open field** fetches zoom 14–19 for the
 around the tractor) in advance, e.g. at home over Wi-Fi; a 12 ha field is a few hundred squares,
 a few MB. **Clear map cache** deletes them, to get newer imagery.
 
+Where a square is missing at the wanted zoom (many rural areas have no zoom 19 imagery) or is
+still loading, the matching part of a coarser square is shown enlarged instead of a hole.
+*Most detailed zoom to download* (default 19) stops the app asking for levels the source does
+not have; closer views enlarge the most detailed one.
+
 The default source is Esri World Imagery, free with attribution (shown on the map); check its terms,
 especially for commercial use. Any `{z}/{x}/{y}` tile URL can be set instead.
 
