@@ -156,6 +156,9 @@ and stays after closing the app or restarting the tablet.
 1. **Field: ...** opens the field list: *New field* (asks for a name), or pick a field to
    *Open*, *Rename* or *Delete* it (deleting also deletes its boundary and lines). *Close field*
    drives without a field.
+   *Import from file (GeoJSON / KML)...* at the end of the list reads field outlines exported
+   from GIS programs, Google Earth or geojson.io (latitude/longitude, WGS84); every polygon
+   becomes a field with its boundary, and the first one is opened.
 2. **Record boundary**: choose what follows the field edge while you drive round with the
    implement up:
    - *Antenna path*: the antenna is driven along the edge,

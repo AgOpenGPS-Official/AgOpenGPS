@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
@@ -143,7 +144,8 @@ namespace AgOpenGPS.Droid
         {
             IReadOnlyList<Field> fields = AppState.Fields.Fields;
             Field open = AppState.Fields.Active;
-            var items = new string[fields.Count];
+            // The fields, then one more entry to import outlines from a file.
+            var items = new string[fields.Count + 1];
             for (int i = 0; i < fields.Count; i++)
             {
                 Field f = fields[i];
@@ -151,12 +153,17 @@ namespace AgOpenGPS.Droid
                     + (f.HasBoundary ? f.AreaHectares.ToString("0.00", Inv) + " ha" : "no boundary")
                     + ", " + AppState.Lines.LinesFor(f.Id).Count + " lines";
             }
+            items[fields.Count] = "Import from file (GeoJSON / KML)...";
 
             var b = new AlertDialog.Builder(this)
                 .SetTitle(fields.Count == 0 ? "No fields yet" : "Fields")
                 .SetPositiveButton("New field", (s, e) => NewField(null))
-                .SetNegativeButton("Close", (s, e) => { });
-            if (fields.Count > 0) b.SetItems(items, (s, e) => ShowFieldActions(fields[e.Which]));
+                .SetNegativeButton("Close", (s, e) => { })
+                .SetItems(items, (s, e) =>
+                {
+                    if (e.Which < fields.Count) ShowFieldActions(fields[e.Which]);
+                    else PickImportFile();
+                });
             if (open != null) b.SetNeutralButton("Close field", (s, e) => AppState.OpenField(null));
             b.Show();
         }
@@ -193,6 +200,64 @@ namespace AgOpenGPS.Droid
                     }
                 })
                 .Show();
+        }
+
+        private const int ImportRequest = 2;
+
+        /// <summary>Opens Android's file picker for a field outline.</summary>
+        private void PickImportFile()
+        {
+            var intent = new Intent(Intent.ActionOpenDocument);
+            intent.AddCategory(Intent.CategoryOpenable);
+            intent.SetType("*/*"); // .geojson and .kml often have no proper MIME type
+            StartActivityForResult(intent, ImportRequest);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode != ImportRequest || resultCode != Result.Ok || data?.Data == null) return;
+
+            string text, fileName = "Imported field";
+            try
+            {
+                using (var stream = ContentResolver.OpenInputStream(data.Data))
+                using (var reader = new System.IO.StreamReader(stream))
+                    text = reader.ReadToEnd();
+                string last = data.Data.LastPathSegment ?? "";
+                int slash = last.LastIndexOfAny(new[] { '/', ':' });
+                if (slash >= 0) last = last.Substring(slash + 1);
+                int dot = last.LastIndexOf('.');
+                if (dot > 0) last = last.Substring(0, dot);
+                if (!string.IsNullOrWhiteSpace(last)) fileName = last;
+            }
+            catch (Exception ex)
+            {
+                Toast_("Could not read the file: " + ex.Message, true);
+                return;
+            }
+
+            List<ImportedField> imported;
+            try { imported = FieldImport.Parse(text, fileName); }
+            catch (FormatException ex)
+            {
+                Toast_(ex.Message, true);
+                return;
+            }
+
+            Field first = null;
+            double hectares = 0;
+            foreach (ImportedField f in imported)
+            {
+                Field field = AppState.Fields.Create(f.Name);
+                AppState.Fields.SetBoundary(field.Id, f.Boundary);
+                first ??= field;
+                hectares += new Field { Boundary = f.Boundary }.AreaHectares;
+            }
+            AppState.OpenField(AppState.Fields.Fields.FirstOrDefault(x => x.Id == first.Id));
+            _ui.PostDelayed(() => _view.ShowWholeField(), 300); // after the next refresh has the new field
+            Toast_(string.Format(Inv, "Imported {0} field{1}, {2:0.00} ha. '{3}' is open.",
+                imported.Count, imported.Count == 1 ? "" : "s", hectares, first.Name), true);
         }
 
         /// <summary>Asks for a name, creates and opens the field, then runs <paramref name="then"/>.</summary>
