@@ -148,8 +148,12 @@ after a minute. **Download map for the open field** fetches zoom 14–19 for the
 around the tractor) in advance, e.g. at home over Wi-Fi; a 12 ha field is a few hundred squares,
 a few MB. **Clear map cache** deletes them, to get newer imagery.
 
-Where a square is missing at the wanted zoom (many rural areas have no zoom 19 imagery) or is
-still loading, the matching part of a coarser square is shown enlarged instead of a hole.
+Where a square is missing at the wanted zoom or is still loading, the matching part of a
+coarser square is shown enlarged instead of a hole. Many sources do not report missing imagery
+as an error but send a "Map data not yet available" picture (Esri does from zoom 19 in many
+rural areas); such placeholders are recognised (known ones, and any identical small image sent
+for different places), never shown, and remembered with a small marker so they are not asked for
+again. So zooming in closer than the source's best level enlarges its real imagery.
 *Most detailed zoom to download* (default 19) stops the app asking for levels the source does
 not have; closer views enlarge the most detailed one.
 

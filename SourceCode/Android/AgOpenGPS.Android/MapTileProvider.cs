@@ -29,10 +29,13 @@ namespace AgOpenGPS.Droid
         private readonly HashSet<string> _pending = new HashSet<string>();
         private readonly Dictionary<string, DateTime> _failed = new Dictionary<string, DateTime>();
         private readonly SemaphoreSlim _downloads = new SemaphoreSlim(ParallelDownloads);
+        private readonly HashSet<string> _noImagery = new HashSet<string>(); // keys of placeholder tiles
+        private readonly TilePlaceholders _placeholders;
 
         public MapTileProvider(string root)
         {
             _root = root;
+            _placeholders = new TilePlaceholders(System.IO.Path.Combine(root, "placeholders.txt"));
         }
 
         /// <summary>The map source, e.g. <see cref="MapTiles.DefaultUrl"/>.</summary>
@@ -60,26 +63,31 @@ namespace AgOpenGPS.Droid
                     _lru.AddFirst(node);
                     return node.Value.Bitmap;
                 }
-                if (_pending.Contains(key)) return null;
+                if (_pending.Contains(key) || _noImagery.Contains(key)) return null; // missing: the caller enlarges a coarser tile
                 if (_failed.TryGetValue(key, out DateTime when) && DateTime.UtcNow - when < RetryAfter) return null;
                 _pending.Add(key);
             }
             string url = MapTiles.Url(UrlTemplate, t);
             string path = FilePath(t);
-            Task.Run(() => LoadAsync(key, url, path));
+            Task.Run(() => LoadAsync(key, t, url, path));
             return null;
         }
 
-        private async Task LoadAsync(string key, string url, string path)
+        private async Task LoadAsync(string key, TileId t, string url, string path)
         {
             Bitmap bmp = null;
+            bool noImagery = false;
             try
             {
-                if (!File.Exists(path)) await DownloadAsync(url, path, CancellationToken.None).ConfigureAwait(false);
-                if (File.Exists(path))
+                byte[] data = await ReadOrDownloadAsync(t, url, path, CancellationToken.None).ConfigureAwait(false);
+                if (data == null)
+                {
+                    noImagery = true;
+                }
+                else
                 {
                     var opts = new BitmapFactory.Options { InPreferredConfig = Bitmap.Config.Rgb565 };
-                    bmp = BitmapFactory.DecodeFile(path, opts);
+                    bmp = BitmapFactory.DecodeByteArray(data, 0, data.Length, opts);
                     if (bmp == null) File.Delete(path); // damaged file: fetch it again next time
                 }
             }
@@ -91,6 +99,11 @@ namespace AgOpenGPS.Droid
             lock (_lock)
             {
                 _pending.Remove(key);
+                if (noImagery)
+                {
+                    _noImagery.Add(key);
+                    return;
+                }
                 if (bmp == null)
                 {
                     _failed[key] = DateTime.UtcNow;
@@ -107,26 +120,57 @@ namespace AgOpenGPS.Droid
             }
         }
 
-        private async Task DownloadAsync(string url, string path, CancellationToken ct)
+        /// <summary>
+        /// The tile's bytes from the tablet, else from the server (then saved). Null when the source
+        /// has no imagery there (a placeholder): a small ".none" marker is saved so it is not asked again.
+        /// </summary>
+        private async Task<byte[]> ReadOrDownloadAsync(TileId t, string url, string path, CancellationToken ct)
         {
-            await _downloads.WaitAsync(ct).ConfigureAwait(false);
-            try
+            string none = path + ".none";
+            if (File.Exists(none)) return null;
+
+            byte[] data;
+            bool fromDisk = File.Exists(path);
+            if (fromDisk)
             {
-                using (HttpResponseMessage r = await Http.GetAsync(url, ct).ConfigureAwait(false))
+                data = File.ReadAllBytes(path);
+            }
+            else
+            {
+                await _downloads.WaitAsync(ct).ConfigureAwait(false);
+                try
                 {
-                    r.EnsureSuccessStatusCode();
-                    byte[] data = await r.Content.ReadAsByteArrayAsync(ct).ConfigureAwait(false);
-                    if (data.Length < 100) throw new IOException("empty tile");
-                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
-                    string tmp = path + ".tmp";
-                    File.WriteAllBytes(tmp, data);
-                    File.Move(tmp, path, true);
+                    using (HttpResponseMessage r = await Http.GetAsync(url, ct).ConfigureAwait(false))
+                    {
+                        if (r.StatusCode == System.Net.HttpStatusCode.NotFound) data = null; // no tile at all
+                        else
+                        {
+                            r.EnsureSuccessStatusCode();
+                            data = await r.Content.ReadAsByteArrayAsync(ct).ConfigureAwait(false);
+                            if (data.Length < 100) throw new IOException("empty tile");
+                        }
+                    }
+                }
+                finally
+                {
+                    _downloads.Release();
                 }
             }
-            finally
+
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+            if (data == null || _placeholders.IsPlaceholder(t, data))
             {
-                _downloads.Release();
+                File.WriteAllBytes(none, Array.Empty<byte>());
+                if (fromDisk) File.Delete(path); // a grey square saved by an older version
+                return null;
             }
+            if (!fromDisk)
+            {
+                string tmp = path + ".tmp";
+                File.WriteAllBytes(tmp, data);
+                File.Move(tmp, path, true);
+            }
+            return data;
         }
 
         /// <summary>
@@ -144,7 +188,8 @@ namespace AgOpenGPS.Droid
                 {
                     try
                     {
-                        if (!File.Exists(path)) await DownloadAsync(url, path, ct).ConfigureAwait(false);
+                        // Squares without imagery at that zoom are noted, not counted as failures.
+                        if (!File.Exists(path)) await ReadOrDownloadAsync(t, url, path, ct).ConfigureAwait(false);
                     }
                     catch (OperationCanceledException) { throw; }
                     catch (Exception) { Interlocked.Increment(ref failed); }
@@ -178,6 +223,7 @@ namespace AgOpenGPS.Droid
                 _memory.Clear();
                 _lru.Clear();
                 _failed.Clear();
+                _noImagery.Clear();
             }
             try { if (Directory.Exists(_root)) Directory.Delete(_root, true); }
             catch (IOException) { }

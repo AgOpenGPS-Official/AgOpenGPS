@@ -201,3 +201,61 @@ namespace AgOpenGPS.Mobile.Core.Tests
         }
     }
 }
+
+namespace AgOpenGPS.Mobile.Core.Tests
+{
+    public class TilePlaceholderTests
+    {
+        private static byte[] Bytes(int size, byte fill)
+        {
+            var b = new byte[size];
+            for (int i = 0; i < size; i++) b[i] = (byte)(fill + i % 7);
+            return b;
+        }
+
+        [Test]
+        public void SameSmallImageAtTwoPlaces_IsLearnedAsPlaceholder()
+        {
+            var p = new TilePlaceholders();
+            byte[] grey = Bytes(2521, 1);
+            Assert.That(p.IsPlaceholder(new TileId(19, 10, 10), grey), Is.False, "first sighting: could be a photo");
+            Assert.That(p.IsPlaceholder(new TileId(19, 11, 10), grey), Is.True, "same image elsewhere: placeholder");
+            Assert.That(p.IsPlaceholder(new TileId(20, 3, 3), grey), Is.True, "remembered");
+        }
+
+        [Test]
+        public void LargeOrCoarseOrRepeatedTiles_AreNotPlaceholders()
+        {
+            var p = new TilePlaceholders();
+            byte[] photo = Bytes(12000, 2);
+            Assert.That(p.IsPlaceholder(new TileId(18, 1, 1), photo), Is.False);
+            Assert.That(p.IsPlaceholder(new TileId(18, 2, 1), photo), Is.False, "real imagery is too big to be one");
+
+            byte[] small = Bytes(3000, 3);
+            Assert.That(p.IsPlaceholder(new TileId(12, 1, 1), small), Is.False);
+            Assert.That(p.IsPlaceholder(new TileId(12, 2, 1), small), Is.False, "not learned at coarse zoom");
+
+            byte[] once = Bytes(3000, 4);
+            Assert.That(p.IsPlaceholder(new TileId(19, 1, 1), once), Is.False);
+            Assert.That(p.IsPlaceholder(new TileId(19, 1, 1), once), Is.False, "the same tile again is no evidence");
+        }
+
+        [Test]
+        public void Learned_SurviveRestart()
+        {
+            string file = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "aog-ph-" + Guid.NewGuid().ToString("N") + ".txt");
+            try
+            {
+                byte[] grey = Bytes(2000, 5);
+                var p = new TilePlaceholders(file);
+                p.IsPlaceholder(new TileId(19, 1, 1), grey);
+                p.IsPlaceholder(new TileId(19, 2, 1), grey);
+                Assert.That(new TilePlaceholders(file).IsPlaceholder(new TileId(19, 9, 9), grey), Is.True);
+            }
+            finally
+            {
+                System.IO.File.Delete(file);
+            }
+        }
+    }
+}
