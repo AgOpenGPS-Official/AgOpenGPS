@@ -10,7 +10,19 @@ namespace AgOpenGPS.Mobile.Core.Guidance
     public sealed class ImportedField
     {
         public string Name;
+        /// <summary>Empty for a field without a recorded boundary (from an AgOpenGPS export).</summary>
         public List<TrackPoint> Boundary = new List<TrackPoint>();
+        /// <summary>A-B lines of the field (AgOpenGPS exports only); ids are new, FieldId is not set yet.</summary>
+        public List<AbLine> Lines = new List<AbLine>();
+        /// <summary>Links lines to their field inside one file.</summary>
+        internal string Key;
+    }
+
+    /// <summary>What a GeoJSON feature's properties say (AgOpenGPS exports add kind, fieldKey, ...).</summary>
+    internal sealed class FeatureInfo
+    {
+        public string Name, Kind, Key, FieldName, LineKind;
+        public double Nudge;
     }
 
     /// <summary>
@@ -49,48 +61,93 @@ namespace AgOpenGPS.Mobile.Core.Guidance
 
             using (doc)
             {
-                ReadGeoJsonObject(doc.RootElement, null, list);
+                var lines = new List<(FeatureInfo Info, List<TrackPoint> Points)>();
+                ReadGeoJsonObject(doc.RootElement, new FeatureInfo(), list, lines);
+                AttachLines(list, lines);
             }
             return list;
         }
 
-        private static void ReadGeoJsonObject(JsonElement e, string name, List<ImportedField> list)
+        /// <summary>Gives each exported line to its field: by key, else by field name, else to the only field.</summary>
+        private static void AttachLines(List<ImportedField> fields, List<(FeatureInfo Info, List<TrackPoint> Points)> lines)
+        {
+            foreach (var (info, pts) in lines)
+            {
+                if (pts.Count < 2) continue;
+                ImportedField owner = null;
+                foreach (ImportedField f in fields)
+                    if (info.Key != null && f.Key == info.Key) { owner = f; break; }
+                if (owner == null)
+                    foreach (ImportedField f in fields)
+                        if (info.FieldName != null && f.Name == info.FieldName) { owner = f; break; }
+                if (owner == null && fields.Count == 1) owner = fields[0];
+                if (owner == null) continue;
+
+                bool curve = info.LineKind == "curve" && pts.Count > 2;
+                owner.Lines.Add(new AbLine
+                {
+                    Name = string.IsNullOrWhiteSpace(info.Name) ? "AB " + (owner.Lines.Count + 1) : info.Name,
+                    Kind = curve ? LineKind.Curve : LineKind.Straight,
+                    LatitudeA = pts[0].Latitude,
+                    LongitudeA = pts[0].Longitude,
+                    LatitudeB = pts[pts.Count - 1].Latitude,
+                    LongitudeB = pts[pts.Count - 1].Longitude,
+                    Points = curve ? pts : new List<TrackPoint>(),
+                    NudgeMeters = info.Nudge,
+                });
+            }
+        }
+
+        private static string Str(JsonElement props, params string[] keys)
+        {
+            foreach (string key in keys)
+                if (props.TryGetProperty(key, out JsonElement v) && v.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(v.GetString()))
+                    return v.GetString().Trim();
+            return null;
+        }
+
+        private static void ReadGeoJsonObject(JsonElement e, FeatureInfo info, List<ImportedField> list,
+            List<(FeatureInfo, List<TrackPoint>)> lines)
         {
             if (e.ValueKind != JsonValueKind.Object || !e.TryGetProperty("type", out JsonElement typeEl)) return;
-            string type = typeEl.GetString();
-            switch (type)
+            switch (typeEl.GetString())
             {
                 case "FeatureCollection":
                     if (e.TryGetProperty("features", out JsonElement features) && features.ValueKind == JsonValueKind.Array)
-                        foreach (JsonElement f in features.EnumerateArray()) ReadGeoJsonObject(f, null, list);
+                        foreach (JsonElement f in features.EnumerateArray()) ReadGeoJsonObject(f, new FeatureInfo(), list, lines);
                     break;
                 case "Feature":
-                    string featureName = name;
+                    var fi = new FeatureInfo();
                     if (e.TryGetProperty("properties", out JsonElement props) && props.ValueKind == JsonValueKind.Object)
                     {
-                        foreach (string key in new[] { "name", "Name", "NAME", "naziv", "label", "title" })
-                        {
-                            if (props.TryGetProperty(key, out JsonElement n) && n.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(n.GetString()))
-                            {
-                                featureName = n.GetString().Trim();
-                                break;
-                            }
-                        }
+                        fi.Name = Str(props, "name", "Name", "NAME", "naziv", "label", "title");
+                        fi.Kind = Str(props, "kind");
+                        fi.Key = Str(props, "fieldKey");
+                        fi.FieldName = Str(props, "field");
+                        fi.LineKind = Str(props, "lineKind");
+                        if (props.TryGetProperty("nudge_m", out JsonElement nudge) && nudge.ValueKind == JsonValueKind.Number) fi.Nudge = nudge.GetDouble();
                     }
-                    if (e.TryGetProperty("geometry", out JsonElement geom)) ReadGeoJsonObject(geom, featureName, list);
+                    bool hasGeometry = e.TryGetProperty("geometry", out JsonElement geom) && geom.ValueKind == JsonValueKind.Object;
+                    if (hasGeometry) ReadGeoJsonObject(geom, fi, list, lines);
+                    else if (fi.Kind == "field") list.Add(new ImportedField { Name = fi.Name, Key = fi.Key }); // field without boundary
                     break;
                 case "GeometryCollection":
                     if (e.TryGetProperty("geometries", out JsonElement geoms) && geoms.ValueKind == JsonValueKind.Array)
-                        foreach (JsonElement g in geoms.EnumerateArray()) ReadGeoJsonObject(g, name, list);
+                        foreach (JsonElement g in geoms.EnumerateArray()) ReadGeoJsonObject(g, info, list, lines);
                     break;
                 case "Polygon":
                     if (e.TryGetProperty("coordinates", out JsonElement rings) && rings.GetArrayLength() > 0)
-                        Add(list, name, ReadRing(rings[0]));
+                        Add(list, info, ReadRing(rings[0]));
                     break;
                 case "MultiPolygon":
                     if (e.TryGetProperty("coordinates", out JsonElement polys))
                         foreach (JsonElement poly in polys.EnumerateArray())
-                            if (poly.GetArrayLength() > 0) Add(list, name, ReadRing(poly[0]));
+                            if (poly.GetArrayLength() > 0) Add(list, info, ReadRing(poly[0]));
+                    break;
+                case "LineString":
+                    // Only lines marked as A-B lines by an AgOpenGPS export; other lines (roads, ditches) are skipped.
+                    if (info.Kind == "abline" && e.TryGetProperty("coordinates", out JsonElement coords))
+                        lines.Add((info, ReadRing(coords)));
                     break;
             }
         }
@@ -131,7 +188,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                         if (parts.Length < 2) continue;
                         pts.Add(Point(D(parts[1]), D(parts[0]))); // KML is lon,lat[,alt]
                     }
-                    Add(list, name, pts);
+                    Add(list, new FeatureInfo { Name = name }, pts);
                 }
             }
             return list;
@@ -158,13 +215,13 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             return new TrackPoint(lat, lon);
         }
 
-        private static void Add(List<ImportedField> list, string name, List<TrackPoint> pts)
+        private static void Add(List<ImportedField> list, FeatureInfo info, List<TrackPoint> pts)
         {
             // Drop the repeated closing point: boundaries here are closed implicitly.
             if (pts.Count > 1 && Math.Abs(pts[0].Latitude - pts[pts.Count - 1].Latitude) < 1e-10
                 && Math.Abs(pts[0].Longitude - pts[pts.Count - 1].Longitude) < 1e-10)
                 pts.RemoveAt(pts.Count - 1);
-            if (pts.Count >= 3) list.Add(new ImportedField { Name = name, Boundary = pts });
+            if (pts.Count >= 3) list.Add(new ImportedField { Name = info.Name, Key = info.Key, Boundary = pts });
         }
     }
 }

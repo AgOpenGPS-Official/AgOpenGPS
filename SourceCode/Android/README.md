@@ -171,6 +171,13 @@ and stays after closing the app or restarting the tablet.
    *Import from file (GeoJSON / KML)...* at the end of the list reads field outlines exported
    from GIS programs, Google Earth or geojson.io (latitude/longitude, WGS84); every polygon
    becomes a field with its boundary, and the first one is opened.
+
+   **Export / backup:** *Export to a file...* in a field's menu, or *Export all fields to a
+   file...* in the list, writes one GeoJSON file: each field's boundary (with name and area) and
+   all its A-B lines (straight and curved, with their nudge). Android asks where to save it:
+   tablet storage, Downloads, a USB stick or Google Drive. Importing that file restores the
+   fields with their lines, on this or another tablet; GIS programs (QGIS, geojson.io) show it as
+   ordinary shapes. The worked area is not included.
 2. **Record boundary**: choose what follows the field edge while you drive round with the
    implement up:
    - *Antenna path*: the antenna is driven along the edge,

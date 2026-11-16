@@ -145,7 +145,8 @@ namespace AgOpenGPS.Droid
             IReadOnlyList<Field> fields = AppState.Fields.Fields;
             Field open = AppState.Fields.Active;
             // The fields, then one more entry to import outlines from a file.
-            var items = new string[fields.Count + 1];
+            // The fields, then: export all, import.
+            var items = new string[fields.Count + 2];
             for (int i = 0; i < fields.Count; i++)
             {
                 Field f = fields[i];
@@ -153,7 +154,8 @@ namespace AgOpenGPS.Droid
                     + (f.HasBoundary ? f.AreaHectares.ToString("0.00", Inv) + " ha" : "no boundary")
                     + ", " + AppState.Lines.LinesFor(f.Id).Count + " lines";
             }
-            items[fields.Count] = "Import from file (GeoJSON / KML)...";
+            items[fields.Count] = "Export all fields to a file...";
+            items[fields.Count + 1] = "Import from file (GeoJSON / KML)...";
 
             var b = new AlertDialog.Builder(this)
                 .SetTitle(fields.Count == 0 ? "No fields yet" : "Fields")
@@ -162,6 +164,7 @@ namespace AgOpenGPS.Droid
                 .SetItems(items, (s, e) =>
                 {
                     if (e.Which < fields.Count) ShowFieldActions(fields[e.Which]);
+                    else if (e.Which == fields.Count) ExportFields(fields, "AgOpenGPS fields");
                     else PickImportFile();
                 });
             if (open != null) b.SetNeutralButton("Close field", (s, e) => AppState.OpenField(null));
@@ -172,7 +175,7 @@ namespace AgOpenGPS.Droid
         {
             new AlertDialog.Builder(this)
                 .SetTitle(field.Name)
-                .SetItems(new[] { "Open", "Rename", "Clear worked area", "Delete" }, (s, e) =>
+                .SetItems(new[] { "Open", "Rename", "Clear worked area", "Export to a file...", "Delete" }, (s, e) =>
                 {
                     switch (e.Which)
                     {
@@ -194,6 +197,9 @@ namespace AgOpenGPS.Droid
                                 "Clear", AppState.ClearCoverage);
                             break;
                         case 3:
+                            ExportFields(new[] { field }, field.Name);
+                            break;
+                        case 4:
                             Confirm("Delete " + field.Name + "?", "Its boundary and its " + AppState.Lines.LinesFor(field.Id).Count
                                 + " lines are deleted too.", "Delete", () => AppState.DeleteField(field));
                             break;
@@ -203,6 +209,42 @@ namespace AgOpenGPS.Droid
         }
 
         private const int ImportRequest = 2;
+        private const int ExportRequest = 3;
+        private string _pendingExport;
+
+        /// <summary>Asks Android where to save (tablet, Downloads, USB stick, Drive...), then writes the GeoJSON.</summary>
+        private void ExportFields(IReadOnlyList<Field> fields, string name)
+        {
+            if (fields.Count == 0)
+            {
+                Toast_("No fields to export");
+                return;
+            }
+            _pendingExport = FieldExport.ToGeoJson(fields, id => AppState.Lines.LinesFor(id));
+            var intent = new Intent(Intent.ActionCreateDocument);
+            intent.AddCategory(Intent.CategoryOpenable);
+            intent.SetType("application/geo+json");
+            intent.PutExtra(Intent.ExtraTitle, FieldExport.FileName(name));
+            StartActivityForResult(intent, ExportRequest);
+        }
+
+        private void WriteExport(global::Android.Net.Uri uri)
+        {
+            string text = _pendingExport;
+            _pendingExport = null;
+            if (text == null) return;
+            try
+            {
+                using (var stream = ContentResolver.OpenOutputStream(uri, "wt"))
+                using (var writer = new System.IO.StreamWriter(stream, new System.Text.UTF8Encoding(false)))
+                    writer.Write(text);
+                Toast_("Fields saved. Import the file on any tablet to restore them.", true);
+            }
+            catch (Exception ex)
+            {
+                Toast_("Could not save: " + ex.Message, true);
+            }
+        }
 
         /// <summary>Opens Android's file picker for a field outline.</summary>
         private void PickImportFile()
@@ -216,6 +258,12 @@ namespace AgOpenGPS.Droid
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == ExportRequest)
+            {
+                if (resultCode == Result.Ok && data?.Data != null) WriteExport(data.Data);
+                else _pendingExport = null;
+                return;
+            }
             if (requestCode != ImportRequest || resultCode != Result.Ok || data?.Data == null) return;
 
             string text, fileName = "Imported field";
@@ -247,17 +295,25 @@ namespace AgOpenGPS.Droid
 
             Field first = null;
             double hectares = 0;
+            int lineCount = 0;
             foreach (ImportedField f in imported)
             {
                 Field field = AppState.Fields.Create(f.Name);
-                AppState.Fields.SetBoundary(field.Id, f.Boundary);
+                if (f.Boundary.Count >= 3) AppState.Fields.SetBoundary(field.Id, f.Boundary);
+                foreach (AbLine line in f.Lines)
+                {
+                    line.FieldId = field.Id;
+                    AppState.Lines.Add(line, makeActive: false);
+                    lineCount++;
+                }
                 first ??= field;
-                hectares += new Field { Boundary = f.Boundary }.AreaHectares;
+                if (f.Boundary.Count >= 3) hectares += new Field { Boundary = f.Boundary }.AreaHectares;
             }
             AppState.OpenField(AppState.Fields.Fields.FirstOrDefault(x => x.Id == first.Id));
             _ui.PostDelayed(() => _view.ShowWholeField(), 300); // after the next refresh has the new field
-            Toast_(string.Format(Inv, "Imported {0} field{1}, {2:0.00} ha. '{3}' is open.",
-                imported.Count, imported.Count == 1 ? "" : "s", hectares, first.Name), true);
+            Toast_(string.Format(Inv, "Imported {0} field{1} ({2:0.00} ha){3}. '{4}' is open.",
+                imported.Count, imported.Count == 1 ? "" : "s", hectares,
+                lineCount == 0 ? "" : string.Format(Inv, " and {0} line{1}", lineCount, lineCount == 1 ? "" : "s"), first.Name), true);
         }
 
         /// <summary>Asks for a name, creates and opens the field, then runs <paramref name="then"/>.</summary>
