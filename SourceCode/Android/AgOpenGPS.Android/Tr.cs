@@ -1,0 +1,334 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
+
+namespace AgOpenGPS.Droid
+{
+    /// <summary>
+    /// Translations. The English text is the key: <see cref="T"/> returns the Croatian text when
+    /// Croatian is chosen, otherwise (or when a text has no translation yet) the English one, so a
+    /// missing entry never breaks the screen. Messages with numbers or names inside (from the core
+    /// library, NTRIP, Android) are matched by patterns.
+    /// Terms follow the AgOpenGPS Croatian translation where it is Croatian: parcela, međa,
+    /// AB linija, krivulja, uvrtine, preklop, točka zakreta.
+    /// </summary>
+    public static class Tr
+    {
+        public const string System = "system", English = "en", Croatian = "hr";
+
+        /// <summary>True while texts are shown in Croatian.</summary>
+        public static bool IsCroatian { get; private set; }
+
+        /// <summary>Changes when the language changes: screens built before then are rebuilt.</summary>
+        public static int Version { get; private set; }
+
+        /// <summary>Sets the language from the setting: "system" (Croatian if the tablet is), "en" or "hr".</summary>
+        public static void SetLanguage(string setting)
+        {
+            bool hr = setting == Croatian
+                || (setting != English && string.Equals(Java.Util.Locale.Default.Language, "hr", StringComparison.OrdinalIgnoreCase));
+            if (hr == IsCroatian) return;
+            IsCroatian = hr;
+            Version++;
+        }
+
+        public static string T(string english)
+        {
+            if (!IsCroatian || string.IsNullOrEmpty(english)) return english;
+            if (Hr.TryGetValue(english, out string text)) return text;
+            foreach ((Regex pattern, string replacement) in Patterns)
+                if (pattern.IsMatch(english)) return pattern.Replace(english, replacement);
+            return english;
+        }
+
+        /// <summary>Translates a format string, then fills it in (numbers with a decimal point, as typed in the app).</summary>
+        public static string F(string englishFormat, params object[] args)
+            => string.Format(CultureInfo.InvariantCulture, T(englishFormat), args);
+
+        private static readonly (Regex, string)[] Patterns =
+        {
+            (new Regex(@"^Connect failed: (.*)$", RegexOptions.Singleline), "Spajanje nije uspjelo: $1"),
+            (new Regex(@"^No data for (\d+) s$"), "Nema podataka $1 s"),
+            (new Regex(@"^Drive back to where you started \((\d+) m to go\)$"), "Vratite se do početne točke (još $1 m)"),
+            (new Regex(@"^Drive at least ([\d.]+) m from A before setting B$"), "Odvezite se barem $1 m od A prije postavljanja točke B"),
+            (new Regex(@"^Damaged GeoJSON: (.*)$", RegexOptions.Singleline), "Oštećen GeoJSON: $1"),
+            (new Regex(@"^Bad coordinate '(.*)'$"), "Neispravna koordinata '$1'"),
+            (new Regex(@"^Cannot connect to (.*)$"), "Nije moguće spojiti se na $1"),
+            (new Regex(@"^Cannot find (.*)$"), "Nije pronađeno: $1"),
+            (new Regex(@"^Cannot reach (.*)$"), "Nije dostupno: $1"),
+            (new Regex(@"^No answer from (.*)$"), "Nema odgovora od $1"),
+            (new Regex(@"^Try (\d+) of (\d+)\.$"), "Pokušaj $1 od $2."),
+        };
+
+        private static readonly Dictionary<string, string> Hr = new Dictionary<string, string>
+        {
+            // ---------------------------------------------------------------- driving screen
+            ["Bluetooth permission is needed to talk to the receiver"] = "Za vezu s prijemnikom potrebno je Bluetooth dopuštenje",
+            ["no boundary"] = "bez međe",
+            ["{0}{1}   {2}, {3} lines"] = "{0}{1}   {2}, linija: {3}",
+            ["Export all fields to a file..."] = "Izvezi sve parcele u datoteku...",
+            ["Import from file (GeoJSON / KML)..."] = "Uvezi iz datoteke (GeoJSON / KML)...",
+            ["No fields yet"] = "Još nema parcela",
+            ["Fields"] = "Parcele",
+            ["New field"] = "Nova parcela",
+            ["Close"] = "Zatvori",
+            ["AgOpenGPS fields"] = "AgOpenGPS parcele",
+            ["Close field"] = "Zatvori parcelu",
+            ["Open"] = "Otvori",
+            ["Rename"] = "Preimenuj",
+            ["Clear worked area"] = "Obriši obrađenu površinu",
+            ["Export to a file..."] = "Izvezi u datoteku...",
+            ["Delete"] = "Obriši",
+            ["Rename field"] = "Preimenuj parcelu",
+            ["Open the field first"] = "Najprije otvorite parcelu",
+            ["Clear the worked area of {0}?"] = "Obrisati obrađenu površinu parcele {0}?",
+            ["Use this to start the next job in this field."] = "Za početak sljedećeg posla na ovoj parceli.",
+            ["Clear"] = "Obriši",
+            ["Delete {0}?"] = "Obrisati {0}?",
+            ["Its boundary and its {0} lines are deleted too."] = "Brišu se i njezina međa i linije ({0}).",
+            ["No fields to export"] = "Nema parcela za izvoz",
+            ["Fields saved. Import the file on any tablet to restore them."] = "Parcele su spremljene. Uvezite datoteku na bilo kojem tabletu da ih vratite.",
+            ["Could not save: {0}"] = "Spremanje nije uspjelo: {0}",
+            ["Imported field"] = "Uvezena parcela",
+            ["Could not read the file: {0}"] = "Datoteka se ne može pročitati: {0}",
+            ["Imported fields: {0} ({1:0.00} ha), lines: {2}. '{3}' is open."] = "Uvezeno parcela: {0} ({1:0.00} ha), linija: {2}. Otvorena je '{3}'.",
+            ["Field '{0}' created. Record its boundary or an A-B line."] = "Parcela '{0}' je stvorena. Snimite njezinu među ili AB liniju.",
+            ["Replace the boundary of {0}?"] = "Zamijeniti među parcele {0}?",
+            ["Record new"] = "Snimi novu",
+            ["Antenna path"] = "Putanja antene",
+            ["Left end of implement ({0:0.0} m left)"] = "Lijevi kraj priključka ({0:0.0} m lijevo)",
+            ["Right end of implement ({0:0.0} m right)"] = "Desni kraj priključka ({0:0.0} m desno)",
+            ["What follows the field edge?"] = "Što prati rub parcele?",
+            ["No position yet"] = "Još nema pozicije",
+            ["Drive round the field with the implement up, then press Finish near where you started"] = "Vozite oko parcele s podignutim priključkom, zatim pritisnite Završi blizu mjesta početka",
+            ["The field was closed while recording"] = "Parcela je zatvorena tijekom snimanja",
+            ["Boundary of {0} saved: {1:0.00} ha"] = "Međa parcele {0} spremljena: {1:0.00} ha",
+            ["A set. Drive along the edge, then press B"] = "A postavljen. Vozite uz rub, zatim pritisnite B",
+            ["A set. Drive straight along the edge, then press B"] = "A postavljen. Vozite ravno uz rub, zatim pritisnite B",
+            ["Saved {0} ({1:0} m). Rename it under Lines."] = "Spremljeno: {0} ({1:0} m). Preimenujte pod Linije.",
+            ["No lines without a field yet: press A, drive, press B"] = "Još nema linija bez parcele: pritisnite A, vozite, pritisnite B",
+            ["No lines in {0} yet: press A, drive, press B"] = "Još nema linija na parceli {0}: pritisnite A, vozite, pritisnite B",
+            ["curve"] = "krivulja",
+            ["straight"] = "ravna",
+            ["Lines without a field"] = "Linije bez parcele",
+            ["Lines in {0}"] = "Linije na parceli {0}",
+            ["No line"] = "Bez linije",
+            ["Use this line"] = "Koristi ovu liniju",
+            ["Rename line"] = "Preimenuj liniju",
+            ["OK"] = "U redu",
+            ["Cancel"] = "Odustani",
+            ["Worked {0:0.00} ha\nLeft {1:0.00} ha  ({2:0} % done)\nOverlap {3:0.00} ha"] = "Obrađeno {0:0.00} ha\nPreostalo {1:0.00} ha  ({2:0} % gotovo)\nPreklop {3:0.00} ha",
+            ["Worked {0:0.00} ha\nOverlap {1:0.00} ha"] = "Obrađeno {0:0.00} ha\nPreklop {1:0.00} ha",
+            ["▲ on line"] = "▲ na liniji",
+            ["Work: ON"] = "Rad: UKLJ.",
+            ["Work: OFF"] = "Rad: ISKLJ.",
+            ["Disconnect"] = "Odspoji",
+            ["Connect"] = "Spoji",
+            ["Not connected"] = "Nije spojeno",
+            ["Connecting"] = "Spajanje",
+            ["Reconnecting"] = "Ponovno spajanje",
+            ["Sim: no position"] = "Sim: nema pozicije",
+            ["No position"] = "Nema pozicije",
+            ["{0} sats   HDOP {1}   age {2} s   {3:0.0} Hz   {4} km/h   {5}"] = "{0} sat.   HDOP {1}   starost {2} s   {3:0.0} Hz   {4} km/h   {5}",
+            ["Press Connect"] = "Pritisnite Spoji",
+            ["RTK FLOAT - accuracy about ±0.3 m"] = "RTK FLOAT - točnost oko ±0.3 m",
+            ["NO RTK - accuracy about ±1-2 m"] = "NEMA RTK - točnost oko ±1-2 m",
+            ["  (corrections lost)"] = "  (korekcije izgubljene)",
+            ["{0}   pass {1}   {2:0.0}°{3}{4}"] = "{0}   prohod {1}   {2:0.0}°{3}{4}",
+            ["   heading err {0:+0.0;-0.0}°"] = "   greška smjera {0:+0.0;-0.0}°",
+            ["   nudged {0:+0;-0} cm"] = "   pomak {0:+0;-0} cm",
+            ["OUTSIDE FIELD"] = "IZVAN PARCELE",
+            ["Field edge {0:0.0} m"] = "Rub parcele {0:0.0} m",
+            ["Field: none"] = "Parcela: nema",
+            ["Field: {0}"] = "Parcela: {0}",
+            ["Finish boundary"] = "Završi među",
+            ["New boundary"] = "Nova međa",
+            ["Record boundary"] = "Snimi među",
+            ["Restart A"] = "Ponovno A",
+            ["Boundary: {0:0} m driven, {1:0} m to the start"] = "Međa: odvezeno {0:0} m, do početka {1:0} m",
+            ["Recording curve: {0:0} m from A"] = "Snimanje krivulje: {0:0} m od A",
+            ["Recording line: {0:0} m from A"] = "Snimanje linije: {0:0} m od A",
+            ["Auto ON"] = "Auto UKLJ.",
+            ["{0}: {1}"] = "{0}: {1}",
+            ["{0}: connected, but no data"] = "{0}: spojeno, ali nema podataka",
+            ["{0}: connected, but no data from the receiver (is it on and wired to the bridge?)"] = "{0}: spojeno, ali nema podataka od prijemnika (je li uključen i spojen na most?)",
+            ["{0}: data arrives but no position sentences (check the receiver's output and baud rate)"] = "{0}: podaci stižu, ali nema rečenica s pozicijom (provjerite izlaz prijemnika i brzinu prijenosa)",
+            ["{0}: connected, no position fix yet"] = "{0}: spojeno, još nema fiksa pozicije",
+            ["NTRIP: {0}"] = "NTRIP: {0}",
+            ["Settings"] = "Postavke",
+            ["Field"] = "Parcela",
+            ["Open a field with a boundary, or select a line"] = "Otvorite parcelu s međom ili odaberite liniju",
+            ["Follow"] = "Prati",
+            ["To field"] = "Na parcelu",
+            ["Open a field with a boundary first"] = "Najprije otvorite parcelu s međom",
+            ["Implement"] = "Priključak",
+            ["Cancel boundary"] = "Odustani od međe",
+            ["New line"] = "Nova linija",
+            ["Straight"] = "Ravna",
+            ["Curve"] = "Krivulja",
+            ["Cancel line"] = "Odustani od linije",
+            ["Lines..."] = "Linije...",
+            ["Nudge line"] = "Pomak linije",
+            ["Snap"] = "Ovdje",
+            ["Reset nudge"] = "Poništi pomak",
+
+            // ---------------------------------------------------------------- settings screen
+            ["The start position is used only with 'Use the simulator' ticked"] = "Početna pozicija koristi se samo uz označeno 'Koristi simulator'",
+            ["Saved on the tablet: {0:0.0} MB"] = "Spremljeno na tabletu: {0:0.0} MB",
+            ["Saved on the tablet: 0.0 MB"] = "Spremljeno na tabletu: 0.0 MB",
+            ["Enter the width in metres, e.g. 6.0"] = "Unesite širinu u metrima, npr. 6.0",
+            ["Distance between passes: {0:0.00} m"] = "Razmak prohoda: {0:0.00} m",
+            ["This tablet has no Bluetooth"] = "Ovaj tablet nema Bluetooth",
+            ["Bluetooth is off - turn it on and press Refresh"] = "Bluetooth je isključen - uključite ga i pritisnite Osvježi",
+            ["(no name)"] = "(bez naziva)",
+            ["Allow 'Nearby devices' for AgOpenGPS in Android settings"] = "Dopustite 'Uređaji u blizini' za AgOpenGPS u postavkama Androida",
+            ["No paired devices - press Pair..."] = "Nema uparenih uređaja - pritisnite Upari...",
+            ["Bluetooth: not connected"] = "Bluetooth: nije spojeno",
+            ["{0}: {1} - {2}"] = "{0}: {1} - {2}",
+            ["  (reconnects: {0})"] = "  (ponovnih spajanja: {0})",
+            ["Data: {0:0.0} Hz, {1}"] = "Podaci: {0:0.0} Hz, {1}",
+            ["no position yet"] = "još nema pozicije",
+            ["AgOpenGPS PGN (bridge)"] = "AgOpenGPS PGN (most)",
+            ["NMEA (receiver)"] = "NMEA (prijemnik)",
+            ["{0}  {1:0.0000000} {2:0.0000000}  sats {3}  HDOP {4:0.00}  age {5:0.0} s"] = "{0}  {1:0.0000000} {2:0.0000000}  sat. {3}  HDOP {4:0.00}  starost {5:0.0} s",
+            ["In {0:N0} B   out {1:N0} B   NMEA ok {2:N0} / bad {3:N0}   PGN {4:N0}   skipped {5:N0} B"] = "Ulaz {0:N0} B   izlaz {1:N0} B   NMEA ispravno {2:N0} / neispravno {3:N0}   PGN {4:N0}   preskočeno {5:N0} B",
+            ["not running (check settings)"] = "ne radi (provjerite postavke)",
+            ["off"] = "isključeno",
+            [", {0} frames, last {1:0.0} s ago, {2:N0} B to receiver"] = ", {0} okvira, zadnji prije {1:0.0} s, {2:N0} B prijemniku",
+            ["Open a field with a boundary, or connect to get a position first"] = "Najprije otvorite parcelu s međom ili se spojite da dobijete poziciju",
+            ["That area is too large ({0} tiles)"] = "To je područje preveliko ({0} kvadrata)",
+            ["Download the map?"] = "Preuzeti kartu?",
+            ["{0} map squares, about {1:0} MB. Best over Wi-Fi."] = "Kvadrata karte: {0}, oko {1:0} MB. Najbolje preko Wi-Fi mreže.",
+            ["Download"] = "Preuzmi",
+            ["Downloading... (press the button again to stop)"] = "Preuzimanje... (ponovno pritisnite gumb za prekid)",
+            ["Downloading {0} / {1}"] = "Preuzimanje {0} / {1}",
+            ["Download stopped"] = "Preuzimanje prekinuto",
+            ["Map ready. Saved on the tablet: {0:0.0} MB"] = "Karta je spremna. Spremljeno na tabletu: {0:0.0} MB",
+            ["{0} squares failed (no internet?). Try again later."] = "Neuspjelih kvadrata: {0} (nema interneta?). Pokušajte kasnije.",
+            ["Delete the saved map?"] = "Obrisati spremljenu kartu?",
+            ["It is downloaded again when needed. Do this only when you want newer imagery."] = "Ponovno će se preuzeti po potrebi. Učinite to samo ako želite novije snimke.",
+            ["< Back"] = "< Natrag",
+            ["  Settings"] = "  Postavke",
+            ["Receiver (Bluetooth)"] = "Prijemnik (Bluetooth)",
+            ["Refresh"] = "Osvježi",
+            ["Pair..."] = "Upari...",
+            ["Connect automatically when the app starts"] = "Automatski se spoji pri pokretanju aplikacije",
+            ["Implement width (m)"] = "Širina priključka (m)",
+            ["The real full width of the implement. The worked area always uses the full width."] = "Stvarna puna širina priključka. Obrađena površina uvijek koristi punu širinu.",
+            ["Overlap (m)"] = "Preklop (m)",
+            ["Only for the spacing between passes: passes are implement width minus overlap apart."] = "Samo za razmak prohoda: prohodi su razmaknuti za širinu priključka umanjenu za preklop.",
+            ["Guidance is for the antenna position."] = "Navođenje je za položaj antene.",
+            ["Vehicle"] = "Vozilo",
+            ["Metres. Measure from the middle of the rear axle. Left / behind = negative."] = "Metri. Mjerite od sredine stražnje osovine. Lijevo / iza = negativno.",
+            ["Antenna height above ground (corrects tilt on slopes; needs roll from the receiver)"] = "Visina antene od tla (ispravlja nagib na padinama; treba podatak o nagibu s prijemnika)",
+            ["Antenna ahead of the rear axle"] = "Antena ispred stražnje osovine",
+            ["Antenna right of the centre line"] = "Antena desno od središnje linije",
+            ["Implement working line behind the rear axle (front mounted = negative)"] = "Radna linija priključka iza stražnje osovine (prednji priključak = negativno)",
+            ["Implement centre right of the tractor centre line"] = "Sredina priključka desno od središnje linije traktora",
+            ["Wheelbase (simulator and steering)"] = "Međuosovinski razmak (simulator i upravljanje)",
+            ["Guidance follows the implement's centre line; the worked area is painted where the implement works."] = "Navođenje prati središnju liniju priključka; obrađena površina crta se ondje gdje priključak radi.",
+            ["Nudge step (cm)"] = "Korak pomaka (cm)",
+            ["Worked area"] = "Obrađena površina",
+            ["Record worked area (Work button, statistics)"] = "Bilježi obrađenu površinu (gumb Rad, statistika)",
+            ["Show worked area on the map"] = "Prikaži obrađenu površinu na karti",
+            ["Recording uses very little; on a slow tablet hide it from the map first."] = "Bilježenje troši vrlo malo; na sporom tabletu prvo je sakrijte s karte.",
+            ["Diagnostics"] = "Dijagnostika",
+            ["Show raw NMEA"] = "Prikaži sirove NMEA podatke",
+            ["NTRIP corrections"] = "NTRIP korekcije",
+            ["Send NTRIP corrections to the receiver over Bluetooth"] = "Šalji NTRIP korekcije prijemniku preko Bluetootha",
+            ["Turn off if the Raspberry Pi or receiver gets corrections itself."] = "Isključite ako Raspberry Pi ili prijemnik sam dobiva korekcije.",
+            ["Caster host"] = "Poslužitelj (caster)",
+            ["User"] = "Korisnik",
+            ["Password"] = "Lozinka",
+            ["Send GGA every (s, 0 = once)"] = "Šalji GGA svakih (s, 0 = jednom)",
+            ["Changes apply when you leave this screen; a running connection reconnects."] = "Promjene vrijede kad napustite ovaj zaslon; aktivna veza se ponovno spaja.",
+            ["Use the simulator instead of the receiver"] = "Koristi simulator umjesto prijemnika",
+            ["A virtual tractor with RTK fix, to try everything at home. Speed and steering on the driving screen."] = "Virtualni traktor s RTK fiksom, za isprobavanje kod kuće. Brzina i upravljanje su na zaslonu za vožnju.",
+            ["Start latitude (empty = open field or last position)"] = "Početna geografska širina (prazno = otvorena parcela ili zadnja pozicija)",
+            ["Start longitude"] = "Početna geografska dužina",
+            ["Satellite map"] = "Satelitska karta",
+            ["Show the satellite map"] = "Prikaži satelitsku kartu",
+            ["Each map square is downloaded once and kept on the tablet; it works without internet afterwards."] = "Svaki kvadrat karte preuzima se jednom i čuva na tabletu; nakon toga radi bez interneta.",
+            ["Download map for the open field"] = "Preuzmi kartu za otvorenu parcelu",
+            ["Clear map cache"] = "Obriši spremljenu kartu",
+            ["Map source (tile URL with {z} {x} {y})"] = "Izvor karte (URL s {z} {x} {y})",
+            ["Attribution shown on the map"] = "Navod izvora prikazan na karti",
+            ["Most detailed zoom to download (10-22, default 19)"] = "Najdetaljnije povećanje za preuzimanje (10-22, zadano 19)",
+            ["If close-up imagery is missing or grey in your area, try 18 or 17. Closer than this, the map is enlarged."] = "Ako u vašem području nema detaljnih snimki ili su sive, pokušajte 18 ili 17. Bliže od toga karta se povećava.",
+            ["Default: Esri World Imagery, free with attribution. Check the source's terms, especially for commercial use."] = "Zadano: Esri World Imagery, besplatno uz navod izvora. Provjerite uvjete izvora, posebno za komercijalnu upotrebu.",
+            ["Language"] = "Jezik",
+            ["System"] = "Sustav",
+
+            // ---------------------------------------------------------------- notification
+            ["Receiver connection"] = "Veza s prijemnikom",
+            ["Shown while AgOpenGPS is connected to the receiver"] = "Prikazuje se dok je AgOpenGPS spojen s prijemnikom",
+            ["Connected, no position"] = "Spojeno, nema pozicije",
+            ["Reconnecting to the receiver"] = "Ponovno spajanje s prijemnikom",
+            ["  ·  NTRIP: {0}"] = "  ·  NTRIP: {0}",
+            ["{0}  ·  {1} sats{2}"] = "{0}  ·  {1} sat.{2}",
+            ["Recording boundary: {0:0} m"] = "Snimanje međe: {0:0} m",
+            ["Recording line: press B in the app"] = "Snimanje linije: pritisnite B u aplikaciji",
+            ["{0}  pass {1}:  {2}"] = "{0}  prohod {1}:  {2}",
+            ["No field open"] = "Nema otvorene parcele",
+            ["OUTSIDE FIELD  ·  {0}"] = "IZVAN PARCELE  ·  {0}",
+
+            // ---------------------------------------------------------------- map view
+            ["Waiting for position"] = "Čeka se pozicija",
+            ["No position fix"] = "Nema fiksa pozicije",
+            ["No line: press A, drive, press B"] = "Nema linije: pritisnite A, vozite, pritisnite B",
+            ["{0:0.0} km wide"] = "širina {0:0.0} km",
+            ["{0:0} m wide"] = "širina {0:0} m",
+
+            // ---------------------------------------------------------------- app state, Bluetooth
+            ["Pick the receiver in Settings first"] = "Najprije odaberite prijemnik u Postavkama",
+            ["Simulator: set speed with + / -, steer with < >, or press Auto"] = "Simulator: brzina s + / -, upravljanje s < >, ili pritisnite Auto",
+            ["NTRIP settings incomplete - connecting without corrections"] = "NTRIP postavke nisu potpune - spajanje bez korekcija",
+            ["Bluetooth is off"] = "Bluetooth je isključen",
+            ["No device selected"] = "Nije odabran uređaj",
+            ["Could not connect"] = "Spajanje nije uspjelo",
+
+            // ---------------------------------------------------------------- core: fix, link, guidance, import
+            ["No fix"] = "Nema fiksa",
+            ["Dead reckoning"] = "Procjena položaja",
+            ["Manual"] = "Ručno",
+            ["Simulation"] = "Simulacija",
+            ["Connecting..."] = "Spajanje...",
+            ["Connected"] = "Spojeno",
+            ["Link closed by the device"] = "Uređaj je prekinuo vezu",
+            ["Stopped"] = "Zaustavljeno",
+            ["WaitingToRetry"] = "Čeka ponovni pokušaj",
+            ["Set point A first"] = "Najprije postavite točku A",
+            ["Start recording the boundary first"] = "Najprije pokrenite snimanje međe",
+            ["Drive all the way round the field first"] = "Najprije obiđite cijelu parcelu",
+            ["The file is empty"] = "Datoteka je prazna",
+            ["Not a GeoJSON or KML file"] = "Nije GeoJSON ni KML datoteka",
+            ["No field outline (polygon) found in the file"] = "U datoteci nema obrisa parcele (poligona)",
+            ["The coordinates are not latitude/longitude (WGS84). Export with EPSG:4326, not a national grid such as HTRS96/TM."] = "Koordinate nisu geografska širina/dužina (WGS84). Izvezite s EPSG:4326, a ne u nacionalnom sustavu kao HTRS96/TM.",
+
+            // ---------------------------------------------------------------- NTRIP (AgIO's client)
+            ["Reconnecting..."] = "Ponovno spajanje...",
+            ["Receiving corrections"] = "Primaju se korekcije",
+            ["Cannot log in"] = "Prijava nije uspjela",
+            ["Mountpoint not found"] = "Mountpoint nije pronađen",
+            ["Service is busy"] = "Usluga je zauzeta",
+            ["Service is starting up"] = "Usluga se pokreće",
+            ["No network"] = "Nema mreže",
+            ["Cannot reach the service"] = "Usluga nije dostupna",
+            ["Service not understood"] = "Odgovor usluge nije razumljiv",
+            ["Connected, waiting for data"] = "Spojeno, čekaju se podaci",
+            ["Connected, nothing coming in"] = "Spojeno, ništa ne stiže",
+            ["Connected. Waiting for corrections."] = "Spojeno. Čekaju se korekcije.",
+            ["Corrections stopped. Reconnecting."] = "Korekcije su prestale. Ponovno spajanje.",
+            ["No network connection."] = "Nema mrežne veze.",
+            ["The service denied access."] = "Usluga je odbila pristup.",
+            ["User name or password is not correct."] = "Korisničko ime ili lozinka nisu ispravni.",
+            ["User name, password or mountpoint is not correct."] = "Korisničko ime, lozinka ili mountpoint nisu ispravni.",
+            ["This service needs your e-mail address as user name."] = "Ova usluga traži vašu e-mail adresu kao korisničko ime.",
+            ["The service sent an empty answer."] = "Usluga je poslala prazan odgovor.",
+            ["The service closed the connection without sending corrections."] = "Usluga je zatvorila vezu bez slanja korekcija.",
+            ["The service closed the connection. Reconnecting."] = "Usluga je zatvorila vezu. Ponovno spajanje.",
+            ["The service answered something AgIO does not understand."] = "Usluga je odgovorila nešto što AgIO ne razumije.",
+        };
+    }
+}

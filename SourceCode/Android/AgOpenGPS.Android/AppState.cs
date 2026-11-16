@@ -42,6 +42,7 @@ namespace AgOpenGPS.Droid
                 if (_context != null) return;
                 _context = context.ApplicationContext;
                 Settings = new AppSettings(_context);
+                Tr.SetLanguage(Settings.Language);
                 string dir = _context.FilesDir.AbsolutePath;
                 Lines = new AbLineStore(Path.Combine(dir, "ablines.json"));
                 Fields = new FieldStore(Path.Combine(dir, "fields.json"));

@@ -25,6 +25,7 @@ namespace AgOpenGPS.Droid
             ToolWidth = _prefs.GetString("tool.width", "6.0");
             ToolOverlap = _prefs.GetString("tool.overlap", "0.0");
             ShowRawLog = _prefs.GetBoolean("ui.rawlog", false);
+            Language = _prefs.GetString("ui.language", Tr.System);
             RecordCoverage = _prefs.GetBoolean("coverage.record", true);
             AntennaHeight = _prefs.GetString("vehicle.antennaHeight", "0");
             AntennaForward = _prefs.GetString("vehicle.antennaForward", "0");
@@ -50,6 +51,8 @@ namespace AgOpenGPS.Droid
         /// <summary>Implement width and overlap in metres, as typed.</summary>
         public string ToolWidth, ToolOverlap;
         public bool ShowRawLog;
+        /// <summary>"system", "en" or "hr" (see <see cref="Tr"/>).</summary>
+        public string Language;
         /// <summary>Vehicle and implement offsets in metres, as typed (see VehicleGeometry).</summary>
         public string AntennaHeight, AntennaForward, AntennaRight, ToolBehind, ToolRight, Wheelbase;
         public string NudgeStepCm;
@@ -134,6 +137,7 @@ namespace AgOpenGPS.Droid
                 .PutString("tool.width", ToolWidth)
                 .PutString("tool.overlap", ToolOverlap)
                 .PutBoolean("ui.rawlog", ShowRawLog)
+                .PutString("ui.language", Language)
                 .PutBoolean("coverage.record", RecordCoverage)
                 .PutBoolean("coverage.show", ShowCoverage)
                 .PutString("vehicle.antennaHeight", AntennaHeight)

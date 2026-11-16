@@ -72,6 +72,12 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
 
 ## Using it
 
+### Language
+
+*Settings → Language / Jezik*: **System / Sustav** (Croatian if the tablet is set to Croatian),
+**English** or **Hrvatski**. The screens switch at once. The Croatian terms follow the AgOpenGPS
+translation: parcela, međa, AB linija, krivulja, preklop, prohod, pomak.
+
 ### First time: Settings
 
 1. **Pair** the receiver, ESP32 or Pi in Android's Bluetooth settings (*Settings → Pair...* opens

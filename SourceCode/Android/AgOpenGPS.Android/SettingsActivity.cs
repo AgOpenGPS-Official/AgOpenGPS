@@ -37,6 +37,8 @@ namespace AgOpenGPS.Droid
         private bool _refreshing;
 
         private Spinner _devices;
+        private Spinner _language;
+        private static readonly string[] LanguageCodes = { Tr.System, Tr.English, Tr.Croatian };
         private CheckBox _autoConnect, _ntripEnabled, _rawLog, _recordCoverage, _showCoverage, _useSim, _showMap;
         private EditText _mapMaxZoom;
         private EditText _antHeight, _antForward, _antRight, _toolBehind, _toolRight, _wheelbase, _nudgeStep, _simLat, _simLon, _mapUrl, _mapAttribution;
@@ -97,7 +99,7 @@ namespace AgOpenGPS.Droid
             s.UseSimulator = _useSim.Checked;
             if (!s.UseSimulator && (_simLat.Text.Trim().Length > 0 || _simLon.Text.Trim().Length > 0)
                 && (_simLat.Text.Trim() != s.SimLatitude || _simLon.Text.Trim() != s.SimLongitude))
-                Toast.MakeText(this, "The start position is used only with 'Use the simulator' ticked", ToastLength.Long).Show();
+                Toast.MakeText(this, Tr.T("The start position is used only with 'Use the simulator' ticked"), ToastLength.Long).Show();
             s.SimLatitude = _simLat.Text.Trim();
             s.SimLongitude = _simLon.Text.Trim();
             s.ShowMap = _showMap.Checked;
@@ -160,7 +162,7 @@ namespace AgOpenGPS.Droid
             Task.Run(() =>
             {
                 long bytes = AppState.Map.DiskBytes();
-                RunOnUiThread(() => _mapStatus.Text = string.Format(Inv, "Saved on the tablet: {0:0.0} MB", bytes / 1048576.0));
+                RunOnUiThread(() => _mapStatus.Text = string.Format(Inv, Tr.T("Saved on the tablet: {0:0.0} MB"), bytes / 1048576.0));
             });
             UpdateWorkingWidth();
         }
@@ -170,8 +172,8 @@ namespace AgOpenGPS.Droid
             double w = AppSettings.ParseMeters(_width.Text, double.NaN);
             double o = AppSettings.ParseMeters(_overlap.Text, double.NaN);
             _workingWidth.Text = double.IsNaN(w) || double.IsNaN(o)
-                ? "Enter the width in metres, e.g. 6.0"
-                : string.Format(Inv, "Distance between passes: {0:0.00} m", System.Math.Max(0.1, w - o));
+                ? Tr.T("Enter the width in metres, e.g. 6.0")
+                : string.Format(Inv, Tr.T("Distance between passes: {0:0.00} m"), System.Math.Max(0.1, w - o));
         }
 
         private void LoadPairedDevices()
@@ -180,8 +182,8 @@ namespace AgOpenGPS.Droid
             var names = new List<string>();
             BluetoothAdapter adapter = AppState.Adapter;
 
-            if (adapter == null) names.Add("This tablet has no Bluetooth");
-            else if (!adapter.IsEnabled) names.Add("Bluetooth is off - turn it on and press Refresh");
+            if (adapter == null) names.Add(Tr.T("This tablet has no Bluetooth"));
+            else if (!adapter.IsEnabled) names.Add(Tr.T("Bluetooth is off - turn it on and press Refresh"));
             else
             {
                 try
@@ -189,14 +191,14 @@ namespace AgOpenGPS.Droid
                     foreach (BluetoothDevice d in adapter.BondedDevices.OrderBy(d => d.Name ?? ""))
                     {
                         _deviceAddresses.Add(d.Address);
-                        names.Add((string.IsNullOrEmpty(d.Name) ? "(no name)" : d.Name) + "  " + d.Address);
+                        names.Add((string.IsNullOrEmpty(d.Name) ? Tr.T("(no name)") : d.Name) + "  " + d.Address);
                     }
                 }
                 catch (Java.Lang.SecurityException)
                 {
-                    names.Add("Allow 'Nearby devices' for AgOpenGPS in Android settings");
+                    names.Add(Tr.T("Allow 'Nearby devices' for AgOpenGPS in Android settings"));
                 }
-                if (names.Count == 0) names.Add("No paired devices - press Pair...");
+                if (names.Count == 0) names.Add(Tr.T("No paired devices - press Pair..."));
             }
 
             var a = new ArrayAdapter<string>(this, global::Android.Resource.Layout.SimpleSpinnerItem, names);
@@ -228,32 +230,32 @@ namespace AgOpenGPS.Droid
             var sb = new StringBuilder();
             if (snap == null)
             {
-                sb.Append("Bluetooth: not connected");
+                sb.Append(Tr.T("Bluetooth: not connected"));
             }
             else
             {
-                sb.Append(AppState.Simulator != null ? "Simulator: " : "Bluetooth: ").Append(snap.State).Append(" - ").Append(snap.Message);
-                if (snap.Connects > 1) sb.Append("  (reconnects: ").Append(snap.Connects - 1).Append(')');
+                sb.Append(Tr.F("{0}: {1} - {2}", AppState.Simulator != null ? "Simulator" : "Bluetooth", Tr.T(snap.State.ToString()), Tr.T(snap.Message)));
+                if (snap.Connects > 1) sb.Append(Tr.F("  (reconnects: {0})", snap.Connects - 1));
                 SessionStats st = snap.Session;
                 if (st != null)
                 {
                     GnssFix f = st.Latest;
-                    sb.Append('\n').AppendFormat(Inv, "Data: {0:0.0} Hz, {1}", st.RateHz,
-                        f == null ? "no position yet" : f.Source == FixSource.Pgn ? "AgOpenGPS PGN (bridge)" : "NMEA (receiver)");
+                    sb.Append('\n').AppendFormat(Inv, Tr.T("Data: {0:0.0} Hz, {1}"), st.RateHz,
+                        f == null ? Tr.T("no position yet") : f.Source == FixSource.Pgn ? Tr.T("AgOpenGPS PGN (bridge)") : Tr.T("NMEA (receiver)"));
                     if (f != null && f.HasPosition)
-                        sb.Append('\n').AppendFormat(Inv, "{0}  {1:0.0000000} {2:0.0000000}  sats {3}  HDOP {4:0.00}  age {5:0.0} s",
-                            GnssFix.FixQualityName(f.FixQuality), f.Latitude, f.Longitude, f.Satellites, f.Hdop, f.AgeSeconds);
+                        sb.Append('\n').AppendFormat(Inv, Tr.T("{0}  {1:0.0000000} {2:0.0000000}  sats {3}  HDOP {4:0.00}  age {5:0.0} s"),
+                            Tr.T(GnssFix.FixQualityName(f.FixQuality)), f.Latitude, f.Longitude, f.Satellites, f.Hdop, f.AgeSeconds);
                     sb.Append('\n').AppendFormat(Inv,
-                        "In {0:N0} B   out {1:N0} B   NMEA ok {2:N0} / bad {3:N0}   PGN {4:N0}   skipped {5:N0} B",
+                        Tr.T("In {0:N0} B   out {1:N0} B   NMEA ok {2:N0} / bad {3:N0}   PGN {4:N0}   skipped {5:N0} B"),
                         st.BytesIn, st.BytesOut, st.Sentences, st.BadSentences, st.PgnFrames, st.SkippedBytes);
                 }
                 NtripStatus n = snap.Ntrip;
                 sb.Append('\n').Append("NTRIP: ");
-                if (n == null) sb.Append(AppState.Settings.NtripEnabled ? "not running (check settings)" : "off");
+                if (n == null) sb.Append(AppState.Settings.NtripEnabled ? Tr.T("not running (check settings)") : Tr.T("off"));
                 else
                 {
                     sb.Append(n.Headline);
-                    if (n.Frames > 0) sb.AppendFormat(Inv, ", {0} frames, last {1:0.0} s ago, {2:N0} B to receiver", n.Frames, n.SecondsSinceLastFrame, snap.NtripBytesSent);
+                    if (n.Frames > 0) sb.AppendFormat(Inv, Tr.T(", {0} frames, last {1:0.0} s ago, {2:N0} B to receiver"), n.Frames, n.SecondsSinceLastFrame, snap.NtripBytesSent);
                     else if (!string.IsNullOrEmpty(n.Message)) sb.Append(" - ").Append(n.Message);
                 }
             }
@@ -261,6 +263,17 @@ namespace AgOpenGPS.Droid
 
             _raw.Visibility = _rawLog.Checked ? ViewStates.Visible : ViewStates.Gone;
             if (_rawLog.Checked) _raw.Text = string.Join("\n", AppState.RawLog.ToArray());
+        }
+
+        private void ChangeLanguage(string code)
+        {
+            if (code == AppState.Settings.Language) return; // the spinner reports its first selection too
+            SaveFields();
+            AppState.Settings.Language = code;
+            AppState.Settings.Save();
+            int before = Tr.Version;
+            Tr.SetLanguage(code);
+            if (Tr.Version != before) Recreate(); // rebuild this screen; the driving screen follows on return
         }
 
         // ---------------------------------------------------------------- map download
@@ -294,7 +307,7 @@ namespace AgOpenGPS.Droid
             }
             else
             {
-                Toast.MakeText(this, "Open a field with a boundary, or connect to get a position first", ToastLength.Long).Show();
+                Toast.MakeText(this, Tr.T("Open a field with a boundary, or connect to get a position first"), ToastLength.Long).Show();
                 return;
             }
             double margin = 100;
@@ -306,15 +319,15 @@ namespace AgOpenGPS.Droid
             for (int z = 14; z <= AppState.Settings.MapMaxZoomLevel; z++) tiles.AddRange(MapTiles.TilesFor(south, west, north, east, z));
             if (tiles.Count > 3000)
             {
-                Toast.MakeText(this, "That area is too large (" + tiles.Count + " tiles)", ToastLength.Long).Show();
+                Toast.MakeText(this, Tr.F("That area is too large ({0} tiles)", tiles.Count), ToastLength.Long).Show();
                 return;
             }
 
             new AlertDialog.Builder(this)
-                .SetTitle("Download the map?")
-                .SetMessage(string.Format(Inv, "{0} map squares, about {1:0} MB. Best over Wi-Fi.", tiles.Count, tiles.Count * 0.02))
-                .SetPositiveButton("Download", (s, e) => StartPrefetch(tiles))
-                .SetNegativeButton("Cancel", (s, e) => { })
+                .SetTitle(Tr.T("Download the map?"))
+                .SetMessage(string.Format(Inv, Tr.T("{0} map squares, about {1:0} MB. Best over Wi-Fi."), tiles.Count, tiles.Count * 0.02))
+                .SetPositiveButton(Tr.T("Download"), (s, e) => StartPrefetch(tiles))
+                .SetNegativeButton(Tr.T("Cancel"), (s, e) => { })
                 .Show();
         }
 
@@ -322,18 +335,18 @@ namespace AgOpenGPS.Droid
         {
             _prefetch = new System.Threading.CancellationTokenSource();
             var ct = _prefetch.Token;
-            _mapStatus.Text = "Downloading... (press the button again to stop)";
+            _mapStatus.Text = Tr.T("Downloading... (press the button again to stop)");
             Task.Run(async () =>
             {
                 int failed = await AppState.Map.PrefetchAsync(tiles,
-                    (done, total) => RunOnUiThread(() => _mapStatus.Text = string.Format(Inv, "Downloading {0} / {1}", done, total)), ct);
+                    (done, total) => RunOnUiThread(() => _mapStatus.Text = string.Format(Inv, Tr.T("Downloading {0} / {1}"), done, total)), ct);
                 long bytes = AppState.Map.DiskBytes();
                 RunOnUiThread(() =>
                 {
                     _prefetch = null;
-                    _mapStatus.Text = ct.IsCancellationRequested ? "Download stopped"
-                        : failed == 0 ? string.Format(Inv, "Map ready. Saved on the tablet: {0:0.0} MB", bytes / 1048576.0)
-                        : string.Format(Inv, "{0} squares failed (no internet?). Try again later.", failed);
+                    _mapStatus.Text = ct.IsCancellationRequested ? Tr.T("Download stopped")
+                        : failed == 0 ? string.Format(Inv, Tr.T("Map ready. Saved on the tablet: {0:0.0} MB"), bytes / 1048576.0)
+                        : string.Format(Inv, Tr.T("{0} squares failed (no internet?). Try again later."), failed);
                 });
             });
         }
@@ -341,14 +354,14 @@ namespace AgOpenGPS.Droid
         private void ClearMapCache()
         {
             new AlertDialog.Builder(this)
-                .SetTitle("Delete the saved map?")
-                .SetMessage("It is downloaded again when needed. Do this only when you want newer imagery.")
-                .SetPositiveButton("Delete", (s, e) =>
+                .SetTitle(Tr.T("Delete the saved map?"))
+                .SetMessage(Tr.T("It is downloaded again when needed. Do this only when you want newer imagery."))
+                .SetPositiveButton(Tr.T("Delete"), (s, e) =>
                 {
                     AppState.Map.ClearDisk();
-                    _mapStatus.Text = "Saved on the tablet: 0.0 MB";
+                    _mapStatus.Text = Tr.T("Saved on the tablet: 0.0 MB");
                 })
-                .SetNegativeButton("Cancel", (s, e) => { })
+                .SetNegativeButton(Tr.T("Cancel"), (s, e) => { })
                 .Show();
         }
 
@@ -366,9 +379,9 @@ namespace AgOpenGPS.Droid
             bar.SetBackgroundColor(Color.ParseColor("#37474F"));
             bar.SetPadding(Dp(8), Dp(4), Dp(8), Dp(4));
             bar.SetGravity(GravityFlags.CenterVertical);
-            bar.AddView(Ui.Button(this, "< Back", Finish, 48));
+            bar.AddView(Ui.Button(this, Tr.T("< Back"), Finish, 48));
             TextView title = Ui.Text(this, 22, true, "#FFFFFF");
-            title.Text = "  Settings";
+            title.Text = Tr.T("  Settings");
             bar.AddView(title);
             root.AddView(bar);
 
@@ -377,51 +390,63 @@ namespace AgOpenGPS.Droid
 
             // Left column: receiver, implement.
             LinearLayout left = Ui.Card(this);
-            left.AddView(Ui.Heading(this, "Receiver (Bluetooth)"));
+
+            // Language first, labelled in both languages so it can be found in either.
+            left.AddView(Ui.Heading(this, "Language / Jezik"));
+            _language = new Spinner(this);
+            var langAdapter = new ArrayAdapter<string>(this, global::Android.Resource.Layout.SimpleSpinnerItem,
+                new[] { "System / Sustav", "English", "Hrvatski" });
+            langAdapter.SetDropDownViewResource(global::Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            _language.Adapter = langAdapter;
+            _language.SetSelection(Math.Max(0, Array.IndexOf(LanguageCodes, AppState.Settings.Language)), false);
+            _language.ItemSelected += (s, e) => ChangeLanguage(LanguageCodes[e.Position]);
+            left.AddView(_language);
+
+            left.AddView(Ui.Heading(this, Tr.T("Receiver (Bluetooth)")));
             _devices = new Spinner(this);
             left.AddView(_devices);
             var devButtons = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            devButtons.AddView(Ui.Button(this, "Refresh", LoadPairedDevices), Ui.Weight(1));
-            devButtons.AddView(Ui.Button(this, "Pair...", () => StartActivity(new Intent(global::Android.Provider.Settings.ActionBluetoothSettings))), Ui.Weight(1));
+            devButtons.AddView(Ui.Button(this, Tr.T("Refresh"), LoadPairedDevices), Ui.Weight(1));
+            devButtons.AddView(Ui.Button(this, Tr.T("Pair..."), () => StartActivity(new Intent(global::Android.Provider.Settings.ActionBluetoothSettings))), Ui.Weight(1));
             left.AddView(devButtons);
-            _autoConnect = new CheckBox(this) { Text = "Connect automatically when the app starts" };
+            _autoConnect = new CheckBox(this) { Text = Tr.T("Connect automatically when the app starts") };
             left.AddView(_autoConnect);
 
-            left.AddView(Ui.Heading(this, "Implement"));
-            _width = Ui.Field(this, left, "Implement width (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
-            left.AddView(Ui.Hint(this, "The real full width of the implement. The worked area always uses the full width."));
-            _overlap = Ui.Field(this, left, "Overlap (m)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
-            left.AddView(Ui.Hint(this, "Only for the spacing between passes: passes are implement width minus overlap apart."));
+            left.AddView(Ui.Heading(this, Tr.T("Implement")));
+            _width = Ui.Field(this, left, Tr.T("Implement width (m)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, Tr.T("The real full width of the implement. The worked area always uses the full width.")));
+            _overlap = Ui.Field(this, left, Tr.T("Overlap (m)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, Tr.T("Only for the spacing between passes: passes are implement width minus overlap apart.")));
             _workingWidth = Ui.Hint(this, "");
             left.AddView(_workingWidth);
             _width.TextChanged += (s, e) => UpdateWorkingWidth();
             _overlap.TextChanged += (s, e) => UpdateWorkingWidth();
-            left.AddView(Ui.Hint(this, "Guidance is for the antenna position."));
+            left.AddView(Ui.Hint(this, Tr.T("Guidance is for the antenna position.")));
 
-            left.AddView(Ui.Heading(this, "Vehicle"));
-            left.AddView(Ui.Hint(this, "Metres. Measure from the middle of the rear axle. Left / behind = negative."));
+            left.AddView(Ui.Heading(this, Tr.T("Vehicle")));
+            left.AddView(Ui.Hint(this, Tr.T("Metres. Measure from the middle of the rear axle. Left / behind = negative.")));
             InputTypes signed = InputTypes.ClassNumber | InputTypes.NumberFlagDecimal | InputTypes.NumberFlagSigned;
-            _antHeight = Ui.Field(this, left, "Antenna height above ground (corrects tilt on slopes; needs roll from the receiver)", signed);
-            _antForward = Ui.Field(this, left, "Antenna ahead of the rear axle", signed);
-            _antRight = Ui.Field(this, left, "Antenna right of the centre line", signed);
-            _toolBehind = Ui.Field(this, left, "Implement working line behind the rear axle (front mounted = negative)", signed);
-            _toolRight = Ui.Field(this, left, "Implement centre right of the tractor centre line", signed);
-            _wheelbase = Ui.Field(this, left, "Wheelbase (simulator and steering)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
-            left.AddView(Ui.Hint(this, "Guidance follows the implement's centre line; the worked area is painted where the implement works."));
-            _nudgeStep = Ui.Field(this, left, "Nudge step (cm)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            _antHeight = Ui.Field(this, left, Tr.T("Antenna height above ground (corrects tilt on slopes; needs roll from the receiver)"), signed);
+            _antForward = Ui.Field(this, left, Tr.T("Antenna ahead of the rear axle"), signed);
+            _antRight = Ui.Field(this, left, Tr.T("Antenna right of the centre line"), signed);
+            _toolBehind = Ui.Field(this, left, Tr.T("Implement working line behind the rear axle (front mounted = negative)"), signed);
+            _toolRight = Ui.Field(this, left, Tr.T("Implement centre right of the tractor centre line"), signed);
+            _wheelbase = Ui.Field(this, left, Tr.T("Wheelbase (simulator and steering)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, Tr.T("Guidance follows the implement's centre line; the worked area is painted where the implement works.")));
+            _nudgeStep = Ui.Field(this, left, Tr.T("Nudge step (cm)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
 
-            left.AddView(Ui.Heading(this, "Worked area"));
-            _recordCoverage = new CheckBox(this) { Text = "Record worked area (Work button, statistics)" };
+            left.AddView(Ui.Heading(this, Tr.T("Worked area")));
+            _recordCoverage = new CheckBox(this) { Text = Tr.T("Record worked area (Work button, statistics)") };
             left.AddView(_recordCoverage);
-            _showCoverage = new CheckBox(this) { Text = "Show worked area on the map" };
+            _showCoverage = new CheckBox(this) { Text = Tr.T("Show worked area on the map") };
             left.AddView(_showCoverage);
             _recordCoverage.CheckedChange += (s, e) => _showCoverage.Enabled = e.IsChecked;
-            left.AddView(Ui.Hint(this, "Recording uses very little; on a slow tablet hide it from the map first."));
+            left.AddView(Ui.Hint(this, Tr.T("Recording uses very little; on a slow tablet hide it from the map first.")));
 
-            left.AddView(Ui.Heading(this, "Diagnostics"));
+            left.AddView(Ui.Heading(this, Tr.T("Diagnostics")));
             _status = Ui.Text(this, 14);
             left.AddView(_status);
-            _rawLog = new CheckBox(this) { Text = "Show raw NMEA" };
+            _rawLog = new CheckBox(this) { Text = Tr.T("Show raw NMEA") };
             left.AddView(_rawLog);
             _raw = Ui.Text(this, 12);
             _raw.Typeface = Typeface.Monospace;
@@ -433,40 +458,40 @@ namespace AgOpenGPS.Droid
 
             // Right column: NTRIP.
             LinearLayout right = Ui.Card(this);
-            right.AddView(Ui.Heading(this, "NTRIP corrections"));
-            _ntripEnabled = new CheckBox(this) { Text = "Send NTRIP corrections to the receiver over Bluetooth" };
+            right.AddView(Ui.Heading(this, Tr.T("NTRIP corrections")));
+            _ntripEnabled = new CheckBox(this) { Text = Tr.T("Send NTRIP corrections to the receiver over Bluetooth") };
             right.AddView(_ntripEnabled);
-            right.AddView(Ui.Hint(this, "Turn off if the Raspberry Pi or receiver gets corrections itself."));
-            _host = Ui.Field(this, right, "Caster host", InputTypes.ClassText | InputTypes.TextVariationUri);
+            right.AddView(Ui.Hint(this, Tr.T("Turn off if the Raspberry Pi or receiver gets corrections itself.")));
+            _host = Ui.Field(this, right, Tr.T("Caster host"), InputTypes.ClassText | InputTypes.TextVariationUri);
             _port = Ui.Field(this, right, "Port", InputTypes.ClassNumber);
             _mount = Ui.Field(this, right, "Mountpoint", InputTypes.ClassText);
-            _user = Ui.Field(this, right, "User", InputTypes.ClassText);
-            _password = Ui.Field(this, right, "Password", InputTypes.ClassText | InputTypes.TextVariationPassword);
-            _gga = Ui.Field(this, right, "Send GGA every (s, 0 = once)", InputTypes.ClassNumber);
-            right.AddView(Ui.Hint(this, "Changes apply when you leave this screen; a running connection reconnects."));
+            _user = Ui.Field(this, right, Tr.T("User"), InputTypes.ClassText);
+            _password = Ui.Field(this, right, Tr.T("Password"), InputTypes.ClassText | InputTypes.TextVariationPassword);
+            _gga = Ui.Field(this, right, Tr.T("Send GGA every (s, 0 = once)"), InputTypes.ClassNumber);
+            right.AddView(Ui.Hint(this, Tr.T("Changes apply when you leave this screen; a running connection reconnects.")));
 
             right.AddView(Ui.Heading(this, "Simulator"));
-            _useSim = new CheckBox(this) { Text = "Use the simulator instead of the receiver" };
+            _useSim = new CheckBox(this) { Text = Tr.T("Use the simulator instead of the receiver") };
             right.AddView(_useSim);
-            right.AddView(Ui.Hint(this, "A virtual tractor with RTK fix, to try everything at home. Speed and steering on the driving screen."));
-            _simLat = Ui.Field(this, right, "Start latitude (empty = open field or last position)", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal | InputTypes.NumberFlagSigned);
-            _simLon = Ui.Field(this, right, "Start longitude", InputTypes.ClassNumber | InputTypes.NumberFlagDecimal | InputTypes.NumberFlagSigned);
+            right.AddView(Ui.Hint(this, Tr.T("A virtual tractor with RTK fix, to try everything at home. Speed and steering on the driving screen.")));
+            _simLat = Ui.Field(this, right, Tr.T("Start latitude (empty = open field or last position)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal | InputTypes.NumberFlagSigned);
+            _simLon = Ui.Field(this, right, Tr.T("Start longitude"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal | InputTypes.NumberFlagSigned);
 
-            right.AddView(Ui.Heading(this, "Satellite map"));
-            _showMap = new CheckBox(this) { Text = "Show the satellite map" };
+            right.AddView(Ui.Heading(this, Tr.T("Satellite map")));
+            _showMap = new CheckBox(this) { Text = Tr.T("Show the satellite map") };
             right.AddView(_showMap);
-            right.AddView(Ui.Hint(this, "Each map square is downloaded once and kept on the tablet; it works without internet afterwards."));
+            right.AddView(Ui.Hint(this, Tr.T("Each map square is downloaded once and kept on the tablet; it works without internet afterwards.")));
             var mapButtons = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            mapButtons.AddView(Ui.Button(this, "Download map for the open field", DownloadFieldMap), Ui.Weight(2));
-            mapButtons.AddView(Ui.Button(this, "Clear map cache", ClearMapCache), Ui.Weight(1));
+            mapButtons.AddView(Ui.Button(this, Tr.T("Download map for the open field"), DownloadFieldMap), Ui.Weight(2));
+            mapButtons.AddView(Ui.Button(this, Tr.T("Clear map cache"), ClearMapCache), Ui.Weight(1));
             right.AddView(mapButtons);
             _mapStatus = Ui.Hint(this, "");
             right.AddView(_mapStatus);
-            _mapUrl = Ui.Field(this, right, "Map source (tile URL with {z} {x} {y})", InputTypes.ClassText | InputTypes.TextVariationUri);
-            _mapAttribution = Ui.Field(this, right, "Attribution shown on the map", InputTypes.ClassText);
-            _mapMaxZoom = Ui.Field(this, right, "Most detailed zoom to download (10-22, default 19)", InputTypes.ClassNumber);
-            right.AddView(Ui.Hint(this, "If close-up imagery is missing or grey in your area, try 18 or 17. Closer than this, the map is enlarged."));
-            right.AddView(Ui.Hint(this, "Default: Esri World Imagery, free with attribution. Check the source's terms, especially for commercial use."));
+            _mapUrl = Ui.Field(this, right, Tr.T("Map source (tile URL with {z} {x} {y})"), InputTypes.ClassText | InputTypes.TextVariationUri);
+            _mapAttribution = Ui.Field(this, right, Tr.T("Attribution shown on the map"), InputTypes.ClassText);
+            _mapMaxZoom = Ui.Field(this, right, Tr.T("Most detailed zoom to download (10-22, default 19)"), InputTypes.ClassNumber);
+            right.AddView(Ui.Hint(this, Tr.T("If close-up imagery is missing or grey in your area, try 18 or 17. Closer than this, the map is enlarged.")));
+            right.AddView(Ui.Hint(this, Tr.T("Default: Esri World Imagery, free with attribution. Check the source's terms, especially for commercial use.")));
 
             var rightScroll = new ScrollView(this);
             rightScroll.AddView(right);

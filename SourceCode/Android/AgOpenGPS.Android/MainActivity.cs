@@ -31,6 +31,7 @@ namespace AgOpenGPS.Droid
         private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
         private Handler _ui;
+        private int _builtLanguage;
         private bool _refreshing;
         private bool _autoConnectTried;
         private LineKind _kind = LineKind.Straight;
@@ -52,6 +53,7 @@ namespace AgOpenGPS.Droid
             AppState.Init(this);
             _ui = new Handler(Looper.MainLooper);
             SetContentView(BuildLayout());
+            _builtLanguage = Tr.Version;
 
             if (!HasBluetoothPermission()) RequestPermissionsNeeded();
             else
@@ -64,6 +66,11 @@ namespace AgOpenGPS.Droid
         protected override void OnResume()
         {
             base.OnResume();
+            if (_builtLanguage != Tr.Version)
+            {
+                Recreate(); // the language was changed in Settings: rebuild with the new texts
+                return;
+            }
             _refreshing = true;
             _ui.Post(Refresh);
         }
@@ -82,7 +89,7 @@ namespace AgOpenGPS.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             if (requestCode != PermissionRequest) return;
             if (HasBluetoothPermission()) TryAutoConnect();
-            else Toast.MakeText(this, "Bluetooth permission is needed to talk to the receiver", ToastLength.Long).Show();
+            else Toast.MakeText(this, Tr.T("Bluetooth permission is needed to talk to the receiver"), ToastLength.Long).Show();
         }
 
         private bool HasBluetoothPermission()
@@ -109,8 +116,9 @@ namespace AgOpenGPS.Droid
             if (s.AutoConnect && (s.UseSimulator || !string.IsNullOrEmpty(s.DeviceAddress))) Connect();
         }
 
+        /// <summary>Shows a message, translated (also messages from the core library).</summary>
         private void Toast_(string text, bool longer = false)
-            => Toast.MakeText(this, text, longer ? ToastLength.Long : ToastLength.Short).Show();
+            => Toast.MakeText(this, Tr.T(text), longer ? ToastLength.Long : ToastLength.Short).Show();
 
         // ---------------------------------------------------------------- connection
 
@@ -150,24 +158,24 @@ namespace AgOpenGPS.Droid
             for (int i = 0; i < fields.Count; i++)
             {
                 Field f = fields[i];
-                items[i] = (open != null && f.Id == open.Id ? "▶ " : "") + f.Name + "   "
-                    + (f.HasBoundary ? f.AreaHectares.ToString("0.00", Inv) + " ha" : "no boundary")
-                    + ", " + AppState.Lines.LinesFor(f.Id).Count + " lines";
+                items[i] = Tr.F("{0}{1}   {2}, {3} lines", open != null && f.Id == open.Id ? "▶ " : "", f.Name,
+                    f.HasBoundary ? f.AreaHectares.ToString("0.00", Inv) + " ha" : Tr.T("no boundary"),
+                    AppState.Lines.LinesFor(f.Id).Count);
             }
-            items[fields.Count] = "Export all fields to a file...";
-            items[fields.Count + 1] = "Import from file (GeoJSON / KML)...";
+            items[fields.Count] = Tr.T("Export all fields to a file...");
+            items[fields.Count + 1] = Tr.T("Import from file (GeoJSON / KML)...");
 
             var b = new AlertDialog.Builder(this)
-                .SetTitle(fields.Count == 0 ? "No fields yet" : "Fields")
-                .SetPositiveButton("New field", (s, e) => NewField(null))
-                .SetNegativeButton("Close", (s, e) => { })
+                .SetTitle(fields.Count == 0 ? Tr.T("No fields yet") : Tr.T("Fields"))
+                .SetPositiveButton(Tr.T("New field"), (s, e) => NewField(null))
+                .SetNegativeButton(Tr.T("Close"), (s, e) => { })
                 .SetItems(items, (s, e) =>
                 {
                     if (e.Which < fields.Count) ShowFieldActions(fields[e.Which]);
-                    else if (e.Which == fields.Count) ExportFields(fields, "AgOpenGPS fields");
+                    else if (e.Which == fields.Count) ExportFields(fields, Tr.T("AgOpenGPS fields"));
                     else PickImportFile();
                 });
-            if (open != null) b.SetNeutralButton("Close field", (s, e) => AppState.OpenField(null));
+            if (open != null) b.SetNeutralButton(Tr.T("Close field"), (s, e) => AppState.OpenField(null));
             b.Show();
         }
 
@@ -175,13 +183,13 @@ namespace AgOpenGPS.Droid
         {
             new AlertDialog.Builder(this)
                 .SetTitle(field.Name)
-                .SetItems(new[] { "Open", "Rename", "Clear worked area", "Export to a file...", "Delete" }, (s, e) =>
+                .SetItems(new[] { Tr.T("Open"), Tr.T("Rename"), Tr.T("Clear worked area"), Tr.T("Export to a file..."), Tr.T("Delete") }, (s, e) =>
                 {
                     switch (e.Which)
                     {
                         case 0: AppState.OpenField(field); break;
                         case 1:
-                            AskText("Rename field", field.Name, name =>
+                            AskText(Tr.T("Rename field"), field.Name, name =>
                             {
                                 AppState.Fields.Rename(field.Id, name);
                                 AppState.RefreshField();
@@ -190,18 +198,18 @@ namespace AgOpenGPS.Droid
                         case 2:
                             if (AppState.Fields.Active?.Id != field.Id)
                             {
-                                Toast_("Open the field first");
+                                Toast_(Tr.T("Open the field first"));
                                 break;
                             }
-                            Confirm("Clear the worked area of " + field.Name + "?", "Use this to start the next job in this field.",
-                                "Clear", AppState.ClearCoverage);
+                            Confirm(Tr.F("Clear the worked area of {0}?", field.Name), Tr.T("Use this to start the next job in this field."),
+                                Tr.T("Clear"), AppState.ClearCoverage);
                             break;
                         case 3:
                             ExportFields(new[] { field }, field.Name);
                             break;
                         case 4:
-                            Confirm("Delete " + field.Name + "?", "Its boundary and its " + AppState.Lines.LinesFor(field.Id).Count
-                                + " lines are deleted too.", "Delete", () => AppState.DeleteField(field));
+                            Confirm(Tr.F("Delete {0}?", field.Name), Tr.F("Its boundary and its {0} lines are deleted too.",
+                                AppState.Lines.LinesFor(field.Id).Count), Tr.T("Delete"), () => AppState.DeleteField(field));
                             break;
                     }
                 })
@@ -217,7 +225,7 @@ namespace AgOpenGPS.Droid
         {
             if (fields.Count == 0)
             {
-                Toast_("No fields to export");
+                Toast_(Tr.T("No fields to export"));
                 return;
             }
             _pendingExport = FieldExport.ToGeoJson(fields, id => AppState.Lines.LinesFor(id));
@@ -238,11 +246,11 @@ namespace AgOpenGPS.Droid
                 using (var stream = ContentResolver.OpenOutputStream(uri, "wt"))
                 using (var writer = new System.IO.StreamWriter(stream, new System.Text.UTF8Encoding(false)))
                     writer.Write(text);
-                Toast_("Fields saved. Import the file on any tablet to restore them.", true);
+                Toast_(Tr.T("Fields saved. Import the file on any tablet to restore them."), true);
             }
             catch (Exception ex)
             {
-                Toast_("Could not save: " + ex.Message, true);
+                Toast_(Tr.F("Could not save: {0}", ex.Message), true);
             }
         }
 
@@ -266,7 +274,7 @@ namespace AgOpenGPS.Droid
             }
             if (requestCode != ImportRequest || resultCode != Result.Ok || data?.Data == null) return;
 
-            string text, fileName = "Imported field";
+            string text, fileName = Tr.T("Imported field");
             try
             {
                 using (var stream = ContentResolver.OpenInputStream(data.Data))
@@ -281,7 +289,7 @@ namespace AgOpenGPS.Droid
             }
             catch (Exception ex)
             {
-                Toast_("Could not read the file: " + ex.Message, true);
+                Toast_(Tr.F("Could not read the file: {0}", ex.Message), true);
                 return;
             }
 
@@ -311,20 +319,19 @@ namespace AgOpenGPS.Droid
             }
             AppState.OpenField(AppState.Fields.Fields.FirstOrDefault(x => x.Id == first.Id));
             _ui.PostDelayed(() => _view.ShowWholeField(), 300); // after the next refresh has the new field
-            Toast_(string.Format(Inv, "Imported {0} field{1} ({2:0.00} ha){3}. '{4}' is open.",
-                imported.Count, imported.Count == 1 ? "" : "s", hectares,
-                lineCount == 0 ? "" : string.Format(Inv, " and {0} line{1}", lineCount, lineCount == 1 ? "" : "s"), first.Name), true);
+            Toast_(Tr.F("Imported fields: {0} ({1:0.00} ha), lines: {2}. '{3}' is open.",
+                imported.Count, hectares, lineCount, first.Name), true);
         }
 
         /// <summary>Asks for a name, creates and opens the field, then runs <paramref name="then"/>.</summary>
         private void NewField(Action then)
         {
-            AskText("New field", AppState.Fields.NextName(), name =>
+            AskText(Tr.T("New field"), AppState.Fields.NextName(), name =>
             {
                 Field f = AppState.Fields.Create(name);
                 AppState.OpenField(f);
                 if (then != null) then();
-                else Toast_("Field '" + f.Name + "' created. Record its boundary or an A-B line.", true);
+                else Toast_(Tr.F("Field '{0}' created. Record its boundary or an A-B line.", f.Name), true);
             });
         }
 
@@ -345,7 +352,7 @@ namespace AgOpenGPS.Droid
             }
             if (field.HasBoundary)
             {
-                Confirm("Replace the boundary of " + field.Name + "?", null, "Record new", ChooseBoundarySide);
+                Confirm(Tr.F("Replace the boundary of {0}?", field.Name), null, Tr.T("Record new"), ChooseBoundarySide);
                 return;
             }
             ChooseBoundarySide();
@@ -356,21 +363,21 @@ namespace AgOpenGPS.Droid
             double half = AppState.Settings.WorkingWidthMeters / 2;
             string[] items =
             {
-                "Antenna path",
-                string.Format(Inv, "Left end of implement ({0:0.0} m left)", half),
-                string.Format(Inv, "Right end of implement ({0:0.0} m right)", half),
+                Tr.T("Antenna path"),
+                string.Format(Inv, Tr.T("Left end of implement ({0:0.0} m left)"), half),
+                string.Format(Inv, Tr.T("Right end of implement ({0:0.0} m right)"), half),
             };
             new AlertDialog.Builder(this)
-                .SetTitle("What follows the field edge?")
+                .SetTitle(Tr.T("What follows the field edge?"))
                 .SetItems(items, (s, e) =>
                 {
                     var side = (BoundarySide)e.Which;
                     if (!AppState.Guidance.StartBoundary(side))
                     {
-                        Toast_("No position yet");
+                        Toast_(Tr.T("No position yet"));
                         return;
                     }
-                    Toast_("Drive round the field with the implement up, then press Finish near where you started", true);
+                    Toast_(Tr.T("Drive round the field with the implement up, then press Finish near where you started"), true);
                 })
                 .Show();
         }
@@ -386,12 +393,12 @@ namespace AgOpenGPS.Droid
             }
             if (field == null)
             {
-                Toast_("The field was closed while recording", true);
+                Toast_(Tr.T("The field was closed while recording"), true);
                 return;
             }
             AppState.Fields.SetBoundary(field.Id, boundary);
             AppState.RefreshField();
-            Toast_(string.Format(Inv, "Boundary of {0} saved: {1:0.00} ha", field.Name, area / 10000), true);
+            Toast_(string.Format(Inv, Tr.T("Boundary of {0} saved: {1:0.00} ha"), field.Name, area / 10000), true);
         }
 
         // ---------------------------------------------------------------- lines
@@ -400,12 +407,12 @@ namespace AgOpenGPS.Droid
         {
             if (!AppState.Guidance.SetA(_kind))
             {
-                Toast_("No position yet");
+                Toast_(Tr.T("No position yet"));
                 return;
             }
             Toast_(_kind == LineKind.Curve
-                ? "A set. Drive along the edge, then press B"
-                : "A set. Drive straight along the edge, then press B", true);
+                ? Tr.T("A set. Drive along the edge, then press B")
+                : Tr.T("A set. Drive straight along the edge, then press B"), true);
         }
 
         private void OnBClicked()
@@ -420,7 +427,7 @@ namespace AgOpenGPS.Droid
             line.FieldId = fieldId;
             AppState.Lines.Add(line, makeActive: true);
             AppState.UseLine(line);
-            Toast_(string.Format(Inv, "Saved {0} ({1:0} m). Rename it under Lines.", line.Name, line.LengthMeters), true);
+            Toast_(string.Format(Inv, Tr.T("Saved {0} ({1:0} m). Rename it under Lines."), line.Name, line.LengthMeters), true);
         }
 
         private void SetKind(LineKind kind)
@@ -435,10 +442,11 @@ namespace AgOpenGPS.Droid
             Field field = AppState.Fields.Active;
             IReadOnlyList<AbLine> lines = AppState.Lines.LinesFor(field?.Id);
             AbLine active = AppState.Guidance.ActiveLine;
-            string where = field == null ? "without a field" : "in " + field.Name;
+            string title = field == null ? Tr.T("Lines without a field") : Tr.F("Lines in {0}", field.Name);
             if (lines.Count == 0)
             {
-                Toast_("No lines " + where + " yet: press A, drive, press B", true);
+                Toast_(field == null ? Tr.T("No lines without a field yet: press A, drive, press B")
+                    : Tr.F("No lines in {0} yet: press A, drive, press B", field.Name), true);
                 return;
             }
 
@@ -448,14 +456,14 @@ namespace AgOpenGPS.Droid
                 AbLine l = lines[i];
                 items[i] = string.Format(Inv, "{0}{1}   {2}, {3:0} m, {4:0}°",
                     active != null && l.Id == active.Id ? "▶ " : "", l.Name,
-                    l.Kind == LineKind.Curve ? "curve" : "straight", l.LengthMeters, l.HeadingDegrees);
+                    l.Kind == LineKind.Curve ? Tr.T("curve") : Tr.T("straight"), l.LengthMeters, l.HeadingDegrees);
             }
 
             new AlertDialog.Builder(this)
-                .SetTitle("Lines " + where)
+                .SetTitle(title)
                 .SetItems(items, (s, e) => ShowLineActions(lines[e.Which]))
-                .SetNeutralButton("No line", (s, e) => AppState.UseLine(null))
-                .SetNegativeButton("Close", (s, e) => { })
+                .SetNeutralButton(Tr.T("No line"), (s, e) => AppState.UseLine(null))
+                .SetNegativeButton(Tr.T("Close"), (s, e) => { })
                 .Show();
         }
 
@@ -463,20 +471,20 @@ namespace AgOpenGPS.Droid
         {
             new AlertDialog.Builder(this)
                 .SetTitle(line.Name)
-                .SetItems(new[] { "Use this line", "Rename", "Delete" }, (s, e) =>
+                .SetItems(new[] { Tr.T("Use this line"), Tr.T("Rename"), Tr.T("Delete") }, (s, e) =>
                 {
                     switch (e.Which)
                     {
                         case 0: AppState.UseLine(line); break;
                         case 1:
-                            AskText("Rename line", line.Name, name =>
+                            AskText(Tr.T("Rename line"), line.Name, name =>
                             {
                                 AppState.Lines.Rename(line.Id, name);
                                 if (AppState.Guidance.ActiveLine?.Id == line.Id) AppState.UseLine(AppState.Lines.Active);
                             });
                             break;
                         case 2:
-                            Confirm("Delete " + line.Name + "?", null, "Delete", () =>
+                            Confirm(Tr.F("Delete {0}?", line.Name), null, Tr.T("Delete"), () =>
                             {
                                 bool wasActive = AppState.Guidance.ActiveLine?.Id == line.Id;
                                 AppState.Lines.Delete(line.Id);
@@ -502,12 +510,12 @@ namespace AgOpenGPS.Droid
             new AlertDialog.Builder(this)
                 .SetTitle(title)
                 .SetView(frame)
-                .SetPositiveButton("OK", (s, e) =>
+                .SetPositiveButton(Tr.T("OK"), (s, e) =>
                 {
                     string text = input.Text?.Trim();
                     ok(string.IsNullOrEmpty(text) ? initial : text);
                 })
-                .SetNegativeButton("Cancel", (s, e) => { })
+                .SetNegativeButton(Tr.T("Cancel"), (s, e) => { })
                 .Show();
         }
 
@@ -516,7 +524,7 @@ namespace AgOpenGPS.Droid
             var b = new AlertDialog.Builder(this)
                 .SetTitle(title)
                 .SetPositiveButton(yes, (s, e) => action())
-                .SetNegativeButton("Cancel", (s, e) => { });
+                .SetNegativeButton(Tr.T("Cancel"), (s, e) => { });
             if (message != null) b.SetMessage(message);
             b.Show();
         }
@@ -539,10 +547,10 @@ namespace AgOpenGPS.Droid
                 double field = g.FieldSquareMeters / 10000.0;
                 double inside = double.IsNaN(g.WorkedInsideSquareMeters) ? 0 : g.WorkedInsideSquareMeters / 10000.0;
                 double left = Math.Max(0, field - inside);
-                return string.Format(Inv, "Worked {0:0.00} ha\nLeft {1:0.00} ha  ({2:0} % done)\nOverlap {3:0.00} ha",
+                return string.Format(Inv, Tr.T("Worked {0:0.00} ha\nLeft {1:0.00} ha  ({2:0} % done)\nOverlap {3:0.00} ha"),
                     inside, left, Math.Min(100, inside / field * 100), overlap);
             }
-            return string.Format(Inv, "Worked {0:0.00} ha\nOverlap {1:0.00} ha", worked, overlap);
+            return string.Format(Inv, Tr.T("Worked {0:0.00} ha\nOverlap {1:0.00} ha"), worked, overlap);
         }
 
         /// <summary>"◀ 12 cm" = right of the line, steer left; "12 cm ▶" = steer right.</summary>
@@ -550,7 +558,7 @@ namespace AgOpenGPS.Droid
         {
             double cm = meters * 100.0;
             double abs = Math.Abs(cm);
-            if (abs < 2) return "▲ on line";
+            if (abs < 2) return Tr.T("▲ on line");
             string amount = abs < 100 ? abs.ToString("0", Inv) + " cm" : (abs / 100).ToString("0.00", Inv) + " m";
             return cm > 0 ? "◀ " + amount : amount + " ▶";
         }
@@ -567,7 +575,7 @@ namespace AgOpenGPS.Droid
             _view.MapMaxZoom = settings.MapMaxZoomLevel;
             RenderSimulator();
 
-            // "Follow" stands out while the map was moved by hand.
+            // Tr.T("Follow") stands out while the map was moved by hand.
             bool following = _view.Following;
             _followButton.SetBackgroundColor(Color.ParseColor(following ? "#E0E0E0" : "#FB8C00"));
             _followButton.SetTextColor(following ? Color.ParseColor("#212121") : Color.White);
@@ -579,34 +587,34 @@ namespace AgOpenGPS.Droid
             _work.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
             _stats.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
             _workLabel.Visibility = _work.Visibility;
-            _work.Text = g.Working ? "Work: ON" : "Work: OFF";
+            _work.Text = g.Working ? Tr.T("Work: ON") : Tr.T("Work: OFF");
             _work.SetBackgroundColor(Color.ParseColor(g.Working ? "#2E7D32" : "#9E9E9E"));
             _work.SetTextColor(Color.White);
             _stats.Text = g.WorkedSquareMeters > 0 || !double.IsNaN(g.FieldSquareMeters) ? FormatStats(g) : "";
 
-            _connect.Text = AppState.IsConnected ? "Disconnect" : "Connect";
+            _connect.Text = AppState.IsConnected ? Tr.T("Disconnect") : Tr.T("Connect");
 
             // Fix badge and info line.
             SessionStats st = link?.Session;
             GnssFix fix = st?.Latest;
             bool fresh = link != null && link.State == LinkState.Connected && fix != null && st.SecondsSinceFix >= 0 && st.SecondsSinceFix < 3;
-            if (link == null) SetBadge("Not connected", "#757575");
-            else if (link.State != LinkState.Connected) SetBadge(link.State == LinkState.Connecting ? "Connecting" : "Reconnecting", "#757575");
-            else if (!fresh) SetBadge(AppState.Simulator != null ? "Sim: no position" : "No position", "#757575");
-            else if (AppState.Simulator != null) SetBadge("SIM " + GnssFix.FixQualityName(fix.FixQuality), "#6A1B9A");
-            else SetBadge(GnssFix.FixQualityName(fix.FixQuality), Ui.FixColor(fix.FixQuality));
+            if (link == null) SetBadge(Tr.T("Not connected"), "#757575");
+            else if (link.State != LinkState.Connected) SetBadge(link.State == LinkState.Connecting ? Tr.T("Connecting") : Tr.T("Reconnecting"), "#757575");
+            else if (!fresh) SetBadge(AppState.Simulator != null ? Tr.T("Sim: no position") : Tr.T("No position"), "#757575");
+            else if (AppState.Simulator != null) SetBadge("SIM " + Tr.T(GnssFix.FixQualityName(fix.FixQuality)), "#6A1B9A");
+            else SetBadge(Tr.T(GnssFix.FixQualityName(fix.FixQuality)), Ui.FixColor(fix.FixQuality));
 
             _fixInfo.Text = fresh
-                ? string.Format(Inv, "{0} sats   HDOP {1}   age {2} s   {3:0.0} Hz   {4} km/h   {5}",
+                ? string.Format(Inv, Tr.T("{0} sats   HDOP {1}   age {2} s   {3:0.0} Hz   {4} km/h   {5}"),
                     fix.Satellites, Num(fix.Hdop, "0.0"), Num(fix.AgeSeconds, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link))
-                : link == null ? "Press Connect" : SourceText(link);
+                : link == null ? Tr.T("Press Connect") : SourceText(link);
 
             // Without RTK fix the centimetres are not to be trusted: say so, and grey out the guidance.
             bool rtk = fresh && fix.FixQuality == 4;
             if (fresh && !rtk)
             {
-                _accuracy.Text = fix.FixQuality == 5 ? "RTK FLOAT - accuracy about ±0.3 m"
-                    : "NO RTK - accuracy about ±1-2 m" + (link.Ntrip != null ? "  (corrections lost)" : "");
+                _accuracy.Text = fix.FixQuality == 5 ? Tr.T("RTK FLOAT - accuracy about ±0.3 m")
+                    : Tr.T("NO RTK - accuracy about ±1-2 m") + (link.Ntrip != null ? Tr.T("  (corrections lost)") : "");
                 _accuracy.SetBackgroundColor(Color.ParseColor(fix.FixQuality == 5 ? "#EF6C00" : "#C62828"));
                 _accuracy.Visibility = ViewStates.Visible;
             }
@@ -621,10 +629,10 @@ namespace AgOpenGPS.Droid
                 double abs = Math.Abs(r.CrossTrackMeters * 100.0);
                 _xte.Text = FormatOffset(r.CrossTrackMeters);
                 _xte.SetTextColor(Color.ParseColor(!rtk ? "#90A4AE" : abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
-                _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}{4}",
+                _lineInfo.Text = string.Format(Inv, Tr.T("{0}   pass {1}   {2:0.0}°{3}{4}"),
                     g.ActiveLine.Name, r.Pass, r.TravelLineHeading,
-                    double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, "   heading err {0:+0.0;-0.0}°", r.HeadingErrorDegrees),
-                    g.ActiveLine.NudgeMeters == 0 ? "" : string.Format(Inv, "   nudged {0:+0;-0} cm", g.ActiveLine.NudgeMeters * 100));
+                    double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, Tr.T("   heading err {0:+0.0;-0.0}°"), r.HeadingErrorDegrees),
+                    g.ActiveLine.NudgeMeters == 0 ? "" : string.Format(Inv, Tr.T("   nudged {0:+0;-0} cm"), g.ActiveLine.NudgeMeters * 100));
             }
             else
             {
@@ -635,13 +643,13 @@ namespace AgOpenGPS.Droid
             // Field edge: warn within half the working width plus 3 m.
             if (fresh && g.InsideField == false)
             {
-                _edge.Text = "OUTSIDE FIELD";
+                _edge.Text = Tr.T("OUTSIDE FIELD");
                 _edge.SetBackgroundColor(Color.ParseColor("#C62828"));
                 _edge.Visibility = ViewStates.Visible;
             }
             else if (fresh && g.InsideField == true && g.DistanceToBoundary < g.PassWidth / 2 + 3)
             {
-                _edge.Text = string.Format(Inv, "Field edge {0:0.0} m", g.DistanceToBoundary);
+                _edge.Text = string.Format(Inv, Tr.T("Field edge {0:0.0} m"), g.DistanceToBoundary);
                 _edge.SetBackgroundColor(Color.ParseColor("#EF6C00"));
                 _edge.Visibility = ViewStates.Visible;
             }
@@ -649,24 +657,24 @@ namespace AgOpenGPS.Droid
 
             // Field and boundary buttons.
             Field field = g.ActiveField;
-            _field.Text = field == null ? "Field: none" : "Field: " + field.Name
-                + (field.HasBoundary ? "  " + field.AreaHectares.ToString("0.0", Inv) + " ha" : "");
-            _boundary.Text = g.RecordingBoundary ? "Finish boundary" : field != null && field.HasBoundary ? "New boundary" : "Record boundary";
+            _field.Text = field == null ? Tr.T("Field: none") : Tr.F("Field: {0}", field.Name
+                + (field.HasBoundary ? "  " + field.AreaHectares.ToString("0.0", Inv) + " ha" : ""));
+            _boundary.Text = g.RecordingBoundary ? Tr.T("Finish boundary") : field != null && field.HasBoundary ? Tr.T("New boundary") : Tr.T("Record boundary");
             _cancelBoundary.Visibility = g.RecordingBoundary ? ViewStates.Visible : ViewStates.Gone;
 
             // Line recording state.
             _cancel.Visibility = g.Recording ? ViewStates.Visible : ViewStates.Gone;
             _b.Enabled = g.Recording;
-            _a.Text = g.Recording ? "Restart A" : "A";
+            _a.Text = g.Recording ? Tr.T("Restart A") : "A";
 
             if (g.RecordingBoundary)
             {
-                _recordInfo.Text = string.Format(Inv, "Boundary: {0:0} m driven, {1:0} m to the start",
+                _recordInfo.Text = string.Format(Inv, Tr.T("Boundary: {0:0} m driven, {1:0} m to the start"),
                     g.BoundaryRecordedMeters, double.IsNaN(g.BoundaryGapMeters) ? 0 : g.BoundaryGapMeters);
             }
             else if (g.Recording)
             {
-                _recordInfo.Text = string.Format(Inv, "Recording {0}: {1:0} m from A", g.RecordingKind == LineKind.Curve ? "curve" : "line",
+                _recordInfo.Text = Tr.F(g.RecordingKind == LineKind.Curve ? Tr.T("Recording curve: {0:0} m from A") : Tr.T("Recording line: {0:0} m from A"),
                     double.IsNaN(g.RecordedMeters) ? 0 : g.RecordedMeters);
             }
             else _recordInfo.Text = "";
@@ -695,7 +703,7 @@ namespace AgOpenGPS.Droid
             _simPanel.Visibility = sim == null ? ViewStates.Gone : ViewStates.Visible;
             if (sim == null) return;
             _simSpeed.Text = string.Format(Inv, "{0:0} km/h\n{1:+0;-0;0}°", sim.SpeedKmh, sim.WheelAngle);
-            _simAuto.Text = sim.AutoSteer ? "Auto ON" : "Auto";
+            _simAuto.Text = sim.AutoSteer ? Tr.T("Auto ON") : "Auto";
             _simAuto.SetTextColor(Color.ParseColor(sim.AutoSteer ? "#2E7D32" : "#212121"));
         }
 
@@ -703,20 +711,21 @@ namespace AgOpenGPS.Droid
         private static string SourceText(LinkSnapshot link)
         {
             string source = AppState.Simulator != null ? "Simulator" : "Bluetooth";
-            if (link.State != LinkState.Connected) return source + ": " + link.Message;
+            if (link.State != LinkState.Connected) return Tr.F("{0}: {1}", source, Tr.T(link.Message));
             SessionStats st = link.Session;
             if (st == null || st.BytesIn == 0)
-                return source + ": connected, but no data" + (AppState.Simulator != null ? "" : " from the receiver (is it on and wired to the bridge?)");
+                return Tr.F(AppState.Simulator != null ? Tr.T("{0}: connected, but no data")
+                    : Tr.T("{0}: connected, but no data from the receiver (is it on and wired to the bridge?)"), source);
             if (st.Sentences == 0 && st.PgnFrames == 0)
-                return source + ": data arrives but no position sentences (check the receiver's output and baud rate)";
-            return source + ": connected, no position fix yet";
+                return Tr.F("{0}: data arrives but no position sentences (check the receiver's output and baud rate)", source);
+            return Tr.F("{0}: connected, no position fix yet", source);
         }
 
         private static string NtripText(LinkSnapshot link)
         {
             NtripStatus n = link.Ntrip;
             if (n == null) return "";
-            return n.Frames > 0 && n.SecondsSinceLastFrame >= 0 && n.SecondsSinceLastFrame < 10 ? "NTRIP ok" : "NTRIP: " + n.Headline;
+            return n.Frames > 0 && n.SecondsSinceLastFrame >= 0 && n.SecondsSinceLastFrame < 10 ? "NTRIP ok" : Tr.F("NTRIP: {0}", Tr.T(n.Headline));
         }
 
         private void SetBadge(string text, string color)
@@ -758,9 +767,9 @@ namespace AgOpenGPS.Droid
             _fixInfo.SetSingleLine(true);
             _fixInfo.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
             bar.AddView(_fixInfo, Ui.Weight(1));
-            _connect = Ui.Button(this, "Connect", OnConnectClicked, 48);
+            _connect = Ui.Button(this, Tr.T("Connect"), OnConnectClicked, 48);
             bar.AddView(_connect);
-            bar.AddView(Ui.Button(this, "Settings", () => StartActivity(new Intent(this, typeof(SettingsActivity))), 48));
+            bar.AddView(Ui.Button(this, Tr.T("Settings"), () => StartActivity(new Intent(this, typeof(SettingsActivity))), 48));
             root.AddView(bar);
 
             var body = new LinearLayout(this) { Orientation = Orientation.Horizontal };
@@ -805,11 +814,11 @@ namespace AgOpenGPS.Droid
             }
             MapButton("+", () => _view.ZoomBy(1.5));
             MapButton("−", () => _view.ZoomBy(1 / 1.5));
-            MapButton("Field", () =>
+            MapButton(Tr.T("Field"), () =>
             {
-                if (!_view.ShowWholeField()) Toast_("Open a field with a boundary, or select a line");
+                if (!_view.ShowWholeField()) Toast_(Tr.T("Open a field with a boundary, or select a line"));
             });
-            _followButton = MapButton("Follow", () => _view.Follow());
+            _followButton = MapButton(Tr.T("Follow"), () => _view.Follow());
             var mp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent,
                 GravityFlags.Right | GravityFlags.CenterVertical) { RightMargin = Dp(8) };
             frame.AddView(mapButtons, mp);
@@ -830,10 +839,10 @@ namespace AgOpenGPS.Droid
             _simPanel.AddView(Ui.Button(this, ">", () => SimSteer(+3), 48));
             _simAuto = Ui.Button(this, "Auto", () => { GnssSimulator sim = AppState.Simulator; if (sim != null) sim.AutoSteer = !sim.AutoSteer; }, 48);
             _simPanel.AddView(_simAuto);
-            _simPanel.AddView(Ui.Button(this, "To field", () =>
+            _simPanel.AddView(Ui.Button(this, Tr.T("To field"), () =>
             {
                 if (AppState.MoveSimulatorToField()) _view.Follow();
-                else Toast_("Open a field with a boundary first");
+                else Toast_(Tr.T("Open a field with a boundary first"));
             }, 48));
             _simPanel.Visibility = ViewStates.Gone;
             var sp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Bottom | GravityFlags.Left)
@@ -845,27 +854,27 @@ namespace AgOpenGPS.Droid
             var panel = new LinearLayout(this) { Orientation = Orientation.Vertical };
             panel.SetPadding(Dp(8), 0, Dp(8), Dp(8));
 
-            _workLabel = Label("Implement");
+            _workLabel = Label(Tr.T("Implement"));
             panel.AddView(_workLabel);
-            _work = Ui.Button(this, "Work: OFF", () => AppState.SetWorking(!AppState.Guidance.Working), 64);
+            _work = Ui.Button(this, Tr.T("Work: OFF"), () => AppState.SetWorking(!AppState.Guidance.Working), 64);
             _work.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 22);
             panel.AddView(_work);
             _stats = Ui.Text(this, 15, false, "#ECEFF1");
             panel.AddView(_stats);
 
-            panel.AddView(Label("Field"));
-            _field = Ui.Button(this, "Field: none", ShowFields, 52);
+            panel.AddView(Label(Tr.T("Field")));
+            _field = Ui.Button(this, Tr.T("Field: none"), ShowFields, 52);
             _field.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 16);
             panel.AddView(_field);
-            _boundary = Ui.Button(this, "Record boundary", OnBoundaryClicked, 52);
+            _boundary = Ui.Button(this, Tr.T("Record boundary"), OnBoundaryClicked, 52);
             panel.AddView(_boundary);
-            _cancelBoundary = Ui.Button(this, "Cancel boundary", () => AppState.Guidance.CancelBoundary(), 44);
+            _cancelBoundary = Ui.Button(this, Tr.T("Cancel boundary"), () => AppState.Guidance.CancelBoundary(), 44);
             panel.AddView(_cancelBoundary);
 
-            panel.AddView(Label("New line"));
+            panel.AddView(Label(Tr.T("New line")));
             var kinds = new LinearLayout(this) { Orientation = Orientation.Horizontal };
-            _straight = Ui.Button(this, "Straight", () => SetKind(LineKind.Straight), 48);
-            _curve = Ui.Button(this, "Curve", () => SetKind(LineKind.Curve), 48);
+            _straight = Ui.Button(this, Tr.T("Straight"), () => SetKind(LineKind.Straight), 48);
+            _curve = Ui.Button(this, Tr.T("Curve"), () => SetKind(LineKind.Curve), 48);
             kinds.AddView(_straight, Ui.Weight(1));
             kinds.AddView(_curve, Ui.Weight(1));
             panel.AddView(kinds);
@@ -878,20 +887,20 @@ namespace AgOpenGPS.Droid
             ab.AddView(_a, Ui.Weight(1));
             ab.AddView(_b, Ui.Weight(1));
             panel.AddView(ab);
-            _cancel = Ui.Button(this, "Cancel line", () => AppState.Guidance.CancelAb(), 44);
+            _cancel = Ui.Button(this, Tr.T("Cancel line"), () => AppState.Guidance.CancelAb(), 44);
             panel.AddView(_cancel);
             _recordInfo = Ui.Text(this, 14, false, "#FFAB91");
             panel.AddView(_recordInfo);
-            panel.AddView(Ui.Button(this, "Lines...", ShowLines, 56));
+            panel.AddView(Ui.Button(this, Tr.T("Lines..."), ShowLines, 56));
 
             // Nudge: move the active line a step left/right (as seen from the seat), snap it to here, reset.
-            panel.AddView(Label("Nudge line"));
+            panel.AddView(Label(Tr.T("Nudge line")));
             var nudge = new LinearLayout(this) { Orientation = Orientation.Horizontal };
             nudge.AddView(Ui.Button(this, "◀", () => AppState.Nudge(-1), 52), Ui.Weight(1));
-            nudge.AddView(Ui.Button(this, "Snap", AppState.SnapLine, 52), Ui.Weight(1.2f));
+            nudge.AddView(Ui.Button(this, Tr.T("Snap"), AppState.SnapLine, 52), Ui.Weight(1.2f));
             nudge.AddView(Ui.Button(this, "▶", () => AppState.Nudge(+1), 52), Ui.Weight(1));
             panel.AddView(nudge);
-            panel.AddView(Ui.Button(this, "Reset nudge", AppState.ResetNudge, 44));
+            panel.AddView(Ui.Button(this, Tr.T("Reset nudge"), AppState.ResetNudge, 44));
 
             var scroll = new ScrollView(this);
             scroll.AddView(panel);

@@ -101,9 +101,9 @@ namespace AgOpenGPS.Droid
         private void CreateChannel()
         {
             var nm = (NotificationManager)GetSystemService(NotificationService);
-            var channel = new NotificationChannel(ChannelId, "Receiver connection", NotificationImportance.Low)
+            var channel = new NotificationChannel(ChannelId, Tr.T("Receiver connection"), NotificationImportance.Low)
             {
-                Description = "Shown while AgOpenGPS is connected to the receiver",
+                Description = Tr.T("Shown while AgOpenGPS is connected to the receiver"),
             };
             channel.SetShowBadge(false);
             nm.CreateNotificationChannel(channel);
@@ -118,7 +118,7 @@ namespace AgOpenGPS.Droid
 
             Describe(out string title, out string text);
             var stopAction = new Notification.Action.Builder(
-                Icon.CreateWithResource(this, global::Android.Resource.Drawable.IcMenuCloseClearCancel), "Disconnect", stopPi).Build();
+                Icon.CreateWithResource(this, global::Android.Resource.Drawable.IcMenuCloseClearCancel), Tr.T("Disconnect"), stopPi).Build();
 
             return new Notification.Builder(this, ChannelId)
                 .SetSmallIcon(global::Android.Resource.Drawable.IcMenuMyLocation)
@@ -138,7 +138,7 @@ namespace AgOpenGPS.Droid
             if (link == null)
             {
                 title = "AgOpenGPS";
-                text = "Not connected";
+                text = Tr.T("Not connected");
                 return;
             }
 
@@ -146,23 +146,23 @@ namespace AgOpenGPS.Droid
             bool fresh = link.State == LinkState.Connected && fix != null && link.Session.SecondsSinceFix >= 0 && link.Session.SecondsSinceFix < 3;
             if (!fresh)
             {
-                title = link.State == LinkState.Connected ? "Connected, no position" : "Reconnecting to the receiver";
+                title = link.State == LinkState.Connected ? Tr.T("Connected, no position") : Tr.T("Reconnecting to the receiver");
             }
             else
             {
                 NtripStatus n = link.Ntrip;
-                string ntrip = n == null ? "" : n.Frames > 0 && n.SecondsSinceLastFrame < 10 ? "  ·  NTRIP ok" : "  ·  NTRIP: " + n.Headline;
-                title = string.Format(Inv, "{0}  ·  {1} sats{2}", GnssFix.FixQualityName(fix.FixQuality), fix.Satellites, ntrip);
+                string ntrip = n == null ? "" : n.Frames > 0 && n.SecondsSinceLastFrame < 10 ? "  ·  NTRIP ok" : Tr.F("  ·  NTRIP: {0}", Tr.T(n.Headline));
+                title = string.Format(Inv, Tr.T("{0}  ·  {1} sats{2}"), Tr.T(GnssFix.FixQualityName(fix.FixQuality)), fix.Satellites, ntrip);
             }
 
             GuidanceSnapshot g = AppState.Guidance.GetSnapshot();
-            if (g.RecordingBoundary) text = string.Format(Inv, "Recording boundary: {0:0} m", g.BoundaryRecordedMeters);
-            else if (g.Recording) text = "Recording line: press B in the app";
+            if (g.RecordingBoundary) text = string.Format(Inv, Tr.T("Recording boundary: {0:0} m"), g.BoundaryRecordedMeters);
+            else if (g.Recording) text = Tr.T("Recording line: press B in the app");
             else if (g.Result != null && fresh)
-                text = string.Format(Inv, "{0}  pass {1}:  {2}", g.ActiveLine.Name, g.Result.Pass, MainActivity.FormatOffset(g.Result.CrossTrackMeters));
-            else text = g.ActiveField != null ? g.ActiveField.Name : "No field open";
+                text = string.Format(Inv, Tr.T("{0}  pass {1}:  {2}"), g.ActiveLine.Name, g.Result.Pass, MainActivity.FormatOffset(g.Result.CrossTrackMeters));
+            else text = g.ActiveField != null ? g.ActiveField.Name : Tr.T("No field open");
 
-            if (g.InsideField == false) text = "OUTSIDE FIELD  ·  " + text;
+            if (g.InsideField == false) text = Tr.F("OUTSIDE FIELD  ·  {0}", text);
             if (g.WorkedSquareMeters > 0) text += "  ·  " + MainActivity.FormatStats(g).Replace("\n", "  ");
         }
     }

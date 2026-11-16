@@ -29,6 +29,14 @@ The PGN format (`[0x80, 0x81, source, pgn, length, data..., crc]`) and the NMEA 
 (GGA, VTG, RMC, HDT, PANDA, PAOGI) must stay compatible with the Windows AgOpenGPS and AgIO,
 so existing modules and bridges keep working.
 
+## Translations
+
+The app is in English and Croatian. Every text shown on screen goes through `Tr.T("English text")`
+or `Tr.F("English {0} format", args)` (`AgOpenGPS.Android/Tr.cs`), and needs a Croatian entry in
+`Tr.cs` with the same `{0}` placeholders. Build whole sentences with placeholders, never by
+gluing pieces ("Delete " + name), because the word order differs. Messages from the core library
+stay English there and are translated where they are shown.
+
 ## User Preferences
 
 - **Language**: English

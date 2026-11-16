@@ -214,7 +214,7 @@ namespace AgOpenGPS.Droid
 
             if (s?.DrawPlane == null)
             {
-                canvas.DrawText(s == null || s.Fix == null ? "Waiting for position" : "No position fix", Width / 2f, Height / 2f, _hint);
+                canvas.DrawText(s == null || s.Fix == null ? Tr.T("Waiting for position") : Tr.T("No position fix"), Width / 2f, Height / 2f, _hint);
                 return;
             }
 
@@ -250,7 +250,7 @@ namespace AgOpenGPS.Droid
             }
             else
             {
-                canvas.DrawText("Waiting for position", Width / 2f, Height / 2f, _hint);
+                canvas.DrawText(Tr.T("Waiting for position"), Width / 2f, Height / 2f, _hint);
                 return;
             }
             _lastScale = scale;
@@ -343,10 +343,10 @@ namespace AgOpenGPS.Droid
             }
 
             if (s.ActiveLine == null && !s.Recording && !s.RecordingBoundary && s.Boundary.Count < 3)
-                canvas.DrawText("No line: press A, drive, press B", Width / 2f, Height * 0.2f, _hint);
+                canvas.DrawText(Tr.T("No line: press A, drive, press B"), Width / 2f, Height * 0.2f, _hint);
 
             // Scale: the width of the view in metres.
-            canvas.DrawText(viewMeters >= 1000 ? (viewMeters / 1000).ToString("0.0") + " km wide" : viewMeters.ToString("0") + " m wide",
+            canvas.DrawText(viewMeters >= 1000 ? Tr.F("{0:0.0} km wide", viewMeters / 1000) : Tr.F("{0:0} m wide", viewMeters),
                 10 * _density, Height - 8 * _density, _scaleText);
         }
 
