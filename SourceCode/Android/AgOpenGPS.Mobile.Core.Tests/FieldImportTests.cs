@@ -50,7 +50,7 @@ namespace AgOpenGPS.Mobile.Core.Tests
         [Test]
         public void ProjectedCoordinates_GiveAClearError()
         {
-            string json = "{\"type\":\"Polygon\",\"coordinates\":[[[480660.2,5036821.45],[480653.07,5036826.92],[480612.91,5036838.21],[480660.2,5036821.45]]]}";
+            string json = "{\"type\":\"Polygon\",\"coordinates\":[[[500000.0,5000000.0],[500100.0,5000000.0],[500100.0,5000100.0],[500000.0,5000000.0]]]}";
             var ex = Assert.Throws<FormatException>(() => FieldImport.Parse(json, "x"));
             Assert.That(ex.Message, Does.Contain("WGS84"));
         }
