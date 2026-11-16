@@ -92,6 +92,11 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
   satellites, HDOP, rate, speed, NTRIP state, and **Connect / Disconnect**.
 - **Guidance view**, heading up: the current pass bold yellow, the recorded line (pass 0) blue,
   neighbouring passes grey, the vehicle as a white arrow.
+- **Moving the map:** **pinch** or **+ / −** to zoom, **drag** to look around, **double tap**
+  to zoom in. Dragging stops following the tractor and keeps the map still; **Follow** (orange
+  while you are looking around) returns to the tractor, heading up. **Field** shows the whole
+  field, north up. Without a position the open field is shown. The width of the view is shown
+  bottom left.
 - **Lightbar** across the top: how much and which way to steer. The app takes a goal point on
   the pass a few metres ahead (3 m when slow, about 6 m at 12 km/h, up to 15 m) and lights one
   segment per degree between the tractor's heading and that point, towards the side to steer:

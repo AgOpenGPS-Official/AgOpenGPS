@@ -38,6 +38,7 @@ namespace AgOpenGPS.Droid
         private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo, _stats;
         private LightbarView _lightbar;
         private LinearLayout _simPanel;
+        private Button _followButton;
         private TextView _simSpeed;
         private Button _simAuto;
         private Button _connect, _work, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
@@ -444,6 +445,11 @@ namespace AgOpenGPS.Droid
             _view.MapAttribution = settings.MapAttribution;
             RenderSimulator();
 
+            // "Follow" stands out while the map was moved by hand.
+            bool following = _view.Following;
+            _followButton.SetBackgroundColor(Color.ParseColor(following ? "#E0E0E0" : "#FB8C00"));
+            _followButton.SetTextColor(following ? Color.ParseColor("#212121") : Color.White);
+
             bool coverageOn = AppState.Settings.RecordCoverage;
             _view.ShowCoverage = coverageOn && AppState.Settings.ShowCoverage;
             _view.Show(g);
@@ -649,6 +655,28 @@ namespace AgOpenGPS.Droid
             var ap = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent) { TopMargin = Dp(6) };
             overlay.AddView(_accuracy, ap);
             frame.AddView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Top));
+
+            // Map controls, right edge: zoom, whole field, back to following the tractor.
+            var mapButtons = new LinearLayout(this) { Orientation = Orientation.Vertical };
+            Button MapButton(string text, Action onClick)
+            {
+                Button b = Ui.Button(this, text, onClick, 52);
+                b.SetMinWidth(Dp(64));
+                b.SetMinimumWidth(Dp(64));
+                b.Alpha = 0.92f;
+                mapButtons.AddView(b, new LinearLayout.LayoutParams(Dp(96), ViewGroup.LayoutParams.WrapContent) { BottomMargin = Dp(4) });
+                return b;
+            }
+            MapButton("+", () => _view.ZoomBy(1.5));
+            MapButton("−", () => _view.ZoomBy(1 / 1.5));
+            MapButton("Field", () =>
+            {
+                if (!_view.ShowWholeField()) Toast_("Open a field with a boundary, or select a line");
+            });
+            _followButton = MapButton("Follow", () => _view.Follow());
+            var mp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent,
+                GravityFlags.Right | GravityFlags.CenterVertical) { RightMargin = Dp(8) };
+            frame.AddView(mapButtons, mp);
 
             // Simulator controls, bottom left, only while the simulator drives.
             _simPanel = new LinearLayout(this) { Orientation = Orientation.Horizontal };
