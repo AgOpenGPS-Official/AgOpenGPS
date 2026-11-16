@@ -29,6 +29,19 @@ namespace AgOpenGPS.Mobile.Core
 
         public double Wheelbase { get; set; } = 3.0;
 
+        /// <summary>Puts the tractor somewhere else (e.g. into the field just opened), stopped, wheel straight.</summary>
+        public void MoveTo(double latitude, double longitude)
+        {
+            lock (_lock)
+            {
+                _lat = latitude;
+                _lon = longitude;
+                _speed = 0;
+                _wheel = 0;
+            }
+            AutoSteer = false;
+        }
+
         /// <summary>Steers itself along the active line (pure pursuit), like AutoSteer would.</summary>
         public bool AutoSteer { get; set; }
 

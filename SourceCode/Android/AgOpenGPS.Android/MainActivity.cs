@@ -759,6 +759,11 @@ namespace AgOpenGPS.Droid
             _simPanel.AddView(Ui.Button(this, ">", () => SimSteer(+3), 48));
             _simAuto = Ui.Button(this, "Auto", () => { GnssSimulator sim = AppState.Simulator; if (sim != null) sim.AutoSteer = !sim.AutoSteer; }, 48);
             _simPanel.AddView(_simAuto);
+            _simPanel.AddView(Ui.Button(this, "To field", () =>
+            {
+                if (AppState.MoveSimulatorToField()) _view.Follow();
+                else Toast_("Open a field with a boundary first");
+            }, 48));
             _simPanel.Visibility = ViewStates.Gone;
             var sp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Bottom | GravityFlags.Left)
             { LeftMargin = Dp(8), BottomMargin = Dp(24) };

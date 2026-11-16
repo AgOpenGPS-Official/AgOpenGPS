@@ -73,6 +73,17 @@ namespace AgOpenGPS.Droid
             Guidance.SetCoverage(LoadCoverage(active));
             AbLine line = Guidance.ActiveLine;
             if (line != null && line.FieldId != active?.Id) UseLine(null);
+            MoveSimulatorToField();
+        }
+
+        /// <summary>In the simulator, puts the tractor in the middle of the open field. False if it cannot.</summary>
+        public static bool MoveSimulatorToField()
+        {
+            GnssSimulator sim = Simulator;
+            Field f = Fields.Active;
+            if (sim == null || f == null || !f.TryGetCentre(out double lat, out double lon)) return false;
+            sim.MoveTo(lat, lon);
+            return true;
         }
 
         /// <summary>Re-reads the open field after its boundary or name changed.</summary>
@@ -101,12 +112,10 @@ namespace AgOpenGPS.Droid
             {
                 Field f = Fields.Active;
                 GnssFix last = Guidance.GetSnapshot().Fix;
-                if (f != null && f.HasBoundary)
+                if (f != null && f.TryGetCentre(out double fLat, out double fLon))
                 {
-                    double sumLat = 0, sumLon = 0;
-                    foreach (TrackPoint p in f.Boundary) { sumLat += p.Latitude; sumLon += p.Longitude; }
-                    lat = sumLat / f.Boundary.Count;
-                    lon = sumLon / f.Boundary.Count;
+                    lat = fLat;
+                    lon = fLon;
                 }
                 else if (last != null && last.HasPosition)
                 {

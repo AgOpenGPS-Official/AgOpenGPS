@@ -38,6 +38,44 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             return list;
         }
 
+        /// <summary>
+        /// A point inside the field to start from: the centre of area, or (for a crescent-shaped
+        /// field whose centre lies outside) the middle of the first edge moved 2 m inwards.
+        /// False without a boundary.
+        /// </summary>
+        public bool TryGetCentre(out double latitude, out double longitude)
+        {
+            latitude = longitude = double.NaN;
+            LocalPlane plane = CreatePlane();
+            if (plane == null) return false;
+            List<GeoPoint> poly = BoundaryLocal(plane);
+
+            double a = 0, cn = 0, ce = 0;
+            for (int i = 0, j = poly.Count - 1; i < poly.Count; j = i++)
+            {
+                double cross = poly[j].Easting * poly[i].Northing - poly[i].Easting * poly[j].Northing;
+                a += cross;
+                ce += (poly[j].Easting + poly[i].Easting) * cross;
+                cn += (poly[j].Northing + poly[i].Northing) * cross;
+            }
+            var centre = Math.Abs(a) > 1e-9 ? new GeoPoint(cn / (3 * a), ce / (3 * a)) : poly[0];
+
+            if (!Geometry.Contains(poly, centre))
+            {
+                GeoPoint p0 = poly[0], p1 = poly[1];
+                var mid = new GeoPoint((p0.Northing + p1.Northing) / 2, (p0.Easting + p1.Easting) / 2);
+                double de = p1.Easting - p0.Easting, dn = p1.Northing - p0.Northing, l = Math.Sqrt(de * de + dn * dn);
+                if (l > 1e-9)
+                {
+                    var right = new GeoPoint(mid.Northing - de / l * 2, mid.Easting + dn / l * 2);
+                    var left = new GeoPoint(mid.Northing + de / l * 2, mid.Easting - dn / l * 2);
+                    centre = Geometry.Contains(poly, right) ? right : left;
+                }
+            }
+            plane.ToWgs84(centre, out latitude, out longitude);
+            return true;
+        }
+
         public double AreaHectares
         {
             get

@@ -138,3 +138,52 @@ namespace AgOpenGPS.Mobile.Core.Tests
         }
     }
 }
+
+namespace AgOpenGPS.Mobile.Core.Tests
+{
+    public class FieldCentreTests
+    {
+        private static Field FieldFrom(params (double n, double e)[] pts)
+        {
+            var plane = new LocalPlane(45.0, 15.0);
+            var f = new Field { Name = "t" };
+            foreach (var (n, e) in pts)
+            {
+                plane.ToWgs84(new GeoPoint(n, e), out double lat, out double lon);
+                f.Boundary.Add(new TrackPoint(lat, lon));
+            }
+            return f;
+        }
+
+        [Test]
+        public void Square_CentreIsTheMiddle()
+        {
+            Field f = FieldFrom((0, 0), (0, 100), (100, 100), (100, 0));
+            Assert.That(f.TryGetCentre(out double lat, out double lon), Is.True);
+            GeoPoint c = new LocalPlane(45.0, 15.0).ToLocal(lat, lon);
+            Assert.That(c.Northing, Is.EqualTo(50).Within(0.01));
+            Assert.That(c.Easting, Is.EqualTo(50).Within(0.01));
+        }
+
+        [Test]
+        public void UShapedField_CentreStillInside()
+        {
+            // A U: the centre of area falls in the gap between the arms.
+            Field f = FieldFrom((0, 0), (0, 100), (100, 100), (100, 80), (10, 80), (10, 20), (100, 20), (100, 0));
+            Assert.That(f.TryGetCentre(out double lat, out double lon), Is.True);
+            var plane = new LocalPlane(45.0, 15.0);
+            Assert.That(Geometry.Contains(f.BoundaryLocal(plane), plane.ToLocal(lat, lon)), Is.True);
+        }
+
+        [Test]
+        public void Simulator_MoveTo_StopsTheTractor()
+        {
+            var sim = new GnssSimulator(45, 15) { SpeedKmh = 10, WheelAngle = 5, AutoSteer = true };
+            sim.MoveTo(45.5, 16.25);
+            Assert.That(sim.Latitude, Is.EqualTo(45.5));
+            Assert.That(sim.SpeedKmh, Is.EqualTo(0));
+            Assert.That(sim.WheelAngle, Is.EqualTo(0));
+            Assert.That(sim.AutoSteer, Is.False);
+        }
+    }
+}

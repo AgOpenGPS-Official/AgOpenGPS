@@ -127,7 +127,8 @@ namespace AgOpenGPS.Droid
             else if (s.Recording || s.RecordingBoundary) { Add(s.RecordingPath); Add(s.BoundaryPath); }
             else if (s.ActiveLine != null && s.DrawPlane != null)
                 Add(s.ActiveLine.ToLocal(s.DrawPlane)); // the line itself, not its long extensions
-            if (s.Vehicle.HasValue) Add(new[] { s.Vehicle.Value });
+            // The tractor only counts without a boundary: it may be far away (another field, the simulator).
+            if (s.Vehicle.HasValue && s.Boundary.Count < 3) Add(new[] { s.Vehicle.Value });
 
             centre = new GeoPoint((minN + maxN) / 2, (minE + maxE) / 2);
             if (minN > maxN) { meters = 0; return false; }

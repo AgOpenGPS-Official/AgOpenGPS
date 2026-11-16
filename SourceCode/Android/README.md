@@ -133,7 +133,8 @@ the tractor now, **Reset nudge** puts it back. The nudge is saved with the line 
 *Settings → Simulator → Use the simulator instead of the receiver*, then Connect. A virtual tractor
 with an RTK fix starts in the open field (or at the start position typed in Settings, or the last
 position). On the driving screen: **− / +** speed, **< | >** steering wheel, **Auto** steers along
-the active line by itself (pure pursuit, as AutoSteer would). Everything else (lines, boundary,
+the active line by itself (pure pursuit, as AutoSteer would), **To field** puts the tractor in
+the middle of the open field (this also happens when a field is opened or imported). Everything else (lines, boundary,
 worked area, lightbar) works as with a real receiver. No NTRIP in the simulator.
 
 ### Satellite map
