@@ -139,7 +139,9 @@ namespace AgOpenGPS.Mobile.Core.Guidance
 
         private readonly object _lock = new object();
         private readonly HeadingTracker _heading = new HeadingTracker();
-        private GnssFix _fix;
+        private GnssFix _fix;           // the guide point: implement centre line, level with the rear axle
+        private GnssFix _antennaFix;    // as received
+        private VehicleGeometry _geometry = new VehicleGeometry();
         private AbLine _line;
         private LocalPlane _plane;
         private double _passWidth = 6.0;
@@ -180,9 +182,12 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             if (fix == null) return;
             lock (_lock)
             {
-                _fix = fix;
+                _antennaFix = fix;
                 _heading.Update(fix);
-                PaintCoverage(fix);
+                _geometry.Apply(fix, _heading.Heading, out GnssFix guide, out GnssFix tool);
+                _fix = guide;
+                PaintCoverage(tool);
+                fix = guide;
                 if (_boundaryRecording && fix.HasPosition && _boundary.Count < MaxCurvePoints)
                 {
                     GeoPoint p = _boundaryPlane.ToLocal(fix.Latitude, fix.Longitude);
@@ -205,6 +210,51 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                         _lastRecorded = p;
                     }
                 }
+            }
+        }
+
+        /// <summary>Antenna and implement position on the tractor. Set a new object to change it.</summary>
+        public VehicleGeometry Vehicle
+        {
+            get { lock (_lock) return _geometry; }
+            set { lock (_lock) _geometry = value ?? new VehicleGeometry(); }
+        }
+
+        /// <summary>
+        /// Shifts the active line sideways, relative to the driving direction (positive = to the
+        /// right as seen from the seat). Returns the new nudge, or NaN without an active line.
+        /// </summary>
+        public double NudgeActiveLine(double metersToTheRight)
+        {
+            lock (_lock)
+            {
+                if (_line == null) return double.NaN;
+                bool same = true;
+                if (_fix != null && _fix.HasPosition && _plane != null)
+                    same = AbGuidance.Compute(_line, _plane, _plane.ToLocal(_fix.Latitude, _fix.Longitude), _heading.Heading, _passWidth).SameDirectionAsAb;
+                _line.NudgeMeters += same ? metersToTheRight : -metersToTheRight;
+                return _line.NudgeMeters;
+            }
+        }
+
+        /// <summary>Moves the active line so the nearest pass runs exactly through the guide point now.</summary>
+        public double SnapActiveLine()
+        {
+            lock (_lock)
+            {
+                if (_line == null || _fix == null || !_fix.HasPosition) return double.NaN;
+                AbGuidanceResult r = AbGuidance.Compute(_line, _plane, _plane.ToLocal(_fix.Latitude, _fix.Longitude), _heading.Heading, _passWidth);
+                // CrossTrack is relative to travel; turn it back into "right of A to B".
+                _line.NudgeMeters += r.SameDirectionAsAb ? r.CrossTrackMeters : -r.CrossTrackMeters;
+                return _line.NudgeMeters;
+            }
+        }
+
+        public void ResetNudge()
+        {
+            lock (_lock)
+            {
+                if (_line != null) _line.NudgeMeters = 0;
             }
         }
 

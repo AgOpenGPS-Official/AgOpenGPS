@@ -26,6 +26,19 @@ namespace AgOpenGPS.Droid
             ToolOverlap = _prefs.GetString("tool.overlap", "0.0");
             ShowRawLog = _prefs.GetBoolean("ui.rawlog", false);
             RecordCoverage = _prefs.GetBoolean("coverage.record", true);
+            AntennaHeight = _prefs.GetString("vehicle.antennaHeight", "0");
+            AntennaForward = _prefs.GetString("vehicle.antennaForward", "0");
+            AntennaRight = _prefs.GetString("vehicle.antennaRight", "0");
+            ToolBehind = _prefs.GetString("tool.behind", "0");
+            ToolRight = _prefs.GetString("tool.right", "0");
+            Wheelbase = _prefs.GetString("vehicle.wheelbase", "3.0");
+            NudgeStepCm = _prefs.GetString("guidance.nudgeCm", "5");
+            UseSimulator = _prefs.GetBoolean("sim.enabled", false);
+            SimLatitude = _prefs.GetString("sim.lat", "");
+            SimLongitude = _prefs.GetString("sim.lon", "");
+            ShowMap = _prefs.GetBoolean("map.show", true);
+            MapUrl = _prefs.GetString("map.url", AgOpenGPS.Mobile.Core.Guidance.MapTiles.DefaultUrl);
+            MapAttribution = _prefs.GetString("map.attribution", AgOpenGPS.Mobile.Core.Guidance.MapTiles.DefaultAttribution);
             ShowCoverage = _prefs.GetBoolean("coverage.show", true);
         }
 
@@ -36,6 +49,15 @@ namespace AgOpenGPS.Droid
         /// <summary>Implement width and overlap in metres, as typed.</summary>
         public string ToolWidth, ToolOverlap;
         public bool ShowRawLog;
+        /// <summary>Vehicle and implement offsets in metres, as typed (see VehicleGeometry).</summary>
+        public string AntennaHeight, AntennaForward, AntennaRight, ToolBehind, ToolRight, Wheelbase;
+        public string NudgeStepCm;
+        public bool UseSimulator;
+        /// <summary>Simulator start position; empty = the open field, or the last position.</summary>
+        public string SimLatitude, SimLongitude;
+        public bool ShowMap;
+        public string MapUrl, MapAttribution;
+
         /// <summary>Record the worked area (Work button and statistics).</summary>
         public bool RecordCoverage;
         /// <summary>Draw the worked area on the map.</summary>
@@ -54,6 +76,30 @@ namespace AgOpenGPS.Droid
 
         /// <summary>Full implement width: the width of the strip painted as worked.</summary>
         public double ToolWidthMeters => System.Math.Max(0.1, ParseMeters(ToolWidth, 6.0));
+
+        public AgOpenGPS.Mobile.Core.Guidance.VehicleGeometry BuildVehicleGeometry()
+        {
+            return new AgOpenGPS.Mobile.Core.Guidance.VehicleGeometry
+            {
+                AntennaHeight = ParseSigned(AntennaHeight, 0),
+                AntennaForward = ParseSigned(AntennaForward, 0),
+                AntennaRight = ParseSigned(AntennaRight, 0),
+                ToolBehind = ParseSigned(ToolBehind, 0),
+                ToolRight = ParseSigned(ToolRight, 0),
+            };
+        }
+
+        public double WheelbaseMeters => System.Math.Max(0.5, ParseMeters(Wheelbase, 3.0));
+
+        /// <summary>Nudge step in metres (typed in cm).</summary>
+        public double NudgeStepMeters => System.Math.Max(0.005, ParseMeters(NudgeStepCm, 5) / 100.0);
+
+        /// <summary>A number that may be negative (offsets to the left or behind), with . or , as decimal mark.</summary>
+        public static double ParseSigned(string text, double fallback)
+        {
+            string t = (text ?? "").Trim().Replace(',', '.');
+            return double.TryParse(t, NumberStyles.Float, Inv, out double v) && v > -100 && v < 100 ? v : fallback;
+        }
 
         public static double ParseMeters(string text, double fallback)
         {
@@ -79,12 +125,25 @@ namespace AgOpenGPS.Droid
                 .PutBoolean("ui.rawlog", ShowRawLog)
                 .PutBoolean("coverage.record", RecordCoverage)
                 .PutBoolean("coverage.show", ShowCoverage)
+                .PutString("vehicle.antennaHeight", AntennaHeight)
+                .PutString("vehicle.antennaForward", AntennaForward)
+                .PutString("vehicle.antennaRight", AntennaRight)
+                .PutString("tool.behind", ToolBehind)
+                .PutString("tool.right", ToolRight)
+                .PutString("vehicle.wheelbase", Wheelbase)
+                .PutString("guidance.nudgeCm", NudgeStepCm)
+                .PutBoolean("sim.enabled", UseSimulator)
+                .PutString("sim.lat", SimLatitude)
+                .PutString("sim.lon", SimLongitude)
+                .PutBoolean("map.show", ShowMap)
+                .PutString("map.url", MapUrl)
+                .PutString("map.attribution", MapAttribution)
                 .Apply();
         }
 
         /// <summary>Everything that needs a reconnect when changed.</summary>
         public string ConnectionKey =>
-            string.Join("|", DeviceAddress, NtripEnabled, NtripHost, NtripPort, NtripMount, NtripUser, NtripPassword, NtripGgaSeconds);
+            string.Join("|", DeviceAddress, UseSimulator, NtripEnabled, NtripHost, NtripPort, NtripMount, NtripUser, NtripPassword, NtripGgaSeconds);
 
         /// <summary>The caster to use, or null when NTRIP is off or the settings are incomplete
         /// (the Pi may be doing NTRIP itself).</summary>

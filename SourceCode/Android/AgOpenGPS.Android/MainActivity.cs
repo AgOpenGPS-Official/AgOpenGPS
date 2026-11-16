@@ -37,6 +37,9 @@ namespace AgOpenGPS.Droid
         private TextView _workLabel;
         private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo, _stats;
         private LightbarView _lightbar;
+        private LinearLayout _simPanel;
+        private TextView _simSpeed;
+        private Button _simAuto;
         private Button _connect, _work, _field, _boundary, _cancelBoundary, _straight, _curve, _a, _b, _cancel;
         private GuidanceView _view;
 
@@ -100,7 +103,8 @@ namespace AgOpenGPS.Droid
         {
             if (_autoConnectTried) return;
             _autoConnectTried = true;
-            if (AppState.Settings.AutoConnect && !string.IsNullOrEmpty(AppState.Settings.DeviceAddress)) Connect();
+            AppSettings s = AppState.Settings;
+            if (s.AutoConnect && (s.UseSimulator || !string.IsNullOrEmpty(s.DeviceAddress))) Connect();
         }
 
         private void Toast_(string text, bool longer = false)
@@ -434,6 +438,12 @@ namespace AgOpenGPS.Droid
             AppState.Tick();
             LinkSnapshot link = AppState.Link?.GetSnapshot();
             GuidanceSnapshot g = AppState.Guidance.GetSnapshot();
+            AppSettings settings = AppState.Settings;
+            AppState.Map.UrlTemplate = string.IsNullOrWhiteSpace(settings.MapUrl) ? MapTiles.DefaultUrl : settings.MapUrl;
+            _view.Map = settings.ShowMap ? AppState.Map : null;
+            _view.MapAttribution = settings.MapAttribution;
+            RenderSimulator();
+
             bool coverageOn = AppState.Settings.RecordCoverage;
             _view.ShowCoverage = coverageOn && AppState.Settings.ShowCoverage;
             _view.Show(g);
@@ -482,9 +492,10 @@ namespace AgOpenGPS.Droid
                 double abs = Math.Abs(r.CrossTrackMeters * 100.0);
                 _xte.Text = FormatOffset(r.CrossTrackMeters);
                 _xte.SetTextColor(Color.ParseColor(!rtk ? "#90A4AE" : abs < 5 ? "#66BB6A" : abs < 15 ? "#FFCA28" : "#EF5350"));
-                _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}",
+                _lineInfo.Text = string.Format(Inv, "{0}   pass {1}   {2:0.0}°{3}{4}",
                     g.ActiveLine.Name, r.Pass, r.TravelLineHeading,
-                    double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, "   heading err {0:+0.0;-0.0}°", r.HeadingErrorDegrees));
+                    double.IsNaN(r.HeadingErrorDegrees) ? "" : string.Format(Inv, "   heading err {0:+0.0;-0.0}°", r.HeadingErrorDegrees),
+                    g.ActiveLine.NudgeMeters == 0 ? "" : string.Format(Inv, "   nudged {0:+0;-0} cm", g.ActiveLine.NudgeMeters * 100));
             }
             else
             {
@@ -530,6 +541,33 @@ namespace AgOpenGPS.Droid
                     double.IsNaN(g.RecordedMeters) ? 0 : g.RecordedMeters);
             }
             else _recordInfo.Text = "";
+        }
+
+        // ---------------------------------------------------------------- simulator
+
+        private void SimSpeed(int step)
+        {
+            GnssSimulator sim = AppState.Simulator;
+            if (sim != null) sim.SpeedKmh = Math.Round(sim.SpeedKmh + step);
+        }
+
+        /// <summary>Turns the wheel by <paramref name="degrees"/>; 0 centres it. Manual steering switches Auto off.</summary>
+        private void SimSteer(double degrees)
+        {
+            GnssSimulator sim = AppState.Simulator;
+            if (sim == null) return;
+            sim.AutoSteer = false;
+            sim.WheelAngle = degrees == 0 ? 0 : sim.WheelAngle + degrees;
+        }
+
+        private void RenderSimulator()
+        {
+            GnssSimulator sim = AppState.Simulator;
+            _simPanel.Visibility = sim == null ? ViewStates.Gone : ViewStates.Visible;
+            if (sim == null) return;
+            _simSpeed.Text = string.Format(Inv, "{0:0} km/h\n{1:+0;-0;0}°", sim.SpeedKmh, sim.WheelAngle);
+            _simAuto.Text = sim.AutoSteer ? "Auto ON" : "Auto";
+            _simAuto.SetTextColor(Color.ParseColor(sim.AutoSteer ? "#2E7D32" : "#212121"));
         }
 
         private static string NtripText(LinkSnapshot link)
@@ -611,6 +649,27 @@ namespace AgOpenGPS.Droid
             var ap = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent) { TopMargin = Dp(6) };
             overlay.AddView(_accuracy, ap);
             frame.AddView(overlay, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Top));
+
+            // Simulator controls, bottom left, only while the simulator drives.
+            _simPanel = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            _simPanel.SetBackgroundColor(Color.Argb(170, 0, 0, 0));
+            _simPanel.SetPadding(Dp(6), Dp(6), Dp(6), Dp(6));
+            _simPanel.SetGravity(GravityFlags.CenterVertical);
+            _simPanel.AddView(Ui.Button(this, "−", () => SimSpeed(-1), 48));
+            _simSpeed = Ui.Text(this, 18, true, "#FFFFFF");
+            _simSpeed.SetMinWidth(Dp(90));
+            _simSpeed.Gravity = GravityFlags.Center;
+            _simPanel.AddView(_simSpeed);
+            _simPanel.AddView(Ui.Button(this, "+", () => SimSpeed(+1), 48));
+            _simPanel.AddView(Ui.Button(this, "<", () => SimSteer(-3), 48));
+            _simPanel.AddView(Ui.Button(this, "|", () => SimSteer(0), 48));
+            _simPanel.AddView(Ui.Button(this, ">", () => SimSteer(+3), 48));
+            _simAuto = Ui.Button(this, "Auto", () => { GnssSimulator sim = AppState.Simulator; if (sim != null) sim.AutoSteer = !sim.AutoSteer; }, 48);
+            _simPanel.AddView(_simAuto);
+            _simPanel.Visibility = ViewStates.Gone;
+            var sp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent, GravityFlags.Bottom | GravityFlags.Left)
+            { LeftMargin = Dp(8), BottomMargin = Dp(24) };
+            frame.AddView(_simPanel, sp);
             body.AddView(frame, Ui.Weight(1, ViewGroup.LayoutParams.MatchParent));
 
             // Right panel.
@@ -655,6 +714,15 @@ namespace AgOpenGPS.Droid
             _recordInfo = Ui.Text(this, 14, false, "#FFAB91");
             panel.AddView(_recordInfo);
             panel.AddView(Ui.Button(this, "Lines...", ShowLines, 56));
+
+            // Nudge: move the active line a step left/right (as seen from the seat), snap it to here, reset.
+            panel.AddView(Label("Nudge line"));
+            var nudge = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            nudge.AddView(Ui.Button(this, "◀", () => AppState.Nudge(-1), 52), Ui.Weight(1));
+            nudge.AddView(Ui.Button(this, "Snap", AppState.SnapLine, 52), Ui.Weight(1.2f));
+            nudge.AddView(Ui.Button(this, "▶", () => AppState.Nudge(+1), 52), Ui.Weight(1));
+            panel.AddView(nudge);
+            panel.AddView(Ui.Button(this, "Reset nudge", AppState.ResetNudge, 44));
 
             var scroll = new ScrollView(this);
             scroll.AddView(panel);

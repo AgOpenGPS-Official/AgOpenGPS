@@ -8,8 +8,8 @@
     <RootNamespace>AgOpenGPS.Droid</RootNamespace>
     <ApplicationId>org.agopengps.android</ApplicationId>
     <ApplicationTitle>AgOpenGPS</ApplicationTitle>
-    <ApplicationVersion>5</ApplicationVersion>
-    <ApplicationDisplayVersion>0.5.0</ApplicationDisplayVersion>
+    <ApplicationVersion>6</ApplicationVersion>
+    <ApplicationDisplayVersion>0.6.0</ApplicationDisplayVersion>
     <!-- One APK for ARM tablets (most) and x86_64 (Chromebooks, emulators). -->
     <RuntimeIdentifiers>android-arm64;android-arm;android-x64</RuntimeIdentifiers>
     <AndroidPackageFormat>apk</AndroidPackageFormat>

@@ -29,6 +29,12 @@ namespace AgOpenGPS.Droid
 
         public static bool IsConnected => Link != null && Link.IsRunning;
 
+        /// <summary>The virtual tractor while connected to the simulator, else null.</summary>
+        public static GnssSimulator Simulator { get; private set; }
+
+        /// <summary>Satellite map tiles (memory + disk cache).</summary>
+        public static MapTileProvider Map { get; private set; }
+
         public static void Init(Context context)
         {
             lock (Lock)
@@ -42,6 +48,8 @@ namespace AgOpenGPS.Droid
                 Guidance.PassWidth = Settings.WorkingWidthMeters;
                 Guidance.ToolWidth = Settings.ToolWidthMeters;
                 Guidance.CoverageEnabled = Settings.RecordCoverage;
+                Guidance.Vehicle = Settings.BuildVehicleGeometry();
+                Map = new MapTileProvider(Path.Combine(dir, "maptiles"));
                 Guidance.SetActiveField(Fields.Active);
                 Guidance.SetCoverage(LoadCoverage(Fields.Active));
                 AbLine line = Lines.Active;
@@ -78,6 +86,74 @@ namespace AgOpenGPS.Droid
             Lines.DeleteForField(field.Id);
             Fields.Delete(field.Id);
             if (wasOpen) OpenField(null);
+        }
+
+        /// <summary>
+        /// The simulator starts at the position in Settings, else in the open field, else at the
+        /// last position, else near Zagreb.
+        /// </summary>
+        private static GnssSimulator CreateSimulator()
+        {
+            double lat = ParseDegrees(Settings.SimLatitude, 85);
+            double lon = ParseDegrees(Settings.SimLongitude, 180);
+            if (double.IsNaN(lon)) lat = double.NaN;
+            if (double.IsNaN(lat))
+            {
+                Field f = Fields.Active;
+                GnssFix last = Guidance.GetSnapshot().Fix;
+                if (f != null && f.HasBoundary)
+                {
+                    double sumLat = 0, sumLon = 0;
+                    foreach (TrackPoint p in f.Boundary) { sumLat += p.Latitude; sumLon += p.Longitude; }
+                    lat = sumLat / f.Boundary.Count;
+                    lon = sumLon / f.Boundary.Count;
+                }
+                else if (last != null && last.HasPosition)
+                {
+                    lat = last.Latitude;
+                    lon = last.Longitude;
+                }
+                else
+                {
+                    lat = 45.8150;
+                    lon = 15.9819;
+                }
+            }
+
+            var sim = new GnssSimulator(lat, lon) { Wheelbase = Settings.WheelbaseMeters };
+            sim.SteerSource = () => Guidance.GetSnapshot().Steer;
+            return sim;
+        }
+
+        private static double ParseDegrees(string text, double limit)
+        {
+            string t = (text ?? "").Trim().Replace(',', '.');
+            return double.TryParse(t, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double v)
+                && Math.Abs(v) <= limit ? v : double.NaN;
+        }
+
+        // ---------------------------------------------------------------- nudge
+
+        /// <summary>Moves the active line by one nudge step to the right (+1) or left (-1) as seen while driving.</summary>
+        public static void Nudge(int direction)
+        {
+            AbLine line = Guidance.ActiveLine;
+            double n = Guidance.NudgeActiveLine(direction * Settings.NudgeStepMeters);
+            if (line != null && !double.IsNaN(n)) Lines.SetNudge(line.Id, n);
+        }
+
+        public static void SnapLine()
+        {
+            AbLine line = Guidance.ActiveLine;
+            double n = Guidance.SnapActiveLine();
+            if (line != null && !double.IsNaN(n)) Lines.SetNudge(line.Id, n);
+        }
+
+        public static void ResetNudge()
+        {
+            AbLine line = Guidance.ActiveLine;
+            Guidance.ResetNudge();
+            if (line != null) Lines.SetNudge(line.Id, 0);
         }
 
         // ---------------------------------------------------------------- worked area
@@ -135,14 +211,24 @@ namespace AgOpenGPS.Droid
             lock (Lock)
             {
                 if (IsConnected) return null;
-                string address = Settings.DeviceAddress;
-                if (!BluetoothAdapter.CheckBluetoothAddress(address)) return "Pick the receiver in Settings first";
-
-                BluetoothAdapter adapter = Adapter;
                 AppSettings settings = Settings;
                 while (RawLog.TryDequeue(out _)) { }
 
-                var link = new LinkSupervisor(ct => BluetoothLink.Connect(adapter, address, ct), settings.BuildNtripProfile);
+                LinkSupervisor link;
+                if (settings.UseSimulator)
+                {
+                    GnssSimulator sim = CreateSimulator();
+                    Simulator = sim;
+                    link = new LinkSupervisor(ct => new SimulatorLink(sim), () => null);
+                }
+                else
+                {
+                    string address = Settings.DeviceAddress;
+                    if (!BluetoothAdapter.CheckBluetoothAddress(address)) return "Pick the receiver in Settings first";
+                    BluetoothAdapter adapter = Adapter;
+                    Simulator = null;
+                    link = new LinkSupervisor(ct => BluetoothLink.Connect(adapter, address, ct), settings.BuildNtripProfile);
+                }
                 link.FixUpdated += Guidance.OnFix;
                 link.SentenceReceived += line =>
                 {
@@ -154,6 +240,7 @@ namespace AgOpenGPS.Droid
                 link.Start();
                 StartService();
 
+                if (settings.UseSimulator) return "Simulator: set speed with + / -, steer with < >, or press Auto";
                 return settings.NtripEnabled && settings.BuildNtripProfile() == null
                     ? "NTRIP settings incomplete - connecting without corrections"
                     : null;
@@ -170,6 +257,7 @@ namespace AgOpenGPS.Droid
                 Link = null;
             }
             link?.Stop();
+            Simulator = null;
             try { _context.StopService(new Intent(_context, typeof(GnssService))); }
             catch (Java.Lang.Exception) { }
         }

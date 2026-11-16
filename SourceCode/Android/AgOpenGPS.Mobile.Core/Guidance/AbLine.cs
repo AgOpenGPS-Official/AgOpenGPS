@@ -37,6 +37,8 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>The field this line belongs to, or null for a line without a field.</summary>
         public string FieldId { get; set; }
         public LineKind Kind { get; set; } = LineKind.Straight;
+        /// <summary>Sideways shift of the line and all its passes, metres, positive = right of A to B.</summary>
+        public double NudgeMeters { get; set; }
         public double LatitudeA { get; set; }
         public double LongitudeA { get; set; }
         public double LatitudeB { get; set; }
@@ -95,7 +97,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public List<GeoPoint> PassPolyline(LocalPlane plane, int pass, double width, double extend = 500)
         {
             List<GeoPoint> pts = ToLocal(plane);
-            double offset = pass * width;
+            double offset = pass * width + NudgeMeters;
             var result = new List<GeoPoint>(pts.Count + 2);
 
             for (int i = 0; i < pts.Count; i++)
@@ -143,7 +145,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>Vehicle heading minus line heading, -180..180 (positive = turned right of the line). NaN without heading.</summary>
         public double HeadingErrorDegrees = double.NaN;
 
-        /// <summary>Distance from the recorded line itself, metres, positive right of A to B.</summary>
+        /// <summary>Distance from the (nudged) line itself, metres, positive right of A to B.</summary>
         public double DistanceFromRefLine;
 
         /// <summary>Position along the line from A, metres (negative before A).</summary>
@@ -159,7 +161,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <param name="passWidth">Working width in metres (implement width minus overlap).</param>
         public static AbGuidanceResult Compute(AbLine line, LocalPlane plane, GeoPoint vehicle, double vehicleHeading, double passWidth)
         {
-            return Compute(line.ToLocal(plane), vehicle, vehicleHeading, passWidth);
+            return Compute(line.ToLocal(plane), vehicle, vehicleHeading, passWidth, line.NudgeMeters);
         }
 
         /// <summary>
@@ -168,7 +170,8 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// line, so passes on a curve are its true parallels as long as the curve radius is
         /// larger than their distance from it.
         /// </summary>
-        public static AbGuidanceResult Compute(IReadOnlyList<GeoPoint> pts, GeoPoint vehicle, double vehicleHeading, double passWidth)
+        public static AbGuidanceResult Compute(IReadOnlyList<GeoPoint> pts, GeoPoint vehicle, double vehicleHeading, double passWidth,
+            double nudge = 0)
         {
             if (pts == null || pts.Count < 2) throw new ArgumentException("A line needs two points", nameof(pts));
 
@@ -207,6 +210,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             }
             if (!found) throw new ArgumentException("All points of the line are the same", nameof(pts));
 
+            bestRight -= nudge; // measure from the nudged line
             int pass = 0;
             double offset = bestRight;
             if (passWidth > 0.01)

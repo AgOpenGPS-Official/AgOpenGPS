@@ -30,6 +30,18 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>Seconds of driving to look ahead: 1.8 s is 6 m at 12 km/h.</summary>
         public const double LookaheadSeconds = 1.8;
 
+        /// <summary>
+        /// Pure pursuit front wheel angle for a goal point <paramref name="steerDegrees"/> off the
+        /// heading at <paramref name="lookahead"/> metres: atan(2 * wheelbase * sin(alpha) / L).
+        /// Positive = right; limited to +-35 degrees.
+        /// </summary>
+        public static double PurePursuitWheelAngle(double steerDegrees, double lookahead, double wheelbase)
+        {
+            if (double.IsNaN(steerDegrees) || lookahead <= 0) return 0;
+            double a = LocalPlane.ToDeg(Math.Atan(2 * wheelbase * Math.Sin(LocalPlane.ToRad(steerDegrees)) / lookahead));
+            return Math.Max(-35, Math.Min(35, a));
+        }
+
         /// <summary>Look-ahead distance for a speed; slower means a closer goal point (but never under 3 m).</summary>
         public static double LookaheadMeters(double speedKmh)
         {

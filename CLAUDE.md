@@ -15,7 +15,8 @@ SourceCode/
 └── Android/
     ├── AgOpenGPS.Android.sln
     ├── AgOpenGPS.Mobile.Core/       # Platform-neutral: NMEA/PGN decoding, link supervisor, NTRIP forwarding,
-    │                                #   Guidance/ (local plane, A-B lines, passes, fields + boundaries, stores)
+    │                                #   Guidance/ (local plane, A-B lines, passes, nudge, vehicle offsets, fields, coverage,
+    │                                #   map tiles), Simulator
     ├── AgOpenGPS.Mobile.Core.Tests/ # NUnit tests (run on any OS)
     ├── AgOpenGPS.Android/           # Android app: driving + settings screens, Bluetooth link, background service
     └── pi/                          # Raspberry Pi Bluetooth <-> serial bridge (Python)

@@ -90,6 +90,18 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             }
         }
 
+        /// <summary>Saves the nudge of a line (the line object may already carry it).</summary>
+        public void SetNudge(string id, double nudgeMeters)
+        {
+            lock (_lock)
+            {
+                AbLine line = _data.Lines.FirstOrDefault(l => l.Id == id);
+                if (line == null) return;
+                line.NudgeMeters = nudgeMeters;
+                Save();
+            }
+        }
+
         public void Delete(string id)
         {
             lock (_lock)

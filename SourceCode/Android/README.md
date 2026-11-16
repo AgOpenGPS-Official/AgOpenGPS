@@ -105,6 +105,44 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
   lightbar and distance turn grey: the centimetres are not reliable then. The top bar shows the
   correction age.
 
+### Vehicle, antenna offsets and nudge
+
+*Settings → Vehicle* (metres, measured from the middle of the rear axle; left and behind are
+negative): antenna height, antenna ahead of the rear axle, antenna right of the centre line,
+implement working line behind the rear axle, implement centre right of the centre line, and the
+wheelbase. From the antenna position and heading the app works out:
+
+- the **guide point**: the implement's centre line, level with the rear axle. Lines are recorded
+  and guidance is given for this point;
+- the **implement point**: where the worked area is painted;
+- with **antenna height** and roll from the receiver (`$PANDA` / `$PAOGI` or a PGN bridge with an
+  IMU): the tilt on slopes is corrected (3 m high at 5° is 26 cm).
+
+**Nudge** (driving screen): **◀ / ▶** move the active line one step (Settings, default 5 cm) to
+the left / right as seen from the seat, **Snap** moves it so the nearest pass runs exactly through
+the tractor now, **Reset nudge** puts it back. The nudge is saved with the line and shown as
+"nudged +5 cm".
+
+### Simulator
+
+*Settings → Simulator → Use the simulator instead of the receiver*, then Connect. A virtual tractor
+with an RTK fix starts in the open field (or at the start position typed in Settings, or the last
+position). On the driving screen: **− / +** speed, **< | >** steering wheel, **Auto** steers along
+the active line by itself (pure pursuit, as AutoSteer would). Everything else (lines, boundary,
+worked area, lightbar) works as with a real receiver. No NTRIP in the simulator.
+
+### Satellite map
+
+*Settings → Satellite map*. Each 256 px map square is downloaded **once** and kept on the tablet
+(files/maptiles); the squares in use are also kept in memory (about 12 MB), so drawing never waits
+for the network. A square is fetched only the first time it is needed; a failed one is retried
+after a minute. **Download map for the open field** fetches zoom 14–19 for the field (or 500 m
+around the tractor) in advance, e.g. at home over Wi-Fi; a 12 ha field is a few hundred squares,
+a few MB. **Clear map cache** deletes them, to get newer imagery.
+
+The default source is Esri World Imagery, free with attribution (shown on the map); check its terms,
+especially for commercial use. Any `{z}/{x}/{y}` tile URL can be set instead.
+
 ### Fields and boundaries
 
 A field has a name, an outer boundary and its own A-B lines. Everything is saved on the tablet
@@ -175,8 +213,6 @@ are sent at up to about 5 KB/s, like AgIO's serial output.
 
 ## Not done yet / next steps
 
-- Antenna position (forward/back and sideways offset from the pivot) and implement offset.
-- Nudging a line sideways, snapping to the current position.
 - Inner boundaries (obstacles), coverage map, headlands, U-turns, section control.
 - Import and export of fields (AgOpenGPS field folders, KML / shapefiles).
 - Sending AutoSteer / machine PGNs to modules (UDP over Wi-Fi or over the same Bluetooth link).

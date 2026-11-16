@@ -26,6 +26,12 @@ namespace AgOpenGPS.Droid
         private readonly Paint _goalLine = Stroke("#FFFFFF", 1.5f);
         private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#B0BEC5"), TextAlign = Paint.Align.Center };
         private GuidanceSnapshot _snap;
+        /// <summary>Satellite map source, or null for no map.</summary>
+        public MapTileProvider Map { get; set; }
+        public string MapAttribution { get; set; } = "";
+        private readonly Paint _mapPaint = new Paint { FilterBitmap = true };
+        private readonly Paint _attribution = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#CFD8DC"), TextAlign = Paint.Align.Right };
+
         /// <summary>Draw the worked area (Settings).</summary>
         public bool ShowCoverage { get; set; } = true;
         private readonly Dictionary<long, (int Version, Bitmap Bitmap)> _tileCache = new Dictionary<long, (int, Bitmap)>();
@@ -38,6 +44,8 @@ namespace AgOpenGPS.Droid
         public GuidanceView(Context context) : base(context)
         {
             _density = context.Resources.DisplayMetrics.Density;
+            _attribution.TextSize = global::Android.Util.TypedValue.ApplyDimension(global::Android.Util.ComplexUnitType.Sp, 10, context.Resources.DisplayMetrics);
+            _attribution.SetShadowLayer(2, 0, 0, Color.Black);
             _hint.TextSize = global::Android.Util.TypedValue.ApplyDimension(global::Android.Util.ComplexUnitType.Sp, 18, context.Resources.DisplayMetrics);
             foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge, _goalLine }) p.StrokeWidth *= _density;
         }
@@ -100,6 +108,7 @@ namespace AgOpenGPS.Droid
             DrawLine(s.Boundary, _boundary, closed: true);
             if (s.RecordingBoundary) DrawLine(s.BoundaryPath, _boundaryRec);
 
+            DrawMap(canvas, s, v, heading, scale, cx, cy);
             DrawCoverage(canvas, s, v, heading, scale, cx, cy);
 
             int current = s.Result?.Pass ?? 0;
@@ -143,6 +152,40 @@ namespace AgOpenGPS.Droid
 
             if (s.ActiveLine == null && !s.Recording && !s.RecordingBoundary)
                 canvas.DrawText("No line: press A, drive, press B", Width / 2f, Height * 0.2f, _hint);
+        }
+
+        /// <summary>Satellite map tiles under everything else; tiles not loaded yet are simply left out.</summary>
+        private void DrawMap(Canvas canvas, GuidanceSnapshot s, GeoPoint v, double heading, float scale, float cx, float cy)
+        {
+            MapTileProvider map = Map;
+            if (map == null || s.Fix == null || !s.Fix.HasPosition || s.DrawPlane == null) return;
+
+            double lat = s.Fix.Latitude, lon = s.Fix.Longitude;
+            int zoom = MapTiles.ZoomFor(1.0 / scale, lat);
+            double radius = Math.Sqrt((double)Width * Width + (double)Height * Height) / scale * 0.75;
+            double dLat = radius / 111132.0, dLon = radius / (111320.0 * Math.Cos(lat * Math.PI / 180.0));
+            List<TileId> tiles = MapTiles.TilesFor(lat - dLat, lon - dLon, lat + dLat, lon + dLon, zoom);
+            if (tiles.Count > 80) return; // far zoomed out: not worth it
+
+            canvas.Save();
+            canvas.Translate(cx, cy);
+            canvas.Rotate((float)-heading);
+            foreach (TileId t in tiles)
+            {
+                Bitmap bmp = map.Get(t);
+                if (bmp == null) continue;
+                MapTiles.ToLatLon(t.X, t.Y, t.Z, out double nLat, out double wLon);
+                MapTiles.ToLatLon(t.X + 1, t.Y + 1, t.Z, out double sLat, out double eLon);
+                GeoPoint nw = s.DrawPlane.ToLocal(nLat, wLon), se = s.DrawPlane.ToLocal(sLat, eLon);
+                var dst = new RectF(
+                    (float)((nw.Easting - v.Easting) * scale), (float)(-(nw.Northing - v.Northing) * scale),
+                    (float)((se.Easting - v.Easting) * scale) + 0.5f, (float)(-(se.Northing - v.Northing) * scale) + 0.5f);
+                canvas.DrawBitmap(bmp, null, dst, _mapPaint);
+            }
+            canvas.Restore();
+
+            if (!string.IsNullOrEmpty(MapAttribution))
+                canvas.DrawText(MapAttribution, Width - 6 * _density, Height - 6 * _density, _attribution);
         }
 
         /// <summary>Worked ground: green, worked twice or more: red. Drawn under the lines.</summary>
