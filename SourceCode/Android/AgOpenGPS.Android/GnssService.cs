@@ -43,8 +43,18 @@ namespace AgOpenGPS.Droid
 
             CreateChannel();
             Notification n = BuildNotification();
-            if (OperatingSystem.IsAndroidVersionAtLeast(29)) StartForeground(NotificationId, n, ForegroundService.TypeConnectedDevice);
-            else StartForeground(NotificationId, n);
+            try
+            {
+                if (OperatingSystem.IsAndroidVersionAtLeast(29)) StartForeground(NotificationId, n, ForegroundService.TypeConnectedDevice);
+                else StartForeground(NotificationId, n);
+            }
+            catch (Java.Lang.Exception)
+            {
+                // Android refused (permission missing, started from the background): the link still
+                // runs while the app is open, just without the background notification.
+                StopSelf();
+                return StartCommandResult.NotSticky;
+            }
 
             if (_wakeLock == null)
             {

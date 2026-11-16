@@ -536,13 +536,14 @@ namespace AgOpenGPS.Droid
             bool fresh = link != null && link.State == LinkState.Connected && fix != null && st.SecondsSinceFix >= 0 && st.SecondsSinceFix < 3;
             if (link == null) SetBadge("Not connected", "#757575");
             else if (link.State != LinkState.Connected) SetBadge(link.State == LinkState.Connecting ? "Connecting" : "Reconnecting", "#757575");
-            else if (!fresh) SetBadge("No position", "#757575");
+            else if (!fresh) SetBadge(AppState.Simulator != null ? "Sim: no position" : "No position", "#757575");
+            else if (AppState.Simulator != null) SetBadge("SIM " + GnssFix.FixQualityName(fix.FixQuality), "#6A1B9A");
             else SetBadge(GnssFix.FixQualityName(fix.FixQuality), Ui.FixColor(fix.FixQuality));
 
             _fixInfo.Text = fresh
                 ? string.Format(Inv, "{0} sats   HDOP {1}   age {2} s   {3:0.0} Hz   {4} km/h   {5}",
                     fix.Satellites, Num(fix.Hdop, "0.0"), Num(fix.AgeSeconds, "0.0"), st.RateHz, Num(fix.SpeedKmh, "0.0"), NtripText(link))
-                : link == null ? "Press Connect" : link.Message;
+                : link == null ? "Press Connect" : SourceText(link);
 
             // Without RTK fix the centimetres are not to be trusted: say so, and grey out the guidance.
             bool rtk = fresh && fix.FixQuality == 4;
@@ -640,6 +641,19 @@ namespace AgOpenGPS.Droid
             _simSpeed.Text = string.Format(Inv, "{0:0} km/h\n{1:+0;-0;0}°", sim.SpeedKmh, sim.WheelAngle);
             _simAuto.Text = sim.AutoSteer ? "Auto ON" : "Auto";
             _simAuto.SetTextColor(Color.ParseColor(sim.AutoSteer ? "#2E7D32" : "#212121"));
+        }
+
+        /// <summary>Says what is connected and why there is no position, e.g. "Bluetooth: connected, but no data from the receiver".</summary>
+        private static string SourceText(LinkSnapshot link)
+        {
+            string source = AppState.Simulator != null ? "Simulator" : "Bluetooth";
+            if (link.State != LinkState.Connected) return source + ": " + link.Message;
+            SessionStats st = link.Session;
+            if (st == null || st.BytesIn == 0)
+                return source + ": connected, but no data" + (AppState.Simulator != null ? "" : " from the receiver (is it on and wired to the bridge?)");
+            if (st.Sentences == 0 && st.PgnFrames == 0)
+                return source + ": data arrives but no position sentences (check the receiver's output and baud rate)";
+            return source + ": connected, no position fix yet";
         }
 
         private static string NtripText(LinkSnapshot link)

@@ -32,6 +32,7 @@ namespace AgOpenGPS.Droid
 
         private readonly List<string> _deviceAddresses = new List<string>();
         private string _connectionKeyAtStart;
+        private bool _simulatorAtStart;
         private Handler _ui;
         private bool _refreshing;
 
@@ -53,6 +54,7 @@ namespace AgOpenGPS.Droid
             LoadFields();
             LoadPairedDevices();
             _connectionKeyAtStart = AppState.Settings.ConnectionKey;
+            _simulatorAtStart = AppState.Settings.UseSimulator;
         }
 
         protected override void OnResume()
@@ -93,6 +95,9 @@ namespace AgOpenGPS.Droid
             s.Wheelbase = _wheelbase.Text.Trim();
             s.NudgeStepCm = _nudgeStep.Text.Trim();
             s.UseSimulator = _useSim.Checked;
+            if (!s.UseSimulator && (_simLat.Text.Trim().Length > 0 || _simLon.Text.Trim().Length > 0)
+                && (_simLat.Text.Trim() != s.SimLatitude || _simLon.Text.Trim() != s.SimLongitude))
+                Toast.MakeText(this, "The start position is used only with 'Use the simulator' ticked", ToastLength.Long).Show();
             s.SimLatitude = _simLat.Text.Trim();
             s.SimLongitude = _simLon.Text.Trim();
             s.ShowMap = _showMap.Checked;
@@ -112,8 +117,12 @@ namespace AgOpenGPS.Droid
             string key = s.ConnectionKey;
             if (key != _connectionKeyAtStart)
             {
+                bool simChanged = s.UseSimulator != _simulatorAtStart;
                 _connectionKeyAtStart = key;
+                _simulatorAtStart = s.UseSimulator;
                 if (AppState.IsConnected) Task.Run(AppState.Reconnect);
+                // Ticking the simulator means "drive it now": connect without a trip to the Connect button.
+                else if (simChanged && s.UseSimulator && HasBluetoothPermission()) AppState.Connect();
             }
         }
 
@@ -197,6 +206,13 @@ namespace AgOpenGPS.Droid
             if (selected >= 0) _devices.SetSelection(selected);
         }
 
+        // The background service (connectedDevice) needs the Bluetooth permission, also for the simulator.
+        private bool HasBluetoothPermission()
+        {
+            if (!OperatingSystem.IsAndroidVersionAtLeast(31)) return true;
+            return CheckSelfPermission(global::Android.Manifest.Permission.BluetoothConnect) == Permission.Granted;
+        }
+
         // ---------------------------------------------------------------- diagnostics, 2 Hz
 
         private void Refresh()
@@ -216,7 +232,7 @@ namespace AgOpenGPS.Droid
             }
             else
             {
-                sb.Append("Bluetooth: ").Append(snap.State).Append(" - ").Append(snap.Message);
+                sb.Append(AppState.Simulator != null ? "Simulator: " : "Bluetooth: ").Append(snap.State).Append(" - ").Append(snap.Message);
                 if (snap.Connects > 1) sb.Append("  (reconnects: ").Append(snap.Connects - 1).Append(')');
                 SessionStats st = snap.Session;
                 if (st != null)

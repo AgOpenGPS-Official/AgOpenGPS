@@ -130,7 +130,9 @@ the tractor now, **Reset nudge** puts it back. The nudge is saved with the line 
 
 ### Simulator
 
-*Settings → Simulator → Use the simulator instead of the receiver*, then Connect. A virtual tractor
+*Settings → Simulator → Use the simulator instead of the receiver*; going back connects to it
+(the badge shows **SIM** in purple while the simulator drives, and the top bar says whether the
+simulator or Bluetooth is connected). A virtual tractor
 with an RTK fix starts in the open field (or at the start position typed in Settings, or the last
 position). On the driving screen: **− / +** speed, **< | >** steering wheel, **Auto** steers along
 the active line by itself (pure pursuit, as AutoSteer would), **To field** puts the tractor in
