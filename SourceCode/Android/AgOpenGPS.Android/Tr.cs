@@ -260,6 +260,20 @@ namespace AgOpenGPS.Droid
             ["Language"] = "Jezik",
             ["System"] = "Sustav",
 
+            // ---------------------------------------------------------------- corner mode
+            ["How to record the boundary?"] = "Kako snimiti među?",
+            ["Drive along the edge"] = "Vožnjom uz rub",
+            ["Corners (straight sides)"] = "Kutovima (ravne stranice)",
+            ["Drive to the first corner and press Corner. After the last corner press Finish."] = "Odvezite se do prvog kuta i pritisnite Kut. Nakon zadnjeg kuta pritisnite Završi.",
+            ["Drive to the first corner and press Corner"] = "Odvezite se do prvog kuta i pritisnite Kut",
+            ["Corners: {0}. Drive to the next one and press Corner, or Finish."] = "Kutova: {0}. Odvezite se do sljedećeg i pritisnite Kut, ili Završi.",
+            ["Corner"] = "Kut",
+            ["Undo"] = "Poništi",
+            ["Corner {0}"] = "Kut {0}",
+            ["Not added: no position, or the same spot as the last corner"] = "Nije dodano: nema pozicije ili je isto mjesto kao zadnji kut",
+            ["Mark at least 3 corners"] = "Označite barem 3 kuta",
+            ["The corners enclose too small an area"] = "Kutovi zatvaraju premalu površinu",
+
             // ---------------------------------------------------------------- sound alerts
             ["Sound alerts"] = "Zvučna upozorenja",
             ["Each alert sounds once per event, on the alarm channel (also with the tablet on silent)."] = "Svako upozorenje oglasi se jednom po događaju, preko zvuka alarma (i kad je tablet utišan).",

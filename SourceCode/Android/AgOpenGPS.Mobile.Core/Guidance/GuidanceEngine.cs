@@ -108,6 +108,9 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>True while a boundary is being driven.</summary>
         public bool RecordingBoundary;
         public BoundarySide BoundarySide;
+        public BoundaryMode BoundaryMode;
+        /// <summary>Corners marked so far (corner mode).</summary>
+        public int BoundaryCorners;
         public double BoundaryRecordedMeters = double.NaN;
         /// <summary>Distance back to where the boundary recording started, metres.</summary>
         public double BoundaryGapMeters = double.NaN;
@@ -166,6 +169,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public const double MaxPaintStepMeters = 10.0;
 
         private bool _boundaryRecording;
+        private BoundaryMode _boundaryMode;
         private BoundarySide _boundarySide;
         private readonly List<TrackPoint> _boundary = new List<TrackPoint>();
         private LocalPlane _boundaryPlane;
@@ -188,7 +192,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 _fix = guide;
                 PaintCoverage(tool);
                 fix = guide;
-                if (_boundaryRecording && fix.HasPosition && _boundary.Count < MaxCurvePoints)
+                if (_boundaryRecording && _boundaryMode == BoundaryMode.Drive && fix.HasPosition && _boundary.Count < MaxCurvePoints)
                 {
                     GeoPoint p = _boundaryPlane.ToLocal(fix.Latitude, fix.Longitude);
                     double step = p.DistanceTo(_boundaryLast);
@@ -374,20 +378,64 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             }
         }
 
-        /// <summary>Starts recording a boundary at the current position. False without a position.</summary>
-        public bool StartBoundary(BoundarySide side)
+        /// <summary>A second Corner press closer than this to the last corner is ignored (pressed twice).</summary>
+        public const double MinCornerSpacingMeters = 1.0;
+
+        /// <summary>
+        /// Starts recording a boundary. Drive mode records the path from here; corner mode starts
+        /// empty and takes the corners from <see cref="AddCorner"/>. False without a position.
+        /// </summary>
+        public bool StartBoundary(BoundarySide side, BoundaryMode mode = BoundaryMode.Drive)
         {
             lock (_lock)
             {
                 if (_fix == null || !_fix.HasPosition) return false;
                 _boundaryRecording = true;
+                _boundaryMode = mode;
                 _boundarySide = side;
                 _boundary.Clear();
-                _boundary.Add(new TrackPoint(_fix.Latitude, _fix.Longitude));
+                if (mode == BoundaryMode.Drive) _boundary.Add(new TrackPoint(_fix.Latitude, _fix.Longitude));
                 _boundaryPlane = new LocalPlane(_fix.Latitude, _fix.Longitude);
                 _boundaryLast = new GeoPoint(0, 0);
                 _boundaryLength = 0;
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Corner mode: marks the current position as the next corner. Returns the number of
+        /// corners, or -1 when it was ignored (no position, or the same spot as the last corner).
+        /// </summary>
+        public int AddCorner()
+        {
+            lock (_lock)
+            {
+                if (!_boundaryRecording || _boundaryMode != BoundaryMode.Corners || _fix == null || !_fix.HasPosition) return -1;
+                GeoPoint here = _boundaryPlane.ToLocal(_fix.Latitude, _fix.Longitude);
+                if (_boundary.Count > 0)
+                {
+                    TrackPoint last = _boundary[_boundary.Count - 1];
+                    GeoPoint lastLocal = _boundaryPlane.ToLocal(last.Latitude, last.Longitude);
+                    if (lastLocal.DistanceTo(here) < MinCornerSpacingMeters) return -1;
+                    _boundaryLength += lastLocal.DistanceTo(here);
+                }
+                _boundary.Add(new TrackPoint(_fix.Latitude, _fix.Longitude));
+                return _boundary.Count;
+            }
+        }
+
+        /// <summary>Corner mode: removes the last corner (pressed by mistake). Returns the corners left.</summary>
+        public int RemoveLastCorner()
+        {
+            lock (_lock)
+            {
+                if (!_boundaryRecording || _boundaryMode != BoundaryMode.Corners || _boundary.Count == 0) return 0;
+                _boundary.RemoveAt(_boundary.Count - 1);
+                _boundaryLength = 0;
+                for (int i = 1; i < _boundary.Count; i++)
+                    _boundaryLength += _boundaryPlane.ToLocal(_boundary[i - 1].Latitude, _boundary[i - 1].Longitude)
+                        .DistanceTo(_boundaryPlane.ToLocal(_boundary[i].Latitude, _boundary[i].Longitude));
+                return _boundary.Count;
             }
         }
 
@@ -412,6 +460,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 areaSquareMeters = 0;
                 error = null;
                 if (!_boundaryRecording) { error = "Start recording the boundary first"; return null; }
+                if (_boundaryMode == BoundaryMode.Corners) return FinishCorners(halfWidth, out areaSquareMeters, out error);
 
                 var path = new List<GeoPoint>();
                 foreach (TrackPoint t in _boundary) path.Add(_boundaryPlane.ToLocal(t.Latitude, t.Longitude));
@@ -465,6 +514,41 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 _boundary.Clear();
                 return result;
             }
+        }
+
+        // Corner mode: the corners as they are, joined with straight lines and closed to the first.
+        private List<TrackPoint> FinishCorners(double halfWidth, out double areaSquareMeters, out string error)
+        {
+            areaSquareMeters = 0;
+            error = null;
+            if (_boundary.Count < 3)
+            {
+                error = "Mark at least 3 corners";
+                return null;
+            }
+
+            var corners = new List<GeoPoint>();
+            foreach (TrackPoint t in _boundary) corners.Add(_boundaryPlane.ToLocal(t.Latitude, t.Longitude));
+            double offset = _boundarySide == BoundarySide.LeftOfImplement ? -halfWidth
+                : _boundarySide == BoundarySide.RightOfImplement ? halfWidth : 0;
+            List<GeoPoint> moved = Geometry.OffsetClosed(corners, offset);
+
+            areaSquareMeters = Geometry.Area(moved);
+            if (areaSquareMeters < MinFieldAreaSquareMeters)
+            {
+                error = "The corners enclose too small an area";
+                return null;
+            }
+
+            var result = new List<TrackPoint>();
+            foreach (GeoPoint p in moved)
+            {
+                _boundaryPlane.ToWgs84(p, out double lat, out double lon);
+                result.Add(new TrackPoint(lat, lon));
+            }
+            _boundaryRecording = false;
+            _boundary.Clear();
+            return result;
         }
 
         public void SetActiveLine(AbLine line)
@@ -572,6 +656,8 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                     ActiveField = _field,
                     RecordingBoundary = _boundaryRecording,
                     BoundarySide = _boundarySide,
+                    BoundaryMode = _boundaryMode,
+                    BoundaryCorners = _boundaryRecording && _boundaryMode == BoundaryMode.Corners ? _boundary.Count : 0,
                     Working = _working,
                     Coverage = _coverage,
                 };

@@ -22,6 +22,7 @@ namespace AgOpenGPS.Droid
         private readonly Paint _vehicle = Fill("#FFFFFF");
         private readonly Paint _vehicleEdge = Stroke("#212121", 2);
         private readonly Paint _pointA = Fill("#FF7043");
+        private readonly Paint _cornerDot = Fill("#4DD0E1");
         private readonly Paint _goal = Fill("#FFFFFF");
         private readonly Paint _goalLine = Stroke("#FFFFFF", 1.5f);
         private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#B0BEC5"), TextAlign = Paint.Align.Center };
@@ -292,7 +293,16 @@ namespace AgOpenGPS.Droid
             DrawCoverage(canvas, s, v, heading, scale, cx, cy);
 
             DrawLine(s.Boundary, _boundary, closed: true);
-            if (s.RecordingBoundary) DrawLine(s.BoundaryPath, _boundaryRec);
+            if (s.RecordingBoundary)
+            {
+                DrawLine(s.BoundaryPath, _boundaryRec);
+                // Corner mode: the first BoundaryCorners points are the marked corners.
+                for (int i = 0; i < s.BoundaryCorners && i < s.BoundaryPath.Count; i++)
+                {
+                    ToScreen(s.BoundaryPath[i], out float kx, out float ky);
+                    canvas.DrawCircle(kx, ky, 7 * _density, _cornerDot);
+                }
+            }
 
             int current = s.Result?.Pass ?? 0;
             foreach (PassShape pass in s.Passes)

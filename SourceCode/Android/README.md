@@ -192,6 +192,13 @@ and stays after closing the app or restarting the tablet.
 3. Drive all the way round and press **Finish boundary** within 30 m of where you started. The
    boundary is closed, smoothed and saved, and the area is shown in hectares.
 
+   **Corner mode** (choose *Corners (straight sides)* when starting): drive to each corner and
+   press **Corner**; **Undo** removes the last one. After the last corner press **Finish
+   boundary**: the corners are joined with straight lines and closed back to the first one, so
+   there is no need to drive along the edges or back to the start. At least 3 corners; the
+   implement side applies as above. Best for fields with straight sides; for a curved side use
+   the driving mode or add extra corners along the curve.
+
 While driving, the boundary is drawn in green. Within half the working width plus 3 m of the edge
 an orange **Field edge 2.4 m** warning shows, outside it a red **OUTSIDE FIELD**.
 

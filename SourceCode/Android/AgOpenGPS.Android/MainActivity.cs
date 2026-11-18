@@ -40,7 +40,7 @@ namespace AgOpenGPS.Droid
         private TextView _workLabel;
         private TextView _fixBadge, _fixInfo, _xte, _lineInfo, _edge, _accuracy, _recordInfo, _stats;
         private LightbarView _lightbar;
-        private LinearLayout _simPanel;
+        private LinearLayout _simPanel, _cornerRow;
         private Button _followButton;
         private TextView _simSpeed;
         private Button _simAuto;
@@ -353,13 +353,23 @@ namespace AgOpenGPS.Droid
             }
             if (field.HasBoundary)
             {
-                Confirm(Tr.F("Replace the boundary of {0}?", field.Name), null, Tr.T("Record new"), ChooseBoundarySide);
+                Confirm(Tr.F("Replace the boundary of {0}?", field.Name), null, Tr.T("Record new"), ChooseBoundaryMode);
                 return;
             }
-            ChooseBoundarySide();
+            ChooseBoundaryMode();
         }
 
-        private void ChooseBoundarySide()
+        /// <summary>First: drive the whole edge, or mark only the corners.</summary>
+        private void ChooseBoundaryMode()
+        {
+            new AlertDialog.Builder(this)
+                .SetTitle(Tr.T("How to record the boundary?"))
+                .SetItems(new[] { Tr.T("Drive along the edge"), Tr.T("Corners (straight sides)") },
+                    (s, e) => ChooseBoundarySide(e.Which == 1 ? BoundaryMode.Corners : BoundaryMode.Drive))
+                .Show();
+        }
+
+        private void ChooseBoundarySide(BoundaryMode mode)
         {
             double half = AppState.Settings.WorkingWidthMeters / 2;
             string[] items =
@@ -373,14 +383,23 @@ namespace AgOpenGPS.Droid
                 .SetItems(items, (s, e) =>
                 {
                     var side = (BoundarySide)e.Which;
-                    if (!AppState.Guidance.StartBoundary(side))
+                    if (!AppState.Guidance.StartBoundary(side, mode))
                     {
                         Toast_(Tr.T("No position yet"));
                         return;
                     }
-                    Toast_(Tr.T("Drive round the field with the implement up, then press Finish near where you started"), true);
+                    Toast_(mode == BoundaryMode.Corners
+                        ? Tr.T("Drive to the first corner and press Corner. After the last corner press Finish.")
+                        : Tr.T("Drive round the field with the implement up, then press Finish near where you started"), true);
                 })
                 .Show();
+        }
+
+        private void OnCornerClicked()
+        {
+            int n = AppState.Guidance.AddCorner();
+            if (n < 0) Toast_(Tr.T("Not added: no position, or the same spot as the last corner"));
+            else Toast_(Tr.F("Corner {0}", n));
         }
 
         private void FinishBoundary()
@@ -668,13 +687,20 @@ namespace AgOpenGPS.Droid
                 + (field.HasBoundary ? "  " + field.AreaHectares.ToString("0.0", Inv) + " ha" : ""));
             _boundary.Text = g.RecordingBoundary ? Tr.T("Finish boundary") : field != null && field.HasBoundary ? Tr.T("New boundary") : Tr.T("Record boundary");
             _cancelBoundary.Visibility = g.RecordingBoundary ? ViewStates.Visible : ViewStates.Gone;
+            ViewStates corners = g.RecordingBoundary && g.BoundaryMode == BoundaryMode.Corners ? ViewStates.Visible : ViewStates.Gone;
+            _cornerRow.Visibility = corners;
 
             // Line recording state.
             _cancel.Visibility = g.Recording ? ViewStates.Visible : ViewStates.Gone;
             _b.Enabled = g.Recording;
             _a.Text = g.Recording ? Tr.T("Restart A") : "A";
 
-            if (g.RecordingBoundary)
+            if (g.RecordingBoundary && g.BoundaryMode == BoundaryMode.Corners)
+            {
+                _recordInfo.Text = g.BoundaryCorners == 0 ? Tr.T("Drive to the first corner and press Corner")
+                    : Tr.F("Corners: {0}. Drive to the next one and press Corner, or Finish.", g.BoundaryCorners);
+            }
+            else if (g.RecordingBoundary)
             {
                 _recordInfo.Text = string.Format(Inv, Tr.T("Boundary: {0:0} m driven, {1:0} m to the start"),
                     g.BoundaryRecordedMeters, double.IsNaN(g.BoundaryGapMeters) ? 0 : g.BoundaryGapMeters);
@@ -875,6 +901,13 @@ namespace AgOpenGPS.Droid
             panel.AddView(_field);
             _boundary = Ui.Button(this, Tr.T("Record boundary"), OnBoundaryClicked, 52);
             panel.AddView(_boundary);
+            _cornerRow = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            Button corner = Ui.Button(this, Tr.T("Corner"), OnCornerClicked, 64);
+            corner.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 22);
+            _cornerRow.AddView(corner, Ui.Weight(2));
+            _cornerRow.AddView(Ui.Button(this, Tr.T("Undo"), () => AppState.Guidance.RemoveLastCorner(), 64), Ui.Weight(1));
+            _cornerRow.Visibility = ViewStates.Gone;
+            panel.AddView(_cornerRow);
             _cancelBoundary = Ui.Button(this, Tr.T("Cancel boundary"), () => AppState.Guidance.CancelBoundary(), 44);
             panel.AddView(_cancelBoundary);
 

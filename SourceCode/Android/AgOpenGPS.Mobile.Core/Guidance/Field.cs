@@ -17,6 +17,15 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         RightOfImplement,
     }
 
+    /// <summary>How a boundary is recorded.</summary>
+    public enum BoundaryMode
+    {
+        /// <summary>The path driven along the edge, recorded every metre.</summary>
+        Drive,
+        /// <summary>Only the corners, marked one by one; joined with straight lines.</summary>
+        Corners,
+    }
+
     /// <summary>A named field: its outer boundary and (through <see cref="AbLine.FieldId"/>) its lines.</summary>
     public sealed class Field
     {

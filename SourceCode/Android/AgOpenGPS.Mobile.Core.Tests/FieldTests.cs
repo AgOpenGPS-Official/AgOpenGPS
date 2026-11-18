@@ -167,3 +167,94 @@ namespace AgOpenGPS.Mobile.Core.Tests
         }
     }
 }
+
+namespace AgOpenGPS.Mobile.Core.Tests
+{
+    public class CornerModeTests
+    {
+        private static readonly LocalPlane Plane = new LocalPlane(45.8150, 15.9819);
+
+        private static GnssFix Fix(double north, double east)
+        {
+            Plane.ToWgs84(new GeoPoint(north, east), out double lat, out double lon);
+            return new GnssFix { Latitude = lat, Longitude = lon, FixQuality = 4 };
+        }
+
+        /// <summary>Drives (in steps, not along the edges) to each corner and presses Corner there.</summary>
+        private static void MarkCorners(GuidanceEngine e, params (double n, double e)[] corners)
+        {
+            foreach (var (n, east) in corners)
+            {
+                e.OnFix(Fix(n * 0.5, east * 0.5 + 7)); // somewhere in between: not part of the boundary
+                e.OnFix(Fix(n, east));
+                Assert.That(e.AddCorner(), Is.GreaterThan(0));
+            }
+        }
+
+        [Test]
+        public void FourCorners_MakeTheSquare_WithoutDrivingBackToTheStart()
+        {
+            var e = new GuidanceEngine();
+            e.OnFix(Fix(-20, -20)); // starting somewhere away from the field
+            Assert.That(e.StartBoundary(BoundarySide.Antenna, BoundaryMode.Corners), Is.True);
+            MarkCorners(e, (0, 0), (0, 100), (100, 100), (100, 0));
+            e.OnFix(Fix(60, -30)); // finishing away from the first corner is fine
+
+            GuidanceSnapshot s = e.GetSnapshot();
+            Assert.That(s.BoundaryCorners, Is.EqualTo(4));
+            Assert.That(s.BoundaryMode, Is.EqualTo(BoundaryMode.Corners));
+
+            List<TrackPoint> b = e.FinishBoundary(3, out double area, out string error);
+            Assert.That(b, Is.Not.Null, error);
+            Assert.That(b, Has.Count.EqualTo(4), "exactly the corners");
+            Assert.That(area, Is.EqualTo(10000).Within(1));
+        }
+
+        [Test]
+        public void Corners_WithImplementSide_AreMovedOutwards()
+        {
+            var e = new GuidanceEngine();
+            e.OnFix(Fix(0, 0));
+            e.StartBoundary(BoundarySide.RightOfImplement, BoundaryMode.Corners);
+            MarkCorners(e, (0, 0), (0, 100), (100, 100), (100, 0)); // counter-clockwise: right is outside
+            e.FinishBoundary(3, out double area, out string error);
+            Assert.That(error, Is.Null);
+            Assert.That(area, Is.EqualTo(106 * 106).Within(1), "mitred corners: exact");
+        }
+
+        [Test]
+        public void DoublePress_Undo_AndTooFewCorners()
+        {
+            var e = new GuidanceEngine();
+            e.OnFix(Fix(0, 0));
+            e.StartBoundary(BoundarySide.Antenna, BoundaryMode.Corners);
+            Assert.That(e.AddCorner(), Is.EqualTo(1));
+            e.OnFix(Fix(0.4, 0));
+            Assert.That(e.AddCorner(), Is.EqualTo(-1), "same spot pressed twice");
+
+            e.OnFix(Fix(0, 100));
+            Assert.That(e.AddCorner(), Is.EqualTo(2));
+            e.OnFix(Fix(30, 40));
+            Assert.That(e.AddCorner(), Is.EqualTo(3), "a wrong one");
+            Assert.That(e.RemoveLastCorner(), Is.EqualTo(2));
+
+            Assert.That(e.FinishBoundary(3, out _, out string error), Is.Null);
+            Assert.That(error, Is.EqualTo("Mark at least 3 corners"));
+            Assert.That(e.IsRecordingBoundary, Is.True, "still recording");
+
+            e.OnFix(Fix(100, 100)); e.AddCorner();
+            e.OnFix(Fix(100, 0)); e.AddCorner();
+            Assert.That(e.FinishBoundary(3, out double area, out error), Is.Not.Null, error);
+            Assert.That(area, Is.EqualTo(10000).Within(1), "the undone corner is gone");
+        }
+
+        [Test]
+        public void DriveMode_IgnoresCornerButtons()
+        {
+            var e = new GuidanceEngine();
+            e.OnFix(Fix(0, 0));
+            e.StartBoundary(BoundarySide.Antenna); // drive mode
+            Assert.That(e.AddCorner(), Is.EqualTo(-1));
+        }
+    }
+}
