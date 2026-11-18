@@ -26,6 +26,10 @@ namespace AgOpenGPS.Droid
             ToolOverlap = _prefs.GetString("tool.overlap", "0.0");
             ShowRawLog = _prefs.GetBoolean("ui.rawlog", false);
             Language = _prefs.GetString("ui.language", Tr.System);
+            foreach (AgOpenGPS.Mobile.Core.AlertKind k in (AgOpenGPS.Mobile.Core.AlertKind[])System.Enum.GetValues(typeof(AgOpenGPS.Mobile.Core.AlertKind)))
+                if (_prefs.GetBoolean("alert." + k, k != AgOpenGPS.Mobile.Core.AlertKind.OffLine)) Alerts.Add(k);
+            AlertEdgeMeters = _prefs.GetString("alert.edgeMeters", "5");
+            AlertOffLineCm = _prefs.GetString("alert.offLineCm", "20");
             RecordCoverage = _prefs.GetBoolean("coverage.record", true);
             AntennaHeight = _prefs.GetString("vehicle.antennaHeight", "0");
             AntennaForward = _prefs.GetString("vehicle.antennaForward", "0");
@@ -53,6 +57,23 @@ namespace AgOpenGPS.Droid
         public bool ShowRawLog;
         /// <summary>"system", "en" or "hr" (see <see cref="Tr"/>).</summary>
         public string Language;
+
+        /// <summary>Alerts that sound (all but "off the line" by default).</summary>
+        public readonly System.Collections.Generic.HashSet<AgOpenGPS.Mobile.Core.AlertKind> Alerts =
+            new System.Collections.Generic.HashSet<AgOpenGPS.Mobile.Core.AlertKind>();
+        public string AlertEdgeMeters, AlertOffLineCm;
+
+        public AgOpenGPS.Mobile.Core.AlertSettings BuildAlertSettings()
+        {
+            var a = new AgOpenGPS.Mobile.Core.AlertSettings
+            {
+                EdgeWarningMeters = System.Math.Max(0.5, ParseMeters(AlertEdgeMeters, 5)),
+                OffLineMeters = System.Math.Max(0.02, ParseMeters(AlertOffLineCm, 20) / 100.0),
+            };
+            a.Enabled.Clear();
+            foreach (var k in Alerts) a.Enabled.Add(k);
+            return a;
+        }
         /// <summary>Vehicle and implement offsets in metres, as typed (see VehicleGeometry).</summary>
         public string AntennaHeight, AntennaForward, AntennaRight, ToolBehind, ToolRight, Wheelbase;
         public string NudgeStepCm;
@@ -124,6 +145,11 @@ namespace AgOpenGPS.Droid
 
         public void Save()
         {
+            var alertEdit = _prefs.Edit();
+            foreach (AgOpenGPS.Mobile.Core.AlertKind k in (AgOpenGPS.Mobile.Core.AlertKind[])System.Enum.GetValues(typeof(AgOpenGPS.Mobile.Core.AlertKind)))
+                alertEdit.PutBoolean("alert." + k, Alerts.Contains(k));
+            alertEdit.Apply();
+
             _prefs.Edit()
                 .PutString("bt.address", DeviceAddress)
                 .PutBoolean("bt.autoconnect", AutoConnect)
@@ -138,6 +164,8 @@ namespace AgOpenGPS.Droid
                 .PutString("tool.overlap", ToolOverlap)
                 .PutBoolean("ui.rawlog", ShowRawLog)
                 .PutString("ui.language", Language)
+                .PutString("alert.edgeMeters", AlertEdgeMeters)
+                .PutString("alert.offLineCm", AlertOffLineCm)
                 .PutBoolean("coverage.record", RecordCoverage)
                 .PutBoolean("coverage.show", ShowCoverage)
                 .PutString("vehicle.antennaHeight", AntennaHeight)

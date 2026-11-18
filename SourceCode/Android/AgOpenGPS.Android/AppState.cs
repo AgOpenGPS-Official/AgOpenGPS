@@ -29,6 +29,74 @@ namespace AgOpenGPS.Droid
 
         public static bool IsConnected => Link != null && Link.IsRunning;
 
+        public static AlertPlayer Sounds { get; } = new AlertPlayer();
+        private static AlertMonitor _alerts = new AlertMonitor(new AlertSettings());
+        private static Android.OS.Handler _alertLoop;
+        private static bool _alertsRunning;
+
+        /// <summary>The last alert and when, for the driving screen.</summary>
+        public static string LastAlert { get; private set; }
+        public static DateTime LastAlertUtc { get; private set; }
+
+        /// <summary>Applies changed alert settings.</summary>
+        public static void ReloadAlerts() => _alerts = new AlertMonitor(Settings.BuildAlertSettings());
+
+        /// <summary>Checks the alerts 4 times a second while connected, also with the screen off (the service keeps the process alive).</summary>
+        private static void StartAlerts()
+        {
+            ReloadAlerts();
+            _alertsRunning = true;
+            _alertLoop ??= new Android.OS.Handler(Android.OS.Looper.MainLooper);
+            _alertLoop.RemoveCallbacksAndMessages(null);
+            _alertLoop.PostDelayed(CheckAlerts, 250);
+        }
+
+        private static void StopAlerts()
+        {
+            _alertsRunning = false;
+            _alertLoop?.RemoveCallbacksAndMessages(null);
+        }
+
+        private static void CheckAlerts()
+        {
+            if (!_alertsRunning) return;
+            try
+            {
+                LinkSnapshot link = Link?.GetSnapshot();
+                GuidanceSnapshot g = Guidance.GetSnapshot();
+                SessionStats st = link?.Session;
+                bool receiving = link != null && link.State == LinkState.Connected && st?.Latest != null
+                    && st.SecondsSinceFix >= 0 && st.SecondsSinceFix < 2;
+                AgLibrary.Ntrip.NtripStatus n = link?.Ntrip;
+                var inputs = new AlertInputs
+                {
+                    Now = DateTime.UtcNow,
+                    Receiving = receiving,
+                    FixQuality = receiving ? st.Latest.FixQuality : -1,
+                    InsideField = g.InsideField,
+                    DistanceToBoundary = g.DistanceToBoundary,
+                    NtripActive = n != null,
+                    SecondsSinceCorrection = n != null && n.Frames > 0 && n.SecondsSinceLastFrame >= 0 ? n.SecondsSinceLastFrame : double.NaN,
+                    CrossTrackMeters = g.Result?.CrossTrackMeters ?? double.NaN,
+                    SpeedKmh = receiving ? st.Latest.SpeedKmh : double.NaN,
+                };
+                foreach (AlertKind kind in _alerts.Update(inputs))
+                {
+                    Sounds.Play(kind);
+                    LastAlert = AlertPlayer.Message(kind);
+                    LastAlertUtc = DateTime.UtcNow;
+                }
+            }
+            catch (Exception)
+            {
+                // An alert check must never stop the guidance; try again on the next tick.
+            }
+            finally
+            {
+                if (_alertsRunning) _alertLoop.PostDelayed(CheckAlerts, 250);
+            }
+        }
+
         /// <summary>The virtual tractor while connected to the simulator, else null.</summary>
         public static GnssSimulator Simulator { get; private set; }
 
@@ -249,6 +317,7 @@ namespace AgOpenGPS.Droid
                 Link = link;
                 link.Start();
                 StartService();
+                StartAlerts();
 
                 if (settings.UseSimulator) return "Simulator: set speed with + / -, steer with < >, or press Auto";
                 return settings.NtripEnabled && settings.BuildNtripProfile() == null
@@ -266,6 +335,7 @@ namespace AgOpenGPS.Droid
                 link = Link;
                 Link = null;
             }
+            StopAlerts(); // pressing Disconnect is not "connection lost"
             link?.Stop();
             Simulator = null;
             try { _context.StopService(new Intent(_context, typeof(GnssService))); }

@@ -260,6 +260,23 @@ namespace AgOpenGPS.Droid
             ["Language"] = "Jezik",
             ["System"] = "Sustav",
 
+            // ---------------------------------------------------------------- sound alerts
+            ["Sound alerts"] = "Zvučna upozorenja",
+            ["Each alert sounds once per event, on the alarm channel (also with the tablet on silent)."] = "Svako upozorenje oglasi se jednom po događaju, preko zvuka alarma (i kad je tablet utišan).",
+            ["Field edge ahead"] = "Rub parcele ispred",
+            ["Warn this far from the edge (m)"] = "Upozori na ovoj udaljenosti od ruba (m)",
+            ["Left the field"] = "Izlazak s parcele",
+            ["You left the field"] = "Izašli ste s parcele",
+            ["RTK Fix lost"] = "RTK Fix izgubljen",
+            ["RTK Fix is back"] = "RTK Fix je ponovno tu",
+            ["NTRIP corrections stopped (15 s)"] = "NTRIP korekcije prestale (15 s)",
+            ["NTRIP corrections stopped"] = "NTRIP korekcije su prestale",
+            ["Connection to the receiver lost"] = "Veza s prijemnikom izgubljena",
+            ["Off the line"] = "Izvan linije",
+            ["Off the line after (cm, for 2 s, when moving)"] = "Izvan linije nakon (cm, 2 s, u vožnji)",
+            ["Test sound"] = "Probni zvuk",
+            ["Too quiet? Turn up the alarm volume of the tablet."] = "Pretiho? Pojačajte glasnoću alarma na tabletu.",
+
             // ---------------------------------------------------------------- notification
             ["Receiver connection"] = "Veza s prijemnikom",
             ["Shown while AgOpenGPS is connected to the receiver"] = "Prikazuje se dok je AgOpenGPS spojen s prijemnikom",

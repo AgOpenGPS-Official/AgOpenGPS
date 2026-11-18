@@ -40,7 +40,8 @@ namespace AgOpenGPS.Droid
         private Spinner _language;
         private static readonly string[] LanguageCodes = { Tr.System, Tr.English, Tr.Croatian };
         private CheckBox _autoConnect, _ntripEnabled, _rawLog, _recordCoverage, _showCoverage, _useSim, _showMap;
-        private EditText _mapMaxZoom;
+        private EditText _mapMaxZoom, _alertEdge, _alertOffLine;
+        private readonly Dictionary<AlertKind, CheckBox> _alertBoxes = new Dictionary<AlertKind, CheckBox>();
         private EditText _antHeight, _antForward, _antRight, _toolBehind, _toolRight, _wheelbase, _nudgeStep, _simLat, _simLon, _mapUrl, _mapAttribution;
         private TextView _mapStatus;
         private System.Threading.CancellationTokenSource _prefetch;
@@ -106,6 +107,10 @@ namespace AgOpenGPS.Droid
             s.MapUrl = string.IsNullOrWhiteSpace(_mapUrl.Text) ? MapTiles.DefaultUrl : _mapUrl.Text.Trim();
             s.MapAttribution = _mapAttribution.Text.Trim();
             s.MapMaxZoom = _mapMaxZoom.Text.Trim();
+            s.Alerts.Clear();
+            foreach (var kv in _alertBoxes) if (kv.Value.Checked) s.Alerts.Add(kv.Key);
+            s.AlertEdgeMeters = _alertEdge.Text.Trim();
+            s.AlertOffLineCm = _alertOffLine.Text.Trim();
             if (s.RecordCoverage && !_recordCoverage.Checked) AppState.SetWorking(false); // switched off: stop and save
             s.RecordCoverage = _recordCoverage.Checked;
             s.ShowCoverage = _showCoverage.Checked;
@@ -114,6 +119,7 @@ namespace AgOpenGPS.Droid
             AppState.Guidance.ToolWidth = s.ToolWidthMeters;
             AppState.Guidance.CoverageEnabled = s.RecordCoverage;
             AppState.Guidance.Vehicle = s.BuildVehicleGeometry();
+            AppState.ReloadAlerts();
             AppState.Map.UrlTemplate = s.MapUrl;
 
             string key = s.ConnectionKey;
@@ -159,6 +165,9 @@ namespace AgOpenGPS.Droid
             _mapUrl.Text = s.MapUrl;
             _mapAttribution.Text = s.MapAttribution;
             _mapMaxZoom.Text = s.MapMaxZoom;
+            foreach (var kv in _alertBoxes) kv.Value.Checked = s.Alerts.Contains(kv.Key);
+            _alertEdge.Text = s.AlertEdgeMeters;
+            _alertOffLine.Text = s.AlertOffLineCm;
             Task.Run(() =>
             {
                 long bytes = AppState.Map.DiskBytes();
@@ -434,6 +443,29 @@ namespace AgOpenGPS.Droid
             _wheelbase = Ui.Field(this, left, Tr.T("Wheelbase (simulator and steering)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
             left.AddView(Ui.Hint(this, Tr.T("Guidance follows the implement's centre line; the worked area is painted where the implement works.")));
             _nudgeStep = Ui.Field(this, left, Tr.T("Nudge step (cm)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+
+            left.AddView(Ui.Heading(this, Tr.T("Sound alerts")));
+            left.AddView(Ui.Hint(this, Tr.T("Each alert sounds once per event, on the alarm channel (also with the tablet on silent).")));
+            void AlertBox(AlertKind kind, string text)
+            {
+                var cb = new CheckBox(this) { Text = Tr.T(text) };
+                _alertBoxes[kind] = cb;
+                left.AddView(cb);
+            }
+            AlertBox(AlertKind.FieldEdge, "Field edge ahead");
+            _alertEdge = Ui.Field(this, left, Tr.T("Warn this far from the edge (m)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            AlertBox(AlertKind.LeftField, "Left the field");
+            AlertBox(AlertKind.RtkLost, "RTK Fix lost");
+            AlertBox(AlertKind.RtkBack, "RTK Fix is back");
+            AlertBox(AlertKind.CorrectionsStopped, "NTRIP corrections stopped (15 s)");
+            AlertBox(AlertKind.LinkLost, "Connection to the receiver lost");
+            AlertBox(AlertKind.OffLine, "Off the line");
+            _alertOffLine = Ui.Field(this, left, Tr.T("Off the line after (cm, for 2 s, when moving)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Button(this, Tr.T("Test sound"), () =>
+            {
+                AppState.Sounds.Play(AlertKind.RtkLost);
+                Toast.MakeText(this, Tr.T("Too quiet? Turn up the alarm volume of the tablet."), ToastLength.Long).Show();
+            }));
 
             left.AddView(Ui.Heading(this, Tr.T("Worked area")));
             _recordCoverage = new CheckBox(this) { Text = Tr.T("Record worked area (Work button, statistics)") };

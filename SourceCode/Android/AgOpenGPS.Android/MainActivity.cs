@@ -32,6 +32,7 @@ namespace AgOpenGPS.Droid
 
         private Handler _ui;
         private int _builtLanguage;
+        private DateTime _shownAlertUtc;
         private bool _refreshing;
         private bool _autoConnectTried;
         private LineKind _kind = LineKind.Straight;
@@ -566,6 +567,12 @@ namespace AgOpenGPS.Droid
         private void Render()
         {
             AppState.Tick();
+            if (AppState.LastAlertUtc != _shownAlertUtc && AppState.LastAlert != null)
+            {
+                // The sound plays from AppState (also in the background); here the matching text.
+                _shownAlertUtc = AppState.LastAlertUtc;
+                if ((DateTime.UtcNow - _shownAlertUtc).TotalSeconds < 5) Toast_(AppState.LastAlert);
+            }
             LinkSnapshot link = AppState.Link?.GetSnapshot();
             GuidanceSnapshot g = AppState.Guidance.GetSnapshot();
             AppSettings settings = AppState.Settings;

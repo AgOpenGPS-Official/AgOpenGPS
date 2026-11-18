@@ -230,6 +230,26 @@ every metre while driving and smoothed (points within 3 cm of a straight run are
 Guidance is for the **antenna** position: mount the antenna above the middle of the implement's
 working path, or expect a constant offset. Antenna and implement offsets are on the list below.
 
+### Sound alerts
+
+*Settings → Sound alerts*, each with its own sound and on/off switch:
+
+| Alert | When | Default |
+|---|---|---|
+| Field edge ahead | within the set distance (5 m) of the boundary, inside the field | on |
+| Left the field | the guide point crosses the boundary outwards | on |
+| RTK Fix lost | the fix drops from RTK Fix for 1.5 s | on |
+| RTK Fix is back | RTK Fix again for 1 s after it was lost | on |
+| NTRIP corrections stopped | no correction for 15 s after they were arriving | on |
+| Connection to the receiver lost | no position for 3 s | on |
+| Off the line | more than the set distance (20 cm) off for 2 s while moving with RTK | off |
+
+Each alert sounds **once** per event and is armed again only when the situation has clearly
+cleared, so a fix flickering between Fix and Float or wobbling at the edge does not keep beeping.
+Sounds use the alarm channel (heard with the tablet on silent) and also play in the background;
+a short message shows on the driving screen. *Test sound* checks the volume. Pressing Disconnect
+gives no alert.
+
 ### Connection and running in the background
 
 While connected, the app keeps running in the background: with the screen off, with another app
