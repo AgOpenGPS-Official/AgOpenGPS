@@ -241,6 +241,19 @@ every metre while driving and smoothed (points within 3 cm of a straight run are
 Guidance is for the **antenna** position: mount the antenna above the middle of the implement's
 working path, or expect a constant offset. Antenna and implement offsets are on the list below.
 
+### Headland, job log, colours, backup
+
+- **Headland** (*Settings → Headland*): a strip of the set width along the boundary, drawn dashed;
+  *Headland ahead* alert; optionally Work off when the implement enters it and on again in the
+  main part (only after Work was switched on by hand; a manual Work off ends the automatic).
+- **Job log** (*Jobs...*): one job per field and day while Work is on: date, start/end, working
+  time, hectares newly worked, distance, average speed, implement width. Export as CSV (UTF-8,
+  semicolons, opens in Excel) or PDF (A4 table). Saved in `jobs.json`.
+- **Colours** (*Settings → Colours*): Night (dark) or Day (light).
+- **Backup** (*Settings → Backup*): one JSON file with all settings (except the paired device)
+  and the fields as GeoJSON; restoring replaces the settings and adds the fields.
+- The active line's **A** and **B** are marked on the map.
+
 ### Sound alerts
 
 *Settings → Sound alerts*, each with its own sound and on/off switch:

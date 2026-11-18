@@ -19,6 +19,8 @@ namespace AgOpenGPS.Mobile.Core
         LinkLost,
         /// <summary>Off the guidance line for a while.</summary>
         OffLine,
+        /// <summary>Close to the headland line, coming from the main part of the field.</summary>
+        HeadlandAhead,
     }
 
     /// <summary>What the alert checks look at, sampled a few times a second.</summary>
@@ -37,6 +39,8 @@ namespace AgOpenGPS.Mobile.Core
         public double SecondsSinceCorrection = double.NaN;
         public double CrossTrackMeters = double.NaN;
         public double SpeedKmh = double.NaN;
+        /// <summary>Distance from the implement to the headland line, positive in the main part; NaN without headland.</summary>
+        public double DistanceToHeadland = double.NaN;
     }
 
     public sealed class AlertSettings
@@ -44,7 +48,7 @@ namespace AgOpenGPS.Mobile.Core
         public readonly HashSet<AlertKind> Enabled = new HashSet<AlertKind>
         {
             AlertKind.FieldEdge, AlertKind.LeftField, AlertKind.RtkLost, AlertKind.RtkBack,
-            AlertKind.CorrectionsStopped, AlertKind.LinkLost,
+            AlertKind.CorrectionsStopped, AlertKind.LinkLost, AlertKind.HeadlandAhead,
         };
         public double EdgeWarningMeters = 5.0;
         public double OffLineMeters = 0.20;
@@ -68,6 +72,7 @@ namespace AgOpenGPS.Mobile.Core
         private readonly AlertSettings _settings;
 
         private bool _edgeArmed = true;
+        private bool _headlandArmed = true;
         private bool? _lastInside;
         private bool _hadRtk;
         private bool _rtkLostAnnounced;
@@ -87,6 +92,7 @@ namespace AgOpenGPS.Mobile.Core
         public void Reset()
         {
             _edgeArmed = true;
+            _headlandArmed = true;
             _lastInside = null;
             _hadRtk = _rtkLostAnnounced = false;
             _notRtkSince = _rtkSince = null;
@@ -182,6 +188,18 @@ namespace AgOpenGPS.Mobile.Core
                     }
                     else if (d > _settings.EdgeWarningMeters + 2) _edgeArmed = true; // re-arm with 2 m margin
                 }
+            }
+
+            // ---- headland ahead (in the main part, getting close to the headland line)
+            if (hasFix && !double.IsNaN(s.DistanceToHeadland))
+            {
+                double h = s.DistanceToHeadland;
+                if (_headlandArmed && h > 0 && h <= _settings.EdgeWarningMeters)
+                {
+                    Fire(AlertKind.HeadlandAhead);
+                    _headlandArmed = false;
+                }
+                else if (h > _settings.EdgeWarningMeters + 2) _headlandArmed = true;
             }
 
             // ---- off the line (moving, RTK, for a moment)

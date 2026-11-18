@@ -26,6 +26,9 @@ namespace AgOpenGPS.Droid
             ToolOverlap = _prefs.GetString("tool.overlap", "0.0");
             ShowRawLog = _prefs.GetBoolean("ui.rawlog", false);
             Language = _prefs.GetString("ui.language", Tr.System);
+            DayColours = _prefs.GetBoolean("ui.dayColours", false);
+            HeadlandWidth = _prefs.GetString("headland.width", "0");
+            AutoHeadland = _prefs.GetBoolean("headland.auto", true);
             foreach (AgOpenGPS.Mobile.Core.AlertKind k in (AgOpenGPS.Mobile.Core.AlertKind[])System.Enum.GetValues(typeof(AgOpenGPS.Mobile.Core.AlertKind)))
                 if (_prefs.GetBoolean("alert." + k, k != AgOpenGPS.Mobile.Core.AlertKind.OffLine)) Alerts.Add(k);
             AlertEdgeMeters = _prefs.GetString("alert.edgeMeters", "5");
@@ -57,6 +60,39 @@ namespace AgOpenGPS.Droid
         public bool ShowRawLog;
         /// <summary>"system", "en" or "hr" (see <see cref="Tr"/>).</summary>
         public string Language;
+        /// <summary>Light colours for bright sun; dark (false) for night.</summary>
+        public bool DayColours;
+        /// <summary>Headland width in metres as typed; 0 = no headland.</summary>
+        public string HeadlandWidth;
+        /// <summary>Work off in the headland, on again in the main part.</summary>
+        public bool AutoHeadland;
+        public double HeadlandWidthMeters => ParseMeters(HeadlandWidth, 0);
+
+        /// <summary>All settings as stored, for a backup. The paired Bluetooth device is left out: it belongs to this tablet.</summary>
+        public System.Collections.Generic.IDictionary<string, object> ExportAll()
+        {
+            var d = new System.Collections.Generic.Dictionary<string, object>();
+            foreach (var kv in _prefs.All)
+            {
+                if (kv.Key == "bt.address") continue;
+                if (kv.Value is Java.Lang.Boolean jb) d[kv.Key] = jb.BooleanValue();
+                else if (kv.Value != null) d[kv.Key] = kv.Value.ToString();
+            }
+            return d;
+        }
+
+        /// <summary>Writes settings from a backup (strings and switches); the app reloads them afterwards.</summary>
+        public void ImportAll(System.Collections.Generic.IDictionary<string, object> values)
+        {
+            ISharedPreferencesEditor e = _prefs.Edit();
+            foreach (var kv in values)
+            {
+                if (kv.Key == "bt.address") continue;
+                if (kv.Value is bool b) e.PutBoolean(kv.Key, b);
+                else if (kv.Value is string s) e.PutString(kv.Key, s);
+            }
+            e.Commit();
+        }
 
         /// <summary>Alerts that sound (all but "off the line" by default).</summary>
         public readonly System.Collections.Generic.HashSet<AgOpenGPS.Mobile.Core.AlertKind> Alerts =
@@ -164,6 +200,9 @@ namespace AgOpenGPS.Droid
                 .PutString("tool.overlap", ToolOverlap)
                 .PutBoolean("ui.rawlog", ShowRawLog)
                 .PutString("ui.language", Language)
+                .PutBoolean("ui.dayColours", DayColours)
+                .PutString("headland.width", HeadlandWidth)
+                .PutBoolean("headland.auto", AutoHeadland)
                 .PutString("alert.edgeMeters", AlertEdgeMeters)
                 .PutString("alert.offLineCm", AlertOffLineCm)
                 .PutBoolean("coverage.record", RecordCoverage)

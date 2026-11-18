@@ -37,7 +37,11 @@ namespace AgOpenGPS.Droid
         private bool _refreshing;
 
         private Spinner _devices;
-        private Spinner _language;
+        private Spinner _language, _colours;
+        private EditText _headlandWidth;
+        private CheckBox _autoHeadland;
+        private const int RestoreRequest = 4;
+        private bool _skipSave; // after a restore: the fields on screen still hold the old values
         private static readonly string[] LanguageCodes = { Tr.System, Tr.English, Tr.Croatian };
         private CheckBox _autoConnect, _ntripEnabled, _rawLog, _recordCoverage, _showCoverage, _useSim, _showMap;
         private EditText _mapMaxZoom, _alertEdge, _alertOffLine;
@@ -70,7 +74,7 @@ namespace AgOpenGPS.Droid
         protected override void OnPause()
         {
             _refreshing = false;
-            SaveFields();
+            if (!_skipSave) SaveFields();
             base.OnPause();
         }
 
@@ -111,6 +115,9 @@ namespace AgOpenGPS.Droid
             foreach (var kv in _alertBoxes) if (kv.Value.Checked) s.Alerts.Add(kv.Key);
             s.AlertEdgeMeters = _alertEdge.Text.Trim();
             s.AlertOffLineCm = _alertOffLine.Text.Trim();
+            s.HeadlandWidth = _headlandWidth.Text.Trim();
+            s.AutoHeadland = _autoHeadland.Checked;
+            s.DayColours = _colours.SelectedItemPosition == 1;
             if (s.RecordCoverage && !_recordCoverage.Checked) AppState.SetWorking(false); // switched off: stop and save
             s.RecordCoverage = _recordCoverage.Checked;
             s.ShowCoverage = _showCoverage.Checked;
@@ -119,7 +126,7 @@ namespace AgOpenGPS.Droid
             AppState.Guidance.ToolWidth = s.ToolWidthMeters;
             AppState.Guidance.CoverageEnabled = s.RecordCoverage;
             AppState.Guidance.Vehicle = s.BuildVehicleGeometry();
-            AppState.ReloadAlerts();
+            AppState.ApplySettings();
             AppState.Map.UrlTemplate = s.MapUrl;
 
             string key = s.ConnectionKey;
@@ -168,6 +175,8 @@ namespace AgOpenGPS.Droid
             foreach (var kv in _alertBoxes) kv.Value.Checked = s.Alerts.Contains(kv.Key);
             _alertEdge.Text = s.AlertEdgeMeters;
             _alertOffLine.Text = s.AlertOffLineCm;
+            _headlandWidth.Text = s.HeadlandWidth;
+            _autoHeadland.Checked = s.AutoHeadland;
             Task.Run(() =>
             {
                 long bytes = AppState.Map.DiskBytes();
@@ -283,6 +292,72 @@ namespace AgOpenGPS.Droid
             int before = Tr.Version;
             Tr.SetLanguage(code);
             if (Tr.Version != before) Recreate(); // rebuild this screen; the driving screen follows on return
+        }
+
+        // ---------------------------------------------------------------- backup
+
+        private void SaveBackup()
+        {
+            SaveFields();
+            IReadOnlyList<Field> fields = AppState.Fields.Fields;
+            string fieldsJson = FieldExport.ToGeoJson(fields, id => AppState.Lines.LinesFor(id));
+            string text = Backup.Write(AppState.Settings.ExportAll(), fieldsJson, DateTime.UtcNow);
+            FileSaver.Save(this, "AgOpenGPS backup " + DateTime.Now.ToString("yyyy-MM-dd", Inv) + ".json", "application/json",
+                new System.Text.UTF8Encoding(false).GetBytes(text), Tr.T("Backup saved"));
+        }
+
+        private void PickBackup()
+        {
+            var intent = new Intent(Intent.ActionOpenDocument);
+            intent.AddCategory(Intent.CategoryOpenable);
+            intent.SetType("*/*");
+            StartActivityForResult(intent, RestoreRequest);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (FileSaver.HandleResult(this, requestCode, resultCode, data)) return;
+            if (requestCode != RestoreRequest || resultCode != Result.Ok || data?.Data == null) return;
+
+            Dictionary<string, object> settings;
+            string fieldsJson;
+            try
+            {
+                string text;
+                using (var stream = ContentResolver.OpenInputStream(data.Data))
+                using (var reader = new System.IO.StreamReader(stream))
+                    text = reader.ReadToEnd();
+                Backup.Read(text, out settings, out fieldsJson);
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, Tr.T(ex.Message), ToastLength.Long).Show();
+                return;
+            }
+
+            List<ImportedField> fields = new List<ImportedField>();
+            if (fieldsJson != null)
+            {
+                try { fields = FieldImport.Parse(fieldsJson, "Field"); }
+                catch (FormatException) { /* a backup without fields */ }
+            }
+
+            new AlertDialog.Builder(this)
+                .SetTitle(Tr.T("Restore this backup?"))
+                .SetMessage(Tr.F("All settings are replaced; {0} fields are added (existing fields stay). The paired Bluetooth device is kept.", fields.Count))
+                .SetPositiveButton(Tr.T("Restore"), (s, e) =>
+                {
+                    AppState.Settings.ImportAll(settings);
+                    AppState.ReloadSettings();
+                    if (fields.Count > 0) AppState.ImportFields(fields);
+                    if (AppState.IsConnected) Task.Run(AppState.Reconnect); // with the restored NTRIP settings
+                    Toast.MakeText(this, Tr.T("Backup restored"), ToastLength.Long).Show();
+                    _skipSave = true;
+                    Recreate();
+                })
+                .SetNegativeButton(Tr.T("Cancel"), (s, e) => { })
+                .Show();
         }
 
         // ---------------------------------------------------------------- map download
@@ -411,6 +486,15 @@ namespace AgOpenGPS.Droid
             _language.ItemSelected += (s, e) => ChangeLanguage(LanguageCodes[e.Position]);
             left.AddView(_language);
 
+            left.AddView(Ui.Heading(this, Tr.T("Colours")));
+            _colours = new Spinner(this);
+            var colourAdapter = new ArrayAdapter<string>(this, global::Android.Resource.Layout.SimpleSpinnerItem,
+                new[] { Tr.T("Night (dark)"), Tr.T("Day (light, for bright sun)") });
+            colourAdapter.SetDropDownViewResource(global::Android.Resource.Layout.SimpleSpinnerDropDownItem);
+            _colours.Adapter = colourAdapter;
+            _colours.SetSelection(AppState.Settings.DayColours ? 1 : 0, false);
+            left.AddView(_colours);
+
             left.AddView(Ui.Heading(this, Tr.T("Receiver (Bluetooth)")));
             _devices = new Spinner(this);
             left.AddView(_devices);
@@ -444,6 +528,13 @@ namespace AgOpenGPS.Droid
             left.AddView(Ui.Hint(this, Tr.T("Guidance follows the implement's centre line; the worked area is painted where the implement works.")));
             _nudgeStep = Ui.Field(this, left, Tr.T("Nudge step (cm)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
 
+            left.AddView(Ui.Heading(this, Tr.T("Headland")));
+            _headlandWidth = Ui.Field(this, left, Tr.T("Headland width (m, 0 = no headland)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
+            left.AddView(Ui.Hint(this, Tr.T("A strip of this width along the field boundary, drawn as a dashed line. Usually a multiple of the implement width.")));
+            _autoHeadland = new CheckBox(this) { Text = Tr.T("Work off in the headland, on again in the main part") };
+            left.AddView(_autoHeadland);
+            left.AddView(Ui.Hint(this, Tr.T("Only after you switched Work on yourself; switching it off by hand ends the automatic until the next Work: ON.")));
+
             left.AddView(Ui.Heading(this, Tr.T("Sound alerts")));
             left.AddView(Ui.Hint(this, Tr.T("Each alert sounds once per event, on the alarm channel (also with the tablet on silent).")));
             void AlertBox(AlertKind kind, string text)
@@ -453,6 +544,7 @@ namespace AgOpenGPS.Droid
                 left.AddView(cb);
             }
             AlertBox(AlertKind.FieldEdge, "Field edge ahead");
+            AlertBox(AlertKind.HeadlandAhead, "Headland ahead");
             _alertEdge = Ui.Field(this, left, Tr.T("Warn this far from the edge (m)"), InputTypes.ClassNumber | InputTypes.NumberFlagDecimal);
             AlertBox(AlertKind.LeftField, "Left the field");
             AlertBox(AlertKind.RtkLost, "RTK Fix lost");
@@ -524,6 +616,13 @@ namespace AgOpenGPS.Droid
             _mapMaxZoom = Ui.Field(this, right, Tr.T("Most detailed zoom to download (10-22, default 19)"), InputTypes.ClassNumber);
             right.AddView(Ui.Hint(this, Tr.T("If close-up imagery is missing or grey in your area, try 18 or 17. Closer than this, the map is enlarged.")));
             right.AddView(Ui.Hint(this, Tr.T("Default: Esri World Imagery, free with attribution. Check the source's terms, especially for commercial use.")));
+
+            right.AddView(Ui.Heading(this, Tr.T("Backup")));
+            right.AddView(Ui.Hint(this, Tr.T("One file with all settings (vehicle, implement, NTRIP, alerts, map) and all fields with their boundaries and lines. Contains the NTRIP password: keep it private.")));
+            var backup = new LinearLayout(this) { Orientation = Orientation.Horizontal };
+            backup.AddView(Ui.Button(this, Tr.T("Save backup"), SaveBackup), Ui.Weight(1));
+            backup.AddView(Ui.Button(this, Tr.T("Restore backup"), PickBackup), Ui.Weight(1));
+            right.AddView(backup);
 
             var rightScroll = new ScrollView(this);
             rightScroll.AddView(right);

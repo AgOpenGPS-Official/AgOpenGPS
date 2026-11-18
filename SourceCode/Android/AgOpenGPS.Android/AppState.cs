@@ -30,6 +30,7 @@ namespace AgOpenGPS.Droid
         public static bool IsConnected => Link != null && Link.IsRunning;
 
         public static AlertPlayer Sounds { get; } = new AlertPlayer();
+        public static JobLog Jobs { get; private set; }
         private static AlertMonitor _alerts = new AlertMonitor(new AlertSettings());
         private static Android.OS.Handler _alertLoop;
         private static bool _alertsRunning;
@@ -53,6 +54,7 @@ namespace AgOpenGPS.Droid
 
         private static void StopAlerts()
         {
+            Jobs?.EndJob(); // disconnecting ends the job
             _alertsRunning = false;
             _alertLoop?.RemoveCallbacksAndMessages(null);
         }
@@ -79,7 +81,13 @@ namespace AgOpenGPS.Droid
                     SecondsSinceCorrection = n != null && n.Frames > 0 && n.SecondsSinceLastFrame >= 0 ? n.SecondsSinceLastFrame : double.NaN,
                     CrossTrackMeters = g.Result?.CrossTrackMeters ?? double.NaN,
                     SpeedKmh = receiving ? st.Latest.SpeedKmh : double.NaN,
+                    DistanceToHeadland = g.HeadlandWidth > 0 ? g.DistanceToHeadland : double.NaN,
                 };
+
+                // The job log follows Work (also the automatic headland pauses).
+                Jobs.Sample(DateTime.UtcNow, g.Working && receiving, g.ActiveField,
+                    receiving && g.Fix != null ? g.Fix.Latitude : double.NaN, receiving && g.Fix != null ? g.Fix.Longitude : double.NaN,
+                    g.WorkedSquareMeters, Settings.ToolWidthMeters);
                 foreach (AlertKind kind in _alerts.Update(inputs))
                 {
                     Sounds.Play(kind);
@@ -110,15 +118,12 @@ namespace AgOpenGPS.Droid
                 if (_context != null) return;
                 _context = context.ApplicationContext;
                 Settings = new AppSettings(_context);
-                Tr.SetLanguage(Settings.Language);
                 string dir = _context.FilesDir.AbsolutePath;
                 Lines = new AbLineStore(Path.Combine(dir, "ablines.json"));
                 Fields = new FieldStore(Path.Combine(dir, "fields.json"));
-                Guidance.PassWidth = Settings.WorkingWidthMeters;
-                Guidance.ToolWidth = Settings.ToolWidthMeters;
-                Guidance.CoverageEnabled = Settings.RecordCoverage;
-                Guidance.Vehicle = Settings.BuildVehicleGeometry();
                 Map = new MapTileProvider(Path.Combine(dir, "maptiles"));
+                Jobs = new JobLog(Path.Combine(dir, "jobs.json"));
+                ApplySettings();
                 Guidance.SetActiveField(Fields.Active);
                 Guidance.SetCoverage(LoadCoverage(Fields.Active));
                 AbLine line = Lines.Active;
@@ -128,6 +133,55 @@ namespace AgOpenGPS.Droid
 
         public static BluetoothAdapter Adapter =>
             ((BluetoothManager)_context.GetSystemService(Context.BluetoothService))?.Adapter;
+
+        /// <summary>Puts the stored settings into effect (after Settings or a restored backup).</summary>
+        public static void ApplySettings()
+        {
+            Guidance.PassWidth = Settings.WorkingWidthMeters;
+            Guidance.ToolWidth = Settings.ToolWidthMeters;
+            Guidance.CoverageEnabled = Settings.RecordCoverage;
+            Guidance.Vehicle = Settings.BuildVehicleGeometry();
+            Guidance.HeadlandWidth = Settings.HeadlandWidthMeters;
+            Guidance.AutoHeadland = Settings.AutoHeadland;
+            Palette.SetDay(Settings.DayColours);
+            Tr.SetLanguage(Settings.Language);
+            if (Map != null) Map.UrlTemplate = string.IsNullOrWhiteSpace(Settings.MapUrl) ? MapTiles.DefaultUrl : Settings.MapUrl;
+            ReloadAlerts();
+        }
+
+        /// <summary>Reads the settings again from storage (after a restored backup) and applies them.</summary>
+        public static void ReloadSettings()
+        {
+            Settings = new AppSettings(_context);
+            ApplySettings();
+        }
+
+        /// <summary>Adds imported fields with their boundaries and lines; opens the first. Returns (hectares, lines, first field).</summary>
+        public static (double Hectares, int Lines, Field First) ImportFields(System.Collections.Generic.List<ImportedField> imported)
+        {
+            Field first = null;
+            double hectares = 0;
+            int lineCount = 0;
+            foreach (ImportedField f in imported)
+            {
+                Field field = Fields.Create(f.Name);
+                if (f.Boundary.Count >= 3) Fields.SetBoundary(field.Id, f.Boundary);
+                foreach (AbLine line in f.Lines)
+                {
+                    line.FieldId = field.Id;
+                    Lines.Add(line, makeActive: false);
+                    lineCount++;
+                }
+                first ??= field;
+                if (f.Boundary.Count >= 3) hectares += new Field { Boundary = f.Boundary }.AreaHectares;
+            }
+            if (first != null)
+            {
+                foreach (Field f in Fields.Fields)
+                    if (f.Id == first.Id) { OpenField(f); break; }
+            }
+            return (hectares, lineCount, first);
+        }
 
         // ---------------------------------------------------------------- fields and lines
 
@@ -263,7 +317,11 @@ namespace AgOpenGPS.Droid
         /// <summary>Called regularly (screen and background service): saves the worked area every 30 s.</summary>
         public static void Tick()
         {
-            if ((DateTime.UtcNow - _lastCoverageSave).TotalSeconds >= 30) SaveCoverage();
+            if ((DateTime.UtcNow - _lastCoverageSave).TotalSeconds >= 30)
+            {
+                SaveCoverage();
+                Jobs?.Save();
+            }
         }
 
         /// <summary>Forgets the worked area of the open field.</summary>

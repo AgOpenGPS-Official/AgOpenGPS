@@ -11,7 +11,7 @@
 
 1. Uparite ESP32 ili Pi u Bluetooth postavkama Androida (**Postavke → Upari...** ih otvara).
 2. Otvorite **Postavke**:
-   - **Jezik**: Sustav, English ili Hrvatski.
+   - **Jezik**: Sustav, English ili Hrvatski. **Boje**: *Noć* (tamno) ili *Dan* (svijetlo, za jako sunce).
    - **Prijemnik**: odaberite upareni uređaj. *Automatski se spoji* spaja se pri svakom pokretanju.
    - **Priključak**: puna **širina priključka** i **preklop**. Prohodi su razmaknuti za širinu umanjenu za preklop.
    - **Vozilo**: položaj antene, mjereno od sredine stražnje osovine (lijevo i iza su negativni). Ako niste sigurni, ostavite 0.
@@ -45,13 +45,23 @@ Zatim odaberite što prati rub: sredina priključka ili njegov lijevi ili desni 
 2. Odvezite se na početak i pritisnite **A**.
 3. Vozite uz rub (barem 5 m, što dulje to bolje) i pritisnite **B**.
 
-Linija se sprema u otvorenu parcelu. Prohodi su s obje strane razmaknuti za radnu širinu. **Linije...** prikazuje spremljene linije.
+Linija se sprema u otvorenu parcelu. Prohodi su s obje strane razmaknuti za radnu širinu. Plave oznake **A** i **B** pokazuju gdje je aktivna linija snimljena. **Linije...** prikazuje spremljene linije.
 
 **Pomak**: **◀ / ▶** pomiču liniju za nekoliko cm, **Ovdje** je pomiče na trenutni položaj traktora, **Poništi pomak** je vraća.
 
 ## Obrađena površina
 
 Pritisnite **Rad: UKLJ.** dok priključak radi i **Rad: ISKLJ.** na uvrtinama. Obrađeno tlo na karti postaje zeleno (preklop crveno). Ispod gumba: **obrađeno**, **preostalo**, **% gotovo** i **preklop** u hektarima. Sprema se za svaku parcelu.
+
+## Uvrtine
+
+**Postavke → Uvrtine**: unesite **širinu uvrtina** (npr. dvije širine priključka). Isprekidana linija na karti označava pojas uvrtina uz među; upozorenje *Uvrtine ispred* oglasi se prije nego što ih dosegnete.
+
+Uz *Rad se isključuje na uvrtinama i ponovno uključuje u glavnom dijelu*, Rad se isključuje kad priključak uđe u uvrtine i ponovno uključuje kad se vrati u glavni dio (gumb u međuvremenu pokazuje **Rad: uvrtine**). To vrijedi samo nakon što ste sami uključili Rad; ručno isključivanje zaustavlja automatiku.
+
+## Dnevnik poslova
+
+Posao počinje s **Rad: UKLJ.** na parceli i bilježi datum, početak i kraj, radno vrijeme, obrađene hektare, prijeđeni put i prosječnu brzinu. Promjena parcele ili odspajanje ga završava. **Poslovi...** (ispod statistike) prikazuje poslove: **Izvoz...** ih sprema kao **CSV** (Excel) ili **PDF** (za ispis), **Završi posao** zatvara trenutni, a dodirom posla brišete ga.
 
 ## Zvučna upozorenja
 
@@ -60,6 +70,10 @@ Pritisnite **Rad: UKLJ.** dok priključak radi i **Rad: ISKLJ.** na uvrtinama. O
 ## Satelitska karta
 
 **Postavke → Satelitska karta**. Kvadrati karte preuzimaju se jednom i čuvaju na tabletu. **Preuzmi kartu za otvorenu parcelu** unaprijed preuzima cijelu parcelu (najbolje preko Wi-Fi mreže), pa karta radi i bez interneta.
+
+## Sigurnosna kopija
+
+**Postavke → Sigurnosna kopija → Spremi kopiju** sprema jednu datoteku sa svim postavkama i svim parcelama (međe i linije). **Vrati kopiju** na ovom ili drugom tabletu sve ponovno postavlja. Datoteka sadrži NTRIP lozinku: čuvajte je privatno.
 
 ## Simulator
 

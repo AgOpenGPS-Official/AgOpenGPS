@@ -122,6 +122,18 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         public List<GeoPoint> RecordingPath = new List<GeoPoint>();
         public List<GeoPoint> Boundary = new List<GeoPoint>();
         public List<GeoPoint> BoundaryPath = new List<GeoPoint>();
+        /// <summary>Points A and B of the active line (draw plane), or null.</summary>
+        public GeoPoint? LineA, LineB;
+        /// <summary>Inner headland line (draw plane); empty without headland or boundary.</summary>
+        public List<GeoPoint> HeadlandLine = new List<GeoPoint>();
+        /// <summary>Headland width in use, metres (0 = off).</summary>
+        public double HeadlandWidth;
+        /// <summary>The implement is in the headland strip; null without boundary or headland.</summary>
+        public bool? InHeadland;
+        /// <summary>Distance from the implement to the headland line, metres, positive in the main part.</summary>
+        public double DistanceToHeadland = double.NaN;
+        /// <summary>Work is off because the implement is in the headland (switches on again in the main part).</summary>
+        public bool WorkPausedInHeadland;
     }
 
     /// <summary>
@@ -168,6 +180,14 @@ namespace AgOpenGPS.Mobile.Core.Guidance
         /// <summary>Positions further apart than this are a jump (lost signal), not a strip to paint.</summary>
         public const double MaxPaintStepMeters = 10.0;
 
+        private double _headlandWidth;
+        private bool _autoHeadland;
+        private bool _pausedInHeadland;
+        private bool? _toolInHeadland;
+        private double _toolToHeadland = double.NaN;
+        /// <summary>Metres the implement must go past the headland line before Work switches (against flicker).</summary>
+        public const double HeadlandHysteresisMeters = 0.5;
+
         private bool _boundaryRecording;
         private BoundaryMode _boundaryMode;
         private BoundarySide _boundarySide;
@@ -190,6 +210,7 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 _heading.Update(fix);
                 _geometry.Apply(fix, _heading.Heading, out GnssFix guide, out GnssFix tool);
                 _fix = guide;
+                UpdateHeadland(tool);
                 PaintCoverage(tool);
                 fix = guide;
                 if (_boundaryRecording && _boundaryMode == BoundaryMode.Drive && fix.HasPosition && _boundary.Count < MaxCurvePoints)
@@ -283,7 +304,10 @@ namespace AgOpenGPS.Mobile.Core.Guidance
             }
         }
 
-        /// <summary>Implement working: while true, the ground under it is painted as worked.</summary>
+        /// <summary>
+        /// Implement working: while true, the ground under it is painted as worked. Setting it is
+        /// the driver's choice and ends an automatic headland pause.
+        /// </summary>
         public bool Working
         {
             get { lock (_lock) return _working; }
@@ -292,8 +316,51 @@ namespace AgOpenGPS.Mobile.Core.Guidance
                 lock (_lock)
                 {
                     _working = value;
+                    _pausedInHeadland = false;
                     _prevCentre = _prevLeft = _prevRight = null;
                 }
+            }
+        }
+
+        /// <summary>Headland strip width along the boundary, metres; 0 switches the headland off.</summary>
+        public double HeadlandWidth
+        {
+            get { lock (_lock) return _headlandWidth; }
+            set { lock (_lock) { _headlandWidth = Math.Max(0, value); _pausedInHeadland = false; } }
+        }
+
+        /// <summary>Switch Work off when the implement enters the headland and on again when it leaves it.</summary>
+        public bool AutoHeadland
+        {
+            get { lock (_lock) return _autoHeadland; }
+            set { lock (_lock) { _autoHeadland = value; _pausedInHeadland = false; } }
+        }
+
+        // Where the implement is relative to the headland; switches Work when automatic.
+        private void UpdateHeadland(GnssFix tool)
+        {
+            _toolInHeadland = null;
+            _toolToHeadland = double.NaN;
+            if (_headlandWidth <= 0 || _fieldPoly == null || _fieldPoly.Count < 3 || tool == null || !tool.HasPosition) return;
+
+            GeoPoint p = _fieldPlane.ToLocal(tool.Latitude, tool.Longitude);
+            bool inside = Geometry.Contains(_fieldPoly, p);
+            double toEdge = Geometry.DistanceToEdge(_fieldPoly, p);
+            double toHeadland = inside ? toEdge - _headlandWidth : -(toEdge + _headlandWidth);
+            _toolToHeadland = toHeadland;
+            _toolInHeadland = toHeadland < 0;
+
+            if (!_autoHeadland) return;
+            if (_working && toHeadland < -HeadlandHysteresisMeters)
+            {
+                _working = false;               // into the headland (or out of the field): pause
+                _pausedInHeadland = true;
+                _prevCentre = _prevLeft = _prevRight = null;
+            }
+            else if (_pausedInHeadland && !_working && toHeadland > HeadlandHysteresisMeters)
+            {
+                _working = true;                // back in the main part: carry on
+                _pausedInHeadland = false;
             }
         }
 
@@ -713,6 +780,24 @@ namespace AgOpenGPS.Mobile.Core.Guidance
 
                 if (_fieldPoly != null && _fieldPoly.Count >= 3)
                     s.Boundary = Geometry.Reproject(_fieldPoly, _fieldPlane, draw);
+                if (_fieldPoly != null && _fieldPoly.Count >= 3 && _headlandWidth > 0)
+                {
+                    // Inward is left of a counter-clockwise outline, right of a clockwise one.
+                    double signed = 0;
+                    for (int i = 0, j = _fieldPoly.Count - 1; i < _fieldPoly.Count; j = i++)
+                        signed += _fieldPoly[j].Easting * _fieldPoly[i].Northing - _fieldPoly[i].Easting * _fieldPoly[j].Northing;
+                    List<GeoPoint> inner = Geometry.OffsetClosed(_fieldPoly, signed > 0 ? -_headlandWidth : _headlandWidth);
+                    s.HeadlandLine = Geometry.Reproject(inner, _fieldPlane, draw);
+                }
+                s.HeadlandWidth = _headlandWidth;
+                s.InHeadland = _toolInHeadland;
+                s.DistanceToHeadland = _toolToHeadland;
+                s.WorkPausedInHeadland = _pausedInHeadland;
+                if (_line != null)
+                {
+                    s.LineA = draw.ToLocal(_line.LatitudeA, _line.LongitudeA);
+                    s.LineB = draw.ToLocal(_line.LatitudeB, _line.LongitudeB);
+                }
 
                 if (_recording)
                 {

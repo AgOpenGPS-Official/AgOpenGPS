@@ -31,7 +31,7 @@ namespace AgOpenGPS.Droid
         private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
         private Handler _ui;
-        private int _builtLanguage;
+        private int _builtLanguage, _builtPalette;
         private DateTime _shownAlertUtc;
         private bool _refreshing;
         private bool _autoConnectTried;
@@ -55,6 +55,7 @@ namespace AgOpenGPS.Droid
             _ui = new Handler(Looper.MainLooper);
             SetContentView(BuildLayout());
             _builtLanguage = Tr.Version;
+            _builtPalette = Palette.Version;
 
             if (!HasBluetoothPermission()) RequestPermissionsNeeded();
             else
@@ -67,7 +68,7 @@ namespace AgOpenGPS.Droid
         protected override void OnResume()
         {
             base.OnResume();
-            if (_builtLanguage != Tr.Version)
+            if (_builtLanguage != Tr.Version || _builtPalette != Palette.Version)
             {
                 Recreate(); // the language was changed in Settings: rebuild with the new texts
                 return;
@@ -218,8 +219,6 @@ namespace AgOpenGPS.Droid
         }
 
         private const int ImportRequest = 2;
-        private const int ExportRequest = 3;
-        private string _pendingExport;
 
         /// <summary>Asks Android where to save (tablet, Downloads, USB stick, Drive...), then writes the GeoJSON.</summary>
         private void ExportFields(IReadOnlyList<Field> fields, string name)
@@ -229,30 +228,9 @@ namespace AgOpenGPS.Droid
                 Toast_(Tr.T("No fields to export"));
                 return;
             }
-            _pendingExport = FieldExport.ToGeoJson(fields, id => AppState.Lines.LinesFor(id));
-            var intent = new Intent(Intent.ActionCreateDocument);
-            intent.AddCategory(Intent.CategoryOpenable);
-            intent.SetType("application/geo+json");
-            intent.PutExtra(Intent.ExtraTitle, FieldExport.FileName(name));
-            StartActivityForResult(intent, ExportRequest);
-        }
-
-        private void WriteExport(global::Android.Net.Uri uri)
-        {
-            string text = _pendingExport;
-            _pendingExport = null;
-            if (text == null) return;
-            try
-            {
-                using (var stream = ContentResolver.OpenOutputStream(uri, "wt"))
-                using (var writer = new System.IO.StreamWriter(stream, new System.Text.UTF8Encoding(false)))
-                    writer.Write(text);
-                Toast_(Tr.T("Fields saved. Import the file on any tablet to restore them."), true);
-            }
-            catch (Exception ex)
-            {
-                Toast_(Tr.F("Could not save: {0}", ex.Message), true);
-            }
+            string json = FieldExport.ToGeoJson(fields, id => AppState.Lines.LinesFor(id));
+            FileSaver.Save(this, FieldExport.FileName(name), "application/geo+json", new System.Text.UTF8Encoding(false).GetBytes(json),
+                Tr.T("Fields saved. Import the file on any tablet to restore them."));
         }
 
         /// <summary>Opens Android's file picker for a field outline.</summary>
@@ -267,12 +245,7 @@ namespace AgOpenGPS.Droid
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == ExportRequest)
-            {
-                if (resultCode == Result.Ok && data?.Data != null) WriteExport(data.Data);
-                else _pendingExport = null;
-                return;
-            }
+            if (FileSaver.HandleResult(this, requestCode, resultCode, data)) return;
             if (requestCode != ImportRequest || resultCode != Result.Ok || data?.Data == null) return;
 
             string text, fileName = Tr.T("Imported field");
@@ -303,22 +276,8 @@ namespace AgOpenGPS.Droid
             }
 
             Field first = null;
-            double hectares = 0;
-            int lineCount = 0;
-            foreach (ImportedField f in imported)
-            {
-                Field field = AppState.Fields.Create(f.Name);
-                if (f.Boundary.Count >= 3) AppState.Fields.SetBoundary(field.Id, f.Boundary);
-                foreach (AbLine line in f.Lines)
-                {
-                    line.FieldId = field.Id;
-                    AppState.Lines.Add(line, makeActive: false);
-                    lineCount++;
-                }
-                first ??= field;
-                if (f.Boundary.Count >= 3) hectares += new Field { Boundary = f.Boundary }.AreaHectares;
-            }
-            AppState.OpenField(AppState.Fields.Fields.FirstOrDefault(x => x.Id == first.Id));
+            (double hectares, int lineCount, Field firstField) = AppState.ImportFields(imported);
+            first = firstField;
             _ui.PostDelayed(() => _view.ShowWholeField(), 300); // after the next refresh has the new field
             Toast_(Tr.F("Imported fields: {0} ({1:0.00} ha), lines: {2}. '{3}' is open.",
                 imported.Count, hectares, lineCount, first.Name), true);
@@ -334,6 +293,63 @@ namespace AgOpenGPS.Droid
                 if (then != null) then();
                 else Toast_(Tr.F("Field '{0}' created. Record its boundary or an A-B line.", f.Name), true);
             });
+        }
+
+        // ---------------------------------------------------------------- jobs
+
+        private void ShowJobs()
+        {
+            IReadOnlyList<Job> jobs = AppState.Jobs.Jobs;
+            Job current = AppState.Jobs.Current;
+            var items = new string[jobs.Count];
+            for (int i = 0; i < jobs.Count; i++)
+            {
+                Job j = jobs[i];
+                items[i] = Tr.F("{0}{1}  {2}   {3:0.00} ha   {4} h:mm   {5} km/h",
+                    current != null && j.Id == current.Id ? "▶ " : "", j.StartUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm", Inv), j.FieldName,
+                    j.Hectares, JobLog.Duration(j.WorkingSeconds),
+                    double.IsNaN(j.AverageSpeedKmh) ? "-" : j.AverageSpeedKmh.ToString("0.0", Inv));
+            }
+
+            var b = new AlertDialog.Builder(this)
+                .SetTitle(jobs.Count == 0 ? Tr.T("No jobs yet: a job starts with Work: ON in a field") : Tr.T("Jobs"))
+                .SetNegativeButton(Tr.T("Close"), (s, e) => { });
+            if (jobs.Count > 0)
+            {
+                b.SetItems(items, (s, e) => ConfirmDeleteJob(jobs[e.Which]));
+                b.SetPositiveButton(Tr.T("Export..."), (s, e) => ChooseJobExport());
+            }
+            if (current != null) b.SetNeutralButton(Tr.T("End job"), (s, e) => AppState.Jobs.EndJob());
+            b.Show();
+        }
+
+        private void ConfirmDeleteJob(Job job)
+        {
+            Confirm(Tr.F("Delete the job of {0} ({1})?", job.FieldName, job.StartUtc.ToLocalTime().ToString("yyyy-MM-dd", Inv)), null,
+                Tr.T("Delete"), () => AppState.Jobs.Delete(job.Id));
+        }
+
+        private void ChooseJobExport()
+        {
+            AppState.Jobs.Save();
+            string day = DateTime.Now.ToString("yyyy-MM-dd", Inv);
+            new AlertDialog.Builder(this)
+                .SetTitle(Tr.T("Export the job log"))
+                .SetItems(new[] { Tr.T("CSV (Excel)"), Tr.T("PDF (print)") }, (s, e) =>
+                {
+                    if (e.Which == 0)
+                    {
+                        // UTF-8 with BOM so Excel shows č, ć, š, ž, đ correctly.
+                        byte[] csv = new System.Text.UTF8Encoding(true).GetPreamble()
+                            .Concat(System.Text.Encoding.UTF8.GetBytes(JobLog.ToCsv(AppState.Jobs.Jobs, Tr.T))).ToArray();
+                        FileSaver.Save(this, Tr.T("Job log") + " " + day + ".csv", "text/csv", csv, Tr.T("Job log saved"));
+                    }
+                    else
+                    {
+                        FileSaver.Save(this, Tr.T("Job log") + " " + day + ".pdf", "application/pdf", JobReport.Pdf(AppState.Jobs.Jobs), Tr.T("Job log saved"));
+                    }
+                })
+                .Show();
         }
 
         // ---------------------------------------------------------------- boundary
@@ -613,7 +629,7 @@ namespace AgOpenGPS.Droid
             _work.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
             _stats.Visibility = coverageOn ? ViewStates.Visible : ViewStates.Gone;
             _workLabel.Visibility = _work.Visibility;
-            _work.Text = g.Working ? Tr.T("Work: ON") : Tr.T("Work: OFF");
+            _work.Text = g.Working ? Tr.T("Work: ON") : g.WorkPausedInHeadland ? Tr.T("Work: headland") : Tr.T("Work: OFF");
             _work.SetBackgroundColor(Color.ParseColor(g.Working ? "#2E7D32" : "#9E9E9E"));
             _work.SetTextColor(Color.White);
             _stats.Text = g.WorkedSquareMeters > 0 || !double.IsNaN(g.FieldSquareMeters) ? FormatStats(g) : "";
@@ -775,7 +791,7 @@ namespace AgOpenGPS.Droid
 
         private TextView Label(string text)
         {
-            TextView t = Ui.Text(this, 14, false, "#B0BEC5");
+            TextView t = Ui.Text(this, 14, false, Palette.PanelLabel);
             t.Text = text;
             t.SetPadding(0, Dp(10), 0, 0);
             return t;
@@ -784,7 +800,7 @@ namespace AgOpenGPS.Droid
         private View BuildLayout()
         {
             var root = new LinearLayout(this) { Orientation = Orientation.Vertical };
-            root.SetBackgroundColor(Color.ParseColor("#37474F"));
+            root.SetBackgroundColor(Color.ParseColor(Palette.Screen));
 
             // Top bar: fix, info, connect, settings.
             var bar = new LinearLayout(this) { Orientation = Orientation.Horizontal };
@@ -795,7 +811,7 @@ namespace AgOpenGPS.Droid
             _fixBadge.SetPadding(Dp(16), Dp(8), Dp(16), Dp(8));
             _fixBadge.SetMinWidth(Dp(170));
             bar.AddView(_fixBadge);
-            _fixInfo = Ui.Text(this, 16, false, "#ECEFF1");
+            _fixInfo = Ui.Text(this, 16, false, Palette.InfoText);
             _fixInfo.SetPadding(Dp(12), 0, Dp(12), 0);
             _fixInfo.SetSingleLine(true);
             _fixInfo.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
@@ -893,8 +909,9 @@ namespace AgOpenGPS.Droid
             _work = Ui.Button(this, Tr.T("Work: OFF"), () => AppState.SetWorking(!AppState.Guidance.Working), 64);
             _work.SetTextSize(global::Android.Util.ComplexUnitType.Sp, 22);
             panel.AddView(_work);
-            _stats = Ui.Text(this, 15, false, "#ECEFF1");
+            _stats = Ui.Text(this, 15, false, Palette.PanelText);
             panel.AddView(_stats);
+            panel.AddView(Ui.Button(this, Tr.T("Jobs..."), ShowJobs, 44));
 
             panel.AddView(Label(Tr.T("Field")));
             _field = Ui.Button(this, Tr.T("Field: none"), ShowFields, 52);
@@ -930,7 +947,7 @@ namespace AgOpenGPS.Droid
             panel.AddView(ab);
             _cancel = Ui.Button(this, Tr.T("Cancel line"), () => AppState.Guidance.CancelAb(), 44);
             panel.AddView(_cancel);
-            _recordInfo = Ui.Text(this, 14, false, "#FFAB91");
+            _recordInfo = Ui.Text(this, 14, false, Palette.RecordText);
             panel.AddView(_recordInfo);
             panel.AddView(Ui.Button(this, Tr.T("Lines..."), ShowLines, 56));
 

@@ -36,6 +36,7 @@ namespace AgOpenGPS.Droid
                 AlertKind.CorrectionsStopped => (Tone.CdmaAbbrAlert, 700),
                 AlertKind.LinkLost => (Tone.SupRadioNotavail, 1200),
                 AlertKind.OffLine => (Tone.PropBeep, 200),
+                AlertKind.HeadlandAhead => (Tone.CdmaPip, 500),
                 _ => (Tone.PropBeep, 200),
             };
             try { Tones?.StartTone(tone, ms); }
@@ -54,6 +55,7 @@ namespace AgOpenGPS.Droid
                 case AlertKind.CorrectionsStopped: return "NTRIP corrections stopped";
                 case AlertKind.LinkLost: return "Connection to the receiver lost";
                 case AlertKind.OffLine: return "Off the line";
+                case AlertKind.HeadlandAhead: return "Headland ahead";
                 default: return kind.ToString();
             }
         }

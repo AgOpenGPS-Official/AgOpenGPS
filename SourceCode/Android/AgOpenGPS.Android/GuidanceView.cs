@@ -13,19 +13,22 @@ namespace AgOpenGPS.Droid
     /// </summary>
     public sealed class GuidanceView : View
     {
-        private readonly Paint _current = Stroke("#FFD54F", 5);
-        private readonly Paint _other = Stroke("#607D8B", 2);
-        private readonly Paint _refLine = Stroke("#4FC3F7", 3);
-        private readonly Paint _recording = Stroke("#FF7043", 4);
-        private readonly Paint _boundary = Stroke("#A5D6A7", 3);
-        private readonly Paint _boundaryRec = Stroke("#4DD0E1", 4);
-        private readonly Paint _vehicle = Fill("#FFFFFF");
-        private readonly Paint _vehicleEdge = Stroke("#212121", 2);
+        private readonly Paint _current = Stroke(Palette.CurrentPass, 5);
+        private readonly Paint _other = Stroke(Palette.OtherPass, 2);
+        private readonly Paint _refLine = Stroke(Palette.RefLine, 3);
+        private readonly Paint _recording = Stroke(Palette.Recording, 4);
+        private readonly Paint _boundary = Stroke(Palette.Boundary, 3);
+        private readonly Paint _boundaryRec = Stroke(Palette.BoundaryRecording, 4);
+        private readonly Paint _vehicle = Fill(Palette.Vehicle);
+        private readonly Paint _vehicleEdge = Stroke(Palette.VehicleEdge, 2);
         private readonly Paint _pointA = Fill("#FF7043");
         private readonly Paint _cornerDot = Fill("#4DD0E1");
-        private readonly Paint _goal = Fill("#FFFFFF");
-        private readonly Paint _goalLine = Stroke("#FFFFFF", 1.5f);
-        private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor("#B0BEC5"), TextAlign = Paint.Align.Center };
+        private readonly Paint _headland = Stroke(Palette.Headland, 2.5f);
+        private readonly Paint _abDot = Fill(Palette.RefLine);
+        private readonly Paint _abText = new Paint(PaintFlags.AntiAlias) { Color = Color.White, TextAlign = Paint.Align.Center, FakeBoldText = true };
+        private readonly Paint _goal = Fill(Palette.Goal);
+        private readonly Paint _goalLine = Stroke(Palette.Goal, 1.5f);
+        private readonly Paint _hint = new Paint(PaintFlags.AntiAlias) { Color = Color.ParseColor(Palette.Hint), TextAlign = Paint.Align.Center };
         private GuidanceSnapshot _snap;
         /// <summary>Satellite map source, or null for no map.</summary>
         public MapTileProvider Map { get; set; }
@@ -53,8 +56,10 @@ namespace AgOpenGPS.Droid
             _scaleText.TextSize = _attribution.TextSize * 1.2f;
             _scaleText.SetShadowLayer(2, 0, 0, Color.Black);
             SetUpGestures(context);
+            _headland.SetPathEffect(new DashPathEffect(new[] { 14 * _density, 9 * _density }, 0));
+            _abText.TextSize = 13 * _density;
             _hint.TextSize = global::Android.Util.TypedValue.ApplyDimension(global::Android.Util.ComplexUnitType.Sp, 18, context.Resources.DisplayMetrics);
-            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge, _goalLine }) p.StrokeWidth *= _density;
+            foreach (Paint p in new[] { _current, _other, _refLine, _recording, _boundary, _boundaryRec, _vehicleEdge, _goalLine, _headland }) p.StrokeWidth *= _density;
         }
 
         public void Show(GuidanceSnapshot snap)
@@ -210,7 +215,7 @@ namespace AgOpenGPS.Droid
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            canvas.DrawColor(Color.ParseColor("#263238"));
+            canvas.DrawColor(Color.ParseColor(Palette.MapBackground));
             GuidanceSnapshot s = _snap;
 
             if (s?.DrawPlane == null)
@@ -293,6 +298,7 @@ namespace AgOpenGPS.Droid
             DrawCoverage(canvas, s, v, heading, scale, cx, cy);
 
             DrawLine(s.Boundary, _boundary, closed: true);
+            DrawLine(s.HeadlandLine, _headland, closed: true);
             if (s.RecordingBoundary)
             {
                 DrawLine(s.BoundaryPath, _boundaryRec);
@@ -321,6 +327,17 @@ namespace AgOpenGPS.Droid
                 ToScreen(s.RecordingPath[0], out float ax, out float ay);
                 canvas.DrawCircle(ax, ay, 8 * _density, _pointA);
             }
+
+            // A and B of the active line: where it was recorded.
+            void Marker(GeoPoint? p, string letter)
+            {
+                if (!p.HasValue) return;
+                ToScreen(p.Value, out float mx, out float my);
+                canvas.DrawCircle(mx, my, 11 * _density, _abDot);
+                canvas.DrawText(letter, mx, my + 4.5f * _density, _abText);
+            }
+            Marker(s.LineA, "A");
+            Marker(s.LineB, "B");
 
             if (s.Vehicle.HasValue)
             {

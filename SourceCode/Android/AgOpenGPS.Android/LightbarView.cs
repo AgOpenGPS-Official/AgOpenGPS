@@ -15,7 +15,7 @@ namespace AgOpenGPS.Droid
         public const int SegmentsPerSide = 10;
         public const double DegreesPerSegment = 1.0;
 
-        private static readonly Color Off = Color.ParseColor("#37474F");
+        private static Color Off => Color.ParseColor(Palette.LightbarOff);
         private static readonly Color Green = Color.ParseColor("#66BB6A");
         private static readonly Color Yellow = Color.ParseColor("#FFCA28");
         private static readonly Color Red = Color.ParseColor("#EF5350");
@@ -39,7 +39,7 @@ namespace AgOpenGPS.Droid
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            canvas.DrawColor(Color.ParseColor("#263238"));
+            canvas.DrawColor(Color.ParseColor(Palette.LightbarBackground));
 
             int total = SegmentsPerSide * 2 + 1;
             float gap = Height * 0.12f;
