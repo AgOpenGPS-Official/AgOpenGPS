@@ -22,6 +22,11 @@ link. Guidance, mapping and section control are not ported yet.
 | [`SourceCode/Android/pi/`](SourceCode/Android/pi/README.md) | Bluetooth bridge for a Raspberry Pi next to the receiver. |
 | `SourceCode/AgLibrary.Ntrip/` | The NTRIP client from AgIO, used by the app. |
 
+## User guide
+
+Short instructions for the tablet: [English](docs/user-guide.en.md) · [Hrvatski](docs/user-guide.hr.md).
+The same text is in the app under **Help / Pomoć**.
+
 ## Getting the app
 
 Every push builds the APK on GitHub Actions (*Android* workflow): open the latest run under

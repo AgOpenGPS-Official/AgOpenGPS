@@ -260,6 +260,8 @@ namespace AgOpenGPS.Droid
             ["Language"] = "Jezik",
             ["System"] = "Sustav",
 
+            ["Help"] = "Pomoć",
+
             // ---------------------------------------------------------------- corner mode
             ["How to record the boundary?"] = "Kako snimiti među?",
             ["Drive along the edge"] = "Vožnjom uz rub",

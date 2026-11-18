@@ -72,6 +72,10 @@ The APK is in `AgOpenGPS.Android/bin/Release/net10.0-android/publish/`.
 
 ## Using it
 
+A short guide for users is in [docs/user-guide.en.md](../../docs/user-guide.en.md) and
+[docs/user-guide.hr.md](../../docs/user-guide.hr.md); the app shows the same text under **Help**
+(the files are packed into the APK, so help works offline). The sections below go into more detail.
+
 ### Language
 
 *Settings → Language / Jezik*: **System / Sustav** (Croatian if the tablet is set to Croatian),

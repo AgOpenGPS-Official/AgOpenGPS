@@ -802,6 +802,7 @@ namespace AgOpenGPS.Droid
             bar.AddView(_fixInfo, Ui.Weight(1));
             _connect = Ui.Button(this, Tr.T("Connect"), OnConnectClicked, 48);
             bar.AddView(_connect);
+            bar.AddView(Ui.Button(this, Tr.T("Help"), () => StartActivity(new Intent(this, typeof(HelpActivity))), 48));
             bar.AddView(Ui.Button(this, Tr.T("Settings"), () => StartActivity(new Intent(this, typeof(SettingsActivity))), 48));
             root.AddView(bar);
 

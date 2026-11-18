@@ -8,8 +8,8 @@
     <RootNamespace>AgOpenGPS.Droid</RootNamespace>
     <ApplicationId>org.agopengps.android</ApplicationId>
     <ApplicationTitle>AgOpenGPS</ApplicationTitle>
-    <ApplicationVersion>16</ApplicationVersion>
-    <ApplicationDisplayVersion>0.12.0</ApplicationDisplayVersion>
+    <ApplicationVersion>17</ApplicationVersion>
+    <ApplicationDisplayVersion>0.13.0</ApplicationDisplayVersion>
     <!-- One APK for ARM tablets (most) and x86_64 (Chromebooks, emulators). -->
     <RuntimeIdentifiers>android-arm64;android-arm;android-x64</RuntimeIdentifiers>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AgOpenGPS.Mobile.Core\AgOpenGPS.Mobile.Core.csproj" />
+  </ItemGroup>
+
+  <!-- The user guide (docs/) is packed into the APK for the Help screen: one text for both. -->
+  <ItemGroup>
+    <AndroidAsset Include="..\..\..\docs\user-guide.en.md" Link="Assets\user-guide.en.md" />
+    <AndroidAsset Include="..\..\..\docs\user-guide.hr.md" Link="Assets\user-guide.hr.md" />
   </ItemGroup>
 
 </Project>

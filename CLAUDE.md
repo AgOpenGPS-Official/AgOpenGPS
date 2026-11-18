@@ -37,6 +37,12 @@ or `Tr.F("English {0} format", args)` (`AgOpenGPS.Android/Tr.cs`), and needs a C
 gluing pieces ("Delete " + name), because the word order differs. Messages from the core library
 stay English there and are translated where they are shown.
 
+## User guide
+
+`docs/user-guide.en.md` and `docs/user-guide.hr.md` are the short user guide, shown in the app's
+Help screen (packed into the APK, converted by `HelpText`). When a feature changes what the user
+sees or does, update both guides. Keep to headings, `-` bullets, `1.` steps, **bold** and *italic*.
+
 ## User Preferences
 
 - **Language**: English
